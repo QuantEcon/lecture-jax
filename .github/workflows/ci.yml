@@ -95,7 +95,7 @@ jobs:
         shell: bash -l {0}
         run: |
           jb build lectures --builder pdflatex --path-output ./ -n -W --keep-going
-          mkdir _build/html/_pdf
+          mkdir -p _build/html/_pdf
           cp -u _build/latex/*.pdf _build/html/_pdf
       - name: Upload Execution Reports (LaTeX)
         uses: actions/upload-artifact@v2
