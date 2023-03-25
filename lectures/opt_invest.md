@@ -17,6 +17,7 @@ kernelspec:
 We require the following library to be installed.
 
 ```{code-cell} ipython3
+:tags: [hide-output]
 !pip install --upgrade quantecon
 ```
 
@@ -58,6 +59,15 @@ import jax
 import jax.numpy as jnp
 ```
 
+Let’s check the backend used by JAX and the devices available
+
+
+```{code-cell} ipython3
+# Check if JAX is using GPU
+print(f"JAX backend: {jax.devices()[0].platform}")
+# Check the devices available for JAX
+print(jax.devices())
+```
 
 We will use 64 bit floats with JAX in order to increase the precision.
 
@@ -273,12 +283,14 @@ $$
 
 Here we set up the linear map $v$ -> $R_{\sigma} v$,
 
-where $$R_{\sigma} := I - \beta P_{\sigma}$$
+where $R_{\sigma} := I - \beta P_{\sigma}$
 
 In the investment problem, this map can be expressed as
+
 $$
     (R_{\sigma} v)(y, z) = v(y, z) - \beta \sum_{z'} v(\sigma(y, z), z') Q(z, z')
 $$
+
 Defining the map as above works in a more intuitive multi-index setting
 (e.g. working with $v[i, j]$ rather than flattening v to a one-dimensional
 array) and avoids instantiating the large matrix $P_{\sigma}$.
