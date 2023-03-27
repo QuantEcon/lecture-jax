@@ -11,6 +11,7 @@ kernelspec:
   name: python3
 ---
 
++++ {"user_expressions": []}
 
 # Optimal Investment
 
@@ -18,8 +19,11 @@ We require the following library to be installed.
 
 ```{code-cell} ipython3
 :tags: [hide-output]
+
 !pip install --upgrade quantecon
 ```
+
++++ {"user_expressions": []}
 
 A monopolist faces inverse demand
 curve
@@ -52,15 +56,16 @@ In essence, the firm tries to choose output close to the monopolist profit maxim
 
 Let's begin with the following imports
 
-
 ```{code-cell} ipython3
 import quantecon as qe
 import jax
 import jax.numpy as jnp
+import matplotlib.pyplot as plt
 ```
 
-Let’s check the backend used by JAX and the devices available
++++ {"user_expressions": []}
 
+Let’s check the backend used by JAX and the devices available
 
 ```{code-cell} ipython3
 # Check if JAX is using GPU
@@ -69,14 +74,17 @@ print(f"JAX backend: {jax.devices()[0].platform}")
 print(jax.devices())
 ```
 
++++ {"user_expressions": []}
+
 We will use 64 bit floats with JAX in order to increase the precision.
 
 ```{code-cell} ipython3
 jax.config.update("jax_enable_x64", True)
 ```
 
++++ {"user_expressions": []}
 
-We also need the successive approximation function.
+We need the following successive approximation function.
 
 ```{code-cell} ipython3
 def successive_approx(T,                     # Operator (callable)
@@ -102,6 +110,7 @@ def successive_approx(T,                     # Operator (callable)
     return x
 ```
 
++++ {"user_expressions": []}
 
 Let's define a function to create an investment model using the given parameters.
 
@@ -132,6 +141,7 @@ def create_investment_model(
     return constants, sizes, arrays
 ```
 
++++ {"user_expressions": []}
 
 Let's re-write the vectorized version of the right-hand side of the
 Bellman equation (before maximization), which is a 3D array representing:
@@ -173,6 +183,7 @@ def B(v, constants, sizes, arrays):
 B = jax.jit(B, static_argnums=(2,))
 ```
 
++++ {"user_expressions": []}
 
 Define a function to compute the current rewards given policy $\sigma$.
 
@@ -201,6 +212,7 @@ def compute_r_σ(σ, constants, sizes, arrays):
 compute_r_σ = jax.jit(compute_r_σ, static_argnums=(2,))
 ```
 
++++ {"user_expressions": []}
 
 Define the Bellman operator.
 
@@ -212,6 +224,7 @@ def T(v, constants, sizes, arrays):
 T = jax.jit(T, static_argnums=(2,))
 ```
 
++++ {"user_expressions": []}
 
 The following function computes a v-greedy policy.
 
@@ -223,6 +236,7 @@ def get_greedy(v, constants, sizes, arrays):
 get_greedy = jax.jit(get_greedy, static_argnums=(2,))
 ```
 
++++ {"user_expressions": []}
 
 Define the $\sigma$-policy operator.
 
@@ -254,7 +268,7 @@ def T_σ(v, σ, constants, sizes, arrays):
 T_σ = jax.jit(T_σ, static_argnums=(3,))
 ```
 
-
++++ {"user_expressions": []}
 
 Next, we want to computes the lifetime value of following policy $\sigma$.
 
@@ -319,6 +333,7 @@ def R_σ(v, σ, constants, sizes, arrays):
 R_σ = jax.jit(R_σ, static_argnums=(3,))
 ```
 
++++ {"user_expressions": []}
 
 Define a function to get the value $v_{\sigma}$ of policy
 $\sigma$ by inverting the linear map $R_{\sigma}$.
@@ -341,6 +356,7 @@ def get_value(σ, constants, sizes, arrays):
 get_value = jax.jit(get_value, static_argnums=(2,))
 ```
 
++++ {"user_expressions": []}
 
 Now, we compute the transition probabilities across states as a multi-index array
 
@@ -367,19 +383,23 @@ def compute_P_σ(σ, constants, sizes, arrays):
 compute_P_σ = jax.jit(compute_P_σ, static_argnums=(2,))
 ```
 
++++ {"user_expressions": []}
+
+Let's write a matrix version to compute the value function.
+
+We get the value v_σ of policy σ via
+
+$$
+        v_{\sigma} = (I - \beta P_{\sigma})^{-1} r_{\sigma}
+$$
+
+In this version we flatten the multi-index $[i, j]$ for the state $(y, z)$ to
+a single index $m$ and compute the vector $r_{\sigma}[m]$ and matrix $P_{\sigma}[m, mp]$
+giving transition probabilities across the single-index state.  Then we
+solve the above equation using matrix inversion.
+
 ```{code-cell} ipython3
 def get_value_matrix_version(σ, constants, sizes, arrays):
-    """
-    Get the value v_σ of policy σ via
-
-        v_σ = (I - β P_σ)^{-1} r_σ
-
-    In this version we flatten the multi-index [i, j] for the state (y, z) to
-    a single index m and compute the vector r_σ[m] and matrix P_σ[m, mp]
-    giving transition probabilities across the single-index state.  Then we
-    solve the above equation using matrix inversion.
-
-    """
 
     # Unpack
     β, a_0, a_1, γ, c = constants
@@ -396,11 +416,17 @@ def get_value_matrix_version(σ, constants, sizes, arrays):
     r_σ = jnp.reshape(r_σ, n)
 
     # Solve
-    v_σ = jnp.linalg.solve(np.identity(n) - β * P_σ, r_σ)
+    v_σ = jnp.linalg.solve(jnp.identity(n) - β * P_σ, r_σ)
 
     # Return as multi-index array
     return jnp.reshape(v_σ, (y_size, z_size))
+
+get_value_matrix_version = jax.jit(get_value_matrix_version, static_argnums=(2,))
 ```
+
++++ {"user_expressions": []}
+
+Similarly, let's define the matrix version to compute $\sigma$-policy operator.
 
 ```{code-cell} ipython3
 def T_σ_matrix_version(v, σ, constants, sizes, arrays):
@@ -426,13 +452,11 @@ def T_σ_matrix_version(v, σ, constants, sizes, arrays):
 
     # Return as multi-index array
     return jnp.reshape(new_v, (y_size, z_size))
-```
 
-```{code-cell} ipython3
-get_value_matrix_version = jax.jit(get_value_matrix_version, static_argnums=(2,))
 T_σ_matrix_version = jax.jit(T_σ_matrix_version, static_argnums=(3,))
 ```
 
++++ {"user_expressions": []}
 
 Now we define the solvers, which implement VFI, HPI and OPI.
 
@@ -516,6 +540,69 @@ out = optimistic_policy_iteration(model, m=100)
 elapsed = qe.toc()
 print(out)
 print(f"OPI completed in {elapsed} seconds.")
+```
+
++++ {"user_expressions": []}
+
+Here's the plot of the Howard policy, as a function of $y$ at the highest and lowest values of $z$.
+
+```{code-cell} ipython3
+fontsize=12
+model = create_investment_model()
+# Unpack 
+constants, sizes, arrays = model
+β, a_0, a_1, γ, c = constants
+y_size, z_size = sizes
+y_grid, z_grid, Q = arrays
+σ_star = policy_iteration(model)
+fig, ax = plt.subplots(figsize=(9, 5))
+ax.plot(y_grid, y_grid, "k--", label="45")
+ax.plot(y_grid, y_grid[σ_star[:, 1]], label="$\\sigma^*(\cdot, z_1)$")
+ax.plot(y_grid, y_grid[σ_star[:, -1]], label="$\\sigma^*(\cdot, z_N)$")
+ax.legend(fontsize=fontsize)
+plt.show()
+```
+
++++ {"user_expressions": []}
+
+Let's plot the time taken by each of the solvers and compare them.
+
+```{code-cell} ipython3
+m_vals = range(5, 3000, 100)
+model = create_investment_model()
+print("Running Howard policy iteration.")
+qe.tic()
+σ_pi = policy_iteration(model)
+pi_time = qe.toc()
+print(f"PI completed in {pi_time} seconds.")
+print("Running value function iteration.")
+qe.tic()
+σ_vfi = value_iteration(model, tol=1e-5)
+vfi_time = qe.toc()
+print(f"VFI completed in {vfi_time} seconds.")
+
+
+opi_times = []
+for m in m_vals:
+    print(f"Running optimistic policy iteration with m={m}.")
+    qe.tic()
+    σ_opi = optimistic_policy_iteration(model, m=m, tol=1e-5)
+    opi_time = qe.toc()
+    print(f"OPI with m={m} completed in {opi_time} seconds.")
+    opi_times.append(opi_time)
+```
+
+```{code-cell} ipython3
+fig, ax = plt.subplots(figsize=(9, 5))
+ax.plot(m_vals, jnp.full(len(m_vals), pi_time), 
+        lw=2, label="Howard policy iteration")
+ax.plot(m_vals, jnp.full(len(m_vals), vfi_time), 
+        lw=2, label="value function iteration")
+ax.plot(m_vals, opi_times, lw=2, label="optimistic policy iteration")
+ax.legend(fontsize=fontsize, frameon=False)
+ax.set_xlabel("$m$", fontsize=fontsize)
+ax.set_ylabel("time", fontsize=fontsize)
+plt.show()
 ```
 
 ```{code-cell} ipython3
