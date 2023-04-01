@@ -124,8 +124,6 @@ Now let's use the multivariate version of Newton's method to compute the equilib
 p_{n+1} = p_n - J_e(p_n)^{-1} e(p_n)
 ```
 
-<!-- This is a multivariate version of [](https://python.quantecon.org/newton_method.html#oneD-newton) -->
-
 Here $J_e(p_n)$ is the Jacobian of $e$ evaluated at $p_n$.
 
 The iteration starts from some initial guess of the price vector $p_0$. 
@@ -154,25 +152,6 @@ def newton(f, x_0, tol=1e-5, max_iter=10):
     return x
 ```
 
-<!-- We find the algorithm terminates in 4 steps
-
-```{code-cell} python3
-%%time
-p = newton(lambda p: e(p, A, b, c), init_p).block_until_ready()
-```
-
-```{code-cell} python3
-jnp.max(jnp.abs(e(p, A, b, c)))
-``` -->
-
-<!-- The result is very accurate.  -->
-
-<!-- With the larger overhead, the speed is not better than the optimized `scipy` function.
-
-However, things will change when we move to higher dimensional problems. -->
-
-
-
 
 ### A High-Dimensional Problem
 
@@ -193,13 +172,6 @@ A = A / s
 b = jnp.ones(dim)
 c = jnp.ones(dim)
 ```
-
-<!-- Here is essentially the same demand function we applied before, but now using `jax.numpy` for the calculations.
-
-```{code-cell} python3
-def e(p, A, b, c):
-    return jnp.exp(- jnp.dot(A, p)) + c - b * jnp.sqrt(p)
-``` -->
 
 Here's our initial condition $p_0$
 
