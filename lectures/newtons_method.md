@@ -3,24 +3,16 @@ jupytext:
   text_representation:
     extension: .md
     format_name: myst
+    format_version: 0.13
+    jupytext_version: 1.14.5
 kernelspec:
   display_name: Python 3
   language: python
   name: python3
 ---
 
-(newton_method)=
-```{raw} html
-<div id="qe-notebook-header" align="right" style="text-align:right;">
-        <a href="https://quantecon.org/" title="quantecon.org">
-                <img style="width:250px;display:inline;" width="250px" src="https://assets.quantecon.org/img/qe-menubar-logo.svg" alt="QuantEcon">
-        </a>
-</div>
-```
-```{index} single: python
-```
 
-## Inplementing Newton's Method with Google Jax
+# Using Newton’s Method to Solve Economic Models¶
 
 Continuing from the the [Newton's Method lecutre](https://python.quantecon.org/newton_method.html), we are going to solve the multidimensional problem with `Jax`. More information about Jax can be found [here](https://python-programming.quantecon.org/jax_intro.html).
 
@@ -33,7 +25,7 @@ import numpy as np
 from scipy.optimize import root
 ```
 
-### The Two Goods Market Equilibrium
+## The Two Goods Market Equilibrium
 
 Let's have a quick recall for this problem, a more detailed explanation and derivation can be found at [A Two Goods Market Equilibrium](https://python.quantecon.org/newton_method.html#two_goods_market).
 
@@ -85,7 +77,7 @@ $$
 for this particular question.
 
 
-### The Multivariable Market Equilibrium
+## The Multivariable Market Equilibrium
 
 We can now easily get the multivariable version of the problem above.
 
@@ -115,7 +107,7 @@ def e(p, A, b, c):
 ```
 
 
-### Using Newton's Method
+# Using Newton's Method
 
 Now let's use the multivariate version of Newton's method to compute the equilibrium price
 
@@ -153,7 +145,7 @@ def newton(f, x_0, tol=1e-5, max_iter=10):
 ```
 
 
-### A High-Dimensional Problem
+## A High-Dimensional Problem
 
 We now apply the multivariate Newton's Method to  investigate a large market with 5,000 goods.
 
