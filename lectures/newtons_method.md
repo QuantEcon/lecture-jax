@@ -258,7 +258,7 @@ with $s = 0.3$, $α = 0.3$, and $δ = 0.4$ and starting value:
 ```{math}
 k_0 = (1, 1, 1)
 ```
-The result should converge to the [analytical solution](solved_k).
+The result should converge to the [analytical solution](https://python.quantecon.org/newton_method.html#solved-k).
 ````
 
 ```{exercise-end}
@@ -283,7 +283,7 @@ initLs = [jnp.ones(3),
           jnp.repeat(50.0, 3)]
 ```
 
-Then define the multivariate version of the formula for the [law of motion of captial](motion_law)
+Then define the multivariate version of the formula for the [law of motion of captial](https://python.quantecon.org/newton_method.html#solow)
 
 ```{code-cell} python3
 def multivariate_solow(k, A=A, s=s, α=α, δ=δ):
