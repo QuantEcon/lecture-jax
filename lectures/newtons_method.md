@@ -21,6 +21,7 @@ We use the following imports in this lecture
 ```{code-cell} python3
 import jax
 import jax.numpy as jnp
+import quantecon as qe
 import numpy as np
 from scipy.optimize import root
 ```
@@ -103,7 +104,7 @@ The function below calculates the excess demand for the given parameters
 
 ```{code-cell} python3
 def e(p, A, b, c):
-    return jnp.exp(- A @ p) + c - b * jnp.srqt(p)
+    return jnp.exp(- A @ p) + c - b * jnp.sqrt(p)
 ```
 
 
@@ -176,8 +177,9 @@ automatic differentiation, and a GPU, we obtain a relatively small error for
 this very large problem in just a few seconds:
 
 ```{code-cell} python3
-%%time
+qe.tic()
 p = newton(lambda p: e(p, A, b, c), init_p).block_until_ready()
+time1 = qe.toc()
 ```
 
 ```{code-cell} python3
@@ -189,12 +191,13 @@ even with the Jacobian supplied.
 
 
 ```{code-cell} python3
-%%time
+qe.tic()
 solution = root(lambda p: e(p, A, b, c),
                 init_p, 
                 jac=lambda p: jax.jacobian(e)(p, A, b, c), 
                 method='hybr',
                 tol=1e-5)
+time2 = qe.toc()
 ```
 
 ```{code-cell} python3
