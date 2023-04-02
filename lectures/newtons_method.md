@@ -78,7 +78,7 @@ $$
 for this particular question.
 
 
-## The Multivariable Market Equilibrium
+### The Multivariable Market Equilibrium
 
 We can now easily get the multivariable version of the problem above.
 
@@ -108,7 +108,7 @@ def e(p, A, b, c):
 ```
 
 
-# Using Newton's Method
+## Using Newton's Method
 
 Now let's use the multivariate version of Newton's method to compute the equilibrium price
 
@@ -146,7 +146,7 @@ def newton(f, x_0, tol=1e-5, max_iter=10):
 ```
 
 
-## A High-Dimensional Problem
+### A High-Dimensional Problem
 
 We now apply the multivariate Newton's Method to  investigate a large market with 5,000 goods.
 
