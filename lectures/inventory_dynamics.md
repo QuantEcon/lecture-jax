@@ -28,25 +28,7 @@ kernelspec:
 :depth: 2
 ```
 
-## Overview
-
-In this lecture we will study the time path of inventories for firms that
-follow so-called s-S inventory dynamics.
-
-Such firms
-
-1. wait until inventory falls below some level $s$ and then
-1. order sufficient quantities to bring their inventory back up to capacity $S$.
-
-These kinds of policies are common in practice and also optimal in certain circumstances.
-
-A review of early literature and some macroeconomic implications can be found in {cite}`caplin1985variability`.
-
-Here our main aim is to learn more about simulation, time series and Markov dynamics.
-
-While our Markov environment and many of the concepts we consider are related to those found in our [lecture on finite Markov chains](https://python.quantecon.org/finite_markov.html), the state space is a continuum in the current application.
-
-Let's start with some imports
+We will use the following imports:
 
 ```{code-cell} ipython3
 %matplotlib inline
@@ -60,7 +42,37 @@ from numba import njit, float64, prange
 from numba.experimental import jitclass
 ```
 
-```{code-cell} ipython3
+## Sample Paths
+
+Consider a firm with inventory $X_t$.
+
+The firm waits until $X_t \leq s$ and then restocks up to $S$ units.
+
+It faces stochastic demand $\{ D_t \}$, which we assume is IID.
+
+With notation $a^+ := \max\{a, 0\}$, inventory dynamics can be written
+as
+
+$$
+X_{t+1} =
+    \begin{cases}
+      ( S - D_{t+1})^+ & \quad \text{if } X_t \leq s \\
+      ( X_t - D_{t+1} )^+ &  \quad \text{if } X_t > s
+    \end{cases}
+$$
+
+In what follows, we will assume that each $D_t$ is lognormal, so that
+
+$$
+D_t = \exp(\mu + \sigma Z_t)
+$$
+
+where $\mu$ and $\sigma$ are parameters and $\{Z_t\}$ is IID
+and standard normal.
+
+Here's a class that stores parameters and generates time paths for inventory.
+
+```{code-cell} python3
 firm_data = [
    ('s', float64),          # restock trigger level
    ('S', float64),          # capacity
@@ -72,7 +84,7 @@ firm_data = [
 @jitclass(firm_data)
 class Firm:
 
-    def __init__(self, s=10.0, S=100.0, mu=1.0, sigma=0.5):
+    def __init__(self, s=10, S=100, mu=1.0, sigma=0.5):
 
         self.s, self.S, self.mu, self.sigma = s, S, mu, sigma
 
@@ -96,87 +108,58 @@ class Firm:
         return X
 ```
 
+Let's run a first simulation, of a single path:
+
+```{code-cell} ipython3
+firm = Firm()
+
+s, S = firm.s, firm.S
+sim_length = 100
+x_init = 50
+
+X = firm.sim_inventory_path(x_init, sim_length)
+
+fig, ax = plt.subplots()
+bbox = (0., 1.02, 1., .102)
+legend_args = {'ncol': 3,
+               'bbox_to_anchor': bbox,
+               'loc': 3,
+               'mode': 'expand'}
+
+ax.plot(X, label="inventory")
+ax.plot(np.full(sim_length, s), 'k--', label="$s$")
+ax.plot(np.full(sim_length, S), 'k-', label="$S$")
+ax.set_ylim(0, S+10)
+ax.set_xlabel("time")
+ax.legend(**legend_args)
+
+plt.show()
+```
+
+Now let's simulate multiple paths in order to build a more complete picture of
+the probabilities of different outcomes:
+
+```{code-cell} ipython3
+sim_length=200
+fig, ax = plt.subplots()
+
+ax.plot(np.full(sim_length, s), 'k--', label="$s$")
+ax.plot(np.full(sim_length, S), 'k-', label="$S$")
+ax.set_ylim(0, S+10)
+ax.legend(**legend_args)
+
+for i in range(400):
+    X = firm.sim_inventory_path(x_init, sim_length)
+    ax.plot(X, 'b', alpha=0.2, lw=0.5)
+
+plt.show()
+```
+
+
 ## Marginal Distributions
 
 Now let’s look at the marginal distribution $\psi_T$ of $X_T$ for some
 fixed $T$.
-
-We will do this by generating many draws of $X_T$ given initial
-condition $X_0$.
-
-With these draws of $X_T$ we can build up a picture of its distribution $\psi_T$.
-
-Here's one visualization, with $T=50$.
-
-```{code-cell} ipython3
-firm = Firm()
-s, S, mu, sigma = firm.s, firm.S, firm.mu, firm.sigma
-
-x_init = 50
-T = 50
-M = 200  # Number of draws
-
-ymin, ymax = 0, S + 10
-
-fig, axes = plt.subplots(1, 2, figsize=(11, 6))
-
-for ax in axes:
-    ax.grid(alpha=0.4)
-
-ax = axes[0]
-
-ax.set_ylim(ymin, ymax)
-ax.set_ylabel('$X_t$', fontsize=16)
-ax.vlines((T,), -1.5, 1.5)
-
-ax.set_xticks((T,))
-ax.set_xticklabels((r'$T$',))
-
-sample = np.empty(M)
-for m in range(M):
-    X = firm.sim_inventory_path(x_init, 2 * T)
-    ax.plot(X, 'b-', lw=1, alpha=0.5)
-    ax.plot((T,), (X[T+1],), 'ko', alpha=0.5)
-    sample[m] = X[T+1]
-
-axes[1].set_ylim(ymin, ymax)
-
-axes[1].hist(sample,
-             bins=16,
-             density=True,
-             orientation='horizontal',
-             histtype='bar',
-             alpha=0.5)
-
-plt.show()
-```
-
-We can build up a clearer picture by drawing more samples
-
-```{code-cell} ipython3
-T = 50
-M = 50_000
-
-fig, ax = plt.subplots()
-
-sample = np.empty(M)
-for m in range(M):
-    X = firm.sim_inventory_path(x_init, T+1)
-    sample[m] = X[T]
-
-ax.hist(sample,
-         bins=36,
-         density=True,
-         histtype='bar',
-         alpha=0.75)
-
-plt.show()
-```
-
-Note that the distribution is bimodal
-
-* Most firms have restocked twice but a few have restocked only once (see figure with paths above).
-* Firms in the second category have lower inventory.
 
 We can also approximate the distribution using a [kernel density estimator](https://en.wikipedia.org/wiki/Kernel_density_estimation).
 
@@ -197,15 +180,6 @@ def plot_kde(sample, ax, label=''):
 
     ax.plot(xgrid, np.exp(log_dens), label=label)
 ```
-
-```{code-cell} ipython3
-fig, ax = plt.subplots()
-plot_kde(sample, ax)
-plt.show()
-```
-
-The allocation of probability mass is similar to what was shown by the
-histogram just above.
 
 ## Exercises
 
@@ -267,8 +241,8 @@ def shift_firms_forward(x_init, key, num_firms=50_000, sim_length=750):
 
 ```{code-cell} ipython3
 x_init = 50.0
-
 sample_dates = 10, 50, 250, 500, 750
+s, S, mu, sigma = firm.s, firm.S, firm.mu, firm.sigma
 
 fig, ax = plt.subplots()
 
