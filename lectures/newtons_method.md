@@ -45,11 +45,11 @@ from scipy.optimize import root
 
 ## The Two Goods Market Equilibrium
 
-Let's have a quick recall for this problem, a more detailed explanation and derivation can be found at [A Two Goods Market Equilibrium](https://python.quantecon.org/newton_method.html#two_goods_market).
+Let's have a quick recap of this problem -- a more detailed explanation and derivation can be found at [A Two Goods Market Equilibrium](https://python.quantecon.org/newton_method.html#two_goods_market).
 
-Assuming we have such market for two complementary goods where demand depends on the price of both components. 
+Assume we have a market for two complementary goods where demand depends on the price of both components. 
 
-We label them $\text{good}_0$ and $\text{ good}_1$, with price vector $p = (p_0, p_1)$.
+We label them good 0 and good 1, with price vector $p = (p_0, p_1)$.
 
 Then the supply of good $i$ at price $p$ is,
 
@@ -102,19 +102,19 @@ We can now easily get the multivariable version of the problem above.
 The supply function remain unchanged,
 
 $$ 
-q^s (\bf{p}) =\bf{b} \bf\sqrt{p} 
+q^s (p) =b \sqrt{p} 
 $$
 
 The demand function is,
 
 $$ 
-q^d (\bf{p}) = \text{exp}(- \bf{A} \cdot \bf{p}) + \bf{c}
+q^d (p) = \text{exp}(- A \cdot p) + c
 $$
 
 Our new excess demand function is,
 
 $$
-e(\bf{p}) = \text{exp}(- \bf{A} \cdot \bf{p}) + \bf{c} - \bf{b} \bf\sqrt{p} 
+e(p) = \text{exp}(- A \cdot p) + c - b \sqrt{p} 
 $$
 
 The function below calculates the excess demand for the given parameters
@@ -167,7 +167,7 @@ def newton(f, x_0, tol=1e-5, max_iter=10):
 
 We now apply the multivariate Newton's Method to  investigate a large market with 5,000 goods.
 
-We randomly generate the matrix $A$ and set the parameter vectors $b \text{ and } c$ to $\bf{1}$.
+We randomly generate the matrix $A$ and set the parameter vectors $b \text{ and } c$ to $1$.
 
 
 ```{code-cell} python3
