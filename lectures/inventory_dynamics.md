@@ -118,21 +118,21 @@ We will see convergence, in the sense that differences between successive distri
 Here is one realization of the process in JAX using `for` loop
 
 ```{code-cell} ipython3
-@jax.jit
-def update_X(X, D):
-    res = jnp.where(X <= s,
-                    jnp.maximum(S - D, 0),
-                    jnp.maximum(X - D, 0))
-    return res
-
 def shift_firms_forward(x_init, key, sample_dates, num_firms=50_000, sim_length=750):
     X = res = jnp.full((num_firms, ), x_init)
-    Z = random.normal(key, shape=(sim_length, num_firms))
-    D = jnp.exp(mu + sigma * Z)
 
+    @jax.jit
+    def update_X(X, key):
+        Z = random.normal(key, shape=(num_firms, ))
+        D = jnp.exp(mu + sigma * Z)
+        X = jnp.where(X <= s,
+                jnp.maximum(S - D, 0),
+                jnp.maximum(X - D, 0))
+        _, key = random.split(key)
+        return X, key
     # Use a for loop to perform the calculations on all states
     for i in range(sim_length):
-        X = update_X(X, D[i, :])
+        X, key = update_X(X, key)
         if (i in sample_dates):
           res = jnp.vstack((res, X))
 
@@ -142,9 +142,7 @@ def shift_firms_forward(x_init, key, sample_dates, num_firms=50_000, sim_length=
 ```{code-cell}ipython3
 x_init = 50
 num_firms = 50_000
-
 sample_dates = 10, 50, 250, 500, 750
-
 s, S, mu, sigma = firm.s, firm.S, firm.mu, firm.sigma
 
 fig, ax = plt.subplots()
@@ -269,12 +267,12 @@ def compute_freq(key, x_init=70, sim_length=50, num_firms=1_000_000):
       X = jnp.where(X <= s,
                     jnp.maximum(S - D, 0),
                     jnp.maximum(X - D, 0))
-      return restock_counter, X
+      _, key = random.split(key)
+      return restock_counter, X, key
 
     # Use a for loop to perform the calculations on all states
     for i in range(sim_length):
-        _, key = random.split(key)
-        restock_counter, X = update_stock(
+        restock_counter, X, key = update_stock(
             restock_counter, X, key)
         
     return jnp.mean(restock_counter > 1, axis=0)
