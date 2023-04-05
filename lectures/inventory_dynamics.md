@@ -77,7 +77,7 @@ Firm = namedtuple('Firm', ['s', 'S', 'mu', 'sigma'])
 firm = Firm(s=10, S=100, mu=1.0, sigma=0.5)
 ```
 
-## Marginal Distributions
+## Example 1: Marginal Distributions
 
 Now let’s look at the marginal distribution $\psi_T$ of $X_T$ for some
 fixed $T$.
@@ -102,8 +102,6 @@ def plot_kde(sample, ax, label=''):
 
 This model for inventory dynamics is asymptotically stationary, with a unique stationary distribution.
 
-(See the discussion of stationarity in [our lecture on AR(1) processes](https://python.quantecon.org/ar1_processes.html) for background --- the fundamental concepts are the same.)
-
 In particular, the sequence of marginal distributions $\{\psi_t\}$
 is converging to a unique limiting distribution that does not depend on
 initial conditions.
@@ -121,16 +119,21 @@ Here is one realization of the process in JAX using `for` loop
 def shift_firms_forward(x_init, key, sample_dates, num_firms=50_000, sim_length=750):
     X = res = jnp.full((num_firms, ), x_init)
 
+    # Define a jit-compiled function to update X and key
     @jax.jit
     def update_X(X, key):
         Z = random.normal(key, shape=(num_firms, ))
         D = jnp.exp(mu + sigma * Z)
+
+        # Restock if the inventory is below the threshold
         X = jnp.where(X <= s,
                 jnp.maximum(S - D, 0),
                 jnp.maximum(X - D, 0))
+
         _, key = random.split(key)
         return X, key
-    # Use a for loop to perform the calculations on all states
+
+    # Use a for loop to update X and collect samples
     for i in range(sim_length):
         X, key = update_X(X, key)
         if (i in sample_dates):
@@ -144,10 +147,9 @@ x_init = 50
 num_firms = 50_000
 sample_dates = 10, 50, 250, 500, 750
 s, S, mu, sigma = firm.s, firm.S, firm.mu, firm.sigma
+key = random.PRNGKey(10)
 
 fig, ax = plt.subplots()
-
-key = random.PRNGKey(10)
 
 %time X = shift_firms_forward(x_init, key, sample_dates)
 
@@ -160,13 +162,11 @@ ax.legend()
 plt.show()
 ```
 
-Note that we only compiled the function within the `for` loop as `jit` compilation of the `for` loop takes a very long time.
+Note that we only compiled the function within the `for` loop as `jit` compilation of the `for` loop takes a very long time when the workload is heavy inside the `for` loop.
 
 Since the function itself is not JIT-compiled, it also takes longer to run when we call it again.
 
-This is why [JAX documentation](https://jax.readthedocs.io/en/latest/faq.html#jit-decorated-function-is-very-slow-to-compile) for JAX recommends to we use `lax.scan` to perform the calculations on all states.
-
-However, `lax.scan` has more complicated syntax and can be memory intensive as we need to have large samples of `Z` in memory.
+This is why [JAX documentation](https://jax.readthedocs.io/en/latest/faq.html#jit-decorated-function-is-very-slow-to-compile) for JAX recommends `lax.scan` to perform heavy computations within a loop.
 
 Here is an example of the same function in `lax.scan`
 
@@ -190,14 +190,10 @@ def shift_firms_forward(x_init, key, num_firms=50_000, sim_length=750):
     return X_final
 ```
 
+It is clear that `lax.scan` has a more complicated syntax and can be memory intensive as we need to have large samples of `Z` in memory.
+
 ```{code-cell} ipython3
-x_init = 50.0
-sample_dates = 10, 50, 250, 500, 750
-s, S, mu, sigma = firm.s, firm.S, firm.mu, firm.sigma
-
 fig, ax = plt.subplots()
-
-key = random.PRNGKey(10)
 
 %time X = shift_firms_forward(x_init, key)
 
@@ -219,14 +215,12 @@ You can test a few more initial conditions to show that they don’t matter by
 testing.
 
 For example, try rerunning the code above with all firms starting at
-$X_0 = 20$ or $X_0 = 80$.
+$X_0 = 20$
 
 ```{code-cell} ipython3
 x_init = 20.0
 
 fig, ax = plt.subplots()
-
-key = random.PRNGKey(10)
 
 %time X = shift_firms_forward(x_init, key)
 
@@ -239,15 +233,17 @@ ax.legend()
 plt.show()
 ```
 
-The compiled function runs very fast. 
+We noticed that the compiled function runs very fast. 
 
-Let's go through another example where we calculate the probability of firms having restocks  
+## Example 2: Restock Frequency
 
-Specifically we set the starting stock level to 70 ($X_0 = 70$), an we calculate the proportion of firms that need to order twice or more in the first 50 periods.
+Let's go through another example where we calculate the probability of firms having restocks.  
+
+Specifically we set the starting stock level to 70 ($X_0 = 70$), as we calculate the proportion of firms that need to order twice or more in the first 50 periods.
 
 You will need a large sample size to get an accurate reading.
 
-Again, we start with a easier but slower `for` loop implementation
+Again, we start with an easier but slightly slower `for` loop implementation
 
 ```{code-cell} ipython3
 def compute_freq(key, x_init=70, sim_length=50, num_firms=1_000_000):
@@ -257,6 +253,7 @@ def compute_freq(key, x_init=70, sim_length=50, num_firms=1_000_000):
     # Stack the restock counter on top of the inventory
     restock_counter = jnp.zeros((num_firms, ))
     
+    # Define a jitted function for each update
     @jax.jit
     def update_stock(restock_counter, X, key):
       Z = random.normal(key, shape=(num_firms, ))
@@ -295,34 +292,35 @@ def compute_freq(key, x_init=70, sim_length=50, num_firms=1_000_000):
     D = jnp.exp(mu + sigma * Z)
 
     # Stack the restock counter on top of the inventory
-    restock_counter = jnp.zeros((num_firms, ))
-    Xs = jnp.concatenate((X, restock_counter), axis=0)
-    
+    restock_count = jnp.zeros((num_firms, ))
+    Xs = jnp.vstack((X, restock_count))
+
     # Define the function for each update
     def update_X(Xs, D):
 
         # Separate the inventory and restock counter
-        X = Xs[:num_firms]
-        restock_counter =  Xs[num_firms:]
-        restock_counter = jnp.where(X <= s,
-                            restock_counter + 1,
-                            restock_counter)
+        X = Xs[0]
+        restock_count =  Xs[1]
+
+        restock_count = jnp.where(X <= s,
+                            restock_count + 1,
+                            restock_count)
         X = jnp.where(X <= s, 
                       jnp.maximum(S - D, 0),
                       jnp.maximum(X - D, 0))
-        Xs = jnp.concatenate((X, restock_counter), axis=0)
-        return Xs, Xs
+        
+        Xs = jnp.vstack((X, restock_count))
+        return Xs, None
 
     # Use lax.scan to perform the calculations on all states
-    _, X_final = lax.scan(update_X, Xs, D)
-    firm_count = jnp.any(X_final[:, num_firms:] > 1, axis=0)
-    return np.mean(firm_count)
+    X_final, _ = lax.scan(update_X, Xs, D)
+
+    return np.mean(X_final[1] > 1)
 ```
 
 Note the time the routine takes to run, as well as the output.
 
 ```{code-cell} ipython3
-key = random.PRNGKey(1)
 %time freq = compute_freq(key)
 print(f"Frequency of at least two stock outs = {freq}")
 ```
