@@ -19,7 +19,7 @@ kernelspec:
  </div>
  ```
 
-# Using Newton’s Method to Solve Economic Models¶
+# Using Newton’s Method to Solve Economic Models
 
 In addition to what’s in Anaconda, this lecture will need the following libraries:
 ```{code-cell} ipython3
@@ -194,6 +194,7 @@ automatic differentiation, and a GPU, we obtain a relatively small error for
 this very large problem in just a few seconds:
 
 ```{code-cell} python3
+# Use tic toc from quantecon to measure runtime
 qe.tic()
 p = newton(lambda p: e(p, A, b, c), init_p).block_until_ready()
 time1 = qe.toc()
