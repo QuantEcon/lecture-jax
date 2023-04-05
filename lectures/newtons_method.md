@@ -21,6 +21,16 @@ kernelspec:
 
 # Using Newton’s Method to Solve Economic Models¶
 
+In addition to what’s in Anaconda, this lecture will need the following libraries:
+```{code-cell} ipython3
+---
+tags: [hide-output]
+---
+!pip install quantecon
+```
+
+## Overview
+
 Continuing from the the [Newton's Method lecutre](https://python.quantecon.org/newton_method.html), we are going to solve the multidimensional problem with `Jax`. More information about Jax can be found [here](https://python-programming.quantecon.org/jax_intro.html).
 
 We use the following imports in this lecture
