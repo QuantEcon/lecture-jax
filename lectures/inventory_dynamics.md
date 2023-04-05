@@ -115,11 +115,7 @@ $t = 10, 50, 250, 500, 750$ based on the kernel density estimator.
 
 We will see convergence, in the sense that differences between successive distributions are getting smaller.
 
-Here is one realization of the process in JAX.
-
-Note that we use `lax.scan` to perform the calculations on all states.
-
-`lax.scan` can be memory intensive as we need to have the sample of `Z` in memory.
+Here is one realization of the process in JAX using `for` loop
 
 ```{code-cell} ipython3
 @jax.jit
@@ -165,6 +161,16 @@ ax.set_ylabel('probability')
 ax.legend()
 plt.show()
 ```
+
+Note that we only compiled the function within the `for` loop as `jit` compilation of the `for` loop takes a very long time.
+
+Since the function itself is not JIT-compiled, it also takes longer to run when we call it again.
+
+This is why [JAX documentation](https://jax.readthedocs.io/en/latest/faq.html#jit-decorated-function-is-very-slow-to-compile) for JAX recommends to we use `lax.scan` to perform the calculations on all states.
+
+However, `lax.scan` has more complicated syntax and can be memory intensive as we need to have large samples of `Z` in memory.
+
+Here is an example of the same function in `lax.scan`
 
 ```{code-cell} ipython3
 @jax.jit
@@ -214,11 +220,11 @@ We have reached a reasonable approximation of the stationary density.
 You can test a few more initial conditions to show that they don’t matter by
 testing.
 
-For example, try rerunning the code above will all firms starting at
+For example, try rerunning the code above with all firms starting at
 $X_0 = 20$ or $X_0 = 80$.
 
 ```{code-cell} ipython3
-x_init = 50.0
+x_init = 20.0
 
 fig, ax = plt.subplots()
 
@@ -235,27 +241,15 @@ ax.legend()
 plt.show()
 ```
 
+The compiled function runs very fast. 
 
-```{exercise}
-:label: id_ex2
+Let's go through another example where we calculate the probability of firms having restocks  
 
-Using simulation, calculate the probability that firms that start with
-$X_0 = 70$ need to order twice or more in the first 50 periods.
+Specifically we set the starting stock level to 70 ($X_0 = 70$), an we calculate the proportion of firms that need to order twice or more in the first 50 periods.
 
 You will need a large sample size to get an accurate reading.
-```
 
-
-```{solution-start} id_ex2
-:class: dropdown
-```
-
-Here is one solution.
-
-Again, the computations are relatively intensive so we have written a a
-specialized function rather than using the class above.
-
-We will also use parallelization across firms.
+Again, we start with a easier but slower `for` loop implementation
 
 ```{code-cell} ipython3
 @jax.jit
@@ -293,6 +287,7 @@ key = random.PRNGKey(1)
 print(f"Frequency of at least two stock outs = {freq}")
 ```
 
+Now let's write a `lax.scan` version that runs faster
 
 ```{code-cell} ipython3
 @jax.jit
@@ -333,7 +328,4 @@ Note the time the routine takes to run, as well as the output.
 key = random.PRNGKey(1)
 %time freq = compute_freq(key)
 print(f"Frequency of at least two stock outs = {freq}")
-```
-
-```{solution-end}
 ```
