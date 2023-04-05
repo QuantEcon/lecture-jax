@@ -252,31 +252,30 @@ You will need a large sample size to get an accurate reading.
 Again, we start with a easier but slower `for` loop implementation
 
 ```{code-cell} ipython3
-@jax.jit
-def update_stock(restock_counter, X, D, num_firms):
-    restock_counter = jnp.where(X <= s,
-                              restock_counter + 1,
-                              restock_counter)
-    X = jnp.where(X <= s,
-                  jnp.maximum(S - D, 0),
-                  jnp.maximum(X - D, 0))
-    return (X, restock_counter)
-
-
 def compute_freq(key, x_init=70, sim_length=50, num_firms=1_000_000):
     # Prepare initial arrays
     X = jnp.full((num_firms, ), x_init)
-    Z = random.normal(key, shape=(sim_length, num_firms))
-    D = jnp.exp(mu + sigma * Z)
 
     # Stack the restock counter on top of the inventory
     restock_counter = jnp.zeros((num_firms, ))
+    
+    @jax.jit
+    def update_stock(restock_counter, X, key):
+      Z = random.normal(key, shape=(num_firms, ))
+      D = jnp.exp(mu + sigma * Z)
+      restock_counter = jnp.where(X <= s,
+                                restock_counter + 1,
+                                restock_counter)
+      X = jnp.where(X <= s,
+                    jnp.maximum(S - D, 0),
+                    jnp.maximum(X - D, 0))
+      return restock_counter, X
 
     # Use a for loop to perform the calculations on all states
     for i in range(sim_length):
-        X, restock_counter = update_stock(
-            restock_counter, 
-            X, D[i, :], num_firms)
+        _, key = random.split(key)
+        restock_counter, X = update_stock(
+            restock_counter, X, key)
         
     return jnp.mean(restock_counter > 1, axis=0)
 ```
