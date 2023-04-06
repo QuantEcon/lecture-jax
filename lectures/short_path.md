@@ -12,221 +12,56 @@ kernelspec:
 ---
 
 
-<a id='short-path'></a>
-
-+++
-
 # Shortest Paths
 
 
-<a id='index-0'></a>
-
-+++ {"user_expressions": []}
-
-## Contents
-
-- [Shortest Paths](#Shortest-Paths)  
-  - [Overview](#Overview)  
-  - [Outline of the Problem](#Outline-of-the-Problem)  
-  - [Finding Least-Cost Paths](#Finding-Least-Cost-Paths)  
-  - [Solving for Minimum Cost-to-Go](#Solving-for-Minimum-Cost-to-Go)  
-  - [Exercises](#Exercises)  
-
-+++ {"user_expressions": []}
-
 ## Overview
 
-The shortest path problem is a [classic problem](https://en.wikipedia.org/wiki/Shortest_path) in mathematics and computer science with applications in
+This lecture is the extended version of the [shortest path lecture](https://python.quantecon.org/short_path.html) using JAX.
 
-- Economics (sequential decision making, analysis of social networks, etc.)  
-- Operations research and transportation  
-- Robotics and artificial intelligence  
-- Telecommunication network design and routing  
-- etc., etc.  
-
-
-Variations of the methods we discuss in this lecture are used millions of times every day, in applications such as
-
-- Google Maps  
-- routing packets on the internet  
-
-
-For us, the shortest path problem also provides a nice introduction to the logic of **dynamic programming**.
-
-Dynamic programming is an extremely powerful optimization technique that we apply in many lectures on this site.
-
-The only scientific library we’ll need in what follows is NumPy:
+Let's start by importing the libraries.
 
 ```{code-cell} ipython3
-:hide-output: false
-
 import numpy as np
 import jax.numpy as jnp
 import jax
 ```
 
-+++ {"user_expressions": []}
-
-## Outline of the Problem
-
-The shortest path problem is one of finding how to traverse a [graph](https://en.wikipedia.org/wiki/Graph_%28mathematics%29) from one specified node to another at minimum cost.
-
-Consider the following graph
-
-![https://python.quantecon.org/_static/lecture_specific/short_path/graph.png](https://python.quantecon.org/_static/lecture_specific/short_path/graph.png)
-
-  
-We wish to travel from node (vertex) A to node G at minimum cost
-
-- Arrows (edges) indicate the movements we can take.  
-- Numbers on edges indicate the cost of traveling that edge.  
-
-
-(Graphs such as the one above are called weighted [directed graphs](https://en.wikipedia.org/wiki/Directed_graph).)
-
-Possible interpretations of the graph include
-
-- Minimum cost for supplier to reach a destination.  
-- Routing of packets on the internet (minimize time).  
-- Etc., etc.  
-
-
-For this simple graph, a quick scan of the edges shows that the optimal paths are
-
-- A, C, F, G at cost 8  
-
-
-![https://python.quantecon.org/_static/lecture_specific/short_path/graph4.png](https://python.quantecon.org/_static/lecture_specific/short_path/graph4.png)
-
-  
-- A, D, F, G at cost 8  
-
-
-![https://python.quantecon.org/_static/lecture_specific/short_path/graph3.png](https://python.quantecon.org/_static/lecture_specific/short_path/graph3.png)
-
-+++ {"user_expressions": []}
-
-## Finding Least-Cost Paths
-
-For large graphs, we need a systematic solution.
-
-Let $ J(v) $ denote the minimum cost-to-go from node $ v $, understood as the total cost from $ v $ if we take the best route.
-
-Suppose that we know $ J(v) $ for each node $ v $, as shown below for the graph from the preceding example
-
-![https://python.quantecon.org/_static/lecture_specific/short_path/graph2.png](https://python.quantecon.org/_static/lecture_specific/short_path/graph2.png)
-
-  
-Note that $ J(G) = 0 $.
-
-The best path can now be found as follows
-
-1. Start at node $ v = A $  
-1. From current node $ v $, move to any node that solves  
-
-
-
-<a id='equation-spprebell'></a>
-$$
-\min_{w \in F_v} \{ c(v, w) + J(w) \} \tag{33.1}
-$$
-
-where
-
-- $ F_v $ is the set of nodes that can be reached from $ v $ in one step.  
-- $ c(v, w) $ is the cost of traveling from $ v $ to $ w $.  
-
-
-Hence, if we know the function $ J $, then finding the best path is almost trivial.
-
-But how can we find the cost-to-go function $ J $?
-
-Some thought will convince you that, for every node $ v $,
-the function $ J $ satisfies
-
-
-<a id='equation-spbell'></a>
-$$
-J(v) = \min_{w \in F_v} \{ c(v, w) + J(w) \} \tag{33.2}
-$$
-
-This is known as the *Bellman equation*, after the mathematician Richard Bellman.
-
-The Bellman equation can be thought of as a restriction that $ J $ must
-satisfy.
-
-What we want to do now is use this restriction to compute $ J $.
-
-+++ {"user_expressions": []}
 
 ## Solving for Minimum Cost-to-Go
 
-Let’s look at an algorithm for computing $ J $ and then think about how to
-implement it.
+Let $J(v)$ denote the minimum cost-to-go from node $v$,
+understood as the total cost from $v$ if we take the best route.
 
-+++ {"user_expressions": []}
+Let's look at an algorithm for computing $J$ and then think about how to
+implement it.
 
 ### The Algorithm
 
-The standard algorithm for finding $ J $ is to start an initial guess and then iterate.
+The standard algorithm for finding $J$ is to start an initial guess and then iterate.
 
 This is a standard approach to solving nonlinear equations, often called
 the method of **successive approximations**.
 
 Our initial guess will be
 
+```{math}
+:label: spguess
 
-<a id='equation-spguess'></a>
-$$
-J_0(v) = 0 \text{ for all } v \tag{33.3}
-$$
+J_0(v) = 0 \text{ for all } v
+```
 
 Now
 
-1. Set $ n = 0 $  
-1. Set $ J_{n+1} (v) = \min_{w \in F_v} \{ c(v, w) + J_n(w) \} $ for all $ v $  
-1. If $ J_{n+1} $ and $ J_n $ are not equal then increment $ n $, go to 2  
+1. Set $n = 0$
+1. Set $J_{n+1} (v) = \min_{w \in F_v} \{ c(v, w) + J_n(w) \}$ for all $v$
+1. If $J_{n+1}$ and $J_n$ are not equal then increment $n$, go to 2
 
+This sequence converges to $J$.
 
-This sequence converges to $ J $.
-
-Although we omit the proof, we’ll prove similar claims in our other lectures
-on dynamic programming.
-
-+++
-
-### Implementation
-
-Having an algorithm is a good start, but we also need to think about how to
-implement it on a computer.
-
-First, for the cost function $ c $, we’ll implement it as a matrix
-$ Q $, where a typical element is
-
-$$
-Q(v, w)
-=
-\begin{cases}
-   & c(v, w) \text{ if } w \in F_v \\
-   & +\infty \text{ otherwise }
-\end{cases}
-$$
-
-In this context $ Q $ is usually called the **distance matrix**.
-
-We’re also numbering the nodes now, with $ A = 0 $, so, for example
-
-$$
-Q(1, 2)
-=
-\text{ the cost of traveling from B to C }
-$$
-
-For example, for the simple graph above, we set
+Let's start by defining the **distance matrix** $Q$.
 
 ```{code-cell} ipython3
-:hide-output: false
-
 inf = jnp.inf
 Q = jnp.array([[inf, 1,   5,   3,   inf, inf, inf],
               [inf, inf, inf, 9,   6,   inf, inf],
@@ -237,15 +72,13 @@ Q = jnp.array([[inf, 1,   5,   3,   inf, inf, inf],
               [inf, inf, inf, inf, inf, inf, 0]])
 ```
 
+
 Notice that the cost of staying still (on the principle diagonal) is set to
 
-- np.inf for non-destination nodes — moving on is required.  
-- 0 for the destination node — here is where we stop.  
+* jnp.inf for non-destination nodes --- moving on is required.
+* 0 for the destination node --- here is where we stop.
 
-
-For the sequence of approximations $ \{J_n\} $ of the cost-to-go functions, we can use NumPy arrays.
-
-Let’s try with this example and see how we go:
+Let's try with this example and see how we go:
 
 ```{code-cell} ipython3
 max_iter = 500
@@ -257,11 +90,11 @@ J = jnp.zeros(num_nodes)
 def body_fun(values):
     # Define the body function of while loop
     i, J, break_cond = values
-    
+
     # Update J and break condition
     next_J = jnp.min(Q + J, axis=1)
-    break_condition = jnp.equal(next_J, J).all()
-    
+    break_condition = jnp.allclose(next_J, J)
+
     # Return next iteration values
     return i + 1, next_J, break_condition
 ```
@@ -274,29 +107,26 @@ def cond_fun(values):
 
 ```{code-cell} ipython3
 %%time
+
 jax.lax.while_loop(cond_fun, body_fun, init_val=(0, J, False))[1]
 ```
 
-This matches with the numbers we obtained by inspection above.
 
-But, importantly, we now have a methodology for tackling large graphs.
-
-+++
 
 ## Exercises
 
-+++
 
-## Exercise 33.1
+```{exercise-start}
+:label: short_path_ex1
+```
 
 The text below describes a weighted directed graph.
 
 The line `node0, node1 0.04, node8 11.11, node14 72.21` means that from node0 we can go to
 
-- node1 at cost 0.04  
-- node8 at cost 11.11  
-- node14 at cost 72.21  
-
+* node1 at cost 0.04
+* node8 at cost 11.11
+* node14 at cost 72.21
 
 No other nodes can be reached directly from node0.
 
@@ -304,14 +134,7 @@ Other lines have a similar interpretation.
 
 Your task is to use the algorithm given above to find the optimal path and its cost.
 
->**Note**
->
->You will be dealing with floating point numbers now, rather than
-integers, so consider replacing `np.equal()` with `np.allclose()`.
-
 ```{code-cell} ipython3
-:hide-output: false
-
 %%file graph.txt
 node0, node1 0.04, node8 11.11, node14 72.21
 node1, node46 1247.25, node6 20.59, node13 64.94
@@ -415,16 +238,19 @@ node98, node99 0.33
 node99,
 ```
 
-## Solution to[ Exercise 33.1](https://python.quantecon.org/#short_path_ex1)
 
-First let’s write a function that reads in the graph data above and builds a distance matrix.
+```{exercise-end}
+```
+
+```{solution-start} short_path_ex1
+:class: dropdown
+```
+
+First let's write a function that reads in the graph data above and builds a distance matrix.
 
 ```{code-cell} ipython3
-:hide-output: false
-
 num_nodes = 100
 destination_node = 99
-
 def map_graph_to_distance_matrix(in_file):
 
     # First let's set of the distance matrix Q with inf everywhere
@@ -445,21 +271,10 @@ def map_graph_to_distance_matrix(in_file):
     return jnp.array(Q)
 ```
 
-+++ {"user_expressions": []}
 
-In addition, let’s write
-
-1. a “Bellman operator” function that takes a distance matrix and current guess of J and returns an updated guess of J, and  
-1. a function that takes a distance matrix and returns a cost-to-go function.  
-
-
-We’ll use the algorithm described above.
-
-The minimization step is vectorized to make it faster.
+Let's write a function `compute_cost_to_go` that returns $J$ given any valid $Q$.
 
 ```{code-cell} ipython3
-:hide-output: false
-
 @jax.jit
 def compute_cost_to_go(Q):
     num_nodes = Q.shape[0]
@@ -473,11 +288,10 @@ def compute_cost_to_go(Q):
 
         # Update J and break condition
         next_J = jnp.min(Q + J, axis=1)
-        break_condition = jnp.equal(next_J, J).all()
+        break_condition = jnp.allclose(next_J, J)
 
         # Return next iteration values
         return i + 1, next_J, break_condition
-    
 
     def cond_fun(values):
         i, J, break_condition = values
@@ -487,17 +301,11 @@ def compute_cost_to_go(Q):
                               init_val=(0, J, False))[1]
 ```
 
-+++ {"user_expressions": []}
 
-We used np.allclose() rather than testing exact equality because we are
-dealing with floating point numbers now.
-
-Finally, here’s a function that uses the cost-to-go function to obtain the
+Finally, here's a function that uses the cost-to-go function to obtain the
 optimal path (and its cost).
 
 ```{code-cell} ipython3
-:hide-output: false
-
 def print_best_path(J, Q):
     sum_costs = 0
     current_node = 0
@@ -507,41 +315,41 @@ def print_best_path(J, Q):
         next_node = jnp.argmin(Q[current_node, :] + J)
         sum_costs += Q[current_node, next_node]
         current_node = next_node
-
     print(destination_node)
     print('Cost: ', sum_costs)
 ```
 
-+++ {"user_expressions": []}
 
-Okay, now we have the necessary functions, let’s call them to do the job we were assigned.
+Okay, now we have the necessary functions, let's call them to do the job we were assigned.
 
 ```{code-cell} ipython3
-:hide-output: false
-
 Q = map_graph_to_distance_matrix('graph.txt')
 ```
 
+
+Let's see the timings for jitting the function and runtime results.
+
 ```{code-cell} ipython3
 %%time
 
-J = compute_cost_to_go(Q)
+J = compute_cost_to_go(Q).block_until_ready()
 ```
 
 ```{code-cell} ipython3
 %%time
-
-J = compute_cost_to_go(Q)
+J = compute_cost_to_go(Q).block_until_ready()
 ```
 
 ```{code-cell} ipython3
 print_best_path(J, Q)
 ```
 
-+++ {"user_expressions": []}
 
-The total cost of the path should agree with $ J[0] $ so let’s check this.
+The total cost of the path should agree with $J[0]$ so let's check this.
 
 ```{code-cell} ipython3
 J[0].item()
+```
+
+```{solution-end}
 ```
