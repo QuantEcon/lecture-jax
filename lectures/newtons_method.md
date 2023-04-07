@@ -31,7 +31,9 @@ tags: [hide-output]
 
 ## Overview
 
-Continuing from the [Newton's Method lecture](https://python.quantecon.org/newton_method.html), we are going to solve the multidimensional problem with `Jax`. More information about Jax can be found [here](https://python-programming.quantecon.org/jax_intro.html).
+Continuing from the [Newton's Method lecture](https://python.quantecon.org/newton_method.html), we are going to solve the multidimensional problem with `Jax`. 
+
+More information about Jax can be found [here](https://python-programming.quantecon.org/jax_intro.html).
 
 We use the following imports in this lecture
 
