@@ -17,7 +17,7 @@ kernelspec:
 
 ## Overview
 
-This lecture is the extended version of the [shortest path lecture](https://python.quantecon.org/short_path.html) using JAX.
+This lecture is the extended version of the [shortest path lecture](https://python.quantecon.org/short_path.html) using JAX. Please see that lecture for all background and notation.
 
 Let's start by importing the libraries.
 
@@ -75,10 +75,33 @@ Q = jnp.array([[inf, 1,   5,   3,   inf, inf, inf],
 
 Notice that the cost of staying still (on the principle diagonal) is set to
 
-* jnp.inf for non-destination nodes --- moving on is required.
-* 0 for the destination node --- here is where we stop.
+* `jnp.inf` for non-destination nodes --- moving on is required.
+* `0` for the destination node --- here is where we stop.
 
-Let's try with this example and see how we go:
+Let's try with this example using python `while` loop and some `jax` vectorized code:
+
+```{code-cell} ipython3
+%%time
+
+num_nodes = Q.shape[0]
+J = jnp.zeros(num_nodes)
+
+max_iter = 500
+i = 0
+
+while i < max_iter:
+    next_J = jnp.min(Q + J, axis=1)
+    if jnp.allclose(next_J, J):
+        break
+    else:
+        J = next_J.copy()
+        i += 1
+
+print("The cost-to-go function is", J)
+```
+
+
+We can further optimize the above code by using [jax.lax.while_loop](https://jax.readthedocs.io/en/latest/_autosummary/jax.lax.while_loop.html). The extra acceleration is due to the fact that the entire operation can be optimized by the JAX compiler and launched as a single kernel on the GPU.
 
 ```{code-cell} ipython3
 max_iter = 500
@@ -105,6 +128,9 @@ def cond_fun(values):
     return ~break_condition & (i < max_iter)
 ```
 
+
+Let's see the timing for JIT compilation of the functions and runtime results.
+
 ```{code-cell} ipython3
 %%time
 
@@ -112,6 +138,20 @@ jax.lax.while_loop(cond_fun, body_fun, init_val=(0, J, False))[1]
 ```
 
 
+Now, this runs faster once we have the JIT compiled JAX version of the functions.
+
+```{code-cell} ipython3
+%%time
+
+jax.lax.while_loop(cond_fun, body_fun, init_val=(0, J, False))[1]
+```
+
+
+```{note}
+Large speed gains while using `jax.lax.while_loop` won't be realized unless the shortest path problem is relatively large.
+```
+
++++
 
 ## Exercises
 
@@ -238,7 +278,6 @@ node98, node99 0.33
 node99,
 ```
 
-
 ```{exercise-end}
 ```
 
@@ -302,7 +341,7 @@ def compute_cost_to_go(Q):
 ```
 
 
-Finally, here's a function that uses the cost-to-go function to obtain the
+Finally, here's a function that uses the `cost-to-go` function to obtain the
 optimal path (and its cost).
 
 ```{code-cell} ipython3
@@ -349,7 +388,4 @@ The total cost of the path should agree with $J[0]$ so let's check this.
 
 ```{code-cell} ipython3
 J[0].item()
-```
-
-```{solution-end}
 ```
