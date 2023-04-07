@@ -411,3 +411,6 @@ The total cost of the path should agree with $J[0]$ so let's check this.
 ```{code-cell} ipython3
 J[0].item()
 ```
+
+```{solution-end}
+```
