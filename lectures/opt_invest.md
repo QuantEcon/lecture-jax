@@ -142,7 +142,6 @@ Bellman equation (before maximization), which is a 3D array representing:
 
 $$
   B(y, z, y') = r(y, z, y') + \beta \sum_{z'} v(y', z') Q(z, z')
-
 $$
 
 for all $(y, z, y')$.
@@ -284,7 +283,7 @@ $$
         v_{\sigma} = (I - \beta P_{\sigma})^{-1} r_{\sigma}
 $$
 
-Here we set up the linear map $v$ -> $R_{\sigma} v$,
+Here we set up the linear map $v \mapsto R_{\sigma} v$,
 
 where $R_{\sigma} := I - \beta P_{\sigma}$
 
