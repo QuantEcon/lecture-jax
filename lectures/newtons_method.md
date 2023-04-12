@@ -196,14 +196,12 @@ automatic differentiation, and a GPU, we obtain a relatively small error for
 this very large problem in just a few seconds:
 
 ```{code-cell} python3
-# Use tic toc from quantecon to measure runtime
-qe.tic()
+%%time
 p = newton(lambda p: e(p, A, b, c), init_p).block_until_ready()
-time1 = qe.toc()
 ```
 
 ```{code-cell} python3
-np.max(np.abs(e(p, A, b, c)))
+jnp.max(jnp.abs(e(p, A, b, c)))
 ```
 
 With the same tolerance, SciPy's `root` function takes much longer to run,
@@ -211,13 +209,12 @@ even with the Jacobian supplied.
 
 
 ```{code-cell} python3
-qe.tic()
+%%time
 solution = root(lambda p: e(p, A, b, c),
                 init_p, 
                 jac=lambda p: jax.jacobian(e)(p, A, b, c), 
                 method='hybr',
                 tol=1e-5)
-time2 = qe.toc()
 ```
 
 ```{code-cell} python3
