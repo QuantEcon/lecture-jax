@@ -24,6 +24,7 @@ kernelspec:
 ```{code-cell} ipython3
 import jax
 import jax.numpy as jnp
+import numpy as np
 ```
 
 ```{code-cell} ipython3
@@ -63,10 +64,8 @@ init_p = jnp.ones(dim)
 ```
 
 ```{code-cell} ipython3
-%% time
-# qe.tic()
+%%time
 p = newton(lambda p: e(p, A, b, c), init_p).block_until_ready()
-# qe.toc()
 ```
 
 ```{code-cell} ipython3
