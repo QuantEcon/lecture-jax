@@ -146,8 +146,13 @@ Let's define a function to compute the Gini coefficient.
 def gini_jax(y):
     n = y.shape[0]
     g_sum = 0
-    for i in range(n):
+
+    # Define the function for each update
+    def sum_y_gini(g_sum, i):
         g_sum += jnp.sum(jnp.abs(y[i] - y))
+        return g_sum, g_sum
+
+    g_sum, _ = jax.lax.scan(sum_y_gini, 0, jnp.arange(n))
     return g_sum / (2 * n * jnp.sum(y))
 ```
 
