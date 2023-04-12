@@ -605,8 +605,6 @@ More equality translates to a lower Gini index.
 :label: wd_ex2
 ```
 
-The wealth process {eq}`wealth_dynam_ah` is similar to a {doc}`Kesten process <kesten_processes>`.
-
 When savings is constant, the wealth process has the same quasi-linear
 structure as a Kesten process, with multiplicative and additive shocks.
 
