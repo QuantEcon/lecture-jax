@@ -21,14 +21,6 @@ kernelspec:
 
 # Using Newton’s Method to Solve Economic Models
 
-In addition to what’s in Anaconda, this lecture will need the following libraries:
-```{code-cell} ipython3
----
-tags: [hide-output]
----
-!pip install quantecon
-```
-
 ## Overview
 
 Continuing from the [Newton's Method lecture](https://python.quantecon.org/newton_method.html), we are going to solve the multidimensional problem with `Jax`. 
@@ -40,7 +32,6 @@ We use the following imports in this lecture
 ```{code-cell} python3
 import jax
 import jax.numpy as jnp
-import quantecon as qe
 from scipy.optimize import root
 ```
 
@@ -176,7 +167,7 @@ dim = 5_000
 seed = 123
 key = jax.random.PRNGKey(seed)
 # Create a random matrix A and normalize the rows to sum to one
-jax.random.normal(key, [dim, dim])
+A = jax.random.normal(key, [dim, dim])
 A = jnp.asarray(A)
 s = jnp.sum(A, axis=0)
 A = A / s
@@ -209,7 +200,7 @@ even with the Jacobian supplied.
 
 
 ```{code-cell} python3
-%% time
+%%time
 solution = root(lambda p: e(p, A, b, c),
                 init_p, 
                 jac=lambda p: jax.jacobian(e)(p, A, b, c), 
