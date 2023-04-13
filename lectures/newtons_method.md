@@ -41,7 +41,6 @@ We use the following imports in this lecture
 import jax
 import jax.numpy as jnp
 import quantecon as qe
-import numpy as np
 from scipy.optimize import root
 ```
 
@@ -174,9 +173,10 @@ We randomly generate the matrix $A$ and set the parameter vectors $b \text{ and 
 
 ```{code-cell} python3
 dim = 5_000
-np.random.seed(123)
+seed = 123
+key = jax.random.PRNGKey(seed)
 # Create a random matrix A and normalize the rows to sum to one
-A = np.random.rand(dim, dim)
+jax.random.normal(key, [dim, dim])
 A = jnp.asarray(A)
 s = jnp.sum(A, axis=0)
 A = A / s
@@ -209,7 +209,7 @@ even with the Jacobian supplied.
 
 
 ```{code-cell} python3
-%%time
+%% time
 solution = root(lambda p: e(p, A, b, c),
                 init_p, 
                 jac=lambda p: jax.jacobian(e)(p, A, b, c), 
@@ -219,7 +219,7 @@ solution = root(lambda p: e(p, A, b, c),
 
 ```{code-cell} python3
 p = solution.x
-np.max(np.abs(e(p, A, b, c)))
+jnp.max(jnp.abs(e(p, A, b, c)))
 ```
 
 The result is also less accurate.
