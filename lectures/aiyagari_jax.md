@@ -39,8 +39,6 @@ We will use 64 bit floats with JAX in order to increase the precision.
 jax.config.update("jax_enable_x64", True)
 ```
 
-+++ {"id": "70499004", "user_expressions": []}
-
 We will use the following function to compute stationary distributions of stochastic matrices.  (For a reference to the algorithm, see p. 88 of [Economic Dynamics](https://johnstachurski.net/edtc).)
 
 ```{code-cell} ipython3
@@ -119,7 +117,7 @@ From the first-order condition with respect to capital, the firm’s inverse dem
 
 ```{math}
 :label: equation-aiy-rgk
-r = A \alpha  \left( \frac{N}{K} \right)^{1 - \alpha} - \delta \tag{70.1}
+r = A \alpha  \left( \frac{N}{K} \right)^{1 - \alpha} - \delta
 ```
 
 Using this expression and the firm’s first-order condition for labor, we can pin down
@@ -128,7 +126,7 @@ the equilibrium wage rate as a function of $ r $ as
 
 ```{math}
 :label: equation-aiy-wgr
-w(r) = A  (1 - \alpha)  (A \alpha / (r + \delta))^{\alpha / (1 - \alpha)} \tag{70.2}
+w(r) = A  (1 - \alpha)  (A \alpha / (r + \delta))^{\alpha / (1 - \alpha)}
 ```
 
 These parameters and equations are stored in the following class.
