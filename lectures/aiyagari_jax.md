@@ -11,6 +11,7 @@ kernelspec:
   name: python3
 ---
 
+
 # The Aiyagari Model
 
 
@@ -23,6 +24,7 @@ import jax
 import jax.numpy as jnp
 ```
 
+
 Let’s check the backend used by JAX and the devices available.
 
 ```{code-cell} ipython3
@@ -33,18 +35,21 @@ print(f"JAX backend: {jax.devices()[0].platform}")
 print(jax.devices())
 ```
 
+
 We will use 64 bit floats with JAX in order to increase the precision.
 
 ```{code-cell} ipython3
 jax.config.update("jax_enable_x64", True)
 ```
 
+
 We will use the following function to compute stationary distributions of stochastic matrices.  (For a reference to the algorithm, see p. 88 of [Economic Dynamics](https://johnstachurski.net/edtc).)
 
 ```{code-cell} ipython3
+# Compute the stationary distribution of P by matrix inversion.
+
 @jax.jit
 def compute_stationary(P):
-    "Compute the stationary distribution of P by matrix inversion."
     n = P.shape[0]
     I = jnp.identity(n)
     O = jnp.ones((n, n))
@@ -55,9 +60,9 @@ def compute_stationary(P):
 
 ## Overview
 
-In this lecture, we describe the structure of a class of models that build on work by Truman Bewley [[Bew77](https://python.quantecon.org/zreferences.html#id173).
+In this lecture, we describe the structure of a class of models that build on work by Truman Bewley [[Bew77](https://python.quantecon.org/zreferences.html#id173)].
 
-We begin by discussing an example of a Bewley model due to Rao Aiyagari [[Aiy94](https://python.quantecon.org/zreferences.html#id137).
+We begin by discussing an example of a Bewley model due to Rao Aiyagari [[Aiy94](https://python.quantecon.org/zreferences.html#id137)].
 
 The model features
 
@@ -68,15 +73,15 @@ The model features
 
 The Aiyagari model has been used to investigate many topics, including
 
-- precautionary savings and the effect of liquidity constraints [[Aiy94](https://python.quantecon.org/zreferences.html#id137)
-- risk sharing and asset pricing [[HL96](https://python.quantecon.org/zreferences.html#id129)
-- the shape of the wealth distribution [[BBZ15](https://python.quantecon.org/zreferences.html#id130)
+- precautionary savings and the effect of liquidity constraints [[Aiy94](https://python.quantecon.org/zreferences.html#id137)]
+- risk sharing and asset pricing [[HL96](https://python.quantecon.org/zreferences.html#id129)]
+- the shape of the wealth distribution [[BBZ15](https://python.quantecon.org/zreferences.html#id130)]
 
 ### References
 
-The primary reference for this lecture is [[Aiy94](https://python.quantecon.org/zreferences.html#id137).
+The primary reference for this lecture is [[Aiy94](https://python.quantecon.org/zreferences.html#id137)].
 
-A textbook treatment is available in chapter 18 of [[LS18](https://python.quantecon.org/zreferences.html#id182).
+A textbook treatment is available in chapter 18 of [[LS18](https://python.quantecon.org/zreferences.html#id182)].
 
 A continuous time version of the model by SeHyoun Ahn and Benjamin Moll can be found [here](http://nbviewer.jupyter.org/github/QuantEcon/QuantEcon.notebooks/blob/master/aiyagari_continuous_time.ipynb).
 
@@ -198,8 +203,9 @@ The exogenous process $ \{z_t\} $ follows a finite state Markov chain with given
 
 In this simple version of the model, households supply labor  inelastically because they do not value leisure.
 
-Below we provide code to solve the household problem,taking $r$ and $w$ as fixed.
+Below we provide code to solve the household problem, taking $r$ and $w$ as fixed.
 
+Also, assuming that $u(c) = log(c)$.
 
 ### Primitives and Operators
 
@@ -237,20 +243,23 @@ class Household:
         return self.a_grid, self.z_grid, self.Π
 ```
 
+```{code-cell} ipython3
+@jax.jit
+def u(c):
+    return jnp.log(c)
+```
 
-This is the right-hand side of the Bellman equation for the household:
+
+This is the vectorized version of the right-hand side of the Bellman equation
+(before maximization), which is a 3D array representing
+
+$$
+        B(a, z, a') = u(wz + (1+r)a - a') + \beta \sum_{z'} v(a', z') Π(z, z')
+$$
+for all $(a, z, a')$.
 
 ```{code-cell} ipython3
 def B(v, constants, sizes, arrays):
-    """
-    A vectorized version of the right-hand side of the Bellman equation
-    (before maximization), which is a 3D array representing
-
-        B(a, z, a') = u(wz + (1+r)a - a') + β Σ_z' v(a', z') Π(z, z')
-
-    for all (a, z, a').
-    """
-
     # Unpack
     r, w, β = constants
     a_size, z_size = sizes
@@ -268,7 +277,7 @@ def B(v, constants, sizes, arrays):
     EV = jnp.sum(v * Π, axis=3)                 # sum over last index jp
 
     # Compute the right-hand side of the Bellman equation
-    return jnp.where(c > 0, jnp.log(c) + β * EV, -jnp.inf)
+    return jnp.where(c > 0, u(c) + β * EV, -jnp.inf)
 
 B = jax.jit(B, static_argnums=(2,))
 ```
@@ -277,8 +286,8 @@ B = jax.jit(B, static_argnums=(2,))
 The next function computes greedy policies.
 
 ```{code-cell} ipython3
+# Computes a v-greedy policy, returned as a set of indices
 def get_greedy(v, constants, sizes, arrays):
-    "Computes a v-greedy policy, returned as a set of indices."
     return jnp.argmax(B(v, constants, sizes, arrays), axis=2)
 
 get_greedy = jax.jit(get_greedy, static_argnums=(2,))
@@ -287,13 +296,14 @@ get_greedy = jax.jit(get_greedy, static_argnums=(2,))
 
 We need to know rewards at a given policy for policy iteration.
 
+The following functions computes the array $r_{\sigma}$ which gives current
+rewards given policy $\sigma$.
+$$
+    r_{\sigma}[i, j] = r[i, j, \sigma[i, j]]
+$$
+
 ```{code-cell} ipython3
 def compute_r_σ(σ, constants, sizes, arrays):
-    """
-    Compute the array r_σ[i, j] = r[i, j, σ[i, j]], which gives current
-    rewards given policy σ.
-    """
-
     # Unpack
     r, w, β = constants
     a_size, z_size = sizes
@@ -304,7 +314,7 @@ def compute_r_σ(σ, constants, sizes, arrays):
     z = jnp.reshape(z_grid, (1, z_size))
     ap = a_grid[σ]
     c = (1 + r)*a + w*z - ap
-    r_σ = jnp.log(c)
+    r_σ = u(c)
 
     return r_σ
 
@@ -312,26 +322,26 @@ compute_r_σ = jax.jit(compute_r_σ, static_argnums=(2,))
 ```
 
 
+The value $v_{\sigma}$ of a policy $\sigma$ is defined as
+$$
+        v_{\sigma} = (I - \beta P_{\sigma})^{-1} r_{\sigma}
+$$
+
+Here we set up the linear map $v \rightarrow R_{\sigma} v$, where $R_{\sigma} := I - \beta P_{\sigma}$.
+
+In the consumption problem, this map can be expressed as
+$$
+    (R_{\sigma} v)(a, z) = v(a, z) - \beta \sum_{z'} v(\sigma(a, z), z') Π(z, z')
+$$
+
+Defining the map as above works in a more intuitive multi-index setting
+(e.g. working with $v[i, j]$ rather than flattening $v$ to a one-dimensional
+array) and avoids instantiating the large matrix $P_{\sigma}$.
+
 The following linear operator is also needed for policy iteration.
 
 ```{code-cell} ipython3
 def R_σ(v, σ, constants, sizes, arrays):
-    """
-    The value v_σ of a policy σ is defined as
-
-        v_σ = (I - β P_σ)^{-1} r_σ
-
-    Here we set up the linear map v -> R_σ v, where R_σ := I - β P_σ.
-
-    In the consumption problem, this map can be expressed as
-
-        (R_σ v)(a, z) = v(a, z) - β Σ_z' v(σ(a, z), z') Π(z, z')
-
-    Defining the map as above works in a more intuitive multi-index setting
-    (e.g. working with v[i, j] rather than flattening v to a one-dimensional
-    array) and avoids instantiating the large matrix P_σ.
-
-    """
     # Unpack
     r, w, β = constants
     a_size, z_size = sizes
@@ -356,8 +366,9 @@ R_σ = jax.jit(R_σ, static_argnums=(3,))
 The next function computes the lifetime value of a given policy.
 
 ```{code-cell} ipython3
+# Get the value v_σ of policy σ by inverting the linear map R_σ
+
 def get_value(σ, constants, sizes, arrays):
-    "Get the value v_σ of policy σ by inverting the linear map R_σ."
 
     r_σ = compute_r_σ(σ, constants, sizes, arrays)
     # Reduce R_σ to a function in v
@@ -406,7 +417,7 @@ We will solve the household problem using Howard policy iteration.
 
 ```{code-cell} ipython3
 def policy_iteration(household, verbose=True):
-    "Howard policy iteration routine."
+    """Howard policy iteration routine."""
     constants = household.constants()
     sizes = household.sizes()
     arrays = household.arrays()
@@ -488,6 +499,7 @@ ax.legend(loc='upper left')
 plt.show()
 ```
 
+
 ### Capital Supply
 
 To start thinking about equilibrium, we need to know how much capital households supply at a given interest rate $r$.
@@ -496,16 +508,12 @@ This quantity can be calculated by taking the stationary distribution of assets 
 
 The next function implements this calculation for a given policy $\sigma$.
 
+First we compute the stationary distribution of $P_{\sigma}$, which is for the
+bivariate Markov chain of the state $(a_t, z_t)$.  Then we sum out
+$z_t$ to get the marginal distribution for $a_t$.
+
 ```{code-cell} ipython3
 def compute_asset_stationary(σ, constants, sizes, arrays):
-    """
-    Compute the stationary distribution of assets under the policy σ.
-
-    First we compute the stationary distribution of P_σ, which is for the
-    bivariate Markov chain of the state (a_t, z_t).  Then we sum out
-    z_t to get the marginal distribution for a_t.
-
-    """
 
     # Unpack
     r, w, β = constants
@@ -569,6 +577,7 @@ def capital_supply(household):
     σ_star = optimistic_policy_iteration(household)
     # Compute the stationary distribution
     ψ_a = compute_asset_stationary(σ_star, constants, sizes, arrays)
+
     # Return K
     return float(jnp.sum(ψ_a * household.a_grid))
 ```
@@ -670,6 +679,10 @@ ax.legend()
 plt.show()
 ```
 
+
+To find the equilibrium point, we use the bisection method which is implemented
+in the next function.
+
 ```{code-cell} ipython3
 def bisect(f, a, b, *args, tol=10e-2):
     """
@@ -682,7 +695,7 @@ def bisect(f, a, b, *args, tol=10e-2):
         middle = 0.5 * (upper + lower)
         if f(middle, *args) > 0:   # root is between lower and middle
             lower, upper = lower, middle
-        else:               # root is between middle and upper
+        else:                      # root is between middle and upper
             lower, upper = middle, upper
         count += 1
     if count == 10000:
@@ -703,6 +716,7 @@ household = Household()
 firm = Firm()
 compute_equilibrium(household, firm)
 ```
+
 
 ## Exercises
 
