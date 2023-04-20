@@ -11,7 +11,6 @@ kernelspec:
   name: python3
 ---
 
-
 # The Aiyagari Model
 
 
@@ -750,6 +749,100 @@ ax.plot(β_vals, eq_vals, ms=2)
 ax.set_xlabel(r'$\beta$')
 ax.set_ylabel('equilibrium')
 plt.show()
+```
+
+
+```{solution-end}
+```
+
+
+```{exercise-start}
+:label: aygr_ex2
+```
+Use CRRA utility function and plot the demand for capital by firms against the supply of captial. Also, recompute the equilibrium.
+
+$$
+    u(c) =\frac{c^{1-\gamma}}{1-\gamma}
+$$
+
+where, $\gamma=2$
+
+Use the default parameters for household and firm model.
+
+```{exercise-end}
+```
+
+```{solution-start} aygr_ex2
+:class: dropdown
+```
+
+Let's define the utility function
+
+```{code-cell} ipython3
+@jax.jit
+def u(c, γ=2):
+    return c**(1 - γ) / (1 - γ)
+```
+
+
+We need to re-compile all the jitted functions in order notice the change
+in the utility function.
+
+```{code-cell} ipython3
+B = jax.jit(B, static_argnums=(2,))
+get_greedy = jax.jit(get_greedy, static_argnums=(2,))
+compute_r_σ = jax.jit(compute_r_σ, static_argnums=(2,))
+R_σ = jax.jit(R_σ, static_argnums=(3,))
+get_value = jax.jit(get_value, static_argnums=(2,))
+T_σ = jax.jit(T_σ, static_argnums=(3,))
+compute_asset_stationary = jax.jit(compute_asset_stationary,
+                                   static_argnums=(2,))
+```
+
+
+Now, let's plot the the demand for capital by firms
+
+```{code-cell} ipython3
+# Create default instances
+household = Household()
+firm = Firm()
+
+# Create a grid of r values at which to compute demand and supply of capital
+num_points = 50
+r_vals = np.linspace(0.005, 0.04, num_points)
+
+
+# Compute supply of capital
+k_vals = np.empty(num_points)
+for i, r in enumerate(r_vals):
+    household.r = r
+    household.w = firm.r_to_w(r)
+    k_vals[i] = capital_supply(household)
+```
+
+```{code-cell} ipython3
+# Plot against demand for capital by firms
+
+fig, ax = plt.subplots()
+ax.plot(k_vals, r_vals, lw=2, alpha=0.6, label='supply of capital')
+ax.plot(k_vals, firm.rd(k_vals), lw=2, alpha=0.6, label='demand for capital')
+ax.grid()
+ax.set_xlabel('capital')
+ax.set_ylabel('interest rate')
+ax.legend()
+
+plt.show()
+```
+
+
+Compute the equilibrium
+
+```{code-cell} ipython3
+%%time
+
+household = Household()
+firm = Firm()
+compute_equilibrium(household, firm)
 ```
 
 ```{solution-end}
