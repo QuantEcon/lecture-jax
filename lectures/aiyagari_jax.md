@@ -14,6 +14,38 @@ kernelspec:
 # The Aiyagari Model
 
 
+## Overview
+
+In this lecture, we describe the structure of a class of models that build on work by Truman Bewley [[Bew77](https://python.quantecon.org/zreferences.html#id173)].
+
+We begin by discussing an example of a Bewley model due to Rao Aiyagari [[Aiy94](https://python.quantecon.org/zreferences.html#id137)].
+
+The model features
+
+- Heterogeneous agents
+- A single exogenous vehicle for borrowing and lending
+- Limits on amounts individual agents may borrow
+
+
+The Aiyagari model has been used to investigate many topics, including
+
+- precautionary savings and the effect of liquidity constraints [[Aiy94](https://python.quantecon.org/zreferences.html#id137)]
+- risk sharing and asset pricing [[HL96](https://python.quantecon.org/zreferences.html#id129)]
+- the shape of the wealth distribution [[BBZ15](https://python.quantecon.org/zreferences.html#id130)]
+
+
+### References
+
+The primary reference for this lecture is [[Aiy94](https://python.quantecon.org/zreferences.html#id137)].
+
+A textbook treatment is available in chapter 18 of [[LS18](https://python.quantecon.org/zreferences.html#id182)].
+
+A less sophisticated version of this lecture (without JAX) can be found
+[here](https://python.quantecon.org/aiyagari.html).
+
+
+### Preliminaries
+
 We use the following imports
 
 ```{code-cell} ipython3
@@ -55,34 +87,6 @@ def compute_stationary(P):
     A = I - jnp.transpose(P) + O
     return jnp.linalg.solve(A, jnp.ones(n))
 ```
-
-
-## Overview
-
-In this lecture, we describe the structure of a class of models that build on work by Truman Bewley [[Bew77](https://python.quantecon.org/zreferences.html#id173)].
-
-We begin by discussing an example of a Bewley model due to Rao Aiyagari [[Aiy94](https://python.quantecon.org/zreferences.html#id137)].
-
-The model features
-
-- Heterogeneous agents
-- A single exogenous vehicle for borrowing and lending
-- Limits on amounts individual agents may borrow
-
-
-The Aiyagari model has been used to investigate many topics, including
-
-- precautionary savings and the effect of liquidity constraints [[Aiy94](https://python.quantecon.org/zreferences.html#id137)]
-- risk sharing and asset pricing [[HL96](https://python.quantecon.org/zreferences.html#id129)]
-- the shape of the wealth distribution [[BBZ15](https://python.quantecon.org/zreferences.html#id130)]
-
-### References
-
-The primary reference for this lecture is [[Aiy94](https://python.quantecon.org/zreferences.html#id137)].
-
-A textbook treatment is available in chapter 18 of [[LS18](https://python.quantecon.org/zreferences.html#id182)].
-
-A continuous time version of the model by SeHyoun Ahn and Benjamin Moll can be found [here](http://nbviewer.jupyter.org/github/QuantEcon/QuantEcon.notebooks/blob/master/aiyagari_continuous_time.ipynb).
 
 
 ## Firms
@@ -204,7 +208,11 @@ In this simple version of the model, households supply labor  inelastically beca
 
 Below we provide code to solve the household problem, taking $r$ and $w$ as fixed.
 
-Also, assuming that $u(c) = log(c)$.
+For now we assume that $u(c) = \log(c)$.
+
+(CRRA utility is treated in the exercises.)
+
+
 
 ### Primitives and Operators
 
@@ -297,6 +305,9 @@ We need to know rewards at a given policy for policy iteration.
 
 The following functions computes the array $r_{\sigma}$ which gives current
 rewards given policy $\sigma$.
+
+That is,
+
 $$
     r_{\sigma}[i, j] = r[i, j, \sigma[i, j]]
 $$
@@ -322,13 +333,15 @@ compute_r_σ = jax.jit(compute_r_σ, static_argnums=(2,))
 
 
 The value $v_{\sigma}$ of a policy $\sigma$ is defined as
+
 $$
-        v_{\sigma} = (I - \beta P_{\sigma})^{-1} r_{\sigma}
+    v_{\sigma} = (I - \beta P_{\sigma})^{-1} r_{\sigma}
 $$
 
 Here we set up the linear map $v \rightarrow R_{\sigma} v$, where $R_{\sigma} := I - \beta P_{\sigma}$.
 
 In the consumption problem, this map can be expressed as
+
 $$
     (R_{\sigma} v)(a, z) = v(a, z) - \beta \sum_{z'} v(\sigma(a, z), z') Π(z, z')
 $$
@@ -612,6 +625,8 @@ If this final quantity agrees with $ K $ then we have a SREE.  Otherwise we adju
 
 These steps describe a fixed point problem which we solve below.
 
+### Visual inspection
+
 Let’s inspect visually as a first pass.
 
 The following code draws aggregate supply and demand curves for capital.
@@ -653,6 +668,11 @@ ax.legend(loc='upper right')
 plt.show()
 ```
 
+Here's a plot of the excess demand function.
+
+The equilibrium is the zero (root) of this function.
+
+
 ```{code-cell} ipython3
 def excess_demand(K, firm, household):
     r = firm.rd(K)
@@ -679,8 +699,13 @@ plt.show()
 ```
 
 
-To find the equilibrium point, we use the bisection method which is implemented
+### Computing the equilibrium
+
+Now let's compute the equilibrium
+
+To do so, we use the bisection method, which is implemented
 in the next function.
+
 
 ```{code-cell} ipython3
 def bisect(f, a, b, *args, tol=10e-2):
@@ -702,6 +727,8 @@ def bisect(f, a, b, *args, tol=10e-2):
     return 0.5 * (upper + lower)
 ```
 
+Now we call the bisection function on excess demand.
+
 ```{code-cell} ipython3
 def compute_equilibrium(household, firm):
     solution = bisect(excess_demand, 6.0, 10.0, firm, household)
@@ -716,6 +743,9 @@ firm = Firm()
 compute_equilibrium(household, firm)
 ```
 
+Notice how quickly we can compute the equilibrium capital stock using a simple
+method such as bisection.
+
 
 ## Exercises
 
@@ -723,8 +753,8 @@ compute_equilibrium(household, firm)
 ```{exercise-start}
 :label: aygr_ex1
 ```
-Using the default household and firm model, plot a graph
-showing the behaviour of equilibrium with the increase in $\beta$.
+Using the default household and firm model, produce a graph
+showing the behaviour of equilibrium capital stock with the increase in $\beta$.
 
 ```{exercise-end}
 ```
@@ -734,7 +764,7 @@ showing the behaviour of equilibrium with the increase in $\beta$.
 ```
 
 ```{code-cell} ipython3
-β_vals = np.linspace(0.1, 0.99, 40)
+β_vals = np.linspace(0.9, 0.99, 40)
 eq_vals = np.empty_like(β_vals)
 
 for i, β in enumerate(β_vals):
@@ -759,15 +789,21 @@ plt.show()
 ```{exercise-start}
 :label: aygr_ex2
 ```
-Use CRRA utility function and plot the demand for capital by firms against the supply of captial. Also, recompute the equilibrium.
+
+Switch to the CRRA utility function 
 
 $$
     u(c) =\frac{c^{1-\gamma}}{1-\gamma}
 $$
 
-where, $\gamma=2$
+and re-do the plot of demand for capital by firms against the
+supply of captial. 
 
-Use the default parameters for household and firm model.
+Also, recompute the equilibrium.
+
+Use the default parameters for households and firms. 
+
+Set $\gamma=2$.
 
 ```{exercise-end}
 ```
