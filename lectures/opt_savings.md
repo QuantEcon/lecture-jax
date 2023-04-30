@@ -402,36 +402,27 @@ model = create_consumption_model_jax()
 ```
 
 ```{code-cell} ipython3
-%%time
 print("Starting HPI.")
+start_time = time.time()
 out = policy_iteration(model)
-print(out)
+elapsed = time.time() - start_time
 print(f"HPI completed in {elapsed} seconds.")
 ```
 
 ```{code-cell} ipython3
-%%time
 print("Starting VFI.")
+start_time = time.time()
 out = value_iteration(model)
-print(out)
+elapsed = time.time() - start_time
 print(f"VFI(jax not in succ) completed in {elapsed} seconds.")
 ```
 
 ```{code-cell} ipython3
-%%time
 print("Starting OPI.")
+start_time = time.time()
 out = optimistic_policy_iteration(model, m=100)
-print(out)
+elapsed = time.time() - start_time
 print(f"OPI completed in {elapsed} seconds.")
-```
-
-```{code-cell} ipython3
-def time_elapsed(func):
-    start_time = time.time()
-    func()
-    end_time = time.time()
-    elapsed_time = end_time - start_time
-    return elapsed_time
 ```
 
 ```{code-cell} ipython3
