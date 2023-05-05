@@ -36,25 +36,11 @@ In addition to what's in Anaconda, this lecture will need the following librarie
 :tags: [hide-output]
 
 !pip install quantecon
-!pip install --upgrade yfinance
 ```
 
 +++ {"user_expressions": []}
 
 ## Overview
-
-{doc}`Previously <ar1_processes>` we learned about linear scalar-valued stochastic processes (AR(1) models).
-
-Now we generalize these linear models slightly by allowing the multiplicative coefficient to be stochastic.
-
-Such processes are known as Kesten processes after German--American mathematician Harry Kesten (1931--2019)
-
-Although simple to write down, Kesten processes are interesting for at least two reasons:
-
-1. A number of significant economic processes are or can be described as Kesten processes.
-1. Kesten processes generate interesting dynamics, including, in some cases, heavy-tailed cross-sectional distributions.
-
-We will discuss these issues as we go along.
 
 Let's start with some imports:
 
@@ -62,6 +48,7 @@ Let's start with some imports:
 %matplotlib inline
 import matplotlib.pyplot as plt
 plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
+import quantecon as qe
 import jax
 import jax.numpy as jnp
 from jax import random
@@ -200,17 +187,16 @@ In the simulation, we assume that each of $a_t, b_t$ and $e_t$ is lognormal.
 Now we can generate the observations with the following default parameters:
 
 ```{code-cell} ipython3
-def generate_draws(M = 1_000_000     # number of firms
-                   μ_a = -0.5        # location parameter for a
-                   σ_a = 0.1         # scale parameter for a
-                   μ_b = 0.0         # location parameter for b
-                   σ_b = 0.5         # scale parameter for b
-                   μ_e = 0.0         # location parameter for e
-                   σ_e = 0.5         # scale parameter for e
-                   s_bar = 1.0       # threshold
-                   T = 500           # sampling date
-                   M = 1_000_000     # number of firms
-                   s_init = 1.0      # initial condition for each firm
+def generate_draws(M = 1_000_000,     # number of firms
+                   μ_a = -0.5,        # location parameter for a
+                   σ_a = 0.1,         # scale parameter for a
+                   μ_b = 0.0,         # location parameter for b
+                   σ_b = 0.5,         # scale parameter for b
+                   μ_e = 0.0,         # location parameter for e
+                   σ_e = 0.5,         # scale parameter for e
+                   s_bar = 1.0,       # threshold
+                   T = 500,           # sampling date
+                   s_init = 1.0,      # initial condition for each firm
                    seed=123):
 
     key = random.PRNGKey(seed)
