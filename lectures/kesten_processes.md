@@ -52,9 +52,16 @@ import quantecon as qe
 import jax
 import jax.numpy as jnp
 from jax import random
+```
 
+Let’s check the backend used by JAX and the devices available.
+
+```{code-cell} ipython3
 # Check if JAX is using GPU
-print(f"jax backend: {jax.devices()[0].platform}")
+print(f"JAX backend: {jax.devices()[0].platform}")
+
+# Check the devices available for JAX
+print(jax.devices())
 ```
 
 +++ {"user_expressions": []}
