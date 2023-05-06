@@ -54,7 +54,7 @@ import jax.numpy as jnp
 from jax import random
 ```
 
-Let’s check the backend used by JAX and the devices available.
+Let’s check the backend used by JAX and the devices available
 
 ```{code-cell} ipython3
 # Check if JAX is using GPU
@@ -94,11 +94,11 @@ In particular, we will assume that
 
 +++ {"user_expressions": []}
 
-## Application: Firm Dynamics
+### Application: Firm Dynamics
 
-### Gibrat's Law
+#### Gibrat's Law
 
-It was postulated many years ago by Robert Gibrat {cite}`gibrat1931inegalites` that firm size evolves according to a simple rule whereby size next period is proportional to current size.
+It was postulated many years ago by Robert Gibrat that firm size evolves according to a simple rule whereby size next period is proportional to current size.
 
 This is now known as [Gibrat's law of proportional growth](https://en.wikipedia.org/wiki/Gibrat%27s_law).
 
@@ -125,11 +125,7 @@ s_{t+1} = a_{t+1} s_t + b_{t+1}
 where $\{a_t\}$ and $\{b_t\}$ are both IID and independent of each
 other.
 
-In the exercises you are asked to show that {eq}`firm_dynam` is more
-consistent with the empirical findings presented above than Gibrat's law in
-{eq}`firm_dynam_gb`.
-
-### Heavy Tails
+#### Heavy Tails
 
 If the conditions of the Kesten--Goldie Theorem are satisfied, then the firm
 size distribution is predicted to have heavy tails.
@@ -212,6 +208,7 @@ def generate_draws(M = 1_000_000,     # number of firms
     # Initialize the array of s values with the initial value
     s = jnp.full((M, ), s_init)
     
+    # Only jax.jit the update function
     @jax.jit
     def update_s(s, keys):
         a_random = μ_a + σ_a * random.normal(keys[0], (M, ))
