@@ -211,7 +211,7 @@ def T_σ(v, σ, constants, sizes, arrays):
     Q = jnp.reshape(Q, (1, y_size, y_size))
 
     # Calculate the expected sum Σ_jp v[σ[i, j], jp] * Q[i, j, jp]
-    Ev = np.sum(V * Q, axis=2)
+    Ev = jnp.sum(V * Q, axis=2)
 
     return r_σ + β * np.sum(V * Q, axis=2)
 ```
