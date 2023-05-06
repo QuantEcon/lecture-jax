@@ -162,7 +162,7 @@ key = random.PRNGKey(10)
 
 fig, ax = plt.subplots()
 
-%time X = shift_firms_forward(x_init, key, sample_dates)
+%time X = shift_firms_forward(x_init, key, sample_dates).block_until_ready()
 
 for i, date in enumerate(sample_dates):
    plot_kde(X[i, :], ax, label=f't = {date}')
@@ -201,12 +201,12 @@ def shift_firms_forward(x_init, key, num_firms=50_000, sim_length=750):
     return X_final
 ```
 
-It is clear that `lax.scan` has a more complicated syntax and can be memory intensive as we need to have large samples of `Z` in memory.
+`lax.scan` has a more complicated syntax and can be memory intensive as we need to have large samples of `Z` in memory.
 
 ```{code-cell} ipython3
 fig, ax = plt.subplots()
 
-%time X = shift_firms_forward(x_init, key)
+%time X = shift_firms_forward(x_init, key).block_until_ready()
 
 for date in sample_dates:
    plot_kde(X[date, :], ax, label=f't = {date}')
@@ -233,7 +233,7 @@ x_init = 20.0
 
 fig, ax = plt.subplots()
 
-%time X = shift_firms_forward(x_init, key)
+%time X = shift_firms_forward(x_init, key).block_until_ready()
 
 for date in sample_dates:
    plot_kde(X[date, :], ax, label=f't = {date}')
@@ -262,33 +262,33 @@ def compute_freq(key, x_init=70, sim_length=50, num_firms=1_000_000):
     X = jnp.full((num_firms, ), x_init)
 
     # Stack the restock counter on top of the inventory
-    restock_counter = jnp.zeros((num_firms, ))
+    n_restock = jnp.zeros((num_firms, ))
     
     # Define a jitted function for each update
     @jax.jit
-    def update_stock(restock_counter, X, key):
+    def update_stock(n_restock, X, key):
       Z = random.normal(key, shape=(num_firms, ))
       D = jnp.exp(mu + sigma * Z)
-      restock_counter = jnp.where(X <= s,
-                                restock_counter + 1,
-                                restock_counter)
+      n_restock = jnp.where(X <= s,
+                            n_restock + 1,
+                            n_restock)
       X = jnp.where(X <= s,
                     jnp.maximum(S - D, 0),
                     jnp.maximum(X - D, 0))
       _, key = random.split(key)
-      return restock_counter, X, key
+      return n_restock, X, key
 
     # Use a for loop to perform the calculations on all states
     for i in range(sim_length):
-        restock_counter, X, key = update_stock(
-            restock_counter, X, key)
+        n_restock, X, key = update_stock(
+            n_restock, X, key)
         
-    return jnp.mean(restock_counter > 1, axis=0)
+    return jnp.mean(n_restock > 1, axis=0)
 ```
 
 ```{code-cell} ipython3
 key = random.PRNGKey(1)
-%time freq = compute_freq(key)
+%time freq = compute_freq(key).block_until_ready()
 print(f"Frequency of at least two stock outs = {freq}")
 ```
 
@@ -332,6 +332,6 @@ def compute_freq(key, x_init=70, sim_length=50, num_firms=1_000_000):
 Note the time the routine takes to run, as well as the output.
 
 ```{code-cell} ipython3
-%time freq = compute_freq(key)
+%time freq = compute_freq(key).block_until_ready()
 print(f"Frequency of at least two stock outs = {freq}")
 ```
