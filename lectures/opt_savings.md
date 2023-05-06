@@ -104,7 +104,7 @@ def create_consumption_model(R=1.01,                    # Gross interest rate
     A function that takes in parameters and returns an instance of Model that
     contains data for the optimal savings problem.
     """
-    w_grid = np.linspace(w_min, w_max, w_size)  
+    w_grid = jnp.linspace(w_min, w_max, w_size)  
     mc = qe.tauchen(n=y_size, rho=ρ, sigma=ν)
     y_grid, Q = np.exp(mc.state_values), mc.P
     return Model(β=β, R=R, γ=γ, w_grid=w_grid, y_grid=y_grid, Q=Q)
