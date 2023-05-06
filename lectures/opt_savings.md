@@ -22,7 +22,6 @@ In addition to what’s in Anaconda, this lecture will need the following librar
 We will use the following imports:
 
 ```{code-cell} ipython3
-import numpy as np
 import quantecon as qe
 import jax
 import jax.numpy as jnp
@@ -106,7 +105,7 @@ def create_consumption_model(R=1.01,                    # Gross interest rate
     """
     w_grid = jnp.linspace(w_min, w_max, w_size)  
     mc = qe.tauchen(n=y_size, rho=ρ, sigma=ν)
-    y_grid, Q = np.exp(mc.state_values), mc.P
+    y_grid, Q = jnp.exp(mc.state_values), mc.P
     return Model(β=β, R=R, γ=γ, w_grid=w_grid, y_grid=y_grid, Q=Q)
 ```
 
@@ -122,9 +121,9 @@ def create_consumption_model_jax(R=1.01,                    # Gross interest rat
     A function that takes in parameters and returns a JAX-compatible version of Model that
     contains data for the optimal savings problem.
     """
-    w_grid = np.linspace(w_min, w_max, w_size)
+    w_grid = jnp.linspace(w_min, w_max, w_size)
     mc = qe.tauchen(n=y_size, rho=ρ, sigma=ν)
-    y_grid, Q = np.exp(mc.state_values), mc.P
+    y_grid, Q = jnp.exp(mc.state_values), mc.P
     β, R, γ = jax.device_put([β, R, γ])
     w_grid, y_grid, Q = tuple(map(jax.device_put, [w_grid, y_grid, Q]))
     sizes = w_size, y_size
@@ -161,12 +160,12 @@ def B(v, constants, sizes, arrays):
     EV = jnp.sum(v * Q, axis=3)                 # sum over last index jp
 
     # Compute the right-hand side of the Bellman equation
-    return jnp.where(c > 0, c**(1-γ)/(1-γ) + β * EV, -np.inf)
+    return jnp.where(c > 0, c**(1-γ)/(1-γ) + β * EV, -jnp.inf)
 ```
 
 ## Operators
 
-Now we define the policy operator $T_\sigma$ 
+Now we define the policy operator $T_\sigma$
 
 ```{code-cell} ipython3
 def compute_r_σ(σ, constants, sizes, arrays):
@@ -213,7 +212,7 @@ def T_σ(v, σ, constants, sizes, arrays):
     # Calculate the expected sum Σ_jp v[σ[i, j], jp] * Q[i, j, jp]
     Ev = jnp.sum(V * Q, axis=2)
 
-    return r_σ + β * np.sum(V * Q, axis=2)
+    return r_σ + β * jnp.sum(V * Q, axis=2)
 ```
 
 and the Bellman operator $T$
@@ -309,7 +308,7 @@ def R_σ(v, σ, constants, sizes, arrays):
     Q = jnp.reshape(Q, (1, y_size, y_size))
 
     # Compute and return v[i, j] - β Σ_jp v[σ[i, j], jp] * Q[j, jp]
-    return v - β * np.sum(V * Q, axis=2)
+    return v - β * jnp.sum(V * Q, axis=2)
 ```
 
 ## JIT compiled versions
@@ -350,7 +349,7 @@ def policy_iteration(model):
     while error > 0:
         v_σ = get_value(σ, constants, sizes, arrays)
         σ_new = get_greedy(v_σ, constants, sizes, arrays)
-        error = jnp.max(np.abs(σ_new - σ))
+        error = jnp.max(jnp.abs(σ_new - σ))
         σ = σ_new
         i = i + 1
         print(f"Concluded loop {i} with error {error}.")
@@ -368,7 +367,7 @@ def optimistic_policy_iteration(model, tol=1e-5, m=10):
         σ = get_greedy(v, constants, sizes, arrays)
         for _ in range(m):
             v = T_σ(v, σ, constants, sizes, arrays)
-        error = jnp.max(np.abs(v - last_v))
+        error = jnp.max(jnp.abs(v - last_v))
     return get_greedy(v, constants, sizes, arrays)
 ```
 
@@ -445,11 +444,15 @@ for m in m_vals:
     opi_times.append(opi_time)
 
 fig, ax = plt.subplots(figsize=(9, 5.2))
-ax.plot(m_vals, np.full(len(m_vals), pi_time), lw=2, label="Howard policy iteration")
-ax.plot(m_vals, np.full(len(m_vals), vfi_time), lw=2, label="value function iteration")
+ax.plot(m_vals, jnp.full(len(m_vals), pi_time), lw=2, label="Howard policy iteration")
+ax.plot(m_vals, jnp.full(len(m_vals), vfi_time), lw=2, label="value function iteration")
 ax.plot(m_vals, opi_times, lw=2, label="optimistic policy iteration")
 ax.legend(fontsize=fontsize, frameon=False)
 ax.set_xlabel("$m$", fontsize=fontsize)
 ax.set_ylabel("time", fontsize=fontsize)
 plt.show()
+```
+
+```{code-cell} ipython3
+
 ```
