@@ -41,6 +41,17 @@ from jax import random, lax
 from collections import namedtuple
 ```
 
+Let’s check the backend used by JAX and the devices available
+
+```{code-cell} ipython3
+# Check if JAX is using GPU
+print(f"JAX backend: {jax.devices()[0].platform}")
+
+# Check the devices available for JAX
+print(jax.devices())
+```
+
+
 ## Sample Paths
 
 Consider a firm with inventory $X_t$.
