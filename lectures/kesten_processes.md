@@ -42,6 +42,12 @@ In addition to what's in Anaconda, this lecture will need the following librarie
 
 ## Overview
 
+This lecture describes Kesten processes and an application of firm dynamics.
+
+A Numba version of the lecture with a more detailed discussion of the concepts involved in this lecture can be found [here](https://python.quantecon.org/kesten_processes.html).
+
+This lecture focuses on the JAX implementation of the simulation.
+
 Let's start with some imports:
 
 ```{code-cell} ipython3
@@ -53,6 +59,8 @@ import jax
 import jax.numpy as jnp
 from jax import random
 ```
+
++++ {"user_expressions": []}
 
 Let’s check the backend used by JAX and the devices available
 
@@ -66,7 +74,7 @@ print(jax.devices())
 
 +++ {"user_expressions": []}
 
-## Kesten Processes
+## Kesten processes
 
 ```{index} single: Kesten processes; heavy tails
 ```
@@ -94,9 +102,9 @@ In particular, we will assume that
 
 +++ {"user_expressions": []}
 
-### Application: Firm Dynamics
+### Application: firm dynamics
 
-#### Gibrat's Law
+#### Gibrat's law
 
 It was postulated many years ago by Robert Gibrat that firm size evolves according to a simple rule whereby size next period is proportional to current size.
 
@@ -125,9 +133,9 @@ s_{t+1} = a_{t+1} s_t + b_{t+1}
 where $\{a_t\}$ and $\{b_t\}$ are both IID and independent of each
 other.
 
-#### Heavy Tails
+#### Heavy tails
 
-If the conditions of the Kesten--Goldie Theorem are satisfied, then the firm
+If the conditions of the [Kesten--Goldie Theorem](https://python.quantecon.org/kesten_processes.html#the-kestengoldie-theorem) are satisfied, then the firm
 size distribution is predicted to have heavy tails.
 
 Now we explore this idea further, generalizing the firm
@@ -190,45 +198,46 @@ In the simulation, we assume that each of $a_t, b_t$ and $e_t$ is lognormal.
 Now we can generate the observations with the following default parameters:
 
 ```{code-cell} ipython3
-def generate_draws(M = 1_000_000,     # number of firms
-                   μ_a = -0.5,        # location parameter for a
-                   σ_a = 0.1,         # scale parameter for a
-                   μ_b = 0.0,         # location parameter for b
-                   σ_b = 0.5,         # scale parameter for b
-                   μ_e = 0.0,         # location parameter for e
-                   σ_e = 0.5,         # scale parameter for e
-                   s_bar = 1.0,       # threshold
-                   T = 500,           # sampling date
-                   s_init = 1.0,      # initial condition for each firm
+@jax.jit
+def update_s(s, s_bar, a_random, b_random, e_random):
+    exp_a = jnp.exp(a_random)
+    exp_b = jnp.exp(b_random)
+    exp_e = jnp.exp(e_random)
+
+    s = jnp.where(s < s_bar,
+                  exp_e,
+                  exp_a * s + exp_b)
+
+    return s
+
+def generate_draws(M = 1_000_000,
+                   μ_a = -0.5,
+                   σ_a = 0.1,
+                   μ_b = 0.0,
+                   σ_b = 0.5,
+                   μ_e = 0.0,
+                   σ_e = 0.5,
+                   s_bar = 1.0,
+                   T = 500,
+                   s_init = 1.0,
                    seed=123):
 
     key = random.PRNGKey(seed)
-    keys = random.split(key, 3)
 
     # Initialize the array of s values with the initial value
     s = jnp.full((M, ), s_init)
-    
-    # Only jax.jit the update function
-    @jax.jit
-    def update_s(s, keys):
+
+    # Perform updates on s for time t
+    for t in range(T):
+        keys = random.split(key, 3)
         a_random = μ_a + σ_a * random.normal(keys[0], (M, ))
         b_random = μ_b + σ_b * random.normal(keys[1], (M, ))
         e_random = μ_e + σ_e * random.normal(keys[2], (M, ))
 
-        exp_a = jnp.exp(a_random)
-        exp_b = jnp.exp(b_random)
-        exp_e = jnp.exp(e_random)
-
-        s = jnp.where(s < s_bar,
-                          exp_e,
-                          exp_a * s + exp_b)
-
-        return s, keys[-1]
-
-    # Perform updates on s for time t
-    for t in range(T):
-        s, key = update_s(s, keys)
-        keys = random.split(key, 3)
+        s = update_s(s, s_bar, a_random, b_random, e_random)
+        
+        # Generate new key for the next iteration
+        key = random.fold_in(key, t)
 
     return s
 
@@ -256,8 +265,16 @@ plt.show()
 
 The plot produces a straight line, consistent with a Pareto tail.
 
+#### An alternative implementation
+
 It is possible to further speed up our code by replacing the `for` loop with [`lax.scan`](https://jax.readthedocs.io/en/latest/_autosummary/jax.lax.scan.html)
-to reduce the loop overhead in the compilation of the jitted function
+to reduce the loop overhead in the compilation of the jitted function.
+
+But there are trade-offs for the speed. 
+
+`lax.scan` has a more complicated syntax making it less readable and harder to debug.
+
+`lax.scan` implementation also consumes more memory as we need to have to store large matrices of random draws
 
 ```{code-cell} ipython3
 from jax import lax
@@ -276,8 +293,8 @@ def generate_draws_lax(μ_a=-0.5,
                        seed=123):
 
     key = random.PRNGKey(seed)
-    keys = random.split(key, T)
-
+    keys = random.split(key, 3)
+    
     # Generate random draws and initial values
     a_random = μ_a + σ_a * random.normal(keys[0], (T, M))
     b_random = μ_b + σ_b * random.normal(keys[1], (T, M))
