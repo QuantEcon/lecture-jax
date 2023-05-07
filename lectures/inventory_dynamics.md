@@ -52,7 +52,7 @@ print(jax.devices())
 ```
 
 
-## Sample Paths
+## Sample paths
 
 Consider a firm with inventory $X_t$.
 
@@ -88,7 +88,7 @@ Firm = namedtuple('Firm', ['s', 'S', 'mu', 'sigma'])
 firm = Firm(s=10, S=100, mu=1.0, sigma=0.5)
 ```
 
-## Example 1: Marginal Distributions
+## Example 1: marginal distributions
 
 Now let’s look at the marginal distribution $\psi_T$ of $X_T$ for some
 fixed $T$.
@@ -246,7 +246,7 @@ plt.show()
 
 We noticed that the compiled function runs very fast. 
 
-## Example 2: Restock Frequency
+## Example 2: restock frequency
 
 Let's go through another example where we calculate the probability of firms having restocks.  
 
