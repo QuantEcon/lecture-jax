@@ -210,7 +210,7 @@ Note that we only compiled the function within the `for` loop as `jit` compilati
 
 Since the function itself is not JIT-compiled, it also takes longer to run when we call it again.
 
-### alternative implementation with `lax.scan`
+### Alternative implementation with `lax.scan`
 
 An alternative to the `for` loop implementation is `lax.scan`.
 
@@ -337,7 +337,7 @@ print(f"Frequency of at least two stock outs = {freq}")
 ```
 
 +++ {"user_expressions": []}
-### alternative implementation with `lax.scan`
+### Alternative implementation with `lax.scan`
 
 Now let's write a `lax.scan` version that JIT compiles the whole function
 
