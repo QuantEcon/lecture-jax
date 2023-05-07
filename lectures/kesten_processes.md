@@ -265,7 +265,7 @@ plt.show()
 
 The plot produces a straight line, consistent with a Pareto tail.
 
-#### An alternative implementation
+#### Alternative implementation with `lax.scan`
 
 It is possible to further speed up our code by replacing the `for` loop with [`lax.scan`](https://jax.readthedocs.io/en/latest/_autosummary/jax.lax.scan.html)
 to reduce the loop overhead in the compilation of the jitted function.
