@@ -210,6 +210,8 @@ Note that we only compiled the function within the `for` loop as `jit` compilati
 
 Since the function itself is not JIT-compiled, it also takes longer to run when we call it again.
 
+### alternative implementation with `lax.scan`
+
 An alternative to the `for` loop implementation is `lax.scan`.
 
 Here is an example of the same function in `lax.scan`
@@ -280,7 +282,9 @@ ax.legend()
 plt.show()
 ```
 
-We noticed that the compiled function runs very fast. 
++++ {"user_expressions": []}
+
+Note that the compiled function runs very fast. 
 
 ## Example 2: restock frequency
 
@@ -333,8 +337,9 @@ print(f"Frequency of at least two stock outs = {freq}")
 ```
 
 +++ {"user_expressions": []}
+### alternative implementation with `lax.scan`
 
-Now let's write a `lax.scan` version that compiles the whole function
+Now let's write a `lax.scan` version that JIT compiles the whole function
 
 ```{code-cell} ipython3
 @jax.jit
