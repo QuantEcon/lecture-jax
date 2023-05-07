@@ -32,7 +32,7 @@ kernelspec:
 
 ## Overview
 
-This lecture explores JAX implementation of the exercises in the lecture on [inventory dynamics].(https://python.quantecon.org/inventory_dynamics.html)
+This lecture explores JAX implementation of the exercises in the lecture on [inventory dynamics](https://python.quantecon.org/inventory_dynamics.html).
 
 We will use the following imports:
 
