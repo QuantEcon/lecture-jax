@@ -4,12 +4,14 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.14.4
+    jupytext_version: 1.14.5
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
   name: python3
 ---
+
++++ {"user_expressions": []}
 
 ```{raw} html
 <div id="qe-notebook-header" align="right" style="text-align:right;">
@@ -27,6 +29,10 @@ kernelspec:
 ```{contents} Contents
 :depth: 2
 ```
+
+## Overview
+
+This lecture explores JAX implementation of the exercises in the lecture on [inventory dynamics].(https://python.quantecon.org/inventory_dynamics.html)
 
 We will use the following imports:
 
@@ -50,7 +56,6 @@ print(f"JAX backend: {jax.devices()[0].platform}")
 # Check the devices available for JAX
 print(jax.devices())
 ```
-
 
 ## Sample paths
 
@@ -82,7 +87,7 @@ and standard normal.
 
 Here's a `namedtuple` that stores parameters and generates time paths for inventory.
 
-```{code-cell} python3
+```{code-cell} ipython3
 Firm = namedtuple('Firm', ['s', 'S', 'mu', 'sigma'])
 
 firm = Firm(s=10, S=100, mu=1.0, sigma=0.5)
@@ -97,7 +102,9 @@ We can approximate the distribution using a [kernel density estimator](https://e
 
 Kernel density estimators can be thought of as smoothed histograms.
 
-We will use a kernel density estimator from [scikit-learn](https://scikit-learn.org/stable/)
+We will use a kernel density estimator from [scikit-learn](https://scikit-learn.org/stable/).
+
+Here is an example of fitting kernel density estimators and plotting the result
 
 ```{code-cell} ipython3
 from sklearn.neighbors import KernelDensity
@@ -109,6 +116,28 @@ def plot_kde(sample, ax, label=''):
     log_dens = kde.score_samples(xgrid[:, None])
 
     ax.plot(xgrid, np.exp(log_dens), label=label)
+
+# Generate simulated data
+np.random.seed(42)
+sample_1 = np.random.normal(0, 2, size=10_000)
+sample_2 = np.random.gamma(2, 2, size=10_000)
+
+# Create a plot
+fig, ax = plt.subplots()
+
+# Plot the samples
+ax.hist(sample_1, alpha=0.2, density=True, bins=50)
+ax.hist(sample_2, alpha=0.2, density=True, bins=50)
+
+# Plot the KDE for each sample
+plot_kde(sample_1, ax, label=r'KDE over $X \sim N(0, 2)$')
+plot_kde(sample_2, ax, label=r'KDE over $X \sim Gamma(0, 2)$')
+ax.set_xlabel('Value')
+ax.set_ylabel('Density')
+ax.set_xlim([-5, 10])
+ax.set_title('KDE of Simulated Normal and Gamma Data')
+ax.legend()
+plt.show()
 ```
 
 This model for inventory dynamics is asymptotically stationary, with a unique stationary distribution.
@@ -127,42 +156,46 @@ We will see convergence, in the sense that differences between successive distri
 Here is one realization of the process in JAX using `for` loop
 
 ```{code-cell} ipython3
-def shift_firms_forward(x_init, key, sample_dates, num_firms=50_000, sim_length=750):
+# Define a jit-compiled function to update X and key
+@jax.jit
+def update_X(X, firm, D):
+    # Restock if the inventory is below the threshold
+    res = jnp.where(X <= firm.s,
+            jnp.maximum(firm.S - D, 0),
+            jnp.maximum(X - D, 0))
+    return res
+
+
+def shift_firms_forward(x_init, firm, sample_dates, 
+                        key, num_firms=50_000, sim_length=750):
+    
     X = res = jnp.full((num_firms, ), x_init)
 
-    # Define a jit-compiled function to update X and key
-    @jax.jit
-    def update_X(X, key):
-        Z = random.normal(key, shape=(num_firms, ))
-        D = jnp.exp(mu + sigma * Z)
-
-        # Restock if the inventory is below the threshold
-        X = jnp.where(X <= s,
-                jnp.maximum(S - D, 0),
-                jnp.maximum(X - D, 0))
-
-        _, key = random.split(key)
-        return X, key
-
-    # Use a for loop to update X and collect samples
+    # Use for loop to update X and collect samples
     for i in range(sim_length):
-        X, key = update_X(X, key)
+        Z = random.normal(key, shape=(num_firms, ))
+        D = jnp.exp(firm.mu + firm.sigma * Z)
+        
+        X = update_X(X, firm, D)
+        _, key = random.split(key)
+        
+        # draw a sample at the sample dates
         if (i in sample_dates):
           res = jnp.vstack((res, X))
 
     return res[1:]
 ```
 
-```{code-cell}ipython3
+```{code-cell} ipython3
 x_init = 50
 num_firms = 50_000
 sample_dates = 10, 50, 250, 500, 750
-s, S, mu, sigma = firm.s, firm.S, firm.mu, firm.sigma
 key = random.PRNGKey(10)
 
 fig, ax = plt.subplots()
 
-%time X = shift_firms_forward(x_init, key, sample_dates).block_until_ready()
+%time X = shift_firms_forward(x_init, firm, \
+                              sample_dates, key).block_until_ready()
 
 for i, date in enumerate(sample_dates):
    plot_kde(X[i, :], ax, label=f't = {date}')
@@ -177,13 +210,16 @@ Note that we only compiled the function within the `for` loop as `jit` compilati
 
 Since the function itself is not JIT-compiled, it also takes longer to run when we call it again.
 
-This is why [JAX documentation](https://jax.readthedocs.io/en/latest/faq.html#jit-decorated-function-is-very-slow-to-compile) for JAX recommends `lax.scan` to perform heavy computations within a loop.
+An alternative to the `for` loop implementation is `lax.scan`.
 
 Here is an example of the same function in `lax.scan`
 
 ```{code-cell} ipython3
 @jax.jit
-def shift_firms_forward(x_init, key, num_firms=50_000, sim_length=750):
+def shift_firms_forward(x_init, firm, key,
+                        num_firms=50_000, sim_length=750):
+    
+    s, S, mu, sigma = firm.s, firm.S, firm.mu, firm.sigma
     X = jnp.full((num_firms, ), x_init)
     Z = random.normal(key, shape=(sim_length, num_firms))
     D = jnp.exp(mu + sigma * Z)
@@ -206,7 +242,7 @@ def shift_firms_forward(x_init, key, num_firms=50_000, sim_length=750):
 ```{code-cell} ipython3
 fig, ax = plt.subplots()
 
-%time X = shift_firms_forward(x_init, key).block_until_ready()
+%time X = shift_firms_forward(x_init, firm, key).block_until_ready()
 
 for date in sample_dates:
    plot_kde(X[date, :], ax, label=f't = {date}')
@@ -233,7 +269,7 @@ x_init = 20.0
 
 fig, ax = plt.subplots()
 
-%time X = shift_firms_forward(x_init, key).block_until_ready()
+%time X = shift_firms_forward(x_init, firm, key).block_until_ready()
 
 for date in sample_dates:
    plot_kde(X[date, :], ax, label=f't = {date}')
@@ -254,49 +290,60 @@ Specifically we set the starting stock level to 70 ($X_0 = 70$), as we calculate
 
 You will need a large sample size to get an accurate reading.
 
-Again, we start with an easier but slightly slower `for` loop implementation
+Again, we start with an easier `for` loop implementation
 
 ```{code-cell} ipython3
-def compute_freq(key, x_init=70, sim_length=50, num_firms=1_000_000):
+# Define a jitted function for each update
+@jax.jit
+def update_stock(n_restock, X, firm, D):
+  n_restock = jnp.where(X <= firm.s,
+                        n_restock + 1,
+                        n_restock)
+  X = jnp.where(X <= firm.s,
+                jnp.maximum(firm.S - D, 0),
+                jnp.maximum(X - D, 0))
+  return n_restock, X, key
+
+def compute_freq(firm, key, 
+                 x_init=70, 
+                 sim_length=50, 
+                 num_firms=1_000_000):
+    
     # Prepare initial arrays
     X = jnp.full((num_firms, ), x_init)
 
     # Stack the restock counter on top of the inventory
     n_restock = jnp.zeros((num_firms, ))
-    
-    # Define a jitted function for each update
-    @jax.jit
-    def update_stock(n_restock, X, key):
-      Z = random.normal(key, shape=(num_firms, ))
-      D = jnp.exp(mu + sigma * Z)
-      n_restock = jnp.where(X <= s,
-                            n_restock + 1,
-                            n_restock)
-      X = jnp.where(X <= s,
-                    jnp.maximum(S - D, 0),
-                    jnp.maximum(X - D, 0))
-      _, key = random.split(key)
-      return n_restock, X, key
 
     # Use a for loop to perform the calculations on all states
     for i in range(sim_length):
+        Z = random.normal(key, shape=(num_firms, ))
+        D = jnp.exp(firm.mu + firm.sigma * Z)
         n_restock, X, key = update_stock(
-            n_restock, X, key)
+            n_restock, X, firm, D)
+        key = random.fold_in(key, i)
         
     return jnp.mean(n_restock > 1, axis=0)
 ```
 
 ```{code-cell} ipython3
-key = random.PRNGKey(1)
-%time freq = compute_freq(key).block_until_ready()
+key = random.PRNGKey(27)
+%time freq = compute_freq(firm, key).block_until_ready()
 print(f"Frequency of at least two stock outs = {freq}")
 ```
 
-Now let's write a `lax.scan` version that runs faster
++++ {"user_expressions": []}
+
+Now let's write a `lax.scan` version that compiles the whole function
 
 ```{code-cell} ipython3
 @jax.jit
-def compute_freq(key, x_init=70, sim_length=50, num_firms=1_000_000):
+def compute_freq(firm, key, 
+                 x_init=70, 
+                 sim_length=50, 
+                 num_firms=1_000_000):
+    
+    s, S, mu, sigma = firm.s, firm.S, firm.mu, firm.sigma
     # Prepare initial arrays
     X = jnp.full((num_firms, ), x_init)
     Z = random.normal(key, shape=(sim_length, num_firms))
@@ -329,9 +376,13 @@ def compute_freq(key, x_init=70, sim_length=50, num_firms=1_000_000):
     return np.mean(X_final[1] > 1)
 ```
 
-Note the time the routine takes to run, as well as the output.
+Note the time the routine takes to run, as well as the output
 
 ```{code-cell} ipython3
-%time freq = compute_freq(key).block_until_ready()
+%time freq = compute_freq(firm, key).block_until_ready()
 print(f"Frequency of at least two stock outs = {freq}")
 ```
+
+This is a good example of where `lax.scan` does not provide further improvement compared to the `for` loop implementation.
+
+In this case `lax.scan` is no longer faster than the `for` loop implementation due to the additional operations in the `update_X` function.
