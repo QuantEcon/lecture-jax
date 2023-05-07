@@ -11,7 +11,6 @@ kernelspec:
   name: python3
 ---
 
-+++ {"user_expressions": []}
 
 ```{raw} html
 <div id="qe-notebook-header" align="right" style="text-align:right;">
@@ -38,15 +37,19 @@ In addition to what's in Anaconda, this lecture will need the following librarie
 !pip install quantecon
 ```
 
-+++ {"user_expressions": []}
 
 ## Overview
 
-This lecture describes Kesten processes and an application of firm dynamics.
+This lecture describes Kesten processes, which are an important class of
+stochastic processes, and an application of firm dynamics.
 
-A Numba version of the lecture with a more detailed discussion of the concepts involved in this lecture can be found [here](https://python.quantecon.org/kesten_processes.html).
+The lecture draws on [an earlier QuantEcon
+lecture](https://python.quantecon.org/kesten_processes.html), which uses Numba
+to accelerate the computations.
 
-This lecture focuses on the JAX implementation of the simulation.
+In that earlier lecture you can find a more detailed discussion of the concepts involved.
+
+This lecture focuses on implementing the same computations in JAX.
 
 Let's start with some imports:
 
@@ -60,7 +63,6 @@ import jax.numpy as jnp
 from jax import random
 ```
 
-+++ {"user_expressions": []}
 
 Let’s check the backend used by JAX and the devices available
 
@@ -72,7 +74,6 @@ print(f"JAX backend: {jax.devices()[0].platform}")
 print(jax.devices())
 ```
 
-+++ {"user_expressions": []}
 
 ## Kesten processes
 
@@ -100,13 +101,17 @@ In particular, we will assume that
 * $\{a_t\}_{t \geq 1}$ is a nonnegative IID stochastic process and
 * $\{\eta_t\}_{t \geq 1}$ is another nonnegative IID stochastic process, independent of the first.
 
-+++ {"user_expressions": []}
 
 ### Application: firm dynamics
 
+In this section we apply Kesten process theory to the study of firm dynamics.
+
+
 #### Gibrat's law
 
-It was postulated many years ago by Robert Gibrat that firm size evolves according to a simple rule whereby size next period is proportional to current size.
+It was postulated many years ago by Robert Gibrat that firm size evolves
+according to a simple rule whereby size next period is proportional to current
+size.
 
 This is now known as [Gibrat's law of proportional growth](https://en.wikipedia.org/wiki/Gibrat%27s_law).
 
@@ -121,8 +126,10 @@ $s_t$ of firm size obeys
 
 for some positive IID sequence $\{a_t\}$.
 
-We can accommodate empirical findings by modifying {eq}`firm_dynam_gb`
-to
+Subsequent empirical research has shown that this specification is not accurate,
+particularly for small firms.
+
+However, we can get close to the data by modifying {eq}`firm_dynam_gb` to
 
 ```{math}
 :label: firm_dynam
@@ -133,45 +140,32 @@ s_{t+1} = a_{t+1} s_t + b_{t+1}
 where $\{a_t\}$ and $\{b_t\}$ are both IID and independent of each
 other.
 
+We now study the implications of this specification.
+
 #### Heavy tails
 
-If the conditions of the [Kesten--Goldie Theorem](https://python.quantecon.org/kesten_processes.html#the-kestengoldie-theorem) are satisfied, then the firm
-size distribution is predicted to have heavy tails.
+If the conditions of the [Kesten--Goldie
+Theorem](https://python.quantecon.org/kesten_processes.html#the-kestengoldie-theorem)
+are satisfied, then {eq}`firm_dynam` implies that the firm size distribution
+will have Pareto tails.
 
-Now we explore this idea further, generalizing the firm
-size dynamics and examining the corresponding rank-size plots.
+This matches empirical findings across many data sets.
 
-One unrealistic aspect of the firm dynamics specified in {eq}`firm_dynam` is
-that it ignores entry and exit.
+But there is another unrealistic aspect of the firm dynamics specified in {eq}`firm_dynam` that we need to address: it ignores entry and exit.
 
-In any given period and in any given market, we observe significant numbers of firms entering and exiting the market.
+In any given period and in any given market, we observe significant numbers of
+firms entering and exiting the market.
 
 In this setting, firm dynamics can be expressed as
 
 ```{math}
 :label: firm_dynam_ee
-
-s_{t+1} = e_{t+1} \mathbb{1}\{s_t < \bar s\} +
-(a_{t+1} s_t + b_{t+1}) \mathbb{1}\{s_t \geq \bar s\}
+    s_{t+1} = e_{t+1} \mathbb{1}\{s_t < \bar s\} +
+    (a_{t+1} s_t + b_{t+1}) \mathbb{1}\{s_t \geq \bar s\}
 ```
 
-Here
-
-* the state variable $s_t$ represents productivity (which is a proxy
-  for output and hence firm size),
-* the IID sequence $\{ e_t \}$ is thought of as a productivity draw for a new
-  entrant and
-* the variable $\bar s$ is a threshold value that we take as given.
-
-The idea behind {eq}`firm_dynam_ee` is that firms stay in the market as long
-as their productivity $s_t$ remains at or above $\bar s$.
-
-* In this case, their productivity updates according to {eq}`firm_dynam`.
-
-Firms choose to exit when their productivity $s_t$ falls below $\bar s$.
-
-* In this case, they are replaced by a new firm with productivity
-  $e_{t+1}$.
+The motivation behind and interpretation of [](firm_dynam_ee) can be found in 
+[our earlier Kesten process lecture](https://python.quantecon.org/kesten_processes.html).
 
 What can we say about dynamics?
 
@@ -193,9 +187,8 @@ when $T$ is large.)
 
 In the simulation, we assume that each of $a_t, b_t$ and $e_t$ is lognormal.
 
-+++ {"user_expressions": []}
-
-Now we can generate the observations with the following default parameters:
+Here's code to update a cross-section of firms according to the dynamics in
+[](firm_dynam_ee).
 
 ```{code-cell} ipython3
 @jax.jit
@@ -209,17 +202,26 @@ def update_s(s, s_bar, a_random, b_random, e_random):
                   exp_a * s + exp_b)
 
     return s
+```
 
-def generate_draws(M = 1_000_000,
-                   μ_a = -0.5,
-                   σ_a = 0.1,
-                   μ_b = 0.0,
-                   σ_b = 0.5,
-                   μ_e = 0.0,
-                   σ_e = 0.5,
-                   s_bar = 1.0,
-                   T = 500,
-                   s_init = 1.0,
+Now we write a for loop that repeatedly calls this function, to push a
+cross-section of firms forward in time.
+
+For sufficiently large `T`, the cross-section it returns (the cross-section at
+time `T`) corresponds to firm size distribution in (approximate) equilibrium.
+
+```{code-cell} ipython3
+
+def generate_draws(M=1_000_000,
+                   μ_a=-0.5,
+                   σ_a=0.1,
+                   μ_b=0.0,
+                   σ_b=0.5,
+                   μ_e=0.0,
+                   σ_e=0.5,
+                   s_bar=1.0,
+                   T=500,
+                   s_init=1.0,
                    seed=123):
 
     key = random.PRNGKey(seed)
@@ -244,9 +246,11 @@ def generate_draws(M = 1_000_000,
 %time data = generate_draws().block_until_ready()
 ```
 
-+++ {"user_expressions": []}
+Notice that we do not JIT-compile the `for` loops, since
 
-As JIT-compiled `for` loops will lead to very slow compilation, we used `jax.jit` on the function `update_s` instead of the whole function.
+1. acceleration of the outer loop makes little difference terms of compute
+   time and
+2. compiling the outer loop is often very slow.
 
 Let's produce the rank-size plot and check the distribution:
 
@@ -261,20 +265,26 @@ ax.set_ylabel("log size")
 plt.show()
 ```
 
-+++ {"user_expressions": []}
 
 The plot produces a straight line, consistent with a Pareto tail.
 
+
 #### Alternative implementation with `lax.scan`
 
-It is possible to further speed up our code by replacing the `for` loop with [`lax.scan`](https://jax.readthedocs.io/en/latest/_autosummary/jax.lax.scan.html)
-to reduce the loop overhead in the compilation of the jitted function.
+If the time horizon is not too large, we can try to further accelerate our code
+by replacing the `for` loop with
+[`lax.scan`](https://jax.readthedocs.io/en/latest/_autosummary/jax.lax.scan.html).
 
-But there are trade-offs for the speed. 
+Note, however, that
 
-`lax.scan` has a more complicated syntax making it less readable and harder to debug.
+1. as mentioned above, there is not much speed gain in accelerating outer loops,
+2. `lax.scan` has a more complicated syntax, and, most importantly,
+3. the `lax.scan` implementation consumes far more memory, as we need to have to
+   store large matrices of random draws
 
-`lax.scan` implementation also consumes more memory as we need to have to store large matrices of random draws
+Hence the code below will fail due to out-of-memory errors when `T` and `M` are large.
+
+Here is the `lax.scan` version:
 
 ```{code-cell} ipython3
 from jax import lax
@@ -316,15 +326,13 @@ def generate_draws_lax(μ_a=-0.5,
 %time data = generate_draws_lax().block_until_ready()
 ```
 
-+++ {"user_expressions": []}
-
-Since we used `jax.jit` on the entire function, the compiled function is even faster
+In this case, `T` and `M` are small enough for the code to run and
+we see some speed gain over the for loop implementation:
 
 ```{code-cell} ipython3
 %time data = generate_draws_lax().block_until_ready()
 ```
 
-+++ {"user_expressions": []}
 
 Here we produce the same rank-size plot:
 
@@ -338,3 +346,5 @@ ax.set_ylabel("log size")
 
 plt.show()
 ```
+
+
