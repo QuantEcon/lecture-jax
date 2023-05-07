@@ -32,7 +32,7 @@ kernelspec:
 
 ## Overview
 
-This lecture explores JAX implementation of the exercises in the lecture on [inventory dynamics](https://python.quantecon.org/inventory_dynamics.html).
+This lecture explores JAX implementations of the exercises in the lecture on [inventory dynamics](https://python.quantecon.org/inventory_dynamics.html).
 
 We will use the following imports:
 
@@ -104,7 +104,7 @@ Kernel density estimators can be thought of as smoothed histograms.
 
 We will use a kernel density estimator from [scikit-learn](https://scikit-learn.org/stable/).
 
-Here is an example of fitting kernel density estimators and plotting the result
+Here is an example of using kernel density estimators and plotting the result
 
 ```{code-cell} ipython3
 from sklearn.neighbors import KernelDensity
@@ -132,8 +132,8 @@ ax.hist(sample_2, alpha=0.2, density=True, bins=50)
 # Plot the KDE for each sample
 plot_kde(sample_1, ax, label=r'KDE over $X \sim N(0, 2)$')
 plot_kde(sample_2, ax, label=r'KDE over $X \sim Gamma(0, 2)$')
-ax.set_xlabel('Value')
-ax.set_ylabel('Density')
+ax.set_xlabel('value')
+ax.set_ylabel('density')
 ax.set_xlim([-5, 10])
 ax.set_title('KDE of Simulated Normal and Gamma Data')
 ax.legend()
@@ -239,7 +239,7 @@ def shift_firms_forward(x_init, firm, key,
     return X_final
 ```
 
-`lax.scan` has a more complicated syntax and can be memory intensive as we need to have large samples of `Z` in memory.
+`lax.scan` has a more complicated syntax and can be memory intensive as we need to have large samples of `Z` and `D` in memory.
 
 ```{code-cell} ipython3
 fig, ax = plt.subplots()
@@ -387,7 +387,3 @@ Note the time the routine takes to run, as well as the output
 %time freq = compute_freq(firm, key).block_until_ready()
 print(f"Frequency of at least two stock outs = {freq}")
 ```
-
-This is a good example of where `lax.scan` does not provide further improvement compared to the `for` loop implementation.
-
-In this case `lax.scan` is no longer faster than the `for` loop implementation due to the additional operations in the `update_X` function.
