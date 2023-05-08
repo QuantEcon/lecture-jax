@@ -14,12 +14,14 @@ kernelspec:
 # JAX
 
 
-```{note}
-This lecture is built using [hardware](status:machine-details) that
-has access to a GPU. This means that 
+```{admonition} GPU
+:class: warning
 
-1. the lecture might be significantly slower when running on your machine, and
-2. the code is well-suited to execution with [Google colab](https://colab.research.google.com/github/QuantEcon/lecture-python-programming.notebooks/blob/master/jax_intro.ipynb)
+This lecture is accelerated via [hardware](status:machine-details) that has access to a GPU and JAX for GPU programming.
+
+Free GPUs are available on Google Colab. To use this option, please click on the play icon top right, select Colab, and set the runtime environment to include a GPU.
+
+Alternatively, if you have your own GPU, you can follow the [instructions](https://github.com/google/jax) for installing JAX with GPU support. If you would like to install JAX running on the `cpu` only you can use `pip install jax[cpu]`
 ```
 
 This lecture provides a short introduction to [Google JAX](https://github.com/google/jax).
