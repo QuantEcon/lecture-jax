@@ -32,20 +32,16 @@ We will use the following imports.
 
 ```{code-cell} ipython3
 import matplotlib.pyplot as plt
-plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
 import jax
 import jax.numpy as jnp
 from collections import namedtuple
-%matplotlib inline
 ```
-
 
 Let's check the hardware we are running on:
 
 ```{code-cell} ipython3
 !nvidia-smi
 ```
-
 
 ## Lorenz Curves and the Gini Coefficient
 
