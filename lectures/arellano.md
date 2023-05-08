@@ -13,10 +13,12 @@ kernelspec:
 
 # Default Risk and Income Fluctuations
 
-```{code-cell} ipython3
-:hide-output: false
++++
 
-#!pip install --upgrade quantecon  # Uncomment if not installed
+In addition to what's in Anaconda, this lecture will need the following libraries:
+
+```{code-cell} ipython3
+!pip install quantecon
 ```
 
 ## Overview
