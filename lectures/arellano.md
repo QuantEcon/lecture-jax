@@ -66,7 +66,7 @@ Such dynamics are consistent with experiences of many countries.
 Let’s start with some imports:
 
 ```{code-cell} ipython3
-:hide-output: false
+:tags: [hide-output]
 
 import matplotlib.pyplot as plt
 import quantecon as qe
