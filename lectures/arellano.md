@@ -113,8 +113,7 @@ Here
 - $ u $ is an increasing and strictly concave utility function  
 
 
-Consumption sequences enjoyed by households are affected by the government’s decision to borrow or
-lend internationally.
+Consumption sequences enjoyed by households are affected by the government’s decision to borrow or lend internationally.
 
 The government is benevolent in the sense that its aim is to maximize [(13.1)](#equation-utility).
 
@@ -297,8 +296,7 @@ $$
 \delta(B', y) := \int \mathbb 1\{v_c(B', y') < v_d(y') \} p(y, y') dy' \tag{13.4}
 $$
 
-Given zero profits for foreign creditors in equilibrium, we can combine [(13.3)](#equation-epc) and [(13.4)](#equation-delta)
-to pin down the bond price function:
+Given zero profits for foreign creditors in equilibrium, we can combine [(13.3)](#equation-epc) and [(13.4)](#equation-delta) to pin down the bond price function:
 
 
 <a id='equation-bondprice'></a>
