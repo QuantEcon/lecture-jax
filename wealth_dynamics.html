@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>6. Wealth Distribution Dynamics &#8212; Quantitative Economics with Python using JAX</title>
+    <title>5. Wealth Distribution Dynamics &#8212; Quantitative Economics with Python using JAX</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
@@ -113,8 +113,8 @@ const thebe_selector_output = ".output, .cell_output"
     <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="7. Shortest Paths" href="short_path.html" />
-    <link rel="prev" title="5. Kesten Processes and Firm Dynamics" href="kesten_processes.html" />
+    <link rel="next" title="6. Shortest Paths" href="short_path.html" />
+    <link rel="prev" title="4. Kesten Processes and Firm Dynamics" href="kesten_processes.html" />
 
 <!-- Normal Meta Tags -->
 <meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
@@ -162,18 +162,18 @@ const thebe_selector_output = ".output, .cell_output"
 
                         <nav id="bd-toc-nav" class="qe-page__toc-nav">
                             <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#lorenz-curves-and-the-gini-coefficient">6.1. Lorenz Curves and the Gini Coefficient</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lorenz-curves">6.1.1. Lorenz Curves</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-gini-coefficient">6.1.2. The Gini Coefficient</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#lorenz-curves-and-the-gini-coefficient">5.1. Lorenz Curves and the Gini Coefficient</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lorenz-curves">5.1.1. Lorenz Curves</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-gini-coefficient">5.1.2. The Gini Coefficient</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-model-of-wealth-dynamics">6.2. A Model of Wealth Dynamics</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implementation-using-jax">6.3. Implementation using JAX</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#applications">6.4. Applications</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#inequality-measures">6.4.1. Inequality Measures</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-model-of-wealth-dynamics">5.2. A Model of Wealth Dynamics</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implementation-using-jax">5.3. Implementation using JAX</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#applications">5.4. Applications</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#inequality-measures">5.4.1. Inequality Measures</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">6.5. Exercises</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">5.5. Exercises</a></li>
 </ul>
                             <p class="logo">
                                 
@@ -219,7 +219,7 @@ const thebe_selector_output = ".output, .cell_output"
                     <div>
                         
   <section class="tex2jax_ignore mathjax_ignore" id="wealth-distribution-dynamics">
-<h1><span class="section-number">6. </span>Wealth Distribution Dynamics<a class="headerlink" href="#wealth-distribution-dynamics" title="Permalink to this heading">#</a></h1>
+<h1><span class="section-number">5. </span>Wealth Distribution Dynamics<a class="headerlink" href="#wealth-distribution-dynamics" title="Permalink to this heading">#</a></h1>
 <p>This lecture is the extended JAX implementation of <a class="reference external" href="https://python.quantecon.org/wealth_dynamics.html">this lecture</a>. Please refer that lecture for all background and notation.</p>
 <p>We will use the following imports.</p>
 <div class="cell docutils container">
@@ -253,11 +253,11 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
 </div>
 <section id="lorenz-curves-and-the-gini-coefficient">
-<h2><span class="section-number">6.1. </span>Lorenz Curves and the Gini Coefficient<a class="headerlink" href="#lorenz-curves-and-the-gini-coefficient" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">5.1. </span>Lorenz Curves and the Gini Coefficient<a class="headerlink" href="#lorenz-curves-and-the-gini-coefficient" title="Permalink to this heading">#</a></h2>
 <p>Before we investigate wealth dynamics, we briefly review some measures of
 inequality.</p>
 <section id="lorenz-curves">
-<h3><span class="section-number">6.1.1. </span>Lorenz Curves<a class="headerlink" href="#lorenz-curves" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">5.1.1. </span>Lorenz Curves<a class="headerlink" href="#lorenz-curves" title="Permalink to this heading">#</a></h3>
 <p>One popular graphical measure of inequality is the <a class="reference external" href="https://en.wikipedia.org/wiki/Lorenz_curve">Lorenz curve</a>.</p>
 <p>To illustrate, let us define a function <code class="docutils literal notranslate"><span class="pre">lorenz_curve_jax</span></code> that returns the cumulative share of people and the cumulative share of income earned.</p>
 <div class="cell docutils container">
@@ -296,8 +296,8 @@ inequality.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1.83 s, sys: 17 ms, total: 1.84 s
-Wall time: 1.59 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1.9 s, sys: 8.83 ms, total: 1.9 s
+Wall time: 1.62 s
 </pre></div>
 </div>
 </div>
@@ -312,8 +312,8 @@ Wall time: 1.59 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 769 µs, sys: 244 µs, total: 1.01 ms
-Wall time: 432 µs
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 940 µs, sys: 5 µs, total: 945 µs
+Wall time: 401 µs
 </pre></div>
 </div>
 </div>
@@ -369,7 +369,7 @@ observations.</p>
 <p>This is to be expected, because a higher tail index implies less weight in the tail of the Pareto distribution.</p>
 </section>
 <section id="the-gini-coefficient">
-<h3><span class="section-number">6.1.2. </span>The Gini Coefficient<a class="headerlink" href="#the-gini-coefficient" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">5.1.2. </span>The Gini Coefficient<a class="headerlink" href="#the-gini-coefficient" title="Permalink to this heading">#</a></h3>
 <p>The definition and interpretation of the Gini coefficient can be found on the corresponding <a class="reference external" href="https://en.wikipedia.org/wiki/Gini_coefficient">Wikipedia page</a>.</p>
 <p>We can test it on the Weibull distribution with parameter <span class="math notranslate nohighlight">\(a\)</span>, where the Gini coefficient is known to be</p>
 <div class="math notranslate nohighlight">
@@ -433,11 +433,11 @@ this at each fixed value of <span class="math notranslate nohighlight">\(a\)</sp
 </section>
 </section>
 <section id="a-model-of-wealth-dynamics">
-<h2><span class="section-number">6.2. </span>A Model of Wealth Dynamics<a class="headerlink" href="#a-model-of-wealth-dynamics" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">5.2. </span>A Model of Wealth Dynamics<a class="headerlink" href="#a-model-of-wealth-dynamics" title="Permalink to this heading">#</a></h2>
 <p>Having discussed inequality measures, let us now turn to wealth dynamics.</p>
 <p>The model we will study is</p>
 <div class="math notranslate nohighlight" id="equation-wealth-dynam-ah">
-<span class="eqno">(6.1)<a class="headerlink" href="#equation-wealth-dynam-ah" title="Permalink to this equation">#</a></span>\[w_{t+1} = (1 + r_{t+1}) s(w_t) + y_{t+1}\]</div>
+<span class="eqno">(5.1)<a class="headerlink" href="#equation-wealth-dynam-ah" title="Permalink to this equation">#</a></span>\[w_{t+1} = (1 + r_{t+1}) s(w_t) + y_{t+1}\]</div>
 <p>where</p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(w_t\)</span> is wealth at time <span class="math notranslate nohighlight">\(t\)</span> for a given household,</p></li>
@@ -447,7 +447,7 @@ this at each fixed value of <span class="math notranslate nohighlight">\(a\)</sp
 </ul>
 </section>
 <section id="implementation-using-jax">
-<h2><span class="section-number">6.3. </span>Implementation using JAX<a class="headerlink" href="#implementation-using-jax" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">5.3. </span>Implementation using JAX<a class="headerlink" href="#implementation-using-jax" title="Permalink to this heading">#</a></h2>
 <p>Let’s define a model to represent the wealth dynamics.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -587,8 +587,8 @@ this at each fixed value of <span class="math notranslate nohighlight">\(a\)</sp
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 57.5 s, sys: 1.06 s, total: 58.6 s
-Wall time: 55.5 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1min 6s, sys: 1.05 s, total: 1min 7s
+Wall time: 1min 4s
 </pre></div>
 </div>
 </div>
@@ -605,8 +605,8 @@ Wall time: 55.5 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 8.35 ms, sys: 197 µs, total: 8.55 ms
-Wall time: 5.61 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 9.91 ms, sys: 226 µs, total: 10.1 ms
+Wall time: 9.35 ms
 </pre></div>
 </div>
 </div>
@@ -685,8 +685,8 @@ Wall time: 5.61 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1.33 s, sys: 12.2 ms, total: 1.34 s
-Wall time: 757 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1.36 s, sys: 8.24 ms, total: 1.37 s
+Wall time: 770 ms
 </pre></div>
 </div>
 </div>
@@ -702,8 +702,8 @@ Wall time: 757 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 9.94 ms, sys: 4.28 ms, total: 14.2 ms
-Wall time: 11.5 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 11.9 ms, sys: 144 µs, total: 12 ms
+Wall time: 8.97 ms
 </pre></div>
 </div>
 </div>
@@ -749,11 +749,11 @@ Wall time: 11.5 ms
 </div>
 </section>
 <section id="applications">
-<h2><span class="section-number">6.4. </span>Applications<a class="headerlink" href="#applications" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">5.4. </span>Applications<a class="headerlink" href="#applications" title="Permalink to this heading">#</a></h2>
 <p>Let’s try simulating the model at different parameter values and investigate
 the implications for the wealth distribution.</p>
 <section id="inequality-measures">
-<h3><span class="section-number">6.4.1. </span>Inequality Measures<a class="headerlink" href="#inequality-measures" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">5.4.1. </span>Inequality Measures<a class="headerlink" href="#inequality-measures" title="Permalink to this heading">#</a></h3>
 <p>Let’s look at how inequality varies with returns on financial assets.</p>
 <p>The next function generates a cross section and then computes the Lorenz
 curve and Gini coefficient.</p>
@@ -800,8 +800,8 @@ curve and Gini coefficient.</p>
 </div>
 <div class="cell_output docutils container">
 <img alt="_images/861196796b68b5e0c861889a696f0281c9527730179336cedb880aba14284f8a.png" src="_images/861196796b68b5e0c861889a696f0281c9527730179336cedb880aba14284f8a.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 7.87 s, sys: 41.5 ms, total: 7.91 s
-Wall time: 6.47 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 8 s, sys: 34.3 ms, total: 8.04 s
+Wall time: 6.62 s
 </pre></div>
 </div>
 </div>
@@ -848,8 +848,8 @@ volatility term <span class="math notranslate nohighlight">\(\sigma_r\)</span> i
 </div>
 <div class="cell_output docutils container">
 <img alt="_images/67ebb9d323bc96de13aff7620adf6038e63afc9c7f067fc65433bc62fd7d3192.png" src="_images/67ebb9d323bc96de13aff7620adf6038e63afc9c7f067fc65433bc62fd7d3192.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 3.26 s, sys: 13.3 ms, total: 3.28 s
-Wall time: 3.22 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 3.24 s, sys: 5.25 ms, total: 3.25 s
+Wall time: 3.19 s
 </pre></div>
 </div>
 </div>
@@ -858,10 +858,10 @@ Wall time: 3.22 s
 </section>
 </section>
 <section id="exercises">
-<h2><span class="section-number">6.5. </span>Exercises<a class="headerlink" href="#exercises" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">5.5. </span>Exercises<a class="headerlink" href="#exercises" title="Permalink to this heading">#</a></h2>
 <div class="exercise admonition" id="wd_ex1">
 
-<p class="admonition-title"><span class="caption-number">Exercise 6.1 </span></p>
+<p class="admonition-title"><span class="caption-number">Exercise 5.1 </span></p>
 <section id="exercise-content">
 <p>For a wealth or income distribution with Pareto tail, a higher tail index suggests lower inequality.</p>
 <p>Indeed, it is possible to prove that the Gini coefficient of the Pareto
@@ -877,7 +877,7 @@ Gini index and <span class="math notranslate nohighlight">\(a\)</span>.</p>
 </div>
 <div class="solution dropdown admonition" id="wealth_dynamics-solution-1">
 
-<p class="admonition-title">Solution to<a class="reference internal" href="#wd_ex1"> Exercise 6.1</a></p>
+<p class="admonition-title">Solution to<a class="reference internal" href="#wd_ex1"> Exercise 5.1</a></p>
 <section id="solution-content">
 <p>Here is one solution, which produces a good match between theory and
 simulation.</p>
@@ -912,12 +912,12 @@ in the right hand tail.</p>
 </div>
 <div class="exercise admonition" id="wd_ex2">
 
-<p class="admonition-title"><span class="caption-number">Exercise 6.2 </span></p>
+<p class="admonition-title"><span class="caption-number">Exercise 5.2 </span></p>
 <section id="exercise-content">
 <p>When savings is constant, the wealth process has the same quasi-linear
 structure as a Kesten process, with multiplicative and additive shocks.</p>
 <p>The Kesten–Goldie theorem tells us that Kesten processes have Pareto tails under a range of parameterizations.</p>
-<p>The theorem does not directly apply here, since savings is not always constant and since the multiplicative and additive terms in <a class="reference internal" href="#equation-wealth-dynam-ah">(6.1)</a> are not IID.</p>
+<p>The theorem does not directly apply here, since savings is not always constant and since the multiplicative and additive terms in <a class="reference internal" href="#equation-wealth-dynam-ah">(5.1)</a> are not IID.</p>
 <p>At the same time, given the similarities, perhaps Pareto tails will arise.</p>
 <p>To test this, run a simulation that generates a cross-section of wealth and
 generate a rank-size plot.</p>
@@ -928,7 +928,7 @@ this what you see?</p>
 </div>
 <div class="solution dropdown admonition" id="wealth_dynamics-solution-3">
 
-<p class="admonition-title">Solution to<a class="reference internal" href="#wd_ex2"> Exercise 6.2</a></p>
+<p class="admonition-title">Solution to<a class="reference internal" href="#wd_ex2"> Exercise 5.2</a></p>
 <section id="solution-content">
 <p>First let’s generate the distribution:</p>
 <div class="cell docutils container">
@@ -1031,55 +1031,76 @@ this what you see?</p>
                 <nav class="qe-sidebar__nav" id="qe-sidebar-nav" aria-label="Main navigation">
                     <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
-  Other
+  Introduction
  </span>
 </p>
-<ul class="current nav bd-sidenav nav sidenav_l1">
+<ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="about.html">
    1. About these Lectures
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="inventory_dynamics.html">
-   2. Inventory Dynamics
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="aiyagari_jax.html">
-   3. The Aiyagari Model
-  </a>
- </li>
- <li class="toctree-l1">
   <a class="reference internal" href="newtons_method.html">
-   4. Using Newton’s Method to Solve Economic Models
+   2. Newton’s Method via JAX
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Simulation
+ </span>
+</p>
+<ul class="current nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="inventory_dynamics.html">
+   3. Inventory Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kesten_processes.html">
-   5. Kesten Processes and Firm Dynamics
+   4. Kesten Processes and Firm Dynamics
   </a>
  </li>
  <li class="toctree-l1 current active active">
   <a class="current reference internal" href="#">
-   6. Wealth Distribution Dynamics
+   5. Wealth Distribution Dynamics
   </a>
  </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Dynamic Programming
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="short_path.html">
-   7. Shortest Paths
+   6. Shortest Paths
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="opt_invest.html">
-   8. Optimal Investment
+   7. Optimal Investment
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="opt_savings.html">
-   9. Optimal Savings
+   8. Optimal Savings
   </a>
  </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="aiyagari_jax.html">
+   9. The Aiyagari Model
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Other
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
    10. Troubleshooting

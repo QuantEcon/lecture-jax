@@ -206,17 +206,32 @@ const thebe_selector_output = ".output, .cell_output"
 specifically using <a class="reference external" href="https://jax.readthedocs.io">JAX</a> and accelerating using the <code class="docutils literal notranslate"><span class="pre">GPU</span></code>.</p>
 <p>For an overview of the series, see <a class="reference external" href="https://quantecon.org/python-lectures/">this page</a></p>
 <div class="toctree-wrapper compound">
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Other</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Introduction</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="about.html">1. About these Lectures</a></li>
-<li class="toctree-l1"><a class="reference internal" href="inventory_dynamics.html">2. Inventory Dynamics</a></li>
-<li class="toctree-l1"><a class="reference internal" href="aiyagari_jax.html">3. The Aiyagari Model</a></li>
-<li class="toctree-l1"><a class="reference internal" href="newtons_method.html">4. Using Newton’s Method to Solve Economic Models</a></li>
-<li class="toctree-l1"><a class="reference internal" href="kesten_processes.html">5. Kesten Processes and Firm Dynamics</a></li>
-<li class="toctree-l1"><a class="reference internal" href="wealth_dynamics.html">6. Wealth Distribution Dynamics</a></li>
-<li class="toctree-l1"><a class="reference internal" href="short_path.html">7. Shortest Paths</a></li>
-<li class="toctree-l1"><a class="reference internal" href="opt_invest.html">8. Optimal Investment</a></li>
-<li class="toctree-l1"><a class="reference internal" href="opt_savings.html">9. Optimal Savings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="newtons_method.html">2. Newton’s Method via JAX</a></li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Simulation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="inventory_dynamics.html">3. Inventory Dynamics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="kesten_processes.html">4. Kesten Processes and Firm Dynamics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wealth_dynamics.html">5. Wealth Distribution Dynamics</a></li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Dynamic Programming</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="short_path.html">6. Shortest Paths</a></li>
+<li class="toctree-l1"><a class="reference internal" href="opt_invest.html">7. Optimal Investment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="opt_savings.html">8. Optimal Savings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="aiyagari_jax.html">9. The Aiyagari Model</a></li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Other</span></p>
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">10. Troubleshooting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="zreferences.html">11. References</a></li>
 <li class="toctree-l1"><a class="reference internal" href="status.html">12. Execution Statistics</a></li>
@@ -275,7 +290,7 @@ specifically using <a class="reference external" href="https://jax.readthedocs.i
                 <nav class="qe-sidebar__nav" id="qe-sidebar-nav" aria-label="Main navigation">
                     <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
-  Other
+  Introduction
  </span>
 </p>
 <ul class="nav bd-sidenav nav sidenav_l1">
@@ -285,45 +300,66 @@ specifically using <a class="reference external" href="https://jax.readthedocs.i
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="inventory_dynamics.html">
-   2. Inventory Dynamics
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="aiyagari_jax.html">
-   3. The Aiyagari Model
-  </a>
- </li>
- <li class="toctree-l1">
   <a class="reference internal" href="newtons_method.html">
-   4. Using Newton’s Method to Solve Economic Models
+   2. Newton’s Method via JAX
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Simulation
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="inventory_dynamics.html">
+   3. Inventory Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kesten_processes.html">
-   5. Kesten Processes and Firm Dynamics
+   4. Kesten Processes and Firm Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wealth_dynamics.html">
-   6. Wealth Distribution Dynamics
+   5. Wealth Distribution Dynamics
   </a>
  </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Dynamic Programming
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="short_path.html">
-   7. Shortest Paths
+   6. Shortest Paths
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="opt_invest.html">
-   8. Optimal Investment
+   7. Optimal Investment
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="opt_savings.html">
-   9. Optimal Savings
+   8. Optimal Savings
   </a>
  </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="aiyagari_jax.html">
+   9. The Aiyagari Model
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Other
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
    10. Troubleshooting

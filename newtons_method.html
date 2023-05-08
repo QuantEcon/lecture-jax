@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>4. Using Newton’s Method to Solve Economic Models &#8212; Quantitative Economics with Python using JAX</title>
+    <title>2. Newton’s Method via JAX &#8212; Quantitative Economics with Python using JAX</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
@@ -113,8 +113,8 @@ const thebe_selector_output = ".output, .cell_output"
     <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="5. Kesten Processes and Firm Dynamics" href="kesten_processes.html" />
-    <link rel="prev" title="3. The Aiyagari Model" href="aiyagari_jax.html" />
+    <link rel="next" title="3. Inventory Dynamics" href="inventory_dynamics.html" />
+    <link rel="prev" title="1. About these Lectures" href="about.html" />
 
 <!-- Normal Meta Tags -->
 <meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
@@ -124,13 +124,13 @@ const thebe_selector_output = ".output, .cell_output"
 <!-- Twitter tags -->
 <meta name="twitter:card" content="summary" />
 <meta name="twitter:site" content="@quantecon" />
-<meta name="twitter:title" content="Using Newton’s Method to Solve Economic Models"/>
+<meta name="twitter:title" content="Newton’s Method via JAX"/>
 <meta name="twitter:description" content="This website presents a set of lectures on quantitative economic modeling, designed and written by Thomas J. Sargent and John Stachurski.">
 <meta name="twitter:creator" content="@quantecon">
 <meta name="twitter:image" content="https://assets.quantecon.org/img/qe-twitter-logo.png">
 
 <!-- Opengraph tags -->
-<meta property="og:title" content="Using Newton’s Method to Solve Economic Models" />
+<meta property="og:title" content="Newton’s Method via JAX" />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://jax.quantecon.org/newtons_method.html" />
 <meta property="og:image" content="https://assets.quantecon.org/img/qe-og-logo.png" />
@@ -162,16 +162,16 @@ const thebe_selector_output = ".output, .cell_output"
 
                         <nav id="bd-toc-nav" class="qe-page__toc-nav">
                             <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">4.1. Overview</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-two-goods-market-equilibrium">4.2. The Two Goods Market Equilibrium</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-multivariable-market-equilibrium">4.2.1. The Multivariable Market Equilibrium</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">2.1. Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-two-goods-market-equilibrium">2.2. The Two Goods Market Equilibrium</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-multivariable-market-equilibrium">2.2.1. The Multivariable Market Equilibrium</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#using-newtons-method">4.3. Using Newton’s Method</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-high-dimensional-problem">4.3.1. A High-Dimensional Problem</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#using-newtons-method">2.3. Using Newton’s Method</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-high-dimensional-problem">2.3.1. A High-Dimensional Problem</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">4.4. Exercises</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">2.4. Exercises</a></li>
 </ul>
                             <p class="logo">
                                 
@@ -201,7 +201,7 @@ const thebe_selector_output = ".output, .cell_output"
 
                         <p class="qe-page__header-heading"><a href="intro.html">Quantitative Economics with Python using JAX</a></p>
 
-                        <p class="qe-page__header-subheading">Using Newton’s Method to Solve Economic Models</p>
+                        <p class="qe-page__header-subheading">Newton’s Method via JAX</p>
 
                     </div>
 
@@ -216,10 +216,10 @@ const thebe_selector_output = ".output, .cell_output"
                     
                     <div>
                         
-  <section class="tex2jax_ignore mathjax_ignore" id="using-newtons-method-to-solve-economic-models">
-<h1><span class="section-number">4. </span>Using Newton’s Method to Solve Economic Models<a class="headerlink" href="#using-newtons-method-to-solve-economic-models" title="Permalink to this heading">#</a></h1>
+  <section class="tex2jax_ignore mathjax_ignore" id="newtons-method-via-jax">
+<h1><span class="section-number">2. </span>Newton’s Method via JAX<a class="headerlink" href="#newtons-method-via-jax" title="Permalink to this heading">#</a></h1>
 <section id="overview">
-<h2><span class="section-number">4.1. </span>Overview<a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">2.1. </span>Overview<a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
 <p>Continuing from the <a class="reference external" href="https://python.quantecon.org/newton_method.html">Newton’s Method lecture</a>, we are going to solve the multidimensional problem with <code class="docutils literal notranslate"><span class="pre">JAX</span></code>.</p>
 <p>More information about JAX can be found <a class="reference external" href="https://python-programming.quantecon.org/jax_intro.html">here</a>.</p>
 <p>We use the following imports in this lecture</p>
@@ -252,7 +252,7 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
 </section>
 <section id="the-two-goods-market-equilibrium">
-<h2><span class="section-number">4.2. </span>The Two Goods Market Equilibrium<a class="headerlink" href="#the-two-goods-market-equilibrium" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">2.2. </span>The Two Goods Market Equilibrium<a class="headerlink" href="#the-two-goods-market-equilibrium" title="Permalink to this heading">#</a></h2>
 <p>Let’s have a quick recap of this problem – a more detailed explanation and derivation can be found at <a class="reference external" href="https://python.quantecon.org/newton_method.html#two_goods_market">A Two Goods Market Equilibrium</a>.</p>
 <p>Assume we have a market for two complementary goods where demand depends on the price of both components.</p>
 <p>We label them good 0 and good 1, with price vector <span class="math notranslate nohighlight">\(p = (p_0, p_1)\)</span>.</p>
@@ -293,7 +293,7 @@ A = \begin{pmatrix}
 \end{split}\]</div>
 <p>for this particular question.</p>
 <section id="the-multivariable-market-equilibrium">
-<h3><span class="section-number">4.2.1. </span>The Multivariable Market Equilibrium<a class="headerlink" href="#the-multivariable-market-equilibrium" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">2.2.1. </span>The Multivariable Market Equilibrium<a class="headerlink" href="#the-multivariable-market-equilibrium" title="Permalink to this heading">#</a></h3>
 <p>We can now easily get the multivariable version of the problem above.</p>
 <p>The supply function remains unchanged,</p>
 <div class="math notranslate nohighlight">
@@ -322,10 +322,10 @@ e(p) = \text{exp}(- A \cdot p) + c - b \sqrt{p}
 </section>
 </section>
 <section id="using-newtons-method">
-<h2><span class="section-number">4.3. </span>Using Newton’s Method<a class="headerlink" href="#using-newtons-method" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">2.3. </span>Using Newton’s Method<a class="headerlink" href="#using-newtons-method" title="Permalink to this heading">#</a></h2>
 <p>Now let’s use the multivariate version of Newton’s method to compute the equilibrium price</p>
 <div class="math notranslate nohighlight" id="equation-multi-newton">
-<span class="eqno">(4.1)<a class="headerlink" href="#equation-multi-newton" title="Permalink to this equation">#</a></span>\[p_{n+1} = p_n - J_e(p_n)^{-1} e(p_n)\]</div>
+<span class="eqno">(2.1)<a class="headerlink" href="#equation-multi-newton" title="Permalink to this equation">#</a></span>\[p_{n+1} = p_n - J_e(p_n)^{-1} e(p_n)\]</div>
 <p>Here <span class="math notranslate nohighlight">\(J_e(p_n)\)</span> is the Jacobian of <span class="math notranslate nohighlight">\(e\)</span> evaluated at <span class="math notranslate nohighlight">\(p_n\)</span>.</p>
 <p>The iteration starts from some initial guess of the price vector <span class="math notranslate nohighlight">\(p_0\)</span>.</p>
 <p>Here, instead of coding Jacobian by hand, We use the <code class="docutils literal notranslate"><span class="pre">jax.jacobian()</span></code> function to auto-differentiate and calculate the Jacobian.</p>
@@ -355,7 +355,7 @@ e(p) = \text{exp}(- A \cdot p) + c - b \sqrt{p}
 </div>
 </div>
 <section id="a-high-dimensional-problem">
-<h3><span class="section-number">4.3.1. </span>A High-Dimensional Problem<a class="headerlink" href="#a-high-dimensional-problem" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">2.3.1. </span>A High-Dimensional Problem<a class="headerlink" href="#a-high-dimensional-problem" title="Permalink to this heading">#</a></h3>
 <p>We now apply the multivariate Newton’s Method to  investigate a large market with 5,000 goods.</p>
 <p>We randomly generate the matrix <span class="math notranslate nohighlight">\(A\)</span> and set the parameter vectors <span class="math notranslate nohighlight">\(b \text{ and } c\)</span> to <span class="math notranslate nohighlight">\(1\)</span>.</p>
 <div class="cell docutils container">
@@ -409,7 +409,7 @@ iteration 6, error = 4.6261807256087195e-06
 
 Result = [1.4999796 1.503175  1.4918782 ... 1.4914232 1.4956646 1.4976945] 
 
-CPU times: user 4.88 s, sys: 1.48 s, total: 6.35 s
+CPU times: user 4.92 s, sys: 1.4 s, total: 6.32 s
 Wall time: 4.37 s
 </pre></div>
 </div>
@@ -442,7 +442,7 @@ even with the Jacobian supplied.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 2min 26s, sys: 398 ms, total: 2min 26s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 2min 27s, sys: 370 ms, total: 2min 27s
 Wall time: 2min 26s
 </pre></div>
 </div>
@@ -465,10 +465,10 @@ Wall time: 2min 26s
 </section>
 </section>
 <section id="exercises">
-<h2><span class="section-number">4.4. </span>Exercises<a class="headerlink" href="#exercises" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">2.4. </span>Exercises<a class="headerlink" href="#exercises" title="Permalink to this heading">#</a></h2>
 <div class="exercise admonition" id="newton_ex1">
 
-<p class="admonition-title"><span class="caption-number">Exercise 4.1 </span></p>
+<p class="admonition-title"><span class="caption-number">Exercise 2.1 </span></p>
 <section id="exercise-content">
 <p>Consider a three-dimensional extension of the Solow fixed point problem with</p>
 <div class="math notranslate nohighlight">
@@ -516,7 +516,7 @@ s = 0.2, \quad α = 0.5, \quad δ = 0.8
 </div>
 <div class="solution dropdown admonition" id="newtons_method-solution-1">
 
-<p class="admonition-title">Solution to<a class="reference internal" href="#newton_ex1"> Exercise 4.1</a></p>
+<p class="admonition-title">Solution to<a class="reference internal" href="#newton_ex1"> Exercise 2.1</a></p>
 <section id="solution-content">
 <p>Let’s first define the parameters for this problem</p>
 <div class="cell docutils container">
@@ -569,8 +569,8 @@ iteration 6, error = 8.92080606718082e-07
 
 Result = [3.8405814 3.870718  3.4109194] 
 
-CPU times: user 814 ms, sys: 20.4 ms, total: 834 ms
-Wall time: 659 ms
+CPU times: user 866 ms, sys: 12.9 ms, total: 879 ms
+Wall time: 695 ms
 ----------------------------------------------------------------
 Attempt 2: Starting value is [3. 5. 5.] 
 </pre></div>
@@ -582,8 +582,8 @@ iteration 4, error = 3.3717478231665154e-07
 
 Result = [3.8405814 3.8707182 3.4109197] 
 
-CPU times: user 594 ms, sys: 4.26 ms, total: 598 ms
-Wall time: 234 ms
+CPU times: user 614 ms, sys: 8.46 ms, total: 623 ms
+Wall time: 240 ms
 ----------------------------------------------------------------
 Attempt 3: Starting value is [50. 50. 50.] 
 </pre></div>
@@ -599,8 +599,8 @@ iteration 6, error = 9.830249609876773e-07
 
 Result = [3.840581  3.8707182 3.41092  ] 
 
-CPU times: user 1.23 s, sys: 7.93 ms, total: 1.23 s
-Wall time: 499 ms
+CPU times: user 1.29 s, sys: 8.39 ms, total: 1.3 s
+Wall time: 524 ms
 ----------------------------------------------------------------
 </pre></div>
 </div>
@@ -647,8 +647,8 @@ iteration 4, error = 8.259061701210157e-07
 
 Result = [1.7846744 1.7846744 1.7846744] 
 
-CPU times: user 1.18 s, sys: 560 µs, total: 1.18 s
-Wall time: 498 ms
+CPU times: user 1.25 s, sys: 12.4 ms, total: 1.26 s
+Wall time: 536 ms
 </pre></div>
 </div>
 </div>
@@ -676,8 +676,8 @@ iteration 5, error = 1.538370149106851e-15
 
 Result = [1.78467418 1.78467418 1.78467418] 
 
-CPU times: user 901 ms, sys: 8.24 ms, total: 910 ms
-Wall time: 714 ms
+CPU times: user 957 ms, sys: 16.9 ms, total: 974 ms
+Wall time: 755 ms
 </pre></div>
 </div>
 </div>
@@ -687,7 +687,7 @@ Wall time: 714 ms
 </div>
 <div class="exercise admonition" id="newton_ex2">
 
-<p class="admonition-title"><span class="caption-number">Exercise 4.2 </span></p>
+<p class="admonition-title"><span class="caption-number">Exercise 2.2 </span></p>
 <section id="exercise-content">
 <p>In this exercise, let’s try different initial values and check how Newton’s method responds to different starting points.</p>
 <p>Let’s define a three-good problem with the following default values:</p>
@@ -728,7 +728,7 @@ c = \begin{pmatrix}
 </div>
 <div class="solution dropdown admonition" id="newtons_method-solution-3">
 
-<p class="admonition-title">Solution to<a class="reference internal" href="#newton_ex2"> Exercise 4.2</a></p>
+<p class="admonition-title">Solution to<a class="reference internal" href="#newton_ex2"> Exercise 2.2</a></p>
 <section id="solution-content">
 <p>Define parameters and initial values</p>
 <div class="cell docutils container">
@@ -797,8 +797,8 @@ iteration 8, error = 0.0
 
 Result = [1.49744442 1.49744442 1.49744442] 
 
-CPU times: user 853 ms, sys: 292 µs, total: 854 ms
-Wall time: 236 ms
+CPU times: user 890 ms, sys: 163 µs, total: 891 ms
+Wall time: 244 ms
 ----------------------------------------------------------------
 </pre></div>
 </div>
@@ -876,7 +876,7 @@ Wall time: 236 ms
                 <nav class="qe-sidebar__nav" id="qe-sidebar-nav" aria-label="Main navigation">
                     <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
-  Other
+  Introduction
  </span>
 </p>
 <ul class="current nav bd-sidenav nav sidenav_l1">
@@ -885,46 +885,67 @@ Wall time: 236 ms
    1. About these Lectures
   </a>
  </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="inventory_dynamics.html">
-   2. Inventory Dynamics
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="aiyagari_jax.html">
-   3. The Aiyagari Model
-  </a>
- </li>
  <li class="toctree-l1 current active active">
   <a class="current reference internal" href="#">
-   4. Using Newton’s Method to Solve Economic Models
+   2. Newton’s Method via JAX
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Simulation
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="inventory_dynamics.html">
+   3. Inventory Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kesten_processes.html">
-   5. Kesten Processes and Firm Dynamics
+   4. Kesten Processes and Firm Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wealth_dynamics.html">
-   6. Wealth Distribution Dynamics
+   5. Wealth Distribution Dynamics
   </a>
  </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Dynamic Programming
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="short_path.html">
-   7. Shortest Paths
+   6. Shortest Paths
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="opt_invest.html">
-   8. Optimal Investment
+   7. Optimal Investment
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="opt_savings.html">
-   9. Optimal Savings
+   8. Optimal Savings
   </a>
  </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="aiyagari_jax.html">
+   9. The Aiyagari Model
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Other
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
    10. Troubleshooting

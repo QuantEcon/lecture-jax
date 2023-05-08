@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>9. Optimal Savings &#8212; Quantitative Economics with Python using JAX</title>
+    <title>8. Optimal Savings &#8212; Quantitative Economics with Python using JAX</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
@@ -113,8 +113,8 @@ const thebe_selector_output = ".output, .cell_output"
     <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="10. Troubleshooting" href="troubleshooting.html" />
-    <link rel="prev" title="8. Optimal Investment" href="opt_invest.html" />
+    <link rel="next" title="9. The Aiyagari Model" href="aiyagari_jax.html" />
+    <link rel="prev" title="7. Optimal Investment" href="opt_invest.html" />
 
 <!-- Normal Meta Tags -->
 <meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
@@ -162,13 +162,13 @@ const thebe_selector_output = ".output, .cell_output"
 
                         <nav id="bd-toc-nav" class="qe-page__toc-nav">
                             <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">9.1. Overview</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#model-primitives">9.2. Model primitives</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#operators">9.3. Operators</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#jit-compiled-versions">9.4. JIT compiled versions</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#solvers">9.5. Solvers</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#plots">9.6. Plots</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tests">9.7. Tests</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">8.1. Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#model-primitives">8.2. Model primitives</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#operators">8.3. Operators</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#jit-compiled-versions">8.4. JIT compiled versions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#solvers">8.5. Solvers</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#plots">8.6. Plots</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tests">8.7. Tests</a></li>
 </ul>
                             <p class="logo">
                                 
@@ -214,7 +214,7 @@ const thebe_selector_output = ".output, .cell_output"
                     <div>
                         
   <section class="tex2jax_ignore mathjax_ignore" id="optimal-savings">
-<h1><span class="section-number">9. </span>Optimal Savings<a class="headerlink" href="#optimal-savings" title="Permalink to this heading">#</a></h1>
+<h1><span class="section-number">8. </span>Optimal Savings<a class="headerlink" href="#optimal-savings" title="Permalink to this heading">#</a></h1>
 <p>In addition to what’s in Anaconda, this lecture will need the following libraries:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -226,17 +226,15 @@ const thebe_selector_output = ".output, .cell_output"
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /opt/conda/envs/quantecon/lib/python3.10/site-packages (0.7.0)
 Requirement already satisfied: sympy in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (1.11.1)
 Requirement already satisfied: numba&gt;=0.49.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (0.56.4)
+Requirement already satisfied: numpy&gt;=1.17.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (1.23.5)
 Requirement already satisfied: requests in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (2.28.1)
 Requirement already satisfied: scipy&gt;=1.5.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (1.10.0)
-Requirement already satisfied: numpy&gt;=1.17.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (1.23.5)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: setuptools in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from numba&gt;=0.49.0-&gt;quantecon) (65.6.3)
+Requirement already satisfied: setuptools in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from numba&gt;=0.49.0-&gt;quantecon) (65.6.3)
 Requirement already satisfied: llvmlite&lt;0.40,&gt;=0.39.0dev0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from numba&gt;=0.49.0-&gt;quantecon) (0.39.1)
-Requirement already satisfied: urllib3&lt;1.27,&gt;=1.21.1 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (1.26.14)
 Requirement already satisfied: certifi&gt;=2017.4.17 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (2022.12.7)
 Requirement already satisfied: idna&lt;4,&gt;=2.5 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (3.4)
 Requirement already satisfied: charset-normalizer&lt;3,&gt;=2 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (2.0.4)
+Requirement already satisfied: urllib3&lt;1.27,&gt;=1.21.1 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (1.26.14)
 Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/envs/quantecon/lib/python3.10/site-packages/mpmath-1.2.1-py3.10.egg (from sympy-&gt;quantecon) (1.2.1)
 </pre></div>
 </div>
@@ -272,7 +270,7 @@ Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/envs/quantecon/lib/
 </div>
 </div>
 <section id="overview">
-<h2><span class="section-number">9.1. </span>Overview<a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">8.1. </span>Overview<a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
 <p>We consider an optimal savings problem with CRRA utility and budget constraint</p>
 <div class="math notranslate nohighlight">
 \[ W_{t+1} + C_t \leq R W_t + Y_t \]</div>
@@ -313,7 +311,7 @@ Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/envs/quantecon/lib/
 </div>
 </section>
 <section id="model-primitives">
-<h2><span class="section-number">9.2. </span>Model primitives<a class="headerlink" href="#model-primitives" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">8.2. </span>Model primitives<a class="headerlink" href="#model-primitives" title="Permalink to this heading">#</a></h2>
 <p>Here’s a <code class="docutils literal notranslate"><span class="pre">namedtuple</span></code> definition for storing parameters and grids.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -405,7 +403,7 @@ Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/envs/quantecon/lib/
 </div>
 </section>
 <section id="operators">
-<h2><span class="section-number">9.3. </span>Operators<a class="headerlink" href="#operators" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">8.3. </span>Operators<a class="headerlink" href="#operators" title="Permalink to this heading">#</a></h2>
 <p>Now we define the policy operator <span class="math notranslate nohighlight">\(T_\sigma\)</span></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -563,7 +561,7 @@ Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/envs/quantecon/lib/
 </div>
 </section>
 <section id="jit-compiled-versions">
-<h2><span class="section-number">9.4. </span>JIT compiled versions<a class="headerlink" href="#jit-compiled-versions" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">8.4. </span>JIT compiled versions<a class="headerlink" href="#jit-compiled-versions" title="Permalink to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">B</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">jit</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="n">static_argnums</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,))</span>
@@ -579,7 +577,7 @@ Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/envs/quantecon/lib/
 </div>
 </section>
 <section id="solvers">
-<h2><span class="section-number">9.5. </span>Solvers<a class="headerlink" href="#solvers" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">8.5. </span>Solvers<a class="headerlink" href="#solvers" title="Permalink to this heading">#</a></h2>
 <p>Now we define the solvers, which implement VFI, HPI and OPI.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -636,7 +634,7 @@ Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/envs/quantecon/lib/
 </div>
 </section>
 <section id="plots">
-<h2><span class="section-number">9.6. </span>Plots<a class="headerlink" href="#plots" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">8.6. </span>Plots<a class="headerlink" href="#plots" title="Permalink to this heading">#</a></h2>
 <p>Create a JAX model for consumption, perform policy iteration, and plot the resulting optimal policy function.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -674,7 +672,7 @@ Concluded loop 9 with error 0.
 </div>
 </section>
 <section id="tests">
-<h2><span class="section-number">9.7. </span>Tests<a class="headerlink" href="#tests" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">8.7. </span>Tests<a class="headerlink" href="#tests" title="Permalink to this heading">#</a></h2>
 <p>Here’s a quick test of the timing of each solver.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -704,7 +702,7 @@ Concluded loop 6 with error 3.
 Concluded loop 7 with error 1.
 Concluded loop 8 with error 1.
 Concluded loop 9 with error 0.
-HPI completed in 0.03375697135925293 seconds.
+HPI completed in 0.03381705284118652 seconds.
 </pre></div>
 </div>
 </div>
@@ -723,7 +721,7 @@ HPI completed in 0.03375697135925293 seconds.
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Starting VFI.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>VFI(jax not in succ) completed in 0.8841691017150879 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>VFI(jax not in succ) completed in 0.911125659942627 seconds.
 </pre></div>
 </div>
 </div>
@@ -742,7 +740,7 @@ HPI completed in 0.03375697135925293 seconds.
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Starting OPI.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OPI completed in 0.3302037715911865 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OPI completed in 0.3050496578216553 seconds.
 </pre></div>
 </div>
 </div>
@@ -791,98 +789,96 @@ Concluded loop 9 with error 0.
 policy_iteration completed in 0.03 seconds.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>value_iteration completed in 0.35 seconds.
-optimistic_policy_iteration completed in 0.13 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>value_iteration completed in 0.30 seconds.
+optimistic_policy_iteration completed in 0.12 seconds.
+optimistic_policy_iteration completed in 0.08 seconds.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>optimistic_policy_iteration completed in 0.11 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>optimistic_policy_iteration completed in 0.14 seconds.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>optimistic_policy_iteration completed in 0.22 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>optimistic_policy_iteration completed in 0.21 seconds.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>optimistic_policy_iteration completed in 0.31 seconds.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>optimistic_policy_iteration completed in 0.41 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>optimistic_policy_iteration completed in 0.28 seconds.
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>optimistic_policy_iteration completed in 0.45 seconds.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>optimistic_policy_iteration completed in 0.42 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>optimistic_policy_iteration completed in 0.41 seconds.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>optimistic_policy_iteration completed in 0.49 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>optimistic_policy_iteration completed in 0.47 seconds.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>optimistic_policy_iteration completed in 0.94 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>optimistic_policy_iteration completed in 0.59 seconds.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>optimistic_policy_iteration completed in 0.88 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>optimistic_policy_iteration completed in 0.77 seconds.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>optimistic_policy_iteration completed in 0.97 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>optimistic_policy_iteration completed in 0.74 seconds.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>optimistic_policy_iteration completed in 1.09 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>optimistic_policy_iteration completed in 0.96 seconds.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>optimistic_policy_iteration completed in 0.82 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>optimistic_policy_iteration completed in 0.96 seconds.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>optimistic_policy_iteration completed in 0.95 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>optimistic_policy_iteration completed in 1.02 seconds.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>optimistic_policy_iteration completed in 0.90 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>optimistic_policy_iteration completed in 1.07 seconds.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>optimistic_policy_iteration completed in 1.31 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>optimistic_policy_iteration completed in 1.06 seconds.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>optimistic_policy_iteration completed in 1.56 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>optimistic_policy_iteration completed in 1.05 seconds.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>optimistic_policy_iteration completed in 1.38 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>optimistic_policy_iteration completed in 1.12 seconds.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>optimistic_policy_iteration completed in 1.28 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>optimistic_policy_iteration completed in 1.18 seconds.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>optimistic_policy_iteration completed in 1.55 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>optimistic_policy_iteration completed in 1.27 seconds.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>optimistic_policy_iteration completed in 1.67 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>optimistic_policy_iteration completed in 1.34 seconds.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>optimistic_policy_iteration completed in 1.48 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>optimistic_policy_iteration completed in 1.44 seconds.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>optimistic_policy_iteration completed in 1.48 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>optimistic_policy_iteration completed in 1.44 seconds.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>optimistic_policy_iteration completed in 1.87 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>optimistic_policy_iteration completed in 1.75 seconds.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>optimistic_policy_iteration completed in 1.88 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>optimistic_policy_iteration completed in 2.09 seconds.
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>optimistic_policy_iteration completed in 2.11 seconds.
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>optimistic_policy_iteration completed in 2.03 seconds.
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>optimistic_policy_iteration completed in 1.80 seconds.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>optimistic_policy_iteration completed in 1.80 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>optimistic_policy_iteration completed in 1.91 seconds.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>optimistic_policy_iteration completed in 1.98 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>optimistic_policy_iteration completed in 2.32 seconds.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>optimistic_policy_iteration completed in 1.98 seconds.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>optimistic_policy_iteration completed in 1.90 seconds.
-</pre></div>
-</div>
-<img alt="_images/e762921bd75d9b415c9fd3283d76bc54a581c7526ddc171660749c9b325b8289.png" src="_images/e762921bd75d9b415c9fd3283d76bc54a581c7526ddc171660749c9b325b8289.png" />
+<img alt="_images/2171fa7b66dee93b20f4d88827eb67f0208e240ed6070d519bb02564bd2927e5.png" src="_images/2171fa7b66dee93b20f4d88827eb67f0208e240ed6070d519bb02564bd2927e5.png" />
 </div>
 </div>
 </section>
@@ -939,55 +935,76 @@ optimistic_policy_iteration completed in 0.13 seconds.
                 <nav class="qe-sidebar__nav" id="qe-sidebar-nav" aria-label="Main navigation">
                     <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
-  Other
+  Introduction
  </span>
 </p>
-<ul class="current nav bd-sidenav nav sidenav_l1">
+<ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="about.html">
    1. About these Lectures
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="inventory_dynamics.html">
-   2. Inventory Dynamics
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="aiyagari_jax.html">
-   3. The Aiyagari Model
-  </a>
- </li>
- <li class="toctree-l1">
   <a class="reference internal" href="newtons_method.html">
-   4. Using Newton’s Method to Solve Economic Models
+   2. Newton’s Method via JAX
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Simulation
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="inventory_dynamics.html">
+   3. Inventory Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kesten_processes.html">
-   5. Kesten Processes and Firm Dynamics
+   4. Kesten Processes and Firm Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wealth_dynamics.html">
-   6. Wealth Distribution Dynamics
+   5. Wealth Distribution Dynamics
   </a>
  </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Dynamic Programming
+ </span>
+</p>
+<ul class="current nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="short_path.html">
-   7. Shortest Paths
+   6. Shortest Paths
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="opt_invest.html">
-   8. Optimal Investment
+   7. Optimal Investment
   </a>
  </li>
  <li class="toctree-l1 current active active">
   <a class="current reference internal" href="#">
-   9. Optimal Savings
+   8. Optimal Savings
   </a>
  </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="aiyagari_jax.html">
+   9. The Aiyagari Model
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Other
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
    10. Troubleshooting

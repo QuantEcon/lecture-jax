@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>7. Shortest Paths &#8212; Quantitative Economics with Python using JAX</title>
+    <title>6. Shortest Paths &#8212; Quantitative Economics with Python using JAX</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
@@ -113,8 +113,8 @@ const thebe_selector_output = ".output, .cell_output"
     <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="8. Optimal Investment" href="opt_invest.html" />
-    <link rel="prev" title="6. Wealth Distribution Dynamics" href="wealth_dynamics.html" />
+    <link rel="next" title="7. Optimal Investment" href="opt_invest.html" />
+    <link rel="prev" title="5. Wealth Distribution Dynamics" href="wealth_dynamics.html" />
 
 <!-- Normal Meta Tags -->
 <meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
@@ -162,12 +162,12 @@ const thebe_selector_output = ".output, .cell_output"
 
                         <nav id="bd-toc-nav" class="qe-page__toc-nav">
                             <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">7.1. Overview</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#solving-for-minimum-cost-to-go">7.2. Solving for Minimum Cost-to-Go</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-algorithm">7.2.1. The Algorithm</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">6.1. Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#solving-for-minimum-cost-to-go">6.2. Solving for Minimum Cost-to-Go</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-algorithm">6.2.1. The Algorithm</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">7.3. Exercises</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">6.3. Exercises</a></li>
 </ul>
                             <p class="logo">
                                 
@@ -213,9 +213,9 @@ const thebe_selector_output = ".output, .cell_output"
                     <div>
                         
   <section class="tex2jax_ignore mathjax_ignore" id="shortest-paths">
-<h1><span class="section-number">7. </span>Shortest Paths<a class="headerlink" href="#shortest-paths" title="Permalink to this heading">#</a></h1>
+<h1><span class="section-number">6. </span>Shortest Paths<a class="headerlink" href="#shortest-paths" title="Permalink to this heading">#</a></h1>
 <section id="overview">
-<h2><span class="section-number">7.1. </span>Overview<a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">6.1. </span>Overview<a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
 <p>This lecture is the extended version of the <a class="reference external" href="https://python.quantecon.org/short_path.html">shortest path lecture</a> using JAX. Please see that lecture for all background and notation.</p>
 <p>Let’s start by importing the libraries.</p>
 <div class="cell docutils container">
@@ -247,19 +247,19 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
 </section>
 <section id="solving-for-minimum-cost-to-go">
-<h2><span class="section-number">7.2. </span>Solving for Minimum Cost-to-Go<a class="headerlink" href="#solving-for-minimum-cost-to-go" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">6.2. </span>Solving for Minimum Cost-to-Go<a class="headerlink" href="#solving-for-minimum-cost-to-go" title="Permalink to this heading">#</a></h2>
 <p>Let <span class="math notranslate nohighlight">\(J(v)\)</span> denote the minimum cost-to-go from node <span class="math notranslate nohighlight">\(v\)</span>,
 understood as the total cost from <span class="math notranslate nohighlight">\(v\)</span> if we take the best route.</p>
 <p>Let’s look at an algorithm for computing <span class="math notranslate nohighlight">\(J\)</span> and then think about how to
 implement it.</p>
 <section id="the-algorithm">
-<h3><span class="section-number">7.2.1. </span>The Algorithm<a class="headerlink" href="#the-algorithm" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">6.2.1. </span>The Algorithm<a class="headerlink" href="#the-algorithm" title="Permalink to this heading">#</a></h3>
 <p>The standard algorithm for finding <span class="math notranslate nohighlight">\(J\)</span> is to start an initial guess and then iterate.</p>
 <p>This is a standard approach to solving nonlinear equations, often called
 the method of <strong>successive approximations</strong>.</p>
 <p>Our initial guess will be</p>
 <div class="math notranslate nohighlight" id="equation-spguess">
-<span class="eqno">(7.1)<a class="headerlink" href="#equation-spguess" title="Permalink to this equation">#</a></span>\[J_0(v) = 0 \text{ for all } v\]</div>
+<span class="eqno">(6.1)<a class="headerlink" href="#equation-spguess" title="Permalink to this equation">#</a></span>\[J_0(v) = 0 \text{ for all } v\]</div>
 <p>Now</p>
 <ol class="arabic simple">
 <li><p>Set <span class="math notranslate nohighlight">\(n = 0\)</span></p></li>
@@ -312,8 +312,8 @@ the method of <strong>successive approximations</strong>.</p>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The cost-to-go function is [ 8. 10.  3.  5.  4.  1.  0.]
-CPU times: user 1.9 s, sys: 531 ms, total: 2.44 s
-Wall time: 2.6 s
+CPU times: user 1.94 s, sys: 516 ms, total: 2.45 s
+Wall time: 2.62 s
 </pre></div>
 </div>
 </div>
@@ -363,8 +363,8 @@ Wall time: 2.6 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 135 ms, sys: 9.07 ms, total: 144 ms
-Wall time: 163 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 135 ms, sys: 10.8 ms, total: 146 ms
+Wall time: 170 ms
 </pre></div>
 </div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Array([ 8., 10.,  3.,  5.,  4.,  1.,  0.], dtype=float32)
@@ -382,8 +382,8 @@ Wall time: 163 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1.7 ms, sys: 901 µs, total: 2.61 ms
-Wall time: 1.45 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 2.75 ms, sys: 0 ns, total: 2.75 ms
+Wall time: 1.4 ms
 </pre></div>
 </div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Array([ 8., 10.,  3.,  5.,  4.,  1.,  0.], dtype=float32)
@@ -398,10 +398,10 @@ Wall time: 1.45 ms
 </section>
 </section>
 <section id="exercises">
-<h2><span class="section-number">7.3. </span>Exercises<a class="headerlink" href="#exercises" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">6.3. </span>Exercises<a class="headerlink" href="#exercises" title="Permalink to this heading">#</a></h2>
 <div class="exercise admonition" id="short_path_ex1">
 
-<p class="admonition-title"><span class="caption-number">Exercise 7.1 </span></p>
+<p class="admonition-title"><span class="caption-number">Exercise 6.1 </span></p>
 <section id="exercise-content">
 <p>The text below describes a weighted directed graph.</p>
 <p>The line <code class="docutils literal notranslate"><span class="pre">node0,</span> <span class="pre">node1</span> <span class="pre">0.04,</span> <span class="pre">node8</span> <span class="pre">11.11,</span> <span class="pre">node14</span> <span class="pre">72.21</span></code> means that from node0 we can go to</p>
@@ -529,7 +529,7 @@ Wall time: 1.45 ms
 </div>
 <div class="solution dropdown admonition" id="short_path-solution-1">
 
-<p class="admonition-title">Solution to<a class="reference internal" href="#short_path_ex1"> Exercise 7.1</a></p>
+<p class="admonition-title">Solution to<a class="reference internal" href="#short_path_ex1"> Exercise 6.1</a></p>
 <section id="solution-content">
 <p>First let’s write a function that reads in the graph data above and builds a distance matrix.</p>
 <div class="cell docutils container">
@@ -626,8 +626,8 @@ optimal path (and its cost).</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 144 ms, sys: 23.3 ms, total: 168 ms
-Wall time: 184 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 177 ms, sys: 7.45 ms, total: 184 ms
+Wall time: 189 ms
 </pre></div>
 </div>
 </div>
@@ -640,8 +640,8 @@ Wall time: 184 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 833 µs, sys: 422 µs, total: 1.26 ms
-Wall time: 949 µs
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1.4 ms, sys: 0 ns, total: 1.4 ms
+Wall time: 1.08 ms
 </pre></div>
 </div>
 </div>
@@ -753,55 +753,76 @@ Cost:  160.55
                 <nav class="qe-sidebar__nav" id="qe-sidebar-nav" aria-label="Main navigation">
                     <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
-  Other
+  Introduction
  </span>
 </p>
-<ul class="current nav bd-sidenav nav sidenav_l1">
+<ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="about.html">
    1. About these Lectures
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="inventory_dynamics.html">
-   2. Inventory Dynamics
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="aiyagari_jax.html">
-   3. The Aiyagari Model
-  </a>
- </li>
- <li class="toctree-l1">
   <a class="reference internal" href="newtons_method.html">
-   4. Using Newton’s Method to Solve Economic Models
+   2. Newton’s Method via JAX
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Simulation
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="inventory_dynamics.html">
+   3. Inventory Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kesten_processes.html">
-   5. Kesten Processes and Firm Dynamics
+   4. Kesten Processes and Firm Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wealth_dynamics.html">
-   6. Wealth Distribution Dynamics
+   5. Wealth Distribution Dynamics
   </a>
  </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Dynamic Programming
+ </span>
+</p>
+<ul class="current nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1 current active active">
   <a class="current reference internal" href="#">
-   7. Shortest Paths
+   6. Shortest Paths
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="opt_invest.html">
-   8. Optimal Investment
+   7. Optimal Investment
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="opt_savings.html">
-   9. Optimal Savings
+   8. Optimal Savings
   </a>
  </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="aiyagari_jax.html">
+   9. The Aiyagari Model
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Other
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
    10. Troubleshooting
