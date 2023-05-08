@@ -557,7 +557,7 @@ This number looks good, given the figure.
 :label: jax_intro_ex2
 ```
 
-In {ref}`an earlier exercise on parallelization <parallel_ex2>`, we used Monte
+In {ref}`an earlier exercise on parallelization <jax_intro_ex1>`, we used Monte
 Carlo to price a European call option.
 
 The code was accelerated by Numba-based multithreading.
