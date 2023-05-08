@@ -12,7 +12,7 @@ kernelspec:
 ---
 
 
-# Using Newton’s Method to Solve Economic Models
+# Newton’s Method via JAX
 
 ## Overview
 
