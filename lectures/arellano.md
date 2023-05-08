@@ -663,7 +663,7 @@ def simulate(model, T, v_c, v_d, q, B_star, key):
             d_sim = d_sim.at[t].set(1)
             Bp_idx = B0_idx
             # Re-enter financial markets next period with prob θ
-#             in_default = False if jnp.random.rand() < model.θ else True
+            # in_default = False if jnp.random.rand() < model.θ else True
             in_default = False if random.uniform(key) < model.θ else True
             key, _ = random.split(key)  # Update the random key
         else:
