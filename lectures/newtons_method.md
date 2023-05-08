@@ -40,7 +40,7 @@ print(jax.devices())
 
 ## The Two Goods Market Equilibrium
 
-Let's have a quick recap of this problem -- a more detailed explanation and derivation can be found at [A Two Goods Market Equilibrium](https://python.quantecon.org/newton_method.html#two_goods_market).
+Let's have a quick recap of this problem -- a more detailed explanation and derivation can be found at [A Two Goods Market Equilibrium](https://python.quantecon.org/newton_method.html#two-goods-market).
 
 Assume we have a market for two complementary goods where demand depends on the price of both components.
 
@@ -135,7 +135,7 @@ The iteration starts from some initial guess of the price vector $p_0$.
 
 Here, instead of coding Jacobian by hand, We use the `jax.jacobian()` function to auto-differentiate and calculate the Jacobian.
 
-With only slight modification, we can generalize [our previous attempt](https://python.quantecon.org/newton_method.html#first_newton_attempt) to multi-dimensional problems
+With only slight modification, we can generalize [our previous attempt](https://python.quantecon.org/newton_method.html#first-newton-attempt) to multi-dimensional problems
 
 ```{code-cell} ipython3
 def newton(f, x_0, tol=1e-5, max_iter=15):

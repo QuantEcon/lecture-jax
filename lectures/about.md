@@ -21,5 +21,5 @@ In particular, we thank and credit
 - [Matthew McKay](https://github.com/mmcky)
 - [Humphrey Yang](https://github.com/HumphreyYang)
 - [Hengcheng Zhang](https://github.com/HengchengZhang)
-- [Frank Wu](https://github.com/https://github.com/chappiewuzefan)
+- [Frank Wu](https://github.com/chappiewuzefan)
 
