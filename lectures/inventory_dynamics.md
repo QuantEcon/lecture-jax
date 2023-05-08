@@ -76,16 +76,18 @@ X_{t+1} =
     \end{cases}
 $$
 
+(See our earlier [lecture on inventory dynamics](https://python.quantecon.org/inventory_dynamics.html) for background and motivation.)
+
 In what follows, we will assume that each $D_t$ is lognormal, so that
 
 $$
-D_t = \exp(\mu + \sigma Z_t)
+    D_t = \exp(\mu + \sigma Z_t)
 $$
 
 where $\mu$ and $\sigma$ are parameters and $\{Z_t\}$ is IID
 and standard normal.
 
-Here's a `namedtuple` that stores parameters and generates time paths for inventory.
+Here's a `namedtuple` that stores parameters.
 
 ```{code-cell} ipython3
 Firm = namedtuple('Firm', ['s', 'S', 'mu', 'sigma'])
@@ -93,10 +95,11 @@ Firm = namedtuple('Firm', ['s', 'S', 'mu', 'sigma'])
 firm = Firm(s=10, S=100, mu=1.0, sigma=0.5)
 ```
 
+
 ## Example 1: marginal distributions
 
-Now let’s look at the marginal distribution $\psi_T$ of $X_T$ for some
-fixed $T$.
+Now let’s look at the marginal distribution $\psi_T$ of $X_T$ for some fixed
+$T$.
 
 We can approximate the distribution using a [kernel density estimator](https://en.wikipedia.org/wiki/Kernel_density_estimation).
 
@@ -140,10 +143,11 @@ ax.legend()
 plt.show()
 ```
 
-This model for inventory dynamics is asymptotically stationary, with a unique stationary distribution.
+This model for inventory dynamics is asymptotically stationary, with a unique
+stationary distribution.
 
 In particular, the sequence of marginal distributions $\{\psi_t\}$
-is converging to a unique limiting distribution that does not depend on
+converges to a unique limiting distribution that does not depend on
 initial conditions.
 
 Although we will not prove this here, we can investigate it using simulation.
@@ -151,7 +155,8 @@ Although we will not prove this here, we can investigate it using simulation.
 We can generate and plot the sequence $\{\psi_t\}$ at times
 $t = 10, 50, 250, 500, 750$ based on the kernel density estimator.
 
-We will see convergence, in the sense that differences between successive distributions are getting smaller.
+We will see convergence, in the sense that differences between successive
+distributions are getting smaller.
 
 Here is one realization of the process in JAX using `for` loop
 
@@ -206,9 +211,11 @@ ax.legend()
 plt.show()
 ```
 
-Note that we only compiled the function within the `for` loop as `jit` compilation of the `for` loop takes a very long time when the workload is heavy inside the `for` loop.
+Note that we did not JIT-compile the outer loop, since
 
-Since the function itself is not JIT-compiled, it also takes longer to run when we call it again.
+1. `jit` compilation of the `for` loop can be very time consuming and
+1. compiling outer loops only leads to minor speed gains.
+
 
 ### Alternative implementation with `lax.scan`
 
@@ -239,7 +246,19 @@ def shift_firms_forward(x_init, firm, key,
     return X_final
 ```
 
-`lax.scan` has a more complicated syntax and can be memory intensive as we need to have large samples of `Z` and `D` in memory.
+The benefit of the `lax.scan` implementation is that we compile the whole
+operation.
+
+The disadvantages are that
+
+1. as mentioned above, there are only limited speed gains in accelerating outer loops,
+2. `lax.scan` has a more complicated syntax, and, most importantly,
+3. the `lax.scan` implementation consumes far more memory, as we need to have to
+   store large matrices of random draws
+
+
+Let's call the code to generate a cross-section that is in approximate
+equilibrium.
 
 ```{code-cell} ipython3
 fig, ax = plt.subplots()
@@ -260,8 +279,8 @@ changing.
 
 We have reached a reasonable approximation of the stationary density.
 
-You can test a few more initial conditions to show that they don’t matter by
-testing.
+You can test a few more initial conditions to show that they do not affect
+long-run outcomes.
 
 For example, try rerunning the code above with all firms starting at
 $X_0 = 20$
@@ -282,15 +301,16 @@ ax.legend()
 plt.show()
 ```
 
-+++ {"user_expressions": []}
 
-Note that the compiled function runs very fast. 
 
 ## Example 2: restock frequency
 
-Let's go through another example where we calculate the probability of firms having restocks.  
+Let's go through another example where we calculate the probability of firms
+having restocks.  
 
-Specifically we set the starting stock level to 70 ($X_0 = 70$), as we calculate the proportion of firms that need to order twice or more in the first 50 periods.
+Specifically we set the starting stock level to 70 ($X_0 = 70$), as we calculate
+the proportion of firms that need to order twice or more in the first 50
+periods.
 
 You will need a large sample size to get an accurate reading.
 
@@ -336,7 +356,6 @@ key = random.PRNGKey(27)
 print(f"Frequency of at least two stock outs = {freq}")
 ```
 
-+++ {"user_expressions": []}
 ### Alternative implementation with `lax.scan`
 
 Now let's write a `lax.scan` version that JIT compiles the whole function
