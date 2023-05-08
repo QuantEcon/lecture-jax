@@ -298,7 +298,7 @@ def generate_draws_lax(μ_a=-0.5,
                        σ_e=0.5,
                        s_bar=1.0,
                        T=500,
-                       M=1_000_000,
+                       M=500_000,
                        s_init=1.0,
                        seed=123):
 
@@ -326,13 +326,12 @@ def generate_draws_lax(μ_a=-0.5,
 %time data = generate_draws_lax().block_until_ready()
 ```
 
-In this case, `T` and `M` are small enough for the code to run and
+In this case, `M` is small enough for the code to run and
 we see some speed gain over the for loop implementation:
 
 ```{code-cell} ipython3
 %time data = generate_draws_lax().block_until_ready()
 ```
-
 
 Here we produce the same rank-size plot:
 
@@ -347,4 +346,11 @@ ax.set_ylabel("log size")
 plt.show()
 ```
 
+Let's rerun the `for` loop version on smaller `M` to compare the speed
 
+```{code-cell} ipython3
+%time generate_draws(M=500_000).block_until_ready()
+```
+
+We see that the `lax.scan` version is faster than the `for` loop version 
+when memory is not an issue.
