@@ -763,18 +763,25 @@ Periods of relative stability are followed by sharp spikes in the discount rate 
 
 +++
 
-## Exercise 13.1
+```{exercise-start}
+:label: arellano_ex1
+```
 
 To the extent that you can, replicate the figures shown above
 
 - Use the parameter values listed as defaults in `Arellano_Economy`.  
-- The time series will of course vary depending on the shock draws.  
+- The time series will of course vary depending on the shock draws. 
+
+```{exercise-end}
+```
 
 +++
 
-## Solution to[ Exercise 13.1](https://python-advanced.quantecon.org/#arella_ex1)
+```{solution-start} arellano_ex1
+:class: dropdown
+```
 
-Compute the value function, policy and equilibrium prices
+Solution to[ Exercise 13.1](https://python-advanced.quantecon.org/#arella_ex1). Compute the value function, policy and equilibrium prices
 
 ```{code-cell} ipython3
 :hide-output: false
@@ -912,6 +919,5 @@ for ax, series, title in zip(axes, plot_series, titles):
 plt.show()
 ```
 
-```{code-cell} ipython3
-
+```{solution-end}
 ```
