@@ -23,8 +23,7 @@ In addition to what's in Anaconda, this lecture will need the following librarie
 
 ## Overview
 
-This lecture computes versions of  Arellano’s  [[Are08](https://python-advanced.quantecon.org/zreferences.html#id126)]
-model of sovereign default.
+This lecture computes versions of Arellano’s {cite}`Are08` model of sovereign default.
 
 The model describes interactions among default risk, output, and an
 equilibrium interest rate that includes a premium for endogenous default risk.
@@ -101,11 +100,9 @@ $ p(y, y') $.
 
 Households within the country are identical and rank stochastic consumption streams according to
 
-
-<a id='equation-utility'></a>
 $$
-\mathbb E \sum_{t=0}^{\infty} \beta^t u(c_t) \tag{13.1}
-$$
+ \mathbb E \sum_{t=0}^{\infty} \beta^t u(c_t)
+ $$ (equation13_1)
 
 Here
 
@@ -113,9 +110,10 @@ Here
 - $ u $ is an increasing and strictly concave utility function  
 
 
-Consumption sequences enjoyed by households are affected by the government’s decision to borrow or lend internationally.
+Consumption sequences enjoyed by households are affected by the government’s decision to borrow or
+lend internationally.
 
-The government is benevolent in the sense that its aim is to maximize [(13.1)](#equation-utility).
+The government is benevolent in the sense that its aim is to maximize {eq}`equation13_1`.
 
 The government is the only domestic actor with access to foreign credit.
 
@@ -148,11 +146,9 @@ households.
 When the government is not excluded from financial markets, the one-period national budget
 constraint is
 
-
-<a id='equation-resource'></a>
 $$
-c = y + B - q(B', y) B' \tag{13.2}
-$$
+c = y + B - q(B', y) B'
+$$ (equation13_2)
 
 Here and below, a prime denotes a next period value or a claim maturing next period.
 
@@ -180,11 +176,9 @@ value of a promise to pay one unit of consumption next period is $ 1 - \delta $.
 
 Therefore, the discounted expected value of a promise to pay $ B $ next period is
 
-
-<a id='equation-epc'></a>
 $$
-q = \frac{1 - \delta}{1 + r} \tag{13.3}
-$$
+q = \frac{1 - \delta}{1 + r}
+$$ (equation13_3)
 
 Next we turn to how the government in effect chooses the default probability $ \delta $.
 
@@ -290,19 +284,16 @@ $$
 
 and hence given $ B' $ the probability of default next period is
 
-
-<a id='equation-delta'></a>
 $$
-\delta(B', y) := \int \mathbb 1\{v_c(B', y') < v_d(y') \} p(y, y') dy' \tag{13.4}
-$$
+\delta(B', y) := \int \mathbb 1\{v_c(B', y') < v_d(y') \} p(y, y') dy'
+$$ (equation13_4)
 
-Given zero profits for foreign creditors in equilibrium, we can combine [(13.3)](#equation-epc) and [(13.4)](#equation-delta) to pin down the bond price function:
+Given zero profits for foreign creditors in equilibrium, we can combine {eq}`equation13_3` and {eq}`equation13_4`
+to pin down the bond price function:
 
-
-<a id='equation-bondprice'></a>
 $$
-q(B', y) = \frac{1 - \delta(B', y)}{1 + r} \tag{13.5}
-$$
+q(B', y) = \frac{1 - \delta(B', y)}{1 + r}
+$$ (equation13_5)
 
 +++
 
@@ -323,7 +314,7 @@ such that
 - The three Bellman equations for $ (v_c(B, y), v_d(y), v(B,y)) $ are satisfied  
 - Given the price function $ q(B',y) $, the default decision rule and the asset accumulation
   decision rule attain the optimal value function  $ v(B,y) $, and  
-- The price function $ q(B',y) $ satisfies equation [(13.5)](#equation-bondprice)  
+- The price function $ q(B',y) $ satisfies equation {eq}`equation13_5`
 
 +++
 
@@ -340,7 +331,7 @@ After that we’ll perform some additional simulations.
 
 We use a slightly modified version of the algorithm recommended by Arellano.
 
-- The appendix to [[Are08](https://python-advanced.quantecon.org/zreferences.html#id126)] recommends value function iteration until
+- The appendix to {cite}`Are08` recommends value function iteration until
   convergence, updating the price, and then repeating.  
 - Instead, we update the bond price at every value function iteration step.  
 
@@ -691,8 +682,7 @@ def simulate(model, T, v_c, v_d, q, B_star, key):
 
 ## Results
 
-Let’s start by trying to replicate the results obtained in
-[[Are08](https://python-advanced.quantecon.org/zreferences.html#id126)].
+Let’s start by trying to replicate the results obtained in {cite}`Are08`.
 
 In what follows, all results are computed using Arellano’s parameter values.
 
@@ -726,14 +716,13 @@ The figure shows that
   of default.  
 
 
-The next figure plots value functions and replicates the right hand panel of Figure 4 of
-[[Are08](https://python-advanced.quantecon.org/zreferences.html#id126)].
+The next figure plots value functions and replicates the right hand panel of Figure 4 of {cite}`Are08`.
 
 ![https://python-advanced.quantecon.org/_static/lecture_specific/arellano/arellano_value_funcs.png](https://python-advanced.quantecon.org/_static/lecture_specific/arellano/arellano_value_funcs.png)
 
   
 We can use the results of the computation to study the default probability $ \delta(B', y) $
-defined in [(13.4)](#equation-delta).
+defined in {eq}`equation13_4`.
 
 The next plot shows these default probabilities over $ (B', y) $ as a heat map.
 
