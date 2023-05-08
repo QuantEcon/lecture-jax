@@ -15,7 +15,7 @@ This website presents a set of lectures on quantitative economic modeling, desig
 [Thomas J. Sargent](http://www.tomsargent.com/) and [John Stachurski](https://johnstachurski.net/)
 specifically using [JAX](https://jax.readthedocs.io) and accelerating using the `GPU`.
 
-For an overview of the series, see [this page](https://quantecon.org/python-lectures/)
+For an overview of the series, see [this page](https://quantecon.org/projects/#filter=lecture)
 
 ```{tableofcontents}
 ```
