@@ -117,7 +117,7 @@ The government is benevolent in the sense that its aim is to maximize {eq}`equat
 
 The government is the only domestic actor with access to foreign credit.
 
-Because household are averse to consumption fluctuations, the government will try to smooth
+Because households are averse to consumption fluctuations, the government will try to smooth
 consumption by borrowing from (and lending to) foreign creditors.
 
 +++
