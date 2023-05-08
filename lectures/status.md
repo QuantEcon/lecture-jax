@@ -21,3 +21,11 @@ This table contains the latest execution statistics.
 These lectures are built on `linux` instances through `github actions`  and `amazon web services (aws)` to
 enable access to a `gpu`. These lectures are built on a [p3.2xlarge](https://aws.amazon.com/ec2/instance-types/p3/)
 that has access to `8 vcpu's`, a `V100 NVIDIA Tesla GPU`, and `61 Gb` of memory.
+
+You can check the backend used by JAX using:
+
+```{code-cell} ipython3
+import jax
+# Check if JAX is using GPU
+print(f"JAX backend: {jax.devices()[0].platform}")
+```
