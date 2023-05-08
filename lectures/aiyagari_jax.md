@@ -29,16 +29,16 @@ The model features
 
 The Aiyagari model has been used to investigate many topics, including
 
-- precautionary savings and the effect of liquidity constraints [[Aiy94](https://python.quantecon.org/zreferences.html#id137)]
-- risk sharing and asset pricing [[HL96](https://python.quantecon.org/zreferences.html#id129)]
-- the shape of the wealth distribution [[BBZ15](https://python.quantecon.org/zreferences.html#id130)]
+- precautionary savings and the effect of liquidity constraints [[Aiy94](https://python.quantecon.org/zreferences.html#id138)]
+- risk sharing and asset pricing [[HL96](https://python.quantecon.org/zreferences.html#id130)]
+- the shape of the wealth distribution [[BBZ15](https://python.quantecon.org/zreferences.html#id131)]
 
 
 ### References
 
-The primary reference for this lecture is [[Aiy94](https://python.quantecon.org/zreferences.html#id137)].
+The primary reference for this lecture is [[Aiy94](https://python.quantecon.org/zreferences.html#id138)].
 
-A textbook treatment is available in chapter 18 of [[LS18](https://python.quantecon.org/zreferences.html#id182)].
+A textbook treatment is available in chapter 18 of [[LS18](https://python.quantecon.org/zreferences.html#id183)].
 
 A less sophisticated version of this lecture (without JAX) can be found
 [here](https://python.quantecon.org/aiyagari.html).
