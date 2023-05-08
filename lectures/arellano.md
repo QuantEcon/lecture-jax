@@ -11,7 +11,7 @@ kernelspec:
   name: python3
 ---
 
-# Default Risk and Income Fluctuations (JAX Version)
+# Default Risk and Income Fluctuations
 
 ```{code-cell} ipython3
 :hide-output: false
