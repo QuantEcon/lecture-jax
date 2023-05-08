@@ -1,0 +1,945 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>2. Inventory Dynamics &#8212; Quantitative Economics with Python using JAX</title>
+    <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    
+        <script>
+            MathJax = {
+            loader: {load: ['[tex]/boldsymbol', '[tex]/textmacros']},
+            tex: {
+                packages: {'[+]': ['boldsymbol', 'textmacros']},
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                processEscapes: true,
+                macros: {
+                    "argmax" : "arg\\,max",
+                    "argmin" : "arg\\,min",
+                    "col"    : "col",
+                    "Span"   :  "span",
+                    "epsilon": "\\varepsilon",
+                    "EE": "\\mathbb{E}",
+                    "PP": "\\mathbb{P}",
+                    "RR": "\\mathbb{R}",
+                    "NN": "\\mathbb{N}",
+                    "ZZ": "\\mathbb{Z}",
+                    "aA": "\\mathcal{A}",
+                    "bB": "\\mathcal{B}",
+                    "cC": "\\mathcal{C}",
+                    "dD": "\\mathcal{D}",
+                    "eE": "\\mathcal{E}",
+                    "fF": "\\mathcal{F}",
+                    "gG": "\\mathcal{G}",
+                    "hH": "\\mathcal{H}",
+                }
+            },
+            svg: {
+                fontCache: 'global',
+                scale: 0.92,
+                displayAlign: "center",
+            },
+            };
+        </script>
+    
+    
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/quantecon-book-theme.531cac136e77cfd0e9b23b36a70b130a.css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/exercise.css" />
+    <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js"></script>
+    <script src="_static/quantecon-book-theme.282f51e609929a8ffbc5260c6713b9cc.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"tex": {"macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'inventory_dynamics';</script>
+    <link rel="canonical" href="https://jax.quantecon.org/inventory_dynamics.html" />
+    <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
+    <link rel="author" title="About these documents" href="about.html" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="3. The Aiyagari Model" href="aiyagari_jax.html" />
+    <link rel="prev" title="1. About these Lectures" href="about.html" />
+
+<!-- Normal Meta Tags -->
+<meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
+<meta name="keywords" content="Python, QuantEcon, Quantitative Economics, Economics, Sloan, Alfred P. Sloan Foundation, Tom J. Sargent, John Stachurski" />
+<meta name="description" content=This website presents a set of lectures on quantitative economic modeling, designed and written by Thomas J. Sargent and John Stachurski. />
+
+<!-- Twitter tags -->
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@quantecon" />
+<meta name="twitter:title" content="Inventory Dynamics"/>
+<meta name="twitter:description" content="This website presents a set of lectures on quantitative economic modeling, designed and written by Thomas J. Sargent and John Stachurski.">
+<meta name="twitter:creator" content="@quantecon">
+<meta name="twitter:image" content="https://assets.quantecon.org/img/qe-twitter-logo.png">
+
+<!-- Opengraph tags -->
+<meta property="og:title" content="Inventory Dynamics" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://jax.quantecon.org/inventory_dynamics.html" />
+<meta property="og:image" content="https://assets.quantecon.org/img/qe-og-logo.png" />
+<meta property="og:description" content="This website presents a set of lectures on quantitative economic modeling, designed and written by Thomas J. Sargent and John Stachurski." />
+<meta property="og:site_name" content="Quantitative Economics with Python using JAX" />
+<meta name="theme-color" content="#ffffff" />
+
+  </head>
+<body>
+
+
+    <span id="top"></span>
+
+    <div class="qe-wrapper">
+
+        <div class="qe-main">
+
+            <div class="qe-page" id=inventory_dynamics>
+
+                <div class="qe-page__toc">
+
+                    <div class="inner">
+
+                        
+                        <div class="qe-page__toc-header">
+                            On this page
+                        </div>
+
+
+                        <nav id="bd-toc-nav" class="qe-page__toc-nav">
+                            <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">2.1. Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sample-paths">2.2. Sample paths</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-1-marginal-distributions">2.3. Example 1: marginal distributions</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#alternative-implementation-with-lax-scan">2.3.1. Alternative implementation with <code class="docutils literal notranslate"><span class="pre">lax.scan</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-2-restock-frequency">2.4. Example 2: restock frequency</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">2.4.1. Alternative implementation with <code class="docutils literal notranslate"><span class="pre">lax.scan</span></code></a></li>
+</ul>
+</li>
+</ul>
+                            <p class="logo">
+                                
+                                    
+                                    <a href=https://quantecon.org><img src="_static/qe-logo-large.png" class="logo" alt="logo"></a>
+                                    
+                                
+                            </p>
+
+                            <p class="powered">Powered by <a href="https://jupyterbook.org/">Jupyter Book</a></p>
+
+                        </nav>
+
+                        <div class="qe-page__toc-footer">
+                            
+                            
+                            <p><a href="#top"><strong>Back to top</strong></a></p>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="qe-page__header">
+
+                    <div class="qe-page__header-copy">
+
+                        <p class="qe-page__header-heading"><a href="intro.html">Quantitative Economics with Python using JAX</a></p>
+
+                        <p class="qe-page__header-subheading">Inventory Dynamics</p>
+
+                    </div>
+
+                    <p class="qe-page__header-authors">Thomas J. Sargent & John Stachurski</p>
+
+                </div> <!-- .page__header -->
+
+
+
+                
+                <main class="qe-page__content" role="main">
+                    
+                    <div>
+                        
+  <div id="qe-notebook-header" align="right" style="text-align:right;">
+        <a href="https://quantecon.org/" title="quantecon.org">
+                <img style="width:250px;display:inline;" width="250px" src="https://assets.quantecon.org/img/qe-menubar-logo.svg" alt="QuantEcon">
+        </a>
+</div><section class="tex2jax_ignore mathjax_ignore" id="inventory-dynamics">
+<h1><a class="toc-backref" href="#id2"><span class="section-number">2. </span>Inventory Dynamics</a><a class="headerlink" href="#inventory-dynamics" title="Permalink to this heading">#</a></h1>
+<div class="contents topic" id="contents">
+<span id="index-0"></span><p class="topic-title">Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#inventory-dynamics" id="id2">Inventory Dynamics</a></p>
+<ul>
+<li><p><a class="reference internal" href="#overview" id="id3">Overview</a></p></li>
+<li><p><a class="reference internal" href="#sample-paths" id="id4">Sample paths</a></p></li>
+<li><p><a class="reference internal" href="#example-1-marginal-distributions" id="id5">Example 1: marginal distributions</a></p></li>
+<li><p><a class="reference internal" href="#example-2-restock-frequency" id="id6">Example 2: restock frequency</a></p></li>
+</ul>
+</li>
+</ul>
+</div>
+<section id="overview">
+<h2><a class="toc-backref" href="#id3"><span class="section-number">2.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
+<p>This lecture explores JAX implementations of the exercises in the lecture on <a class="reference external" href="https://python.quantecon.org/inventory_dynamics.html">inventory dynamics</a>.</p>
+<p>We will use the following imports:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;figure.figsize&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>  <span class="c1">#set default figure size</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">jax</span>
+<span class="kn">import</span> <span class="nn">jax.numpy</span> <span class="k">as</span> <span class="nn">jnp</span>
+<span class="kn">from</span> <span class="nn">jax</span> <span class="kn">import</span> <span class="n">random</span><span class="p">,</span> <span class="n">lax</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">namedtuple</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s check the backend used by JAX and the devices available</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check if JAX is using GPU</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;JAX backend: </span><span class="si">{</span><span class="n">jax</span><span class="o">.</span><span class="n">devices</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">platform</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># Check the devices available for JAX</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">jax</span><span class="o">.</span><span class="n">devices</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>JAX backend: gpu
+[StreamExecutorGpuDevice(id=0, process_index=0, slice_index=0)]
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="sample-paths">
+<h2><a class="toc-backref" href="#id4"><span class="section-number">2.2. </span>Sample paths</a><a class="headerlink" href="#sample-paths" title="Permalink to this heading">#</a></h2>
+<p>Consider a firm with inventory <span class="math notranslate nohighlight">\(X_t\)</span>.</p>
+<p>The firm waits until <span class="math notranslate nohighlight">\(X_t \leq s\)</span> and then restocks up to <span class="math notranslate nohighlight">\(S\)</span> units.</p>
+<p>It faces stochastic demand <span class="math notranslate nohighlight">\(\{ D_t \}\)</span>, which we assume is IID.</p>
+<p>With notation <span class="math notranslate nohighlight">\(a^+ := \max\{a, 0\}\)</span>, inventory dynamics can be written
+as</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+X_{t+1} =
+    \begin{cases}
+      ( S - D_{t+1})^+ &amp; \quad \text{if } X_t \leq s \\
+      ( X_t - D_{t+1} )^+ &amp;  \quad \text{if } X_t &gt; s
+    \end{cases}
+\end{split}\]</div>
+<p>(See our earlier <a class="reference external" href="https://python.quantecon.org/inventory_dynamics.html">lecture on inventory dynamics</a> for background and motivation.)</p>
+<p>In what follows, we will assume that each <span class="math notranslate nohighlight">\(D_t\)</span> is lognormal, so that</p>
+<div class="math notranslate nohighlight">
+\[
+    D_t = \exp(\mu + \sigma Z_t)
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\mu\)</span> and <span class="math notranslate nohighlight">\(\sigma\)</span> are parameters and <span class="math notranslate nohighlight">\(\{Z_t\}\)</span> is IID
+and standard normal.</p>
+<p>Here’s a <code class="docutils literal notranslate"><span class="pre">namedtuple</span></code> that stores parameters.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Firm</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s1">&#39;Firm&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;s&#39;</span><span class="p">,</span> <span class="s1">&#39;S&#39;</span><span class="p">,</span> <span class="s1">&#39;mu&#39;</span><span class="p">,</span> <span class="s1">&#39;sigma&#39;</span><span class="p">])</span>
+
+<span class="n">firm</span> <span class="o">=</span> <span class="n">Firm</span><span class="p">(</span><span class="n">s</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">S</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">mu</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="example-1-marginal-distributions">
+<h2><a class="toc-backref" href="#id5"><span class="section-number">2.3. </span>Example 1: marginal distributions</a><a class="headerlink" href="#example-1-marginal-distributions" title="Permalink to this heading">#</a></h2>
+<p>Now let’s look at the marginal distribution <span class="math notranslate nohighlight">\(\psi_T\)</span> of <span class="math notranslate nohighlight">\(X_T\)</span> for some fixed
+<span class="math notranslate nohighlight">\(T\)</span>.</p>
+<p>We can approximate the distribution using a <a class="reference external" href="https://en.wikipedia.org/wiki/Kernel_density_estimation">kernel density estimator</a>.</p>
+<p>Kernel density estimators can be thought of as smoothed histograms.</p>
+<p>We will use a kernel density estimator from <a class="reference external" href="https://scikit-learn.org/stable/">scikit-learn</a>.</p>
+<p>Here is an example of using kernel density estimators and plotting the result</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.neighbors</span> <span class="kn">import</span> <span class="n">KernelDensity</span>
+
+<span class="k">def</span> <span class="nf">plot_kde</span><span class="p">(</span><span class="n">sample</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
+    <span class="n">xmin</span><span class="p">,</span> <span class="n">xmax</span> <span class="o">=</span> <span class="mf">0.9</span> <span class="o">*</span> <span class="nb">min</span><span class="p">(</span><span class="n">sample</span><span class="p">),</span> <span class="mf">1.1</span> <span class="o">*</span> <span class="nb">max</span><span class="p">(</span><span class="n">sample</span><span class="p">)</span>
+    <span class="n">xgrid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">xmin</span><span class="p">,</span> <span class="n">xmax</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
+    <span class="n">kde</span> <span class="o">=</span> <span class="n">KernelDensity</span><span class="p">(</span><span class="n">kernel</span><span class="o">=</span><span class="s1">&#39;gaussian&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">sample</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">])</span>
+    <span class="n">log_dens</span> <span class="o">=</span> <span class="n">kde</span><span class="o">.</span><span class="n">score_samples</span><span class="p">(</span><span class="n">xgrid</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">])</span>
+
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xgrid</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">log_dens</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">)</span>
+
+<span class="c1"># Generate simulated data</span>
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+<span class="n">sample_1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">10_000</span><span class="p">)</span>
+<span class="n">sample_2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">gamma</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">10_000</span><span class="p">)</span>
+
+<span class="c1"># Create a plot</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+
+<span class="c1"># Plot the samples</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">sample_1</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">density</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">sample_2</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">density</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+
+<span class="c1"># Plot the KDE for each sample</span>
+<span class="n">plot_kde</span><span class="p">(</span><span class="n">sample_1</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;KDE over $X \sim N(0, 2)$&#39;</span><span class="p">)</span>
+<span class="n">plot_kde</span><span class="p">(</span><span class="n">sample_2</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;KDE over $X \sim Gamma(0, 2)$&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;value&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;density&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">([</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">])</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;KDE of Simulated Normal and Gamma Data&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/6e0db5928dcb34c1e7008bb6a6e3fb7c4139d8a581508403f9489ddb9a04142c.png" src="_images/6e0db5928dcb34c1e7008bb6a6e3fb7c4139d8a581508403f9489ddb9a04142c.png" />
+</div>
+</div>
+<p>This model for inventory dynamics is asymptotically stationary, with a unique
+stationary distribution.</p>
+<p>In particular, the sequence of marginal distributions <span class="math notranslate nohighlight">\(\{\psi_t\}\)</span>
+converges to a unique limiting distribution that does not depend on
+initial conditions.</p>
+<p>Although we will not prove this here, we can investigate it using simulation.</p>
+<p>We can generate and plot the sequence <span class="math notranslate nohighlight">\(\{\psi_t\}\)</span> at times
+<span class="math notranslate nohighlight">\(t = 10, 50, 250, 500, 750\)</span> based on the kernel density estimator.</p>
+<p>We will see convergence, in the sense that differences between successive
+distributions are getting smaller.</p>
+<p>Here is one realization of the process in JAX using <code class="docutils literal notranslate"><span class="pre">for</span></code> loop</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define a jit-compiled function to update X and key</span>
+<span class="nd">@jax</span><span class="o">.</span><span class="n">jit</span>
+<span class="k">def</span> <span class="nf">update_X</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">firm</span><span class="p">,</span> <span class="n">D</span><span class="p">):</span>
+    <span class="c1"># Restock if the inventory is below the threshold</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">X</span> <span class="o">&lt;=</span> <span class="n">firm</span><span class="o">.</span><span class="n">s</span><span class="p">,</span>
+            <span class="n">jnp</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">firm</span><span class="o">.</span><span class="n">S</span> <span class="o">-</span> <span class="n">D</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+            <span class="n">jnp</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">X</span> <span class="o">-</span> <span class="n">D</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">res</span>
+
+
+<span class="k">def</span> <span class="nf">shift_firms_forward</span><span class="p">(</span><span class="n">x_init</span><span class="p">,</span> <span class="n">firm</span><span class="p">,</span> <span class="n">sample_dates</span><span class="p">,</span> 
+                        <span class="n">key</span><span class="p">,</span> <span class="n">num_firms</span><span class="o">=</span><span class="mi">50_000</span><span class="p">,</span> <span class="n">sim_length</span><span class="o">=</span><span class="mi">750</span><span class="p">):</span>
+    
+    <span class="n">X</span> <span class="o">=</span> <span class="n">res</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">full</span><span class="p">((</span><span class="n">num_firms</span><span class="p">,</span> <span class="p">),</span> <span class="n">x_init</span><span class="p">)</span>
+
+    <span class="c1"># Use for loop to update X and collect samples</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">sim_length</span><span class="p">):</span>
+        <span class="n">Z</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">num_firms</span><span class="p">,</span> <span class="p">))</span>
+        <span class="n">D</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">firm</span><span class="o">.</span><span class="n">mu</span> <span class="o">+</span> <span class="n">firm</span><span class="o">.</span><span class="n">sigma</span> <span class="o">*</span> <span class="n">Z</span><span class="p">)</span>
+        
+        <span class="n">X</span> <span class="o">=</span> <span class="n">update_X</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">firm</span><span class="p">,</span> <span class="n">D</span><span class="p">)</span>
+        <span class="n">_</span><span class="p">,</span> <span class="n">key</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+        
+        <span class="c1"># draw a sample at the sample dates</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">i</span> <span class="ow">in</span> <span class="n">sample_dates</span><span class="p">):</span>
+          <span class="n">res</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">res</span><span class="p">,</span> <span class="n">X</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">res</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x_init</span> <span class="o">=</span> <span class="mi">50</span>
+<span class="n">num_firms</span> <span class="o">=</span> <span class="mi">50_000</span>
+<span class="n">sample_dates</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">250</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">750</span>
+<span class="n">key</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">PRNGKey</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+
+<span class="o">%</span><span class="k">time</span> X = shift_firms_forward(x_init, firm, \
+                              <span class="n">sample_dates</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span><span class="o">.</span><span class="n">block_until_ready</span><span class="p">()</span>
+
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">date</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">sample_dates</span><span class="p">):</span>
+   <span class="n">plot_kde</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:],</span> <span class="n">ax</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;t = </span><span class="si">{</span><span class="n">date</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;inventory&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;probability&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 2.55 s, sys: 500 ms, total: 3.05 s
+Wall time: 2.49 s
+</pre></div>
+</div>
+<img alt="_images/068030f3bf3b65142f5b7f98e12bda981b02ea55608a0ed9dad2cbff9fb44f2d.png" src="_images/068030f3bf3b65142f5b7f98e12bda981b02ea55608a0ed9dad2cbff9fb44f2d.png" />
+</div>
+</div>
+<p>Note that we did not JIT-compile the outer loop, since</p>
+<ol class="arabic simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">jit</span></code> compilation of the <code class="docutils literal notranslate"><span class="pre">for</span></code> loop can be very time consuming and</p></li>
+<li><p>compiling outer loops only leads to minor speed gains.</p></li>
+</ol>
+<section id="alternative-implementation-with-lax-scan">
+<h3><span class="section-number">2.3.1. </span>Alternative implementation with <code class="docutils literal notranslate"><span class="pre">lax.scan</span></code><a class="headerlink" href="#alternative-implementation-with-lax-scan" title="Permalink to this heading">#</a></h3>
+<p>An alternative to the <code class="docutils literal notranslate"><span class="pre">for</span></code> loop implementation is <code class="docutils literal notranslate"><span class="pre">lax.scan</span></code>.</p>
+<p>Here is an example of the same function in <code class="docutils literal notranslate"><span class="pre">lax.scan</span></code></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jax</span><span class="o">.</span><span class="n">jit</span>
+<span class="k">def</span> <span class="nf">shift_firms_forward</span><span class="p">(</span><span class="n">x_init</span><span class="p">,</span> <span class="n">firm</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span>
+                        <span class="n">num_firms</span><span class="o">=</span><span class="mi">50_000</span><span class="p">,</span> <span class="n">sim_length</span><span class="o">=</span><span class="mi">750</span><span class="p">):</span>
+    
+    <span class="n">s</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">sigma</span> <span class="o">=</span> <span class="n">firm</span><span class="o">.</span><span class="n">s</span><span class="p">,</span> <span class="n">firm</span><span class="o">.</span><span class="n">S</span><span class="p">,</span> <span class="n">firm</span><span class="o">.</span><span class="n">mu</span><span class="p">,</span> <span class="n">firm</span><span class="o">.</span><span class="n">sigma</span>
+    <span class="n">X</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">full</span><span class="p">((</span><span class="n">num_firms</span><span class="p">,</span> <span class="p">),</span> <span class="n">x_init</span><span class="p">)</span>
+    <span class="n">Z</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">sim_length</span><span class="p">,</span> <span class="n">num_firms</span><span class="p">))</span>
+    <span class="n">D</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">mu</span> <span class="o">+</span> <span class="n">sigma</span> <span class="o">*</span> <span class="n">Z</span><span class="p">)</span>
+    
+    <span class="c1"># Define the function for each update</span>
+    <span class="k">def</span> <span class="nf">update_X</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">D</span><span class="p">):</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">X</span> <span class="o">&lt;=</span> <span class="n">s</span><span class="p">,</span> 
+                  <span class="n">jnp</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">S</span> <span class="o">-</span> <span class="n">D</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> 
+                  <span class="n">jnp</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">X</span> <span class="o">-</span> <span class="n">D</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">res</span><span class="p">,</span> <span class="n">res</span>
+
+    <span class="c1"># Use lax.scan to perform the calculations on all states</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">X_final</span> <span class="o">=</span> <span class="n">lax</span><span class="o">.</span><span class="n">scan</span><span class="p">(</span><span class="n">update_X</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">D</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">X_final</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The benefit of the <code class="docutils literal notranslate"><span class="pre">lax.scan</span></code> implementation is that we compile the whole
+operation.</p>
+<p>The disadvantages are that</p>
+<ol class="arabic simple">
+<li><p>as mentioned above, there are only limited speed gains in accelerating outer loops,</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lax.scan</span></code> has a more complicated syntax, and, most importantly,</p></li>
+<li><p>the <code class="docutils literal notranslate"><span class="pre">lax.scan</span></code> implementation consumes far more memory, as we need to have to
+store large matrices of random draws</p></li>
+</ol>
+<p>Let’s call the code to generate a cross-section that is in approximate
+equilibrium.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+
+<span class="o">%</span><span class="k">time</span> X = shift_firms_forward(x_init, firm, key).block_until_ready()
+
+<span class="k">for</span> <span class="n">date</span> <span class="ow">in</span> <span class="n">sample_dates</span><span class="p">:</span>
+   <span class="n">plot_kde</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">date</span><span class="p">,</span> <span class="p">:],</span> <span class="n">ax</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;t = </span><span class="si">{</span><span class="n">date</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;inventory&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;probability&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 990 ms, sys: 0 ns, total: 990 ms
+Wall time: 379 ms
+</pre></div>
+</div>
+<img alt="_images/017d485c3a0620cfbf4f3014a9e7260cc6f65acb41ae27015404ecc4a63c2e58.png" src="_images/017d485c3a0620cfbf4f3014a9e7260cc6f65acb41ae27015404ecc4a63c2e58.png" />
+</div>
+</div>
+<p>Notice that by <span class="math notranslate nohighlight">\(t=500\)</span> or <span class="math notranslate nohighlight">\(t=750\)</span> the densities are barely
+changing.</p>
+<p>We have reached a reasonable approximation of the stationary density.</p>
+<p>You can test a few more initial conditions to show that they do not affect
+long-run outcomes.</p>
+<p>For example, try rerunning the code above with all firms starting at
+<span class="math notranslate nohighlight">\(X_0 = 20\)</span></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x_init</span> <span class="o">=</span> <span class="mf">20.0</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+
+<span class="o">%</span><span class="k">time</span> X = shift_firms_forward(x_init, firm, key).block_until_ready()
+
+<span class="k">for</span> <span class="n">date</span> <span class="ow">in</span> <span class="n">sample_dates</span><span class="p">:</span>
+   <span class="n">plot_kde</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">date</span><span class="p">,</span> <span class="p">:],</span> <span class="n">ax</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;t = </span><span class="si">{</span><span class="n">date</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;inventory&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;probability&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 882 ms, sys: 0 ns, total: 882 ms
+Wall time: 303 ms
+</pre></div>
+</div>
+<img alt="_images/d10e9f858ea29c276b6bb6e09f258f11dd878fe50f2fe640388ffb4a42e1d275.png" src="_images/d10e9f858ea29c276b6bb6e09f258f11dd878fe50f2fe640388ffb4a42e1d275.png" />
+</div>
+</div>
+</section>
+</section>
+<section id="example-2-restock-frequency">
+<h2><a class="toc-backref" href="#id6"><span class="section-number">2.4. </span>Example 2: restock frequency</a><a class="headerlink" href="#example-2-restock-frequency" title="Permalink to this heading">#</a></h2>
+<p>Let’s go through another example where we calculate the probability of firms
+having restocks.</p>
+<p>Specifically we set the starting stock level to 70 (<span class="math notranslate nohighlight">\(X_0 = 70\)</span>), as we calculate
+the proportion of firms that need to order twice or more in the first 50
+periods.</p>
+<p>You will need a large sample size to get an accurate reading.</p>
+<p>Again, we start with an easier <code class="docutils literal notranslate"><span class="pre">for</span></code> loop implementation</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define a jitted function for each update</span>
+<span class="nd">@jax</span><span class="o">.</span><span class="n">jit</span>
+<span class="k">def</span> <span class="nf">update_stock</span><span class="p">(</span><span class="n">n_restock</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">firm</span><span class="p">,</span> <span class="n">D</span><span class="p">):</span>
+  <span class="n">n_restock</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">X</span> <span class="o">&lt;=</span> <span class="n">firm</span><span class="o">.</span><span class="n">s</span><span class="p">,</span>
+                        <span class="n">n_restock</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
+                        <span class="n">n_restock</span><span class="p">)</span>
+  <span class="n">X</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">X</span> <span class="o">&lt;=</span> <span class="n">firm</span><span class="o">.</span><span class="n">s</span><span class="p">,</span>
+                <span class="n">jnp</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">firm</span><span class="o">.</span><span class="n">S</span> <span class="o">-</span> <span class="n">D</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+                <span class="n">jnp</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">X</span> <span class="o">-</span> <span class="n">D</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+  <span class="k">return</span> <span class="n">n_restock</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">key</span>
+
+<span class="k">def</span> <span class="nf">compute_freq</span><span class="p">(</span><span class="n">firm</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> 
+                 <span class="n">x_init</span><span class="o">=</span><span class="mi">70</span><span class="p">,</span> 
+                 <span class="n">sim_length</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> 
+                 <span class="n">num_firms</span><span class="o">=</span><span class="mi">1_000_000</span><span class="p">):</span>
+    
+    <span class="c1"># Prepare initial arrays</span>
+    <span class="n">X</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">full</span><span class="p">((</span><span class="n">num_firms</span><span class="p">,</span> <span class="p">),</span> <span class="n">x_init</span><span class="p">)</span>
+
+    <span class="c1"># Stack the restock counter on top of the inventory</span>
+    <span class="n">n_restock</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">num_firms</span><span class="p">,</span> <span class="p">))</span>
+
+    <span class="c1"># Use a for loop to perform the calculations on all states</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">sim_length</span><span class="p">):</span>
+        <span class="n">Z</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">num_firms</span><span class="p">,</span> <span class="p">))</span>
+        <span class="n">D</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">firm</span><span class="o">.</span><span class="n">mu</span> <span class="o">+</span> <span class="n">firm</span><span class="o">.</span><span class="n">sigma</span> <span class="o">*</span> <span class="n">Z</span><span class="p">)</span>
+        <span class="n">n_restock</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">key</span> <span class="o">=</span> <span class="n">update_stock</span><span class="p">(</span>
+            <span class="n">n_restock</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">firm</span><span class="p">,</span> <span class="n">D</span><span class="p">)</span>
+        <span class="n">key</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">fold_in</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+        
+    <span class="k">return</span> <span class="n">jnp</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">n_restock</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">key</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">PRNGKey</span><span class="p">(</span><span class="mi">27</span><span class="p">)</span>
+<span class="o">%</span><span class="k">time</span> freq = compute_freq(firm, key).block_until_ready()
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Frequency of at least two stock outs = </span><span class="si">{</span><span class="n">freq</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 962 ms, sys: 0 ns, total: 962 ms
+Wall time: 1.22 s
+Frequency of at least two stock outs = 0.4472379982471466
+</pre></div>
+</div>
+</div>
+</div>
+<section id="id1">
+<h3><span class="section-number">2.4.1. </span>Alternative implementation with <code class="docutils literal notranslate"><span class="pre">lax.scan</span></code><a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h3>
+<p>Now let’s write a <code class="docutils literal notranslate"><span class="pre">lax.scan</span></code> version that JIT compiles the whole function</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jax</span><span class="o">.</span><span class="n">jit</span>
+<span class="k">def</span> <span class="nf">compute_freq</span><span class="p">(</span><span class="n">firm</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> 
+                 <span class="n">x_init</span><span class="o">=</span><span class="mi">70</span><span class="p">,</span> 
+                 <span class="n">sim_length</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> 
+                 <span class="n">num_firms</span><span class="o">=</span><span class="mi">1_000_000</span><span class="p">):</span>
+    
+    <span class="n">s</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">sigma</span> <span class="o">=</span> <span class="n">firm</span><span class="o">.</span><span class="n">s</span><span class="p">,</span> <span class="n">firm</span><span class="o">.</span><span class="n">S</span><span class="p">,</span> <span class="n">firm</span><span class="o">.</span><span class="n">mu</span><span class="p">,</span> <span class="n">firm</span><span class="o">.</span><span class="n">sigma</span>
+    <span class="c1"># Prepare initial arrays</span>
+    <span class="n">X</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">full</span><span class="p">((</span><span class="n">num_firms</span><span class="p">,</span> <span class="p">),</span> <span class="n">x_init</span><span class="p">)</span>
+    <span class="n">Z</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">sim_length</span><span class="p">,</span> <span class="n">num_firms</span><span class="p">))</span>
+    <span class="n">D</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">mu</span> <span class="o">+</span> <span class="n">sigma</span> <span class="o">*</span> <span class="n">Z</span><span class="p">)</span>
+
+    <span class="c1"># Stack the restock counter on top of the inventory</span>
+    <span class="n">restock_count</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">num_firms</span><span class="p">,</span> <span class="p">))</span>
+    <span class="n">Xs</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">X</span><span class="p">,</span> <span class="n">restock_count</span><span class="p">))</span>
+
+    <span class="c1"># Define the function for each update</span>
+    <span class="k">def</span> <span class="nf">update_X</span><span class="p">(</span><span class="n">Xs</span><span class="p">,</span> <span class="n">D</span><span class="p">):</span>
+
+        <span class="c1"># Separate the inventory and restock counter</span>
+        <span class="n">X</span> <span class="o">=</span> <span class="n">Xs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">restock_count</span> <span class="o">=</span>  <span class="n">Xs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="n">restock_count</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">X</span> <span class="o">&lt;=</span> <span class="n">s</span><span class="p">,</span>
+                            <span class="n">restock_count</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
+                            <span class="n">restock_count</span><span class="p">)</span>
+        <span class="n">X</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">X</span> <span class="o">&lt;=</span> <span class="n">s</span><span class="p">,</span> 
+                      <span class="n">jnp</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">S</span> <span class="o">-</span> <span class="n">D</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+                      <span class="n">jnp</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">X</span> <span class="o">-</span> <span class="n">D</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+        
+        <span class="n">Xs</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">X</span><span class="p">,</span> <span class="n">restock_count</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">Xs</span><span class="p">,</span> <span class="kc">None</span>
+
+    <span class="c1"># Use lax.scan to perform the calculations on all states</span>
+    <span class="n">X_final</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">lax</span><span class="o">.</span><span class="n">scan</span><span class="p">(</span><span class="n">update_X</span><span class="p">,</span> <span class="n">Xs</span><span class="p">,</span> <span class="n">D</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">X_final</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Note the time the routine takes to run, as well as the output</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">time</span> freq = compute_freq(firm, key).block_until_ready()
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Frequency of at least two stock outs = </span><span class="si">{</span><span class="n">freq</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1.01 s, sys: 0 ns, total: 1.01 s
+Wall time: 391 ms
+Frequency of at least two stock outs = 0.44674399495124817
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                    </div>
+                    
+                </main> <!-- .page__content -->
+                
+
+
+                <footer class="qe-page__footer">
+
+                    <p><a href="https://creativecommons.org/licenses/by-sa/4.0/"><img src="https://licensebuttons.net/l/by-sa/4.0/80x15.png"></a></p>
+
+                    <p>Creative Commons License &ndash; This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International.</p>
+
+                </footer> <!-- .page__footer -->
+
+            </div> <!-- .page -->
+
+            
+
+            
+            <div class="qe-sidebar bd-sidebar inactive" id="site-navigation">
+
+                <div class="qe-sidebar__header">
+
+
+                    Contents
+
+                </div>
+
+                <nav class="qe-sidebar__nav" id="qe-sidebar-nav" aria-label="Main navigation">
+                    <p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Other
+ </span>
+</p>
+<ul class="current nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="about.html">
+   1. About these Lectures
+  </a>
+ </li>
+ <li class="toctree-l1 current active active">
+  <a class="current reference internal" href="#">
+   2. Inventory Dynamics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="aiyagari_jax.html">
+   3. The Aiyagari Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="newtons_method.html">
+   4. Using Newton’s Method to Solve Economic Models
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="kesten_processes.html">
+   5. Kesten Processes and Firm Dynamics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="wealth_dynamics.html">
+   6. Wealth Distribution Dynamics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="short_path.html">
+   7. Shortest Paths
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="opt_invest.html">
+   8. Optimal Investment
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="opt_savings.html">
+   9. Optimal Savings
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="troubleshooting.html">
+   10. Troubleshooting
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="zreferences.html">
+   11. References
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="status.html">
+   12. Execution Statistics
+  </a>
+ </li>
+</ul>
+
+                </nav>
+
+                <div class="qe-sidebar__footer">
+
+                </div>
+
+            </div> <!-- .sidebar -->
+            
+        </div> <!-- .main -->
+
+        <div class="qe-toolbar">
+
+            <div class="qe-toolbar__inner">
+
+                <ul class="qe-toolbar__main">
+                    <li data-tippy-content="Table of Contents" class="btn__sidebar"><i data-feather="menu"></i></li>
+                    <li data-tippy-content="Home"><a href="intro.html"><i data-feather="home"></i></a></li>
+                    <li class="btn__qelogo"><a href="https://quantecon.org" title=""><span class="show-for-sr">QuantEcon</span></a></li>
+                </ul>
+
+                <ul class="qe-toolbar__links">
+                    <li class="btn__search">
+                        <form action="search.html" method="get">
+                            <input type="search" class="form-control" name="q" id="search-input" placeholder="Search..." aria-label="Search..." autocomplete="off" accesskey="k">
+                            <i data-feather="search" id="search-icon"></i>
+                        </form>
+                    </li>
+                    <li data-tippy-content="Fullscreen" class="btn__fullscreen"><i data-feather="maximize"></i></li>
+                    <li data-tippy-content="Increase font size" class="btn__plus"><i data-feather="plus-circle"></i></li>
+                    <li data-tippy-content="Decrease font size" class="btn__minus"><i data-feather="minus-circle"></i></li>
+                    <li data-tippy-content="Change contrast" class="btn__contrast"><i data-feather="sunset"></i></li>
+                    <li data-tippy-content="Download Notebook"><a href="/_notebooks/inventory_dynamics.ipynb" download><i data-feather="download-cloud"></i></a></li>
+                    <li class="settings-button" id="settingsButton"><div data-tippy-content="Launch Notebook"><i data-feather="play-circle"></i></div></li>
+                        <li class="download-pdf" id="downloadButton"><i data-feather="file"></i></li>
+                    <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-jax/blob/main/lectures/inventory_dynamics.md" download><i data-feather="github"></i></a></li>
+                </ul>
+
+            </div>
+
+        </div> <!-- .toolbar -->
+        <div id="downloadPDFModal" style="display: none;">
+            <ul class="pdf-options" style="display: block;">
+                <li class="download-pdf-book" onClick="window.print()">
+                    <p>Lecture (PDF)</p>
+                </li>
+                <li class="download-pdf-file">
+                    <a href="/_pdf/quantecon-jax.pdf" download><p>Book (PDF)</p></a>
+                </li>
+            </ul>
+        </div>
+        <div id="settingsModal" style="display: none;">
+            <p class="modal-title"> Notebook Launcher </p>
+            <div class="modal-desc">
+            <p>
+                Choose public or private cloud service for "Launch" button.
+            </p>
+            </div>
+            <p class="modal-subtitle">Select a server</p>
+            <ul class="modal-servers">
+            <li class="active launcher-public">
+                <span class="label">Public</span>
+                <select id="launcher-public-input">
+                
+                    <option value="https://mybinder.org/v2/gh/QuantEcon/lecture-jax.notebooks/master?urlpath=tree/inventory_dynamics.ipynb">BinderHub</option>
+                
+                    <option value="https://colab.research.google.com/github/QuantEcon/lecture-jax.notebooks/blob/master/inventory_dynamics.ipynb">Colab</option>
+                
+                </select>
+                <i class="fas fa-check-circle"></i>
+            </li>
+            <li class="launcher-private">
+                <span class="label">Private</span>
+                <input type="text" id="launcher-private-input" data-repourl="https://github.com/QuantEcon/lecture-jax.notebooks" data-urlpath="tree/lecture-jax.notebooks/inventory_dynamics.ipynb" data-branch=master>
+                <i class="fas fa-check-circle"></i>
+            </li>
+            </ul>
+            <p class="launch"><a href="https://mybinder.org/v2/gh/QuantEcon/lecture-jax.notebooks/master?urlpath=tree/inventory_dynamics.ipynb" id="advancedLaunchButton" target="_blank">Launch Notebook</a></p>
+            <script>
+                // QuantEcon Notebook Launcher
+                const launcherTypeElements = document.querySelectorAll('#settingsModal .modal-servers li');
+                // Highlight the server type if previous selection exists
+                if (typeof localStorage.launcherType !== 'undefined') {
+                  for (var i = 0; i < launcherTypeElements.length; i++) {
+                    launcherTypeElements[i].classList.remove('active');
+                    if ( launcherTypeElements[i].classList.contains(localStorage.launcherType) ) {
+                      launcherTypeElements[i].classList.add('active');
+                    }
+                  }
+                }
+                // Highlight server type on click and set local storage value
+                for (var i = 0; i < launcherTypeElements.length; i++) {
+                  launcherTypeElements[i].addEventListener('click', function() {
+                    for (var j = 0; j < launcherTypeElements.length; j++) {
+                      launcherTypeElements[j].classList.remove('active');
+                    }
+                    this.classList.add('active');
+                    if ( this.classList.contains('launcher-private') ) {
+                      localStorage.launcherType = 'launcher-private';
+                    } else if ( this.classList.contains('launcher-public') ) {
+                      localStorage.launcherType = 'launcher-public';
+                    }
+                    setLaunchServer();
+                  })
+                }
+                const launcherPublic = document.getElementById('launcher-public-input');
+                const launcherPrivate = document.getElementById('launcher-private-input');
+                const pageName = "inventory_dynamics";
+                const repoURL = "https://github.com/QuantEcon/lecture-jax.notebooks";
+                const urlPath = "tree/lecture-jax.notebooks/inventory_dynamics.ipynb";
+                const branch = "master"
+                const launchNotebookLink = document.getElementById('advancedLaunchButton');
+
+                // Highlight public server option if previous selection exists
+                if (typeof localStorage.launcherPublic !== 'undefined') {
+                  launcherPublic.value = localStorage.launcherPublic;
+                }
+                // Update local storage upon public server selection
+                launcherPublic.addEventListener('change', (event) => {
+                  setLaunchServer();
+                });
+                // Populate private server input if previous entry exists
+                if (typeof localStorage.launcherPrivate !== 'undefined') {
+                  launcherPrivate.value = localStorage.launcherPrivate;
+                }
+                // Update local storage when a private server is entered
+                launcherPrivate.addEventListener('input', (event) => {
+                  setLaunchServer();
+                });
+
+                // Function to update the "Launch Notebook" link href
+                function setLaunchServer() {
+                  launchNotebookLink.removeAttribute("style")
+                  if ( localStorage.launcherType == 'launcher-private' ) {
+                    let repoPrefix = "/jupyter/hub/user-redirect/git-pull?repo=" + repoURL + "&branch=" + branch + "&urlpath=" + urlPath;
+                    launcherPrivateValue = launcherPrivate.value
+                    if (!launcherPrivateValue) {
+                        launchNotebookLink.removeAttribute("href")
+                        launchNotebookLink.style.background = "grey"
+                        return
+                    }
+                    localStorage.launcherPrivate = launcherPrivateValue;
+                    privateServer = localStorage.launcherPrivate.replace(/\/$/, "")
+                    if (!privateServer.includes("http")) {
+                        privateServer = "http://" + privateServer
+                    }
+                    launchNotebookLinkURL = privateServer + repoPrefix;
+                  } else if ( localStorage.launcherType == 'launcher-public' ) {
+                    launcherPublicValue = launcherPublic.options[launcherPublic.selectedIndex].value;
+                    localStorage.launcherPublic = launcherPublicValue;
+                    launchNotebookLinkURL = localStorage.launcherPublic;
+                  }
+                  if (launchNotebookLinkURL) launchNotebookLink.href = launchNotebookLinkURL;
+                }
+                // Check if user has previously selected a server
+                if ( (typeof localStorage.launcherPrivate !== 'undefined') || (typeof localStorage.launcherPublic !== 'undefined') ) {
+                  setLaunchServer();
+                }
+                </script>
+
+        </div>
+
+    </div> <!-- .wrapper-->
+  </body>
+</html>

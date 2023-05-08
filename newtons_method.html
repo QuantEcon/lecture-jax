@@ -1,0 +1,1109 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>4. Using Newton’s Method to Solve Economic Models &#8212; Quantitative Economics with Python using JAX</title>
+    <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    
+        <script>
+            MathJax = {
+            loader: {load: ['[tex]/boldsymbol', '[tex]/textmacros']},
+            tex: {
+                packages: {'[+]': ['boldsymbol', 'textmacros']},
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                processEscapes: true,
+                macros: {
+                    "argmax" : "arg\\,max",
+                    "argmin" : "arg\\,min",
+                    "col"    : "col",
+                    "Span"   :  "span",
+                    "epsilon": "\\varepsilon",
+                    "EE": "\\mathbb{E}",
+                    "PP": "\\mathbb{P}",
+                    "RR": "\\mathbb{R}",
+                    "NN": "\\mathbb{N}",
+                    "ZZ": "\\mathbb{Z}",
+                    "aA": "\\mathcal{A}",
+                    "bB": "\\mathcal{B}",
+                    "cC": "\\mathcal{C}",
+                    "dD": "\\mathcal{D}",
+                    "eE": "\\mathcal{E}",
+                    "fF": "\\mathcal{F}",
+                    "gG": "\\mathcal{G}",
+                    "hH": "\\mathcal{H}",
+                }
+            },
+            svg: {
+                fontCache: 'global',
+                scale: 0.92,
+                displayAlign: "center",
+            },
+            };
+        </script>
+    
+    
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/quantecon-book-theme.531cac136e77cfd0e9b23b36a70b130a.css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/exercise.css" />
+    <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js"></script>
+    <script src="_static/quantecon-book-theme.282f51e609929a8ffbc5260c6713b9cc.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"tex": {"macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'newtons_method';</script>
+    <link rel="canonical" href="https://jax.quantecon.org/newtons_method.html" />
+    <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
+    <link rel="author" title="About these documents" href="about.html" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="5. Kesten Processes and Firm Dynamics" href="kesten_processes.html" />
+    <link rel="prev" title="3. The Aiyagari Model" href="aiyagari_jax.html" />
+
+<!-- Normal Meta Tags -->
+<meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
+<meta name="keywords" content="Python, QuantEcon, Quantitative Economics, Economics, Sloan, Alfred P. Sloan Foundation, Tom J. Sargent, John Stachurski" />
+<meta name="description" content=This website presents a set of lectures on quantitative economic modeling, designed and written by Thomas J. Sargent and John Stachurski. />
+
+<!-- Twitter tags -->
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@quantecon" />
+<meta name="twitter:title" content="Using Newton’s Method to Solve Economic Models"/>
+<meta name="twitter:description" content="This website presents a set of lectures on quantitative economic modeling, designed and written by Thomas J. Sargent and John Stachurski.">
+<meta name="twitter:creator" content="@quantecon">
+<meta name="twitter:image" content="https://assets.quantecon.org/img/qe-twitter-logo.png">
+
+<!-- Opengraph tags -->
+<meta property="og:title" content="Using Newton’s Method to Solve Economic Models" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://jax.quantecon.org/newtons_method.html" />
+<meta property="og:image" content="https://assets.quantecon.org/img/qe-og-logo.png" />
+<meta property="og:description" content="This website presents a set of lectures on quantitative economic modeling, designed and written by Thomas J. Sargent and John Stachurski." />
+<meta property="og:site_name" content="Quantitative Economics with Python using JAX" />
+<meta name="theme-color" content="#ffffff" />
+
+  </head>
+<body>
+
+
+    <span id="top"></span>
+
+    <div class="qe-wrapper">
+
+        <div class="qe-main">
+
+            <div class="qe-page" id=newtons_method>
+
+                <div class="qe-page__toc">
+
+                    <div class="inner">
+
+                        
+                        <div class="qe-page__toc-header">
+                            On this page
+                        </div>
+
+
+                        <nav id="bd-toc-nav" class="qe-page__toc-nav">
+                            <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">4.1. Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-two-goods-market-equilibrium">4.2. The Two Goods Market Equilibrium</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-multivariable-market-equilibrium">4.2.1. The Multivariable Market Equilibrium</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#using-newtons-method">4.3. Using Newton’s Method</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-high-dimensional-problem">4.3.1. A High-Dimensional Problem</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">4.4. Exercises</a></li>
+</ul>
+                            <p class="logo">
+                                
+                                    
+                                    <a href=https://quantecon.org><img src="_static/qe-logo-large.png" class="logo" alt="logo"></a>
+                                    
+                                
+                            </p>
+
+                            <p class="powered">Powered by <a href="https://jupyterbook.org/">Jupyter Book</a></p>
+
+                        </nav>
+
+                        <div class="qe-page__toc-footer">
+                            
+                            
+                            <p><a href="#top"><strong>Back to top</strong></a></p>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="qe-page__header">
+
+                    <div class="qe-page__header-copy">
+
+                        <p class="qe-page__header-heading"><a href="intro.html">Quantitative Economics with Python using JAX</a></p>
+
+                        <p class="qe-page__header-subheading">Using Newton’s Method to Solve Economic Models</p>
+
+                    </div>
+
+                    <p class="qe-page__header-authors">Thomas J. Sargent & John Stachurski</p>
+
+                </div> <!-- .page__header -->
+
+
+
+                
+                <main class="qe-page__content" role="main">
+                    
+                    <div>
+                        
+  <section class="tex2jax_ignore mathjax_ignore" id="using-newtons-method-to-solve-economic-models">
+<h1><span class="section-number">4. </span>Using Newton’s Method to Solve Economic Models<a class="headerlink" href="#using-newtons-method-to-solve-economic-models" title="Permalink to this heading">#</a></h1>
+<section id="overview">
+<h2><span class="section-number">4.1. </span>Overview<a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
+<p>Continuing from the <a class="reference external" href="https://python.quantecon.org/newton_method.html">Newton’s Method lecture</a>, we are going to solve the multidimensional problem with <code class="docutils literal notranslate"><span class="pre">JAX</span></code>.</p>
+<p>More information about JAX can be found <a class="reference external" href="https://python-programming.quantecon.org/jax_intro.html">here</a>.</p>
+<p>We use the following imports in this lecture</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">jax</span>
+<span class="kn">import</span> <span class="nn">jax.numpy</span> <span class="k">as</span> <span class="nn">jnp</span>
+<span class="kn">from</span> <span class="nn">scipy.optimize</span> <span class="kn">import</span> <span class="n">root</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s check the backend used by JAX and the devices available.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check if JAX is using GPU</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;JAX backend: </span><span class="si">{</span><span class="n">jax</span><span class="o">.</span><span class="n">devices</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">platform</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># Check the devices available for JAX</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">jax</span><span class="o">.</span><span class="n">devices</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>JAX backend: gpu
+[StreamExecutorGpuDevice(id=0, process_index=0, slice_index=0)]
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="the-two-goods-market-equilibrium">
+<h2><span class="section-number">4.2. </span>The Two Goods Market Equilibrium<a class="headerlink" href="#the-two-goods-market-equilibrium" title="Permalink to this heading">#</a></h2>
+<p>Let’s have a quick recap of this problem – a more detailed explanation and derivation can be found at <a class="reference external" href="https://python.quantecon.org/newton_method.html#two_goods_market">A Two Goods Market Equilibrium</a>.</p>
+<p>Assume we have a market for two complementary goods where demand depends on the price of both components.</p>
+<p>We label them good 0 and good 1, with price vector <span class="math notranslate nohighlight">\(p = (p_0, p_1)\)</span>.</p>
+<p>Then the supply of good <span class="math notranslate nohighlight">\(i\)</span> at price <span class="math notranslate nohighlight">\(p\)</span> is,</p>
+<div class="math notranslate nohighlight">
+\[
+q^s_i (p) = b_i \sqrt{p_i}
+\]</div>
+<p>and the demand of good <span class="math notranslate nohighlight">\(i\)</span> at price <span class="math notranslate nohighlight">\(p\)</span> is,</p>
+<div class="math notranslate nohighlight">
+\[
+q^d_i (p) = \text{exp}(-(a_{i0} p_0 + a_{i1} p_1)) + c_i
+\]</div>
+<p>Here <span class="math notranslate nohighlight">\(a_{ij}\)</span>, <span class="math notranslate nohighlight">\(b_i\)</span> and <span class="math notranslate nohighlight">\(c_i\)</span> are parameters for <span class="math notranslate nohighlight">\(n \times n\)</span> square matrix <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(n \times 1\)</span> parameter vectors <span class="math notranslate nohighlight">\(b\)</span> and <span class="math notranslate nohighlight">\(c\)</span>.</p>
+<p>The excess demand function is,</p>
+<div class="math notranslate nohighlight">
+\[
+e_i(p) = q_i^d(p) - q_i^s(p), \quad i = 0, 1
+\]</div>
+<p>An equilibrium price vector <span class="math notranslate nohighlight">\(p^*\)</span> satisfies <span class="math notranslate nohighlight">\(e_i(p^*) = 0\)</span>.</p>
+<p>We set</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+A = \begin{pmatrix}
+            a_{00} &amp; a_{01} \\
+            a_{10} &amp; a_{11}
+        \end{pmatrix},
+            \qquad
+    b = \begin{pmatrix}
+            b_0 \\
+            b_1
+        \end{pmatrix}
+    \qquad \text{and} \qquad
+    c = \begin{pmatrix}
+            c_0 \\
+            c_1
+        \end{pmatrix}
+\end{split}\]</div>
+<p>for this particular question.</p>
+<section id="the-multivariable-market-equilibrium">
+<h3><span class="section-number">4.2.1. </span>The Multivariable Market Equilibrium<a class="headerlink" href="#the-multivariable-market-equilibrium" title="Permalink to this heading">#</a></h3>
+<p>We can now easily get the multivariable version of the problem above.</p>
+<p>The supply function remains unchanged,</p>
+<div class="math notranslate nohighlight">
+\[
+q^s (p) =b \sqrt{p}
+\]</div>
+<p>The demand function is,</p>
+<div class="math notranslate nohighlight">
+\[
+q^d (p) = \text{exp}(- A \cdot p) + c
+\]</div>
+<p>Our new excess demand function is,</p>
+<div class="math notranslate nohighlight">
+\[
+e(p) = \text{exp}(- A \cdot p) + c - b \sqrt{p}
+\]</div>
+<p>The function below calculates the excess demand for the given parameters</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">e</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">jnp</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span> <span class="n">A</span> <span class="o">@</span> <span class="n">p</span><span class="p">)</span> <span class="o">+</span> <span class="n">c</span> <span class="o">-</span> <span class="n">b</span> <span class="o">*</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="using-newtons-method">
+<h2><span class="section-number">4.3. </span>Using Newton’s Method<a class="headerlink" href="#using-newtons-method" title="Permalink to this heading">#</a></h2>
+<p>Now let’s use the multivariate version of Newton’s method to compute the equilibrium price</p>
+<div class="math notranslate nohighlight" id="equation-multi-newton">
+<span class="eqno">(4.1)<a class="headerlink" href="#equation-multi-newton" title="Permalink to this equation">#</a></span>\[p_{n+1} = p_n - J_e(p_n)^{-1} e(p_n)\]</div>
+<p>Here <span class="math notranslate nohighlight">\(J_e(p_n)\)</span> is the Jacobian of <span class="math notranslate nohighlight">\(e\)</span> evaluated at <span class="math notranslate nohighlight">\(p_n\)</span>.</p>
+<p>The iteration starts from some initial guess of the price vector <span class="math notranslate nohighlight">\(p_0\)</span>.</p>
+<p>Here, instead of coding Jacobian by hand, We use the <code class="docutils literal notranslate"><span class="pre">jax.jacobian()</span></code> function to auto-differentiate and calculate the Jacobian.</p>
+<p>With only slight modification, we can generalize <a class="reference external" href="https://python.quantecon.org/newton_method.html#first_newton_attempt">our previous attempt</a> to multi-dimensional problems</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">newton</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">x_0</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">15</span><span class="p">):</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">x_0</span>
+    <span class="n">f_jac</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">jacobian</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+    <span class="n">q</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">jit</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">-</span> <span class="n">jnp</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">f_jac</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">)))</span>
+    <span class="n">error</span> <span class="o">=</span> <span class="n">tol</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">while</span> <span class="n">error</span> <span class="o">&gt;</span> <span class="n">tol</span><span class="p">:</span>
+        <span class="n">n</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">n</span> <span class="o">&gt;</span> <span class="n">max_iter</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;Max iteration reached without convergence&#39;</span><span class="p">)</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">q</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">jnp</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">y</span><span class="p">)):</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;Solution not found with NaN generated&#39;</span><span class="p">)</span>
+        <span class="n">error</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">y</span><span class="p">)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">y</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;iteration </span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s1">, error = </span><span class="si">{</span><span class="n">error</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">+</span> <span class="sa">f</span><span class="s1">&#39;Result = </span><span class="si">{</span><span class="n">x</span><span class="si">}</span><span class="s1"> </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">x</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="a-high-dimensional-problem">
+<h3><span class="section-number">4.3.1. </span>A High-Dimensional Problem<a class="headerlink" href="#a-high-dimensional-problem" title="Permalink to this heading">#</a></h3>
+<p>We now apply the multivariate Newton’s Method to  investigate a large market with 5,000 goods.</p>
+<p>We randomly generate the matrix <span class="math notranslate nohighlight">\(A\)</span> and set the parameter vectors <span class="math notranslate nohighlight">\(b \text{ and } c\)</span> to <span class="math notranslate nohighlight">\(1\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dim</span> <span class="o">=</span> <span class="mi">5_000</span>
+<span class="n">seed</span> <span class="o">=</span> <span class="mi">32</span>
+
+<span class="c1"># Create a random matrix A and normalize the rows to sum to one</span>
+<span class="n">key</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">PRNGKey</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
+
+<span class="n">A</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="p">[</span><span class="n">dim</span><span class="p">,</span> <span class="n">dim</span><span class="p">])</span>
+
+<span class="n">s</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">A</span> <span class="o">=</span> <span class="n">A</span> <span class="o">/</span> <span class="n">s</span>
+
+<span class="c1"># Set up b and c</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">dim</span><span class="p">)</span>
+<span class="n">c</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">dim</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Here’s our initial condition <span class="math notranslate nohighlight">\(p_0\)</span></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">init_p</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">dim</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>By leveraging the power of Newton’s method, JAX accelerated linear algebra,
+automatic differentiation, and a GPU, we obtain a relatively small error for
+this very large problem in just a few seconds:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%time</span>
+
+<span class="n">p</span> <span class="o">=</span> <span class="n">newton</span><span class="p">(</span><span class="k">lambda</span> <span class="n">p</span><span class="p">:</span> <span class="n">e</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">),</span> <span class="n">init_p</span><span class="p">)</span><span class="o">.</span><span class="n">block_until_ready</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>iteration 1, error = 29.97745704650879
+iteration 2, error = 5.092828750610352
+iteration 3, error = 0.10971643775701523
+iteration 4, error = 5.197196878725663e-05
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>iteration 5, error = 1.2309188605286181e-05
+iteration 6, error = 4.6261807256087195e-06
+
+Result = [1.4999796 1.503175  1.4918782 ... 1.4914232 1.4956646 1.4976945] 
+
+CPU times: user 4.79 s, sys: 1.46 s, total: 6.25 s
+Wall time: 4.3 s
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">jnp</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">e</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Array(1.1920929e-07, dtype=float32)
+</pre></div>
+</div>
+</div>
+</div>
+<p>With the same tolerance, SciPy’s <code class="docutils literal notranslate"><span class="pre">root</span></code> function takes much longer to run,
+even with the Jacobian supplied.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%time</span>
+
+<span class="n">solution</span> <span class="o">=</span> <span class="n">root</span><span class="p">(</span><span class="k">lambda</span> <span class="n">p</span><span class="p">:</span> <span class="n">e</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">),</span>
+                <span class="n">init_p</span><span class="p">,</span>
+                <span class="n">jac</span><span class="o">=</span><span class="k">lambda</span> <span class="n">p</span><span class="p">:</span> <span class="n">jax</span><span class="o">.</span><span class="n">jacobian</span><span class="p">(</span><span class="n">e</span><span class="p">)(</span><span class="n">p</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">),</span>
+                <span class="n">method</span><span class="o">=</span><span class="s1">&#39;hybr&#39;</span><span class="p">,</span>
+                <span class="n">tol</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 2min 24s, sys: 355 ms, total: 2min 25s
+Wall time: 2min 25s
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">p</span> <span class="o">=</span> <span class="n">solution</span><span class="o">.</span><span class="n">x</span>
+<span class="n">jnp</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">e</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Array(7.1525574e-07, dtype=float32)
+</pre></div>
+</div>
+</div>
+</div>
+<p>The result is also less accurate.</p>
+</section>
+</section>
+<section id="exercises">
+<h2><span class="section-number">4.4. </span>Exercises<a class="headerlink" href="#exercises" title="Permalink to this heading">#</a></h2>
+<div class="exercise admonition" id="newton_ex1">
+
+<p class="admonition-title"><span class="caption-number">Exercise 4.1 </span></p>
+<section id="exercise-content">
+<p>Consider a three-dimensional extension of the Solow fixed point problem with</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+A = \begin{pmatrix}
+            2 &amp; 3 &amp; 3 \\
+            2 &amp; 4 &amp; 2 \\
+            1 &amp; 5 &amp; 1 \\
+        \end{pmatrix},
+            \quad
+s = 0.2, \quad α = 0.5, \quad δ = 0.8
+\end{split}\]</div>
+<p>As before the law of motion is</p>
+<div class="math notranslate nohighlight">
+\[    k_{t+1} = g(k_t) \quad \text{where} \quad
+    g(k) := sAk^\alpha + (1-\delta) k\]</div>
+<p>However <span class="math notranslate nohighlight">\(k_t\)</span> is now a <span class="math notranslate nohighlight">\(3 \times 1\)</span> vector.</p>
+<p>Solve for the fixed point using Newton’s method with the following initial values:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{aligned}
+    k1_{0} &amp;= (1, 1, 1) \\
+    k2_{0} &amp;= (3, 5, 5) \\
+    k3_{0} &amp;= (50, 50, 50)
+\end{aligned}
+\end{split}\]</div>
+<div class="dropdown admonition hint">
+<p class="admonition-title">Hint</p>
+<ul class="simple">
+<li><p>The computation of the fixed point is equivalent to computing <span class="math notranslate nohighlight">\(k^*\)</span> such that <span class="math notranslate nohighlight">\(f(k^*) - k^* = 0\)</span>.</p></li>
+<li><p>If you are unsure about your solution, you can start with the solved example:</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[\begin{split}A = \begin{pmatrix}
+            2 &amp; 0 &amp; 0 \\
+            0 &amp; 2 &amp; 0 \\
+            0 &amp; 0 &amp; 2 \\
+        \end{pmatrix}\end{split}\]</div>
+<p>with <span class="math notranslate nohighlight">\(s = 0.3\)</span>, <span class="math notranslate nohighlight">\(α = 0.3\)</span>, and <span class="math notranslate nohighlight">\(δ = 0.4\)</span> and starting value:</p>
+<div class="math notranslate nohighlight">
+\[k_0 = (1, 1, 1)\]</div>
+<p>The result should converge to the <a class="reference external" href="https://python.quantecon.org/newton_method.html#solved-k">analytical solution</a>.</p>
+</div>
+</section>
+</div>
+<div class="solution dropdown admonition" id="newtons_method-solution-1">
+
+<p class="admonition-title">Solution to<a class="reference internal" href="#newton_ex1"> Exercise 4.1</a></p>
+<section id="solution-content">
+<p>Let’s first define the parameters for this problem</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">A</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">2.0</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">],</span>
+               <span class="p">[</span><span class="mf">2.0</span><span class="p">,</span> <span class="mf">4.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">],</span>
+               <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">5.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">]])</span>
+<span class="n">s</span> <span class="o">=</span> <span class="mf">0.2</span>
+<span class="n">α</span> <span class="o">=</span> <span class="mf">0.5</span>
+<span class="n">δ</span> <span class="o">=</span> <span class="mf">0.8</span>
+<span class="n">initLs</span> <span class="o">=</span> <span class="p">[</span><span class="n">jnp</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span>
+          <span class="n">jnp</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">3.0</span><span class="p">,</span> <span class="mf">5.0</span><span class="p">,</span> <span class="mf">5.0</span><span class="p">]),</span>
+          <span class="n">jnp</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="mf">50.0</span><span class="p">,</span> <span class="mi">3</span><span class="p">)]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Then define the multivariate version of the formula for the <a class="reference external" href="https://python.quantecon.org/newton_method.html#solow">law of motion of captial</a></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">multivariate_solow</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">A</span><span class="o">=</span><span class="n">A</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="n">s</span><span class="p">,</span> <span class="n">α</span><span class="o">=</span><span class="n">α</span><span class="p">,</span> <span class="n">δ</span><span class="o">=</span><span class="n">δ</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">s</span> <span class="o">*</span> <span class="n">jnp</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">k</span><span class="o">**</span><span class="n">α</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">δ</span><span class="p">)</span> <span class="o">*</span> <span class="n">k</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s run through each starting value and see the output</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">attempt</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="k">for</span> <span class="n">init</span> <span class="ow">in</span> <span class="n">initLs</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Attempt </span><span class="si">{</span><span class="n">attempt</span><span class="si">}</span><span class="s1">: Starting value is </span><span class="si">{</span><span class="n">init</span><span class="si">}</span><span class="s1"> </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="o">%</span><span class="k">time</span> k = newton(lambda k: multivariate_solow(k) - k, \
+                     <span class="n">init</span><span class="p">)</span><span class="o">.</span><span class="n">block_until_ready</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="o">*</span><span class="mi">64</span><span class="p">)</span>
+    <span class="n">attempt</span> <span class="o">+=</span> <span class="mi">1</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Attempt 1: Starting value is [1. 1. 1.] 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>iteration 1, error = 50.496315002441406
+iteration 2, error = 41.1093864440918
+iteration 3, error = 4.294127464294434
+iteration 4, error = 0.3854290544986725
+iteration 5, error = 0.0054382034577429295
+iteration 6, error = 8.92080606718082e-07
+
+Result = [3.8405814 3.870718  3.4109194] 
+
+CPU times: user 784 ms, sys: 48.8 ms, total: 833 ms
+Wall time: 662 ms
+----------------------------------------------------------------
+Attempt 2: Starting value is [3. 5. 5.] 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>iteration 1, error = 2.0701100826263428
+iteration 2, error = 0.12642373144626617
+iteration 3, error = 0.0006017307168804109
+iteration 4, error = 3.3717478231665154e-07
+
+Result = [3.8405814 3.8707182 3.4109197] 
+
+CPU times: user 580 ms, sys: 10.1 ms, total: 590 ms
+Wall time: 227 ms
+----------------------------------------------------------------
+Attempt 3: Starting value is [50. 50. 50.] 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>iteration 1, error = 73.00942993164062
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>iteration 2, error = 6.493789196014404
+iteration 3, error = 0.6806989312171936
+iteration 4, error = 0.016202213242650032
+iteration 5, error = 1.0600916539260652e-05
+iteration 6, error = 9.830249609876773e-07
+
+Result = [3.840581  3.8707182 3.41092  ] 
+
+CPU times: user 1.21 s, sys: 16.4 ms, total: 1.23 s
+Wall time: 505 ms
+----------------------------------------------------------------
+</pre></div>
+</div>
+</div>
+</div>
+<p>We find that the results are invariant to the starting values given the well-defined property of this question.</p>
+<p>But the number of iterations it takes to converge is dependent on the starting values.</p>
+<p>Let substitute the output back to the formulate to check our last result</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">multivariate_solow</span><span class="p">(</span><span class="n">k</span><span class="p">)</span> <span class="o">-</span> <span class="n">k</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Array([ 4.7683716e-07,  0.0000000e+00, -2.3841858e-07], dtype=float32)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Note the error is very small.</p>
+<p>We can also test our results on the known solution</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">A</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">2.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span>
+               <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span>
+               <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">]])</span>
+<span class="n">s</span> <span class="o">=</span> <span class="mf">0.3</span>
+<span class="n">α</span> <span class="o">=</span> <span class="mf">0.3</span>
+<span class="n">δ</span> <span class="o">=</span> <span class="mf">0.4</span>
+<span class="n">init</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="o">%</span><span class="k">time</span> k = newton(lambda k: multivariate_solow(k, A=A, s=s, α=α, δ=δ) - k, \
+                 <span class="n">init</span><span class="p">)</span><span class="o">.</span><span class="n">block_until_ready</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>iteration 1, error = 1.5745922327041626
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>iteration 2, error = 0.21344946324825287
+iteration 3, error = 0.002045975998044014
+iteration 4, error = 8.259061701210157e-07
+
+Result = [1.7846744 1.7846744 1.7846744] 
+
+CPU times: user 1.17 s, sys: 8.33 ms, total: 1.18 s
+Wall time: 481 ms
+</pre></div>
+</div>
+</div>
+</div>
+<p>The result is very close to the ground truth but still slightly different.</p>
+<p>We can increase the precision of the floating point numbers and restrict the tolerance to obtain a more accurate approximation (see detailed discussion in the <a class="reference external" href="https://python-programming.quantecon.org/jax_intro.html#differences">lecture on JAX</a>)</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># We will use 64 bit floats with JAX in order to increase the precision.</span>
+<span class="n">jax</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="s2">&quot;jax_enable_x64&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+<span class="n">init</span> <span class="o">=</span> <span class="n">init</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;float64&#39;</span><span class="p">)</span>
+
+<span class="o">%</span><span class="k">time</span> k = newton(lambda k: multivariate_solow(k, A=A, s=s, α=α, δ=δ) - k,\
+                 <span class="n">init</span><span class="p">,</span>\
+                 <span class="n">tol</span><span class="o">=</span><span class="mf">1e-7</span><span class="p">)</span><span class="o">.</span><span class="n">block_until_ready</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>iteration 1, error = 1.5745916432444333
+iteration 2, error = 0.21344933091258958
+iteration 3, error = 0.0020465547718452695
+iteration 4, error = 2.0309190076799282e-07
+iteration 5, error = 1.538370149106851e-15
+
+Result = [1.78467418 1.78467418 1.78467418] 
+
+CPU times: user 854 ms, sys: 4.53 ms, total: 858 ms
+Wall time: 681 ms
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can see it steps towards a more accurate solution.</p>
+</section>
+</div>
+<div class="exercise admonition" id="newton_ex2">
+
+<p class="admonition-title"><span class="caption-number">Exercise 4.2 </span></p>
+<section id="exercise-content">
+<p>In this exercise, let’s try different initial values and check how Newton’s method responds to different starting points.</p>
+<p>Let’s define a three-good problem with the following default values:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+A = \begin{pmatrix}
+            0.2 &amp; 0.1 &amp; 0.7 \\
+            0.3 &amp; 0.2 &amp; 0.5 \\
+            0.1 &amp; 0.8 &amp; 0.1 \\
+        \end{pmatrix},
+            \qquad
+b = \begin{pmatrix}
+            1 \\
+            1 \\
+            1
+        \end{pmatrix}
+    \qquad \text{and} \qquad
+c = \begin{pmatrix}
+            1 \\
+            1 \\
+            1
+        \end{pmatrix}
+\end{split}\]</div>
+<p>For this exercise, use the following extreme price vectors as initial values:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+    p1_{0} &amp;= (5, 5, 5) \\
+    p2_{0} &amp;= (1, 1, 1) \\
+    p3_{0} &amp;= (4.5, 0.1, 4)
+\end{aligned}
+\end{split}\]</div>
+<p>Set the tolerance to <span class="math notranslate nohighlight">\(10^{-15}\)</span> for more accurate output.</p>
+<div class="dropdown admonition hint">
+<p class="admonition-title">Hint</p>
+<p>Similar to <a class="reference internal" href="#newton_ex1"><span class="std std-ref">exercise 1</span></a>, enabling <code class="docutils literal notranslate"><span class="pre">float64</span></code> for JAX can improve the precision of our results.</p>
+</div>
+</section>
+</div>
+<div class="solution dropdown admonition" id="newtons_method-solution-3">
+
+<p class="admonition-title">Solution to<a class="reference internal" href="#newton_ex2"> Exercise 4.2</a></p>
+<section id="solution-content">
+<p>Define parameters and initial values</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">A</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>
+    <span class="p">[</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">],</span>
+    <span class="p">[</span><span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">],</span>
+    <span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">]</span>
+<span class="p">])</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">])</span>
+<span class="n">c</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">])</span>
+<span class="n">initLs</span> <span class="o">=</span> <span class="p">[</span><span class="n">jnp</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="mf">5.0</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span>
+          <span class="n">jnp</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">4.5</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">4.0</span><span class="p">])]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s run through each initial guess and check the output</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">attempt</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="k">for</span> <span class="n">init</span> <span class="ow">in</span> <span class="n">initLs</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Attempt </span><span class="si">{</span><span class="n">attempt</span><span class="si">}</span><span class="s1">: Starting value is </span><span class="si">{</span><span class="n">init</span><span class="si">}</span><span class="s1"> </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">init</span> <span class="o">=</span> <span class="n">init</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;float64&#39;</span><span class="p">)</span>
+    <span class="o">%</span><span class="k">time</span> p = newton(lambda p: e(p, A, b, c), \
+                 <span class="n">init</span><span class="p">,</span> \
+                 <span class="n">tol</span><span class="o">=</span><span class="mf">1e-15</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span><span class="o">.</span><span class="n">block_until_ready</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="o">*</span><span class="mi">64</span><span class="p">)</span>
+    <span class="n">attempt</span> <span class="o">+=</span><span class="mi">1</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Attempt 1: Starting value is [5. 5. 5.] 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>iteration 1, error = 9.243805733085065
+</pre></div>
+</div>
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">Exception</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
+<span class="n">File</span> <span class="o">&lt;</span><span class="n">timed</span> <span class="n">exec</span><span class="o">&gt;</span><span class="p">:</span><span class="mi">1</span>
+
+<span class="nn">Cell In[4], line 13,</span> in <span class="ni">newton</span><span class="nt">(f, x_0, tol, max_iter)</span>
+<span class="g g-Whitespace">     </span><span class="mi">11</span> <span class="n">y</span> <span class="o">=</span> <span class="n">q</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">12</span> <span class="k">if</span> <span class="n">jnp</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">y</span><span class="p">)):</span>
+<span class="ne">---&gt; </span><span class="mi">13</span>     <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;Solution not found with NaN generated&#39;</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">14</span> <span class="n">error</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">y</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">15</span> <span class="n">x</span> <span class="o">=</span> <span class="n">y</span>
+
+<span class="ne">Exception</span>: Solution not found with NaN generated
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>----------------------------------------------------------------
+Attempt 2: Starting value is [4.5 0.1 4. ] 
+
+iteration 1, error = 4.892018895185869
+iteration 2, error = 1.2120550201694784
+iteration 3, error = 0.6942087122866175
+iteration 4, error = 0.168951089180319
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>iteration 5, error = 0.005209730313222213
+iteration 6, error = 4.3632751705775364e-06
+iteration 7, error = 3.0460818773540415e-12
+iteration 8, error = 0.0
+
+Result = [1.49744442 1.49744442 1.49744442] 
+
+CPU times: user 840 ms, sys: 8.13 ms, total: 848 ms
+Wall time: 237 ms
+----------------------------------------------------------------
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can find that Newton’s method may fail for some starting values.</p>
+<p>Sometimes it may take a few initial guesses to achieve convergence.</p>
+<p>Substitute the result back to the formula to check our result</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">e</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Array([0., 0., 0.], dtype=float64)
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can see the result is very accurate.</p>
+</section>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                    </div>
+                    
+                </main> <!-- .page__content -->
+                
+
+
+                <footer class="qe-page__footer">
+
+                    <p><a href="https://creativecommons.org/licenses/by-sa/4.0/"><img src="https://licensebuttons.net/l/by-sa/4.0/80x15.png"></a></p>
+
+                    <p>Creative Commons License &ndash; This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International.</p>
+
+                </footer> <!-- .page__footer -->
+
+            </div> <!-- .page -->
+
+            
+
+            
+            <div class="qe-sidebar bd-sidebar inactive" id="site-navigation">
+
+                <div class="qe-sidebar__header">
+
+
+                    Contents
+
+                </div>
+
+                <nav class="qe-sidebar__nav" id="qe-sidebar-nav" aria-label="Main navigation">
+                    <p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Other
+ </span>
+</p>
+<ul class="current nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="about.html">
+   1. About these Lectures
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="inventory_dynamics.html">
+   2. Inventory Dynamics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="aiyagari_jax.html">
+   3. The Aiyagari Model
+  </a>
+ </li>
+ <li class="toctree-l1 current active active">
+  <a class="current reference internal" href="#">
+   4. Using Newton’s Method to Solve Economic Models
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="kesten_processes.html">
+   5. Kesten Processes and Firm Dynamics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="wealth_dynamics.html">
+   6. Wealth Distribution Dynamics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="short_path.html">
+   7. Shortest Paths
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="opt_invest.html">
+   8. Optimal Investment
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="opt_savings.html">
+   9. Optimal Savings
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="troubleshooting.html">
+   10. Troubleshooting
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="zreferences.html">
+   11. References
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="status.html">
+   12. Execution Statistics
+  </a>
+ </li>
+</ul>
+
+                </nav>
+
+                <div class="qe-sidebar__footer">
+
+                </div>
+
+            </div> <!-- .sidebar -->
+            
+        </div> <!-- .main -->
+
+        <div class="qe-toolbar">
+
+            <div class="qe-toolbar__inner">
+
+                <ul class="qe-toolbar__main">
+                    <li data-tippy-content="Table of Contents" class="btn__sidebar"><i data-feather="menu"></i></li>
+                    <li data-tippy-content="Home"><a href="intro.html"><i data-feather="home"></i></a></li>
+                    <li class="btn__qelogo"><a href="https://quantecon.org" title=""><span class="show-for-sr">QuantEcon</span></a></li>
+                </ul>
+
+                <ul class="qe-toolbar__links">
+                    <li class="btn__search">
+                        <form action="search.html" method="get">
+                            <input type="search" class="form-control" name="q" id="search-input" placeholder="Search..." aria-label="Search..." autocomplete="off" accesskey="k">
+                            <i data-feather="search" id="search-icon"></i>
+                        </form>
+                    </li>
+                    <li data-tippy-content="Fullscreen" class="btn__fullscreen"><i data-feather="maximize"></i></li>
+                    <li data-tippy-content="Increase font size" class="btn__plus"><i data-feather="plus-circle"></i></li>
+                    <li data-tippy-content="Decrease font size" class="btn__minus"><i data-feather="minus-circle"></i></li>
+                    <li data-tippy-content="Change contrast" class="btn__contrast"><i data-feather="sunset"></i></li>
+                    <li data-tippy-content="Download Notebook"><a href="/_notebooks/newtons_method.ipynb" download><i data-feather="download-cloud"></i></a></li>
+                    <li class="settings-button" id="settingsButton"><div data-tippy-content="Launch Notebook"><i data-feather="play-circle"></i></div></li>
+                        <li class="download-pdf" id="downloadButton"><i data-feather="file"></i></li>
+                    <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-jax/blob/main/lectures/newtons_method.md" download><i data-feather="github"></i></a></li>
+                </ul>
+
+            </div>
+
+        </div> <!-- .toolbar -->
+        <div id="downloadPDFModal" style="display: none;">
+            <ul class="pdf-options" style="display: block;">
+                <li class="download-pdf-book" onClick="window.print()">
+                    <p>Lecture (PDF)</p>
+                </li>
+                <li class="download-pdf-file">
+                    <a href="/_pdf/quantecon-jax.pdf" download><p>Book (PDF)</p></a>
+                </li>
+            </ul>
+        </div>
+        <div id="settingsModal" style="display: none;">
+            <p class="modal-title"> Notebook Launcher </p>
+            <div class="modal-desc">
+            <p>
+                Choose public or private cloud service for "Launch" button.
+            </p>
+            </div>
+            <p class="modal-subtitle">Select a server</p>
+            <ul class="modal-servers">
+            <li class="active launcher-public">
+                <span class="label">Public</span>
+                <select id="launcher-public-input">
+                
+                    <option value="https://mybinder.org/v2/gh/QuantEcon/lecture-jax.notebooks/master?urlpath=tree/newtons_method.ipynb">BinderHub</option>
+                
+                    <option value="https://colab.research.google.com/github/QuantEcon/lecture-jax.notebooks/blob/master/newtons_method.ipynb">Colab</option>
+                
+                </select>
+                <i class="fas fa-check-circle"></i>
+            </li>
+            <li class="launcher-private">
+                <span class="label">Private</span>
+                <input type="text" id="launcher-private-input" data-repourl="https://github.com/QuantEcon/lecture-jax.notebooks" data-urlpath="tree/lecture-jax.notebooks/newtons_method.ipynb" data-branch=master>
+                <i class="fas fa-check-circle"></i>
+            </li>
+            </ul>
+            <p class="launch"><a href="https://mybinder.org/v2/gh/QuantEcon/lecture-jax.notebooks/master?urlpath=tree/newtons_method.ipynb" id="advancedLaunchButton" target="_blank">Launch Notebook</a></p>
+            <script>
+                // QuantEcon Notebook Launcher
+                const launcherTypeElements = document.querySelectorAll('#settingsModal .modal-servers li');
+                // Highlight the server type if previous selection exists
+                if (typeof localStorage.launcherType !== 'undefined') {
+                  for (var i = 0; i < launcherTypeElements.length; i++) {
+                    launcherTypeElements[i].classList.remove('active');
+                    if ( launcherTypeElements[i].classList.contains(localStorage.launcherType) ) {
+                      launcherTypeElements[i].classList.add('active');
+                    }
+                  }
+                }
+                // Highlight server type on click and set local storage value
+                for (var i = 0; i < launcherTypeElements.length; i++) {
+                  launcherTypeElements[i].addEventListener('click', function() {
+                    for (var j = 0; j < launcherTypeElements.length; j++) {
+                      launcherTypeElements[j].classList.remove('active');
+                    }
+                    this.classList.add('active');
+                    if ( this.classList.contains('launcher-private') ) {
+                      localStorage.launcherType = 'launcher-private';
+                    } else if ( this.classList.contains('launcher-public') ) {
+                      localStorage.launcherType = 'launcher-public';
+                    }
+                    setLaunchServer();
+                  })
+                }
+                const launcherPublic = document.getElementById('launcher-public-input');
+                const launcherPrivate = document.getElementById('launcher-private-input');
+                const pageName = "newtons_method";
+                const repoURL = "https://github.com/QuantEcon/lecture-jax.notebooks";
+                const urlPath = "tree/lecture-jax.notebooks/newtons_method.ipynb";
+                const branch = "master"
+                const launchNotebookLink = document.getElementById('advancedLaunchButton');
+
+                // Highlight public server option if previous selection exists
+                if (typeof localStorage.launcherPublic !== 'undefined') {
+                  launcherPublic.value = localStorage.launcherPublic;
+                }
+                // Update local storage upon public server selection
+                launcherPublic.addEventListener('change', (event) => {
+                  setLaunchServer();
+                });
+                // Populate private server input if previous entry exists
+                if (typeof localStorage.launcherPrivate !== 'undefined') {
+                  launcherPrivate.value = localStorage.launcherPrivate;
+                }
+                // Update local storage when a private server is entered
+                launcherPrivate.addEventListener('input', (event) => {
+                  setLaunchServer();
+                });
+
+                // Function to update the "Launch Notebook" link href
+                function setLaunchServer() {
+                  launchNotebookLink.removeAttribute("style")
+                  if ( localStorage.launcherType == 'launcher-private' ) {
+                    let repoPrefix = "/jupyter/hub/user-redirect/git-pull?repo=" + repoURL + "&branch=" + branch + "&urlpath=" + urlPath;
+                    launcherPrivateValue = launcherPrivate.value
+                    if (!launcherPrivateValue) {
+                        launchNotebookLink.removeAttribute("href")
+                        launchNotebookLink.style.background = "grey"
+                        return
+                    }
+                    localStorage.launcherPrivate = launcherPrivateValue;
+                    privateServer = localStorage.launcherPrivate.replace(/\/$/, "")
+                    if (!privateServer.includes("http")) {
+                        privateServer = "http://" + privateServer
+                    }
+                    launchNotebookLinkURL = privateServer + repoPrefix;
+                  } else if ( localStorage.launcherType == 'launcher-public' ) {
+                    launcherPublicValue = launcherPublic.options[launcherPublic.selectedIndex].value;
+                    localStorage.launcherPublic = launcherPublicValue;
+                    launchNotebookLinkURL = localStorage.launcherPublic;
+                  }
+                  if (launchNotebookLinkURL) launchNotebookLink.href = launchNotebookLinkURL;
+                }
+                // Check if user has previously selected a server
+                if ( (typeof localStorage.launcherPrivate !== 'undefined') || (typeof localStorage.launcherPublic !== 'undefined') ) {
+                  setLaunchServer();
+                }
+                </script>
+
+        </div>
+
+    </div> <!-- .wrapper-->
+  </body>
+</html>
