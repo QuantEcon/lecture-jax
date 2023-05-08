@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>9. The Aiyagari Model &#8212; Quantitative Economics with Python using JAX</title>
+    <title>11. The Aiyagari Model &#8212; Quantitative Economics with Python using JAX</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
@@ -113,8 +113,8 @@ const thebe_selector_output = ".output, .cell_output"
     <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="10. Troubleshooting" href="troubleshooting.html" />
-    <link rel="prev" title="8. Optimal Savings" href="opt_savings.html" />
+    <link rel="next" title="12. Troubleshooting" href="troubleshooting.html" />
+    <link rel="prev" title="10. Default Risk and Income Fluctuations" href="arellano.html" />
 
 <!-- Normal Meta Tags -->
 <meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
@@ -162,26 +162,26 @@ const thebe_selector_output = ".output, .cell_output"
 
                         <nav id="bd-toc-nav" class="qe-page__toc-nav">
                             <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">9.1. Overview</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#references">9.1.1. References</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#preliminaries">9.1.2. Preliminaries</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">11.1. Overview</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#references">11.1.1. References</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#preliminaries">11.1.2. Preliminaries</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#firms">9.2. Firms</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#households">9.3. Households</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#primitives-and-operators">9.3.1. Primitives and Operators</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#firms">11.2. Firms</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#households">11.3. Households</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#primitives-and-operators">11.3.1. Primitives and Operators</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#solvers">9.4. Solvers</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#capital-supply">9.4.1. Capital Supply</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#solvers">11.4. Solvers</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#capital-supply">11.4.1. Capital Supply</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#equilibrium">9.5. Equilibrium</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#visual-inspection">9.5.1. Visual inspection</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#computing-the-equilibrium">9.5.2. Computing the equilibrium</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#equilibrium">11.5. Equilibrium</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#visual-inspection">11.5.1. Visual inspection</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#computing-the-equilibrium">11.5.2. Computing the equilibrium</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">9.6. Exercises</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">11.6. Exercises</a></li>
 </ul>
                             <p class="logo">
                                 
@@ -227,9 +227,9 @@ const thebe_selector_output = ".output, .cell_output"
                     <div>
                         
   <section class="tex2jax_ignore mathjax_ignore" id="the-aiyagari-model">
-<h1><span class="section-number">9. </span>The Aiyagari Model<a class="headerlink" href="#the-aiyagari-model" title="Permalink to this heading">#</a></h1>
+<h1><span class="section-number">11. </span>The Aiyagari Model<a class="headerlink" href="#the-aiyagari-model" title="Permalink to this heading">#</a></h1>
 <section id="overview">
-<h2><span class="section-number">9.1. </span>Overview<a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">11.1. </span>Overview<a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
 <p>In this lecture, we describe the structure of a class of models that build on work by Truman Bewley [<a class="reference external" href="https://python.quantecon.org/zreferences.html#id173">Bew77</a>].</p>
 <p>We begin by discussing an example of a Bewley model due to Rao Aiyagari [<a class="reference external" href="https://python.quantecon.org/zreferences.html#id137">Aiy94</a>].</p>
 <p>The model features</p>
@@ -240,19 +240,19 @@ const thebe_selector_output = ".output, .cell_output"
 </ul>
 <p>The Aiyagari model has been used to investigate many topics, including</p>
 <ul class="simple">
-<li><p>precautionary savings and the effect of liquidity constraints [<a class="reference external" href="https://python.quantecon.org/zreferences.html#id137">Aiy94</a>]</p></li>
-<li><p>risk sharing and asset pricing [<a class="reference external" href="https://python.quantecon.org/zreferences.html#id129">HL96</a>]</p></li>
-<li><p>the shape of the wealth distribution [<a class="reference external" href="https://python.quantecon.org/zreferences.html#id130">BBZ15</a>]</p></li>
+<li><p>precautionary savings and the effect of liquidity constraints [<a class="reference external" href="https://python.quantecon.org/zreferences.html#id138">Aiy94</a>]</p></li>
+<li><p>risk sharing and asset pricing [<a class="reference external" href="https://python.quantecon.org/zreferences.html#id130">HL96</a>]</p></li>
+<li><p>the shape of the wealth distribution [<a class="reference external" href="https://python.quantecon.org/zreferences.html#id131">BBZ15</a>]</p></li>
 </ul>
 <section id="references">
-<h3><span class="section-number">9.1.1. </span>References<a class="headerlink" href="#references" title="Permalink to this heading">#</a></h3>
-<p>The primary reference for this lecture is [<a class="reference external" href="https://python.quantecon.org/zreferences.html#id137">Aiy94</a>].</p>
-<p>A textbook treatment is available in chapter 18 of [<a class="reference external" href="https://python.quantecon.org/zreferences.html#id182">LS18</a>].</p>
+<h3><span class="section-number">11.1.1. </span>References<a class="headerlink" href="#references" title="Permalink to this heading">#</a></h3>
+<p>The primary reference for this lecture is [<a class="reference external" href="https://python.quantecon.org/zreferences.html#id138">Aiy94</a>].</p>
+<p>A textbook treatment is available in chapter 18 of [<a class="reference external" href="https://python.quantecon.org/zreferences.html#id183">LS18</a>].</p>
 <p>A less sophisticated version of this lecture (without JAX) can be found
 <a class="reference external" href="https://python.quantecon.org/aiyagari.html">here</a>.</p>
 </section>
 <section id="preliminaries">
-<h3><span class="section-number">9.1.2. </span>Preliminaries<a class="headerlink" href="#preliminaries" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">11.1.2. </span>Preliminaries<a class="headerlink" href="#preliminaries" title="Permalink to this heading">#</a></h3>
 <p>We use the following imports</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -309,7 +309,7 @@ const thebe_selector_output = ".output, .cell_output"
 </section>
 </section>
 <section id="firms">
-<h2><span class="section-number">9.2. </span>Firms<a class="headerlink" href="#firms" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">11.2. </span>Firms<a class="headerlink" href="#firms" title="Permalink to this heading">#</a></h2>
 <p>Firms produce output by hiring capital and labor.</p>
 <p>Firms act competitively and face constant returns to scale.</p>
 <p>Since returns to scale are constant the number of firms does not matter.</p>
@@ -333,11 +333,11 @@ Y_t = A K_t^{\alpha} N^{1 - \alpha}
 <p>The parameter <span class="math notranslate nohighlight">\( \delta \)</span> is the depreciation rate.</p>
 <p>From the first-order condition with respect to capital, the firm’s inverse demand for capital is</p>
 <div class="math notranslate nohighlight" id="equation-equation-aiy-rgk">
-<span class="eqno">(9.1)<a class="headerlink" href="#equation-equation-aiy-rgk" title="Permalink to this equation">#</a></span>\[r = A \alpha  \left( \frac{N}{K} \right)^{1 - \alpha} - \delta\]</div>
+<span class="eqno">(11.1)<a class="headerlink" href="#equation-equation-aiy-rgk" title="Permalink to this equation">#</a></span>\[r = A \alpha  \left( \frac{N}{K} \right)^{1 - \alpha} - \delta\]</div>
 <p>Using this expression and the firm’s first-order condition for labor, we can pin down
 the equilibrium wage rate as a function of <span class="math notranslate nohighlight">\( r \)</span> as</p>
 <div class="math notranslate nohighlight" id="equation-equation-aiy-wgr">
-<span class="eqno">(9.2)<a class="headerlink" href="#equation-equation-aiy-wgr" title="Permalink to this equation">#</a></span>\[w(r) = A  (1 - \alpha)  (A \alpha / (r + \delta))^{\alpha / (1 - \alpha)}\]</div>
+<span class="eqno">(11.2)<a class="headerlink" href="#equation-equation-aiy-wgr" title="Permalink to this equation">#</a></span>\[w(r) = A  (1 - \alpha)  (A \alpha / (r + \delta))^{\alpha / (1 - \alpha)}\]</div>
 <p>These parameters and equations are stored in the following class.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -373,7 +373,7 @@ the equilibrium wage rate as a function of <span class="math notranslate nohighl
 </div>
 </section>
 <section id="households">
-<h2><span class="section-number">9.3. </span>Households<a class="headerlink" href="#households" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">11.3. </span>Households<a class="headerlink" href="#households" title="Permalink to this heading">#</a></h2>
 <p>Infinitely lived households / consumers face idiosyncratic income shocks.</p>
 <p>A unit interval of  <em>ex-ante</em> identical households face a common borrowing constraint.</p>
 <p>The savings problem faced by a typical  household is</p>
@@ -405,7 +405,7 @@ a_t \geq -B
 <p>For now we assume that <span class="math notranslate nohighlight">\(u(c) = \log(c)\)</span>.</p>
 <p>(CRRA utility is treated in the exercises.)</p>
 <section id="primitives-and-operators">
-<h3><span class="section-number">9.3.1. </span>Primitives and Operators<a class="headerlink" href="#primitives-and-operators" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">11.3.1. </span>Primitives and Operators<a class="headerlink" href="#primitives-and-operators" title="Permalink to this heading">#</a></h3>
 <p>This class stores the parameters that define a household asset
 accumulation problem and the grids used to solve it.</p>
 <div class="cell docutils container">
@@ -620,7 +620,7 @@ array) and avoids instantiating the large matrix <span class="math notranslate n
 </section>
 </section>
 <section id="solvers">
-<h2><span class="section-number">9.4. </span>Solvers<a class="headerlink" href="#solvers" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">11.4. </span>Solvers<a class="headerlink" href="#solvers" title="Permalink to this heading">#</a></h2>
 <p>We will solve the household problem using Howard policy iteration.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -704,8 +704,8 @@ Concluded loop 12 with error 1.
 Concluded loop 13 with error 1.
 Concluded loop 14 with error 1.
 Concluded loop 15 with error 0.
-CPU times: user 1.86 s, sys: 202 ms, total: 2.06 s
-Wall time: 1.57 s
+CPU times: user 1.88 s, sys: 181 ms, total: 2.06 s
+Wall time: 1.59 s
 </pre></div>
 </div>
 </div>
@@ -719,8 +719,8 @@ Wall time: 1.57 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 573 ms, sys: 73 ms, total: 646 ms
-Wall time: 601 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 559 ms, sys: 76.4 ms, total: 635 ms
+Wall time: 580 ms
 </pre></div>
 </div>
 </div>
@@ -749,7 +749,7 @@ Wall time: 601 ms
 </div>
 </div>
 <section id="capital-supply">
-<h3><span class="section-number">9.4.1. </span>Capital Supply<a class="headerlink" href="#capital-supply" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">11.4.1. </span>Capital Supply<a class="headerlink" href="#capital-supply" title="Permalink to this heading">#</a></h3>
 <p>To start thinking about equilibrium, we need to know how much capital households supply at a given interest rate <span class="math notranslate nohighlight">\(r\)</span>.</p>
 <p>This quantity can be calculated by taking the stationary distribution of assets under the optimal policy and computing the mean.</p>
 <p>The next function implements this calculation for a given policy <span class="math notranslate nohighlight">\(\sigma\)</span>.</p>
@@ -840,7 +840,7 @@ bivariate Markov chain of the state <span class="math notranslate nohighlight">\
 </section>
 </section>
 <section id="equilibrium">
-<h2><span class="section-number">9.5. </span>Equilibrium<a class="headerlink" href="#equilibrium" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">11.5. </span>Equilibrium<a class="headerlink" href="#equilibrium" title="Permalink to this heading">#</a></h2>
 <p>We construct  a <em>stationary rational expectations equilibrium</em> (SREE).</p>
 <p>In such an equilibrium</p>
 <ul class="simple">
@@ -857,14 +857,14 @@ bivariate Markov chain of the state <span class="math notranslate nohighlight">\
 <p>In practice, once parameter values are set, we can check for an SREE by the following steps</p>
 <ol class="arabic simple">
 <li><p>pick a proposed quantity <span class="math notranslate nohighlight">\( K \)</span> for aggregate capital</p></li>
-<li><p>determine corresponding prices, with interest rate <span class="math notranslate nohighlight">\( r \)</span> determined by <a class="reference internal" href="#equation-equation-aiy-rgk">(9.1)</a> and a wage rate <span class="math notranslate nohighlight">\( w(r) \)</span> as given in <a class="reference internal" href="#equation-equation-aiy-wgr">(9.2)</a>.</p></li>
+<li><p>determine corresponding prices, with interest rate <span class="math notranslate nohighlight">\( r \)</span> determined by <a class="reference internal" href="#equation-equation-aiy-rgk">(11.1)</a> and a wage rate <span class="math notranslate nohighlight">\( w(r) \)</span> as given in <a class="reference internal" href="#equation-equation-aiy-wgr">(11.2)</a>.</p></li>
 <li><p>determine the common optimal savings policy of the households given these prices</p></li>
 <li><p>compute aggregate capital as the mean of steady state capital given this savings policy</p></li>
 </ol>
 <p>If this final quantity agrees with <span class="math notranslate nohighlight">\( K \)</span> then we have a SREE.  Otherwise we adjust <span class="math notranslate nohighlight">\(K\)</span>.</p>
 <p>These steps describe a fixed point problem which we solve below.</p>
 <section id="visual-inspection">
-<h3><span class="section-number">9.5.1. </span>Visual inspection<a class="headerlink" href="#visual-inspection" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">11.5.1. </span>Visual inspection<a class="headerlink" href="#visual-inspection" title="Permalink to this heading">#</a></h3>
 <p>Let’s inspect visually as a first pass.</p>
 <p>The following code draws aggregate supply and demand curves for capital.</p>
 <p>The intersection gives equilibrium interest rates and capital.</p>
@@ -895,8 +895,8 @@ bivariate Markov chain of the state <span class="math notranslate nohighlight">\
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 11.9 s, sys: 3.41 s, total: 15.3 s
-Wall time: 5.06 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 12.3 s, sys: 3.73 s, total: 16 s
+Wall time: 5.23 s
 </pre></div>
 </div>
 </div>
@@ -945,8 +945,8 @@ Wall time: 5.06 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 11.9 s, sys: 3.76 s, total: 15.7 s
-Wall time: 4.89 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 12 s, sys: 4.24 s, total: 16.2 s
+Wall time: 4.93 s
 </pre></div>
 </div>
 </div>
@@ -968,7 +968,7 @@ Wall time: 4.89 s
 </div>
 </section>
 <section id="computing-the-equilibrium">
-<h3><span class="section-number">9.5.2. </span>Computing the equilibrium<a class="headerlink" href="#computing-the-equilibrium" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">11.5.2. </span>Computing the equilibrium<a class="headerlink" href="#computing-the-equilibrium" title="Permalink to this heading">#</a></h3>
 <p>Now let’s compute the equilibrium</p>
 <p>To do so, we use the bisection method, which is implemented
 in the next function.</p>
@@ -1016,8 +1016,8 @@ in the next function.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1.4 s, sys: 409 ms, total: 1.81 s
-Wall time: 569 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1.47 s, sys: 445 ms, total: 1.92 s
+Wall time: 586 ms
 </pre></div>
 </div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>8.09375
@@ -1030,10 +1030,10 @@ method such as bisection.</p>
 </section>
 </section>
 <section id="exercises">
-<h2><span class="section-number">9.6. </span>Exercises<a class="headerlink" href="#exercises" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">11.6. </span>Exercises<a class="headerlink" href="#exercises" title="Permalink to this heading">#</a></h2>
 <div class="exercise admonition" id="aygr_ex1">
 
-<p class="admonition-title"><span class="caption-number">Exercise 9.1 </span></p>
+<p class="admonition-title"><span class="caption-number">Exercise 11.1 </span></p>
 <section id="exercise-content">
 <p>Using the default household and firm model, produce a graph
 showing the behaviour of equilibrium capital stock with the increase in <span class="math notranslate nohighlight">\(\beta\)</span>.</p>
@@ -1041,7 +1041,7 @@ showing the behaviour of equilibrium capital stock with the increase in <span cl
 </div>
 <div class="solution dropdown admonition" id="aiyagari_jax-solution-1">
 
-<p class="admonition-title">Solution to<a class="reference internal" href="#aygr_ex1"> Exercise 9.1</a></p>
+<p class="admonition-title">Solution to<a class="reference internal" href="#aygr_ex1"> Exercise 11.1</a></p>
 <section id="solution-content">
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1074,7 +1074,7 @@ showing the behaviour of equilibrium capital stock with the increase in <span cl
 </div>
 <div class="exercise admonition" id="aygr_ex2">
 
-<p class="admonition-title"><span class="caption-number">Exercise 9.2 </span></p>
+<p class="admonition-title"><span class="caption-number">Exercise 11.2 </span></p>
 <section id="exercise-content">
 <p>Switch to the CRRA utility function</p>
 <div class="math notranslate nohighlight">
@@ -1090,7 +1090,7 @@ supply of captial.</p>
 </div>
 <div class="solution dropdown admonition" id="aiyagari_jax-solution-3">
 
-<p class="admonition-title">Solution to<a class="reference internal" href="#aygr_ex2"> Exercise 9.2</a></p>
+<p class="admonition-title">Solution to<a class="reference internal" href="#aygr_ex2"> Exercise 11.2</a></p>
 <section id="solution-content">
 <p>Let’s define the utility function</p>
 <div class="cell docutils container">
@@ -1172,8 +1172,8 @@ in the utility function.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 2.1 s, sys: 411 ms, total: 2.52 s
-Wall time: 1.01 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 2.25 s, sys: 281 ms, total: 2.53 s
+Wall time: 1.03 s
 </pre></div>
 </div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>8.09375
@@ -1247,8 +1247,13 @@ Wall time: 1.01 s
   </a>
  </li>
  <li class="toctree-l1">
+  <a class="reference internal" href="jax_intro.html">
+   2. JAX
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="newtons_method.html">
-   2. Newton’s Method via JAX
+   3. Newton’s Method via JAX
   </a>
  </li>
 </ul>
@@ -1260,17 +1265,17 @@ Wall time: 1.01 s
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="inventory_dynamics.html">
-   3. Inventory Dynamics
+   4. Inventory Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kesten_processes.html">
-   4. Kesten Processes and Firm Dynamics
+   5. Kesten Processes and Firm Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wealth_dynamics.html">
-   5. Wealth Distribution Dynamics
+   6. Wealth Distribution Dynamics
   </a>
  </li>
 </ul>
@@ -1282,22 +1287,27 @@ Wall time: 1.01 s
 <ul class="current nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="short_path.html">
-   6. Shortest Paths
+   7. Shortest Paths
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="opt_invest.html">
-   7. Optimal Investment
+   8. Optimal Investment
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="opt_savings.html">
-   8. Optimal Savings
+   9. Optimal Savings
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="arellano.html">
+   10. Default Risk and Income Fluctuations
   </a>
  </li>
  <li class="toctree-l1 current active active">
   <a class="current reference internal" href="#">
-   9. The Aiyagari Model
+   11. The Aiyagari Model
   </a>
  </li>
 </ul>
@@ -1309,17 +1319,17 @@ Wall time: 1.01 s
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   10. Troubleshooting
+   12. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   11. References
+   13. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   12. Execution Statistics
+   14. Execution Statistics
   </a>
  </li>
 </ul>
@@ -1355,9 +1365,8 @@ Wall time: 1.01 s
                     <li data-tippy-content="Increase font size" class="btn__plus"><i data-feather="plus-circle"></i></li>
                     <li data-tippy-content="Decrease font size" class="btn__minus"><i data-feather="minus-circle"></i></li>
                     <li data-tippy-content="Change contrast" class="btn__contrast"><i data-feather="sunset"></i></li>
-                    <li data-tippy-content="Download Notebook"><a href="/_notebooks/aiyagari_jax.ipynb" download><i data-feather="download-cloud"></i></a></li>
                     <li class="settings-button" id="settingsButton"><div data-tippy-content="Launch Notebook"><i data-feather="play-circle"></i></div></li>
-                        <li class="download-pdf" id="downloadButton"><i data-feather="file"></i></li>
+                        <li data-tippy-content="Download PDF" onClick="window.print()"><i data-feather="file"></i></li>
                     <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-jax/blob/main/lectures/aiyagari_jax.md" download><i data-feather="github"></i></a></li>
                 </ul>
 
@@ -1370,7 +1379,7 @@ Wall time: 1.01 s
                     <p>Lecture (PDF)</p>
                 </li>
                 <li class="download-pdf-file">
-                    <a href="/_pdf/quantecon-jax.pdf" download><p>Book (PDF)</p></a>
+                    <a href="" download><p>Book (PDF)</p></a>
                 </li>
             </ul>
         </div>

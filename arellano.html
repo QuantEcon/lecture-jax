@@ -1,0 +1,1461 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>10. Default Risk and Income Fluctuations &#8212; Quantitative Economics with Python using JAX</title>
+    <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    
+        <script>
+            MathJax = {
+            loader: {load: ['[tex]/boldsymbol', '[tex]/textmacros']},
+            tex: {
+                packages: {'[+]': ['boldsymbol', 'textmacros']},
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                processEscapes: true,
+                macros: {
+                    "argmax" : "arg\\,max",
+                    "argmin" : "arg\\,min",
+                    "col"    : "col",
+                    "Span"   :  "span",
+                    "epsilon": "\\varepsilon",
+                    "EE": "\\mathbb{E}",
+                    "PP": "\\mathbb{P}",
+                    "RR": "\\mathbb{R}",
+                    "NN": "\\mathbb{N}",
+                    "ZZ": "\\mathbb{Z}",
+                    "aA": "\\mathcal{A}",
+                    "bB": "\\mathcal{B}",
+                    "cC": "\\mathcal{C}",
+                    "dD": "\\mathcal{D}",
+                    "eE": "\\mathcal{E}",
+                    "fF": "\\mathcal{F}",
+                    "gG": "\\mathcal{G}",
+                    "hH": "\\mathcal{H}",
+                }
+            },
+            svg: {
+                fontCache: 'global',
+                scale: 0.92,
+                displayAlign: "center",
+            },
+            };
+        </script>
+    
+    
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/quantecon-book-theme.531cac136e77cfd0e9b23b36a70b130a.css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/exercise.css" />
+    <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js"></script>
+    <script src="_static/quantecon-book-theme.282f51e609929a8ffbc5260c6713b9cc.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"tex": {"macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'arellano';</script>
+    <link rel="canonical" href="https://jax.quantecon.org/arellano.html" />
+    <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
+    <link rel="author" title="About these documents" href="about.html" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="11. The Aiyagari Model" href="aiyagari_jax.html" />
+    <link rel="prev" title="9. Optimal Savings" href="opt_savings.html" />
+
+<!-- Normal Meta Tags -->
+<meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
+<meta name="keywords" content="Python, QuantEcon, Quantitative Economics, Economics, Sloan, Alfred P. Sloan Foundation, Tom J. Sargent, John Stachurski" />
+<meta name="description" content=This website presents a set of lectures on quantitative economic modeling, designed and written by Thomas J. Sargent and John Stachurski. />
+
+<!-- Twitter tags -->
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@quantecon" />
+<meta name="twitter:title" content="Default Risk and Income Fluctuations"/>
+<meta name="twitter:description" content="This website presents a set of lectures on quantitative economic modeling, designed and written by Thomas J. Sargent and John Stachurski.">
+<meta name="twitter:creator" content="@quantecon">
+<meta name="twitter:image" content="https://assets.quantecon.org/img/qe-twitter-logo.png">
+
+<!-- Opengraph tags -->
+<meta property="og:title" content="Default Risk and Income Fluctuations" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://jax.quantecon.org/arellano.html" />
+<meta property="og:image" content="https://assets.quantecon.org/img/qe-og-logo.png" />
+<meta property="og:description" content="This website presents a set of lectures on quantitative economic modeling, designed and written by Thomas J. Sargent and John Stachurski." />
+<meta property="og:site_name" content="Quantitative Economics with Python using JAX" />
+<meta name="theme-color" content="#ffffff" />
+
+  </head>
+<body>
+
+
+    <span id="top"></span>
+
+    <div class="qe-wrapper">
+
+        <div class="qe-main">
+
+            <div class="qe-page" id=arellano>
+
+                <div class="qe-page__toc">
+
+                    <div class="inner">
+
+                        
+                        <div class="qe-page__toc-header">
+                            On this page
+                        </div>
+
+
+                        <nav id="bd-toc-nav" class="qe-page__toc-nav">
+                            <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">10.1. Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#structure">10.2. Structure</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#output-consumption-and-debt">10.2.1. Output, Consumption and Debt</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#asset-markets">10.2.2. Asset Markets</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#financial-markets">10.2.3. Financial Markets</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#governments-decisions">10.2.4. Government’s Decisions</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reentering-international-credit-market">10.2.5. Reentering International Credit Market</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#equilibrium">10.3. Equilibrium</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#definition-of-equilibrium">10.3.1. Definition of Equilibrium</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#computation">10.4. Computation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#results">10.5. Results</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">10.6. Exercises</a></li>
+</ul>
+                            <p class="logo">
+                                
+                                    
+                                    <a href=https://quantecon.org><img src="_static/qe-logo-large.png" class="logo" alt="logo"></a>
+                                    
+                                
+                            </p>
+
+                            <p class="powered">Powered by <a href="https://jupyterbook.org/">Jupyter Book</a></p>
+
+                        </nav>
+
+                        <div class="qe-page__toc-footer">
+                            
+                            
+                            <p><a href="#top"><strong>Back to top</strong></a></p>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="qe-page__header">
+
+                    <div class="qe-page__header-copy">
+
+                        <p class="qe-page__header-heading"><a href="intro.html">Quantitative Economics with Python using JAX</a></p>
+
+                        <p class="qe-page__header-subheading">Default Risk and Income Fluctuations</p>
+
+                    </div>
+
+                    <p class="qe-page__header-authors">Thomas J. Sargent & John Stachurski</p>
+
+                </div> <!-- .page__header -->
+
+
+
+                
+                <main class="qe-page__content" role="main">
+                    
+                    <div>
+                        
+  <section class="tex2jax_ignore mathjax_ignore" id="default-risk-and-income-fluctuations">
+<h1><span class="section-number">10. </span>Default Risk and Income Fluctuations<a class="headerlink" href="#default-risk-and-income-fluctuations" title="Permalink to this heading">#</a></h1>
+<p>In addition to what’s in Anaconda, this lecture will need the following libraries:</p>
+<div class="cell tag_hide-output docutils container">
+<div class="cell_input above-output-prompt docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install quantecon
+</pre></div>
+</div>
+</div>
+<details class="hide below-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell output</span>
+<span class="expanded">Hide code cell output</span>
+</summary>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting quantecon
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Downloading quantecon-0.7.0-py3-none-any.whl (214 kB)
+?25l     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">0.0/214.8 kB</span> <span class=" -Color -Color-Red">?</span> eta <span class=" -Color -Color-Cyan">-:--:--</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">214.8/214.8 kB</span> <span class=" -Color -Color-Red">7.3 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
+?25hRequirement already satisfied: sympy in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (1.11.1)
+Requirement already satisfied: scipy&gt;=1.5.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (1.10.0)
+Requirement already satisfied: numpy&gt;=1.17.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (1.23.5)
+Requirement already satisfied: requests in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (2.28.1)
+Requirement already satisfied: numba&gt;=0.49.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (0.56.4)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: llvmlite&lt;0.40,&gt;=0.39.0dev0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from numba&gt;=0.49.0-&gt;quantecon) (0.39.1)
+Requirement already satisfied: setuptools in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from numba&gt;=0.49.0-&gt;quantecon) (65.6.3)
+Requirement already satisfied: certifi&gt;=2017.4.17 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (2022.12.7)
+Requirement already satisfied: charset-normalizer&lt;3,&gt;=2 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (2.0.4)
+Requirement already satisfied: idna&lt;4,&gt;=2.5 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (3.4)
+Requirement already satisfied: urllib3&lt;1.27,&gt;=1.21.1 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (1.26.14)
+Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/envs/quantecon/lib/python3.10/site-packages/mpmath-1.2.1-py3.10.egg (from sympy-&gt;quantecon) (1.2.1)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Installing collected packages: quantecon
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Successfully installed quantecon-0.7.0
+<span class=" -Color -Color-Yellow">WARNING: Running pip as the &#39;root&#39; user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv</span>
+
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<section id="overview">
+<h2><span class="section-number">10.1. </span>Overview<a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
+<p>This lecture computes versions of Arellano’s <span id="id1">[<a class="reference internal" href="zreferences.html#id255" title="Cristina Arellano. Default risk and income fluctuations in emerging economies. The American Economic Review, pages 690–712, 2008.">Are08</a>]</span> model of sovereign default.</p>
+<p>The model describes interactions among default risk, output, and an
+equilibrium interest rate that includes a premium for endogenous default risk.</p>
+<p>The decision maker is a government of a small open economy that borrows from
+risk-neutral foreign creditors.</p>
+<p>The foreign lenders must be compensated for default risk.</p>
+<p>The government borrows and lends abroad in order to smooth the consumption of
+its citizens.</p>
+<p>The government repays its debt only if it wants to, but declining to pay has
+adverse consequences.</p>
+<p>The interest rate on government debt adjusts in response to the
+state-dependent default probability chosen by government.</p>
+<p>The model yields outcomes that help interpret sovereign default experiences,
+including</p>
+<ul class="simple">
+<li><p>countercyclical interest rates on sovereign debt</p></li>
+<li><p>countercyclical trade balances</p></li>
+<li><p>high volatility of consumption relative to output</p></li>
+</ul>
+<p>Notably, long recessions caused by bad draws in the income process increase the government’s
+incentive to default.</p>
+<p>This can lead to</p>
+<ul class="simple">
+<li><p>spikes in interest rates</p></li>
+<li><p>temporary losses of access to international credit markets</p></li>
+<li><p>large drops in output, consumption, and welfare</p></li>
+<li><p>large capital outflows during recessions</p></li>
+</ul>
+<p>Such dynamics are consistent with experiences of many countries.</p>
+<p>Let’s start with some imports:</p>
+<div class="cell tag_hide-output docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">quantecon</span> <span class="k">as</span> <span class="nn">qe</span>
+<span class="kn">import</span> <span class="nn">random</span>
+
+<span class="kn">import</span> <span class="nn">jax</span>
+<span class="kn">import</span> <span class="nn">jax.numpy</span> <span class="k">as</span> <span class="nn">jnp</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">jax</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="s1">&#39;jax_enable_x64&#39;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="structure">
+<h2><span class="section-number">10.2. </span>Structure<a class="headerlink" href="#structure" title="Permalink to this heading">#</a></h2>
+<p>In this section we describe the main features of the model.</p>
+<section id="output-consumption-and-debt">
+<h3><span class="section-number">10.2.1. </span>Output, Consumption and Debt<a class="headerlink" href="#output-consumption-and-debt" title="Permalink to this heading">#</a></h3>
+<p>A small open economy is endowed with an exogenous stochastically fluctuating potential output
+stream <span class="math notranslate nohighlight">\( \{y_t\} \)</span>.</p>
+<p>Potential output is realized only in periods in which the government honors its sovereign debt.</p>
+<p>The output good can be traded or consumed.</p>
+<p>The sequence <span class="math notranslate nohighlight">\( \{y_t\} \)</span> is described by a Markov process with stochastic density kernel
+<span class="math notranslate nohighlight">\( p(y, y') \)</span>.</p>
+<p>Households within the country are identical and rank stochastic consumption streams according to</p>
+<div class="math notranslate nohighlight" id="equation-equation13-1">
+<span class="eqno">(10.1)<a class="headerlink" href="#equation-equation13-1" title="Permalink to this equation">#</a></span>\[
+ \mathbb E \sum_{t=0}^{\infty} \beta^t u(c_t)
+ \]</div>
+<p>Here</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\( 0 &lt; \beta &lt; 1 \)</span> is a time discount factor</p></li>
+<li><p><span class="math notranslate nohighlight">\( u \)</span> is an increasing and strictly concave utility function</p></li>
+</ul>
+<p>Consumption sequences enjoyed by households are affected by the government’s decision to borrow or
+lend internationally.</p>
+<p>The government is benevolent in the sense that its aim is to maximize <a class="reference internal" href="#equation-equation13-1">(10.1)</a>.</p>
+<p>The government is the only domestic actor with access to foreign credit.</p>
+<p>Because households are averse to consumption fluctuations, the government will try to smooth
+consumption by borrowing from (and lending to) foreign creditors.</p>
+</section>
+<section id="asset-markets">
+<h3><span class="section-number">10.2.2. </span>Asset Markets<a class="headerlink" href="#asset-markets" title="Permalink to this heading">#</a></h3>
+<p>The only credit instrument available to the government is a one-period bond traded in international credit markets.</p>
+<p>The bond market has the following features</p>
+<ul class="simple">
+<li><p>The bond matures in one period and is not state contingent.</p></li>
+<li><p>A purchase of a bond with face value <span class="math notranslate nohighlight">\( B' \)</span> is a claim to <span class="math notranslate nohighlight">\( B' \)</span> units of the
+consumption good next period.</p></li>
+<li><p>To purchase <span class="math notranslate nohighlight">\( B' \)</span>  next period costs <span class="math notranslate nohighlight">\( q B' \)</span> now, or, what is equivalent.</p></li>
+<li><p>For selling <span class="math notranslate nohighlight">\( -B' \)</span> units of next period goods the seller earns <span class="math notranslate nohighlight">\( - q B' \)</span> of today’s
+goods.</p>
+<ul>
+<li><p>If <span class="math notranslate nohighlight">\( B' &lt; 0 \)</span>, then <span class="math notranslate nohighlight">\( -q B' \)</span> units of the good are received in the current period,
+for a promise to repay <span class="math notranslate nohighlight">\( -B' \)</span> units next period.</p></li>
+<li><p>There is an equilibrium  price function <span class="math notranslate nohighlight">\( q(B', y) \)</span> that makes <span class="math notranslate nohighlight">\( q \)</span> depend on both
+<span class="math notranslate nohighlight">\( B' \)</span> and <span class="math notranslate nohighlight">\( y \)</span>.</p></li>
+</ul>
+</li>
+</ul>
+<p>Earnings on the government portfolio are distributed (or, if negative, taxed) lump sum to
+households.</p>
+<p>When the government is not excluded from financial markets, the one-period national budget
+constraint is</p>
+<div class="math notranslate nohighlight" id="equation-equation13-2">
+<span class="eqno">(10.2)<a class="headerlink" href="#equation-equation13-2" title="Permalink to this equation">#</a></span>\[
+c = y + B - q(B', y) B'
+\]</div>
+<p>Here and below, a prime denotes a next period value or a claim maturing next period.</p>
+<p>To rule out Ponzi schemes, we also require that <span class="math notranslate nohighlight">\( B \geq -Z \)</span> in every period.</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\( Z \)</span> is chosen to be sufficiently large that the constraint never binds in equilibrium.</p></li>
+</ul>
+</section>
+<section id="financial-markets">
+<h3><span class="section-number">10.2.3. </span>Financial Markets<a class="headerlink" href="#financial-markets" title="Permalink to this heading">#</a></h3>
+<p>Foreign creditors</p>
+<ul class="simple">
+<li><p>are risk neutral</p></li>
+<li><p>know the domestic output stochastic process <span class="math notranslate nohighlight">\( \{y_t\} \)</span> and observe
+<span class="math notranslate nohighlight">\( y_t, y_{t-1}, \ldots, \)</span> at time <span class="math notranslate nohighlight">\( t \)</span></p></li>
+<li><p>can borrow or lend without limit in an international credit market at a constant international
+interest rate <span class="math notranslate nohighlight">\( r \)</span></p></li>
+<li><p>receive full payment if the government chooses to pay</p></li>
+<li><p>receive zero if the government defaults on its one-period debt due</p></li>
+</ul>
+<p>When a government is expected to default next period with probability <span class="math notranslate nohighlight">\( \delta \)</span>, the expected
+value of a promise to pay one unit of consumption next period is <span class="math notranslate nohighlight">\( 1 - \delta \)</span>.</p>
+<p>Therefore, the discounted expected value of a promise to pay <span class="math notranslate nohighlight">\( B \)</span> next period is</p>
+<div class="math notranslate nohighlight" id="equation-equation13-3">
+<span class="eqno">(10.3)<a class="headerlink" href="#equation-equation13-3" title="Permalink to this equation">#</a></span>\[
+q = \frac{1 - \delta}{1 + r}
+\]</div>
+<p>Next we turn to how the government in effect chooses the default probability <span class="math notranslate nohighlight">\( \delta \)</span>.</p>
+</section>
+<section id="governments-decisions">
+<h3><span class="section-number">10.2.4. </span>Government’s Decisions<a class="headerlink" href="#governments-decisions" title="Permalink to this heading">#</a></h3>
+<p>At each point in time <span class="math notranslate nohighlight">\( t \)</span>, the government chooses between</p>
+<ol class="arabic simple">
+<li><p>defaulting</p></li>
+<li><p>meeting its current obligations and purchasing or selling an optimal quantity of  one-period
+sovereign debt</p></li>
+</ol>
+<p>Defaulting means declining to repay all of its current obligations.</p>
+<p>If the government defaults in the current period, then consumption equals current output.</p>
+<p>But a sovereign default has two consequences:</p>
+<ol class="arabic simple">
+<li><p>Output immediately falls from <span class="math notranslate nohighlight">\( y \)</span> to <span class="math notranslate nohighlight">\( h(y) \)</span>, where <span class="math notranslate nohighlight">\( 0 \leq h(y) \leq y \)</span>.</p></li>
+</ol>
+<ul class="simple">
+<li><p>It returns to <span class="math notranslate nohighlight">\( y \)</span> only after the country regains access to international credit
+markets.</p></li>
+</ul>
+<ol class="arabic simple">
+<li><p>The country loses access to foreign credit markets.</p></li>
+</ol>
+</section>
+<section id="reentering-international-credit-market">
+<h3><span class="section-number">10.2.5. </span>Reentering International Credit Market<a class="headerlink" href="#reentering-international-credit-market" title="Permalink to this heading">#</a></h3>
+<p>While in a state of default, the economy regains access to foreign credit in each subsequent
+period with probability <span class="math notranslate nohighlight">\( \theta \)</span>.</p>
+</section>
+</section>
+<section id="equilibrium">
+<h2><span class="section-number">10.3. </span>Equilibrium<a class="headerlink" href="#equilibrium" title="Permalink to this heading">#</a></h2>
+<p>Informally, an equilibrium is a sequence of interest rates on its sovereign debt, a stochastic
+sequence of government default decisions and an implied flow of household consumption such that</p>
+<ol class="arabic simple">
+<li><p>Consumption and assets satisfy the national budget constraint.</p></li>
+<li><p>The government maximizes household utility taking into account</p></li>
+</ol>
+<ul class="simple">
+<li><p>the resource constraint</p></li>
+<li><p>the effect of its choices on the price of bonds</p></li>
+<li><p>consequences of defaulting now for future net output and future borrowing and lending
+opportunities</p></li>
+</ul>
+<ol class="arabic simple">
+<li><p>The interest rate on the government’s debt includes a risk-premium sufficient to make foreign
+creditors expect on average to earn the constant risk-free international interest rate.</p></li>
+</ol>
+<p>To express these ideas more precisely, consider first the choices of the government, which</p>
+<ol class="arabic simple">
+<li><p>enters a period with initial assets <span class="math notranslate nohighlight">\( B \)</span>, or what is the same thing, initial debt to be
+repaid now of <span class="math notranslate nohighlight">\( -B \)</span></p></li>
+<li><p>observes current output <span class="math notranslate nohighlight">\( y \)</span>, and</p></li>
+<li><p>chooses either</p></li>
+<li><p>to default, or</p></li>
+<li><p>to pay <span class="math notranslate nohighlight">\( -B \)</span> and set next period’s debt due to <span class="math notranslate nohighlight">\( -B' \)</span></p></li>
+</ol>
+<p>In a recursive formulation,</p>
+<ul class="simple">
+<li><p>state variables for the government comprise the pair <span class="math notranslate nohighlight">\( (B, y) \)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\( v(B, y) \)</span> is the optimum value of the government’s problem when at the beginning of a
+period it faces the choice of whether to honor or default</p></li>
+<li><p><span class="math notranslate nohighlight">\( v_c(B, y) \)</span> is the value of choosing to pay obligations falling due</p></li>
+<li><p><span class="math notranslate nohighlight">\( v_d(y) \)</span> is the value of choosing to default</p></li>
+</ul>
+<p><span class="math notranslate nohighlight">\( v_d(y) \)</span> does not depend on <span class="math notranslate nohighlight">\( B \)</span> because, when access to credit is eventually regained,
+net foreign assets equal <span class="math notranslate nohighlight">\( 0 \)</span>.</p>
+<p>Expressed recursively, the value of defaulting is</p>
+<div class="math notranslate nohighlight">
+\[
+v_d(y) = u(h(y)) +
+            \beta \int \left\{
+            \theta v(0, y') + (1 - \theta) v_d(y')
+            \right\}
+            p(y, y') dy'
+\]</div>
+<p>The value of paying is</p>
+<div class="math notranslate nohighlight">
+\[
+v_c(B, y) = \max_{B' \geq -Z}
+       \left\{
+            u(y - q(B', y) B' + B) +
+            \beta \int v(B', y') p(y, y') dy'
+      \right\}
+\]</div>
+<p>The three value functions are linked by</p>
+<div class="math notranslate nohighlight">
+\[
+v(B, y) = \max\{ v_c(B, y), v_d(y) \}
+\]</div>
+<p>The government chooses to default when</p>
+<div class="math notranslate nohighlight">
+\[
+v_c(B, y) &lt; v_d(y)
+\]</div>
+<p>and hence given <span class="math notranslate nohighlight">\( B' \)</span> the probability of default next period is</p>
+<div class="math notranslate nohighlight" id="equation-equation13-4">
+<span class="eqno">(10.4)<a class="headerlink" href="#equation-equation13-4" title="Permalink to this equation">#</a></span>\[
+\delta(B', y) := \int \mathbb 1\{v_c(B', y') &lt; v_d(y') \} p(y, y') dy'
+\]</div>
+<p>Given zero profits for foreign creditors in equilibrium, we can combine <a class="reference internal" href="#equation-equation13-3">(10.3)</a> and <a class="reference internal" href="#equation-equation13-4">(10.4)</a>
+to pin down the bond price function:</p>
+<div class="math notranslate nohighlight" id="equation-equation13-5">
+<span class="eqno">(10.5)<a class="headerlink" href="#equation-equation13-5" title="Permalink to this equation">#</a></span>\[
+q(B', y) = \frac{1 - \delta(B', y)}{1 + r}
+\]</div>
+<section id="definition-of-equilibrium">
+<h3><span class="section-number">10.3.1. </span>Definition of Equilibrium<a class="headerlink" href="#definition-of-equilibrium" title="Permalink to this heading">#</a></h3>
+<p>An <em>equilibrium</em> is</p>
+<ul class="simple">
+<li><p>a pricing function <span class="math notranslate nohighlight">\( q(B',y) \)</span>,</p></li>
+<li><p>a triple of value functions <span class="math notranslate nohighlight">\( (v_c(B, y), v_d(y), v(B,y)) \)</span>,</p></li>
+<li><p>a decision rule telling the government when to default and when to pay as a function of the state
+<span class="math notranslate nohighlight">\( (B, y) \)</span>, and</p></li>
+<li><p>an asset accumulation rule that, conditional on choosing not to default, maps <span class="math notranslate nohighlight">\( (B,y) \)</span> into
+<span class="math notranslate nohighlight">\( B' \)</span></p></li>
+</ul>
+<p>such that</p>
+<ul class="simple">
+<li><p>The three Bellman equations for <span class="math notranslate nohighlight">\( (v_c(B, y), v_d(y), v(B,y)) \)</span> are satisfied</p></li>
+<li><p>Given the price function <span class="math notranslate nohighlight">\( q(B',y) \)</span>, the default decision rule and the asset accumulation
+decision rule attain the optimal value function  <span class="math notranslate nohighlight">\( v(B,y) \)</span>, and</p></li>
+<li><p>The price function <span class="math notranslate nohighlight">\( q(B',y) \)</span> satisfies equation <a class="reference internal" href="#equation-equation13-5">(10.5)</a></p></li>
+</ul>
+</section>
+</section>
+<section id="computation">
+<h2><span class="section-number">10.4. </span>Computation<a class="headerlink" href="#computation" title="Permalink to this heading">#</a></h2>
+<p>Let’s now compute an equilibrium of Arellano’s model.</p>
+<p>The equilibrium objects are the value function <span class="math notranslate nohighlight">\( v(B, y) \)</span>, the associated
+default decision rule, and the pricing function <span class="math notranslate nohighlight">\( q(B', y) \)</span>.</p>
+<p>We’ll use our code to replicate Arellano’s results.</p>
+<p>After that we’ll perform some additional simulations.</p>
+<p>We use a slightly modified version of the algorithm recommended by Arellano.</p>
+<ul class="simple">
+<li><p>The appendix to <span id="id2">[<a class="reference internal" href="zreferences.html#id255" title="Cristina Arellano. Default risk and income fluctuations in emerging economies. The American Economic Review, pages 690–712, 2008.">Are08</a>]</span> recommends value function iteration until
+convergence, updating the price, and then repeating.</p></li>
+<li><p>Instead, we update the bond price at every value function iteration step.</p></li>
+</ul>
+<p>The second approach is faster and the two different procedures deliver very similar results.</p>
+<p>Here is a more detailed description of our algorithm:</p>
+<ol class="arabic simple">
+<li><p>Guess a pair of non-default and default value functions <span class="math notranslate nohighlight">\( v_c \)</span> and <span class="math notranslate nohighlight">\( v_d \)</span>.</p></li>
+<li><p>Using these functions, calculate the value function <span class="math notranslate nohighlight">\( v \)</span>, the corresponding default probabilities and the price function <span class="math notranslate nohighlight">\( q \)</span>.</p></li>
+<li><p>At each pair <span class="math notranslate nohighlight">\( (B, y) \)</span>,</p></li>
+<li><p>update the value of defaulting <span class="math notranslate nohighlight">\( v_d(y) \)</span>.</p></li>
+<li><p>update the value of remaining <span class="math notranslate nohighlight">\( v_c(B, y) \)</span>.</p></li>
+<li><p>Check for convergence. If converged, stop – if not, go to step 2.</p></li>
+</ol>
+<p>We use simple discretization on a grid of asset holdings and income levels.</p>
+<p>The output process is discretized using a <a class="reference external" href="https://github.com/QuantEcon/QuantEcon.py/blob/master/quantecon/markov/approximation.py">quadrature method due to Tauchen</a>.</p>
+<p>As we have in other places, we accelerate our code using Numba.</p>
+<p>We define a class that will store parameters, grids and transition
+probabilities.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Arellano_Economy</span><span class="p">:</span>
+    <span class="s2">&quot; Stores data and creates primitives for the Arellano economy. &quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> 
+            <span class="n">B_grid_size</span><span class="o">=</span><span class="mi">251</span><span class="p">,</span>   <span class="c1"># Grid size for bonds</span>
+            <span class="n">B_grid_min</span><span class="o">=-</span><span class="mf">0.45</span><span class="p">,</span>   <span class="c1"># Smallest B value </span>
+            <span class="n">B_grid_max</span><span class="o">=</span><span class="mf">0.45</span><span class="p">,</span>    <span class="c1"># Largest B value</span>
+            <span class="n">y_grid_size</span><span class="o">=</span><span class="mi">51</span><span class="p">,</span>     <span class="c1"># Grid size for income </span>
+            <span class="n">β</span><span class="o">=</span><span class="mf">0.953</span><span class="p">,</span>            <span class="c1"># Time discount parameter</span>
+            <span class="n">γ</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span>              <span class="c1"># Utility parameter</span>
+            <span class="n">r</span><span class="o">=</span><span class="mf">0.017</span><span class="p">,</span>            <span class="c1"># Lending rate</span>
+            <span class="n">ρ</span><span class="o">=</span><span class="mf">0.945</span><span class="p">,</span>            <span class="c1"># Persistence in the income process</span>
+            <span class="n">η</span><span class="o">=</span><span class="mf">0.025</span><span class="p">,</span>            <span class="c1"># Standard deviation of the income process</span>
+            <span class="n">θ</span><span class="o">=</span><span class="mf">0.282</span><span class="p">,</span>            <span class="c1"># Prob of re-entering financial markets </span>
+            <span class="n">def_y_param</span><span class="o">=</span><span class="mf">0.969</span><span class="p">):</span> <span class="c1"># Parameter governing income in default</span>
+
+        <span class="c1"># Save parameters</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">β</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">γ</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">r</span><span class="p">,</span> <span class="o">=</span> <span class="n">β</span><span class="p">,</span> <span class="n">γ</span><span class="p">,</span> <span class="n">r</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ρ</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">η</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">θ</span> <span class="o">=</span> <span class="n">ρ</span><span class="p">,</span> <span class="n">η</span><span class="p">,</span> <span class="n">θ</span>
+
+        <span class="c1"># Set up grids</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">y_grid_size</span> <span class="o">=</span> <span class="n">y_grid_size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">B_grid_size</span> <span class="o">=</span> <span class="n">B_grid_size</span>
+        <span class="n">B_grid</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">B_grid_min</span><span class="p">,</span> <span class="n">B_grid_max</span><span class="p">,</span> <span class="n">B_grid_size</span><span class="p">)</span>
+        <span class="n">mc</span> <span class="o">=</span> <span class="n">qe</span><span class="o">.</span><span class="n">markov</span><span class="o">.</span><span class="n">tauchen</span><span class="p">(</span><span class="n">y_grid_size</span><span class="p">,</span> <span class="n">ρ</span><span class="p">,</span> <span class="n">η</span><span class="p">)</span>
+        <span class="n">y_grid</span><span class="p">,</span> <span class="n">P</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">mc</span><span class="o">.</span><span class="n">state_values</span><span class="p">),</span> <span class="n">mc</span><span class="o">.</span><span class="n">P</span>
+        
+        <span class="c1"># Put grids on the device</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">B_grid</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">device_put</span><span class="p">(</span><span class="n">B_grid</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">y_grid</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">device_put</span><span class="p">(</span><span class="n">y_grid</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">P</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">device_put</span><span class="p">(</span><span class="n">P</span><span class="p">)</span>
+
+        <span class="c1"># Output recieved while in default, with same shape as y_grid</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">def_y</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">minimum</span><span class="p">(</span><span class="n">def_y_param</span> <span class="o">*</span> <span class="n">jnp</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">y_grid</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">y_grid</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">params</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">β</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">γ</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">r</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ρ</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">η</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">θ</span> 
+    
+    <span class="k">def</span> <span class="nf">sizes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">B_grid_size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y_grid_size</span>
+
+    <span class="k">def</span> <span class="nf">arrays</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">P</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">B_grid</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y_grid</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">def_y</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Here is the utility function.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jax</span><span class="o">.</span><span class="n">jit</span>
+<span class="k">def</span> <span class="nf">u</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">γ</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">c</span><span class="o">**</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">γ</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">γ</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Here is a function to compute the bond price at each state, given <span class="math notranslate nohighlight">\( v_c \)</span> and
+<span class="math notranslate nohighlight">\( v_d \)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">compute_q</span><span class="p">(</span><span class="n">v_c</span><span class="p">,</span> <span class="n">v_d</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">sizes</span><span class="p">,</span> <span class="n">arrays</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute the bond price function q(B, y) at each (B, y) pair.  The first</span>
+<span class="sd">    step is to calculate the default probabilities</span>
+<span class="sd">    </span>
+<span class="sd">        δ(B, y) := Σ_{y&#39;} 1{v_c(B, y&#39;) &lt; v_d(y&#39;)} P(y, y&#39;) dy&#39;</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Unpack </span>
+    <span class="n">β</span><span class="p">,</span> <span class="n">γ</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">ρ</span><span class="p">,</span> <span class="n">η</span><span class="p">,</span> <span class="n">θ</span> <span class="o">=</span> <span class="n">params</span> 
+    <span class="n">B_size</span><span class="p">,</span> <span class="n">y_size</span> <span class="o">=</span> <span class="n">sizes</span>
+    <span class="n">P</span><span class="p">,</span> <span class="n">B_grid</span><span class="p">,</span> <span class="n">y_grid</span><span class="p">,</span> <span class="n">def_y</span> <span class="o">=</span> <span class="n">arrays</span>
+
+    <span class="c1"># Set up arrays with indices [i_B, i_y, i_yp]</span>
+    <span class="n">v_d</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">v_d</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">y_size</span><span class="p">))</span>
+    <span class="n">v_c</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">v_c</span><span class="p">,</span> <span class="p">(</span><span class="n">B_size</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">y_size</span><span class="p">))</span>
+    <span class="n">P</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">P</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">y_size</span><span class="p">,</span> <span class="n">y_size</span><span class="p">))</span>
+    
+    <span class="c1"># Compute δ[i_B, i_y]</span>
+    <span class="n">default_states</span> <span class="o">=</span> <span class="n">v_c</span> <span class="o">&lt;</span> <span class="n">v_d</span>
+    <span class="n">delta</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">default_states</span> <span class="o">*</span> <span class="n">P</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,))</span> 
+
+    <span class="n">q</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">delta</span> <span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">r</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">q</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Next we introduce Bellman operators that updated <span class="math notranslate nohighlight">\( v_d \)</span> and <span class="math notranslate nohighlight">\( v_c \)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">T_d</span><span class="p">(</span><span class="n">v_c</span><span class="p">,</span> <span class="n">v_d</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">sizes</span><span class="p">,</span> <span class="n">arrays</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The RHS of the Bellman equation when income is at index y_idx and</span>
+<span class="sd">    the country has chosen to default.  Returns an update of v_d.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Unpack </span>
+    <span class="n">β</span><span class="p">,</span> <span class="n">γ</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">ρ</span><span class="p">,</span> <span class="n">η</span><span class="p">,</span> <span class="n">θ</span> <span class="o">=</span> <span class="n">params</span> 
+    <span class="n">B_size</span><span class="p">,</span> <span class="n">y_size</span> <span class="o">=</span> <span class="n">sizes</span>
+    <span class="n">P</span><span class="p">,</span> <span class="n">B_grid</span><span class="p">,</span> <span class="n">y_grid</span><span class="p">,</span> <span class="n">def_y</span> <span class="o">=</span> <span class="n">arrays</span>
+    <span class="n">B0_idx</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span><span class="n">B_grid</span><span class="p">,</span> <span class="mf">1e-10</span><span class="p">)</span>  <span class="c1"># Index at which B is near zero</span>
+    
+    <span class="n">current_utility</span> <span class="o">=</span> <span class="n">u</span><span class="p">(</span><span class="n">def_y</span><span class="p">,</span> <span class="n">γ</span><span class="p">)</span> 
+    <span class="n">v</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">v_c</span><span class="p">[</span><span class="n">B0_idx</span><span class="p">,</span> <span class="p">:],</span> <span class="n">v_d</span><span class="p">)</span>
+    <span class="n">w</span> <span class="o">=</span> <span class="n">θ</span> <span class="o">*</span> <span class="n">v</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">θ</span><span class="p">)</span> <span class="o">*</span> <span class="n">v_d</span>
+    <span class="n">A</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">y_size</span><span class="p">))</span>
+    <span class="n">cont_value</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">A</span> <span class="o">*</span> <span class="n">P</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,))</span>
+
+    <span class="k">return</span> <span class="n">current_utility</span> <span class="o">+</span> <span class="n">β</span> <span class="o">*</span> <span class="n">cont_value</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">bellman</span><span class="p">(</span><span class="n">v_c</span><span class="p">,</span> <span class="n">v_d</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">sizes</span><span class="p">,</span> <span class="n">arrays</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The RHS of the Bellman equation when the country is not in a</span>
+<span class="sd">    defaulted state on their debt.  That is,</span>
+<span class="sd">    </span>
+<span class="sd">        bellman(B, y) = </span>
+<span class="sd">            u(y - q(B&#39;, y) B&#39; + B) + β Σ_{y&#39;} v(B&#39;, y&#39;) P(y, y&#39;)</span>
+<span class="sd">    </span>
+<span class="sd">    If consumption is not positive then returns -np.inf</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Unpack </span>
+    <span class="n">β</span><span class="p">,</span> <span class="n">γ</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">ρ</span><span class="p">,</span> <span class="n">η</span><span class="p">,</span> <span class="n">θ</span> <span class="o">=</span> <span class="n">params</span> 
+    <span class="n">B_size</span><span class="p">,</span> <span class="n">y_size</span> <span class="o">=</span> <span class="n">sizes</span>
+    <span class="n">P</span><span class="p">,</span> <span class="n">B_grid</span><span class="p">,</span> <span class="n">y_grid</span><span class="p">,</span> <span class="n">def_y</span> <span class="o">=</span> <span class="n">arrays</span>
+
+    <span class="c1"># Set up c[i_B, i_y, i_Bp]</span>
+    <span class="n">y_idx</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">y_size</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">y_size</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="n">B_idx</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">B_size</span><span class="p">),</span> <span class="p">(</span><span class="n">B_size</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="n">Bp_idx</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">B_size</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">B_size</span><span class="p">))</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="n">y_grid</span><span class="p">[</span><span class="n">y_idx</span><span class="p">]</span> <span class="o">-</span> <span class="n">q</span><span class="p">[</span><span class="n">Bp_idx</span><span class="p">,</span> <span class="n">y_idx</span><span class="p">]</span> <span class="o">*</span> <span class="n">B_grid</span><span class="p">[</span><span class="n">Bp_idx</span><span class="p">]</span> <span class="o">+</span> <span class="n">B_grid</span><span class="p">[</span><span class="n">B_idx</span><span class="p">]</span>  
+    
+    <span class="c1"># Set up v[i_B, i_y, i_Bp, i_yp] and P[i_B, i_y, i_Bp, i_yp]</span>
+    <span class="n">v_d</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">v_d</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">y_size</span><span class="p">))</span>
+    <span class="n">v_c</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">v_c</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">B_size</span><span class="p">,</span> <span class="n">y_size</span><span class="p">))</span>
+    <span class="n">v</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">v_c</span><span class="p">,</span> <span class="n">v_d</span><span class="p">)</span>
+    <span class="n">P</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">P</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">y_size</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">y_size</span><span class="p">))</span>
+    <span class="c1"># Sum over i_yp</span>
+    <span class="n">continuation_value</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">v</span> <span class="o">*</span> <span class="n">P</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,))</span>
+    
+    <span class="c1"># Return new_v_c[i_B, i_y, i_Bp]</span>
+    <span class="n">val</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">c</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">,</span> <span class="n">u</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">γ</span><span class="p">)</span> <span class="o">+</span> <span class="n">β</span> <span class="o">*</span> <span class="n">continuation_value</span><span class="p">,</span> <span class="o">-</span><span class="n">jnp</span><span class="o">.</span><span class="n">inf</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">val</span>
+                  
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">T_c</span><span class="p">(</span><span class="n">v_c</span><span class="p">,</span> <span class="n">v_d</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">sizes</span><span class="p">,</span> <span class="n">arrays</span><span class="p">):</span>
+    <span class="n">vals</span> <span class="o">=</span> <span class="n">bellman</span><span class="p">(</span><span class="n">v_c</span><span class="p">,</span> <span class="n">v_d</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">sizes</span><span class="p">,</span> <span class="n">arrays</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">jnp</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">vals</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_greedy</span><span class="p">(</span><span class="n">v_c</span><span class="p">,</span> <span class="n">v_d</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">sizes</span><span class="p">,</span> <span class="n">arrays</span><span class="p">):</span>
+    <span class="n">vals</span> <span class="o">=</span> <span class="n">bellman</span><span class="p">(</span><span class="n">v_c</span><span class="p">,</span> <span class="n">v_d</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">sizes</span><span class="p">,</span> <span class="n">arrays</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">jnp</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">vals</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s make JIT-compiled versions of these functions, with the sizes of the arrays declared as static (compile-time constants) in order to help the compiler.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">compute_q</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">jit</span><span class="p">(</span><span class="n">compute_q</span><span class="p">,</span> <span class="n">static_argnums</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,))</span>
+<span class="n">T_d</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">jit</span><span class="p">(</span><span class="n">T_d</span><span class="p">,</span> <span class="n">static_argnums</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,))</span>
+<span class="n">bellman</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">jit</span><span class="p">(</span><span class="n">bellman</span><span class="p">,</span> <span class="n">static_argnums</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,))</span>
+<span class="n">T_c</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">jit</span><span class="p">(</span><span class="n">T_c</span><span class="p">,</span> <span class="n">static_argnums</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,))</span>
+<span class="n">get_greedy</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">jit</span><span class="p">(</span><span class="n">get_greedy</span><span class="p">,</span> <span class="n">static_argnums</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Here is a function that calls these operators in the right sequence.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">update_values_and_prices</span><span class="p">(</span><span class="n">v_c</span><span class="p">,</span> <span class="n">v_d</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">sizes</span><span class="p">,</span> <span class="n">arrays</span><span class="p">):</span>
+
+    <span class="n">q</span> <span class="o">=</span> <span class="n">compute_q</span><span class="p">(</span><span class="n">v_c</span><span class="p">,</span> <span class="n">v_d</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">sizes</span><span class="p">,</span> <span class="n">arrays</span><span class="p">)</span>
+    <span class="n">new_v_d</span> <span class="o">=</span> <span class="n">T_d</span><span class="p">(</span><span class="n">v_c</span><span class="p">,</span> <span class="n">v_d</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">sizes</span><span class="p">,</span> <span class="n">arrays</span><span class="p">)</span>
+    <span class="n">new_v_c</span> <span class="o">=</span> <span class="n">T_c</span><span class="p">(</span><span class="n">v_c</span><span class="p">,</span> <span class="n">v_d</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">sizes</span><span class="p">,</span> <span class="n">arrays</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">new_v_c</span><span class="p">,</span> <span class="n">new_v_d</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We can now write a function that will use the <code class="docutils literal notranslate"><span class="pre">Arellano_Economy</span></code> class and the
+functions defined above to compute the solution to our model.</p>
+<p>One of the jobs of this function is to take an instance of
+<code class="docutils literal notranslate"><span class="pre">Arellano_Economy</span></code>, which is hard for the JIT compiler to handle, and strip it
+down to more basic objects, which are then passed out to jitted functions.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">solve</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-8</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">10_000</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Given an instance of Arellano_Economy, this function computes the optimal</span>
+<span class="sd">    policy and value functions.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Unpack</span>
+    <span class="n">params</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">params</span><span class="p">()</span>
+    <span class="n">sizes</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">sizes</span><span class="p">()</span>
+    <span class="n">arrays</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">arrays</span><span class="p">()</span>
+    <span class="n">B_size</span><span class="p">,</span> <span class="n">y_size</span> <span class="o">=</span> <span class="n">sizes</span>
+    
+    <span class="c1"># Initial conditions for v_c and v_d</span>
+    <span class="n">v_c</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">B_size</span><span class="p">,</span> <span class="n">y_size</span><span class="p">))</span>
+    <span class="n">v_d</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">y_size</span><span class="p">,))</span>
+
+    <span class="n">current_iter</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">error</span> <span class="o">=</span> <span class="n">tol</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="k">while</span> <span class="p">(</span><span class="n">current_iter</span> <span class="o">&lt;</span> <span class="n">max_iter</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">error</span> <span class="o">&gt;</span> <span class="n">tol</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">current_iter</span> <span class="o">%</span> <span class="mi">100</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Entering iteration </span><span class="si">{</span><span class="n">current_iter</span><span class="si">}</span><span class="s2"> with error </span><span class="si">{</span><span class="n">error</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+        <span class="n">new_v_c</span><span class="p">,</span> <span class="n">new_v_d</span> <span class="o">=</span> <span class="n">update_values_and_prices</span><span class="p">(</span><span class="n">v_c</span><span class="p">,</span> <span class="n">v_d</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">sizes</span><span class="p">,</span> <span class="n">arrays</span><span class="p">)</span>
+        <span class="n">error</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">new_v_c</span> <span class="o">-</span> <span class="n">v_c</span><span class="p">))</span> <span class="o">+</span> <span class="n">jnp</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">new_v_d</span> <span class="o">-</span> <span class="n">v_d</span><span class="p">))</span>
+        <span class="n">v_c</span><span class="p">,</span> <span class="n">v_d</span> <span class="o">=</span> <span class="n">new_v_c</span><span class="p">,</span> <span class="n">new_v_d</span>
+        <span class="n">current_iter</span> <span class="o">+=</span> <span class="mi">1</span>
+        
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Terminating at iteration </span><span class="si">{</span><span class="n">current_iter</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+    
+    <span class="n">q</span> <span class="o">=</span> <span class="n">compute_q</span><span class="p">(</span><span class="n">v_c</span><span class="p">,</span> <span class="n">v_d</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">sizes</span><span class="p">,</span> <span class="n">arrays</span><span class="p">)</span>
+    <span class="n">B_star</span> <span class="o">=</span> <span class="n">get_greedy</span><span class="p">(</span><span class="n">v_c</span><span class="p">,</span> <span class="n">v_d</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">sizes</span><span class="p">,</span> <span class="n">arrays</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">v_c</span><span class="p">,</span> <span class="n">v_d</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">B_star</span> 
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s try solving the model.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ae</span> <span class="o">=</span> <span class="n">Arellano_Economy</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">v_c</span><span class="p">,</span> <span class="n">v_d</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">B_star</span> <span class="o">=</span> <span class="n">solve</span><span class="p">(</span><span class="n">ae</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Entering iteration 0 with error 1.00000001.
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Entering iteration 100 with error 0.017499341639204857.
+Entering iteration 200 with error 0.00014189363558969603.
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Entering iteration 300 with error 1.151467966309383e-06.
+Terminating at iteration 399.
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%time</span>
+<span class="n">v_c</span><span class="p">,</span> <span class="n">v_d</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">B_star</span> <span class="o">=</span> <span class="n">solve</span><span class="p">(</span><span class="n">ae</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Entering iteration 0 with error 1.00000001.
+Entering iteration 100 with error 0.017499341639204857.
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Entering iteration 200 with error 0.00014189363558969603.
+Entering iteration 300 with error 1.151467966309383e-06.
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Terminating at iteration 399.
+CPU times: user 1.3 s, sys: 292 ms, total: 1.59 s
+Wall time: 648 ms
+</pre></div>
+</div>
+</div>
+</div>
+<p>Finally, we write a function that will allow us to simulate the economy once
+we have the policy functions</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">simulate</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">v_c</span><span class="p">,</span> <span class="n">v_d</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">B_star</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Simulates the Arellano 2008 model of sovereign debt</span>
+
+<span class="sd">    Here `model` is an instance of `Arellano_Economy` and `T` is the length of</span>
+<span class="sd">    the simulation.  Endogenous objects `v_c`, `v_d`, `q` and `B_star` are</span>
+<span class="sd">    assumed to come from a solution to `model`.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Unpack elements of the model</span>
+    <span class="n">B_size</span><span class="p">,</span> <span class="n">y_size</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">sizes</span><span class="p">()</span>
+    <span class="n">B_grid</span><span class="p">,</span> <span class="n">y_grid</span><span class="p">,</span> <span class="n">P</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">B_grid</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">y_grid</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">P</span>
+    <span class="n">B0_idx</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span><span class="n">B_grid</span><span class="p">,</span> <span class="mf">1e-10</span><span class="p">)</span>  <span class="c1"># Index at which B is near zero</span>
+        
+    <span class="c1"># Set initial conditions</span>
+    <span class="n">y_idx</span> <span class="o">=</span> <span class="n">y_size</span> <span class="o">//</span> <span class="mi">2</span>
+    <span class="n">B_idx</span> <span class="o">=</span> <span class="n">B0_idx</span>
+    <span class="n">in_default</span> <span class="o">=</span> <span class="kc">False</span>
+
+    <span class="c1"># Create Markov chain and simulate income process</span>
+    <span class="n">mc</span> <span class="o">=</span> <span class="n">qe</span><span class="o">.</span><span class="n">MarkovChain</span><span class="p">(</span><span class="n">P</span><span class="p">,</span> <span class="n">y_grid</span><span class="p">)</span>
+    <span class="n">y_sim_indices</span> <span class="o">=</span> <span class="n">mc</span><span class="o">.</span><span class="n">simulate_indices</span><span class="p">(</span><span class="n">T</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="n">y_idx</span><span class="p">)</span>
+
+    <span class="c1"># Allocate memory for outputs</span>
+    <span class="n">y_sim</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">T</span><span class="p">)</span>
+    <span class="n">y_a_sim</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">T</span><span class="p">)</span>
+    <span class="n">B_sim</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">T</span><span class="p">)</span>
+    <span class="n">q_sim</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">T</span><span class="p">)</span>
+    <span class="n">d_sim</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+
+    <span class="c1"># Perform simulation</span>
+    <span class="n">t</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">while</span> <span class="n">t</span> <span class="o">&lt;</span> <span class="n">T</span><span class="p">:</span>
+
+        <span class="c1"># Update y_sim and B_sim</span>
+        <span class="n">y_sim</span> <span class="o">=</span> <span class="n">y_sim</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">t</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">y_grid</span><span class="p">[</span><span class="n">y_idx</span><span class="p">])</span>
+        <span class="n">B_sim</span> <span class="o">=</span> <span class="n">B_sim</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">t</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">B_grid</span><span class="p">[</span><span class="n">B_idx</span><span class="p">])</span>
+
+        <span class="c1"># if in default:</span>
+        <span class="k">if</span> <span class="n">v_c</span><span class="p">[</span><span class="n">B_idx</span><span class="p">,</span> <span class="n">y_idx</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">v_d</span><span class="p">[</span><span class="n">y_idx</span><span class="p">]</span> <span class="ow">or</span> <span class="n">in_default</span><span class="p">:</span>
+            <span class="c1"># Update y_a_sim</span>
+            <span class="n">y_a_sim</span> <span class="o">=</span> <span class="n">y_a_sim</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">t</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">def_y</span><span class="p">[</span><span class="n">y_idx</span><span class="p">])</span>
+            <span class="n">d_sim</span> <span class="o">=</span> <span class="n">d_sim</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">t</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">Bp_idx</span> <span class="o">=</span> <span class="n">B0_idx</span>
+            <span class="c1"># Re-enter financial markets next period with prob θ</span>
+            <span class="c1"># in_default = False if jnp.random.rand() &lt; model.θ else True</span>
+            <span class="n">in_default</span> <span class="o">=</span> <span class="kc">False</span> <span class="k">if</span> <span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">model</span><span class="o">.</span><span class="n">θ</span> <span class="k">else</span> <span class="kc">True</span>
+            <span class="n">key</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>  <span class="c1"># Update the random key</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># Update y_a_sim</span>
+            <span class="n">y_a_sim</span> <span class="o">=</span> <span class="n">y_a_sim</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">t</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">y_sim</span><span class="p">[</span><span class="n">t</span><span class="p">])</span>
+            <span class="n">d_sim</span> <span class="o">=</span> <span class="n">d_sim</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">t</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="n">Bp_idx</span> <span class="o">=</span> <span class="n">B_star</span><span class="p">[</span><span class="n">B_idx</span><span class="p">,</span> <span class="n">y_idx</span><span class="p">]</span>
+
+        <span class="n">q_sim</span> <span class="o">=</span> <span class="n">q_sim</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">t</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">q</span><span class="p">[</span><span class="n">Bp_idx</span><span class="p">,</span> <span class="n">y_idx</span><span class="p">])</span>
+
+        <span class="c1"># Update time and indices</span>
+        <span class="n">t</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">y_idx</span> <span class="o">=</span> <span class="n">y_sim_indices</span><span class="p">[</span><span class="n">t</span><span class="p">]</span>
+        <span class="n">B_idx</span> <span class="o">=</span> <span class="n">Bp_idx</span>
+
+    <span class="k">return</span> <span class="n">y_sim</span><span class="p">,</span> <span class="n">y_a_sim</span><span class="p">,</span> <span class="n">B_sim</span><span class="p">,</span> <span class="n">q_sim</span><span class="p">,</span> <span class="n">d_sim</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="results">
+<h2><span class="section-number">10.5. </span>Results<a class="headerlink" href="#results" title="Permalink to this heading">#</a></h2>
+<p>Let’s start by trying to replicate the results obtained in <span id="id3">[<a class="reference internal" href="zreferences.html#id255" title="Cristina Arellano. Default risk and income fluctuations in emerging economies. The American Economic Review, pages 690–712, 2008.">Are08</a>]</span>.</p>
+<p>In what follows, all results are computed using Arellano’s parameter values.</p>
+<p>The values can be seen in the <code class="docutils literal notranslate"><span class="pre">__init__</span></code> method of the <code class="docutils literal notranslate"><span class="pre">Arellano_Economy</span></code>
+shown above.</p>
+<p>For example, <code class="docutils literal notranslate"><span class="pre">r=0.017</span></code> matches the average quarterly rate on a 5 year US treasury over the period 1983–2001.</p>
+<p>Details on how to compute the figures are reported as solutions to the
+exercises.</p>
+<p>The first figure shows the bond price schedule and replicates Figure 3 of
+Arellano, where <span class="math notranslate nohighlight">\( y_L \)</span> and <span class="math notranslate nohighlight">\( Y_H \)</span> are particular below average and above average
+values of output <span class="math notranslate nohighlight">\( y \)</span>.</p>
+<p><img alt="https://python-advanced.quantecon.org/_static/lecture_specific/arellano/arellano_bond_prices.png" src="https://python-advanced.quantecon.org/_static/lecture_specific/arellano/arellano_bond_prices.png" /></p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\( y_L \)</span> is 5% below the mean of the <span class="math notranslate nohighlight">\( y \)</span> grid values</p></li>
+<li><p><span class="math notranslate nohighlight">\( y_H \)</span> is 5% above  the mean of the <span class="math notranslate nohighlight">\( y \)</span> grid values</p></li>
+</ul>
+<p>The grid used to compute this figure was relatively fine (<code class="docutils literal notranslate"><span class="pre">y_grid_size,</span> <span class="pre">B_grid_size</span> <span class="pre">=</span> <span class="pre">51,</span> <span class="pre">251</span></code>), which explains the minor differences between this and
+Arrelano’s figure.</p>
+<p>The figure shows that</p>
+<ul class="simple">
+<li><p>Higher levels of debt (larger <span class="math notranslate nohighlight">\( -B' \)</span>) induce larger discounts on the face value, which
+correspond to higher interest rates.</p></li>
+<li><p>Lower income also causes more discounting, as foreign creditors anticipate greater likelihood
+of default.</p></li>
+</ul>
+<p>The next figure plots value functions and replicates the right hand panel of Figure 4 of <span id="id4">[<a class="reference internal" href="zreferences.html#id255" title="Cristina Arellano. Default risk and income fluctuations in emerging economies. The American Economic Review, pages 690–712, 2008.">Are08</a>]</span>.</p>
+<p><img alt="https://python-advanced.quantecon.org/_static/lecture_specific/arellano/arellano_value_funcs.png" src="https://python-advanced.quantecon.org/_static/lecture_specific/arellano/arellano_value_funcs.png" /></p>
+<p>We can use the results of the computation to study the default probability <span class="math notranslate nohighlight">\( \delta(B', y) \)</span>
+defined in <a class="reference internal" href="#equation-equation13-4">(10.4)</a>.</p>
+<p>The next plot shows these default probabilities over <span class="math notranslate nohighlight">\( (B', y) \)</span> as a heat map.</p>
+<p><img alt="https://python-advanced.quantecon.org/_static/lecture_specific/arellano/arellano_default_probs.png" src="https://python-advanced.quantecon.org/_static/lecture_specific/arellano/arellano_default_probs.png" /></p>
+<p>As anticipated, the probability that the government chooses to default in the following period
+increases with indebtedness and falls with income.</p>
+<p>Next let’s run a time series simulation of <span class="math notranslate nohighlight">\( \{y_t\} \)</span>, <span class="math notranslate nohighlight">\( \{B_t\} \)</span> and <span class="math notranslate nohighlight">\( q(B_{t+1}, y_t) \)</span>.</p>
+<p>The grey vertical bars correspond to periods when the economy is excluded from financial markets because of a past default.</p>
+<p><img alt="https://python-advanced.quantecon.org/_static/lecture_specific/arellano/arellano_time_series.png" src="https://python-advanced.quantecon.org/_static/lecture_specific/arellano/arellano_time_series.png" /></p>
+<p>One notable feature of the simulated data is the nonlinear response of interest rates.</p>
+<p>Periods of relative stability are followed by sharp spikes in the discount rate on government debt.</p>
+</section>
+<section id="exercises">
+<h2><span class="section-number">10.6. </span>Exercises<a class="headerlink" href="#exercises" title="Permalink to this heading">#</a></h2>
+<p><a id='arellano-ex1'></a></p>
+<div class="exercise admonition" id="arellano_ex1">
+
+<p class="admonition-title"><span class="caption-number">Exercise 10.1 </span></p>
+<section id="exercise-content">
+<p>To the extent that you can, replicate the figures shown above</p>
+<ul class="simple">
+<li><p>Use the parameter values listed as defaults in <code class="docutils literal notranslate"><span class="pre">Arellano_Economy</span></code>.</p></li>
+<li><p>The time series will of course vary depending on the shock draws.</p></li>
+</ul>
+</section>
+</div>
+<div class="solution dropdown admonition" id="arellano-solution-1">
+
+<p class="admonition-title">Solution to<a class="reference internal" href="#arellano_ex1"> Exercise 10.1</a></p>
+<section id="solution-content">
+<p>Solution to<a class="reference external" href="https://python-advanced.quantecon.org/#arella_ex1"> Exercise 13.1</a>. Compute the value function, policy and equilibrium prices</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ae</span> <span class="o">=</span> <span class="n">Arellano_Economy</span><span class="p">()</span>
+<span class="n">v_c</span><span class="p">,</span> <span class="n">v_d</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">B_star</span> <span class="o">=</span> <span class="n">solve</span><span class="p">(</span><span class="n">ae</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Entering iteration 0 with error 1.00000001.
+Entering iteration 100 with error 0.017499341639204857.
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Entering iteration 200 with error 0.00014189363558969603.
+Entering iteration 300 with error 1.151467966309383e-06.
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Terminating at iteration 399.
+</pre></div>
+</div>
+</div>
+</div>
+<p>Compute the bond price schedule as seen in figure 3 of Arellano (2008)</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Unpack some useful names</span>
+<span class="n">B_grid</span><span class="p">,</span> <span class="n">y_grid</span><span class="p">,</span> <span class="n">P</span> <span class="o">=</span> <span class="n">ae</span><span class="o">.</span><span class="n">B_grid</span><span class="p">,</span> <span class="n">ae</span><span class="o">.</span><span class="n">y_grid</span><span class="p">,</span> <span class="n">ae</span><span class="o">.</span><span class="n">P</span>
+<span class="n">B_size</span><span class="p">,</span> <span class="n">y_size</span> <span class="o">=</span> <span class="n">ae</span><span class="o">.</span><span class="n">sizes</span><span class="p">()</span>
+<span class="n">r</span> <span class="o">=</span> <span class="n">ae</span><span class="o">.</span><span class="n">r</span>
+
+<span class="c1"># Create &quot;Y High&quot; and &quot;Y Low&quot; values as 5% devs from mean</span>
+<span class="n">high</span><span class="p">,</span> <span class="n">low</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">y_grid</span><span class="p">)</span> <span class="o">*</span> <span class="mf">1.05</span><span class="p">,</span> <span class="n">jnp</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">y_grid</span><span class="p">)</span> <span class="o">*</span> <span class="mf">.95</span>
+<span class="n">iy_high</span><span class="p">,</span> <span class="n">iy_low</span> <span class="o">=</span> <span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span><span class="n">y_grid</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="p">(</span><span class="n">high</span><span class="p">,</span> <span class="n">low</span><span class="p">))</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mf">6.5</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Bond price schedule $q(y, B&#39;)$&quot;</span><span class="p">)</span>
+
+<span class="c1"># Extract a suitable plot grid</span>
+<span class="n">x</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">q_low</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">q_high</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">B</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">B_grid</span><span class="p">):</span>
+    <span class="k">if</span> <span class="o">-</span><span class="mf">0.35</span> <span class="o">&lt;=</span> <span class="n">B</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>  <span class="c1"># To match fig 3 of Arellano</span>
+        <span class="n">x</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">B</span><span class="p">)</span>
+        <span class="n">q_low</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">q</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">iy_low</span><span class="p">])</span>
+        <span class="n">q_high</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">q</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">iy_high</span><span class="p">])</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">q_high</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;$y_H$&quot;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">q_low</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;$y_L$&quot;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;$B&#39;$&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper left&#39;</span><span class="p">,</span> <span class="n">frameon</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/07c5bbfc064304f7f014a883a3c6a7f2e50f9cd5679dcbc645253a7eb62036d6.png" src="_images/07c5bbfc064304f7f014a883a3c6a7f2e50f9cd5679dcbc645253a7eb62036d6.png" />
+</div>
+</div>
+<p>Draw a plot of the value functions</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">v</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">v_c</span><span class="p">,</span> <span class="n">jnp</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">v_d</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">y_size</span><span class="p">)))</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mf">6.5</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Value Functions&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">B_grid</span><span class="p">,</span> <span class="n">v</span><span class="p">[:,</span> <span class="n">iy_high</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;$y_H$&quot;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">B_grid</span><span class="p">,</span> <span class="n">v</span><span class="p">[:,</span> <span class="n">iy_low</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;$y_L$&quot;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper left&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;$B$&quot;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;$v(y, B)$&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">B_grid</span><span class="p">),</span> <span class="nb">max</span><span class="p">(</span><span class="n">B_grid</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/dbecf2a88dd68007c668d4201c0f2b12e9537473ca32665bcb9ebcb875b177bb.png" src="_images/dbecf2a88dd68007c668d4201c0f2b12e9537473ca32665bcb9ebcb875b177bb.png" />
+</div>
+</div>
+<p>Draw a heat map for default probability</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set up arrays with indices [i_B, i_y, i_yp]</span>
+<span class="n">shaped_v_d</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">v_d</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">y_size</span><span class="p">))</span>
+<span class="n">shaped_v_c</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">v_c</span><span class="p">,</span> <span class="p">(</span><span class="n">B_size</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">y_size</span><span class="p">))</span>
+<span class="n">shaped_P</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">P</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">y_size</span><span class="p">,</span> <span class="n">y_size</span><span class="p">))</span>
+
+<span class="c1"># Compute delta[i_B, i_y]</span>
+<span class="n">default_states</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">*</span> <span class="p">(</span><span class="n">shaped_v_c</span> <span class="o">&lt;</span> <span class="n">shaped_v_d</span><span class="p">)</span>
+<span class="n">delta</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">default_states</span> <span class="o">*</span> <span class="n">shaped_P</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,))</span> 
+
+<span class="c1"># Create figure</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mf">6.5</span><span class="p">))</span>
+<span class="n">hm</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">pcolormesh</span><span class="p">(</span><span class="n">B_grid</span><span class="p">,</span> <span class="n">y_grid</span><span class="p">,</span> <span class="n">delta</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+<span class="n">cax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_axes</span><span class="p">([</span><span class="mf">.92</span><span class="p">,</span> <span class="mf">.1</span><span class="p">,</span> <span class="mf">.02</span><span class="p">,</span> <span class="mf">.8</span><span class="p">])</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">hm</span><span class="p">,</span> <span class="n">cax</span><span class="o">=</span><span class="n">cax</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">([</span><span class="n">B_grid</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="mf">0.05</span><span class="p">,</span> <span class="n">y_grid</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">y_grid</span><span class="o">.</span><span class="n">max</span><span class="p">()])</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;$B&#39;$&quot;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;$y$&quot;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Probability of Default&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/ec562548723897cdf070271c6f23da0c9bf3f99c6368828060cf4a26525ff43d.png" src="_images/ec562548723897cdf070271c6f23da0c9bf3f99c6368828060cf4a26525ff43d.png" />
+</div>
+</div>
+<p>Plot a time series of major variables simulated from the model</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">jax.random</span> <span class="k">as</span> <span class="nn">random</span>
+<span class="n">T</span> <span class="o">=</span> <span class="mi">250</span>
+<span class="n">key</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">PRNGKey</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+<span class="n">y_sim</span><span class="p">,</span> <span class="n">y_a_sim</span><span class="p">,</span> <span class="n">B_sim</span><span class="p">,</span> <span class="n">q_sim</span><span class="p">,</span> <span class="n">d_sim</span> <span class="o">=</span> <span class="n">simulate</span><span class="p">(</span><span class="n">ae</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">v_c</span><span class="p">,</span> <span class="n">v_d</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">B_star</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
+
+<span class="c1"># T = 250</span>
+<span class="c1"># jnp.random.seed(42)</span>
+<span class="c1"># y_sim, y_a_sim, B_sim, q_sim, d_sim = simulate(ae, T, v_c, v_d, q, B_star)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Pick up default start and end dates</span>
+<span class="n">start_end_pairs</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">while</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">d_sim</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">d_sim</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># If we get to here we&#39;re in default</span>
+        <span class="n">start_default</span> <span class="o">=</span> <span class="n">i</span>
+        <span class="k">while</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">d_sim</span><span class="p">)</span> <span class="ow">and</span> <span class="n">d_sim</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">end_default</span> <span class="o">=</span> <span class="n">i</span> <span class="o">-</span> <span class="mi">1</span>
+        <span class="n">start_end_pairs</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">start_default</span><span class="p">,</span> <span class="n">end_default</span><span class="p">))</span>
+
+<span class="n">plot_series</span> <span class="o">=</span> <span class="p">(</span><span class="n">y_sim</span><span class="p">,</span> <span class="n">B_sim</span><span class="p">,</span> <span class="n">q_sim</span><span class="p">)</span>
+<span class="n">titles</span> <span class="o">=</span> <span class="s1">&#39;output&#39;</span><span class="p">,</span> <span class="s1">&#39;foreign assets&#39;</span><span class="p">,</span> <span class="s1">&#39;bond price&#39;</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">plot_series</span><span class="p">),</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">12</span><span class="p">))</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">subplots_adjust</span><span class="p">(</span><span class="n">hspace</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">ax</span><span class="p">,</span> <span class="n">series</span><span class="p">,</span> <span class="n">title</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">axes</span><span class="p">,</span> <span class="n">plot_series</span><span class="p">,</span> <span class="n">titles</span><span class="p">):</span>
+    <span class="c1"># Determine suitable y limits</span>
+    <span class="n">s_max</span><span class="p">,</span> <span class="n">s_min</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">series</span><span class="p">),</span> <span class="nb">min</span><span class="p">(</span><span class="n">series</span><span class="p">)</span>
+    <span class="n">s_range</span> <span class="o">=</span> <span class="n">s_max</span> <span class="o">-</span> <span class="n">s_min</span>
+    <span class="n">y_max</span> <span class="o">=</span> <span class="n">s_max</span> <span class="o">+</span> <span class="n">s_range</span> <span class="o">*</span> <span class="mf">0.1</span>
+    <span class="n">y_min</span> <span class="o">=</span> <span class="n">s_min</span> <span class="o">-</span> <span class="n">s_range</span> <span class="o">*</span> <span class="mf">0.1</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="n">y_min</span><span class="p">,</span> <span class="n">y_max</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">pair</span> <span class="ow">in</span> <span class="n">start_end_pairs</span><span class="p">:</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span><span class="n">pair</span><span class="p">,</span> <span class="p">(</span><span class="n">y_min</span><span class="p">,</span> <span class="n">y_min</span><span class="p">),</span> <span class="p">(</span><span class="n">y_max</span><span class="p">,</span> <span class="n">y_max</span><span class="p">),</span>
+                        <span class="n">color</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">T</span><span class="p">),</span> <span class="n">series</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="n">title</span><span class="p">,</span> <span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;time&quot;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/71099af923af11ea27980c86cfbc84539ac1cc559260a85e685093010ca6c215.png" src="_images/71099af923af11ea27980c86cfbc84539ac1cc559260a85e685093010ca6c215.png" />
+</div>
+</div>
+</section>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                    </div>
+                    
+                </main> <!-- .page__content -->
+                
+
+
+                <footer class="qe-page__footer">
+
+                    <p><a href="https://creativecommons.org/licenses/by-sa/4.0/"><img src="https://licensebuttons.net/l/by-sa/4.0/80x15.png"></a></p>
+
+                    <p>Creative Commons License &ndash; This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International.</p>
+
+                </footer> <!-- .page__footer -->
+
+            </div> <!-- .page -->
+
+            
+
+            
+            <div class="qe-sidebar bd-sidebar inactive" id="site-navigation">
+
+                <div class="qe-sidebar__header">
+
+
+                    Contents
+
+                </div>
+
+                <nav class="qe-sidebar__nav" id="qe-sidebar-nav" aria-label="Main navigation">
+                    <p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Introduction
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="about.html">
+   1. About these Lectures
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="jax_intro.html">
+   2. JAX
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="newtons_method.html">
+   3. Newton’s Method via JAX
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Simulation
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="inventory_dynamics.html">
+   4. Inventory Dynamics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="kesten_processes.html">
+   5. Kesten Processes and Firm Dynamics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="wealth_dynamics.html">
+   6. Wealth Distribution Dynamics
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Dynamic Programming
+ </span>
+</p>
+<ul class="current nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="short_path.html">
+   7. Shortest Paths
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="opt_invest.html">
+   8. Optimal Investment
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="opt_savings.html">
+   9. Optimal Savings
+  </a>
+ </li>
+ <li class="toctree-l1 current active active">
+  <a class="current reference internal" href="#">
+   10. Default Risk and Income Fluctuations
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="aiyagari_jax.html">
+   11. The Aiyagari Model
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Other
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="troubleshooting.html">
+   12. Troubleshooting
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="zreferences.html">
+   13. References
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="status.html">
+   14. Execution Statistics
+  </a>
+ </li>
+</ul>
+
+                </nav>
+
+                <div class="qe-sidebar__footer">
+
+                </div>
+
+            </div> <!-- .sidebar -->
+            
+        </div> <!-- .main -->
+
+        <div class="qe-toolbar">
+
+            <div class="qe-toolbar__inner">
+
+                <ul class="qe-toolbar__main">
+                    <li data-tippy-content="Table of Contents" class="btn__sidebar"><i data-feather="menu"></i></li>
+                    <li data-tippy-content="Home"><a href="intro.html"><i data-feather="home"></i></a></li>
+                    <li class="btn__qelogo"><a href="https://quantecon.org" title=""><span class="show-for-sr">QuantEcon</span></a></li>
+                </ul>
+
+                <ul class="qe-toolbar__links">
+                    <li class="btn__search">
+                        <form action="search.html" method="get">
+                            <input type="search" class="form-control" name="q" id="search-input" placeholder="Search..." aria-label="Search..." autocomplete="off" accesskey="k">
+                            <i data-feather="search" id="search-icon"></i>
+                        </form>
+                    </li>
+                    <li data-tippy-content="Fullscreen" class="btn__fullscreen"><i data-feather="maximize"></i></li>
+                    <li data-tippy-content="Increase font size" class="btn__plus"><i data-feather="plus-circle"></i></li>
+                    <li data-tippy-content="Decrease font size" class="btn__minus"><i data-feather="minus-circle"></i></li>
+                    <li data-tippy-content="Change contrast" class="btn__contrast"><i data-feather="sunset"></i></li>
+                    <li class="settings-button" id="settingsButton"><div data-tippy-content="Launch Notebook"><i data-feather="play-circle"></i></div></li>
+                        <li data-tippy-content="Download PDF" onClick="window.print()"><i data-feather="file"></i></li>
+                    <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-jax/blob/main/lectures/arellano.md" download><i data-feather="github"></i></a></li>
+                </ul>
+
+            </div>
+
+        </div> <!-- .toolbar -->
+        <div id="downloadPDFModal" style="display: none;">
+            <ul class="pdf-options" style="display: block;">
+                <li class="download-pdf-book" onClick="window.print()">
+                    <p>Lecture (PDF)</p>
+                </li>
+                <li class="download-pdf-file">
+                    <a href="" download><p>Book (PDF)</p></a>
+                </li>
+            </ul>
+        </div>
+        <div id="settingsModal" style="display: none;">
+            <p class="modal-title"> Notebook Launcher </p>
+            <div class="modal-desc">
+            <p>
+                Choose public or private cloud service for "Launch" button.
+            </p>
+            </div>
+            <p class="modal-subtitle">Select a server</p>
+            <ul class="modal-servers">
+            <li class="active launcher-public">
+                <span class="label">Public</span>
+                <select id="launcher-public-input">
+                
+                    <option value="https://mybinder.org/v2/gh/QuantEcon/lecture-jax.notebooks/master?urlpath=tree/arellano.ipynb">BinderHub</option>
+                
+                    <option value="https://colab.research.google.com/github/QuantEcon/lecture-jax.notebooks/blob/master/arellano.ipynb">Colab</option>
+                
+                </select>
+                <i class="fas fa-check-circle"></i>
+            </li>
+            <li class="launcher-private">
+                <span class="label">Private</span>
+                <input type="text" id="launcher-private-input" data-repourl="https://github.com/QuantEcon/lecture-jax.notebooks" data-urlpath="tree/lecture-jax.notebooks/arellano.ipynb" data-branch=master>
+                <i class="fas fa-check-circle"></i>
+            </li>
+            </ul>
+            <p class="launch"><a href="https://mybinder.org/v2/gh/QuantEcon/lecture-jax.notebooks/master?urlpath=tree/arellano.ipynb" id="advancedLaunchButton" target="_blank">Launch Notebook</a></p>
+            <script>
+                // QuantEcon Notebook Launcher
+                const launcherTypeElements = document.querySelectorAll('#settingsModal .modal-servers li');
+                // Highlight the server type if previous selection exists
+                if (typeof localStorage.launcherType !== 'undefined') {
+                  for (var i = 0; i < launcherTypeElements.length; i++) {
+                    launcherTypeElements[i].classList.remove('active');
+                    if ( launcherTypeElements[i].classList.contains(localStorage.launcherType) ) {
+                      launcherTypeElements[i].classList.add('active');
+                    }
+                  }
+                }
+                // Highlight server type on click and set local storage value
+                for (var i = 0; i < launcherTypeElements.length; i++) {
+                  launcherTypeElements[i].addEventListener('click', function() {
+                    for (var j = 0; j < launcherTypeElements.length; j++) {
+                      launcherTypeElements[j].classList.remove('active');
+                    }
+                    this.classList.add('active');
+                    if ( this.classList.contains('launcher-private') ) {
+                      localStorage.launcherType = 'launcher-private';
+                    } else if ( this.classList.contains('launcher-public') ) {
+                      localStorage.launcherType = 'launcher-public';
+                    }
+                    setLaunchServer();
+                  })
+                }
+                const launcherPublic = document.getElementById('launcher-public-input');
+                const launcherPrivate = document.getElementById('launcher-private-input');
+                const pageName = "arellano";
+                const repoURL = "https://github.com/QuantEcon/lecture-jax.notebooks";
+                const urlPath = "tree/lecture-jax.notebooks/arellano.ipynb";
+                const branch = "master"
+                const launchNotebookLink = document.getElementById('advancedLaunchButton');
+
+                // Highlight public server option if previous selection exists
+                if (typeof localStorage.launcherPublic !== 'undefined') {
+                  launcherPublic.value = localStorage.launcherPublic;
+                }
+                // Update local storage upon public server selection
+                launcherPublic.addEventListener('change', (event) => {
+                  setLaunchServer();
+                });
+                // Populate private server input if previous entry exists
+                if (typeof localStorage.launcherPrivate !== 'undefined') {
+                  launcherPrivate.value = localStorage.launcherPrivate;
+                }
+                // Update local storage when a private server is entered
+                launcherPrivate.addEventListener('input', (event) => {
+                  setLaunchServer();
+                });
+
+                // Function to update the "Launch Notebook" link href
+                function setLaunchServer() {
+                  launchNotebookLink.removeAttribute("style")
+                  if ( localStorage.launcherType == 'launcher-private' ) {
+                    let repoPrefix = "/jupyter/hub/user-redirect/git-pull?repo=" + repoURL + "&branch=" + branch + "&urlpath=" + urlPath;
+                    launcherPrivateValue = launcherPrivate.value
+                    if (!launcherPrivateValue) {
+                        launchNotebookLink.removeAttribute("href")
+                        launchNotebookLink.style.background = "grey"
+                        return
+                    }
+                    localStorage.launcherPrivate = launcherPrivateValue;
+                    privateServer = localStorage.launcherPrivate.replace(/\/$/, "")
+                    if (!privateServer.includes("http")) {
+                        privateServer = "http://" + privateServer
+                    }
+                    launchNotebookLinkURL = privateServer + repoPrefix;
+                  } else if ( localStorage.launcherType == 'launcher-public' ) {
+                    launcherPublicValue = launcherPublic.options[launcherPublic.selectedIndex].value;
+                    localStorage.launcherPublic = launcherPublicValue;
+                    launchNotebookLinkURL = localStorage.launcherPublic;
+                  }
+                  if (launchNotebookLinkURL) launchNotebookLink.href = launchNotebookLinkURL;
+                }
+                // Check if user has previously selected a server
+                if ( (typeof localStorage.launcherPrivate !== 'undefined') || (typeof localStorage.launcherPublic !== 'undefined') ) {
+                  setLaunchServer();
+                }
+                </script>
+
+        </div>
+
+    </div> <!-- .wrapper-->
+  </body>
+</html>
