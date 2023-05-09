@@ -228,6 +228,12 @@ const thebe_selector_output = ".output, .cell_output"
                         
   <section class="tex2jax_ignore mathjax_ignore" id="the-aiyagari-model">
 <h1><span class="section-number">11. </span>The Aiyagari Model<a class="headerlink" href="#the-aiyagari-model" title="Permalink to this heading">#</a></h1>
+<div class="warning admonition">
+<p class="admonition-title">GPU</p>
+<p>This lecture is accelerated via <a class="reference internal" href="status.html#status-machine-details"><span class="std std-ref">hardware</span></a> that has access to a GPU and JAX for GPU programming.</p>
+<p>Free GPUs are available on Google Colab. To use this option, please click on the play icon top right, select Colab, and set the runtime environment to include a GPU.</p>
+<p>Alternatively, if you have your own GPU, you can follow the <a class="reference external" href="https://github.com/google/jax">instructions</a> for installing JAX with GPU support. If you would like to install JAX running on the <code class="docutils literal notranslate"><span class="pre">cpu</span></code> only you can use <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">jax[cpu]</span></code></p>
+</div>
 <section id="overview">
 <h2><span class="section-number">11.1. </span>Overview<a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
 <p>In this lecture, we describe the structure of a class of models that build on work by Truman Bewley [<a class="reference external" href="https://python.quantecon.org/zreferences.html#id173">Bew77</a>].</p>
@@ -260,24 +266,6 @@ const thebe_selector_output = ".output, .cell_output"
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">jax</span>
 <span class="kn">import</span> <span class="nn">jax.numpy</span> <span class="k">as</span> <span class="nn">jnp</span>
-</pre></div>
-</div>
-</div>
-</div>
-<p>Let’s check the backend used by JAX and the devices available.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check if JAX is using GPU</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;JAX backend: </span><span class="si">{</span><span class="n">jax</span><span class="o">.</span><span class="n">devices</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">platform</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-
-<span class="c1"># Check the devices available for JAX</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">jax</span><span class="o">.</span><span class="n">devices</span><span class="p">())</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>JAX backend: gpu
-[StreamExecutorGpuDevice(id=0, process_index=0, slice_index=0)]
 </pre></div>
 </div>
 </div>
@@ -704,8 +692,8 @@ Concluded loop 12 with error 1.
 Concluded loop 13 with error 1.
 Concluded loop 14 with error 1.
 Concluded loop 15 with error 0.
-CPU times: user 1.88 s, sys: 181 ms, total: 2.06 s
-Wall time: 1.59 s
+CPU times: user 1.86 s, sys: 110 ms, total: 1.97 s
+Wall time: 1.51 s
 </pre></div>
 </div>
 </div>
@@ -719,8 +707,8 @@ Wall time: 1.59 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 559 ms, sys: 76.4 ms, total: 635 ms
-Wall time: 580 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 530 ms, sys: 79.6 ms, total: 610 ms
+Wall time: 567 ms
 </pre></div>
 </div>
 </div>
@@ -745,7 +733,7 @@ Wall time: 580 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/452217c75b032e20474a0925a350aeefbf0b54757a1145f1be87de5217c026a7.png" src="_images/452217c75b032e20474a0925a350aeefbf0b54757a1145f1be87de5217c026a7.png" />
+<a class="reference internal image-reference" href="_images/452217c75b032e20474a0925a350aeefbf0b54757a1145f1be87de5217c026a7.png"><img alt="_images/452217c75b032e20474a0925a350aeefbf0b54757a1145f1be87de5217c026a7.png" src="_images/452217c75b032e20474a0925a350aeefbf0b54757a1145f1be87de5217c026a7.png" style="width: 80%;" /></a>
 </div>
 </div>
 <section id="capital-supply">
@@ -895,8 +883,8 @@ bivariate Markov chain of the state <span class="math notranslate nohighlight">\
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 12.3 s, sys: 3.73 s, total: 16 s
-Wall time: 5.23 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 11.6 s, sys: 2.86 s, total: 14.5 s
+Wall time: 4.87 s
 </pre></div>
 </div>
 </div>
@@ -918,7 +906,7 @@ Wall time: 5.23 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/1052b5d5917a3f3fecfa5a173a73b910ca6349c7484a9913d321ee68f87056f5.png" src="_images/1052b5d5917a3f3fecfa5a173a73b910ca6349c7484a9913d321ee68f87056f5.png" />
+<a class="reference internal image-reference" href="_images/1052b5d5917a3f3fecfa5a173a73b910ca6349c7484a9913d321ee68f87056f5.png"><img alt="_images/1052b5d5917a3f3fecfa5a173a73b910ca6349c7484a9913d321ee68f87056f5.png" src="_images/1052b5d5917a3f3fecfa5a173a73b910ca6349c7484a9913d321ee68f87056f5.png" style="width: 80%;" /></a>
 </div>
 </div>
 <p>Here’s a plot of the excess demand function.</p>
@@ -945,8 +933,8 @@ Wall time: 5.23 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 12 s, sys: 4.24 s, total: 16.2 s
-Wall time: 4.93 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 11.3 s, sys: 3.35 s, total: 14.7 s
+Wall time: 4.59 s
 </pre></div>
 </div>
 </div>
@@ -963,7 +951,7 @@ Wall time: 4.93 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/b234c27d15e248f1a3ca63820ac18bf32c37bc11eb27067301b276c97c1f42c5.png" src="_images/b234c27d15e248f1a3ca63820ac18bf32c37bc11eb27067301b276c97c1f42c5.png" />
+<a class="reference internal image-reference" href="_images/b234c27d15e248f1a3ca63820ac18bf32c37bc11eb27067301b276c97c1f42c5.png"><img alt="_images/b234c27d15e248f1a3ca63820ac18bf32c37bc11eb27067301b276c97c1f42c5.png" src="_images/b234c27d15e248f1a3ca63820ac18bf32c37bc11eb27067301b276c97c1f42c5.png" style="width: 80%;" /></a>
 </div>
 </div>
 </section>
@@ -1016,8 +1004,8 @@ in the next function.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1.47 s, sys: 445 ms, total: 1.92 s
-Wall time: 586 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1.31 s, sys: 380 ms, total: 1.69 s
+Wall time: 537 ms
 </pre></div>
 </div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>8.09375
@@ -1067,7 +1055,7 @@ showing the behaviour of equilibrium capital stock with the increase in <span cl
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/64c112ffd626b7b5fc009b3fc893121b21519ccb1d8966c18117bbeea0a3a642.png" src="_images/64c112ffd626b7b5fc009b3fc893121b21519ccb1d8966c18117bbeea0a3a642.png" />
+<a class="reference internal image-reference" href="_images/64c112ffd626b7b5fc009b3fc893121b21519ccb1d8966c18117bbeea0a3a642.png"><img alt="_images/64c112ffd626b7b5fc009b3fc893121b21519ccb1d8966c18117bbeea0a3a642.png" src="_images/64c112ffd626b7b5fc009b3fc893121b21519ccb1d8966c18117bbeea0a3a642.png" style="width: 80%;" /></a>
 </div>
 </div>
 </section>
@@ -1157,7 +1145,7 @@ in the utility function.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/1052b5d5917a3f3fecfa5a173a73b910ca6349c7484a9913d321ee68f87056f5.png" src="_images/1052b5d5917a3f3fecfa5a173a73b910ca6349c7484a9913d321ee68f87056f5.png" />
+<a class="reference internal image-reference" href="_images/1052b5d5917a3f3fecfa5a173a73b910ca6349c7484a9913d321ee68f87056f5.png"><img alt="_images/1052b5d5917a3f3fecfa5a173a73b910ca6349c7484a9913d321ee68f87056f5.png" src="_images/1052b5d5917a3f3fecfa5a173a73b910ca6349c7484a9913d321ee68f87056f5.png" style="width: 80%;" /></a>
 </div>
 </div>
 <p>Compute the equilibrium</p>
@@ -1172,8 +1160,8 @@ in the utility function.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 2.25 s, sys: 281 ms, total: 2.53 s
-Wall time: 1.03 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 2.15 s, sys: 87.5 ms, total: 2.24 s
+Wall time: 922 ms
 </pre></div>
 </div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>8.09375
@@ -1243,12 +1231,12 @@ Wall time: 1.03 s
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="about.html">
-   1. About these Lectures
+   1. About
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="jax_intro.html">
-   2. JAX
+   2. An Introduction to JAX
   </a>
  </li>
  <li class="toctree-l1">

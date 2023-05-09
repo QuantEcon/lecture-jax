@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>2. JAX &#8212; Quantitative Economics with Python using JAX</title>
+    <title>2. An Introduction to JAX &#8212; Quantitative Economics with Python using JAX</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
@@ -114,7 +114,7 @@ const thebe_selector_output = ".output, .cell_output"
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="3. Newton’s Method via JAX" href="newtons_method.html" />
-    <link rel="prev" title="1. About these Lectures" href="about.html" />
+    <link rel="prev" title="1. About" href="about.html" />
 
 <!-- Normal Meta Tags -->
 <meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
@@ -124,13 +124,13 @@ const thebe_selector_output = ".output, .cell_output"
 <!-- Twitter tags -->
 <meta name="twitter:card" content="summary" />
 <meta name="twitter:site" content="@quantecon" />
-<meta name="twitter:title" content="JAX"/>
+<meta name="twitter:title" content="An Introduction to JAX"/>
 <meta name="twitter:description" content="This website presents a set of lectures on quantitative economic modeling, designed and written by Thomas J. Sargent and John Stachurski.">
 <meta name="twitter:creator" content="@quantecon">
 <meta name="twitter:image" content="https://assets.quantecon.org/img/qe-twitter-logo.png">
 
 <!-- Opengraph tags -->
-<meta property="og:title" content="JAX" />
+<meta property="og:title" content="An Introduction to JAX" />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://jax.quantecon.org/jax_intro.html" />
 <meta property="og:image" content="https://assets.quantecon.org/img/qe-og-logo.png" />
@@ -162,22 +162,16 @@ const thebe_selector_output = ".output, .cell_output"
 
                         <nav id="bd-toc-nav" class="qe-page__toc-nav">
                             <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">2.1. Overview</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#capabilities">2.1.1. Capabilities</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#history">2.1.2. History</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#installation">2.1.3. Installation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#jax-as-a-numpy-replacement">2.1. JAX as a NumPy Replacement</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#similarities">2.1.1. Similarities</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#differences">2.1.2. Differences</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#jax-as-a-numpy-replacement">2.2. JAX as a NumPy Replacement</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#similarities">2.2.1. Similarities</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#differences">2.2.2. Differences</a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#random-numbers">2.3. Random Numbers</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#jit-compilation">2.4. JIT Compilation</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#functional-programming">2.5. Functional Programming</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gradients">2.6. Gradients</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">2.7. Exercises</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#random-numbers">2.2. Random Numbers</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#jit-compilation">2.3. JIT Compilation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#functional-programming">2.4. Functional Programming</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gradients">2.5. Gradients</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">2.6. Exercises</a></li>
 </ul>
                             <p class="logo">
                                 
@@ -207,7 +201,7 @@ const thebe_selector_output = ".output, .cell_output"
 
                         <p class="qe-page__header-heading"><a href="intro.html">Quantitative Economics with Python using JAX</a></p>
 
-                        <p class="qe-page__header-subheading">JAX</p>
+                        <p class="qe-page__header-subheading">An Introduction to JAX</p>
 
                     </div>
 
@@ -222,63 +216,21 @@ const thebe_selector_output = ".output, .cell_output"
                     
                     <div>
                         
-  <section class="tex2jax_ignore mathjax_ignore" id="jax">
-<h1><span class="section-number">2. </span>JAX<a class="headerlink" href="#jax" title="Permalink to this heading">#</a></h1>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>This lecture is built using <a class="reference internal" href="status.html#status-machine-details"><span class="std std-ref">hardware</span></a> that
-has access to a GPU. This means that</p>
-<ol class="arabic simple">
-<li><p>the lecture might be significantly slower when running on your machine, and</p></li>
-<li><p>the code is well-suited to execution with <a class="reference external" href="https://colab.research.google.com/github/QuantEcon/lecture-python-programming.notebooks/blob/master/jax_intro.ipynb">Google colab</a></p></li>
-</ol>
+  <section class="tex2jax_ignore mathjax_ignore" id="an-introduction-to-jax">
+<h1><span class="section-number">2. </span>An Introduction to JAX<a class="headerlink" href="#an-introduction-to-jax" title="Permalink to this heading">#</a></h1>
+<div class="warning admonition">
+<p class="admonition-title">GPU</p>
+<p>This lecture is accelerated via <a class="reference internal" href="status.html#status-machine-details"><span class="std std-ref">hardware</span></a> that has access to a GPU and JAX for GPU programming.</p>
+<p>Free GPUs are available on Google Colab. To use this option, please click on the play icon top right, select Colab, and set the runtime environment to include a GPU.</p>
+<p>Alternatively, if you have your own GPU, you can follow the <a class="reference external" href="https://github.com/google/jax">instructions</a> for installing JAX with GPU support. If you would like to install JAX running on the <code class="docutils literal notranslate"><span class="pre">cpu</span></code> only you can use <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">jax[cpu]</span></code></p>
 </div>
 <p>This lecture provides a short introduction to <a class="reference external" href="https://github.com/google/jax">Google JAX</a>.</p>
-<section id="overview">
-<h2><span class="section-number">2.1. </span>Overview<a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
-<p>Let’s start with an overview of JAX.</p>
-<section id="capabilities">
-<h3><span class="section-number">2.1.1. </span>Capabilities<a class="headerlink" href="#capabilities" title="Permalink to this heading">#</a></h3>
-<p><a class="reference external" href="https://github.com/google/jax">JAX</a> is a Python library initially developed by
-Google to support in-house artificial intelligence and machine learning.</p>
-<p>JAX provides data types, functions and a compiler for fast linear
-algebra operations and automatic differentiation.</p>
-<p>Loosely speaking, JAX is like NumPy with the addition of</p>
-<ul class="simple">
-<li><p>automatic differentiation</p></li>
-<li><p>automated GPU/TPU support</p></li>
-<li><p>a just-in-time compiler</p></li>
-</ul>
-<p>One of the great benefits of JAX is that the same code can be run either on
-the CPU or on a hardware accelerator, such as a GPU or TPU.</p>
-<p>For example, JAX automatically builds and deploys kernels on the GPU whenever
-an accessible device is detected.</p>
-</section>
-<section id="history">
-<h3><span class="section-number">2.1.2. </span>History<a class="headerlink" href="#history" title="Permalink to this heading">#</a></h3>
-<p>In 2015, Google open-sourced part of its AI infrastructure called TensorFlow.</p>
-<p>Around two years later, Facebook open-sourced PyTorch beta, an alternative AI
-framework which is regarded as developer-friendly and more Pythonic than
-TensorFlow.</p>
-<p>By 2019, PyTorch was surging in popularity, adopted by Uber, Airbnb, Tesla and
-many other companies.</p>
-<p>In 2020, Google launched JAX as an open-source framework, simultaneously
-beginning to shift away from TPUs to Nvidia GPUs.</p>
-<p>In the last few years, uptake of Google JAX has accelerated rapidly, bringing
-attention back to Google-based machine learning architectures.</p>
-</section>
-<section id="installation">
-<h3><span class="section-number">2.1.3. </span>Installation<a class="headerlink" href="#installation" title="Permalink to this heading">#</a></h3>
-<p>JAX can be installed with or without GPU support by following <a class="reference external" href="https://github.com/google/jax">the install guide</a>.</p>
-<p>Note that JAX is pre-installed with GPU support on <a class="reference external" href="https://colab.research.google.com/">Google Colab</a>.</p>
-<p>If you do not have your own GPU, we recommend that you run this lecture on Colab.</p>
-</section>
-</section>
 <section id="jax-as-a-numpy-replacement">
-<h2><span class="section-number">2.2. </span>JAX as a NumPy Replacement<a class="headerlink" href="#jax-as-a-numpy-replacement" title="Permalink to this heading">#</a></h2>
-<p>One way to use JAX is as a plug-in NumPy replacement. Let’s look at the similarities and differences.</p>
+<h2><span class="section-number">2.1. </span>JAX as a NumPy Replacement<a class="headerlink" href="#jax-as-a-numpy-replacement" title="Permalink to this heading">#</a></h2>
+<p>One way to use JAX is as a plug-in NumPy replacement. Let’s look at the
+similarities and differences.</p>
 <section id="similarities">
-<h3><span class="section-number">2.2.1. </span>Similarities<a class="headerlink" href="#similarities" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">2.1.1. </span>Similarities<a class="headerlink" href="#similarities" title="Permalink to this heading">#</a></h3>
 <p>The following import is standard, replacing <code class="docutils literal notranslate"><span class="pre">import</span> <span class="pre">numpy</span> <span class="pre">as</span> <span class="pre">np</span></code>:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -442,7 +394,7 @@ attention back to Google-based machine learning architectures.</p>
 </div>
 </section>
 <section id="differences">
-<h3><span class="section-number">2.2.2. </span>Differences<a class="headerlink" href="#differences" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">2.1.2. </span>Differences<a class="headerlink" href="#differences" title="Permalink to this heading">#</a></h3>
 <p>One difference between NumPy and JAX is that, when running on a GPU, JAX uses 32 bit floats by default.</p>
 <p>This is standard for GPU computing and can lead to significant speed gains with small loss of precision.</p>
 <p>However, for some calculations precision matters.  In these cases 64 bit floats can be enforced via the command</p>
@@ -574,7 +526,7 @@ attention back to Google-based machine learning architectures.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1136433904
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1149641296
 </pre></div>
 </div>
 </div>
@@ -611,7 +563,7 @@ attention back to Google-based machine learning architectures.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1136433904
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1149641296
 </pre></div>
 </div>
 </div>
@@ -619,7 +571,7 @@ attention back to Google-based machine learning architectures.</p>
 </section>
 </section>
 <section id="random-numbers">
-<h2><span class="section-number">2.3. </span>Random Numbers<a class="headerlink" href="#random-numbers" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">2.2. </span>Random Numbers<a class="headerlink" href="#random-numbers" title="Permalink to this heading">#</a></h2>
 <p>Random numbers are also a bit different in JAX, relative to NumPy.  Typically, in JAX, the state of the random number generator needs to be controlled explicitly.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -772,7 +724,7 @@ attention back to Google-based machine learning architectures.</p>
 </div>
 </section>
 <section id="jit-compilation">
-<h2><span class="section-number">2.4. </span>JIT Compilation<a class="headerlink" href="#jit-compilation" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">2.3. </span>JIT Compilation<a class="headerlink" href="#jit-compilation" title="Permalink to this heading">#</a></h2>
 <p>The JAX JIT compiler accelerates logic within functions by fusing linear
 algebra operations into a single, highly optimized kernel that the host can
 launch on the GPU / TPU (or CPU if no accelerator is detected).</p>
@@ -802,8 +754,8 @@ launch on the GPU / TPU (or CPU if no accelerator is detected).</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 629 ms, sys: 132 ms, total: 762 ms
-Wall time: 4.3 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 490 ms, sys: 129 ms, total: 620 ms
+Wall time: 4.27 s
 </pre></div>
 </div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Array([499500., 499500., 499500., ..., 499500., 499500., 499500.],      dtype=float64)
@@ -847,8 +799,8 @@ Wall time: 4.3 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1.02 ms, sys: 233 µs, total: 1.25 ms
-Wall time: 35.6 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 657 µs, sys: 157 µs, total: 814 µs
+Wall time: 35.7 ms
 </pre></div>
 </div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Array([499500., 499500., 499500., ..., 499500., 499500., 499500.],      dtype=float64)
@@ -858,7 +810,7 @@ Wall time: 35.6 ms
 </div>
 </section>
 <section id="functional-programming">
-<h2><span class="section-number">2.5. </span>Functional Programming<a class="headerlink" href="#functional-programming" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">2.4. </span>Functional Programming<a class="headerlink" href="#functional-programming" title="Permalink to this heading">#</a></h2>
 <p>From JAX’s documentation:</p>
 <p><em>When walking about the countryside of Italy, the people will not hesitate to tell you that JAX has “una anima di pura programmazione funzionale”.</em></p>
 <p>In other words, JAX assumes a functional programming style.</p>
@@ -944,7 +896,7 @@ Wall time: 35.6 ms
 <p>Moral of the story: write pure functions when using JAX!</p>
 </section>
 <section id="gradients">
-<h2><span class="section-number">2.6. </span>Gradients<a class="headerlink" href="#gradients" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">2.5. </span>Gradients<a class="headerlink" href="#gradients" title="Permalink to this heading">#</a></h2>
 <p>JAX can use automatic differentiation to compute gradients.</p>
 <p>This can be extremely useful in optimization, root finding and other applications.</p>
 <p>Here’s a very simple illustration, involving the function</p>
@@ -991,12 +943,12 @@ Wall time: 35.6 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/98d8ad6885f397353a235bbc67f91823a2b6bbea2bbd8d90999973ef5fbb0361.png" src="_images/98d8ad6885f397353a235bbc67f91823a2b6bbea2bbd8d90999973ef5fbb0361.png" />
+<a class="reference internal image-reference" href="_images/98d8ad6885f397353a235bbc67f91823a2b6bbea2bbd8d90999973ef5fbb0361.png"><img alt="_images/98d8ad6885f397353a235bbc67f91823a2b6bbea2bbd8d90999973ef5fbb0361.png" src="_images/98d8ad6885f397353a235bbc67f91823a2b6bbea2bbd8d90999973ef5fbb0361.png" style="width: 80%;" /></a>
 </div>
 </div>
 </section>
 <section id="exercises">
-<h2><span class="section-number">2.7. </span>Exercises<a class="headerlink" href="#exercises" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">2.6. </span>Exercises<a class="headerlink" href="#exercises" title="Permalink to this heading">#</a></h2>
 <div class="exercise admonition" id="jax_intro_ex1">
 
 <p class="admonition-title"><span class="caption-number">Exercise 2.1 </span></p>
@@ -1025,7 +977,7 @@ Wall time: 35.6 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/9e5927624162cce35b51195f159768375415cf3e6c5341a1a492adc2c60f6801.png" src="_images/9e5927624162cce35b51195f159768375415cf3e6c5341a1a492adc2c60f6801.png" />
+<a class="reference internal image-reference" href="_images/9e5927624162cce35b51195f159768375415cf3e6c5341a1a492adc2c60f6801.png"><img alt="_images/9e5927624162cce35b51195f159768375415cf3e6c5341a1a492adc2c60f6801.png" src="_images/9e5927624162cce35b51195f159768375415cf3e6c5341a1a492adc2c60f6801.png" style="width: 80%;" /></a>
 </div>
 </div>
 </section>
@@ -1143,8 +1095,8 @@ significantly faster exection.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1.68 ms, sys: 237 µs, total: 1.91 ms
-Wall time: 109 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1.74 ms, sys: 243 µs, total: 1.99 ms
+Wall time: 111 ms
 </pre></div>
 </div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Array(180876.48840921, dtype=float64)
@@ -1214,12 +1166,12 @@ Wall time: 109 ms
 <ul class="current nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="about.html">
-   1. About these Lectures
+   1. About
   </a>
  </li>
  <li class="toctree-l1 current active active">
   <a class="current reference internal" href="#">
-   2. JAX
+   2. An Introduction to JAX
   </a>
  </li>
  <li class="toctree-l1">

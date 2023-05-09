@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>1. About these Lectures &#8212; Quantitative Economics with Python using JAX</title>
+    <title>1. About &#8212; Quantitative Economics with Python using JAX</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
@@ -111,7 +111,7 @@ const thebe_selector_output = ".output, .cell_output"
     <link rel="author" title="About these documents" href="#" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="2. JAX" href="jax_intro.html" />
+    <link rel="next" title="2. An Introduction to JAX" href="jax_intro.html" />
     <link rel="prev" title="Quantitative Economics with Python (JAX)" href="intro.html" />
 
 <!-- Normal Meta Tags -->
@@ -122,13 +122,13 @@ const thebe_selector_output = ".output, .cell_output"
 <!-- Twitter tags -->
 <meta name="twitter:card" content="summary" />
 <meta name="twitter:site" content="@quantecon" />
-<meta name="twitter:title" content="About these Lectures"/>
+<meta name="twitter:title" content="About"/>
 <meta name="twitter:description" content="This website presents a set of lectures on quantitative economic modeling, designed and written by Thomas J. Sargent and John Stachurski.">
 <meta name="twitter:creator" content="@quantecon">
 <meta name="twitter:image" content="https://assets.quantecon.org/img/qe-twitter-logo.png">
 
 <!-- Opengraph tags -->
-<meta property="og:title" content="About these Lectures" />
+<meta property="og:title" content="About" />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://jax.quantecon.org/about.html" />
 <meta property="og:image" content="https://assets.quantecon.org/img/qe-og-logo.png" />
@@ -160,8 +160,10 @@ const thebe_selector_output = ".output, .cell_output"
 
                         <nav id="bd-toc-nav" class="qe-page__toc-nav">
                             <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#about">1.1. About</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#credits">1.2. Credits</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-jax">1.1. What is JAX?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-to-run-these-lectures">1.2. How to run these lectures</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#credits">1.3. Credits</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prerequisites">1.4. Prerequisites</a></li>
 </ul>
                             <p class="logo">
                                 
@@ -191,7 +193,7 @@ const thebe_selector_output = ".output, .cell_output"
 
                         <p class="qe-page__header-heading"><a href="intro.html">Quantitative Economics with Python using JAX</a></p>
 
-                        <p class="qe-page__header-subheading">About these Lectures</p>
+                        <p class="qe-page__header-subheading">About</p>
 
                     </div>
 
@@ -206,16 +208,51 @@ const thebe_selector_output = ".output, .cell_output"
                     
                     <div>
                         
-  <section class="tex2jax_ignore mathjax_ignore" id="about-these-lectures">
-<h1><span class="section-number">1. </span>About these Lectures<a class="headerlink" href="#about-these-lectures" title="Permalink to this heading">#</a></h1>
-<section id="about">
-<h2><span class="section-number">1.1. </span>About<a class="headerlink" href="#about" title="Permalink to this heading">#</a></h2>
-<p>This lecture series introduces quantitative economics using Google JAX.</p>
-<p>We assume that readers have covered most of the QuantEcon lecture
-series <a class="reference external" href="https://python-programming.quantecon.org/intro.html">on Python programming</a>.</p>
+  <section class="tex2jax_ignore mathjax_ignore" id="about">
+<h1><span class="section-number">1. </span>About<a class="headerlink" href="#about" title="Permalink to this heading">#</a></h1>
+<p>This lecture series provides an introduction to quantitative economics using <a class="reference external" href="https://github.com/google/jax">Google JAX</a>.</p>
+<section id="what-is-jax">
+<h2><span class="section-number">1.1. </span>What is JAX?<a class="headerlink" href="#what-is-jax" title="Permalink to this heading">#</a></h2>
+<p>JAX is an open source Python library developed by Google Research to support
+in-house artificial intelligence and machine learning.</p>
+<p>JAX provides data types, functions and a compiler for fast linear
+algebra operations and automatic differentiation.</p>
+<p>Loosely speaking, JAX is like <a class="reference external" href="https://numpy.org/">NumPy</a> with the addition of</p>
+<ul class="simple">
+<li><p>automatic differentiation</p></li>
+<li><p>automated GPU/TPU support</p></li>
+<li><p>a just-in-time compiler</p></li>
+</ul>
+<p>One of the great benefits of JAX is that exactly the same code can be run either
+on the CPU or on a hardware accelerator, such as a GPU or TPU.</p>
+<p>In short, JAX delivers</p>
+<ol class="arabic simple">
+<li><p>high execution speeds on CPUs due to efficient parallelization and JIT
+compilation,</p></li>
+<li><p>a powerful and convenient environment for GPU programming, and</p></li>
+<li><p>the ability to efficiently differentiate smooth functions for optimization
+and estimation.</p></li>
+</ol>
+<p>These features make JAX ideal for almost all quantitative economic modeling
+problems that require heavy-duty computing.</p>
+</section>
+<section id="how-to-run-these-lectures">
+<h2><span class="section-number">1.2. </span>How to run these lectures<a class="headerlink" href="#how-to-run-these-lectures" title="Permalink to this heading">#</a></h2>
+<p>The easiest way to run these lectures is via  <a class="reference external" href="https://colab.research.google.com/">Google Colab</a>.</p>
+<p>JAX is pre-installed with GPU support on Colab and Colab provides GPU access
+even on the free tier.</p>
+<p>Each lecture has a “play” button on the top right that you can use to launch the
+lecture on Colab.</p>
+<p>You might also like to try using JAX locally.</p>
+<p>If you do not own a GPU, you can still install JAX for the CPU by following the relevant <a class="reference external" href="https://github.com/google/jax">install instructions</a>.</p>
+<p>(We recommend that you install <a class="reference external" href="https://www.anaconda.com/download">Anaconda
+Python</a> first.)</p>
+<p>If you do have a GPU, you can try installing JAX for the GPU by following the
+install instructions for GPUs.</p>
+<p>(This is not always trivial but is starting to get easier.)</p>
 </section>
 <section id="credits">
-<h2><span class="section-number">1.2. </span>Credits<a class="headerlink" href="#credits" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">1.3. </span>Credits<a class="headerlink" href="#credits" title="Permalink to this heading">#</a></h2>
 <p>In building this lecture series, we had invaluable assistance from research
 assistants at QuantEcon and our QuantEcon colleagues.</p>
 <p>In particular, we thank and credit</p>
@@ -227,6 +264,11 @@ assistants at QuantEcon and our QuantEcon colleagues.</p>
 <li><p><a class="reference external" href="https://github.com/HengchengZhang">Hengcheng Zhang</a></p></li>
 <li><p><a class="reference external" href="https://github.com/chappiewuzefan">Frank Wu</a></p></li>
 </ul>
+</section>
+<section id="prerequisites">
+<h2><span class="section-number">1.4. </span>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this heading">#</a></h2>
+<p>We assume that readers have covered most of the QuantEcon lecture
+series <a class="reference external" href="https://python-programming.quantecon.org/intro.html">on Python programming</a>.</p>
 </section>
 </section>
 
@@ -287,12 +329,12 @@ assistants at QuantEcon and our QuantEcon colleagues.</p>
 <ul class="current nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1 current active active">
   <a class="current reference internal" href="#">
-   1. About these Lectures
+   1. About
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="jax_intro.html">
-   2. JAX
+   2. An Introduction to JAX
   </a>
  </li>
  <li class="toctree-l1">

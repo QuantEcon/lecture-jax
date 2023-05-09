@@ -54,7 +54,6 @@ If your local environment is still not working you can do two things.
 First, you can use a remote machine instead, by clicking on the Launch Notebook icon available for each lecture
 
 ```{image} _static/lecture_specific/troubleshooting/launch.png
-
 ```
 
 Second, you can report an issue, so we can try to fix your local set up.

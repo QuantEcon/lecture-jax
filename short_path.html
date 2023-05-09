@@ -214,6 +214,12 @@ const thebe_selector_output = ".output, .cell_output"
                         
   <section class="tex2jax_ignore mathjax_ignore" id="shortest-paths">
 <h1><span class="section-number">7. </span>Shortest Paths<a class="headerlink" href="#shortest-paths" title="Permalink to this heading">#</a></h1>
+<div class="warning admonition">
+<p class="admonition-title">GPU</p>
+<p>This lecture is accelerated via <a class="reference internal" href="status.html#status-machine-details"><span class="std std-ref">hardware</span></a> that has access to a GPU and JAX for GPU programming.</p>
+<p>Free GPUs are available on Google Colab. To use this option, please click on the play icon top right, select Colab, and set the runtime environment to include a GPU.</p>
+<p>Alternatively, if you have your own GPU, you can follow the <a class="reference external" href="https://github.com/google/jax">instructions</a> for installing JAX with GPU support. If you would like to install JAX running on the <code class="docutils literal notranslate"><span class="pre">cpu</span></code> only you can use <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">jax[cpu]</span></code></p>
+</div>
 <section id="overview">
 <h2><span class="section-number">7.1. </span>Overview<a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
 <p>This lecture is the extended version of the <a class="reference external" href="https://python.quantecon.org/short_path.html">shortest path lecture</a> using JAX. Please see that lecture for all background and notation.</p>
@@ -223,24 +229,6 @@ const thebe_selector_output = ".output, .cell_output"
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">jax.numpy</span> <span class="k">as</span> <span class="nn">jnp</span>
 <span class="kn">import</span> <span class="nn">jax</span>
-</pre></div>
-</div>
-</div>
-</div>
-<p>Let’s check the backend used by JAX and the devices available.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check if JAX is using GPU</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;JAX backend: </span><span class="si">{</span><span class="n">jax</span><span class="o">.</span><span class="n">devices</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">platform</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-
-<span class="c1"># Check the devices available for JAX</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">jax</span><span class="o">.</span><span class="n">devices</span><span class="p">())</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>JAX backend: gpu
-[StreamExecutorGpuDevice(id=0, process_index=0, slice_index=0)]
 </pre></div>
 </div>
 </div>
@@ -312,8 +300,8 @@ the method of <strong>successive approximations</strong>.</p>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The cost-to-go function is [ 8. 10.  3.  5.  4.  1.  0.]
-CPU times: user 1.83 s, sys: 562 ms, total: 2.39 s
-Wall time: 2.56 s
+CPU times: user 1.85 s, sys: 574 ms, total: 2.43 s
+Wall time: 2.59 s
 </pre></div>
 </div>
 </div>
@@ -363,8 +351,8 @@ Wall time: 2.56 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 129 ms, sys: 10 ms, total: 140 ms
-Wall time: 166 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 121 ms, sys: 9.8 ms, total: 130 ms
+Wall time: 161 ms
 </pre></div>
 </div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Array([ 8., 10.,  3.,  5.,  4.,  1.,  0.], dtype=float32)
@@ -382,8 +370,8 @@ Wall time: 166 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1.65 ms, sys: 921 µs, total: 2.57 ms
-Wall time: 1.34 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1.4 ms, sys: 733 µs, total: 2.13 ms
+Wall time: 1.1 ms
 </pre></div>
 </div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Array([ 8., 10.,  3.,  5.,  4.,  1.,  0.], dtype=float32)
@@ -626,8 +614,8 @@ optimal path (and its cost).</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 173 ms, sys: 11.3 ms, total: 184 ms
-Wall time: 198 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 160 ms, sys: 2.79 ms, total: 163 ms
+Wall time: 172 ms
 </pre></div>
 </div>
 </div>
@@ -640,8 +628,8 @@ Wall time: 198 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 949 µs, sys: 502 µs, total: 1.45 ms
-Wall time: 1.09 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 894 µs, sys: 468 µs, total: 1.36 ms
+Wall time: 930 µs
 </pre></div>
 </div>
 </div>
@@ -759,12 +747,12 @@ Cost:  160.55
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="about.html">
-   1. About these Lectures
+   1. About
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="jax_intro.html">
-   2. JAX
+   2. An Introduction to JAX
   </a>
  </li>
  <li class="toctree-l1">

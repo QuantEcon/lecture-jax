@@ -220,34 +220,55 @@ const thebe_selector_output = ".output, .cell_output"
                         
   <section class="tex2jax_ignore mathjax_ignore" id="wealth-distribution-dynamics">
 <h1><span class="section-number">6. </span>Wealth Distribution Dynamics<a class="headerlink" href="#wealth-distribution-dynamics" title="Permalink to this heading">#</a></h1>
-<p>This lecture is the extended JAX implementation of <a class="reference external" href="https://python.quantecon.org/wealth_dynamics.html">this lecture</a>. Please refer that lecture for all background and notation.</p>
+<div class="warning admonition">
+<p class="admonition-title">GPU</p>
+<p>This lecture is accelerated via <a class="reference internal" href="status.html#status-machine-details"><span class="std std-ref">hardware</span></a> that has access to a GPU and JAX for GPU programming.</p>
+<p>Free GPUs are available on Google Colab. To use this option, please click on the play icon top right, select Colab, and set the runtime environment to include a GPU.</p>
+<p>Alternatively, if you have your own GPU, you can follow the <a class="reference external" href="https://github.com/google/jax">instructions</a> for installing JAX with GPU support. If you would like to install JAX running on the <code class="docutils literal notranslate"><span class="pre">cpu</span></code> only you can use <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">jax[cpu]</span></code></p>
+</div>
+<p>This lecture is the extended JAX implementation of <a class="reference external" href="https://python.quantecon.org/wealth_dynamics.html">this lecture</a>.</p>
+<p>Please refer that lecture for all background and notation.</p>
 <p>We will use the following imports.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;figure.figsize&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>  <span class="c1">#set default figure size</span>
 <span class="kn">import</span> <span class="nn">jax</span>
 <span class="kn">import</span> <span class="nn">jax.numpy</span> <span class="k">as</span> <span class="nn">jnp</span>
 <span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">namedtuple</span>
-<span class="o">%</span><span class="k">matplotlib</span> inline
 </pre></div>
 </div>
 </div>
 </div>
-<p>Let’s check the backend used by JAX and the devices available</p>
+<p>Let’s check the hardware we are running on:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check if JAX is using GPU</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;JAX backend: </span><span class="si">{</span><span class="n">jax</span><span class="o">.</span><span class="n">devices</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">platform</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-
-<span class="c1"># Check the devices available for JAX</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">jax</span><span class="o">.</span><span class="n">devices</span><span class="p">())</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>nvidia-smi
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>JAX backend: gpu
-[StreamExecutorGpuDevice(id=0, process_index=0, slice_index=0)]
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Tue May  9 03:37:45 2023       
++-----------------------------------------------------------------------------+
+| NVIDIA-SMI 470.182.03   Driver Version: 470.182.03   CUDA Version: 12.1     |
+|-------------------------------+----------------------+----------------------+
+| GPU  Name        Persistence-M| Bus-Id        Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp  Perf  Pwr:Usage/Cap|         Memory-Usage | GPU-Util  Compute M. |
+|                               |                      |               MIG M. |
+|===============================+======================+======================|
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>|   0  Tesla V100-SXM2...  Off  | 00000000:00:1E.0 Off |                    0 |
+| N/A   25C    P0    36W / 300W |      0MiB / 16160MiB |      1%      Default |
+|                               |                      |                  N/A |
++-------------------------------+----------------------+----------------------+
+                                                                               
++-----------------------------------------------------------------------------+
+| Processes:                                                                  |
+|  GPU   GI   CI        PID   Type   Process name                  GPU Memory |
+|        ID   ID                                                   Usage      |
+|=============================================================================|
+|  No running processes found                                                 |
++-----------------------------------------------------------------------------+
 </pre></div>
 </div>
 </div>
@@ -296,8 +317,8 @@ inequality.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1.86 s, sys: 34.2 ms, total: 1.9 s
-Wall time: 1.61 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1.78 s, sys: 19.2 ms, total: 1.8 s
+Wall time: 1.55 s
 </pre></div>
 </div>
 </div>
@@ -312,8 +333,8 @@ Wall time: 1.61 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 647 µs, sys: 168 µs, total: 815 µs
-Wall time: 490 µs
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 742 µs, sys: 0 ns, total: 742 µs
+Wall time: 330 µs
 </pre></div>
 </div>
 </div>
@@ -329,7 +350,7 @@ Wall time: 490 µs
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/cbe3af84957d0605d972dad5346ad8f74bafd928d89f39ebcfd9c9e087115d40.png" src="_images/cbe3af84957d0605d972dad5346ad8f74bafd928d89f39ebcfd9c9e087115d40.png" />
+<a class="reference internal image-reference" href="_images/fef5c4366881d00a4e1faa5fb4dae8f5ed1bfe9a1f698409b3944333d0e2a7ba.png"><img alt="_images/fef5c4366881d00a4e1faa5fb4dae8f5ed1bfe9a1f698409b3944333d0e2a7ba.png" src="_images/fef5c4366881d00a4e1faa5fb4dae8f5ed1bfe9a1f698409b3944333d0e2a7ba.png" style="width: 80%;" /></a>
 </div>
 </div>
 <p>Here is another example, which shows how the Lorenz curve shifts as the
@@ -362,7 +383,7 @@ observations.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/30f3ef598779884486426d3b60c3e1f18974611b613870f45df77166710768a1.png" src="_images/30f3ef598779884486426d3b60c3e1f18974611b613870f45df77166710768a1.png" />
+<a class="reference internal image-reference" href="_images/1abd00d7b9f4b04dd58d9c6590b7caaf60b9ff6daa6dc40119a35699f4a9e4e0.png"><img alt="_images/1abd00d7b9f4b04dd58d9c6590b7caaf60b9ff6daa6dc40119a35699f4a9e4e0.png" src="_images/1abd00d7b9f4b04dd58d9c6590b7caaf60b9ff6daa6dc40119a35699f4a9e4e0.png" style="width: 80%;" /></a>
 </div>
 </div>
 <p>You can see that, as the tail parameter of the Pareto distribution increases, inequality decreases.</p>
@@ -426,7 +447,7 @@ this at each fixed value of <span class="math notranslate nohighlight">\(a\)</sp
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/6cf10715870cf9b65aee2776e0c6a4a3c9e1812024db077b6e527e0ff93849bf.png" src="_images/6cf10715870cf9b65aee2776e0c6a4a3c9e1812024db077b6e527e0ff93849bf.png" />
+<a class="reference internal image-reference" href="_images/4c8dc31990a842557d4af01701d5e9ab9cabfffcba6758c4ef1751f8005e4420.png"><img alt="_images/4c8dc31990a842557d4af01701d5e9ab9cabfffcba6758c4ef1751f8005e4420.png" src="_images/4c8dc31990a842557d4af01701d5e9ab9cabfffcba6758c4ef1751f8005e4420.png" style="width: 80%;" /></a>
 </div>
 </div>
 <p>The simulation shows that the fit is good.</p>
@@ -587,8 +608,8 @@ this at each fixed value of <span class="math notranslate nohighlight">\(a\)</sp
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1min 6s, sys: 1.01 s, total: 1min 7s
-Wall time: 1min 4s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 54.3 s, sys: 806 ms, total: 55.1 s
+Wall time: 52 s
 </pre></div>
 </div>
 </div>
@@ -605,8 +626,8 @@ Wall time: 1min 4s
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 12.9 ms, sys: 363 µs, total: 13.3 ms
-Wall time: 9.11 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 10.7 ms, sys: 273 µs, total: 10.9 ms
+Wall time: 8.97 ms
 </pre></div>
 </div>
 </div>
@@ -620,7 +641,7 @@ Wall time: 9.11 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/f05dd0fb98552f8f883d3e48f2ddb1a7563d21f28a388e9286e17404f11cb2a3.png" src="_images/f05dd0fb98552f8f883d3e48f2ddb1a7563d21f28a388e9286e17404f11cb2a3.png" />
+<a class="reference internal image-reference" href="_images/a5193fe497ecca42fa863b202d3ac7769e1265634d85d02e2cfaf5d2941608de.png"><img alt="_images/a5193fe497ecca42fa863b202d3ac7769e1265634d85d02e2cfaf5d2941608de.png" src="_images/a5193fe497ecca42fa863b202d3ac7769e1265634d85d02e2cfaf5d2941608de.png" style="width: 80%;" /></a>
 </div>
 </div>
 <p>We can further try to optimize and speed up the compile time of the above function by replacing <code class="docutils literal notranslate"><span class="pre">for</span></code> loop with <a class="reference external" href="https://jax.readthedocs.io/en/latest/_autosummary/jax.lax.scan.html"><code class="docutils literal notranslate"><span class="pre">jax.lax.scan</span></code></a>.</p>
@@ -685,8 +706,8 @@ Wall time: 9.11 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1.35 s, sys: 8.45 ms, total: 1.35 s
-Wall time: 763 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1.29 s, sys: 15.6 ms, total: 1.3 s
+Wall time: 731 ms
 </pre></div>
 </div>
 </div>
@@ -702,8 +723,8 @@ Wall time: 763 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 7.13 ms, sys: 4.14 ms, total: 11.3 ms
-Wall time: 8.2 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 11.7 ms, sys: 147 µs, total: 11.8 ms
+Wall time: 8.18 ms
 </pre></div>
 </div>
 </div>
@@ -717,7 +738,7 @@ Wall time: 8.2 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/f05dd0fb98552f8f883d3e48f2ddb1a7563d21f28a388e9286e17404f11cb2a3.png" src="_images/f05dd0fb98552f8f883d3e48f2ddb1a7563d21f28a388e9286e17404f11cb2a3.png" />
+<a class="reference internal image-reference" href="_images/a5193fe497ecca42fa863b202d3ac7769e1265634d85d02e2cfaf5d2941608de.png"><img alt="_images/a5193fe497ecca42fa863b202d3ac7769e1265634d85d02e2cfaf5d2941608de.png" src="_images/a5193fe497ecca42fa863b202d3ac7769e1265634d85d02e2cfaf5d2941608de.png" style="width: 80%;" /></a>
 </div>
 </div>
 <p>Now here’s function to simulate a cross section of households forward in time.</p>
@@ -799,9 +820,9 @@ curve and Gini coefficient.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/861196796b68b5e0c861889a696f0281c9527730179336cedb880aba14284f8a.png" src="_images/861196796b68b5e0c861889a696f0281c9527730179336cedb880aba14284f8a.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 8 s, sys: 49.3 ms, total: 8.04 s
-Wall time: 6.63 s
+<a class="reference internal image-reference" href="_images/1c49201aa04c6be2bd75ec81cf712b0c322890ab95031b653e33a511cab1caa0.png"><img alt="_images/1c49201aa04c6be2bd75ec81cf712b0c322890ab95031b653e33a511cab1caa0.png" src="_images/1c49201aa04c6be2bd75ec81cf712b0c322890ab95031b653e33a511cab1caa0.png" style="width: 80%;" /></a>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 7.68 s, sys: 45.4 ms, total: 7.73 s
+Wall time: 6.35 s
 </pre></div>
 </div>
 </div>
@@ -819,7 +840,7 @@ Wall time: 6.63 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/556c2b2b65eb20da168e3d92ef35897c565c46c152b217592eb692848bdd70c5.png" src="_images/556c2b2b65eb20da168e3d92ef35897c565c46c152b217592eb692848bdd70c5.png" />
+<a class="reference internal image-reference" href="_images/7cd180df783fdff33f91ae58feca1866c94262d42fa42e3271e372fd7222a411.png"><img alt="_images/7cd180df783fdff33f91ae58feca1866c94262d42fa42e3271e372fd7222a411.png" src="_images/7cd180df783fdff33f91ae58feca1866c94262d42fa42e3271e372fd7222a411.png" style="width: 80%;" /></a>
 </div>
 </div>
 <p>Once again, we see that inequality increases as returns on financial income
@@ -847,9 +868,9 @@ volatility term <span class="math notranslate nohighlight">\(\sigma_r\)</span> i
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/67ebb9d323bc96de13aff7620adf6038e63afc9c7f067fc65433bc62fd7d3192.png" src="_images/67ebb9d323bc96de13aff7620adf6038e63afc9c7f067fc65433bc62fd7d3192.png" />
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 3.24 s, sys: 13.6 ms, total: 3.25 s
-Wall time: 3.2 s
+<a class="reference internal image-reference" href="_images/6b088e41bf3005e7a1bd115d383a7276afffbb49c8925bbfa521b85b47e6ea4a.png"><img alt="_images/6b088e41bf3005e7a1bd115d383a7276afffbb49c8925bbfa521b85b47e6ea4a.png" src="_images/6b088e41bf3005e7a1bd115d383a7276afffbb49c8925bbfa521b85b47e6ea4a.png" style="width: 80%;" /></a>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 3.17 s, sys: 4.86 ms, total: 3.18 s
+Wall time: 3.13 s
 </pre></div>
 </div>
 </div>
@@ -901,7 +922,7 @@ simulation.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/760338028b4c1b4f0a34285392035277bd70409b678988de33fcb37dfdd2f2cd.png" src="_images/760338028b4c1b4f0a34285392035277bd70409b678988de33fcb37dfdd2f2cd.png" />
+<a class="reference internal image-reference" href="_images/db4c15632530dd2d333cc60a729cc7ac7fd730a1523eaf84d420214382285025.png"><img alt="_images/db4c15632530dd2d333cc60a729cc7ac7fd730a1523eaf84d420214382285025.png" src="_images/db4c15632530dd2d333cc60a729cc7ac7fd730a1523eaf84d420214382285025.png" style="width: 80%;" /></a>
 </div>
 </div>
 <p>In general, for a Pareto distribution, a higher tail index implies less weight
@@ -972,7 +993,7 @@ this what you see?</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/847ca3a729511e9e7b93c4d1bc4e675130a0633fdbbf6278c8d3183096924be9.png" src="_images/847ca3a729511e9e7b93c4d1bc4e675130a0633fdbbf6278c8d3183096924be9.png" />
+<a class="reference internal image-reference" href="_images/31c3571776e498f29b8d1ad0c23af68d227764b38db0a4bed969eb6a4380685a.png"><img alt="_images/31c3571776e498f29b8d1ad0c23af68d227764b38db0a4bed969eb6a4380685a.png" src="_images/31c3571776e498f29b8d1ad0c23af68d227764b38db0a4bed969eb6a4380685a.png" style="width: 80%;" /></a>
 </div>
 </div>
 </section>
@@ -1037,12 +1058,12 @@ this what you see?</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="about.html">
-   1. About these Lectures
+   1. About
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="jax_intro.html">
-   2. JAX
+   2. An Introduction to JAX
   </a>
  </li>
  <li class="toctree-l1">

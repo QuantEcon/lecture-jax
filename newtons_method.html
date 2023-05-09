@@ -114,7 +114,7 @@ const thebe_selector_output = ".output, .cell_output"
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="4. Inventory Dynamics" href="inventory_dynamics.html" />
-    <link rel="prev" title="2. JAX" href="jax_intro.html" />
+    <link rel="prev" title="2. An Introduction to JAX" href="jax_intro.html" />
 
 <!-- Normal Meta Tags -->
 <meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
@@ -163,12 +163,14 @@ const thebe_selector_output = ".output, .cell_output"
                         <nav id="bd-toc-nav" class="qe-page__toc-nav">
                             <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">3.1. Overview</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-two-goods-market-equilibrium">3.2. The Two Goods Market Equilibrium</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-multivariable-market-equilibrium">3.2.1. The Multivariable Market Equilibrium</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-equilibrium-problem">3.2. The Equilibrium Problem</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-two-goods-market-equilibrium">3.2.1. The Two Goods Market Equilibrium</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-high-dimensional-version">3.2.2. A High-Dimensional Version</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#using-newtons-method">3.3. Using Newton’s Method</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-high-dimensional-problem">3.3.1. A High-Dimensional Problem</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#computation">3.3. Computation</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#newtons-method">3.3.1. Newton’s Method</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#application">3.3.2. Application</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">3.4. Exercises</a></li>
@@ -218,10 +220,19 @@ const thebe_selector_output = ".output, .cell_output"
                         
   <section class="tex2jax_ignore mathjax_ignore" id="newtons-method-via-jax">
 <h1><span class="section-number">3. </span>Newton’s Method via JAX<a class="headerlink" href="#newtons-method-via-jax" title="Permalink to this heading">#</a></h1>
+<div class="warning admonition">
+<p class="admonition-title">GPU</p>
+<p>This lecture is accelerated via <a class="reference internal" href="status.html#status-machine-details"><span class="std std-ref">hardware</span></a> that has access to a GPU and JAX for GPU programming.</p>
+<p>Free GPUs are available on Google Colab. To use this option, please click on the play icon top right, select Colab, and set the runtime environment to include a GPU.</p>
+<p>Alternatively, if you have your own GPU, you can follow the <a class="reference external" href="https://github.com/google/jax">instructions</a> for installing JAX with GPU support. If you would like to install JAX running on the <code class="docutils literal notranslate"><span class="pre">cpu</span></code> only you can use <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">jax[cpu]</span></code></p>
+</div>
 <section id="overview">
 <h2><span class="section-number">3.1. </span>Overview<a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
-<p>Continuing from the <a class="reference external" href="https://python.quantecon.org/newton_method.html">Newton’s Method lecture</a>, we are going to solve the multidimensional problem with <code class="docutils literal notranslate"><span class="pre">JAX</span></code>.</p>
-<p>More information about JAX can be found <a class="reference external" href="https://python-programming.quantecon.org/jax_intro.html">here</a>.</p>
+<p>In this lecture we highlight some of the capabilities of JAX, including JIT
+compilation and automatic differentiation.</p>
+<p>The application is computing equilibria via Newton’s method, which we discussed
+in <a class="reference external" href="https://python.quantecon.org/newton_method.html">a more elementary QuantEcon lecture</a></p>
+<p>Here our focus is on how to apply JAX to this problem.</p>
 <p>We use the following imports in this lecture</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -232,29 +243,18 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
 </div>
 </div>
-<p>Let’s check the backend used by JAX and the devices available.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check if JAX is using GPU</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;JAX backend: </span><span class="si">{</span><span class="n">jax</span><span class="o">.</span><span class="n">devices</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">platform</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-
-<span class="c1"># Check the devices available for JAX</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">jax</span><span class="o">.</span><span class="n">devices</span><span class="p">())</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>JAX backend: gpu
-[StreamExecutorGpuDevice(id=0, process_index=0, slice_index=0)]
-</pre></div>
-</div>
-</div>
-</div>
 </section>
+<section id="the-equilibrium-problem">
+<h2><span class="section-number">3.2. </span>The Equilibrium Problem<a class="headerlink" href="#the-equilibrium-problem" title="Permalink to this heading">#</a></h2>
+<p>In this section we describe the market equilibrium problem we will solve with
+JAX.</p>
+<p>We begin with a two good case,
+which is borrowed from <a class="reference external" href="https://python.quantecon.org/newton_method.html">an earlier lecture</a>.</p>
+<p>Then we shift to higher dimensions.</p>
 <section id="the-two-goods-market-equilibrium">
-<h2><span class="section-number">3.2. </span>The Two Goods Market Equilibrium<a class="headerlink" href="#the-two-goods-market-equilibrium" title="Permalink to this heading">#</a></h2>
-<p>Let’s have a quick recap of this problem – a more detailed explanation and derivation can be found at <a class="reference external" href="https://python.quantecon.org/newton_method.html#two-goods-market">A Two Goods Market Equilibrium</a>.</p>
-<p>Assume we have a market for two complementary goods where demand depends on the price of both components.</p>
+<h3><span class="section-number">3.2.1. </span>The Two Goods Market Equilibrium<a class="headerlink" href="#the-two-goods-market-equilibrium" title="Permalink to this heading">#</a></h3>
+<p>Assume we have a market for two complementary goods where demand depends on the
+price of both components.</p>
 <p>We label them good 0 and good 1, with price vector <span class="math notranslate nohighlight">\(p = (p_0, p_1)\)</span>.</p>
 <p>Then the supply of good <span class="math notranslate nohighlight">\(i\)</span> at price <span class="math notranslate nohighlight">\(p\)</span> is,</p>
 <div class="math notranslate nohighlight">
@@ -292,20 +292,22 @@ A = \begin{pmatrix}
         \end{pmatrix}
 \end{split}\]</div>
 <p>for this particular question.</p>
-<section id="the-multivariable-market-equilibrium">
-<h3><span class="section-number">3.2.1. </span>The Multivariable Market Equilibrium<a class="headerlink" href="#the-multivariable-market-equilibrium" title="Permalink to this heading">#</a></h3>
-<p>We can now easily get the multivariable version of the problem above.</p>
+</section>
+<section id="a-high-dimensional-version">
+<h3><span class="section-number">3.2.2. </span>A High-Dimensional Version<a class="headerlink" href="#a-high-dimensional-version" title="Permalink to this heading">#</a></h3>
+<p>Let’s now shift to a linear algebra formulation, which alllows us to handle
+arbitrarily many goods.</p>
 <p>The supply function remains unchanged,</p>
 <div class="math notranslate nohighlight">
 \[
-q^s (p) =b \sqrt{p}
+    q^s (p) =b \sqrt{p}
 \]</div>
-<p>The demand function is,</p>
+<p>The demand function becomes</p>
 <div class="math notranslate nohighlight">
 \[
-q^d (p) = \text{exp}(- A \cdot p) + c
+    q^d (p) = \text{exp}(- A \cdot p) + c
 \]</div>
-<p>Our new excess demand function is,</p>
+<p>Our new excess demand function is</p>
 <div class="math notranslate nohighlight">
 \[
 e(p) = \text{exp}(- A \cdot p) + c - b \sqrt{p}
@@ -321,15 +323,18 @@ e(p) = \text{exp}(- A \cdot p) + c - b \sqrt{p}
 </div>
 </section>
 </section>
-<section id="using-newtons-method">
-<h2><span class="section-number">3.3. </span>Using Newton’s Method<a class="headerlink" href="#using-newtons-method" title="Permalink to this heading">#</a></h2>
-<p>Now let’s use the multivariate version of Newton’s method to compute the equilibrium price</p>
+<section id="computation">
+<h2><span class="section-number">3.3. </span>Computation<a class="headerlink" href="#computation" title="Permalink to this heading">#</a></h2>
+<p>In this section we describe and then implement the solution method.</p>
+<section id="newtons-method">
+<h3><span class="section-number">3.3.1. </span>Newton’s Method<a class="headerlink" href="#newtons-method" title="Permalink to this heading">#</a></h3>
+<p>We use a multivariate version of Newton’s method to compute the equilibrium price.</p>
+<p>The rule for updating a guess <span class="math notranslate nohighlight">\(p_n\)</span> of the price vector is</p>
 <div class="math notranslate nohighlight" id="equation-multi-newton">
 <span class="eqno">(3.1)<a class="headerlink" href="#equation-multi-newton" title="Permalink to this equation">#</a></span>\[p_{n+1} = p_n - J_e(p_n)^{-1} e(p_n)\]</div>
 <p>Here <span class="math notranslate nohighlight">\(J_e(p_n)\)</span> is the Jacobian of <span class="math notranslate nohighlight">\(e\)</span> evaluated at <span class="math notranslate nohighlight">\(p_n\)</span>.</p>
-<p>The iteration starts from some initial guess of the price vector <span class="math notranslate nohighlight">\(p_0\)</span>.</p>
-<p>Here, instead of coding Jacobian by hand, We use the <code class="docutils literal notranslate"><span class="pre">jax.jacobian()</span></code> function to auto-differentiate and calculate the Jacobian.</p>
-<p>With only slight modification, we can generalize <a class="reference external" href="https://python.quantecon.org/newton_method.html#first-newton-attempt">our previous attempt</a> to multi-dimensional problems</p>
+<p>Iteration starts from initial guess <span class="math notranslate nohighlight">\(p_0\)</span>.</p>
+<p>Instead of coding the Jacobian by hand, we use <code class="docutils literal notranslate"><span class="pre">jax.jacobian()</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">newton</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">x_0</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">15</span><span class="p">):</span>
@@ -354,9 +359,10 @@ e(p) = \text{exp}(- A \cdot p) + c - b \sqrt{p}
 </div>
 </div>
 </div>
-<section id="a-high-dimensional-problem">
-<h3><span class="section-number">3.3.1. </span>A High-Dimensional Problem<a class="headerlink" href="#a-high-dimensional-problem" title="Permalink to this heading">#</a></h3>
-<p>We now apply the multivariate Newton’s Method to  investigate a large market with 5,000 goods.</p>
+</section>
+<section id="application">
+<h3><span class="section-number">3.3.2. </span>Application<a class="headerlink" href="#application" title="Permalink to this heading">#</a></h3>
+<p>Let’s now apply the method just described to investigate a large market with 5,000 goods.</p>
 <p>We randomly generate the matrix <span class="math notranslate nohighlight">\(A\)</span> and set the parameter vectors <span class="math notranslate nohighlight">\(b \text{ and } c\)</span> to <span class="math notranslate nohighlight">\(1\)</span>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -409,8 +415,8 @@ iteration 6, error = 4.6261807256087195e-06
 
 Result = [1.4999796 1.503175  1.4918782 ... 1.4914232 1.4956646 1.4976945] 
 
-CPU times: user 5.01 s, sys: 1.48 s, total: 6.49 s
-Wall time: 4.51 s
+CPU times: user 4.76 s, sys: 1.45 s, total: 6.21 s
+Wall time: 4.28 s
 </pre></div>
 </div>
 </div>
@@ -442,8 +448,8 @@ even with the Jacobian supplied.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 2min 27s, sys: 355 ms, total: 2min 27s
-Wall time: 2min 26s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 2min 22s, sys: 326 ms, total: 2min 22s
+Wall time: 2min 22s
 </pre></div>
 </div>
 </div>
@@ -569,8 +575,8 @@ iteration 6, error = 8.92080606718082e-07
 
 Result = [3.8405814 3.870718  3.4109194] 
 
-CPU times: user 838 ms, sys: 28.3 ms, total: 867 ms
-Wall time: 674 ms
+CPU times: user 860 ms, sys: 8.68 ms, total: 869 ms
+Wall time: 660 ms
 ----------------------------------------------------------------
 Attempt 2: Starting value is [3. 5. 5.] 
 </pre></div>
@@ -582,8 +588,8 @@ iteration 4, error = 3.3717478231665154e-07
 
 Result = [3.8405814 3.8707182 3.4109197] 
 
-CPU times: user 606 ms, sys: 8.58 ms, total: 615 ms
-Wall time: 229 ms
+CPU times: user 567 ms, sys: 16 ms, total: 583 ms
+Wall time: 224 ms
 ----------------------------------------------------------------
 Attempt 3: Starting value is [50. 50. 50.] 
 </pre></div>
@@ -599,8 +605,8 @@ iteration 6, error = 9.830249609876773e-07
 
 Result = [3.840581  3.8707182 3.41092  ] 
 
-CPU times: user 1.3 s, sys: 3.77 ms, total: 1.31 s
-Wall time: 542 ms
+CPU times: user 1.23 s, sys: 4.68 ms, total: 1.23 s
+Wall time: 497 ms
 ----------------------------------------------------------------
 </pre></div>
 </div>
@@ -647,8 +653,8 @@ iteration 4, error = 8.259061701210157e-07
 
 Result = [1.7846744 1.7846744 1.7846744] 
 
-CPU times: user 1.28 s, sys: 8.75 ms, total: 1.28 s
-Wall time: 516 ms
+CPU times: user 1.14 s, sys: 20.8 ms, total: 1.16 s
+Wall time: 490 ms
 </pre></div>
 </div>
 </div>
@@ -676,8 +682,8 @@ iteration 5, error = 1.538370149106851e-15
 
 Result = [1.78467418 1.78467418 1.78467418] 
 
-CPU times: user 890 ms, sys: 12 ms, total: 902 ms
-Wall time: 746 ms
+CPU times: user 924 ms, sys: 8.27 ms, total: 932 ms
+Wall time: 712 ms
 </pre></div>
 </div>
 </div>
@@ -772,7 +778,7 @@ c = \begin{pmatrix}
 <span class="ne">Exception</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
 <span class="n">File</span> <span class="o">&lt;</span><span class="n">timed</span> <span class="n">exec</span><span class="o">&gt;</span><span class="p">:</span><span class="mi">1</span>
 
-<span class="nn">Cell In[4], line 13,</span> in <span class="ni">newton</span><span class="nt">(f, x_0, tol, max_iter)</span>
+<span class="nn">Cell In[3], line 13,</span> in <span class="ni">newton</span><span class="nt">(f, x_0, tol, max_iter)</span>
 <span class="g g-Whitespace">     </span><span class="mi">11</span> <span class="n">y</span> <span class="o">=</span> <span class="n">q</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
 <span class="g g-Whitespace">     </span><span class="mi">12</span> <span class="k">if</span> <span class="n">jnp</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">y</span><span class="p">)):</span>
 <span class="ne">---&gt; </span><span class="mi">13</span>     <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;Solution not found with NaN generated&#39;</span><span class="p">)</span>
@@ -784,9 +790,8 @@ c = \begin{pmatrix}
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>----------------------------------------------------------------
 Attempt 2: Starting value is [4.5 0.1 4. ] 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>iteration 1, error = 4.892018895185869
+
+iteration 1, error = 4.892018895185869
 iteration 2, error = 1.2120550201694784
 iteration 3, error = 0.6942087122866175
 iteration 4, error = 0.168951089180319
@@ -797,8 +802,8 @@ iteration 8, error = 0.0
 
 Result = [1.49744442 1.49744442 1.49744442] 
 
-CPU times: user 874 ms, sys: 526 µs, total: 874 ms
-Wall time: 246 ms
+CPU times: user 832 ms, sys: 4.38 ms, total: 837 ms
+Wall time: 231 ms
 ----------------------------------------------------------------
 </pre></div>
 </div>
@@ -882,12 +887,12 @@ Wall time: 246 ms
 <ul class="current nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="about.html">
-   1. About these Lectures
+   1. About
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="jax_intro.html">
-   2. JAX
+   2. An Introduction to JAX
   </a>
  </li>
  <li class="toctree-l1 current active active">

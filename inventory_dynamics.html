@@ -222,6 +222,12 @@ const thebe_selector_output = ".output, .cell_output"
         </a>
 </div><section class="tex2jax_ignore mathjax_ignore" id="inventory-dynamics">
 <h1><a class="toc-backref" href="#id2"><span class="section-number">4. </span>Inventory Dynamics</a><a class="headerlink" href="#inventory-dynamics" title="Permalink to this heading">#</a></h1>
+<div class="warning admonition">
+<p class="admonition-title">GPU</p>
+<p>This lecture is accelerated via <a class="reference internal" href="status.html#status-machine-details"><span class="std std-ref">hardware</span></a> that has access to a GPU and JAX for GPU programming.</p>
+<p>Free GPUs are available on Google Colab. To use this option, please click on the play icon top right, select Colab, and set the runtime environment to include a GPU.</p>
+<p>Alternatively, if you have your own GPU, you can follow the <a class="reference external" href="https://github.com/google/jax">instructions</a> for installing JAX with GPU support. If you would like to install JAX running on the <code class="docutils literal notranslate"><span class="pre">cpu</span></code> only you can use <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">jax[cpu]</span></code></p>
+</div>
 <div class="contents topic" id="contents">
 <span id="index-0"></span><p class="topic-title">Contents</p>
 <ul class="simple">
@@ -241,9 +247,7 @@ const thebe_selector_output = ".output, .cell_output"
 <p>We will use the following imports:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;figure.figsize&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>  <span class="c1">#set default figure size</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">jax</span>
 <span class="kn">import</span> <span class="nn">jax.numpy</span> <span class="k">as</span> <span class="nn">jnp</span>
@@ -351,7 +355,7 @@ and standard normal.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/6e0db5928dcb34c1e7008bb6a6e3fb7c4139d8a581508403f9489ddb9a04142c.png" src="_images/6e0db5928dcb34c1e7008bb6a6e3fb7c4139d8a581508403f9489ddb9a04142c.png" />
+<a class="reference internal image-reference" href="_images/2dff78f9d10198effda3d05de17138875f57cdc5e86a1611cd1372c678718ecc.png"><img alt="_images/2dff78f9d10198effda3d05de17138875f57cdc5e86a1611cd1372c678718ecc.png" src="_images/2dff78f9d10198effda3d05de17138875f57cdc5e86a1611cd1372c678718ecc.png" style="width: 80%;" /></a>
 </div>
 </div>
 <p>This model for inventory dynamics is asymptotically stationary, with a unique
@@ -422,11 +426,11 @@ distributions are getting smaller.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 2.69 s, sys: 478 ms, total: 3.17 s
-Wall time: 2.61 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 2.56 s, sys: 489 ms, total: 3.05 s
+Wall time: 2.55 s
 </pre></div>
 </div>
-<img alt="_images/068030f3bf3b65142f5b7f98e12bda981b02ea55608a0ed9dad2cbff9fb44f2d.png" src="_images/068030f3bf3b65142f5b7f98e12bda981b02ea55608a0ed9dad2cbff9fb44f2d.png" />
+<a class="reference internal image-reference" href="_images/9ba36e0e7bebf031401c3a5b2e900f204adfcddf94a4ead0239abb4927a251f2.png"><img alt="_images/9ba36e0e7bebf031401c3a5b2e900f204adfcddf94a4ead0239abb4927a251f2.png" src="_images/9ba36e0e7bebf031401c3a5b2e900f204adfcddf94a4ead0239abb4927a251f2.png" style="width: 80%;" /></a>
 </div>
 </div>
 <p>Note that we did not JIT-compile the outer loop, since</p>
@@ -492,11 +496,11 @@ equilibrium.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1.02 s, sys: 0 ns, total: 1.02 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 969 ms, sys: 0 ns, total: 969 ms
 Wall time: 373 ms
 </pre></div>
 </div>
-<img alt="_images/017d485c3a0620cfbf4f3014a9e7260cc6f65acb41ae27015404ecc4a63c2e58.png" src="_images/017d485c3a0620cfbf4f3014a9e7260cc6f65acb41ae27015404ecc4a63c2e58.png" />
+<a class="reference internal image-reference" href="_images/db5bcba37f118e95a7a6a19f8e7e4471f5d4d01c648f8f83a6842c416b6c6b0d.png"><img alt="_images/db5bcba37f118e95a7a6a19f8e7e4471f5d4d01c648f8f83a6842c416b6c6b0d.png" src="_images/db5bcba37f118e95a7a6a19f8e7e4471f5d4d01c648f8f83a6842c416b6c6b0d.png" style="width: 80%;" /></a>
 </div>
 </div>
 <p>Notice that by <span class="math notranslate nohighlight">\(t=500\)</span> or <span class="math notranslate nohighlight">\(t=750\)</span> the densities are barely
@@ -525,11 +529,11 @@ long-run outcomes.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 925 ms, sys: 0 ns, total: 925 ms
-Wall time: 306 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 900 ms, sys: 0 ns, total: 900 ms
+Wall time: 301 ms
 </pre></div>
 </div>
-<img alt="_images/d10e9f858ea29c276b6bb6e09f258f11dd878fe50f2fe640388ffb4a42e1d275.png" src="_images/d10e9f858ea29c276b6bb6e09f258f11dd878fe50f2fe640388ffb4a42e1d275.png" />
+<a class="reference internal image-reference" href="_images/a89ccee605d93748ead554bd7ccb751bfce2ba1a82dd8fe4279d661333134230.png"><img alt="_images/a89ccee605d93748ead554bd7ccb751bfce2ba1a82dd8fe4279d661333134230.png" src="_images/a89ccee605d93748ead554bd7ccb751bfce2ba1a82dd8fe4279d661333134230.png" style="width: 80%;" /></a>
 </div>
 </div>
 </section>
@@ -589,8 +593,8 @@ periods.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1.01 s, sys: 0 ns, total: 1.01 s
-Wall time: 1.28 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 942 ms, sys: 0 ns, total: 942 ms
+Wall time: 1.22 s
 Frequency of at least two stock outs = 0.4472379982471466
 </pre></div>
 </div>
@@ -651,8 +655,8 @@ Frequency of at least two stock outs = 0.4472379982471466
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1.08 s, sys: 0 ns, total: 1.08 s
-Wall time: 418 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1.02 s, sys: 0 ns, total: 1.02 s
+Wall time: 398 ms
 Frequency of at least two stock outs = 0.44674399495124817
 </pre></div>
 </div>
@@ -719,12 +723,12 @@ Frequency of at least two stock outs = 0.44674399495124817
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="about.html">
-   1. About these Lectures
+   1. About
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="jax_intro.html">
-   2. JAX
+   2. An Introduction to JAX
   </a>
  </li>
  <li class="toctree-l1">

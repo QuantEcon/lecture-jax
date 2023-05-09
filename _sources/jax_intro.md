@@ -11,76 +11,27 @@ kernelspec:
   name: python3
 ---
 
-# JAX
+# An Introduction to JAX
 
 
-```{note}
-This lecture is built using [hardware](status:machine-details) that
-has access to a GPU. This means that 
+```{admonition} GPU
+:class: warning
 
-1. the lecture might be significantly slower when running on your machine, and
-2. the code is well-suited to execution with [Google colab](https://colab.research.google.com/github/QuantEcon/lecture-python-programming.notebooks/blob/master/jax_intro.ipynb)
+This lecture is accelerated via [hardware](status:machine-details) that has access to a GPU and JAX for GPU programming.
+
+Free GPUs are available on Google Colab. To use this option, please click on the play icon top right, select Colab, and set the runtime environment to include a GPU.
+
+Alternatively, if you have your own GPU, you can follow the [instructions](https://github.com/google/jax) for installing JAX with GPU support. If you would like to install JAX running on the `cpu` only you can use `pip install jax[cpu]`
 ```
 
 This lecture provides a short introduction to [Google JAX](https://github.com/google/jax).
 
-## Overview
-
-Let's start with an overview of JAX.
-
-### Capabilities
-
-[JAX](https://github.com/google/jax) is a Python library initially developed by
-Google to support in-house artificial intelligence and machine learning.
-
-
-JAX provides data types, functions and a compiler for fast linear
-algebra operations and automatic differentiation.
-
-Loosely speaking, JAX is like NumPy with the addition of
-
-* automatic differentiation
-* automated GPU/TPU support
-* a just-in-time compiler
-
-One of the great benefits of JAX is that the same code can be run either on
-the CPU or on a hardware accelerator, such as a GPU or TPU.
-
-For example, JAX automatically builds and deploys kernels on the GPU whenever
-an accessible device is detected.
-
-### History
-
-In 2015, Google open-sourced part of its AI infrastructure called TensorFlow.
-
-Around two years later, Facebook open-sourced PyTorch beta, an alternative AI
-framework which is regarded as developer-friendly and more Pythonic than
-TensorFlow.
-
-By 2019, PyTorch was surging in popularity, adopted by Uber, Airbnb, Tesla and
-many other companies.
-
-In 2020, Google launched JAX as an open-source framework, simultaneously 
-beginning to shift away from TPUs to Nvidia GPUs. 
-
-In the last few years, uptake of Google JAX has accelerated rapidly, bringing
-attention back to Google-based machine learning architectures.
-
-
-### Installation
-
-JAX can be installed with or without GPU support by following [the install guide](https://github.com/google/jax).
-
-Note that JAX is pre-installed with GPU support on [Google Colab](https://colab.research.google.com/).
-
-If you do not have your own GPU, we recommend that you run this lecture on Colab.
-
-+++
 
 ## JAX as a NumPy Replacement
 
 
-One way to use JAX is as a plug-in NumPy replacement. Let's look at the similarities and differences.
+One way to use JAX is as a plug-in NumPy replacement. Let's look at the
+similarities and differences.
 
 ### Similarities
 
