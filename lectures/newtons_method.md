@@ -26,9 +26,13 @@ Alternatively, if you have your own GPU, you can follow the [instructions](https
 
 ## Overview
 
-Continuing from the [Newton's Method lecture](https://python.quantecon.org/newton_method.html), we are going to solve the multidimensional problem with `JAX`.
+In this lecture we highlight some of the capabilities of JAX, including JIT
+compilation and automatic differentiation.
 
-More information about JAX can be found [here](https://python-programming.quantecon.org/jax_intro.html).
+The application is computing equilibria via Newton's method, which we discussed 
+in [a more elementary QuantEcon lecture](https://python.quantecon.org/newton_method.html)
+
+Here our focus is on how to apply JAX to this problem.
 
 We use the following imports in this lecture
 
@@ -38,11 +42,21 @@ import jax.numpy as jnp
 from scipy.optimize import root
 ```
 
-## The Two Goods Market Equilibrium
+## The Equilibrium Problem
 
-Let's have a quick recap of this problem -- a more detailed explanation and derivation can be found at [A Two Goods Market Equilibrium](https://python.quantecon.org/newton_method.html#two-goods-market).
+In this section we describe the market equilibrium problem we will solve with
+JAX.
 
-Assume we have a market for two complementary goods where demand depends on the price of both components.
+We begin with a two good case, 
+which is borrowed from [an earlier lecture](https://python.quantecon.org/newton_method.html).
+
+Then we shift to higher dimensions.
+
+
+### The Two Goods Market Equilibrium
+
+Assume we have a market for two complementary goods where demand depends on the
+price of both components.
 
 We label them good 0 and good 1, with price vector $p = (p_0, p_1)$.
 
@@ -90,23 +104,24 @@ $$
 for this particular question.
 
 
-### The Multivariable Market Equilibrium
+### A High-Dimensional Version
 
-We can now easily get the multivariable version of the problem above.
+Let's now shift to a linear algebra formulation, which alllows us to handle
+arbitrarily many goods.
 
 The supply function remains unchanged,
 
 $$
-q^s (p) =b \sqrt{p}
+    q^s (p) =b \sqrt{p}
 $$
 
-The demand function is,
+The demand function becomes
 
 $$
-q^d (p) = \text{exp}(- A \cdot p) + c
+    q^d (p) = \text{exp}(- A \cdot p) + c
 $$
 
-Our new excess demand function is,
+Our new excess demand function is
 
 $$
 e(p) = \text{exp}(- A \cdot p) + c - b \sqrt{p}
@@ -120,9 +135,17 @@ def e(p, A, b, c):
 ```
 
 
-## Using Newton's Method
 
-Now let's use the multivariate version of Newton's method to compute the equilibrium price
+## Computation
+
+In this section we describe and then implement the solution method.
+
+
+### Newton's Method
+
+We use a multivariate version of Newton's method to compute the equilibrium price.
+
+The rule for updating a guess $p_n$ of the price vector is
 
 ```{math}
 :label: multi-newton
@@ -131,11 +154,9 @@ p_{n+1} = p_n - J_e(p_n)^{-1} e(p_n)
 
 Here $J_e(p_n)$ is the Jacobian of $e$ evaluated at $p_n$.
 
-The iteration starts from some initial guess of the price vector $p_0$.
+Iteration starts from initial guess $p_0$.
 
-Here, instead of coding Jacobian by hand, We use the `jax.jacobian()` function to auto-differentiate and calculate the Jacobian.
-
-With only slight modification, we can generalize [our previous attempt](https://python.quantecon.org/newton_method.html#first-newton-attempt) to multi-dimensional problems
+Instead of coding the Jacobian by hand, we use `jax.jacobian()`.
 
 ```{code-cell} ipython3
 def newton(f, x_0, tol=1e-5, max_iter=15):
@@ -159,9 +180,9 @@ def newton(f, x_0, tol=1e-5, max_iter=15):
 ```
 
 
-### A High-Dimensional Problem
+### Application
 
-We now apply the multivariate Newton's Method to  investigate a large market with 5,000 goods.
+Let's now apply the method just described to investigate a large market with 5,000 goods.
 
 We randomly generate the matrix $A$ and set the parameter vectors $b \text{ and } c$ to $1$.
 
@@ -188,7 +209,6 @@ Here's our initial condition $p_0$
 ```{code-cell} ipython3
 init_p = jnp.ones(dim)
 ```
-
 
 By leveraging the power of Newton's method, JAX accelerated linear algebra,
 automatic differentiation, and a GPU, we obtain a relatively small error for
