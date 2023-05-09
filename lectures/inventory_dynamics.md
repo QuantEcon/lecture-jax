@@ -47,9 +47,7 @@ This lecture explores JAX implementations of the exercises in the lecture on [in
 We will use the following imports:
 
 ```{code-cell} ipython3
-%matplotlib inline
 import matplotlib.pyplot as plt
-plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
 import numpy as np
 import jax
 import jax.numpy as jnp
