@@ -1,5 +1,7 @@
 # An Asset Pricing Problem
 
+## Overview
+
 In this lecture we consider a simple asset pricing problem and use it to
 illustrate some foundations of JAX programming.
 
@@ -14,6 +16,21 @@ working in the environment provided by JAX.
 If you wish to skip all motivation and move straight to the equation we plan to
 study, you can skip to [TODO add link]
 
+Below we use the following imports
+
+```{code-cell} ipython3
+import matplotlib.pyplot as plt
+import numpy as np
+import jax
+import jax.numpy as jnp
+from collections import namedtuple
+```
+
+We will use 64 bit floats with JAX in order to increase precision.
+
+```{code-cell} ipython3
+jax.config.update("jax_enable_x64", True)
+```
 
 ## Pricing a single payoff
 
@@ -270,6 +287,14 @@ then compute the solution [](eq:ntecxvv).
 
 ## Code
 
+```{code-cell} python3
+Model = namedtuple('Model',
+    'n',    # size of state space for Markov chain
+    'ρ',    # persistence parameter for Markov chain
+    'β',    # discount factor
+    'γ',    # coefficient of risk aversion
+
+```
 
 ```{code-cell} python3
 class AssetPriceModel:
