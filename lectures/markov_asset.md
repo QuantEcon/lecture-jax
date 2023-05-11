@@ -3,8 +3,8 @@
 In this lecture we consider a simple asset pricing problem and use it to
 illustrate some foundations of JAX programming.
 
-We will describe the underlying problem only briefly, moving quickly to the
-equation that needs to be solved.
+We will describe the underlying problem relatively briefly, so we can focus on
+to the equation that needs to be solved.
 
 Then we will show how to solve the problem using JAX.
 
@@ -64,8 +64,8 @@ D_{t+1}, \ldots$.
 
 We will call these payoffs "dividends".
 
-If we buy the share, hold it for one period and sell it again, our payoff is
-$D_{t+1} + P_{t+1}$.
+If we buy the share, hold it for one period and sell it again, we receive one
+dividend and our payoff is $D_{t+1} + P_{t+1}$.
 
 Therefore, by [](eq:nrnp), the price should be
 
@@ -73,8 +73,8 @@ $$
     P_t = \mathbb E_t M_{t+1} [ D_{t+1} + P_{t+1} ]
 $$ (lteeqs0)
 
-Because prices generally grow over time, which complicates analysis, it will be easier for us to solve for
-the **price-dividend ratio** $V_t := P_t / D_t$.
+Because prices generally grow over time, which complicates analysis, it will be
+easier for us to solve for the **price-dividend ratio** $V_t := P_t / D_t$.
 
 Let's write down an expression that this ratio should satisfy.
 
@@ -126,12 +126,10 @@ For utility, we'll assume the **constant relative risk aversion** (CRRA) specifi
     u(c) = \frac{c^{1-\gamma}}{1 - \gamma} 
 ```
 
-
 Inserting the CRRA specification into {eq}`lucsdf` and letting
 
 $$
-    g_{c, t+1}
-    = \ln \left( \frac{C_{t+1}}{C_t} \right)
+    g_{c, t+1} = \ln \left( \frac{C_{t+1}}{C_t} \right)
 $$ 
 
 the growth rate rate of consumption, we obtain 
@@ -140,8 +138,8 @@ the growth rate rate of consumption, we obtain
 :label: lucsdf2
     M_{t+1}
     = \beta \left(\frac{C_{t+1}}{C_t}\right)^{-\gamma}
-    = \beta \exp( g_{t+1} )^{-\gamma} 
-    = \beta \exp(-\gamma g_{t+1})
+    = \beta \exp( g_{c, t+1} )^{-\gamma} 
+    = \beta \exp(-\gamma g_{c, t+1})
 ```
 
 
@@ -151,65 +149,126 @@ the growth rate rate of consumption, we obtain
 Substituting [](lucsdf2) into {eq}`pdex2` gives the price-dividend ratio
 formula
 
-```{math}
-:label: pdex3
+$$
+    V_t = \beta {\mathbb E}_t 
+    \left[ \exp(g_{d, t+1} - \gamma g_{c, t+1}) (1 + V_{t+1}) \right]
+$$ (pdex3)
 
-V_t = {\mathbb E}_t \left[ \exp(g_{d, t+1} - \gamma g_{t+1}) (1 + V_{t+1}) \right]
-```
-
-We suppose that
+For now we assume that there is a Markov chain $\{X_t\}$, which we call
+the **state process**,  such that
 
 $$
 \begin{aligned}
-    & g_{c, t+1} = \mu_c + Z_t + \exp(h_{c, t}) \epsilon_{c, t+1} \\
-    & g_{d, t+1} = \mu_d + Z_t + \exp(h_{d, t}) \epsilon_{d, t+1} \\
+    & g_{c, t+1} = \mu_c + X_t + \sigma_c \epsilon_{c, t+1} \\
+    & g_{d, t+1} = \mu_d + X_t + \sigma_d \epsilon_{d, t+1} 
 \end{aligned}
 $$
 
-where
+Here $\{\epsilon_{c, t}\}$ and $\{\epsilon_{d, t}\}$ are IID and standard
+normal, and independent of eachother.
 
+We can think of $\{X_t\}$ as an aggregate shock that affects both consumption
+growth and firm profits (and hence dividends).
 
-Let $X_t = (h_{c, t}, h_{d, t}, Z_t)$.  
+We let $P$ be the [stochastic matrix that governs $\{X_t\}$](https://python.quantecon.org/finite_markov.html) and assume $\{X_t\}$ takes values in some finite set $S$.
 
-
-We call $\{X_t\}$ the **state process** and guess that $V_t$ is a function of
-this state process --- and this guess turns out to be correct.
+We guess that $V_t$ is a function of this state process (and this guess turns
+out to be correct).
 
 This means that $V_t = v(X_t)$ for some unknown function $v$.
 
 The unknown function $v$ satisfies the equation
 
 $$
-v(X_t) = {\mathbb E}_t 
-    \left[ \exp(g_{d, t+1} - \gamma g_{t+1}) (1 + V(X_{t+1})) \right]
+    v(X_t) = \beta {\mathbb E}_t 
+    \left[
+        \exp[
+            a + (1-\gamma) X_t + 
+                \sigma_c \epsilon_{c, t+1} - 
+                \gamma  \sigma_d \epsilon_{d, t+1}     
+            ]
+        (1 + V(X_{t+1}))
+    \right]
 $$ (eq:neweqn101)
+
+where $a := \mu_c - \gamma \mu_d$
+
+Since the shocks $\epsilon_{c, t+1}$ and $\epsilon_{d, t+1}$ are independent of
+$\{X_t\}$, we can integrate them out.
+
+We use the following property of lognormal distributions: if $Y = \exp(c
+\epsilon)$ for constant $c$ and $\epsilon \sim N(0,1)$, then $\mathbb E Y =
+\exp(c^2/2)$.
+
+This yields
+
+$$
+    v(X_t) = \beta {\mathbb E}_t 
+    \left[
+        \exp[
+            a + (1-\gamma) X_t + 
+                (\sigma_c ^2 + \gamma^2  \sigma_d^2) / 2)
+            ]
+        (1 + v(X_{t+1}))
+    \right]
+$$ (eq:ntev)
 
 Conditioning on $X_t = x$, we can write this as
 
 $$
-    v(x)
-    = \beta \sum_{y \in S} g(y)^{1-\gamma} (1 + v(y) ) P(x, y)
+    v(x) = \beta \sum_{y \in S}
+    \left[
+        \exp[
+            a + (1-\gamma) x + 
+                (\sigma_c ^2 + \gamma^2  \sigma_d^2) / 2)
+            ]
+        (1 + v(y))
+    \right] P(x, y)
+$$ (eq:ntecx)
+
+for all $x \in S$.
+
+Suppose $S = \{x_1, \ldots, x_n\}$.
+
+Then we can think of $v(x_1), \ldots, v(x_n)$ as an $n \times 1$ vector.
+
+We can write [](eq:ntecx) in vector form as
+
+$$
+    v = K (\mathbb 1 + v)
+$$ [](eq:ntecxv)
+
+where $K$ is the matrix defined by 
+
+$$
+    K(x, y)
+    = \beta \left[
+        \exp[
+            a + (1-\gamma) x + 
+                (\sigma_c ^2 + \gamma^2  \sigma_d^2) / 2)
+            ]
+        (1 + v(y))
+    \right] P(x, y)
 $$
 
-If we let
+(That, is $K$ is a matrix with $i,j$-th element $K(x_i, x_j)$.)
+
+Notice that [](eq:ntecxv) can be written as $(I - K)v = K \mathbb 1$.
+
+The Neumann series lemma tells us that $(I - K)$ is invertible and the solution
+is
 
 $$
-    J(x, y) := g(y)^{1-\gamma}  P(x, y)
-$$
+    v = (I - K)^{-1} K \mathbb 1
+$$ (eq:ntecxvv)
 
-then we can rewrite equation {eq}`eq:neweqn101` in vector form as
+whenever $r(K)$, the spectral radius of $K$, is strictly less than one.
 
-$$
-    v = \beta J ({\mathbb 1} + v )
-$$
+Once we specify $P$ and all the parameters, we can obtain $K$ and 
+then compute the solution [](eq:ntecxvv).
 
-Assuming that the spectral radius of $J$ is strictly less than $\beta^{-1}$, this equation has the unique solution
 
-```{math}
-:label: resolvent2
-
-v = (I - \beta J)^{-1} \beta  J {\mathbb 1}
-```
+## Code
 
 
 ```{code-cell} python3
@@ -314,84 +373,31 @@ With the stochastic discount factor {eq}`lucsdf2`, higher growth decreases the
 discount factor, lowering the weight placed on future dividends.
 
 
-### A Risk-Free Consol
 
-Consider the same pure exchange representative agent economy.
 
-A risk-free consol promises to pay a constant amount  $\zeta> 0$ each period.
 
-Recycling notation, let $P_t$ now be the price of an  ex-coupon claim to the consol.
+## An Extended Example
 
-An ex-coupon claim to the consol entitles an owner at the end of period $t$ to
-
-* $\zeta$ in period $t+1$, plus
-* the right to sell the claim for $P_{t+1}$ next period
-
-The price satisfies {eq}`lteeqs0` with $d_t = \zeta$, or
+We suppose that
 
 $$
-P_t = {\mathbb E}_t \left[ m_{t+1}  ( \zeta + P_{t+1} ) \right]
+\begin{aligned}
+    & g_{c, t+1} = \mu_c + Z_t + \exp(h_{c, t}) \epsilon_{c, t+1} \\
+    & g_{d, t+1} = \mu_d + Z_t + \exp(h_{d, t}) \epsilon_{d, t+1} 
+\end{aligned}
 $$
 
-With the stochastic discount factor {eq}`lucsdf2`, this becomes
+where
 
-```{math}
-:label: consolguess1
 
-P_t
-= {\mathbb E}_t \left[ \beta g_{t+1}^{-\gamma}  ( \zeta + P_{t+1} ) \right]
-```
+Let $X_t = (h_{c, t}, h_{d, t}, Z_t)$.  
 
-Guessing a solution of the form $P_t = p(X_t)$ and conditioning on
-$X_t = x$, we get
 
-$$
-p(x)
-= \beta \sum_{y \in S}  g(y)^{-\gamma} (\zeta + p(y)) P(x, y)
-$$
+We call $\{X_t\}$ the state process and guess that $V_t$ is a function of
+this state process --- and this guess turns out to be correct.
 
-Letting $M(x, y) = P(x, y) g(y)^{-\gamma}$ and rewriting in vector notation
-yields the solution
+This means that $V_t = v(X_t)$ for some unknown function $v$.
 
-```{math}
-:label: consol_price
+The unknown function $v$ satisfies the equation
 
-p = (I - \beta M)^{-1} \beta M \zeta {\mathbb 1}
-```
-
-The above is implemented in the function consol_price.
-
-```{code-cell} python3
-def consol_price(ap, ζ):
-    """
-    Computes price of a consol bond with payoff ζ
-
-    Parameters
-    ----------
-    ap: AssetPriceModel
-        An instance of AssetPriceModel containing primitives
-
-    ζ : scalar(float)
-        Coupon of the console
-
-    Returns
-    -------
-    p : array_like(float)
-        Console bond prices
-
-    """
-    # Simplify names, set up matrices
-    β, γ, P, y = ap.β, ap.γ, ap.mc.P, ap.mc.state_values
-    M = P * ap.g(y)**(- γ)
-
-    # Make sure that a unique solution exists
-    ap.test_stability(M)
-
-    # Compute price
-    I = np.identity(ap.n)
-    Ones = np.ones(ap.n)
-    p = solve(I - β * M, β * ζ * M @ Ones)
-
-    return p
-```
 
