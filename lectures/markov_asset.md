@@ -1,3 +1,16 @@
+---
+jupytext:
+  text_representation:
+    extension: .md
+    format_name: myst
+    format_version: 0.13
+    jupytext_version: 1.14.5
+kernelspec:
+  display_name: Python 3 (ipykernel)
+  language: python
+  name: python3
+---
+
 # An Asset Pricing Problem
 
 ## Overview
@@ -5,20 +18,13 @@
 In this lecture we consider a simple asset pricing problem and use it to
 illustrate some foundations of JAX programming.
 
-We will describe the underlying problem relatively briefly, so we can focus on
-to the equation that needs to be solved.
-
-Then we will show how to solve the problem using JAX.
-
-Along the way we will make comments on how we structure coding problems when
-working in the environment provided by JAX.
-
 If you wish to skip all motivation and move straight to the equation we plan to
-study, you can skip to [TODO add link]
+solve, you can jump to [TODO add link]
 
 Below we use the following imports
 
-```{code-cell} ipython3
+```{code-cell}
+import quantecon as qe
 import matplotlib.pyplot as plt
 import numpy as np
 import jax
@@ -28,31 +34,31 @@ from collections import namedtuple
 
 We will use 64 bit floats with JAX in order to increase precision.
 
-```{code-cell} ipython3
+```{code-cell}
 jax.config.update("jax_enable_x64", True)
 ```
 
 ## Pricing a single payoff
 
-Suppose, at time $t$, we have an asset that pays a random amount $G_{t+1}$ at
+Suppose, at time $t$, we have an asset that pays a random amount $D_{t+1}$ at
 time $t+1$ and nothing after that.
 
 The simplest way to price this asset is to use "risk-neutral" asset pricing, which
 asserts that the price of the asset at time $t$ should be
 
 $$
-    P_t = \beta \mathbb E_t G_{t+1}
+    P_t = \beta \mathbb E_t D_{t+1}
 $$ (eq:rnp)
 
-where $\beta$ is a discount factor and $\mathbb E_t G_{t+1}$ is the expectation
-of $G_{t+1}$ at time $t$
+where $\beta$ is a constant discount factor and $\mathbb E_t D_{t+1}$ is the expectation
+of $D_{t+1}$ at time $t$.
 
-Roughly speaking, this says that the cost (i.e., price) equals expected benefit.
+Roughly speaking, [](eq:rnp) says that the cost (i.e., price) equals expected benefit.
 
 The discount factor is introduced because most people prefer payments now to
 payments in the future.
 
-The problem with this very simple model is that it does not take into account
+One problem with this very simple model is that it does not take into account
 attitudes to risk.
 
 For example, investors often demand higher rates of return for holding risky
@@ -63,16 +69,18 @@ This feature of asset prices cannot be captured by risk neutral pricing.
 Hence we modify [](eq:rnp) to
 
 $$
-    P_t = \mathbb E_t M_{t+1} G_{t+1}
+    P_t = \mathbb E_t M_{t+1} D_{t+1}
 $$ (eq:nrnp)
 
-In this expression, $M_{t+1}$ is called the **stochastic discount factor**.
+In this expression, $M_{t+1}$ replaces $\beta$ and is called the **stochastic discount factor**.
 
 In essence, allowing discounting to become a random variable gives us the
-flexibilit to combine temporal discounting and attitudes to risk.
+flexibility to combine temporal discounting and attitudes to risk.
 
-We omit further justification because our aim is to move to the computational problem.
+We leave further discussion to [other lectures](https://python.quantecon.org/markov_asset.html) 
+because our aim is to move to the computational problem.
 
++++
 
 ## Pricing a cash flow
 
@@ -108,11 +116,11 @@ We can also write this as
 ```{math}
 :label: pdex2
 
-V_t = {\mathbb E}_t \left[ M_{t+1} \exp(g_{d, t+1}) (1 + V_{t+1}) \right]
+V_t = {\mathbb E}_t \left[ M_{t+1} \exp(G^d_{t+1}) (1 + V_{t+1}) \right]
 ```
 
 $$
-    g_{d, t+1} = \ln \frac{D_{t+1}}{D_t}
+    G^d_{t+1} = \ln \frac{D_{t+1}}{D_t}
 $$
 
 is the growth rate of dividends.
@@ -120,8 +128,9 @@ is the growth rate of dividends.
 Our aim is to solve [](pdex2) but before that we need to specify
 
 1. the stochastic discount factor $M_{t+1}$ and
-1. the growth rate of dividends $g_{d, t+1}$
+1. the growth rate of dividends $G^d_{t+1}$
 
++++
 
 ## Choosing the stochastic discount factor
 
@@ -146,7 +155,7 @@ For utility, we'll assume the **constant relative risk aversion** (CRRA) specifi
 Inserting the CRRA specification into {eq}`lucsdf` and letting
 
 $$
-    g_{c, t+1} = \ln \left( \frac{C_{t+1}}{C_t} \right)
+    G^c_{t+1} = \ln \left( \frac{C_{t+1}}{C_t} \right)
 $$ 
 
 the growth rate rate of consumption, we obtain 
@@ -155,11 +164,11 @@ the growth rate rate of consumption, we obtain
 :label: lucsdf2
     M_{t+1}
     = \beta \left(\frac{C_{t+1}}{C_t}\right)^{-\gamma}
-    = \beta \exp( g_{c, t+1} )^{-\gamma} 
-    = \beta \exp(-\gamma g_{c, t+1})
+    = \beta \exp( G^c_{t+1} )^{-\gamma} 
+    = \beta \exp(-\gamma G^c_{t+1})
 ```
 
-
++++
 
 ## Solving for the price-dividend ratio
 
@@ -168,7 +177,7 @@ formula
 
 $$
     V_t = \beta {\mathbb E}_t 
-    \left[ \exp(g_{d, t+1} - \gamma g_{c, t+1}) (1 + V_{t+1}) \right]
+    \left[ \exp(G^d_{t+1} - \gamma G^c_{t+1}) (1 + V_{t+1}) \right]
 $$ (pdex3)
 
 For now we assume that there is a Markov chain $\{X_t\}$, which we call
@@ -176,8 +185,8 @@ the **state process**,  such that
 
 $$
 \begin{aligned}
-    & g_{c, t+1} = \mu_c + X_t + \sigma_c \epsilon_{c, t+1} \\
-    & g_{d, t+1} = \mu_d + X_t + \sigma_d \epsilon_{d, t+1} 
+    & G^c_{t+1} = \mu_c + X_t + \sigma_c \epsilon_{c, t+1} \\
+    & G^d_{t+1} = \mu_d + X_t + \sigma_d \epsilon_{d, t+1} 
 \end{aligned}
 $$
 
@@ -194,7 +203,7 @@ out to be correct).
 
 This means that $V_t = v(X_t)$ for some unknown function $v$.
 
-The unknown function $v$ satisfies the equation
+By [](pdex3), the unknown function $v$ satisfies the equation
 
 $$
     v(X_t) = \beta {\mathbb E}_t 
@@ -204,7 +213,7 @@ $$
                 \sigma_c \epsilon_{c, t+1} - 
                 \gamma  \sigma_d \epsilon_{d, t+1}     
             ]
-        (1 + V(X_{t+1}))
+        (1 + v(X_{t+1}))
     \right]
 $$ (eq:neweqn101)
 
@@ -253,7 +262,7 @@ We can write [](eq:ntecx) in vector form as
 
 $$
     v = K (\mathbb 1 + v)
-$$ [](eq:ntecxv)
+$$ (eq:ntecxv)
 
 where $K$ is the matrix defined by 
 
@@ -264,7 +273,6 @@ $$
             a + (1-\gamma) x + 
                 (\sigma_c ^2 + \gamma^2  \sigma_d^2) / 2)
             ]
-        (1 + v(y))
     \right] P(x, y)
 $$
 
@@ -284,86 +292,86 @@ whenever $r(K)$, the spectral radius of $K$, is strictly less than one.
 Once we specify $P$ and all the parameters, we can obtain $K$ and 
 then compute the solution [](eq:ntecxvv).
 
++++
 
 ## Code
 
-```{code-cell} python3
-Model = namedtuple('Model',
-    'n',    # size of state space for Markov chain
-    'ρ',    # persistence parameter for Markov chain
-    'β',    # discount factor
-    'γ',    # coefficient of risk aversion
+```{code-cell}
+Model = namedtuple('Model', 
+                   ('P', 'S', 'β', 'γ', 'μ_c', 'μ_d', 'σ_c', 'σ_d'))
 
-```
+def create_model(n=100,         # size of state space for Markov chain
+                 ρ=0.2,         # persistence parameter for Markov chain
+                 σ=0.1,         # persistence parameter for Markov chain
+                 β=0.98,        # discount factor
+                 γ=2.5,         # coefficient of risk aversion 
+                 μ_c=0.01,      # mean growth of consumtion
+                 μ_d=0.01,      # mean growth of dividends
+                 σ_c=0.02,      # consumption volatility 
+                 σ_d=0.04):     # dividend volatility 
 
-```{code-cell} python3
-class AssetPriceModel:
+    mc = qe.tauchen(n, ρ, σ, 0)
+    S = mc.state_values
+    P = mc.P
+    return Model(P=P, S=S, β=β, γ=γ, μ_c=μ_c, μ_d=μ_d, σ_c=σ_c, σ_d=σ_d)
+
+
+def test_stability(Q):
     """
-    A class that stores the primitives of the asset pricing model.
+    Stability test for a given matrix Q.
+    """
+    sr = np.max(np.abs(np.linalg.eigvals(Q)))
+    if not sr < 1:
+        msg = f"Spectral radius condition failed with radius = {sr}"
+        raise ValueError(msg)
+
+def compute_K(model):
+    # Setp up
+    P, S, β, γ, μ_c, μ_d, σ_c, σ_d = model
+    n = len(S)
+    # Reshape and multiply pointwise using broadcasting
+    x = np.reshape(S, (n, 1))
+    a = μ_c - γ * μ_d
+    e = np.exp(a + (1 - γ) * x + (σ_c**2 + γ**2 * σ_d**2) / 2)
+    K = β * e * P
+    return K
+
+def compute_K_loop(model):
+    # Setp up
+    P, S, β, γ, μ_c, μ_d, σ_c, σ_d = model
+    n = len(S)
+    K = np.empty((n, n))
+    a = μ_c - γ * μ_d
+    for i, x in enumerate(S):
+        for j, y in enumerate(S):
+            e = np.exp(a + (1 - γ) * x + (σ_c**2 + γ**2 * σ_d**2) / 2)
+            K[i, j] = β * e * P[i, j]
+    return K
+
+def price_dividend_ratio(model):
+    """
+    Computes the price-dividend ratio of the asset.
 
     Parameters
     ----------
-    β : scalar, float
-        Discount factor
-    mc : MarkovChain
-        Contains the transition matrix and set of state values for the state
-        process
-    γ : scalar(float)
-        Coefficient of risk aversion
-    g : callable
-        The function mapping states to growth rates
-
-    """
-    def __init__(self, β=0.96, mc=None, γ=2.0, g=np.exp):
-        self.β, self.γ = β, γ
-        self.g = g
-
-        # A default process for the Markov chain
-        if mc is None:
-            self.ρ = 0.9
-            self.σ = 0.02
-            self.mc = qe.tauchen(self.ρ, self.σ, n=25)
-        else:
-            self.mc = mc
-
-        self.n = self.mc.P.shape[0]
-
-    def test_stability(self, Q):
-        """
-        Stability test for a given matrix Q.
-        """
-        sr = np.max(np.abs(eigvals(Q)))
-        if not sr < 1 / self.β:
-            msg = f"Spectral radius condition failed with radius = {sr}"
-            raise ValueError(msg)
-
-
-def tree_price(ap):
-    """
-    Computes the price-dividend ratio of the Lucas tree.
-
-    Parameters
-    ----------
-    ap: AssetPriceModel
-        An instance of AssetPriceModel containing primitives
+    model: an instance of Model
+        contains primitives
 
     Returns
     -------
-    v : array_like(float)
-        Lucas tree price-dividend ratio
+    v : array_like
+        price-dividend ratio
 
     """
-    # Simplify names, set up matrices
-    β, γ, P, y = ap.β, ap.γ, ap.mc.P, ap.mc.state_values
-    J = P * ap.g(y)**(1 - γ)
-
+    K = compute_K(model)
+    n = len(model.S)
     # Make sure that a unique solution exists
-    ap.test_stability(J)
+    test_stability(K)
 
     # Compute v
-    I = np.identity(ap.n)
-    Ones = np.ones(ap.n)
-    v = solve(I - β * J, β * J @ Ones)
+    I = np.identity(n)
+    Ones = np.ones(n)
+    v = np.linalg.solve(I - K, K @ Ones)
 
     return v
 ```
@@ -371,17 +379,17 @@ def tree_price(ap):
 Here's a plot of $v$ as a function of the state for several values of $\gamma$,
 with a positively correlated Markov process and $g(x) = \exp(x)$
 
-```{code-cell} python3
-γs = [1.2, 1.4, 1.6, 1.8, 2.0]
-ap = AssetPriceModel()
-states = ap.mc.state_values
+```{code-cell}
+model = create_model()
+S = model.S
+γs = np.linspace(2.0, 3.0, 5)
 
 fig, ax = plt.subplots()
 
 for γ in γs:
-    ap.γ = γ
-    v = tree_price(ap)
-    ax.plot(states, v, lw=2, alpha=0.6, label=rf"$\gamma = {γ}$")
+    model = create_model(γ=γ)
+    v = price_dividend_ratio(model)
+    ax.plot(S, v, lw=2, alpha=0.6, label=rf"$\gamma = {γ}$")
 
 ax.set_title('Price-divdend ratio as a function of the state')
 ax.set_ylabel("price-dividend ratio")
@@ -397,9 +405,7 @@ This is because, with a positively correlated state process, higher states indic
 With the stochastic discount factor {eq}`lucsdf2`, higher growth decreases the
 discount factor, lowering the weight placed on future dividends.
 
-
-
-
++++
 
 ## An Extended Example
 
@@ -407,16 +413,18 @@ We suppose that
 
 $$
 \begin{aligned}
-    & g_{c, t+1} = \mu_c + Z_t + \exp(h_{c, t}) \epsilon_{c, t+1} \\
-    & g_{d, t+1} = \mu_d + Z_t + \exp(h_{d, t}) \epsilon_{d, t+1} 
+    & G^c_{t+1} = \mu_c + Z_t + \exp(h_{c, t}) \epsilon_{c, t+1} \\
+    & G^d_{t+1} = \mu_d + Z_t + \exp(h_{d, t}) \epsilon_{d, t+1} 
 \end{aligned}
 $$
 
 where
 
++++
 
-Let $X_t = (h_{c, t}, h_{d, t}, Z_t)$.  
+Let $X_t = (h_{c, t}, h_{d, t}, Z_t)$.
 
++++
 
 We call $\{X_t\}$ the state process and guess that $V_t$ is a function of
 this state process --- and this guess turns out to be correct.
@@ -424,5 +432,3 @@ this state process --- and this guess turns out to be correct.
 This means that $V_t = v(X_t)$ for some unknown function $v$.
 
 The unknown function $v$ satisfies the equation
-
-
