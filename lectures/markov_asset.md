@@ -23,7 +23,7 @@ solve, you can jump to [TODO add link]
 
 Below we use the following imports
 
-```{code-cell}
+```{code-cell} ipython3
 import quantecon as qe
 import matplotlib.pyplot as plt
 import numpy as np
@@ -34,7 +34,7 @@ from collections import namedtuple
 
 We will use 64 bit floats with JAX in order to increase precision.
 
-```{code-cell}
+```{code-cell} ipython3
 jax.config.update("jax_enable_x64", True)
 ```
 
@@ -207,14 +207,14 @@ By [](pdex3), the unknown function $v$ satisfies the equation
 
 $$
     v(X_t) = \beta {\mathbb E}_t 
-    \left[
+    \left\{
         \exp[
             a + (1-\gamma) X_t + 
                 \sigma_c \epsilon_{c, t+1} - 
                 \gamma  \sigma_d \epsilon_{d, t+1}     
             ]
         (1 + v(X_{t+1}))
-    \right]
+    \right\}
 $$ (eq:neweqn101)
 
 where $a := \mu_c - \gamma \mu_d$
@@ -230,35 +230,50 @@ This yields
 
 $$
     v(X_t) = \beta {\mathbb E}_t 
-    \left[
-        \exp[
+    \left\{
+        \exp \left[
             a + (1-\gamma) X_t + 
-                (\sigma_c ^2 + \gamma^2  \sigma_d^2) / 2)
-            ]
+                \frac{\sigma_c^2 + \gamma^2  \sigma_d^2}{2}
+            \right]
         (1 + v(X_{t+1}))
-    \right]
+    \right\}
 $$ (eq:ntev)
 
 Conditioning on $X_t = x$, we can write this as
 
 $$
     v(x) = \beta \sum_{y \in S}
-    \left[
-        \exp[
+    \left\{
+        \exp \left[
             a + (1-\gamma) x + 
-                (\sigma_c ^2 + \gamma^2  \sigma_d^2) / 2)
-            ]
+                \frac{\sigma_c^2 + \gamma^2  \sigma_d^2}{2} 
+            \right]
         (1 + v(y))
-    \right] P(x, y)
+    \right\}
+    P(x, y)
 $$ (eq:ntecx)
 
 for all $x \in S$.
 
-Suppose $S = \{x_1, \ldots, x_n\}$.
+Suppose $S = \{x_1, \ldots, x_N\}$.
 
-Then we can think of $v(x_1), \ldots, v(x_n)$ as an $n \times 1$ vector.
+Then we can think of $v$ as an $N$-vector and write
 
-We can write [](eq:ntecx) in vector form as
+$$
+    v[i] = \beta \sum_{j=1}^N
+    \left\{
+        \exp \left[
+            a + (1-\gamma) x[i] + 
+                \frac{\sigma_c^2 + \gamma^2  \sigma_d^2}{2} 
+            \right]
+        (1 + v[j])
+    \right\}
+    P[i, j]
+$$ (eq:ntecx2)
+
+for $i = 1, \ldots, N$.
+
+We can write [](eq:ntecx2) in vector form as
 
 $$
     v = K (\mathbb 1 + v)
@@ -267,16 +282,15 @@ $$ (eq:ntecxv)
 where $K$ is the matrix defined by 
 
 $$
-    K(x, y)
-    = \beta \left[
-        \exp[
-            a + (1-\gamma) x + 
-                (\sigma_c ^2 + \gamma^2  \sigma_d^2) / 2)
-            ]
-    \right] P(x, y)
+    K[i, j]
+    = \beta \left\{
+        \exp \left[
+            a + (1-\gamma) x[i] + 
+                \frac{\sigma_c^2 + \gamma^2  \sigma_d^2}{2}
+            \right]
+    \right\} P[i,j]
 $$
 
-(That, is $K$ is a matrix with $i,j$-th element $K(x_i, x_j)$.)
 
 Notice that [](eq:ntecxv) can be written as $(I - K)v = K \mathbb 1$.
 
@@ -292,15 +306,24 @@ whenever $r(K)$, the spectral radius of $K$, is strictly less than one.
 Once we specify $P$ and all the parameters, we can obtain $K$ and 
 then compute the solution [](eq:ntecxvv).
 
-+++
 
 ## Code
 
-```{code-cell}
+We assume that $\{X_t\}$ is a discretization of the AR(1) process
+
+$$
+    X_{t+1} = \rho X_t + \sigma \eta_{t+1}
+$$
+
+where $\rho, \sigma$ are parameters and $\{\eta_t\}$ is IID and standard normal.
+
+To discretize this process we use QuantEcon.py's `tauchen` function.
+
+```{code-cell} ipython3
 Model = namedtuple('Model', 
                    ('P', 'S', 'β', 'γ', 'μ_c', 'μ_d', 'σ_c', 'σ_d'))
 
-def create_model(n=100,         # size of state space for Markov chain
+def create_model(N=100,         # size of state space for Markov chain
                  ρ=0.2,         # persistence parameter for Markov chain
                  σ=0.1,         # persistence parameter for Markov chain
                  β=0.98,        # discount factor
@@ -310,7 +333,7 @@ def create_model(n=100,         # size of state space for Markov chain
                  σ_c=0.02,      # consumption volatility 
                  σ_d=0.04):     # dividend volatility 
 
-    mc = qe.tauchen(n, ρ, σ, 0)
+    mc = qe.tauchen(N, ρ, σ, 0)
     S = mc.state_values
     P = mc.P
     return Model(P=P, S=S, β=β, γ=γ, μ_c=μ_c, μ_d=μ_d, σ_c=σ_c, σ_d=σ_d)
@@ -328,9 +351,9 @@ def test_stability(Q):
 def compute_K(model):
     # Setp up
     P, S, β, γ, μ_c, μ_d, σ_c, σ_d = model
-    n = len(S)
+    N = len(S)
     # Reshape and multiply pointwise using broadcasting
-    x = np.reshape(S, (n, 1))
+    x = np.reshape(S, (N, 1))
     a = μ_c - γ * μ_d
     e = np.exp(a + (1 - γ) * x + (σ_c**2 + γ**2 * σ_d**2) / 2)
     K = β * e * P
@@ -339,8 +362,8 @@ def compute_K(model):
 def compute_K_loop(model):
     # Setp up
     P, S, β, γ, μ_c, μ_d, σ_c, σ_d = model
-    n = len(S)
-    K = np.empty((n, n))
+    N = len(S)
+    K = np.empty((N, N))
     a = μ_c - γ * μ_d
     for i, x in enumerate(S):
         for j, y in enumerate(S):
@@ -364,13 +387,13 @@ def price_dividend_ratio(model):
 
     """
     K = compute_K(model)
-    n = len(model.S)
+    N = len(model.S)
     # Make sure that a unique solution exists
     test_stability(K)
 
     # Compute v
-    I = np.identity(n)
-    Ones = np.ones(n)
+    I = np.identity(N)
+    Ones = np.ones(N)
     v = np.linalg.solve(I - K, K @ Ones)
 
     return v
@@ -379,7 +402,7 @@ def price_dividend_ratio(model):
 Here's a plot of $v$ as a function of the state for several values of $\gamma$,
 with a positively correlated Markov process and $g(x) = \exp(x)$
 
-```{code-cell}
+```{code-cell} ipython3
 model = create_model()
 S = model.S
 γs = np.linspace(2.0, 3.0, 5)
@@ -405,30 +428,132 @@ This is because, with a positively correlated state process, higher states indic
 With the stochastic discount factor {eq}`lucsdf2`, higher growth decreases the
 discount factor, lowering the weight placed on future dividends.
 
-+++
 
 ## An Extended Example
 
-We suppose that
+One problem with the last set is that volatility is constant through time (i.e.,
+$\sigma_c$ and $\sigma_d$ are constants).
+
+In reality, financial markets and growth rates of macroeconomic variables
+exhibit bursts of volatility.
+
+To accommodate this, we now suppose that
 
 $$
 \begin{aligned}
-    & G^c_{t+1} = \mu_c + Z_t + \exp(h_{c, t}) \epsilon_{c, t+1} \\
-    & G^d_{t+1} = \mu_d + Z_t + \exp(h_{d, t}) \epsilon_{d, t+1} 
+    & G^c_{t+1} = \mu_c + Z_t + \exp(H^c_t) \epsilon_{c, t+1} \\
+    & G^d_{t+1} = \mu_d + Z_t + \exp(H^d_t) \epsilon_{d, t+1} 
 \end{aligned}
 $$
 
-where
+where $\{Z_t\}$ is a finite Markov chain and $\{H^c_t\}$ and $\{H^d_t\}$ are AR(1) processes of the form
 
-+++
+$$
+\begin{aligned}
+    H^c_{t+1} & = \rho_c H^c_t + \sigma_c \eta_{c, t+1}  \\
+    H^d_{t+1} & = \rho_d H^d_t + \sigma_d \eta_{d, t+1}  
+\end{aligned}
+$$
 
-Let $X_t = (h_{c, t}, h_{d, t}, Z_t)$.
+Here $\{\eta^c_t\}$ and $\{\eta^d_t\}$ are IID and standard normal.
 
-+++
+Let $X_t = (H^c_t, H^d_t, Z_t)$.
 
 We call $\{X_t\}$ the state process and guess that $V_t$ is a function of
-this state process --- and this guess turns out to be correct.
+this state process, so that $V_t = v(X_t)$ for some unknown function $v$.
 
-This means that $V_t = v(X_t)$ for some unknown function $v$.
+Modifying [](eq:neweqn101) to accommodate the new growth specifications, 
+we find that $v$ satisfies 
 
-The unknown function $v$ satisfies the equation
+$$
+    v(X_t) = \beta {\mathbb E}_t 
+    \left\{
+        \exp[
+            a + (1-\gamma) Z_t + 
+                \exp(H^c_t) \epsilon_{c, t+1} - 
+                \gamma \exp(H^d_t) \epsilon_{d, t+1}     
+            ]
+        (1 + v(X_{t+1}))
+    \right\}
+$$ (eq:neweqn102)
+
+Conditioning on state $x = (h_c, h_d, z)$, this becomes
+
+$$
+    v(x) = \beta  {\mathbb E}_t
+        \exp[
+            a + (1-\gamma) z + 
+                \exp(h_c) \epsilon_{c, t+1} - 
+                \gamma \exp(h_d) \epsilon_{d, t+1}     
+            ]
+        (1 + v(X_{t+1}))
+$$ (eq:neweqn103)
+
+As before, we integrate out the independent shocks and use the rules for 
+expectations of lognormals to obtain
+
+$$
+    v(x) = \beta  {\mathbb E}_t
+        \exp \left[
+            a + (1-\gamma) z + 
+                \frac{\exp(2 h_c) + \gamma^2 \exp(2 h_d)}{2}
+            \right]
+        (1 + v(X_{t+1}))
+$$ (eq:neweqn103)
+
+Using the definition of the state and setting
+
+$$
+    \kappa(h_c, h_z, z) :=
+        \exp \left[
+            a + (1-\gamma) z + 
+                \frac{\exp(2 h_c) + \gamma^2 \exp(2 h_d)}{2}
+            \right]
+$$
+
+we can write this more explicitly
+
+$$
+    v(h_c, h_d, z) = 
+    \beta \sum_{h_c', h_d', z'}
+        \kappa(h_c, h_z, z)
+        (1 + v(h_c', h_d', z')) P(h_c, h_c')Q(h_d, h_d')R(z, z')
+$$ (eq:neweqn104)
+
+Here $P, Q, R$ are the stochastic matrices for, respectively, discretized
+$\{H^c_t\}$, discretized $\{H^d_t\}$ and $\{Z_t\}$.
+
+Let's now write the state using indices, with $(i, j, k)$ being the
+indices for $(h_c, h_z, z)$.
+
+The last expression becomes
+
+$$
+    v[i, j, k] = 
+    \beta \sum_{i', j', k'}
+        \kappa[i, j, k]
+        (1 + v[i', j', k']) P[i, i']Q[j, j']R[k, k']
+$$ (eq:neweqn104)
+
+If we define the linear operator
+
+$$
+    (Kg)[i, j, k] = 
+    \beta \sum_{i', j', k'}
+        \kappa[i, j, k] g[i', j', k'] P[i, i']Q[j, j']R[k, k']
+$$
+
+then [](eq:neweqn104) becomes $v(i, j, k) = (K(1 + v))(i, j, k)$, or, in vector
+form,
+
+$$
+    v = K(\mathbb 1 + v)
+$$
+
+Provided that $K$ is invertible, the solution is given by
+
+$$
+    v = (I - K)^{-1} K \mathbb 1
+$$
+
+
