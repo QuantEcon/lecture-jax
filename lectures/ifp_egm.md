@@ -14,7 +14,7 @@ kernelspec:
 # Income Fluctuations and Endogenous Grid Method
 
 ```{code-cell} ipython3
-!pip install --upgrade interpolation
+!pip install --upgrade quantecon interpolation
 ```
 
 ```{code-cell} ipython3
