@@ -23,7 +23,8 @@ solve, you can jump to [TODO add link]
 
 Below we use the following imports
 
-```{code-cell} ipython3
+```{code-cell}
+import scipy
 import quantecon as qe
 import matplotlib.pyplot as plt
 import numpy as np
@@ -34,7 +35,7 @@ from collections import namedtuple
 
 We will use 64 bit floats with JAX in order to increase precision.
 
-```{code-cell} ipython3
+```{code-cell}
 jax.config.update("jax_enable_x64", True)
 ```
 
@@ -210,14 +211,14 @@ $$
     \left\{
         \exp[
             a + (1-\gamma) X_t + 
-                \sigma_c \epsilon_{c, t+1} - 
-                \gamma  \sigma_d \epsilon_{d, t+1}     
+                \sigma_d \epsilon_{d, t+1} - 
+                \gamma  \sigma_c \epsilon_{c, t+1}     
             ]
         (1 + v(X_{t+1}))
     \right\}
 $$ (eq:neweqn101)
 
-where $a := \mu_c - \gamma \mu_d$
+where $a := \mu_d - \gamma \mu_c$
 
 Since the shocks $\epsilon_{c, t+1}$ and $\epsilon_{d, t+1}$ are independent of
 $\{X_t\}$, we can integrate them out.
@@ -233,7 +234,7 @@ $$
     \left\{
         \exp \left[
             a + (1-\gamma) X_t + 
-                \frac{\sigma_c^2 + \gamma^2  \sigma_d^2}{2}
+                \frac{\sigma_d^2 + \gamma^2  \sigma_c^2}{2}
             \right]
         (1 + v(X_{t+1}))
     \right\}
@@ -246,7 +247,7 @@ $$
     \left\{
         \exp \left[
             a + (1-\gamma) x + 
-                \frac{\sigma_c^2 + \gamma^2  \sigma_d^2}{2} 
+                \frac{\sigma_d^2 + \gamma^2  \sigma_c^2}{2} 
             \right]
         (1 + v(y))
     \right\}
@@ -264,7 +265,7 @@ $$
     \left\{
         \exp \left[
             a + (1-\gamma) x[i] + 
-                \frac{\sigma_c^2 + \gamma^2  \sigma_d^2}{2} 
+                \frac{\sigma_d^2 + \gamma^2  \sigma_c^2}{2} 
             \right]
         (1 + v[j])
     \right\}
@@ -286,7 +287,7 @@ $$
     = \beta \left\{
         \exp \left[
             a + (1-\gamma) x[i] + 
-                \frac{\sigma_c^2 + \gamma^2  \sigma_d^2}{2}
+                \frac{\sigma_d^2 + \gamma^2  \sigma_c^2}{2}
             \right]
     \right\} P[i,j]
 $$
@@ -319,13 +320,22 @@ where $\rho, \sigma$ are parameters and $\{\eta_t\}$ is IID and standard normal.
 
 To discretize this process we use QuantEcon.py's `tauchen` function.
 
-```{code-cell} ipython3
+```{code-cell}
+
+def test_stability(Q):
+    """
+    Assert that the spectral radius of matrix Q is < 1.
+    """
+    sr = np.max(jnp.abs(jnp.linalg.eigvals(Q)))
+    assert sr < 1, f"Spectral radius condition failed with radius = {sr}"
+
+
 Model = namedtuple('Model', 
                    ('P', 'S', 'β', 'γ', 'μ_c', 'μ_d', 'σ_c', 'σ_d'))
 
 def create_model(N=100,         # size of state space for Markov chain
-                 ρ=0.2,         # persistence parameter for Markov chain
-                 σ=0.1,         # persistence parameter for Markov chain
+                 ρ=0.9,         # persistence parameter for Markov chain
+                 σ=0.01,        # persistence parameter for Markov chain
                  β=0.98,        # discount factor
                  γ=2.5,         # coefficient of risk aversion 
                  μ_c=0.01,      # mean growth of consumtion
@@ -333,29 +343,21 @@ def create_model(N=100,         # size of state space for Markov chain
                  σ_c=0.02,      # consumption volatility 
                  σ_d=0.04):     # dividend volatility 
 
-    mc = qe.tauchen(N, ρ, σ, 0)
+    mc = qe.tauchen(N, ρ, σ)
     S = mc.state_values
     P = mc.P
+    S, P = map(jax.device_put, (S, P))
     return Model(P=P, S=S, β=β, γ=γ, μ_c=μ_c, μ_d=μ_d, σ_c=σ_c, σ_d=σ_d)
 
-
-def test_stability(Q):
-    """
-    Stability test for a given matrix Q.
-    """
-    sr = np.max(np.abs(np.linalg.eigvals(Q)))
-    if not sr < 1:
-        msg = f"Spectral radius condition failed with radius = {sr}"
-        raise ValueError(msg)
 
 def compute_K(model):
     # Setp up
     P, S, β, γ, μ_c, μ_d, σ_c, σ_d = model
     N = len(S)
     # Reshape and multiply pointwise using broadcasting
-    x = np.reshape(S, (N, 1))
-    a = μ_c - γ * μ_d
-    e = np.exp(a + (1 - γ) * x + (σ_c**2 + γ**2 * σ_d**2) / 2)
+    x = jnp.reshape(S, (N, 1))
+    a = μ_d - γ * μ_c
+    e = jnp.exp(a + (1 - γ) * x + (σ_d**2 + γ**2 * σ_c**2) / 2)
     K = β * e * P
     return K
 
@@ -363,15 +365,15 @@ def compute_K_loop(model):
     # Setp up
     P, S, β, γ, μ_c, μ_d, σ_c, σ_d = model
     N = len(S)
-    K = np.empty((N, N))
-    a = μ_c - γ * μ_d
+    K = jnp.empty((N, N))
+    a = μ_d - γ * μ_c
     for i, x in enumerate(S):
         for j, y in enumerate(S):
-            e = np.exp(a + (1 - γ) * x + (σ_c**2 + γ**2 * σ_d**2) / 2)
+            e = jnp.exp(a + (1 - γ) * x + (σ_d**2 + γ**2 * σ_c**2) / 2)
             K[i, j] = β * e * P[i, j]
     return K
 
-def price_dividend_ratio(model):
+def price_dividend_ratio(model, test_stable=True):
     """
     Computes the price-dividend ratio of the asset.
 
@@ -388,13 +390,14 @@ def price_dividend_ratio(model):
     """
     K = compute_K(model)
     N = len(model.S)
-    # Make sure that a unique solution exists
-    test_stability(K)
+
+    if test_stable:
+        test_stability(K)
 
     # Compute v
-    I = np.identity(N)
-    Ones = np.ones(N)
-    v = np.linalg.solve(I - K, K @ Ones)
+    I = jnp.identity(N)
+    ones_vec = np.ones(N)
+    v = jnp.linalg.solve(I - K, K @ ones_vec)
 
     return v
 ```
@@ -402,10 +405,10 @@ def price_dividend_ratio(model):
 Here's a plot of $v$ as a function of the state for several values of $\gamma$,
 with a positively correlated Markov process and $g(x) = \exp(x)$
 
-```{code-cell} ipython3
+```{code-cell}
 model = create_model()
 S = model.S
-γs = np.linspace(2.0, 3.0, 5)
+γs = jnp.linspace(2.0, 3.0, 5)
 
 fig, ax = plt.subplots()
 
@@ -414,7 +417,6 @@ for γ in γs:
     v = price_dividend_ratio(model)
     ax.plot(S, v, lw=2, alpha=0.6, label=rf"$\gamma = {γ}$")
 
-ax.set_title('Price-divdend ratio as a function of the state')
 ax.set_ylabel("price-dividend ratio")
 ax.set_xlabel("state")
 ax.legend(loc='upper right')
@@ -441,8 +443,8 @@ To accommodate this, we now suppose that
 
 $$
 \begin{aligned}
-    & G^c_{t+1} = \mu_c + Z_t + \exp(H^c_t) \epsilon_{c, t+1} \\
-    & G^d_{t+1} = \mu_d + Z_t + \exp(H^d_t) \epsilon_{d, t+1} 
+    & G^c_{t+1} = \mu_c + Z_t + \bar \sigma \exp(H^c_t) \epsilon_{c, t+1} \\
+    & G^d_{t+1} = \mu_d + Z_t + \bar \sigma \exp(H^d_t) \epsilon_{d, t+1} 
 \end{aligned}
 $$
 
@@ -470,12 +472,16 @@ $$
     \left\{
         \exp[
             a + (1-\gamma) Z_t + 
-                \exp(H^c_t) \epsilon_{c, t+1} - 
-                \gamma \exp(H^d_t) \epsilon_{d, t+1}     
+                \bar \sigma \exp(H^d_t) \epsilon_{d, t+1} - 
+                \gamma \bar \sigma \exp(H^c_t) \epsilon_{c, t+1}     
             ]
         (1 + v(X_{t+1}))
     \right\}
 $$ (eq:neweqn102)
+
+where, as before, $a := \mu_d - \gamma \mu_c$
+
++++
 
 Conditioning on state $x = (h_c, h_d, z)$, this becomes
 
@@ -483,8 +489,8 @@ $$
     v(x) = \beta  {\mathbb E}_t
         \exp[
             a + (1-\gamma) z + 
-                \exp(h_c) \epsilon_{c, t+1} - 
-                \gamma \exp(h_d) \epsilon_{d, t+1}     
+                \bar \sigma \exp(h_d) \epsilon_{d, t+1} - 
+                \gamma \bar \sigma \exp(h_c) \epsilon_{c, t+1}     
             ]
         (1 + v(X_{t+1}))
 $$ (eq:neweqn103)
@@ -496,7 +502,7 @@ $$
     v(x) = \beta  {\mathbb E}_t
         \exp \left[
             a + (1-\gamma) z + 
-                \frac{\exp(2 h_c) + \gamma^2 \exp(2 h_d)}{2}
+                \bar \sigma^2 \frac{\exp(2 h_d) + \gamma^2 \exp(2 h_c)}{2}
             \right]
         (1 + v(X_{t+1}))
 $$ (eq:neweqn103)
@@ -507,7 +513,7 @@ $$
     \kappa(h_c, h_z, z) :=
         \exp \left[
             a + (1-\gamma) z + 
-                \frac{\exp(2 h_c) + \gamma^2 \exp(2 h_d)}{2}
+                \bar \sigma^2 \frac{\exp(2 h_d) + \gamma^2 \exp(2 h_c)}{2}
             \right]
 $$
 
@@ -538,22 +544,347 @@ $$ (eq:neweqn104)
 If we define the linear operator
 
 $$
-    (Kg)[i, j, k] = 
+    (Hg)[i, j, k] = 
     \beta \sum_{i', j', k'}
         \kappa[i, j, k] g[i', j', k'] P[i, i']Q[j, j']R[k, k']
 $$
 
-then [](eq:neweqn104) becomes $v(i, j, k) = (K(1 + v))(i, j, k)$, or, in vector
+then [](eq:neweqn104) becomes $v(i, j, k) = (H(1 + v))(i, j, k)$, or, in vector
 form,
 
 $$
-    v = K(\mathbb 1 + v)
+    v = H(\mathbb 1 + v)
 $$
 
-Provided that $K$ is invertible, the solution is given by
+Provided that $H$ is invertible, the solution is given by
 
 $$
-    v = (I - K)^{-1} K \mathbb 1
+    v = (I - H)^{-1} H \mathbb 1
 $$
 
++++
 
+$$
+    Z_{t+1} = \rho_z Z_t + \sigma_z \xi_{t+1}
+$$
+
++++
+
+# Numpy Version
+
+```{code-cell}
+SVModel = namedtuple('SVModel', 
+                        ('P', 'hc_grid', 
+                         'Q', 'hd_grid', 
+                         'R', 'z_grid', 
+                         'β', 'γ', 'bar_σ', 'μ_c', 'μ_d'))
+```
+
+```{code-cell}
+def create_sv_model(β=0.98,        # discount factor
+                    γ=2.5,         # coefficient of risk aversion 
+                    I=14,          # size of state space for h_c 
+                    ρ_c=0.9,       # persistence parameter for h_c
+                    σ_c=0.01,      # volatility parameter for h_c
+                    J=14,          # size of state space for h_d 
+                    ρ_d=0.9,       # persistence parameter for h_d
+                    σ_d=0.01,      # volatility parameter for h_d
+                    K=14,          # size of state space for z
+                    bar_σ=0.01,    # volatility scaling parameter
+                    ρ_z=0.9,       # persistence parameter for z
+                    σ_z=0.01,      # persistence parameter for z
+                    μ_c=0.001,     # mean growth of consumtion
+                    μ_d=0.005):    # mean growth of dividends
+
+    mc = qe.tauchen(I, ρ_c, σ_c)
+    hc_grid = mc.state_values
+    P = mc.P
+    mc = qe.tauchen(J, ρ_d, σ_d)
+    hd_grid = mc.state_values
+    Q = mc.P
+    mc = qe.tauchen(K, ρ_z, σ_z)
+    z_grid = mc.state_values
+    R = mc.P
+
+    return SVModel(P=P, hc_grid=hc_grid,
+                   Q=Q, hd_grid=hd_grid,
+                   R=R, z_grid=z_grid,
+                   β=β, γ=γ, bar_σ=bar_σ, μ_c=μ_c, μ_d=μ_d)
+```
+
+```{code-cell}
+def compute_H(sv_model):
+    # Set up
+    P, hc_grid, Q, hd_grid, R, z_grid, β, γ, bar_σ, μ_c, μ_d = sv_model
+    I, J, K = len(hc_grid), len(hd_grid), len(z_grid)
+    N = I * J * K
+    # Reshape and multiply pointwise using broadcasting
+    hc = np.reshape(hc_grid, (I, 1, 1))
+    hd = np.reshape(hd_grid, (1, J, 1))
+    z = np.reshape(z_grid,   (1, 1, K))
+    P = np.reshape(P, (I, 1, 1, I, 1, 1))
+    Q = np.reshape(Q, (1, J, 1, 1, J, 1))
+    R = np.reshape(R, (1, 1, K, 1, 1, K))
+    # Compute H and then reshape to create a matrix
+    a = μ_d - γ * μ_c
+    b = bar_σ**2 * (np.exp(2 * hd) + γ**2 * np.exp(2 * hc)) / 2
+    κ = np.exp(a + (1 - γ) * z + b)
+    H = β * κ * P * Q * R
+    H = np.reshape(H, (N, N))
+    return H
+```
+
+```{code-cell}
+
+```
+
+```{code-cell}
+def sv_pd_ratio(sv_model, test_stable=True):
+    """
+    Computes the price-dividend ratio of the asset for the stochastic volatility
+    model.
+
+    Parameters
+    ----------
+    sv_model: an instance of Model
+        contains primitives
+
+    Returns
+    -------
+    v : array_like
+        price-dividend ratio
+
+    """
+    # Setp up
+    P, hc_grid, Q, hd_grid, R, z_grid, β, γ, bar_σ, μ_c, μ_d = sv_model
+    I, J, K = len(hc_grid), len(hd_grid), len(z_grid)
+    N = I * J * K
+
+    H = compute_H(sv_model)
+    if test_stable:
+        test_stability(H)
+
+    # Make sure that a unique solution exists
+    if test_stable:
+        test_stability(H)
+
+    # Compute v
+    ones_array = np.ones(N)
+    Id = np.identity(N)
+    v = scipy.linalg.solve(Id - H, H @ ones_array)
+    # Reshape into an array of the form v[i, j, k]
+    v = np.reshape(v, (I, J, K))
+    return v
+```
+
+```{code-cell}
+sv_model = create_sv_model()
+P, hc_grid, Q, hd_grid, R, z_grid, β, γ, bar_σ, μ_c, μ_d = sv_model
+```
+
+```{code-cell}
+qe.tic()
+v = sv_pd_ratio(sv_model)
+np_time = qe.toc()
+```
+
+```{code-cell}
+fig, ax = plt.subplots()
+ax.plot(hc_grid, v[:, 0, 0], lw=2, alpha=0.6, label="$v$ as a function of $H^c$")
+ax.set_ylabel("price-dividend ratio")
+ax.set_xlabel("state")
+ax.legend()
+plt.show()
+```
+
+```{code-cell}
+fig, ax = plt.subplots()
+ax.plot(hd_grid, v[0, :, 0], lw=2, alpha=0.6, label="$v$ as a function of $H^d$")
+ax.set_ylabel("price-dividend ratio")
+ax.set_xlabel("state")
+ax.legend()
+plt.show()
+```
+
+```{code-cell}
+fig, ax = plt.subplots()
+ax.plot(z_grid, v[0, 0, :], lw=2, alpha=0.6, label="$v$ as a function of $Z$")
+ax.set_ylabel("price-dividend ratio")
+ax.set_xlabel("state")
+ax.legend()
+plt.show()
+```
+
+```{code-cell}
+
+```
+
+# JAX Version
+
+```{code-cell}
+def create_sv_model_jax(sv_model):    # mean growth of dividends
+
+    # Unpack
+    P, hc_grid, Q, hd_grid, R, z_grid, β, γ, bar_σ, μ_c, μ_d = sv_model
+
+    # Shift the arrays to the device (GPU if available)
+    hc_grid, hd_grid, z_grid = map(jax.device_put, (hc_grid, hd_grid, z_grid))
+    P, Q, R = map(jax.device_put, (P, Q, R))
+
+    # Create a new instance and return it
+    return SVModel(P=P, hc_grid=hc_grid,
+                   Q=Q, hd_grid=hd_grid,
+                   R=R, z_grid=z_grid,
+                   β=β, γ=γ, bar_σ=bar_σ, μ_c=μ_c, μ_d=μ_d)
+```
+
+```{code-cell}
+def compute_H_jax(sv_model, shapes):
+    # Set up
+    P, hc_grid, Q, hd_grid, R, z_grid, β, γ, bar_σ, μ_c, μ_d = sv_model
+    I, J, K = shapes
+    N = I * J * K
+    # Reshape and multiply pointwise using broadcasting
+    hc = jnp.reshape(hc_grid, (I, 1, 1))
+    hd = jnp.reshape(hd_grid, (1, J, 1))
+    z = jnp.reshape(z_grid, (1, 1, K))
+    P = jnp.reshape(P, (I, 1, 1, I, 1, 1))
+    Q = jnp.reshape(Q, (1, J, 1, 1, J, 1))
+    R = jnp.reshape(R, (1, 1, K, 1, 1, K))
+    # Compute H and then reshape to create a matrix
+    a = μ_d - γ * μ_c
+    b = bar_σ**2 * (jnp.exp(2 * hd) + γ**2 * jnp.exp(2 * hc)) / 2
+    κ = jnp.exp(a + (1 - γ) * z + b)
+    H = β * κ * P * Q * R
+    H = jnp.reshape(H, (N, N))
+    return H
+```
+
+```{code-cell}
+def sv_pd_ratio_jax(sv_model, shapes):
+    """
+    Computes the price-dividend ratio of the asset for the stochastic volatility
+    model.
+
+    Parameters
+    ----------
+    sv_model: an instance of Model
+        contains primitives
+
+    Returns
+    -------
+    v : array_like
+        price-dividend ratio
+
+    """
+    # Setp up
+    P, hc_grid, Q, hd_grid, R, z_grid, β, γ, bar_σ, μ_c, μ_d = sv_model
+    I, J, K = len(hc_grid), len(hd_grid), len(z_grid)
+    shapes = I, J, K
+    N = I * J * K
+
+    # Make sure that a unique solution exists
+    H = compute_H_jax(sv_model, shapes)
+
+    # Compute v, reshape and return
+    ones_array = jnp.ones(N)
+    Id = jnp.identity(N)
+    v = jax.scipy.linalg.solve(Id - H, H @ ones_array)
+    return jnp.reshape(v, (I, J, K))
+```
+
+```{code-cell}
+compute_H_jax = jax.jit(compute_H_jax, static_argnums=(1,))
+sv_pd_ratio_jax = jax.jit(sv_pd_ratio_jax, static_argnums=(1,))
+```
+
+```{code-cell}
+sv_model = create_sv_model()
+sv_model_jax = create_sv_model_jax(sv_model)
+P, hc_grid, Q, hd_grid, R, z_grid, β, γ, bar_σ, μ_c, μ_d = sv_model_jax
+shapes = len(hc_grid), len(hd_grid), len(z_grid)
+```
+
+```{code-cell}
+qe.tic()
+v_jax = sv_pd_ratio_jax(sv_model, shapes).block_until_ready()
+jnp_time_0 = qe.toc()
+```
+
+```{code-cell}
+qe.tic()
+v_jax = sv_pd_ratio_jax(sv_model, shapes).block_until_ready()
+jnp_time_1 = qe.toc()
+```
+
+```{code-cell}
+v = jax.device_put(v)
+```
+
+```{code-cell}
+print(jnp.allclose(v, v_jax))
+```
+
+```{code-cell}
+
+```
+
+# Efficient JAX Version
+
+```{code-cell}
+def H_operator(g, sv_model, shapes):
+    # Set up
+    P, hc_grid, Q, hd_grid, R, z_grid, β, γ, bar_σ, μ_c, μ_d = sv_model
+    I, J, K = shapes
+    # Reshape and multiply pointwise using broadcasting
+    hc = jnp.reshape(hc_grid, (I, 1, 1))
+    hd = jnp.reshape(hd_grid, (1, J, 1))
+    z = jnp.reshape(z_grid, (1, 1, K))
+    P = jnp.reshape(P, (I, 1, 1, I, 1, 1))
+    Q = jnp.reshape(Q, (1, J, 1, 1, J, 1))
+    R = jnp.reshape(R, (1, 1, K, 1, 1, K))
+    a = μ_d - γ * μ_c
+    b = bar_σ**2 * (jnp.exp(2 * hd) + γ**2 * jnp.exp(2 * hc)) / 2
+    κ = jnp.exp(a + (1 - γ) * z + b)
+    H = β * κ * P * Q * R
+    Hg = jnp.sum(H * g, axis=(3, 4, 5))
+    return Hg
+```
+
+```{code-cell}
+def sv_pd_ratio_jax_multi(sv_model, shapes):
+
+    # Setp up
+    P, hc_grid, Q, hd_grid, R, z_grid, β, γ, bar_σ, μ_c, μ_d = sv_model
+    I, J, K = shapes
+
+    # Compute v
+    ones_array = np.ones((I, J, K))
+    # Set up the operator g -> (I - H) g
+    J = lambda g: g - H_operator(g, sv_model, shapes)
+    # Solve
+    H1 = H_operator(ones_array, sv_model, shapes)
+    v = jax.scipy.sparse.linalg.bicgstab(J, H1)[0]
+    return v
+```
+
+```{code-cell}
+H_operator = jax.jit(H_operator, static_argnums=(2,))
+sv_pd_ratio_jax_multi = jax.jit(sv_pd_ratio_jax_multi, static_argnums=(1,))
+```
+
+```{code-cell}
+qe.tic()
+v_jax_multi = sv_pd_ratio_jax(sv_model, shapes).block_until_ready()
+jnp_time_multi_0 = qe.toc()
+```
+
+```{code-cell}
+qe.tic()
+v_jax_multi = sv_pd_ratio_jax(sv_model, shapes).block_until_ready()
+jnp_time_multi_1 = qe.toc()
+```
+
+```{code-cell}
+print(jnp.allclose(v, v_jax_multi))
+```
