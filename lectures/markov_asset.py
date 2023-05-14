@@ -324,9 +324,10 @@ def create_model(N=100,         # size of state space for Markov chain
                  σ_c=0.02,      # consumption volatility 
                  σ_d=0.04):     # dividend volatility 
 
-    mc = qe.tauchen(N, ρ, σ, 0)
+    mc = qe.tauchen(N, ρ, σ)
     S = mc.state_values
     P = mc.P
+    S, P = map(jax.device_put, (S, P))
     return Model(P=P, S=S, β=β, γ=γ, μ_c=μ_c, μ_d=μ_d, σ_c=σ_c, σ_d=σ_d)
 
 
@@ -334,7 +335,7 @@ def test_stability(Q):
     """
     Stability test for a given matrix Q.
     """
-    sr = np.max(np.abs(np.linalg.eigvals(Q)))
+    sr = jnp.max(jnp.abs(jnp.linalg.eigvals(Q)))
     if not sr < 1:
         msg = f"Spectral radius condition failed with radius = {sr}"
         raise ValueError(msg)
@@ -344,9 +345,9 @@ def compute_K(model):
     P, S, β, γ, μ_c, μ_d, σ_c, σ_d = model
     N = len(S)
     # Reshape and multiply pointwise using broadcasting
-    x = np.reshape(S, (N, 1))
+    x = jnp.reshape(S, (N, 1))
     a = μ_c - γ * μ_d
-    e = np.exp(a + (1 - γ) * x + (σ_c**2 + γ**2 * σ_d**2) / 2)
+    e = jnp.exp(a + (1 - γ) * x + (σ_c**2 + γ**2 * σ_d**2) / 2)
     K = β * e * P
     return K
 
@@ -354,11 +355,11 @@ def compute_K_loop(model):
     # Setp up
     P, S, β, γ, μ_c, μ_d, σ_c, σ_d = model
     N = len(S)
-    K = np.empty((N, N))
+    K = jnp.empty((N, N))
     a = μ_c - γ * μ_d
     for i, x in enumerate(S):
         for j, y in enumerate(S):
-            e = np.exp(a + (1 - γ) * x + (σ_c**2 + γ**2 * σ_d**2) / 2)
+            e = jnp.exp(a + (1 - γ) * x + (σ_c**2 + γ**2 * σ_d**2) / 2)
             K[i, j] = β * e * P[i, j]
     return K
 
@@ -383,9 +384,9 @@ def price_dividend_ratio(model):
     test_stability(K)
 
     # Compute v
-    I = np.identity(N)
-    Ones = np.ones(N)
-    v = np.linalg.solve(I - K, K @ Ones)
+    I = jnp.identity(N)
+    ones_vec = np.ones(N)
+    v = jnp.linalg.solve(I - K, K @ ones_vec)
 
     return v
 
@@ -398,7 +399,7 @@ def price_dividend_ratio(model):
 # +
 model = create_model()
 S = model.S
-γs = np.linspace(2.0, 3.0, 5)
+γs = jnp.linspace(2.0, 3.0, 5)
 
 fig, ax = plt.subplots()
 
@@ -407,7 +408,6 @@ for γ in γs:
     v = price_dividend_ratio(model)
     ax.plot(S, v, lw=2, alpha=0.6, label=rf"$\gamma = {γ}$")
 
-ax.set_title('Price-divdend ratio as a function of the state')
 ax.set_ylabel("price-dividend ratio")
 ax.set_xlabel("state")
 ax.legend(loc='upper right')
@@ -531,40 +531,141 @@ plt.show()
 # If we define the linear operator
 #
 # $$
-#     (Kg)[i, j, k] = 
+#     (Hg)[i, j, k] = 
 #     \beta \sum_{i', j', k'}
 #         \kappa[i, j, k] g[i', j', k'] P[i, i']Q[j, j']R[k, k']
 # $$
 #
-# then [](eq:neweqn104) becomes $v(i, j, k) = (K(1 + v))(i, j, k)$, or, in vector
+# then [](eq:neweqn104) becomes $v(i, j, k) = (H(1 + v))(i, j, k)$, or, in vector
 # form,
 #
 # $$
-#     v = K(\mathbb 1 + v)
+#     v = H(\mathbb 1 + v)
 # $$
 #
-# Provided that $K$ is invertible, the solution is given by
+# Provided that $H$ is invertible, the solution is given by
 #
 # $$
-#     v = (I - K)^{-1} K \mathbb 1
+#     v = (I - H)^{-1} H \mathbb 1
 # $$
 
+# $$
+#     Z_{t+1} = \rho_z Z_t + \sigma_z \xi_{t+1}
+# $$
+#
 
-Model = namedtuple('Model', 
-                   ('P', 'S', 'β', 'γ', 'μ_c', 'μ_d', 'σ_c', 'σ_d'))
+SVModel = namedtuple('SVModel', 
+                   ('P', 'hc_grid', 
+                    'Q', 'hd_grid', 
+                    'R', 'z_grid', 
+                    'β', 'γ', 'μ_c', 'μ_d'))
 
-def create_model(N=100,         # size of state space for Markov chain
-                 ρ=0.2,         # persistence parameter for Markov chain
-                 σ=0.1,         # persistence parameter for Markov chain
-                 β=0.98,        # discount factor
-                 γ=2.5,         # coefficient of risk aversion 
-                 μ_c=0.01,      # mean growth of consumtion
-                 μ_d=0.01,      # mean growth of dividends
-                 σ_c=0.02,      # consumption volatility 
-                 σ_d=0.04):     # dividend volatility 
+def create_sv_model(β=0.98,        # discount factor
+                    γ=2.5,         # coefficient of risk aversion 
+                    I=10,          # size of state space for h_c 
+                    ρ_c=0.9,       # persistence parameter for h_c
+                    σ_c=0.01,      # volatility parameter for h_c
+                    J=10,          # size of state space for h_d 
+                    ρ_d=0.9,       # persistence parameter for h_d
+                    σ_d=0.01,      # volatility parameter for h_d
+                    K=10,          # size of state space for z
+                    ρ_z=0.9,       # persistence parameter for z
+                    σ_z=0.1,       # persistence parameter for z
+                    μ_c=0.01,      # mean growth of consumtion
+                    μ_d=0.015):    # mean growth of dividends
 
-    mc = qe.tauchen(N, ρ, σ, 0)
-    S = mc.state_values
+    mc = qe.tauchen(I, ρ_c, σ_c)
+    hc_grid = mc.state_values
     P = mc.P
-    return Model(P=P, S=S, β=β, γ=γ, μ_c=μ_c, μ_d=μ_d, σ_c=σ_c, σ_d=σ_d)
+    mc = qe.tauchen(J, ρ_d, σ_d)
+    hd_grid = mc.state_values
+    Q = mc.P
+    mc = qe.tauchen(K, ρ_z, σ_z)
+    z_grid = mc.state_values
+    R = mc.P
 
+    # Shift the arrays to the device (GPU if available)
+    hc_grid, hd_grid, z_grid = map(jax.device_put, (hc_grid, hd_grid, z_grid))
+    P, Q, R = map(jax.device_put, (P, Q, R))
+
+    return SVModel(P=P, hc_grid=hc_grid,
+                 Q=Q, hd_grid=hd_grid,
+                 R=R, z_grid=z_grid,
+                 β=β, γ=γ, μ_c=μ_c, μ_d=μ_d)
+
+
+def H(g, sv_model):
+    # Set up
+    P, hc_grid, Q, hd_grid, R, z_grid, β, γ, μ_c, μ_d = sv_model
+    I, J, K = len(hc_grid), len(hd_grid), len(z_grid)
+    # Reshape and multiply pointwise using broadcasting
+    hc = jnp.reshape(hc_grid, (I, 1, 1))
+    hd = jnp.reshape(hd_grid, (1, J, 1))
+    z = jnp.reshape(z_grid, (1, 1, K))
+    P = jnp.reshape(P, (I, 1, 1, I, 1, 1))
+    Q = jnp.reshape(Q, (1, J, 1, 1, J, 1))
+    R = jnp.reshape(R, (1, 1, K, 1, 1, K))
+    a = μ_c - γ * μ_d
+    κ = jnp.exp(a + (1 - γ) * z + (jnp.exp(2 * hc) + γ**2 * jnp.exp(2 * hd)) / 2)
+    H = β * κ * P * Q * R
+    Hg = jnp.sum(H * g, axis=(3, 4, 5))
+    return Hg
+
+
+def sv_pd_ratio(sv_model):
+    """
+    Computes the price-dividend ratio of the asset for the stochastic volatility
+    model.
+
+    Parameters
+    ----------
+    sv_model: an instance of Model
+        contains primitives
+
+    Returns
+    -------
+    v : array_like
+        price-dividend ratio
+
+    """
+    # Setp up
+    P, hc_grid, Q, hd_grid, R, z_grid, β, γ, μ_c, μ_d = sv_model
+    I, J, K = len(hc_grid), len(hd_grid), len(z_grid)
+
+    # Make sure that a unique solution exists
+    # test_stability(H)
+
+    # Compute v
+    ones_array = np.ones((I, J, K))
+    J = lambda g: g - H(g, sv_model)
+    H1 = H(ones_array, sv_model)
+    v = jax.scipy.sparse.linalg.bicgstab(J, H1)[0]
+    return v
+
+
+sv_model = create_sv_model()
+P, hc_grid, Q, hd_grid, R, z_grid, β, γ, μ_c, μ_d = sv_model
+v = sv_pd_ratio(sv_model)
+
+fig, ax = plt.subplots()
+ax.plot(hc_grid, v[:, 0, 0], lw=2, alpha=0.6, label="$v$ as a function of $H^c$")
+ax.set_ylabel("price-dividend ratio")
+ax.set_xlabel("state")
+ax.legend()
+plt.show()
+
+
+fig, ax = plt.subplots()
+ax.plot(hd_grid, v[0, :, 0], lw=2, alpha=0.6, label="$v$ as a function of $H^d$")
+ax.set_ylabel("price-dividend ratio")
+ax.set_xlabel("state")
+ax.legend()
+plt.show()
+
+
+fig, ax = plt.subplots()
+ax.plot(z_grid, v[0, 0, :], lw=2, alpha=0.6, label="$v$ as a function of $Z$")
+ax.set_ylabel("price-dividend ratio")
+ax.set_xlabel("state")
+ax.legend()
+plt.show()
