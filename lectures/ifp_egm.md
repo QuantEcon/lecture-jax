@@ -13,7 +13,11 @@ kernelspec:
 
 # Income Fluctuations and Endogenous Grid Method
 
+```{include} _admonition/gpu.md
+```
+
 ```{code-cell} ipython3
+:tags: [hide-output]
 !pip install --upgrade quantecon interpolation
 ```
 
@@ -164,7 +168,7 @@ Reference:
 
 +++
 
-### Ifp with egm
+### IFP with EGM
 
 Rewrite the Euler equation in functional form
 
@@ -242,14 +246,14 @@ Reference: https://python.quantecon.org/ifp_advanced.html#using-an-endogenous-gr
 
 +++
 
-### Jax version egm
+### Jax version EGM
 
 First we define a vectorized operator $K$ based on {eq}`euler`.
 
 ```{code-cell} ipython3
 def K_egm_vec(a_in, σ_in, constants, sizes, arrays):
     """
-    The vectorzied operator K using egm.
+    The vectorzied operator K using EGM.
 
     """
     
@@ -335,11 +339,11 @@ def egm_jax(model,
     return a_new, σ_new
 ```
 
-### Numba version egm
+### Numba version EGM
 
-Here is the code for solving the same model with numba version egm.
+Here is the code for solving the same model with numba version EGM.
 
-We will use the code for a sanity check on the results from the jax version egm.
+We will use the code for a sanity check on the results from the jax version EGM.
 
 ```{code-cell} ipython3
 ifp_data = [
@@ -385,7 +389,7 @@ class IFP:
 @njit
 def K_egm_nb(a_in, σ_in, ifp):
     """
-    The operator K using egm and numba.
+    The operator K using EGM and numba.
 
     """
     
@@ -461,7 +465,7 @@ def egm_numba(model,        # Class with model information
 
 ## A sanity check
 
-First solve ifp with jax version egm.
+First solve IFP with jax version EGM.
 
 ```{code-cell} ipython3
 m_jax = ifp()
@@ -473,7 +477,7 @@ a_star_egm_jax, σ_star_egm_jax = egm_jax(m_jax,
                                          print_skip=5)
 ```
 
-Then solve the same ifp with numba version egm.
+Then solve the same IFP with numba version EGM.
 
 ```{code-cell} ipython3
 m_numba = IFP()
@@ -492,8 +496,8 @@ fig, ax = plt.subplots()
 
 n = len(m_numba.P)
 for z in range(0, n-22):
-    ax.plot(a_star_egm_nb[:, z], σ_star_egm_nb[:, z], label=f"egm-numba: consumption when $z={z}$")
-    ax.plot(a_star_egm_jax[:, z], σ_star_egm_jax[:, z], label=f"egm-jax: consumption when $z={z}$")
+    ax.plot(a_star_egm_nb[:, z], σ_star_egm_nb[:, z], label=f"numba EGM: consumption when $z={z}$")
+    ax.plot(a_star_egm_jax[:, z], σ_star_egm_jax[:, z], label=f"jax EGM: consumption when $z={z}$")
 
 ax.set_xlabel('asset')
 plt.legend()
