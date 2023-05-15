@@ -11,7 +11,6 @@ kernelspec:
   name: python3
 ---
 
-+++ {"user_expressions": []}
 
 # Endogenous Grid Method
 
@@ -49,7 +48,6 @@ from numba import njit, float64
 from numba.experimental import jitclass
 ```
 
-+++ {"user_expressions": []}
 
 We use 64 bit floating point numbers for extra precision.
 
@@ -57,7 +55,6 @@ We use 64 bit floating point numbers for extra precision.
 jax.config.update("jax_enable_x64", True)
 ```
 
-+++ {"user_expressions": []}
 
 ## Setup 
 
@@ -125,7 +122,6 @@ def ifp(R=1.01,             # gross interest rate
     return (β, R, γ), sizes, (s_grid, y_grid, P)
 ```
 
-+++ {"user_expressions": []}
 
 ## Solution method
 
@@ -286,7 +282,8 @@ $$
 
 where the inequality uses the fact that $\sigma$ is increasing in its first argument.
 
-If we now take $a_i = s_i + c_i$ we get $a_i > \bar a(y)$, so the pair $(a_i, c_i)$ obeys
+If we now take $a_i = s_i + c_i$ we get $a_i > \bar a(y)$, so the pair $(a_i, c_i)$ satisfies
+
 $$
     c_i
     = (u')^{-1}
@@ -305,7 +302,12 @@ We are now ready to iterate with $K$.
 
 ### JAX version 
 
-First we define a vectorized operator $K$ based on [](eq:kaper).
+First we define a vectorized operator $K$ based on the EGM.
+
+Notice in the code below that 
+
+* we avoid all loops and any mutation of arrays
+* the function is pure (no globals, no mutation of inputs)
 
 ```{code-cell} ipython3
 def K_egm(a_in, σ_in, constants, sizes, arrays):
@@ -356,24 +358,22 @@ def K_egm(a_in, σ_in, constants, sizes, arrays):
     return a_out, σ_out
 ```
 
-+++ {"user_expressions": []}
 
 Then we use `jax.jit` to compile $K$.
 
-We use `static_argnums` to allow a recompile whenever `shapes` changes, since the compiler likes to specialize on shapes.
+We use `static_argnums` to allow a recompile whenever `sizes` changes, since the compiler likes to specialize on shapes.
 
 ```{code-cell} ipython3
 K_egm_jax = jax.jit(K_egm, static_argnums=(3,))
 ```
 
-+++ {"user_expressions": []}
 
 Next we define a successive approximator that repeatedly applies $K$.
 
 ```{code-cell} ipython3
 def successive_approx_jax(model,        
             tol=1e-5,
-            max_iter=1000,
+            max_iter=100_000,
             verbose=True,
             print_skip=25):
 
@@ -409,7 +409,6 @@ def successive_approx_jax(model,
     return a_new, σ_new
 ```
 
-+++ {"user_expressions": []}
 
 ### Numba version 
 
@@ -490,8 +489,8 @@ def K_egm_nb(a_in, σ_in, ifp):
         for z in range(n):
             expect = 0.0
             for z_hat in range(n):
-                expect += u_prime(σ(R * s + y_grid[z_hat], z_hat)) * P[z, z_hat]
-
+                expect += u_prime(σ(R * s + y_grid[z_hat], z_hat)) * \
+                            P[z, z_hat]
             c = u_prime_inv(β * R * expect)
             σ_out[i, z] = c
             a_out[i, z] = s + c
@@ -502,7 +501,7 @@ def K_egm_nb(a_in, σ_in, ifp):
 ```{code-cell} ipython3
 def successive_approx_numba(model,        # Class with model information
               tol=1e-5,
-              max_iter=1000,
+              max_iter=100_000,
               verbose=True,
               print_skip=25):
 
@@ -535,7 +534,6 @@ def successive_approx_numba(model,        # Class with model information
     return a_new, σ_new
 ```
 
-+++ {"user_expressions": []}
 
 ## Solutions
 
@@ -553,7 +551,6 @@ ifp_jax = ifp()
 ifp_numba = IFP()
 ```
 
-+++ {"user_expressions": []}
 
 Here's a first run of the JAX code.
 
@@ -562,7 +559,6 @@ a_star_egm_jax, σ_star_egm_jax = successive_approx_jax(ifp_jax,
                                          print_skip=100)
 ```
 
-+++ {"user_expressions": []}
 
 Next let's solve the same IFP with Numba.
 
@@ -573,7 +569,6 @@ a_star_egm_nb, σ_star_egm_nb = successive_approx_numba(ifp_numba,
 qe.toc()
 ```
 
-+++ {"user_expressions": []}
 
 Now let's check the outputs in a plot to make sure they are the same.
 
@@ -595,7 +590,6 @@ plt.legend()
 plt.show()
 ```
 
-+++ {"user_expressions": []}
 
 ### Timing
 
@@ -619,7 +613,6 @@ numba_time = qe.toc()
 jax_time / numba_time
 ```
 
-+++ {"user_expressions": []}
 
 The JAX code is significantly faster, as expected.
 
