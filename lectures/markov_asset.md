@@ -16,12 +16,12 @@ kernelspec:
 
 ## Overview
 
-In this lecture we consider a simple asset pricing problem and use it to
+In this lecture we consider a some asset pricing problems and use them to
 illustrate some foundations of JAX programming.
 
 Most of the heavy lifting will be done through routines from linear algebra.
 
-We will show how to solve some memory-intensive problems with large state spaces.
+Along the way, we will show how to solve some memory-intensive problems with large state spaces.
 
 We do this using elegant techniques made available by JAX, involving the use of linear operators to avoid instantiating large matrices.
 
@@ -65,10 +65,10 @@ The simplest way to price this asset is to use "risk-neutral" asset pricing, whi
 asserts that the price of the asset at time $t$ should be
 
 $$
-    P_t = \beta \mathbb E_t D_{t+1}
+    P_t = \beta \, \mathbb E_t D_{t+1}
 $$ (eq:rnp)
 
-where $\beta$ is a constant discount factor and $\mathbb E_t D_{t+1}$ is the expectation
+Here $\beta$ is a constant discount factor and $\mathbb E_t D_{t+1}$ is the expectation
 of $D_{t+1}$ at time $t$.
 
 Roughly speaking, [](eq:rnp) says that the cost (i.e., price) equals expected benefit.
@@ -198,7 +198,7 @@ $$
     \left[ \exp(G^d_{t+1} - \gamma G^c_{t+1}) (1 + V_{t+1}) \right]
 $$ (pdex3)
 
-For now we assume that there is a Markov chain $\{X_t\}$, which we call
+We assume there is a Markov chain $\{X_t\}$, which we call
 the **state process**,  such that
 
 $$
@@ -216,7 +216,7 @@ growth and firm profits (and hence dividends).
 
 We let $P$ be the [stochastic matrix that governs $\{X_t\}$](https://python.quantecon.org/finite_markov.html) and assume $\{X_t\}$ takes values in some finite set $S$.
 
-We guess that $V_t$ is a function of this state process (and this guess turns
+We guess that $V_t$ is a fixed function of this state process (and this guess turns
 out to be correct).
 
 This means that $V_t = v(X_t)$ for some unknown function $v$.
@@ -330,7 +330,7 @@ then compute the solution [](eq:ntecxvv).
 ## Code
 
 
-We will use the following code to check the spectral radius condition.
+We will use the [power iteration algorithm](https://en.wikipedia.org/wiki/Power_iteration) to check the spectral radius condition.
 
 ```{code-cell} ipython3
 def power_iteration_sr(A, num_iterations=15, seed=1234):
@@ -763,9 +763,6 @@ def sv_pd_ratio(sv_model, test_stable=True):
     N = I * J * K
 
     H = compute_H(sv_model)
-    if test_stable:
-        test_stability(H)
-
     # Make sure that a unique solution exists
     if test_stable:
         test_stability(H)
@@ -908,8 +905,10 @@ def sv_pd_ratio_jax(sv_model, shapes):
     shapes = I, J, K
     N = I * J * K
 
-    # Make sure that a unique solution exists
     H = compute_H_jax(sv_model, shapes)
+    # Make sure that a unique solution exists
+    if test_stable:
+        test_stability(H)
 
     # Compute v, reshape and return
     ones_array = jnp.ones(N)
@@ -974,7 +973,7 @@ print(jnp.allclose(v, v_jax))
 
 One problem with the code above is that we instantiate a matrix of size $N = I \times J \times K$.
 
-This quickly becomes impossible when $I, J$ and K$ increase.
+This quickly becomes impossible as $I, J, K$ increase.
 
 Fortunately, JAX makes it possible to solve for the price-dividend ratio without instantiating this large matrix.
 
@@ -1018,8 +1017,10 @@ def sv_pd_ratio_jax_multi(sv_model, shapes):
 
     # Compute v
     ones_array = np.ones((I, J, K))
+    # Set up the operator g -> g
+    H = lambda g: H_operator(g, sv_model, shapes)
     # Set up the operator g -> (I - H) g
-    J = lambda g: g - H_operator(g, sv_model, shapes)
+    J = lambda g: g - H(g)
     # Solve v = (I - H)^{-1} H 1
     H1 = H_operator(ones_array, sv_model, shapes)
     v = jax.scipy.sparse.linalg.bicgstab(J, H1)[0]
