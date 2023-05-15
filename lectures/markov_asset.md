@@ -11,7 +11,7 @@ kernelspec:
   name: python3
 ---
 
-+++ {"user_expressions": []}
+
 
 # An Asset Pricing Problem
 
@@ -29,6 +29,15 @@ We do this using elegant techniques made available by JAX, involving the use of 
 If you wish to skip all motivation and move straight to the first equation we plan to
 solve, you can jump to [](eq:ntecx2).
 
+In addition to what's in Anaconda, this lecture will need the following libraries:
+
+```{code-cell} ipython3
+:tags: [hide-output]
+
+!pip install quantecon
+```
+
+
 Below we use the following imports
 
 ```{code-cell} ipython3
@@ -41,7 +50,7 @@ import jax.numpy as jnp
 from collections import namedtuple
 ```
 
-+++ {"user_expressions": []}
+
 
 We will use 64 bit floats with JAX in order to increase precision.
 
@@ -49,7 +58,7 @@ We will use 64 bit floats with JAX in order to increase precision.
 jax.config.update("jax_enable_x64", True)
 ```
 
-+++ {"user_expressions": []}
+
 
 ## Pricing a single payoff
 
@@ -90,10 +99,10 @@ In this expression, $M_{t+1}$ replaces $\beta$ and is called the **stochastic di
 In essence, allowing discounting to become a random variable gives us the
 flexibility to combine temporal discounting and attitudes to risk.
 
-We leave further discussion to [other lectures](https://python.quantecon.org/markov_asset.html) 
+We leave further discussion to [other lectures](https://python.quantecon.org/markov_asset.html)
 because our aim is to move to the computational problem.
 
-+++ {"user_expressions": []}
+
 
 ## Pricing a cash flow
 
@@ -143,7 +152,7 @@ Our aim is to solve [](pdex2) but before that we need to specify
 1. the stochastic discount factor $M_{t+1}$ and
 1. the growth rate of dividends $G^d_{t+1}$
 
-+++ {"user_expressions": []}
+
 
 ## Choosing the stochastic discount factor
 
@@ -162,26 +171,26 @@ For utility, we'll assume the **constant relative risk aversion** (CRRA) specifi
 
 ```{math}
 :label: eqCRRA
-    u(c) = \frac{c^{1-\gamma}}{1 - \gamma} 
+    u(c) = \frac{c^{1-\gamma}}{1 - \gamma}
 ```
 
 Inserting the CRRA specification into {eq}`lucsdf` and letting
 
 $$
     G^c_{t+1} = \ln \left( \frac{C_{t+1}}{C_t} \right)
-$$ 
+$$
 
-the growth rate rate of consumption, we obtain 
+the growth rate rate of consumption, we obtain
 
 ```{math}
 :label: lucsdf2
     M_{t+1}
     = \beta \left(\frac{C_{t+1}}{C_t}\right)^{-\gamma}
-    = \beta \exp( G^c_{t+1} )^{-\gamma} 
+    = \beta \exp( G^c_{t+1} )^{-\gamma}
     = \beta \exp(-\gamma G^c_{t+1})
 ```
 
-+++ {"user_expressions": []}
+
 
 ## Solving for the price-dividend ratio
 
@@ -189,7 +198,7 @@ Substituting [](lucsdf2) into {eq}`pdex2` gives the price-dividend ratio
 formula
 
 $$
-    V_t = \beta {\mathbb E}_t 
+    V_t = \beta {\mathbb E}_t
     \left[ \exp(G^d_{t+1} - \gamma G^c_{t+1}) (1 + V_{t+1}) \right]
 $$ (pdex3)
 
@@ -199,7 +208,7 @@ the **state process**,  such that
 $$
 \begin{aligned}
     & G^c_{t+1} = \mu_c + X_t + \sigma_c \epsilon_{c, t+1} \\
-    & G^d_{t+1} = \mu_d + X_t + \sigma_d \epsilon_{d, t+1} 
+    & G^d_{t+1} = \mu_d + X_t + \sigma_d \epsilon_{d, t+1}
 \end{aligned}
 $$
 
@@ -219,12 +228,12 @@ This means that $V_t = v(X_t)$ for some unknown function $v$.
 By [](pdex3), the unknown function $v$ satisfies the equation
 
 $$
-    v(X_t) = \beta {\mathbb E}_t 
+    v(X_t) = \beta {\mathbb E}_t
     \left\{
         \exp[
-            a + (1-\gamma) X_t + 
-                \sigma_d \epsilon_{d, t+1} - 
-                \gamma  \sigma_c \epsilon_{c, t+1}     
+            a + (1-\gamma) X_t +
+                \sigma_d \epsilon_{d, t+1} -
+                \gamma  \sigma_c \epsilon_{c, t+1}
             ]
         (1 + v(X_{t+1}))
     \right\}
@@ -242,10 +251,10 @@ We use the following property of lognormal distributions: if $Y = \exp(c
 This yields
 
 $$
-    v(X_t) = \beta {\mathbb E}_t 
+    v(X_t) = \beta {\mathbb E}_t
     \left\{
         \exp \left[
-            a + (1-\gamma) X_t + 
+            a + (1-\gamma) X_t +
                 \frac{\sigma_d^2 + \gamma^2  \sigma_c^2}{2}
             \right]
         (1 + v(X_{t+1}))
@@ -258,8 +267,8 @@ $$
     v(x) = \beta \sum_{y \in S}
     \left\{
         \exp \left[
-            a + (1-\gamma) x + 
-                \frac{\sigma_d^2 + \gamma^2  \sigma_c^2}{2} 
+            a + (1-\gamma) x +
+                \frac{\sigma_d^2 + \gamma^2  \sigma_c^2}{2}
             \right]
         (1 + v(y))
     \right\}
@@ -268,7 +277,7 @@ $$ (eq:ntecx)
 
 for all $x \in S$.
 
-+++ {"user_expressions": []}
+
 
 Suppose $S = \{x_1, \ldots, x_N\}$.
 
@@ -278,8 +287,8 @@ $$
     v[i] = \beta \sum_{j=1}^N
     \left\{
         \exp \left[
-            a + (1-\gamma) x[i] + 
-                \frac{\sigma_d^2 + \gamma^2  \sigma_c^2}{2} 
+            a + (1-\gamma) x[i] +
+                \frac{\sigma_d^2 + \gamma^2  \sigma_c^2}{2}
             \right]
         (1 + v[j])
     \right\}
@@ -294,13 +303,13 @@ $$
     v = K (\mathbb 1 + v)
 $$ (eq:ntecxv)
 
-where $K$ is the matrix defined by 
+where $K$ is the matrix defined by
 
 $$
     K[i, j]
     = \beta \left\{
         \exp \left[
-            a + (1-\gamma) x[i] + 
+            a + (1-\gamma) x[i] +
                 \frac{\sigma_d^2 + \gamma^2  \sigma_c^2}{2}
             \right]
     \right\} P[i,j]
@@ -318,7 +327,7 @@ $$ (eq:ntecxvv)
 
 whenever $r(K)$, the spectral radius of $K$, is strictly less than one.
 
-Once we specify $P$ and all the parameters, we can obtain $K$ and 
+Once we specify $P$ and all the parameters, we can obtain $K$ and
 then compute the solution [](eq:ntecxvv).
 
 
@@ -336,7 +345,7 @@ def test_stability(Q):
     assert sr < 1, f"Spectral radius condition failed with radius = {sr}"
 ```
 
-+++ {"user_expressions": []}
+
 
 In what follows we assume that $\{X_t\}$, the state process, is a discretization of the AR(1) process
 
@@ -351,19 +360,19 @@ To discretize this process we use QuantEcon.py's `tauchen` function.
 Below we write a function called `create_model()` that returns a namedtuple storing the relevant parameters and arrays.
 
 ```{code-cell} ipython3
-Model = namedtuple('Model', 
+Model = namedtuple('Model',
                    ('P', 'S', 'β', 'γ', 'μ_c', 'μ_d', 'σ_c', 'σ_d'))
 
 def create_model(N=100,         # size of state space for Markov chain
                  ρ=0.9,         # persistence parameter for Markov chain
                  σ=0.01,        # persistence parameter for Markov chain
                  β=0.98,        # discount factor
-                 γ=2.5,         # coefficient of risk aversion 
+                 γ=2.5,         # coefficient of risk aversion
                  μ_c=0.01,      # mean growth of consumtion
                  μ_d=0.01,      # mean growth of dividends
-                 σ_c=0.02,      # consumption volatility 
-                 σ_d=0.04):     # dividend volatility 
-    # Create the state process 
+                 σ_c=0.02,      # consumption volatility
+                 σ_d=0.04):     # dividend volatility
+    # Create the state process
     mc = qe.tauchen(N, ρ, σ)
     S = mc.state_values
     P = mc.P
@@ -373,7 +382,7 @@ def create_model(N=100,         # size of state space for Markov chain
     return Model(P=P, S=S, β=β, γ=γ, μ_c=μ_c, μ_d=μ_d, σ_c=σ_c, σ_d=σ_d)
 ```
 
-+++ {"user_expressions": []}
+
 
 Our first step is to construct the matrix $K$.
 
@@ -392,7 +401,7 @@ def compute_K(model):
     return K
 ```
 
-+++ {"user_expressions": []}
+
 
 Just to double check, let's write a loop version and check we get the same matrix.
 
@@ -417,7 +426,7 @@ K2 = compute_K_loop(model)
 jnp.allclose(K1, K2)
 ```
 
-+++ {"user_expressions": []}
+
 
 Now we can compute the price-dividend ratio:
 
@@ -451,7 +460,7 @@ def price_dividend_ratio(model, test_stable=True):
     return v
 ```
 
-+++ {"user_expressions": []}
+
 
 Here's a plot of $v$ as a function of the state for several values of $\gamma$.
 
@@ -473,7 +482,7 @@ ax.legend(loc='upper right')
 plt.show()
 ```
 
-+++ {"user_expressions": []}
+
 
 Notice that $v$ is decreasing in each case.
 
@@ -482,7 +491,7 @@ This is because, with a positively correlated state process, higher states indic
 With the stochastic discount factor {eq}`lucsdf2`, higher growth decreases the
 discount factor, lowering the weight placed on future dividends.
 
-+++ {"user_expressions": []}
+
 
 ## An Extended Example
 
@@ -499,7 +508,7 @@ To begin, suppose that
 $$
 \begin{aligned}
     & G^c_{t+1} = \mu_c + Z_t + \bar \sigma \exp(H^c_t) \epsilon_{c, t+1} \\
-    & G^d_{t+1} = \mu_d + Z_t + \bar \sigma \exp(H^d_t) \epsilon_{d, t+1} 
+    & G^d_{t+1} = \mu_d + Z_t + \bar \sigma \exp(H^d_t) \epsilon_{d, t+1}
 \end{aligned}
 $$
 
@@ -508,7 +517,7 @@ where $\{Z_t\}$ is a finite Markov chain and $\{H^c_t\}$ and $\{H^d_t\}$ are AR(
 $$
 \begin{aligned}
     H^c_{t+1} & = \rho_c H^c_t + \sigma_c \eta_{c, t+1}  \\
-    H^d_{t+1} & = \rho_d H^d_t + \sigma_d \eta_{d, t+1}  
+    H^d_{t+1} & = \rho_d H^d_t + \sigma_d \eta_{d, t+1}
 \end{aligned}
 $$
 
@@ -519,16 +528,16 @@ Let $X_t = (H^c_t, H^d_t, Z_t)$.
 We call $\{X_t\}$ the state process and guess that $V_t$ is a function of
 this state process, so that $V_t = v(X_t)$ for some unknown function $v$.
 
-Modifying [](eq:neweqn101) to accommodate the new growth specifications, 
-we find that $v$ satisfies 
+Modifying [](eq:neweqn101) to accommodate the new growth specifications,
+we find that $v$ satisfies
 
 $$
-    v(X_t) = \beta {\mathbb E}_t 
+    v(X_t) = \beta {\mathbb E}_t
     \left\{
         \exp[
-            a + (1-\gamma) Z_t + 
-                \bar \sigma \exp(H^d_t) \epsilon_{d, t+1} - 
-                \gamma \bar \sigma \exp(H^c_t) \epsilon_{c, t+1}     
+            a + (1-\gamma) Z_t +
+                \bar \sigma \exp(H^d_t) \epsilon_{d, t+1} -
+                \gamma \bar \sigma \exp(H^c_t) \epsilon_{c, t+1}
             ]
         (1 + v(X_{t+1}))
     \right\}
@@ -536,50 +545,53 @@ $$ (eq:neweqn102)
 
 where, as before, $a := \mu_d - \gamma \mu_c$
 
-+++ {"user_expressions": []}
+
 
 Conditioning on state $x = (h_c, h_d, z)$, this becomes
 
-$$
+```{math}
+:label: neweqn103_old
     v(x) = \beta  {\mathbb E}_t
         \exp[
-            a + (1-\gamma) z + 
-                \bar \sigma \exp(h_d) \epsilon_{d, t+1} - 
-                \gamma \bar \sigma \exp(h_c) \epsilon_{c, t+1}     
+            a + (1-\gamma) z +
+                \bar \sigma \exp(h_d) \epsilon_{d, t+1} -
+                \gamma \bar \sigma \exp(h_c) \epsilon_{c, t+1}
             ]
         (1 + v(X_{t+1}))
-$$ (eq:neweqn103)
+```
 
-As before, we integrate out the independent shocks and use the rules for 
+As before, we integrate out the independent shocks and use the rules for
 expectations of lognormals to obtain
 
-$$
+```{math}
+:label: neweqn103_new
     v(x) = \beta  {\mathbb E}_t
         \exp \left[
-            a + (1-\gamma) z + 
+            a + (1-\gamma) z +
                 \bar \sigma^2 \frac{\exp(2 h_d) + \gamma^2 \exp(2 h_c)}{2}
             \right]
         (1 + v(X_{t+1}))
-$$ (eq:neweqn103)
+```
 
 Using the definition of the state and setting
 
 $$
     \kappa(h_c, h_z, z) :=
         \exp \left[
-            a + (1-\gamma) z + 
+            a + (1-\gamma) z +
                 \bar \sigma^2 \frac{\exp(2 h_d) + \gamma^2 \exp(2 h_c)}{2}
             \right]
 $$
 
 we can write this more explicitly
 
-$$
-    v(h_c, h_d, z) = 
+```{math}
+:label: neweqn104_old
+    v(h_c, h_d, z) =
     \beta \sum_{h_c', h_d', z'}
         \kappa(h_c, h_z, z)
         (1 + v(h_c', h_d', z')) P(h_c, h_c')Q(h_d, h_d')R(z, z')
-$$ (eq:neweqn104)
+```
 
 Here $P, Q, R$ are the stochastic matrices for, respectively, discretized
 $\{H^c_t\}$, discretized $\{H^d_t\}$ and $\{Z_t\}$.
@@ -589,32 +601,34 @@ indices for $(h_c, h_z, z)$.
 
 The last expression becomes
 
-$$
-    v[i, j, k] = 
+```{math}
+:label: neweqn104_new
+
+    v[i, j, k] =
     \beta \sum_{i', j', k'}
         \kappa[i, j, k]
         (1 + v[i', j', k']) P[i, i']Q[j, j']R[k, k']
-$$ (eq:neweqn104)
+```
 
-We define the multi-index array $H$ by 
+We define the multi-index array $H$ by
 
 $$
     H[i, j, k, i', j', k']
-    = 
+    =
     \beta \sum_{i', j', k'}
         \kappa[i, j, k] P[i, i']Q[j, j']R[k, k']
 $$
 
-then [](eq:neweqn104) becomes 
+then {eq}`neweqn104_new` becomes
 
 $$
-    v[i, j, k] = 
+    v[i, j, k] =
     \beta \sum_{i', j', k'}
-        H[i, j, k, i', j', k'] (1 + v[i', j', k']) 
+        H[i, j, k, i', j', k'] (1 + v[i', j', k'])
 $$ (eq:neweqn105)
 
 One way to understand this is to reshape $v$ into an $N$-vector, where $N = I \times J \times K$,
-and $H$ into an $N \times N$ matrix.  
+and $H$ into an $N \times N$ matrix.
 
 Then we can write [](eq:neweqn105) as
 
@@ -628,7 +642,7 @@ $$
     v = (I - H)^{-1} H \mathbb 1
 $$
 
-+++ {"user_expressions": []}
+
 
 # Numpy Version
 
@@ -646,18 +660,18 @@ $$
 $$
 
 ```{code-cell} ipython3
-SVModel = namedtuple('SVModel', 
-                        ('P', 'hc_grid', 
-                         'Q', 'hd_grid', 
-                         'R', 'z_grid', 
+SVModel = namedtuple('SVModel',
+                        ('P', 'hc_grid',
+                         'Q', 'hd_grid',
+                         'R', 'z_grid',
                          'β', 'γ', 'bar_σ', 'μ_c', 'μ_d'))
 
 def create_sv_model(β=0.98,        # discount factor
-                    γ=2.5,         # coefficient of risk aversion 
-                    I=14,          # size of state space for h_c 
+                    γ=2.5,         # coefficient of risk aversion
+                    I=14,          # size of state space for h_c
                     ρ_c=0.9,       # persistence parameter for h_c
                     σ_c=0.01,      # volatility parameter for h_c
-                    J=14,          # size of state space for h_d 
+                    J=14,          # size of state space for h_d
                     ρ_d=0.9,       # persistence parameter for h_d
                     σ_d=0.01,      # volatility parameter for h_d
                     K=14,          # size of state space for z
@@ -683,7 +697,7 @@ def create_sv_model(β=0.98,        # discount factor
                    β=β, γ=γ, bar_σ=bar_σ, μ_c=μ_c, μ_d=μ_d)
 ```
 
-+++ {"user_expressions": []}
+
 
 Now we provide a function to compute the matrix $H$.
 
@@ -709,7 +723,7 @@ def compute_H(sv_model):
     return H
 ```
 
-+++ {"user_expressions": []}
+
 
 Here's our function to compute the price-dividend ratio for the stochastic volatility model.
 
@@ -752,7 +766,7 @@ def sv_pd_ratio(sv_model, test_stable=True):
     return v
 ```
 
-+++ {"user_expressions": []}
+
 
 Let's create an instance of the model and solve it.
 
@@ -767,7 +781,7 @@ v = sv_pd_ratio(sv_model)
 np_time = qe.toc()
 ```
 
-+++ {"user_expressions": []}
+
 
 Here are some plots of the solution $v$ along the three dimensions.
 
@@ -802,11 +816,11 @@ plt.show()
 
 ```
 
-+++ {"user_expressions": []}
+
 
 ## JAX Version
 
-+++ {"user_expressions": []}
+
 
 Now let's write a JAX version that is a simple transformation of the NumPy version.
 
@@ -829,7 +843,7 @@ def create_sv_model_jax(sv_model):    # mean growth of dividends
                    β=β, γ=γ, bar_σ=bar_σ, μ_c=μ_c, μ_d=μ_d)
 ```
 
-+++ {"user_expressions": []}
+
 
 Here's a function to compute $H$.
 
@@ -859,7 +873,7 @@ def compute_H_jax(sv_model, shapes):
     return H
 ```
 
-+++ {"user_expressions": []}
+
 
 Here's the function that computes the solution.
 
@@ -896,7 +910,7 @@ def sv_pd_ratio_jax(sv_model, shapes):
     return jnp.reshape(v, (I, J, K))
 ```
 
-+++ {"user_expressions": []}
+
 
 Now let's target these functions for JIT-compilation, while using `static_argnums` to indicate that the function will need to be recompiled when `shapes` changes.
 
@@ -912,7 +926,7 @@ P, hc_grid, Q, hd_grid, R, z_grid, β, γ, bar_σ, μ_c, μ_d = sv_model_jax
 shapes = len(hc_grid), len(hd_grid), len(z_grid)
 ```
 
-+++ {"user_expressions": []}
+
 
 Let's see how long it takes to run with compile time included.
 
@@ -922,7 +936,7 @@ v_jax = sv_pd_ratio_jax(sv_model_jax, shapes).block_until_ready()
 jnp_time_0 = qe.toc()
 ```
 
-+++ {"user_expressions": []}
+
 
 And now let's see without compile time.
 
@@ -932,7 +946,7 @@ v_jax = sv_pd_ratio_jax(sv_model_jax, shapes).block_until_ready()
 jnp_time_1 = qe.toc()
 ```
 
-+++ {"user_expressions": []}
+
 
 Here's the ratio of times:
 
@@ -940,7 +954,7 @@ Here's the ratio of times:
 jnp_time_1 / np_time
 ```
 
-+++ {"user_expressions": []}
+
 
 Let's check that the NumPy and JAX versions realize the same solution.
 
@@ -950,11 +964,11 @@ v = jax.device_put(v)
 print(jnp.allclose(v, v_jax))
 ```
 
-+++ {"user_expressions": []}
+
 
 # Efficient JAX Version
 
-+++ {"user_expressions": []}
+
 
 One problem with the code above is that we instantiate a matrix of size $N = I \times J \times K$.
 
@@ -965,7 +979,7 @@ Fortunately, JAX makes it possible to solve for the price-dividend ratio without
 The first step is to think of $H$ not as a matrix, but rather as the linear operator that transforms $g$ into $Hg$ via
 
 $$
-    (Hg)[i, j, k] = 
+    (Hg)[i, j, k] =
     \beta \sum_{i', j', k'}
         \kappa[i, j, k] g[i', j', k'] P[i, i']Q[j, j']R[k, k']
 $$
@@ -990,7 +1004,7 @@ def H_operator(g, sv_model, shapes):
     return Hg
 ```
 
-+++ {"user_expressions": []}
+
 
 Now we write a version of the solution function that acts directly on this linear operator.
 
@@ -1011,7 +1025,7 @@ def sv_pd_ratio_jax_multi(sv_model, shapes):
     return v
 ```
 
-+++ {"user_expressions": []}
+
 
 Let's target these functions for JIT compilation.
 
@@ -1020,7 +1034,7 @@ H_operator = jax.jit(H_operator, static_argnums=(2,))
 sv_pd_ratio_jax_multi = jax.jit(sv_pd_ratio_jax_multi, static_argnums=(1,))
 ```
 
-+++ {"user_expressions": []}
+
 
 Let's time the solution with compile time included.
 
@@ -1034,7 +1048,7 @@ jnp_time_multi_0 = qe.toc()
 print(jnp.allclose(v, v_jax_multi))
 ```
 
-+++ {"user_expressions": []}
+
 
 Now let's run again without compile time.
 
@@ -1044,7 +1058,7 @@ v_jax_multi = sv_pd_ratio_jax(sv_model, shapes).block_until_ready()
 jnp_time_multi_1 = qe.toc()
 ```
 
-+++ {"user_expressions": []}
+
 
 The speed gain is not large but now we can work with much larger grides.
 
