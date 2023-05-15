@@ -11,8 +11,6 @@ kernelspec:
   name: python3
 ---
 
-+++ {"user_expressions": []}
-
 # Endogenous Grid Method
 
 
@@ -49,15 +47,11 @@ from numba import njit, float64
 from numba.experimental import jitclass
 ```
 
-+++ {"user_expressions": []}
-
 We use 64 bit floating point numbers for extra precision.
 
 ```{code-cell} ipython3
 jax.config.update("jax_enable_x64", True)
 ```
-
-+++ {"user_expressions": []}
 
 ## Setup 
 
@@ -103,8 +97,8 @@ fluctuation problem and creates suitable arrays.
 def ifp(R=1.01,             # gross interest rate
         β=0.96,             # discount factor
         γ=1.5,              # CRRA preference parameter
-        grid_max=16,        # asset grid max
-        grid_size=200,      # asset grid size
+        s_max=16,           # savings grid max
+        s_size=200,         # savings grid size
         ρ=0.99,             # income persistence
         ν=0.02,             # income volatility
         y_size=25):         # income grid size
@@ -115,27 +109,26 @@ def ifp(R=1.01,             # gross interest rate
     # Shift to JAX arrays
     P, y_grid = jax.device_put((P, y_grid))
     
-    a_grid = jnp.linspace(0, grid_max, grid_size)
-    sizes = grid_size, y_size
-    a_grid, y_grid, P = jax.device_put((a_grid, y_grid, P))
+    s_grid = jnp.linspace(0, s_max, s_size)
+    sizes = s_size, y_size
+    s_grid, y_grid, P = jax.device_put((s_grid, y_grid, P))
 
     # require R β < 1 for convergence
     assert R * β < 1, "Stability condition violated."
         
-    return (β, R, γ), sizes, (a_grid, y_grid, P)
+    return (β, R, γ), sizes, (s_grid, y_grid, P)
 ```
 
-+++ {"user_expressions": []}
 
 ## Solution method
 
-Let $S = \mathbb R_+ \times \mathsf Y$ be the set of possible values for the state $(a_t, Y_t)$.
+Let $S = \mathbb R_+ \times \mathsf Y$ be the set of possible values for the
+state $(a_t, Y_t)$.
 
-We aim to compute an optimal consumption policy $\sigma^* \colon S \to \mathbb R$, under which dynamics are given by
+We aim to compute an optimal consumption policy $\sigma^* \colon S \to \mathbb
+R$, under which dynamics are given by
 
 $$
-    (a_0, y_0) = (a, y),
-    \quad
     c_t = \sigma^*(a_t, Y_t)
     \quad \text{and} \quad
     a_{t+1} = R (a_t - c_t) + Y_{t+1}
@@ -189,11 +182,11 @@ $$ (eq:kaper)
 It [can be shown that](https://python.quantecon.org/ifp.html)
 
 1. iterating with $K$ computes an optimal policy and
-2. if $\sigma$ is increasing in its first argument, the so is $K\sigma$
+2. if $\sigma$ is increasing in its first argument, then so is $K\sigma$
 
 Hence below we always assume that $\sigma$ is increasing in its first argument.
 
-The EGM is a method for computing the update $K\sigma$ given $\sigma$ along a grid of asset values.
+The EGM is a technique for computing the update $K\sigma$ given $\sigma$ along a grid of asset values.
 
 Notice that, since $u'(a) \to \infty$ as $a \downarrow 0$, the second term in
 the max in [](eq:kaper) dominates for sufficiently small $a$.
@@ -301,8 +294,7 @@ $$
 Hence [](eq:oro) holds.
 
 
-Finally, we know that $a=0$ implies $c=0$, so we append the points $a_0 = 0$ and $c_0 = 0$ to the endogenous grids.
-
+We are now ready to iterate with $K$.
 
 ### JAX version 
 
@@ -317,8 +309,8 @@ def K_egm(a_in, σ_in, constants, sizes, arrays):
     
     # Unpack
     β, R, γ = constants
-    grid_size, y_size = sizes
-    grid, y_grid, P = arrays
+    s_size, y_size = sizes
+    s_grid, y_grid, P = arrays
     
     def u_prime(c):
         return c**(-γ)
@@ -326,22 +318,20 @@ def K_egm(a_in, σ_in, constants, sizes, arrays):
     def u_prime_inv(u_prime):
             return u_prime**(-1/γ)
 
-
-    # Linearly interpolate σ(a, z)
-    def σ(a, z):
-        return jnp.interp(a, a_in[:,z], σ_in[:,z])
+    # Linearly interpolate σ(a, y)
+    def σ(a, y):
+        return jnp.interp(a, a_in[:, y], σ_in[:, y])
 
     σ_vec = jnp.vectorize(σ)
 
-    
     # Broadcast and vectorize
-    z_grid = jnp.reshape(jnp.arange(y_size), (1, y_size, 1))
-    z_hat_grid = jnp.reshape(jnp.arange(y_size), (1, 1, y_size))
-    s_grid = jnp.reshape(grid, (grid_size, 1, 1))
+    y_hat = jnp.reshape(y_grid, (1, y_size, 1))
+    y_hat_idx = jnp.reshape(jnp.arange(y_size), (1, 1, y_size))
+    s_grid = jnp.reshape(s_grid, (s_size, 1, 1))
     
     # Evaluate σ_out
-    a_next = R * s_grid + y_grid[z_hat_grid]
-    σ_next = σ_vec(a_next, z_hat_grid)
+    a_next = R * s_grid + y_hat
+    σ_next = σ_vec(a_next, y_hat_idx)
     up = u_prime(σ_next)
     P = jnp.reshape(P, (1, y_size, y_size))
     E = jnp.sum(up * P, axis=-1)
@@ -349,7 +339,7 @@ def K_egm(a_in, σ_in, constants, sizes, arrays):
     σ_out = u_prime_inv(β * R * E)
 
     # Compute a_out by s = a - c
-    a_out = grid[:, jnp.newaxis] + σ_out
+    a_out = s_grid[:, jnp.newaxis] + σ_out
     
     # Set σ_0 = 0 and a_0 = 0
     σ_out = σ_out.at[0, :].set(0)
@@ -381,11 +371,11 @@ def successive_approx_jax(model,
     constants, sizes, arrays = model
     
     β, R, γ = constants
-    grid_size, y_size = sizes
-    grid, y_grid, P = arrays
+    s_size, y_size = sizes
+    s_grid, y_grid, P = arrays
     
     # Set up loop
-    σ_init = jnp.tile(grid, [y_size, 1]).T
+    σ_init = jnp.tile(s_grid, [y_size, 1]).T
     a_init = jnp.copy(σ_init)
     a_vec, σ_vec = a_init, σ_init
     
@@ -427,15 +417,15 @@ ifp_data = [
     ('γ', float64),            
     ('P', float64[:, :]),     
     ('y_grid', float64[:]),  
-    ('grid', float64[:])    
+    ('s_grid', float64[:])    
 ]
 
 # Use the JAX IFP data as our defaults for the Numba version
 model = ifp()
 constants, sizes, arrays = model
 β, R, γ = constants
-grid_size, y_size = sizes
-grid, y_grid, P = (np.array(a) for a in arrays)
+s_size, y_size = sizes
+s_grid, y_grid, P = (np.array(a) for a in arrays)
 
 @jitclass(ifp_data)
 class IFP:
@@ -446,11 +436,11 @@ class IFP:
                  γ=γ,
                  P=np.array(P),
                  y_grid=np.array(y_grid),
-                 grid=grid):
+                 s_grid=s_grid):
 
         self.R, self.β, self.γ = R, β, γ
         self.P, self.y_grid = P, y_grid
-        self.grid = grid
+        self.s_grid = s_grid
 
         # Recall that we need R β < 1 for convergence.
         assert self.R * self.β < 1, "Stability condition violated."
@@ -472,7 +462,7 @@ def K_egm_nb(a_in, σ_in, ifp):
     
     # Simplify names
     R, P, y_grid, β, γ  = ifp.R, ifp.P, ifp.y_grid, ifp.β, ifp.γ
-    grid, u_prime = ifp.grid, ifp.u_prime
+    s_grid, u_prime = ifp.s_grid, ifp.u_prime
     u_prime_inv = ifp.u_prime_inv
     n = len(y_grid)
     
@@ -484,7 +474,7 @@ def K_egm_nb(a_in, σ_in, ifp):
     σ_out = np.zeros_like(σ_in)
     a_out = np.zeros_like(σ_out)
     
-    for i, s in enumerate(grid[1:]):
+    for i, s in enumerate(s_grid[1:]):
         i += 1
         for z in range(n):
             expect = 0.0
@@ -506,10 +496,10 @@ def successive_approx_numba(model,        # Class with model information
               print_skip=25):
 
     # Unpack
-    P, grid = model.P, model.grid
+    P, s_grid = model.P, model.s_grid
     n = len(P)
     
-    σ_init = np.tile(grid, (n, 1)).T
+    σ_init = np.tile(s_grid, (n, 1)).T
     a_init = np.copy(σ_init)
     a_vec, σ_vec = a_init, σ_init
     
