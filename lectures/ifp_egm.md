@@ -29,13 +29,13 @@ Here we focus on providing an efficient JAX implmentation.
 
 We will use the following libraries and imports.
 
-```{code-cell} ipython3
+```{code-cell}
 :tags: [hide-output]
 
 !pip install --upgrade quantecon interpolation
 ```
 
-```{code-cell} ipython3
+```{code-cell}
 import quantecon as qe
 import matplotlib.pyplot as plt
 import numpy as np
@@ -49,7 +49,7 @@ from numba.experimental import jitclass
 
 We use 64 bit floating point numbers for extra precision.
 
-```{code-cell} ipython3
+```{code-cell}
 jax.config.update("jax_enable_x64", True)
 ```
 
@@ -93,7 +93,7 @@ $$
 The following function stores default parameter values for the income
 fluctuation problem and creates suitable arrays.
 
-```{code-cell} ipython3
+```{code-cell}
 def ifp(R=1.01,             # gross interest rate
         β=0.96,             # discount factor
         γ=1.5,              # CRRA preference parameter
@@ -118,7 +118,6 @@ def ifp(R=1.01,             # gross interest rate
         
     return (β, R, γ), sizes, (s_grid, y_grid, P)
 ```
-
 
 ## Solution method
 
@@ -300,7 +299,7 @@ We are now ready to iterate with $K$.
 
 First we define a vectorized operator $K$ based on [](eq:kaper).
 
-```{code-cell} ipython3
+```{code-cell}
 def K_egm(a_in, σ_in, constants, sizes, arrays):
     """
     The vectorzied operator K using EGM.
@@ -352,7 +351,7 @@ def K_egm(a_in, σ_in, constants, sizes, arrays):
 
 Then we use ``jax.jit`` to compile $K$.
 
-```{code-cell} ipython3
+```{code-cell}
 K_egm_jax = jax.jit(K_egm, static_argnums=(3,))
 ```
 
@@ -360,7 +359,7 @@ K_egm_jax = jax.jit(K_egm, static_argnums=(3,))
 
 Next we define a successive approximator that repeatedly applies $K$.
 
-```{code-cell} ipython3
+```{code-cell}
 def successive_approx_jax(model,        
             tol=1e-5,
             max_iter=1000,
@@ -410,7 +409,7 @@ well as to do a runtime comparison.
 Most readers will want to skip ahead to the next section, where we solve the
 model and run the cross-check.
 
-```{code-cell} ipython3
+```{code-cell}
 ifp_data = [
     ('R', float64),              
     ('β', float64),             
@@ -452,7 +451,7 @@ class IFP:
         return u_prime**(-1/self.γ)
 ```
 
-```{code-cell} ipython3
+```{code-cell}
 @njit
 def K_egm_nb(a_in, σ_in, ifp):
     """
@@ -488,7 +487,7 @@ def K_egm_nb(a_in, σ_in, ifp):
     return a_out, σ_out
 ```
 
-```{code-cell} ipython3
+```{code-cell}
 def successive_approx_numba(model,        # Class with model information
               tol=1e-5,
               max_iter=1000,
@@ -529,7 +528,7 @@ def successive_approx_numba(model,        # Class with model information
 
 First we solve the IFP with JAX.
 
-```{code-cell} ipython3
+```{code-cell}
 ifp_jax = ifp()
 ```
 
@@ -537,7 +536,7 @@ ifp_jax = ifp()
 
 Here's a first run.
 
-```{code-cell} ipython3
+```{code-cell}
 qe.tic()
 a_star_egm_jax, σ_star_egm_jax = successive_approx_jax(ifp_jax,
                                          print_skip=5)
@@ -548,7 +547,7 @@ qe.toc()
 
 Let's run again so we can see the run time without compilation.
 
-```{code-cell} ipython3
+```{code-cell}
 qe.tic()
 a_star_egm_jax, σ_star_egm_jax = successive_approx_jax(ifp_jax,
                                          print_skip=5)
@@ -559,11 +558,11 @@ jax_time = qe.toc()
 
 Next let's solve the same IFP with Numba.
 
-```{code-cell} ipython3
+```{code-cell}
 ifp_numba = IFP()
 ```
 
-```{code-cell} ipython3
+```{code-cell}
 qe.tic()
 a_star_egm_nb, σ_star_egm_nb = successive_approx_numba(ifp_numba,
                                          print_skip=5)
@@ -574,7 +573,7 @@ qe.toc()
 
 Let's run again so we can see the run time without compilation.
 
-```{code-cell} ipython3
+```{code-cell}
 qe.tic()
 a_star_egm_nb, σ_star_egm_nb = successive_approx_numba(ifp_numba,
                                          print_skip=5)
@@ -590,7 +589,7 @@ to the model.
 
 Lastly, let's plot the consumption functions for a sanity check.
 
-```{code-cell} ipython3
+```{code-cell}
 fig, ax = plt.subplots()
 
 n = len(ifp_numba.P)
@@ -608,10 +607,10 @@ plt.legend()
 plt.show()
 ```
 
-```{code-cell} ipython3
+```{code-cell}
 
 ```
 
-```{code-cell} ipython3
+```{code-cell}
 
 ```
