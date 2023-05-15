@@ -659,7 +659,7 @@ $$
 
 
 
-# Numpy Version
+## Numpy Version
 
 
 Our first implementation will be in NumPy.
@@ -968,7 +968,7 @@ print(jnp.allclose(v, v_jax))
 ```
 
 
-# Efficient JAX Version
+## Efficient JAX Version
 
 
 
