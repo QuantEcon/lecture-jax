@@ -11,6 +11,8 @@ kernelspec:
   name: python3
 ---
 
++++ {"user_expressions": []}
+
 # Endogenous Grid Method
 
 
@@ -22,20 +24,20 @@ kernelspec:
 In this lecture we use the endogenous grid method (EGM) to solve a basic income
 fluctuation (optimal savings) problem.
 
-Some general backgroud on The endogeous grid method can be found in [an earlier
+Backgroud on the endogeous grid method can be found in [an earlier
 QuantEcon lecture](https://python.quantecon.org/egm_policy_iter.html).
 
 Here we focus on providing an efficient JAX implmentation.
 
 We will use the following libraries and imports.
 
-```{code-cell}
+```{code-cell} ipython3
 :tags: [hide-output]
 
 !pip install --upgrade quantecon interpolation
 ```
 
-```{code-cell}
+```{code-cell} ipython3
 import quantecon as qe
 import matplotlib.pyplot as plt
 import numpy as np
@@ -47,11 +49,15 @@ from numba import njit, float64
 from numba.experimental import jitclass
 ```
 
++++ {"user_expressions": []}
+
 We use 64 bit floating point numbers for extra precision.
 
-```{code-cell}
+```{code-cell} ipython3
 jax.config.update("jax_enable_x64", True)
 ```
+
++++ {"user_expressions": []}
 
 ## Setup 
 
@@ -93,9 +99,9 @@ $$
 The following function stores default parameter values for the income
 fluctuation problem and creates suitable arrays.
 
-```{code-cell}
+```{code-cell} ipython3
 def ifp(R=1.01,             # gross interest rate
-        β=0.96,             # discount factor
+        β=0.99,             # discount factor
         γ=1.5,              # CRRA preference parameter
         s_max=16,           # savings grid max
         s_size=200,         # savings grid size
@@ -118,6 +124,8 @@ def ifp(R=1.01,             # gross interest rate
         
     return (β, R, γ), sizes, (s_grid, y_grid, P)
 ```
+
++++ {"user_expressions": []}
 
 ## Solution method
 
@@ -299,7 +307,7 @@ We are now ready to iterate with $K$.
 
 First we define a vectorized operator $K$ based on [](eq:kaper).
 
-```{code-cell}
+```{code-cell} ipython3
 def K_egm(a_in, σ_in, constants, sizes, arrays):
     """
     The vectorzied operator K using EGM.
@@ -328,29 +336,33 @@ def K_egm(a_in, σ_in, constants, sizes, arrays):
     s = jnp.reshape(s_grid, (s_size, 1, 1))
     P = jnp.reshape(P, (1, y_size, y_size))
     
-    # Evaluate σ_out
+    # Evaluate consumption choice
     a_next = R * s + y_hat
     σ_next = σ_vec(a_next, y_hat_idx)
     up = u_prime(σ_next)
     E = jnp.sum(up * P, axis=-1)
+    c = u_prime_inv(β * R * E)
 
-    σ_out = u_prime_inv(β * R * E)
+    # Set up a column vector with zero in the first row and ones elsewhere
+    e_0 = jnp.ones(s_size) - jnp.identity(s_size)[:, 0]
+    e_0 = jnp.reshape(e_0, (s_size, 1))
 
-    # Compute a_out by s = a - c
+    # The policy is computed consumption with the first row set to zero
+    σ_out = c * e_0
+
+    # Compute a_out by a = s + c
     a_out = np.reshape(s_grid, (s_size, 1)) + σ_out
     
-    # Set σ_0 = 0 and a_0 = 0
-    σ_out = σ_out.at[0, :].set(0)
-    a_out = a_out.at[0, :].set(0)
-
     return a_out, σ_out
 ```
 
 +++ {"user_expressions": []}
 
-Then we use ``jax.jit`` to compile $K$.
+Then we use `jax.jit` to compile $K$.
 
-```{code-cell}
+We use `static_argnums` to allow a recompile whenever `shapes` changes, since the compiler likes to specialize on shapes.
+
+```{code-cell} ipython3
 K_egm_jax = jax.jit(K_egm, static_argnums=(3,))
 ```
 
@@ -358,7 +370,7 @@ K_egm_jax = jax.jit(K_egm, static_argnums=(3,))
 
 Next we define a successive approximator that repeatedly applies $K$.
 
-```{code-cell}
+```{code-cell} ipython3
 def successive_approx_jax(model,        
             tol=1e-5,
             max_iter=1000,
@@ -372,7 +384,7 @@ def successive_approx_jax(model,
     s_size, y_size = sizes
     s_grid, y_grid, P = arrays
     
-    # Initial conditions: consume all in every state
+    # Initial condition is to consume all in every state
     σ_init = jnp.repeat(s_grid, y_size)
     σ_init = jnp.reshape(σ_init, (s_size, y_size))
     a_init = jnp.copy(σ_init)
@@ -391,7 +403,7 @@ def successive_approx_jax(model,
 
     if error > tol:
         print("Failed to converge!")
-    elif verbose:
+    else:
         print(f"\nConverged in {i} iterations.")
 
     return a_new, σ_new
@@ -409,7 +421,7 @@ well as to do a runtime comparison.
 Most readers will want to skip ahead to the next section, where we solve the
 model and run the cross-check.
 
-```{code-cell}
+```{code-cell} ipython3
 ifp_data = [
     ('R', float64),              
     ('β', float64),             
@@ -451,7 +463,7 @@ class IFP:
         return u_prime**(-1/self.γ)
 ```
 
-```{code-cell}
+```{code-cell} ipython3
 @njit
 def K_egm_nb(a_in, σ_in, ifp):
     """
@@ -487,7 +499,7 @@ def K_egm_nb(a_in, σ_in, ifp):
     return a_out, σ_out
 ```
 
-```{code-cell}
+```{code-cell} ipython3
 def successive_approx_numba(model,        # Class with model information
               tol=1e-5,
               max_iter=1000,
@@ -517,7 +529,7 @@ def successive_approx_numba(model,        # Class with model information
 
     if error > tol:
         print("Failed to converge!")
-    elif verbose:
+    else:
         print(f"\nConverged in {i} iterations.")
 
     return a_new, σ_new
@@ -527,70 +539,45 @@ def successive_approx_numba(model,        # Class with model information
 
 ## Solutions
 
-First we solve the IFP with JAX.
+Here we solve the IFP with JAX and Numba.
 
-```{code-cell}
+We will compare both the outputs and the execution time.
+
+### Outputs
+
+```{code-cell} ipython3
 ifp_jax = ifp()
 ```
 
-+++ {"user_expressions": []}
-
-Here's a first run.
-
-```{code-cell}
-qe.tic()
-a_star_egm_jax, σ_star_egm_jax = successive_approx_jax(ifp_jax,
-                                         print_skip=5)
-qe.toc()
+```{code-cell} ipython3
+ifp_numba = IFP()
 ```
 
 +++ {"user_expressions": []}
 
-Let's run again so we can see the run time without compilation.
+Here's a first run of the JAX code.
 
-```{code-cell}
-qe.tic()
+```{code-cell} ipython3
 a_star_egm_jax, σ_star_egm_jax = successive_approx_jax(ifp_jax,
-                                         print_skip=5)
-jax_time = qe.toc()
+                                         print_skip=100)
 ```
 
 +++ {"user_expressions": []}
 
 Next let's solve the same IFP with Numba.
 
-```{code-cell}
-ifp_numba = IFP()
-```
-
-```{code-cell}
+```{code-cell} ipython3
 qe.tic()
 a_star_egm_nb, σ_star_egm_nb = successive_approx_numba(ifp_numba,
-                                         print_skip=5)
+                                         print_skip=100)
 qe.toc()
 ```
 
 +++ {"user_expressions": []}
 
-Let's run again so we can see the run time without compilation.
+Now let's check the outputs in a plot to make sure they are the same.
 
-```{code-cell}
-qe.tic()
-a_star_egm_nb, σ_star_egm_nb = successive_approx_numba(ifp_numba,
-                                         print_skip=5)
-numba_time = qe.toc()
-```
-
-+++ {"user_expressions": []}
-
-The JAX code is significantly faster, as expected.
-
-This difference will increase when more features (and state variables) are added
-to the model.
-
-Lastly, let's plot the consumption functions for a sanity check.
-
-```{code-cell}
+```{code-cell} ipython3
 fig, ax = plt.subplots()
 
 n = len(ifp_numba.P)
@@ -608,10 +595,41 @@ plt.legend()
 plt.show()
 ```
 
-```{code-cell}
++++ {"user_expressions": []}
+
+### Timing
+
+Now let's compare excution time of the two methods
+
+```{code-cell} ipython3
+qe.tic()
+a_star_egm_jax, σ_star_egm_jax = successive_approx_jax(ifp_jax,
+                                         print_skip=1000)
+jax_time = qe.toc()
+```
+
+```{code-cell} ipython3
+qe.tic()
+a_star_egm_nb, σ_star_egm_nb = successive_approx_numba(ifp_numba,
+                                         print_skip=1000)
+numba_time = qe.toc()
+```
+
+```{code-cell} ipython3
+jax_time / numba_time
+```
+
++++ {"user_expressions": []}
+
+The JAX code is significantly faster, as expected.
+
+This difference will increase when more features (and state variables) are added
+to the model.
+
+```{code-cell} ipython3
 
 ```
 
-```{code-cell}
+```{code-cell} ipython3
 
 ```
