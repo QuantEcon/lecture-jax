@@ -11,6 +11,8 @@ kernelspec:
   name: python3
 ---
 
++++ {"user_expressions": []}
+
 # Endogenous Grid Method
 
 
@@ -19,7 +21,7 @@ kernelspec:
 
 ## Overview
 
-In this lecture we use the endogenous grid method to solve a basic income
+In this lecture we use the endogenous grid method (EGM) to solve a basic income
 fluctuation (optimal savings) problem.
 
 Some general backgroud on The endogeous grid method can be found in [an earlier
@@ -29,13 +31,13 @@ Here we focus on providing an efficient JAX implmentation.
 
 We will use the following libraries and imports.
 
-```{code-cell}
+```{code-cell} ipython3
 :tags: [hide-output]
 
 !pip install --upgrade quantecon interpolation
 ```
 
-```{code-cell}
+```{code-cell} ipython3
 import quantecon as qe
 import matplotlib.pyplot as plt
 import numpy as np
@@ -47,11 +49,15 @@ from numba import njit, float64
 from numba.experimental import jitclass
 ```
 
++++ {"user_expressions": []}
+
 We use 64 bit floating point numbers for extra precision.
 
-```{code-cell}
+```{code-cell} ipython3
 jax.config.update("jax_enable_x64", True)
 ```
+
++++ {"user_expressions": []}
 
 ## Setup 
 
@@ -93,7 +99,7 @@ $$
 The following function stores default parameter values for the income
 fluctuation problem and creates suitable arrays.
 
-```{code-cell}
+```{code-cell} ipython3
 def ifp(R=1.01,             # gross interest rate
         β=0.96,             # discount factor
         γ=1.5,              # CRRA preference parameter
@@ -117,112 +123,192 @@ def ifp(R=1.01,             # gross interest rate
     assert R * β < 1, "Stability condition violated."
         
     return (β, R, γ), sizes, (a_grid, y_grid, P)
+```
 
-# ## Solution method
-#
-# Let $S = \RR_+ \times \mathsf Y$ be the set of possible values for the state $(a_t, Y_t)$.
-#
-# We aim to compute an optimal consumption policy $\sigma^* \colon S \to \mathbb R$, under which 
-#
-# $$
-#     (a_0, z_0) = (a, z),
-#     \quad
-#     c_t = \sigma^*(a_t, Z_t)
-#     \quad \text{and} \quad
-#     a_{t+1} = R (a_t - c_t) + Y_{t+1}
-# $$
-#
-#
-# In this section we discuss how we intend to solve for this policy.
-#
-#
-# ### Euler equation
-#
-# The Euler equation for the optimization problem is
-#
-# $$
-#     u' (c_t)
-#     = \max \left\{
-#         \beta R \,  \mathbb{E}_t  u'(c_{t+1})  \,,\;  u'(a_t)
-#     \right\}
-# $$
-#
-# An explanation for this expression can be found [here](https://python.quantecon.org/ifp.html#value-function-and-euler-equation).
-#
-# We rewrite the Euler equation in functional form
-#
-# $$
-#     (u' \circ \sigma)  (a, z)
-#     = \max \left\{
-#     \beta R \, \mathbb E_z (u' \circ \sigma)
-#         [R (a - \sigma(a, z)) + \hat Y, \, \hat Z]
-#     \, , \;
-#          u'(a)
-#          \right\}
-# $$
-#
-#
-# where $(u' \circ \sigma)(s) := u'(\sigma(s))$.
-#
-# Let $\mathscr C$ be the space of continuous functions $\sigma \colon \mathbf S
-# \to \mathbb R$ such that $\sigma$ is increasing in the first argument, $0 <
-# \sigma(a,z) \leq a$ for all $(a,z) \in \mathbf S$, and
-#
-# $$
-#     \sup_{(a,z) \in \mathbf S}
-#     \left| (u' \circ \sigma)(a,z) - u'(a) \right| < \infty
-# $$
-#
-# For given $\sigma \in \mathscr{C}$, define $K \sigma (a,z)$ as the unique $c \in [0, a]$ that solves
-#
-# $$
-# u'(c)
-# = \max \left\{
-#            \beta R \, \mathbb E_z (u' \circ \sigma) \,
-#            [R (a - c) + \hat Y, \, \hat Z]
-#            \, , \;
-#            u'(a)
-#      \right\}
-# $$ (eq:kaper)
-#
-# We call $K$ is the [Coleman--Reffett operator](https://python.quantecon.org/ifp.html#computation).
-#
-# The EGM is to take a grid of saving values $s_i=a_i - c_i$.
-#
-# $$
-# c
-# = (u')^{-1}\left (\max \left\{
-#            \beta R \, \mathbb E_z (u' \circ \sigma) \,
-#            [R (a - c) + \hat Y, \, \hat Z]
-#            \, , \;
-#            u'(a)
-#      \right\} \right )
-# $$
++++ {"user_expressions": []}
 
-# On one hand, $a_0=s_0=0$.
-#
-# On the other hand since $s>0$ implies $c<a$ consumption is interior.
-#
-# Hence we can drop out the max and we solve for 
-#
-# $$
-# c_i =
-# (u')^{-1}
-# \left\{
-#     \beta \, R \mathbb E_z
-#     (u' \circ \sigma) \, [\hat R s_i + \hat Y, \, \hat Z]
-# \right\}
-# $$ (euler)
-#
-# for each $s_i$.
-#
-# Reference: https://python.quantecon.org/ifp_advanced.html#using-an-endogenous-grid
-#
-#
-# ### Jax version 
-#
-# First we define a vectorized operator $K$ based on {eq}`kaper`.
+## Solution method
 
+Let $S = \mathbb R_+ \times \mathsf Y$ be the set of possible values for the state $(a_t, Y_t)$.
+
+We aim to compute an optimal consumption policy $\sigma^* \colon S \to \mathbb R$, under which dynamics are given by
+
+$$
+    (a_0, y_0) = (a, y),
+    \quad
+    c_t = \sigma^*(a_t, Y_t)
+    \quad \text{and} \quad
+    a_{t+1} = R (a_t - c_t) + Y_{t+1}
+$$
+
+
+In this section we discuss how we intend to solve for this policy.
+
+
+### Euler equation
+
+The Euler equation for the optimization problem is
+
+$$
+    u' (c_t)
+    = \max \left\{
+        \beta R \,  \mathbb{E}_t  u'(c_{t+1})  \,,\;  u'(a_t)
+    \right\}
+$$
+
+An explanation for this expression can be found [here](https://python.quantecon.org/ifp.html#value-function-and-euler-equation).
+
+We rewrite the Euler equation in functional form
+
+$$
+    (u' \circ \sigma)  (a, y)
+    = \max \left\{
+    \beta R \, \mathbb E_y (u' \circ \sigma)
+        [R (a - \sigma(a, y)) + \hat Y, \, \hat Y]
+    \, , \;
+         u'(a)
+         \right\}
+$$
+
+
+where $(u' \circ \sigma)(a, y) := u'(\sigma(a, y))$ and $\sigma$ is a consumption
+policy.
+
+For given consumption policy $\sigma$, we define $(K \sigma) (a,y)$ as the unique $c \in [0, a]$ that solves
+
+$$
+u'(c)
+= \max \left\{
+           \beta R \, \mathbb E_y (u' \circ \sigma) \,
+           [R (a - c) + \hat Y, \, \hat Y]
+           \, , \;
+           u'(a)
+     \right\}
+$$ (eq:kaper)
+
+It [can be shown that](https://python.quantecon.org/ifp.html)
+
+1. iterating with $K$ computes an optimal policy and
+2. if $\sigma$ is increasing in its first argument, the so is $K\sigma$
+
+Hence below we always assume that $\sigma$ is increasing in its first argument.
+
+The EGM is a method for computing the update $K\sigma$ given $\sigma$ along a grid of asset values.
+
+Notice that, since $u'(a) \to \infty$ as $a \downarrow 0$, the second term in
+the max in [](eq:kaper) dominates for sufficiently small $a$.
+
+Also, again using [](eq:kaper), we have $c=a$ for all such $a$.
+
+Hence, for sufficiently small $a$,
+
+$$
+   u'(a) \geq
+   \beta R \, \mathbb E_y (u' \circ \sigma) \,
+           [\hat Y, \, \hat Y]
+$$
+
+Equality holds at $\bar a(y)$ given by 
+
+$$
+   \bar a (y) =
+   (u')^{-1}
+   \left\{
+       \beta R \, \mathbb E_y (u' \circ \sigma) \,
+               [\hat Y, \, \hat Y]
+   \right\}
+$$
+
+We can now write
+
+$$
+u'(c)
+    = \begin{cases}
+        \beta R \, \mathbb E_y (u' \circ \sigma) \,
+               [R (a - c) + \hat Y, \, \hat Y]
+               & \text{if } a > \bar a (y) \\
+        u'(a)  & \text{if } a \leq \bar a (y)
+    \end{cases}
+$$
+
+Equivalently, we can state that the $c$ satisfying $c = (K\sigma)(a, y)$ obeys
+
+$$
+c = \begin{cases}
+        (u')^{-1}
+        \left\{
+            \beta R \, \mathbb E_y (u' \circ \sigma) \,
+               [R (a - c) + \hat Y, \, \hat Y]
+        \right\}
+               & \text{if } a > \bar a (y) \\
+            a  & \text{if } a \leq \bar a (y)
+    \end{cases}
+$$ (eq:oro)
+
+We begin with an *exogenous* grid of saving values $0 = s_0 < \ldots < s_{N-1}$
+
+Using the exogenous savings grid, and a fixed value of $y$, we create an *endogenous* asset grid
+$a_0, \ldots, a_{N-1}$ and a consumption grid $c_0, \ldots, c_{N-1}$ as follows.
+
+First we set $a_0 = c_0 = 0$, since zero consumption is an optimal (in fact the only) choice when $a=0$.
+
+Then, for $i > 0$, we compute 
+
+$$
+    c_i
+    = (u')^{-1}
+    \left\{ 
+        \beta R \, \mathbb E_y (u' \circ \sigma) \,
+               [R s_i + \hat Y, \, \hat Y]
+     \right\}
+     \quad \text{for all } i
+$$ (eq:kaperc)
+
+and we set 
+
+$$
+    a_i = s_i + c_i 
+$$ 
+
+We claim that each pair $a_i, c_i$ obeys [](eq:oro).
+
+Indeed, since $s_i > 0$, choosing $c_i$ according to [](eq:kaperc) gives
+
+$$
+    c_i
+    = (u')^{-1}
+    \left\{ 
+        \beta R \, \mathbb E_y (u' \circ \sigma) \,
+               [R s_i + \hat Y, \, \hat Y]
+     \right\}
+     \geq \bar a(y)
+$$
+
+where the inequality uses the fact that $\sigma$ is increasing in its first argument.
+
+If we now take $a_i = s_i + c_i$ we get $a_i > \bar a(y)$, so the pair $(a_i, c_i)$ obeys
+$$
+    c_i
+    = (u')^{-1}
+    \left\{ 
+        \beta R \, \mathbb E_y (u' \circ \sigma) \,
+               [R (a_i - c_i) + \hat Y, \, \hat Y]
+     \right\}
+     \quad \text{and} \quad a_i > \bar a(y)
+$$
+
+
+Hence [](eq:oro) holds.
+
+
+Finally, we know that $a=0$ implies $c=0$, so we append the points $a_0 = 0$ and $c_0 = 0$ to the endogenous grids.
+
+
+### JAX version 
+
+First we define a vectorized operator $K$ based on [](eq:kaper).
+
+```{code-cell} ipython3
 def K_egm(a_in, σ_in, constants, sizes, arrays):
     """
     The vectorzied operator K using EGM.
@@ -270,14 +356,21 @@ def K_egm(a_in, σ_in, constants, sizes, arrays):
     a_out = a_out.at[0, :].set(0)
 
     return a_out, σ_out
+```
 
-# Then we use ``jax.jit`` to compile the vectorized $K$.
++++ {"user_expressions": []}
 
+Then we use ``jax.jit`` to compile $K$.
+
+```{code-cell} ipython3
 K_egm_jax = jax.jit(K_egm, static_argnums=(3,))
+```
 
++++ {"user_expressions": []}
 
-# Next we define a successive approximator that repeatedly applies $K$.
+Next we define a successive approximator that repeatedly applies $K$.
 
+```{code-cell} ipython3
 def successive_approx_jax(model,        
             tol=1e-5,
             max_iter=1000,
@@ -313,20 +406,21 @@ def successive_approx_jax(model,
         print(f"\nConverged in {i} iterations.")
 
     return a_new, σ_new
-
-
-# ### Numba version 
-#
-# Below we provide a second set of code, which solves the same model with Numba.
-#
-# The purpose of this code is to cross-check our results from the JAX version, as
-# well as to do a runtime comparison.
-#
-# Most readers will want to skip ahead to the next section, where we solve the
-# model and run the cross-check.
 ```
 
-```{code-cell}
++++ {"user_expressions": []}
+
+### Numba version 
+
+Below we provide a second set of code, which solves the same model with Numba.
+
+The purpose of this code is to cross-check our results from the JAX version, as
+well as to do a runtime comparison.
+
+Most readers will want to skip ahead to the next section, where we solve the
+model and run the cross-check.
+
+```{code-cell} ipython3
 ifp_data = [
     ('R', float64),              
     ('β', float64),             
@@ -336,6 +430,7 @@ ifp_data = [
     ('grid', float64[:])    
 ]
 
+# Use the JAX IFP data as our defaults for the Numba version
 model = ifp()
 constants, sizes, arrays = model
 β, R, γ = constants
@@ -367,7 +462,7 @@ class IFP:
         return u_prime**(-1/self.γ)
 ```
 
-```{code-cell}
+```{code-cell} ipython3
 @njit
 def K_egm_nb(a_in, σ_in, ifp):
     """
@@ -381,36 +476,29 @@ def K_egm_nb(a_in, σ_in, ifp):
     u_prime_inv = ifp.u_prime_inv
     n = len(y_grid)
     
-    
     # Linear interpolation of policy using endogenous grid
     def σ(a, z):
         return interp(a_in[:, z], σ_in[:, z], a)
     
-    
     # Allocate memory for new consumption array
-    σ_out = np.empty_like(σ_in)
+    σ_out = np.zeros_like(σ_in)
+    a_out = np.zeros_like(σ_out)
     
-    for i, s in enumerate(grid):
+    for i, s in enumerate(grid[1:]):
+        i += 1
         for z in range(n):
             expect = 0.0
             for z_hat in range(n):
                 expect += u_prime(σ(R * s + y_grid[z_hat], z_hat)) * P[z, z_hat]
 
-            σ_out[i, z] = u_prime_inv(β * R * expect)
-    
-    # Calculate endogenous asset grid
-    a_out = np.empty_like(σ_out)
-    for z in range(n):
-        a_out[:, z] = grid + σ_out[:, z]
-
-    # Fixing a consumption-asset pair at (0, 0) improves interpolation
-    σ_out[0, :] = 0
-    a_out[0, :] = 0
+            c = u_prime_inv(β * R * expect)
+            σ_out[i, z] = c
+            a_out[i, z] = s + c
     
     return a_out, σ_out
 ```
 
-```{code-cell}
+```{code-cell} ipython3
 def successive_approx_numba(model,        # Class with model information
               tol=1e-5,
               max_iter=1000,
@@ -445,53 +533,65 @@ def successive_approx_numba(model,        # Class with model information
     return a_new, σ_new
 ```
 
++++ {"user_expressions": []}
+
 ## Solutions
 
 First we solve the IFP with JAX.
 
-```{code-cell}
+```{code-cell} ipython3
 ifp_jax = ifp()
 ```
 
++++ {"user_expressions": []}
+
 Here's a first run.
 
-```{code-cell}
+```{code-cell} ipython3
 qe.tic()
 a_star_egm_jax, σ_star_egm_jax = successive_approx_jax(ifp_jax,
                                          print_skip=5)
 qe.toc()
 ```
 
++++ {"user_expressions": []}
+
 Let's run again so we can see the run time without compilation.
 
-```{code-cell}
+```{code-cell} ipython3
 qe.tic()
 a_star_egm_jax, σ_star_egm_jax = successive_approx_jax(ifp_jax,
                                          print_skip=5)
 jax_time = qe.toc()
 ```
 
++++ {"user_expressions": []}
+
 Next let's solve the same IFP with Numba.
 
-```{code-cell}
+```{code-cell} ipython3
 ifp_numba = IFP()
 ```
 
-```{code-cell}
+```{code-cell} ipython3
 qe.tic()
 a_star_egm_nb, σ_star_egm_nb = successive_approx_numba(ifp_numba,
                                          print_skip=5)
 qe.toc()
 ```
 
++++ {"user_expressions": []}
+
 Let's run again so we can see the run time without compilation.
 
-```{code-cell}
+```{code-cell} ipython3
 qe.tic()
 a_star_egm_nb, σ_star_egm_nb = successive_approx_numba(ifp_numba,
                                          print_skip=5)
 numba_time = qe.toc()
 ```
+
++++ {"user_expressions": []}
 
 The JAX code is significantly faster, as expected.
 
@@ -500,7 +600,7 @@ to the model.
 
 Lastly, let's plot the consumption functions for a sanity check.
 
-```{code-cell}
+```{code-cell} ipython3
 fig, ax = plt.subplots()
 
 n = len(ifp_numba.P)
@@ -516,4 +616,12 @@ for z in (0, y_size-1):
 ax.set_xlabel('asset')
 plt.legend()
 plt.show()
+```
+
+```{code-cell} ipython3
+
+```
+
+```{code-cell} ipython3
+
 ```
