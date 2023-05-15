@@ -320,25 +320,24 @@ def K_egm(a_in, σ_in, constants, sizes, arrays):
     # Linearly interpolate σ(a, y)
     def σ(a, y):
         return jnp.interp(a, a_in[:, y], σ_in[:, y])
-
     σ_vec = jnp.vectorize(σ)
 
     # Broadcast and vectorize
-    y_hat = jnp.reshape(y_grid, (1, y_size, 1))
+    y_hat = jnp.reshape(y_grid, (1, 1, y_size))
     y_hat_idx = jnp.reshape(jnp.arange(y_size), (1, 1, y_size))
-    s_grid = jnp.reshape(s_grid, (s_size, 1, 1))
+    s = jnp.reshape(s_grid, (s_size, 1, 1))
+    P = jnp.reshape(P, (1, y_size, y_size))
     
     # Evaluate σ_out
-    a_next = R * s_grid + y_hat
+    a_next = R * s + y_hat
     σ_next = σ_vec(a_next, y_hat_idx)
     up = u_prime(σ_next)
-    P = jnp.reshape(P, (1, y_size, y_size))
     E = jnp.sum(up * P, axis=-1)
 
     σ_out = u_prime_inv(β * R * E)
 
     # Compute a_out by s = a - c
-    a_out = s_grid[:, jnp.newaxis] + σ_out
+    a_out = np.reshape(s_grid, (s_size, 1)) + σ_out
     
     # Set σ_0 = 0 and a_0 = 0
     σ_out = σ_out.at[0, :].set(0)
@@ -373,8 +372,9 @@ def successive_approx_jax(model,
     s_size, y_size = sizes
     s_grid, y_grid, P = arrays
     
-    # Set up loop
-    σ_init = jnp.tile(s_grid, [y_size, 1]).T
+    # Initial conditions: consume all in every state
+    σ_init = jnp.repeat(s_grid, y_size)
+    σ_init = jnp.reshape(σ_init, (s_size, y_size))
     a_init = jnp.copy(σ_init)
     a_vec, σ_vec = a_init, σ_init
     
@@ -498,7 +498,8 @@ def successive_approx_numba(model,        # Class with model information
     P, s_grid = model.P, model.s_grid
     n = len(P)
     
-    σ_init = np.tile(s_grid, (n, 1)).T
+    σ_init = np.repeat(s_grid, y_size)
+    σ_init = np.reshape(σ_init, (s_size, y_size))
     a_init = np.copy(σ_init)
     a_vec, σ_vec = a_init, σ_init
     
