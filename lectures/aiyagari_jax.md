@@ -57,6 +57,12 @@ import jax
 import jax.numpy as jnp
 ```
 
+We can also check the `gpu` hardware we are running on using `nvidia-smi`.
+
+```{code-cell} ipython3
+!nvidia-smi
+```
+
 We will use 64 bit floats with JAX in order to increase the precision.
 
 ```{code-cell} ipython3

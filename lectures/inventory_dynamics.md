@@ -48,14 +48,10 @@ from jax import random, lax
 from collections import namedtuple
 ```
 
-Let’s check the backend used by JAX and the devices available
+We can also check the `gpu` hardware we are running on using `nvidia-smi`.
 
 ```{code-cell} ipython3
-# Check if JAX is using GPU
-print(f"JAX backend: {jax.devices()[0].platform}")
-
-# Check the devices available for JAX
-print(jax.devices())
+!nvidia-smi
 ```
 
 ## Sample paths

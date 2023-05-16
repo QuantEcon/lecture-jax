@@ -33,6 +33,12 @@ import matplotlib.pyplot as plt
 import time
 ```
 
+We can also check the `gpu` hardware we are running on using `nvidia-smi`.
+
+```{code-cell} ipython3
+!nvidia-smi
+```
+
 Use 64 bit floats with JAX in order to match NumPy code
 - By default, JAX uses 32-bit datatypes.
 - By default, NumPy uses 64-bit datatypes.

@@ -48,6 +48,11 @@ from numba import njit, float64
 from numba.experimental import jitclass
 ```
 
+We can also check the `gpu` hardware we are running on using `nvidia-smi`.
+
+```{code-cell} ipython3
+!nvidia-smi
+```
 
 We use 64 bit floating point numbers for extra precision.
 
