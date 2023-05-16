@@ -48,9 +48,9 @@ state-dependent default probability chosen by government.
 The model yields outcomes that help interpret sovereign default experiences,
 including
 
-- countercyclical interest rates on sovereign debt  
-- countercyclical trade balances  
-- high volatility of consumption relative to output  
+- countercyclical interest rates on sovereign debt
+- countercyclical trade balances
+- high volatility of consumption relative to output
 
 
 Notably, long recessions caused by bad draws in the income process increase the government’s
@@ -58,10 +58,10 @@ incentive to default.
 
 This can lead to
 
-- spikes in interest rates  
-- temporary losses of access to international credit markets  
-- large drops in output, consumption, and welfare  
-- large capital outflows during recessions  
+- spikes in interest rates
+- temporary losses of access to international credit markets
+- large drops in output, consumption, and welfare
+- large capital outflows during recessions
 
 
 Such dynamics are consistent with experiences of many countries.
@@ -117,8 +117,8 @@ $$
 
 Here
 
-- $ 0 < \beta < 1 $ is a time discount factor  
-- $ u $ is an increasing and strictly concave utility function  
+- $ 0 < \beta < 1 $ is a time discount factor
+- $ u $ is an increasing and strictly concave utility function
 
 
 Consumption sequences enjoyed by households are affected by the government’s decision to borrow or
@@ -139,16 +139,16 @@ The only credit instrument available to the government is a one-period bond trad
 
 The bond market has the following features
 
-- The bond matures in one period and is not state contingent.  
+- The bond matures in one period and is not state contingent.
 - A purchase of a bond with face value $ B' $ is a claim to $ B' $ units of the
-  consumption good next period.  
-- To purchase $ B' $  next period costs $ q B' $ now, or, what is equivalent.  
+  consumption good next period.
+- To purchase $ B' $  next period costs $ q B' $ now, or, what is equivalent.
 - For selling $ -B' $ units of next period goods the seller earns $ - q B' $ of today’s
-  goods.  
+  goods.
   - If $ B' < 0 $, then $ -q B' $ units of the good are received in the current period,
-    for a promise to repay $ -B' $ units next period.  
+    for a promise to repay $ -B' $ units next period.
   - There is an equilibrium  price function $ q(B', y) $ that makes $ q $ depend on both
-    $ B' $ and $ y $.  
+    $ B' $ and $ y $.
 
 
 Earnings on the government portfolio are distributed (or, if negative, taxed) lump sum to
@@ -165,7 +165,7 @@ Here and below, a prime denotes a next period value or a claim maturing next per
 
 To rule out Ponzi schemes, we also require that $ B \geq -Z $ in every period.
 
-- $ Z $ is chosen to be sufficiently large that the constraint never binds in equilibrium.  
+- $ Z $ is chosen to be sufficiently large that the constraint never binds in equilibrium.
 
 +++
 
@@ -173,13 +173,13 @@ To rule out Ponzi schemes, we also require that $ B \geq -Z $ in every period.
 
 Foreign creditors
 
-- are risk neutral  
+- are risk neutral
 - know the domestic output stochastic process $ \{y_t\} $ and observe
-  $ y_t, y_{t-1}, \ldots, $ at time $ t $  
+  $ y_t, y_{t-1}, \ldots, $ at time $ t $
 - can borrow or lend without limit in an international credit market at a constant international
-  interest rate $ r $  
-- receive full payment if the government chooses to pay  
-- receive zero if the government defaults on its one-period debt due  
+  interest rate $ r $
+- receive full payment if the government chooses to pay
+- receive zero if the government defaults on its one-period debt due
 
 
 When a government is expected to default next period with probability $ \delta $, the expected
@@ -199,9 +199,9 @@ Next we turn to how the government in effect chooses the default probability $ \
 
 At each point in time $ t $, the government chooses between
 
-1. defaulting  
+1. defaulting
 1. meeting its current obligations and purchasing or selling an optimal quantity of  one-period
-  sovereign debt  
+  sovereign debt
 
 
 Defaulting means declining to repay all of its current obligations.
@@ -210,10 +210,10 @@ If the government defaults in the current period, then consumption equals curren
 
 But a sovereign default has two consequences:
 
-1. Output immediately falls from $ y $ to $ h(y) $, where $ 0 \leq h(y) \leq y $.  
+1. Output immediately falls from $ y $ to $ h(y) $, where $ 0 \leq h(y) \leq y $.
   - It returns to $ y $ only after the country regains access to international credit
-    markets.  
-1. The country loses access to foreign credit markets.  
+    markets.
+1. The country loses access to foreign credit markets.
 
 +++
 
@@ -229,33 +229,33 @@ period with probability $ \theta $.
 Informally, an equilibrium is a sequence of interest rates on its sovereign debt, a stochastic
 sequence of government default decisions and an implied flow of household consumption such that
 
-1. Consumption and assets satisfy the national budget constraint.  
-1. The government maximizes household utility taking into account  
-  - the resource constraint  
-  - the effect of its choices on the price of bonds  
+1. Consumption and assets satisfy the national budget constraint.
+1. The government maximizes household utility taking into account
+  - the resource constraint
+  - the effect of its choices on the price of bonds
   - consequences of defaulting now for future net output and future borrowing and lending
-    opportunities  
+    opportunities
 1. The interest rate on the government’s debt includes a risk-premium sufficient to make foreign
-  creditors expect on average to earn the constant risk-free international interest rate.  
+  creditors expect on average to earn the constant risk-free international interest rate.
 
 
 To express these ideas more precisely, consider first the choices of the government, which
 
 1. enters a period with initial assets $ B $, or what is the same thing, initial debt to be
-  repaid now of $ -B $  
-1. observes current output $ y $, and  
-1. chooses either  
-  1. to default, or  
-  1. to pay $ -B $ and set next period’s debt due to $ -B' $  
+  repaid now of $ -B $
+1. observes current output $ y $, and
+1. chooses either
+  1. to default, or
+  1. to pay $ -B $ and set next period’s debt due to $ -B' $
 
 
 In a recursive formulation,
 
-- state variables for the government comprise the pair $ (B, y) $  
+- state variables for the government comprise the pair $ (B, y) $
 - $ v(B, y) $ is the optimum value of the government’s problem when at the beginning of a
-  period it faces the choice of whether to honor or default  
-- $ v_c(B, y) $ is the value of choosing to pay obligations falling due  
-- $ v_d(y) $ is the value of choosing to default  
+  period it faces the choice of whether to honor or default
+- $ v_c(B, y) $ is the value of choosing to pay obligations falling due
+- $ v_d(y) $ is the value of choosing to default
 
 
 $ v_d(y) $ does not depend on $ B $ because, when access to credit is eventually regained,
@@ -312,19 +312,19 @@ $$ (equation13_5)
 
 An *equilibrium* is
 
-- a pricing function $ q(B',y) $,  
-- a triple of value functions $ (v_c(B, y), v_d(y), v(B,y)) $,  
+- a pricing function $ q(B',y) $,
+- a triple of value functions $ (v_c(B, y), v_d(y), v(B,y)) $,
 - a decision rule telling the government when to default and when to pay as a function of the state
-  $ (B, y) $, and  
+  $ (B, y) $, and
 - an asset accumulation rule that, conditional on choosing not to default, maps $ (B,y) $ into
-  $ B' $  
+  $ B' $
 
 
 such that
 
-- The three Bellman equations for $ (v_c(B, y), v_d(y), v(B,y)) $ are satisfied  
+- The three Bellman equations for $ (v_c(B, y), v_d(y), v(B,y)) $ are satisfied
 - Given the price function $ q(B',y) $, the default decision rule and the asset accumulation
-  decision rule attain the optimal value function  $ v(B,y) $, and  
+  decision rule attain the optimal value function  $ v(B,y) $, and
 - The price function $ q(B',y) $ satisfies equation {eq}`equation13_5`
 
 +++
@@ -343,20 +343,20 @@ After that we’ll perform some additional simulations.
 We use a slightly modified version of the algorithm recommended by Arellano.
 
 - The appendix to {cite}`Are08` recommends value function iteration until
-  convergence, updating the price, and then repeating.  
-- Instead, we update the bond price at every value function iteration step.  
+  convergence, updating the price, and then repeating.
+- Instead, we update the bond price at every value function iteration step.
 
 
 The second approach is faster and the two different procedures deliver very similar results.
 
 Here is a more detailed description of our algorithm:
 
-1. Guess a pair of non-default and default value functions $ v_c $ and $ v_d $.  
-1. Using these functions, calculate the value function $ v $, the corresponding default probabilities and the price function $ q $.  
-1. At each pair $ (B, y) $,  
-  1. update the value of defaulting $ v_d(y) $.  
-  1. update the value of remaining $ v_c(B, y) $.  
-1. Check for convergence. If converged, stop – if not, go to step 2.  
+1. Guess a pair of non-default and default value functions $ v_c $ and $ v_d $.
+1. Using these functions, calculate the value function $ v $, the corresponding default probabilities and the price function $ q $.
+1. At each pair $ (B, y) $,
+  1. update the value of defaulting $ v_d(y) $.
+  1. update the value of remaining $ v_c(B, y) $.
+1. Check for convergence. If converged, stop – if not, go to step 2.
 
 
 We use simple discretization on a grid of asset holdings and income levels.
@@ -374,17 +374,17 @@ probabilities.
 class Arellano_Economy:
     " Stores data and creates primitives for the Arellano economy. "
 
-    def __init__(self, 
+    def __init__(self,
             B_grid_size=251,   # Grid size for bonds
-            B_grid_min=-0.45,   # Smallest B value 
+            B_grid_min=-0.45,   # Smallest B value
             B_grid_max=0.45,    # Largest B value
-            y_grid_size=51,     # Grid size for income 
+            y_grid_size=51,     # Grid size for income
             β=0.953,            # Time discount parameter
             γ=2.0,              # Utility parameter
             r=0.017,            # Lending rate
             ρ=0.945,            # Persistence in the income process
             η=0.025,            # Standard deviation of the income process
-            θ=0.282,            # Prob of re-entering financial markets 
+            θ=0.282,            # Prob of re-entering financial markets
             def_y_param=0.969): # Parameter governing income in default
 
         # Save parameters
@@ -397,7 +397,7 @@ class Arellano_Economy:
         B_grid = jnp.linspace(B_grid_min, B_grid_max, B_grid_size)
         mc = qe.markov.tauchen(y_grid_size, ρ, η)
         y_grid, P = jnp.exp(mc.state_values), mc.P
-        
+
         # Put grids on the device
         self.B_grid = jax.device_put(B_grid)
         self.y_grid = jax.device_put(y_grid)
@@ -407,8 +407,8 @@ class Arellano_Economy:
         self.def_y = jnp.minimum(def_y_param * jnp.mean(self.y_grid), self.y_grid)
 
     def params(self):
-        return self.β, self.γ, self.r, self.ρ, self.η, self.θ 
-    
+        return self.β, self.γ, self.r, self.ρ, self.η, self.θ
+
     def sizes(self):
         return self.B_grid_size, self.y_grid_size
 
@@ -436,13 +436,13 @@ def compute_q(v_c, v_d, params, sizes, arrays):
     """
     Compute the bond price function q(B, y) at each (B, y) pair.  The first
     step is to calculate the default probabilities
-    
+
         δ(B, y) := Σ_{y'} 1{v_c(B, y') < v_d(y')} P(y, y') dy'
 
     """
 
-    # Unpack 
-    β, γ, r, ρ, η, θ = params 
+    # Unpack
+    β, γ, r, ρ, η, θ = params
     B_size, y_size = sizes
     P, B_grid, y_grid, def_y = arrays
 
@@ -450,10 +450,10 @@ def compute_q(v_c, v_d, params, sizes, arrays):
     v_d = jnp.reshape(v_d, (1, 1, y_size))
     v_c = jnp.reshape(v_c, (B_size, 1, y_size))
     P = jnp.reshape(P, (1, y_size, y_size))
-    
+
     # Compute δ[i_B, i_y]
     default_states = v_c < v_d
-    delta = jnp.sum(default_states * P, axis=(2,)) 
+    delta = jnp.sum(default_states * P, axis=(2,))
 
     q = (1 - delta ) / (1 + r)
     return q
@@ -469,13 +469,13 @@ def T_d(v_c, v_d, params, sizes, arrays):
     The RHS of the Bellman equation when income is at index y_idx and
     the country has chosen to default.  Returns an update of v_d.
     """
-    # Unpack 
-    β, γ, r, ρ, η, θ = params 
+    # Unpack
+    β, γ, r, ρ, η, θ = params
     B_size, y_size = sizes
     P, B_grid, y_grid, def_y = arrays
     B0_idx = jnp.searchsorted(B_grid, 1e-10)  # Index at which B is near zero
-    
-    current_utility = u(def_y, γ) 
+
+    current_utility = u(def_y, γ)
     v = jnp.maximum(v_c[B0_idx, :], v_d)
     w = θ * v + (1 - θ) * v_d
     A = jnp.reshape(w, (1, y_size))
@@ -491,14 +491,14 @@ def bellman(v_c, v_d, q, params, sizes, arrays):
     """
     The RHS of the Bellman equation when the country is not in a
     defaulted state on their debt.  That is,
-    
-        bellman(B, y) = 
+
+        bellman(B, y) =
             u(y - q(B', y) B' + B) + β Σ_{y'} v(B', y') P(y, y')
-    
+
     If consumption is not positive then returns -np.inf
     """
-    # Unpack 
-    β, γ, r, ρ, η, θ = params 
+    # Unpack
+    β, γ, r, ρ, η, θ = params
     B_size, y_size = sizes
     P, B_grid, y_grid, def_y = arrays
 
@@ -506,8 +506,8 @@ def bellman(v_c, v_d, q, params, sizes, arrays):
     y_idx = jnp.reshape(jnp.arange(y_size), (1, y_size, 1))
     B_idx = jnp.reshape(jnp.arange(B_size), (B_size, 1, 1))
     Bp_idx = jnp.reshape(jnp.arange(B_size), (1, 1, B_size))
-    c = y_grid[y_idx] - q[Bp_idx, y_idx] * B_grid[Bp_idx] + B_grid[B_idx]  
-    
+    c = y_grid[y_idx] - q[Bp_idx, y_idx] * B_grid[Bp_idx] + B_grid[B_idx]
+
     # Set up v[i_B, i_y, i_Bp, i_yp] and P[i_B, i_y, i_Bp, i_yp]
     v_d = jnp.reshape(v_d, (1, 1, 1, y_size))
     v_c = jnp.reshape(v_c, (1, 1, B_size, y_size))
@@ -515,11 +515,11 @@ def bellman(v_c, v_d, q, params, sizes, arrays):
     P = jnp.reshape(P, (1, y_size, 1, y_size))
     # Sum over i_yp
     continuation_value = jnp.sum(v * P, axis=(3,))
-    
+
     # Return new_v_c[i_B, i_y, i_Bp]
     val = jnp.where(c > 0, u(c, γ) + β * continuation_value, -jnp.inf)
     return val
-                  
+
 ```
 
 ```{code-cell} ipython3
@@ -578,7 +578,7 @@ def solve(model, tol=1e-8, max_iter=10_000):
     sizes = model.sizes()
     arrays = model.arrays()
     B_size, y_size = sizes
-    
+
     # Initial conditions for v_c and v_d
     v_c = jnp.zeros((B_size, y_size))
     v_d = jnp.zeros((y_size,))
@@ -592,12 +592,12 @@ def solve(model, tol=1e-8, max_iter=10_000):
         error = jnp.max(jnp.abs(new_v_c - v_c)) + jnp.max(jnp.abs(new_v_d - v_d))
         v_c, v_d = new_v_c, new_v_d
         current_iter += 1
-        
+
     print(f"Terminating at iteration {current_iter}.")
-    
+
     q = compute_q(v_c, v_d, params, sizes, arrays)
     B_star = get_greedy(v_c, v_d, q, params, sizes, arrays)
-    return v_c, v_d, q, B_star 
+    return v_c, v_d, q, B_star
 ```
 
 Let's try solving the model.
@@ -640,7 +640,7 @@ def simulate(model, T, v_c, v_d, q, B_star, key):
     B_size, y_size = model.sizes()
     B_grid, y_grid, P = model.B_grid, model.y_grid, model.P
     B0_idx = jnp.searchsorted(B_grid, 1e-10)  # Index at which B is near zero
-        
+
     # Set initial conditions
     y_idx = y_size // 2
     B_idx = B0_idx
@@ -711,9 +711,9 @@ values of output $ y $.
 
 ![https://python-advanced.quantecon.org/_static/lecture_specific/arellano/arellano_bond_prices.png](https://python-advanced.quantecon.org/_static/lecture_specific/arellano/arellano_bond_prices.png)
 
-  
-- $ y_L $ is 5% below the mean of the $ y $ grid values  
-- $ y_H $ is 5% above  the mean of the $ y $ grid values  
+
+- $ y_L $ is 5% below the mean of the $ y $ grid values
+- $ y_H $ is 5% above  the mean of the $ y $ grid values
 
 
 The grid used to compute this figure was relatively fine (`y_grid_size, B_grid_size = 51, 251`), which explains the minor differences between this and
@@ -722,16 +722,16 @@ Arrelano’s figure.
 The figure shows that
 
 - Higher levels of debt (larger $ -B' $) induce larger discounts on the face value, which
-  correspond to higher interest rates.  
+  correspond to higher interest rates.
 - Lower income also causes more discounting, as foreign creditors anticipate greater likelihood
-  of default.  
+  of default.
 
 
 The next figure plots value functions and replicates the right hand panel of Figure 4 of {cite}`Are08`.
 
 ![https://python-advanced.quantecon.org/_static/lecture_specific/arellano/arellano_value_funcs.png](https://python-advanced.quantecon.org/_static/lecture_specific/arellano/arellano_value_funcs.png)
 
-  
+
 We can use the results of the computation to study the default probability $ \delta(B', y) $
 defined in {eq}`equation13_4`.
 
@@ -739,7 +739,7 @@ The next plot shows these default probabilities over $ (B', y) $ as a heat map.
 
 ![https://python-advanced.quantecon.org/_static/lecture_specific/arellano/arellano_default_probs.png](https://python-advanced.quantecon.org/_static/lecture_specific/arellano/arellano_default_probs.png)
 
-  
+
 As anticipated, the probability that the government chooses to default in the following period
 increases with indebtedness and falls with income.
 
@@ -749,7 +749,7 @@ The grey vertical bars correspond to periods when the economy is excluded from f
 
 ![https://python-advanced.quantecon.org/_static/lecture_specific/arellano/arellano_time_series.png](https://python-advanced.quantecon.org/_static/lecture_specific/arellano/arellano_time_series.png)
 
-  
+
 One notable feature of the simulated data is the nonlinear response of interest rates.
 
 Periods of relative stability are followed by sharp spikes in the discount rate on government debt.
@@ -757,9 +757,6 @@ Periods of relative stability are followed by sharp spikes in the discount rate 
 +++
 
 ## Exercises
-
-
-<a id='arellano-ex1'></a>
 
 +++
 
@@ -769,8 +766,8 @@ Periods of relative stability are followed by sharp spikes in the discount rate 
 
 To the extent that you can, replicate the figures shown above
 
-- Use the parameter values listed as defaults in `Arellano_Economy`.  
-- The time series will of course vary depending on the shock draws. 
+- Use the parameter values listed as defaults in `Arellano_Economy`.
+- The time series will of course vary depending on the shock draws.
 
 ```{exercise-end}
 ```
@@ -781,7 +778,9 @@ To the extent that you can, replicate the figures shown above
 :class: dropdown
 ```
 
-Solution to[ Exercise 13.1](https://python-advanced.quantecon.org/#arella_ex1). Compute the value function, policy and equilibrium prices
+Solution to this [exercise](https://python-advanced.quantecon.org/arellano.html#arella_ex1).
+
+Compute the value function, policy and equilibrium prices
 
 ```{code-cell} ipython3
 :hide-output: false
@@ -852,7 +851,7 @@ shaped_P = jnp.reshape(P, (1, y_size, y_size))
 
 # Compute delta[i_B, i_y]
 default_states = 1.0 * (shaped_v_c < shaped_v_d)
-delta = jnp.sum(default_states * shaped_P, axis=(2,)) 
+delta = jnp.sum(default_states * shaped_P, axis=(2,))
 
 # Create figure
 fig, ax = plt.subplots(figsize=(10, 6.5))
