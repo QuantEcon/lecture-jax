@@ -23,10 +23,10 @@ kernelspec:
 In this lecture we use the endogenous grid method (EGM) to solve a basic income
 fluctuation (optimal savings) problem.
 
-Backgroud on the endogeous grid method can be found in [an earlier
+Background on the endogenous grid method can be found in [an earlier
 QuantEcon lecture](https://python.quantecon.org/egm_policy_iter.html).
 
-Here we focus on providing an efficient JAX implmentation.
+Here we focus on providing an efficient JAX implementation.
 
 We will use the following libraries and imports.
 
