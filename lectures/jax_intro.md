@@ -68,23 +68,17 @@ a
 type(a)
 ```
 
-Even scalar-valued maps on arrays return objects of type `DeviceArray`:
+Even scalar-valued maps on arrays return JAX arrays.
 
 ```{code-cell} ipython3
 jnp.sum(a)
 ```
 
-The term `Device` refers to the hardware accelerator (GPU or TPU), although JAX falls back to the CPU if no accelerator is detected.
+JAX arrays are also called "device arrays," where term "device" refers to a
+hardware accelerator (GPU or TPU).
 
 (In the terminology of GPUs, the "host" is the machine that launches GPU operations, while the "device" is the GPU itself.)
 
-```{note}
-Note that `DeviceArray` is a [*future*](https://en.wikipedia.org/wiki/Futures_and_promises); it allows Python to continue execution when the results of computation are not available immediately.
-
-This means that Python can dispatch more jobs without waiting for the computation results to be returned by the device.
-
-This feature is called [*asynchronous dispatch*](https://jax.readthedocs.io/en/latest/async_dispatch.html), which hides Python overheads and reduces wait time.
-```
 
 
 Operations on higher dimensional arrays is also similar to NumPy:
@@ -169,7 +163,8 @@ a_new = a.sort()
 a, a_new
 ```
 
-The designers of JAX chose to make arrays immutable because JAX uses a functional programming style.  More on this below.  
+The designers of JAX chose to make arrays immutable because JAX uses a
+functional programming style.  More on this below.  
 
 Note that, while mutation is discouraged, it is in fact possible with `at`, as in
 
@@ -293,11 +288,14 @@ How long does the function take to execute?
 ```
 
 ```{note}
-With asynchronous dispatch, the `%time` magic is only evaluating the time to dispatch by the Python interpreter, without taking into account the computation time on the device.
+Here, in order to measure actual speed, we use the `block_until_ready()` method 
+to hold the interpreter until the results of the computation are returned from
+the device.
 
-Here, to measure the actual speed, the `block_until_ready()` method prevents asynchronous dispatch by asking Python to wait until the computation results are ready.
+This is necessary because JAX uses asynchronous dispatch, which allows the
+Python interpreter to run ahead of GPU computations.
+
 ```
-
 
 This code is not particularly fast.  
 
@@ -320,6 +318,8 @@ And now let's time it.
 ```{code-cell} ipython3
 %time f_jit(x).block_until_ready()
 ```
+
+
 
 ## Functional Programming
 
