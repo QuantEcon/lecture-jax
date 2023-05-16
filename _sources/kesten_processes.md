@@ -11,7 +11,6 @@ kernelspec:
   name: python3
 ---
 
-
 ```{raw} html
 <div id="qe-notebook-header" align="right" style="text-align:right;">
         <a href="https://quantecon.org/" title="quantecon.org">
@@ -29,14 +28,7 @@ kernelspec:
 :depth: 2
 ```
 
-```{admonition} GPU
-:class: warning
-
-This lecture is accelerated via [hardware](status:machine-details) that has access to a GPU and JAX for GPU programming.
-
-Free GPUs are available on Google Colab. To use this option, please click on the play icon top right, select Colab, and set the runtime environment to include a GPU.
-
-Alternatively, if you have your own GPU, you can follow the [instructions](https://github.com/google/jax) for installing JAX with GPU support. If you would like to install JAX running on the `cpu` only you can use `pip install jax[cpu]`
+```{include} _admonition/gpu.md
 ```
 
 In addition to what's in Anaconda, this lecture will need the following libraries:
@@ -46,7 +38,6 @@ In addition to what's in Anaconda, this lecture will need the following librarie
 
 !pip install quantecon
 ```
-
 
 ## Overview
 
@@ -71,6 +62,11 @@ import jax.numpy as jnp
 from jax import random
 ```
 
+Let's check the GPU we are running
+
+```{code-cell} ipython3
+!nvidia-smi
+```
 
 ## Kesten processes
 
@@ -208,7 +204,6 @@ For sufficiently large `T`, the cross-section it returns (the cross-section at
 time `T`) corresponds to firm size distribution in (approximate) equilibrium.
 
 ```{code-cell} ipython3
-
 def generate_draws(M=1_000_000,
                    μ_a=-0.5,
                    σ_a=0.1,
@@ -243,6 +238,12 @@ def generate_draws(M=1_000_000,
 %time data = generate_draws().block_until_ready()
 ```
 
+Running the above function again so we can see the speed with and without compile time.
+
+```{code-cell} ipython3
+%time data = generate_draws().block_until_ready()
+```
+
 Notice that we do not JIT-compile the `for` loops, since
 
 1. acceleration of the outer loop makes little difference terms of compute
@@ -261,7 +262,6 @@ ax.set_ylabel("log size")
 
 plt.show()
 ```
-
 
 The plot produces a straight line, consistent with a Pareto tail.
 

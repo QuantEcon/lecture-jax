@@ -220,9 +220,9 @@ const thebe_selector_output = ".output, .cell_output"
 <h1><span class="section-number">2. </span>An Introduction to JAX<a class="headerlink" href="#an-introduction-to-jax" title="Permalink to this heading">#</a></h1>
 <div class="warning admonition">
 <p class="admonition-title">GPU</p>
-<p>This lecture is accelerated via <a class="reference internal" href="status.html#status-machine-details"><span class="std std-ref">hardware</span></a> that has access to a GPU and JAX for GPU programming.</p>
-<p>Free GPUs are available on Google Colab. To use this option, please click on the play icon top right, select Colab, and set the runtime environment to include a GPU.</p>
-<p>Alternatively, if you have your own GPU, you can follow the <a class="reference external" href="https://github.com/google/jax">instructions</a> for installing JAX with GPU support. If you would like to install JAX running on the <code class="docutils literal notranslate"><span class="pre">cpu</span></code> only you can use <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">jax[cpu]</span></code></p>
+<p>This lecture was built using <a class="reference internal" href="status.html#status-machine-details"><span class="std std-ref">hardware</span></a> that has access to a GPU.</p>
+<p>To run this lecture on <a class="reference external" href="https://colab.research.google.com/">Google Colab</a>, click on the “play” icon top right, select Colab, and set the runtime environment to include a GPU.</p>
+<p>To run this lecture on your own machine, you need to install <a class="reference external" href="https://github.com/google/jax">Google JAX</a>.</p>
 </div>
 <p>This lecture provides a short introduction to <a class="reference external" href="https://github.com/google/jax">Google JAX</a>.</p>
 <section id="jax-as-a-numpy-replacement">
@@ -321,7 +321,7 @@ similarities and differences.</p>
 </div>
 </div>
 </div>
-<p>Even scalar-valued maps on arrays return objects of type <code class="docutils literal notranslate"><span class="pre">DeviceArray</span></code>:</p>
+<p>Even scalar-valued maps on arrays return JAX arrays.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">jnp</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
@@ -334,15 +334,10 @@ similarities and differences.</p>
 </div>
 </div>
 </div>
-<p>The term <code class="docutils literal notranslate"><span class="pre">Device</span></code> refers to the hardware accelerator (GPU or TPU), although JAX falls back to the CPU if no accelerator is detected.</p>
+<p>JAX arrays are also called “device arrays,” where term “device” refers to a
+hardware accelerator (GPU or TPU).</p>
 <p>(In the terminology of GPUs, the “host” is the machine that launches GPU operations, while the “device” is the GPU itself.)</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>Note that <code class="docutils literal notranslate"><span class="pre">DeviceArray</span></code> is a <a class="reference external" href="https://en.wikipedia.org/wiki/Futures_and_promises"><em>future</em></a>; it allows Python to continue execution when the results of computation are not available immediately.</p>
-<p>This means that Python can dispatch more jobs without waiting for the computation results to be returned by the device.</p>
-<p>This feature is called <a class="reference external" href="https://jax.readthedocs.io/en/latest/async_dispatch.html"><em>asynchronous dispatch</em></a>, which hides Python overheads and reduces wait time.</p>
-</div>
-<p>Operations on higher dimensional arrays is also similar to NumPy:</p>
+<p>Operations on higher dimensional arrays are also similar to NumPy:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">A</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
@@ -516,7 +511,8 @@ similarities and differences.</p>
 </div>
 </div>
 </div>
-<p>The designers of JAX chose to make arrays immutable because JAX uses a functional programming style.  More on this below.</p>
+<p>The designers of JAX chose to make arrays immutable because JAX uses a
+functional programming style.  More on this below.</p>
 <p>Note that, while mutation is discouraged, it is in fact possible with <code class="docutils literal notranslate"><span class="pre">at</span></code>, as in</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -526,7 +522,7 @@ similarities and differences.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1149641296
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1146809296
 </pre></div>
 </div>
 </div>
@@ -563,7 +559,7 @@ similarities and differences.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1149641296
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1146809296
 </pre></div>
 </div>
 </div>
@@ -754,8 +750,8 @@ launch on the GPU / TPU (or CPU if no accelerator is detected).</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 490 ms, sys: 129 ms, total: 620 ms
-Wall time: 4.27 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 548 ms, sys: 162 ms, total: 710 ms
+Wall time: 4.29 s
 </pre></div>
 </div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Array([499500., 499500., 499500., ..., 499500., 499500., 499500.],      dtype=float64)
@@ -765,11 +761,14 @@ Wall time: 4.27 s
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>With asynchronous dispatch, the <code class="docutils literal notranslate"><span class="pre">%time</span></code> magic is only evaluating the time to dispatch by the Python interpreter, without taking into account the computation time on the device.</p>
-<p>Here, to measure the actual speed, the <code class="docutils literal notranslate"><span class="pre">block_until_ready()</span></code> method prevents asynchronous dispatch by asking Python to wait until the computation results are ready.</p>
+<p>Here, in order to measure actual speed, we use the <code class="docutils literal notranslate"><span class="pre">block_until_ready()</span></code> method
+to hold the interpreter until the results of the computation are returned from
+the device.</p>
+<p>This is necessary because JAX uses asynchronous dispatch, which allows the
+Python interpreter to run ahead of GPU computations.</p>
 </div>
 <p>This code is not particularly fast.</p>
-<p>While it is run on the GPU (since <code class="docutils literal notranslate"><span class="pre">x</span></code> is a <code class="docutils literal notranslate"><span class="pre">DeviceArray</span></code>), each vector <code class="docutils literal notranslate"><span class="pre">k</span> <span class="pre">*</span> <span class="pre">x</span></code> has to be instantiated before the final sum is computed.</p>
+<p>While it is run on the GPU (since <code class="docutils literal notranslate"><span class="pre">x</span></code> is a JAX array), each vector <code class="docutils literal notranslate"><span class="pre">k</span> <span class="pre">*</span> <span class="pre">x</span></code> has to be instantiated before the final sum is computed.</p>
 <p>If we JIT-compile the function with JAX, then the operations are fused and no intermediate arrays are created.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -799,8 +798,8 @@ Wall time: 4.27 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 657 µs, sys: 157 µs, total: 814 µs
-Wall time: 35.7 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1.07 ms, sys: 265 µs, total: 1.34 ms
+Wall time: 35.9 ms
 </pre></div>
 </div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Array([499500., 499500., 499500., ..., 499500., 499500., 499500.],      dtype=float64)
@@ -808,18 +807,20 @@ Wall time: 35.7 ms
 </div>
 </div>
 </div>
+<p>Note the large speed gain.</p>
 </section>
 <section id="functional-programming">
 <h2><span class="section-number">2.4. </span>Functional Programming<a class="headerlink" href="#functional-programming" title="Permalink to this heading">#</a></h2>
 <p>From JAX’s documentation:</p>
 <p><em>When walking about the countryside of Italy, the people will not hesitate to tell you that JAX has “una anima di pura programmazione funzionale”.</em></p>
 <p>In other words, JAX assumes a functional programming style.</p>
-<p>The major implication is that JAX functions should be pure:</p>
+<p>The major implication is that JAX functions should be pure.</p>
+<p>A pure function will always return the same result if invoked with the same inputs.</p>
+<p>In particular, a pure function has</p>
 <ul class="simple">
-<li><p>no dependence on global variables</p></li>
+<li><p>no dependence on global variables and</p></li>
 <li><p>no side effects</p></li>
 </ul>
-<p>“A pure function will always return the same result if invoked with the same inputs.”</p>
 <p>JAX will not usually throw errors when compiling impure functions but execution becomes unpredictable.</p>
 <p>Here’s an illustration of this fact, using global variables:</p>
 <div class="cell docutils container">
@@ -898,8 +899,9 @@ Wall time: 35.7 ms
 <section id="gradients">
 <h2><span class="section-number">2.5. </span>Gradients<a class="headerlink" href="#gradients" title="Permalink to this heading">#</a></h2>
 <p>JAX can use automatic differentiation to compute gradients.</p>
-<p>This can be extremely useful in optimization, root finding and other applications.</p>
-<p>Here’s a very simple illustration, involving the function</p>
+<p>This can be extremely useful for optimization and solving nonlinear systems.</p>
+<p>We will see significant applications later in this lecture series.</p>
+<p>For now, here’s a very simple illustration involving the function</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
@@ -1095,8 +1097,8 @@ significantly faster exection.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1.74 ms, sys: 243 µs, total: 1.99 ms
-Wall time: 111 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1.18 ms, sys: 171 µs, total: 1.35 ms
+Wall time: 112 ms
 </pre></div>
 </div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Array(180876.48840921, dtype=float64)
@@ -1179,6 +1181,11 @@ Wall time: 111 ms
    3. Newton’s Method via JAX
   </a>
  </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="markov_asset.html">
+   4. An Asset Pricing Problem
+  </a>
+ </li>
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
@@ -1188,17 +1195,17 @@ Wall time: 111 ms
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="inventory_dynamics.html">
-   4. Inventory Dynamics
+   5. Inventory Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kesten_processes.html">
-   5. Kesten Processes and Firm Dynamics
+   6. Kesten Processes and Firm Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wealth_dynamics.html">
-   6. Wealth Distribution Dynamics
+   7. Wealth Distribution Dynamics
   </a>
  </li>
 </ul>
@@ -1210,27 +1217,32 @@ Wall time: 111 ms
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="short_path.html">
-   7. Shortest Paths
+   8. Shortest Paths
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="opt_invest.html">
-   8. Optimal Investment
+   9. Optimal Investment
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="opt_savings.html">
-   9. Optimal Savings
+   10. Optimal Savings
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ifp_egm.html">
+   11. Endogenous Grid Method
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="arellano.html">
-   10. Default Risk and Income Fluctuations
+   12. Default Risk and Income Fluctuations
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="aiyagari_jax.html">
-   11. The Aiyagari Model
+   13. The Aiyagari Model
   </a>
  </li>
 </ul>
@@ -1242,17 +1254,17 @@ Wall time: 111 ms
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   12. Troubleshooting
+   14. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   13. References
+   15. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   14. Execution Statistics
+   16. Execution Statistics
   </a>
  </li>
 </ul>
@@ -1288,9 +1300,8 @@ Wall time: 111 ms
                     <li data-tippy-content="Increase font size" class="btn__plus"><i data-feather="plus-circle"></i></li>
                     <li data-tippy-content="Decrease font size" class="btn__minus"><i data-feather="minus-circle"></i></li>
                     <li data-tippy-content="Change contrast" class="btn__contrast"><i data-feather="sunset"></i></li>
-                    <li data-tippy-content="Download Notebook"><a href="/_notebooks/jax_intro.ipynb" download><i data-feather="download-cloud"></i></a></li>
                     <li class="settings-button" id="settingsButton"><div data-tippy-content="Launch Notebook"><i data-feather="play-circle"></i></div></li>
-                        <li class="download-pdf" id="downloadButton"><i data-feather="file"></i></li>
+                        <li data-tippy-content="Download PDF" onClick="window.print()"><i data-feather="file"></i></li>
                     <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-jax/blob/main/lectures/jax_intro.md" download><i data-feather="github"></i></a></li>
                 </ul>
 
@@ -1303,7 +1314,7 @@ Wall time: 111 ms
                     <p>Lecture (PDF)</p>
                 </li>
                 <li class="download-pdf-file">
-                    <a href="/_pdf/quantecon-jax.pdf" download><p>Book (PDF)</p></a>
+                    <a href="" download><p>Book (PDF)</p></a>
                 </li>
             </ul>
         </div>

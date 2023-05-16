@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>4. Inventory Dynamics &#8212; Quantitative Economics with Python using JAX</title>
+    <title>5. Inventory Dynamics &#8212; Quantitative Economics with Python using JAX</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
@@ -113,8 +113,8 @@ const thebe_selector_output = ".output, .cell_output"
     <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="5. Kesten Processes and Firm Dynamics" href="kesten_processes.html" />
-    <link rel="prev" title="3. Newton’s Method via JAX" href="newtons_method.html" />
+    <link rel="next" title="6. Kesten Processes and Firm Dynamics" href="kesten_processes.html" />
+    <link rel="prev" title="4. An Asset Pricing Problem" href="markov_asset.html" />
 
 <!-- Normal Meta Tags -->
 <meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
@@ -162,14 +162,14 @@ const thebe_selector_output = ".output, .cell_output"
 
                         <nav id="bd-toc-nav" class="qe-page__toc-nav">
                             <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">4.1. Overview</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sample-paths">4.2. Sample paths</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-1-marginal-distributions">4.3. Example 1: marginal distributions</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#alternative-implementation-with-lax-scan">4.3.1. Alternative implementation with <code class="docutils literal notranslate"><span class="pre">lax.scan</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">5.1. Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sample-paths">5.2. Sample paths</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-1-marginal-distributions">5.3. Example 1: marginal distributions</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#alternative-implementation-with-lax-scan">5.3.1. Alternative implementation with <code class="docutils literal notranslate"><span class="pre">lax.scan</span></code></a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-2-restock-frequency">4.4. Example 2: restock frequency</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">4.4.1. Alternative implementation with <code class="docutils literal notranslate"><span class="pre">lax.scan</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-2-restock-frequency">5.4. Example 2: restock frequency</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">5.4.1. Alternative implementation with <code class="docutils literal notranslate"><span class="pre">lax.scan</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -221,12 +221,12 @@ const thebe_selector_output = ".output, .cell_output"
                 <img style="width:250px;display:inline;" width="250px" src="https://assets.quantecon.org/img/qe-menubar-logo.svg" alt="QuantEcon">
         </a>
 </div><section class="tex2jax_ignore mathjax_ignore" id="inventory-dynamics">
-<h1><a class="toc-backref" href="#id2"><span class="section-number">4. </span>Inventory Dynamics</a><a class="headerlink" href="#inventory-dynamics" title="Permalink to this heading">#</a></h1>
+<h1><a class="toc-backref" href="#id2"><span class="section-number">5. </span>Inventory Dynamics</a><a class="headerlink" href="#inventory-dynamics" title="Permalink to this heading">#</a></h1>
 <div class="warning admonition">
 <p class="admonition-title">GPU</p>
-<p>This lecture is accelerated via <a class="reference internal" href="status.html#status-machine-details"><span class="std std-ref">hardware</span></a> that has access to a GPU and JAX for GPU programming.</p>
-<p>Free GPUs are available on Google Colab. To use this option, please click on the play icon top right, select Colab, and set the runtime environment to include a GPU.</p>
-<p>Alternatively, if you have your own GPU, you can follow the <a class="reference external" href="https://github.com/google/jax">instructions</a> for installing JAX with GPU support. If you would like to install JAX running on the <code class="docutils literal notranslate"><span class="pre">cpu</span></code> only you can use <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">jax[cpu]</span></code></p>
+<p>This lecture was built using <a class="reference internal" href="status.html#status-machine-details"><span class="std std-ref">hardware</span></a> that has access to a GPU.</p>
+<p>To run this lecture on <a class="reference external" href="https://colab.research.google.com/">Google Colab</a>, click on the “play” icon top right, select Colab, and set the runtime environment to include a GPU.</p>
+<p>To run this lecture on your own machine, you need to install <a class="reference external" href="https://github.com/google/jax">Google JAX</a>.</p>
 </div>
 <div class="contents topic" id="contents">
 <span id="index-0"></span><p class="topic-title">Contents</p>
@@ -242,7 +242,7 @@ const thebe_selector_output = ".output, .cell_output"
 </ul>
 </div>
 <section id="overview">
-<h2><a class="toc-backref" href="#id3"><span class="section-number">4.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id3"><span class="section-number">5.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
 <p>This lecture explores JAX implementations of the exercises in the lecture on <a class="reference external" href="https://python.quantecon.org/inventory_dynamics.html">inventory dynamics</a>.</p>
 <p>We will use the following imports:</p>
 <div class="cell docutils container">
@@ -257,27 +257,43 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
 </div>
 </div>
-<p>Let’s check the backend used by JAX and the devices available</p>
+<p>Let’s check the GPU we are running</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check if JAX is using GPU</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;JAX backend: </span><span class="si">{</span><span class="n">jax</span><span class="o">.</span><span class="n">devices</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">platform</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-
-<span class="c1"># Check the devices available for JAX</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">jax</span><span class="o">.</span><span class="n">devices</span><span class="p">())</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>nvidia-smi
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>JAX backend: gpu
-[StreamExecutorGpuDevice(id=0, process_index=0, slice_index=0)]
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Tue May 16 11:08:48 2023       
++-----------------------------------------------------------------------------+
+| NVIDIA-SMI 470.182.03   Driver Version: 470.182.03   CUDA Version: 12.1     |
+|-------------------------------+----------------------+----------------------+
+| GPU  Name        Persistence-M| Bus-Id        Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp  Perf  Pwr:Usage/Cap|         Memory-Usage | GPU-Util  Compute M. |
+|                               |                      |               MIG M. |
+|===============================+======================+======================|
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>|   0  Tesla V100-SXM2...  Off  | 00000000:00:1E.0 Off |                    0 |
+| N/A   30C    P0    38W / 300W |      0MiB / 16160MiB |      2%      Default |
+|                               |                      |                  N/A |
++-------------------------------+----------------------+----------------------+
+                                                                               
++-----------------------------------------------------------------------------+
+| Processes:                                                                  |
+|  GPU   GI   CI        PID   Type   Process name                  GPU Memory |
+|        ID   ID                                                   Usage      |
+|=============================================================================|
+|  No running processes found                                                 |
++-----------------------------------------------------------------------------+
 </pre></div>
 </div>
 </div>
 </div>
 </section>
 <section id="sample-paths">
-<h2><a class="toc-backref" href="#id4"><span class="section-number">4.2. </span>Sample paths</a><a class="headerlink" href="#sample-paths" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id4"><span class="section-number">5.2. </span>Sample paths</a><a class="headerlink" href="#sample-paths" title="Permalink to this heading">#</a></h2>
 <p>Consider a firm with inventory <span class="math notranslate nohighlight">\(X_t\)</span>.</p>
 <p>The firm waits until <span class="math notranslate nohighlight">\(X_t \leq s\)</span> and then restocks up to <span class="math notranslate nohighlight">\(S\)</span> units.</p>
 <p>It faces stochastic demand <span class="math notranslate nohighlight">\(\{ D_t \}\)</span>, which we assume is IID.</p>
@@ -311,7 +327,7 @@ and standard normal.</p>
 </div>
 </section>
 <section id="example-1-marginal-distributions">
-<h2><a class="toc-backref" href="#id5"><span class="section-number">4.3. </span>Example 1: marginal distributions</a><a class="headerlink" href="#example-1-marginal-distributions" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id5"><span class="section-number">5.3. </span>Example 1: marginal distributions</a><a class="headerlink" href="#example-1-marginal-distributions" title="Permalink to this heading">#</a></h2>
 <p>Now let’s look at the marginal distribution <span class="math notranslate nohighlight">\(\psi_T\)</span> of <span class="math notranslate nohighlight">\(X_T\)</span> for some fixed
 <span class="math notranslate nohighlight">\(T\)</span>.</p>
 <p>We can approximate the distribution using a <a class="reference external" href="https://en.wikipedia.org/wiki/Kernel_density_estimation">kernel density estimator</a>.</p>
@@ -426,8 +442,8 @@ distributions are getting smaller.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 2.56 s, sys: 489 ms, total: 3.05 s
-Wall time: 2.55 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 2.84 s, sys: 421 ms, total: 3.27 s
+Wall time: 2.62 s
 </pre></div>
 </div>
 <a class="reference internal image-reference" href="_images/9ba36e0e7bebf031401c3a5b2e900f204adfcddf94a4ead0239abb4927a251f2.png"><img alt="_images/9ba36e0e7bebf031401c3a5b2e900f204adfcddf94a4ead0239abb4927a251f2.png" src="_images/9ba36e0e7bebf031401c3a5b2e900f204adfcddf94a4ead0239abb4927a251f2.png" style="width: 80%;" /></a>
@@ -439,7 +455,7 @@ Wall time: 2.55 s
 <li><p>compiling outer loops only leads to minor speed gains.</p></li>
 </ol>
 <section id="alternative-implementation-with-lax-scan">
-<h3><span class="section-number">4.3.1. </span>Alternative implementation with <code class="docutils literal notranslate"><span class="pre">lax.scan</span></code><a class="headerlink" href="#alternative-implementation-with-lax-scan" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">5.3.1. </span>Alternative implementation with <code class="docutils literal notranslate"><span class="pre">lax.scan</span></code><a class="headerlink" href="#alternative-implementation-with-lax-scan" title="Permalink to this heading">#</a></h3>
 <p>An alternative to the <code class="docutils literal notranslate"><span class="pre">for</span></code> loop implementation is <code class="docutils literal notranslate"><span class="pre">lax.scan</span></code>.</p>
 <p>Here is an example of the same function in <code class="docutils literal notranslate"><span class="pre">lax.scan</span></code></p>
 <div class="cell docutils container">
@@ -496,8 +512,8 @@ equilibrium.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 969 ms, sys: 0 ns, total: 969 ms
-Wall time: 373 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 982 ms, sys: 0 ns, total: 982 ms
+Wall time: 375 ms
 </pre></div>
 </div>
 <a class="reference internal image-reference" href="_images/db5bcba37f118e95a7a6a19f8e7e4471f5d4d01c648f8f83a6842c416b6c6b0d.png"><img alt="_images/db5bcba37f118e95a7a6a19f8e7e4471f5d4d01c648f8f83a6842c416b6c6b0d.png" src="_images/db5bcba37f118e95a7a6a19f8e7e4471f5d4d01c648f8f83a6842c416b6c6b0d.png" style="width: 80%;" /></a>
@@ -529,8 +545,8 @@ long-run outcomes.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 900 ms, sys: 0 ns, total: 900 ms
-Wall time: 301 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 891 ms, sys: 0 ns, total: 891 ms
+Wall time: 307 ms
 </pre></div>
 </div>
 <a class="reference internal image-reference" href="_images/a89ccee605d93748ead554bd7ccb751bfce2ba1a82dd8fe4279d661333134230.png"><img alt="_images/a89ccee605d93748ead554bd7ccb751bfce2ba1a82dd8fe4279d661333134230.png" src="_images/a89ccee605d93748ead554bd7ccb751bfce2ba1a82dd8fe4279d661333134230.png" style="width: 80%;" /></a>
@@ -539,7 +555,7 @@ Wall time: 301 ms
 </section>
 </section>
 <section id="example-2-restock-frequency">
-<h2><a class="toc-backref" href="#id6"><span class="section-number">4.4. </span>Example 2: restock frequency</a><a class="headerlink" href="#example-2-restock-frequency" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id6"><span class="section-number">5.4. </span>Example 2: restock frequency</a><a class="headerlink" href="#example-2-restock-frequency" title="Permalink to this heading">#</a></h2>
 <p>Let’s go through another example where we calculate the probability of firms
 having restocks.</p>
 <p>Specifically we set the starting stock level to 70 (<span class="math notranslate nohighlight">\(X_0 = 70\)</span>), as we calculate
@@ -593,15 +609,15 @@ periods.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 942 ms, sys: 0 ns, total: 942 ms
-Wall time: 1.22 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 968 ms, sys: 0 ns, total: 968 ms
+Wall time: 1.23 s
 Frequency of at least two stock outs = 0.4472379982471466
 </pre></div>
 </div>
 </div>
 </div>
 <section id="id1">
-<h3><span class="section-number">4.4.1. </span>Alternative implementation with <code class="docutils literal notranslate"><span class="pre">lax.scan</span></code><a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">5.4.1. </span>Alternative implementation with <code class="docutils literal notranslate"><span class="pre">lax.scan</span></code><a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h3>
 <p>Now let’s write a <code class="docutils literal notranslate"><span class="pre">lax.scan</span></code> version that JIT compiles the whole function</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -655,8 +671,8 @@ Frequency of at least two stock outs = 0.4472379982471466
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1.02 s, sys: 0 ns, total: 1.02 s
-Wall time: 398 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1 s, sys: 0 ns, total: 1 s
+Wall time: 417 ms
 Frequency of at least two stock outs = 0.44674399495124817
 </pre></div>
 </div>
@@ -736,6 +752,11 @@ Frequency of at least two stock outs = 0.44674399495124817
    3. Newton’s Method via JAX
   </a>
  </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="markov_asset.html">
+   4. An Asset Pricing Problem
+  </a>
+ </li>
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
@@ -745,17 +766,17 @@ Frequency of at least two stock outs = 0.44674399495124817
 <ul class="current nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1 current active active">
   <a class="current reference internal" href="#">
-   4. Inventory Dynamics
+   5. Inventory Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kesten_processes.html">
-   5. Kesten Processes and Firm Dynamics
+   6. Kesten Processes and Firm Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wealth_dynamics.html">
-   6. Wealth Distribution Dynamics
+   7. Wealth Distribution Dynamics
   </a>
  </li>
 </ul>
@@ -767,27 +788,32 @@ Frequency of at least two stock outs = 0.44674399495124817
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="short_path.html">
-   7. Shortest Paths
+   8. Shortest Paths
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="opt_invest.html">
-   8. Optimal Investment
+   9. Optimal Investment
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="opt_savings.html">
-   9. Optimal Savings
+   10. Optimal Savings
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ifp_egm.html">
+   11. Endogenous Grid Method
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="arellano.html">
-   10. Default Risk and Income Fluctuations
+   12. Default Risk and Income Fluctuations
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="aiyagari_jax.html">
-   11. The Aiyagari Model
+   13. The Aiyagari Model
   </a>
  </li>
 </ul>
@@ -799,17 +825,17 @@ Frequency of at least two stock outs = 0.44674399495124817
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   12. Troubleshooting
+   14. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   13. References
+   15. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   14. Execution Statistics
+   16. Execution Statistics
   </a>
  </li>
 </ul>
@@ -845,9 +871,8 @@ Frequency of at least two stock outs = 0.44674399495124817
                     <li data-tippy-content="Increase font size" class="btn__plus"><i data-feather="plus-circle"></i></li>
                     <li data-tippy-content="Decrease font size" class="btn__minus"><i data-feather="minus-circle"></i></li>
                     <li data-tippy-content="Change contrast" class="btn__contrast"><i data-feather="sunset"></i></li>
-                    <li data-tippy-content="Download Notebook"><a href="/_notebooks/inventory_dynamics.ipynb" download><i data-feather="download-cloud"></i></a></li>
                     <li class="settings-button" id="settingsButton"><div data-tippy-content="Launch Notebook"><i data-feather="play-circle"></i></div></li>
-                        <li class="download-pdf" id="downloadButton"><i data-feather="file"></i></li>
+                        <li data-tippy-content="Download PDF" onClick="window.print()"><i data-feather="file"></i></li>
                     <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-jax/blob/main/lectures/inventory_dynamics.md" download><i data-feather="github"></i></a></li>
                 </ul>
 
@@ -860,7 +885,7 @@ Frequency of at least two stock outs = 0.44674399495124817
                     <p>Lecture (PDF)</p>
                 </li>
                 <li class="download-pdf-file">
-                    <a href="/_pdf/quantecon-jax.pdf" download><p>Book (PDF)</p></a>
+                    <a href="" download><p>Book (PDF)</p></a>
                 </li>
             </ul>
         </div>

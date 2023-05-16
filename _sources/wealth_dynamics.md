@@ -11,17 +11,9 @@ kernelspec:
   name: python3
 ---
 
-
 # Wealth Distribution Dynamics
 
-```{admonition} GPU
-:class: warning
-
-This lecture is accelerated via [hardware](status:machine-details) that has access to a GPU and JAX for GPU programming.
-
-Free GPUs are available on Google Colab. To use this option, please click on the play icon top right, select Colab, and set the runtime environment to include a GPU.
-
-Alternatively, if you have your own GPU, you can follow the [instructions](https://github.com/google/jax) for installing JAX with GPU support. If you would like to install JAX running on the `cpu` only you can use `pip install jax[cpu]`
+```{include} _admonition/gpu.md
 ```
 
 This lecture is the extended JAX implementation of [this lecture](https://python.quantecon.org/wealth_dynamics.html). 
@@ -37,7 +29,7 @@ import jax.numpy as jnp
 from collections import namedtuple
 ```
 
-Let's check the hardware we are running on:
+Let's check the GPU we are running
 
 ```{code-cell} ipython3
 !nvidia-smi
@@ -66,7 +58,6 @@ def lorenz_curve_jax(y):
     return cum_people, cum_income
 ```
 
-
 Let's suppose that
 
 ```{code-cell} ipython3
@@ -74,7 +65,6 @@ n = 10_000                                              # Size of sample
 rand_key = jax.random.PRNGKey(101)                      # Set random key
 w = jnp.exp(jax.random.normal(rand_key, shape=(n,)))    # Lognormal draws
 ```
-
 
 is data representing the wealth of 10,000 households.
 
@@ -101,7 +91,6 @@ ax.legend()
 plt.show()
 ```
 
-
 Here is another example, which shows how the Lorenz curve shifts as the
 underlying distribution changes.
 
@@ -127,7 +116,6 @@ ax.plot(f_vals, f_vals, label='equality')
 ax.legend()
 plt.show()
 ```
-
 
 You can see that, as the tail parameter of the Pareto distribution increases, inequality decreases.
 
@@ -160,7 +148,6 @@ def gini_jax(y):
     return g_sum / (2 * n * jnp.sum(y))
 ```
 
-
 Let's see if the Gini coefficient computed from a simulated sample matches
 this at each fixed value of $a$.
 
@@ -186,7 +173,6 @@ ax.set_xlabel("Weibull parameter $a$")
 ax.set_ylabel("Gini coefficient")
 plt.show()
 ```
-
 
 The simulation shows that the fit is good.
 
@@ -221,7 +207,6 @@ Model = namedtuple("Model", ("w_hat", "s_0", "c_y", "μ_y",
                              "b", "σ_z", "z_mean", "z_var", "y_mean"))
 ```
 
-
 Here's a function to create the Model with the given parameters
 
 ```{code-cell} ipython3
@@ -255,7 +240,6 @@ def create_wealth_model(w_hat=1.0,
                  b=b, σ_z=σ_z, z_mean=z_mean, z_var=z_var, y_mean=y_mean)
 ```
 
-
 The following function updates one period with the given current wealth and persistent state.
 
 ```{code-cell} ipython3
@@ -279,12 +263,7 @@ def update_states_jax(arrays, wdy, size, rand_key):
                         wdy.μ_r + wdy.σ_r * jax.random.normal(subkey[1], shape=size))
     wp += (w >= wdy.w_hat) * R * wdy.s_0 * w
     return wp, zp
-
-
-# Create the jit function
-update_states_jax = jax.jit(update_states_jax, static_argnums=(2,))
 ```
-
 
 Here’s function to simulate the time series of wealth for individual households using a `for` loop and JAX.
 
@@ -318,13 +297,7 @@ def wealth_time_series_for_loop_jax(w_0, n, wdy, size, rand_seed=1):
         w_, z = update_states_jax((w[t], z), wdy, size, subkey[t])
         w.append(w_)
     return jnp.array(w)
-
-
-# Create the jit function
-wealth_time_series_for_loop_jax = jax.jit(wealth_time_series_for_loop_jax,
-                                          static_argnums=(1,3,))
 ```
-
 
 Let's try simulating the model at different parameter values and investigate the implications for the wealth distribution using the above function.
 
@@ -347,7 +320,7 @@ Running the above function again will be even faster because of JAX's JIT.
 %%time
 
 # 2nd time is expected to be very fast because of JIT
-w_jax_result = wealth_time_series_for_loop_jax(wdy.y_mean,
+w_jax_result = wealth_time_series_scan_jax(wdy.y_mean,
                                                ts_length, wdy, size).block_until_ready()
 ```
 
@@ -398,7 +371,6 @@ def wealth_time_series_jax(w_0, n, wdy, size, rand_seed=1):
 wealth_time_series_jax = jax.jit(wealth_time_series_jax, static_argnums=(1,3,))
 ```
 
-
 Let's try simulating the model at different parameter values and investigate the implications for the wealth distribution and also observe the difference in time between `wealth_time_series_jax` and `wealth_time_series_for_loop_jax`.
 
 ```{code-cell} ipython3
@@ -413,14 +385,13 @@ size = (1,)
 w_jax_result = wealth_time_series_jax(wdy.y_mean, ts_length, wdy, size).block_until_ready()
 ```
 
-
 Running the above function again will be even faster because of JAX's JIT.
 
 ```{code-cell} ipython3
 %%time
 
 # 2nd time is expected to be very fast because of JIT
-w_jax_result = wealth_time_series_jax(wdy.y_mean, ts_length, wdy, size).block_until_ready()
+w_jax_result = wealth_time_series_for_loop_jax(wdy.y_mean, ts_length, wdy, size).block_until_ready()
 ```
 
 ```{code-cell} ipython3
@@ -428,7 +399,6 @@ fig, ax = plt.subplots()
 ax.plot(w_jax_result)
 plt.show()
 ```
-
 
 Now here’s function to simulate a cross section of households forward in time.
 
@@ -454,7 +424,6 @@ def update_cross_section_jax(w_distribution, shift_length, wdy, size, rand_seed=
 # Create the jit function
 update_cross_section_jax = jax.jit(update_cross_section_jax, static_argnums=(1,3,))
 ```
-
 
 ## Applications
 
@@ -484,7 +453,6 @@ def generate_lorenz_and_gini_jax(wdy, num_households=100_000, T=500):
 generate_lorenz_and_gini_jax = jax.jit(generate_lorenz_and_gini_jax,
                                        static_argnums=(1,2,))
 ```
-
 
 Now we investigate how the Lorenz curves associated with the wealth distribution change as return to savings varies.
 
@@ -544,7 +512,6 @@ ax.legend(loc="upper left")
 plt.show()
 ```
 
-
 We see that greater volatility has the effect of increasing inequality in this model.
 
 ## Exercises
@@ -593,7 +560,6 @@ ax.plot(a_vals, 1/(2*a_vals - 1), label='theoretical')
 ax.legend()
 plt.show()
 ```
-
 
 In general, for a Pareto distribution, a higher tail index implies less weight
 in the right hand tail.
@@ -646,7 +612,6 @@ wdy = create_wealth_model()
 ψ_star = update_cross_section_jax(ψ_0, T, wdy, size)
 ```
 
-
 Let's define a function to get the rank data
 
 ```{code-cell} ipython3
@@ -657,7 +622,6 @@ def rank_size(data, c=1):
     size_data = w
     return rank_data, size_data
 ```
-
 
 Now let's see the rank-size plot:
 

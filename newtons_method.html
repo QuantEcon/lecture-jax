@@ -113,7 +113,7 @@ const thebe_selector_output = ".output, .cell_output"
     <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="4. Inventory Dynamics" href="inventory_dynamics.html" />
+    <link rel="next" title="4. An Asset Pricing Problem" href="markov_asset.html" />
     <link rel="prev" title="2. An Introduction to JAX" href="jax_intro.html" />
 
 <!-- Normal Meta Tags -->
@@ -222,9 +222,9 @@ const thebe_selector_output = ".output, .cell_output"
 <h1><span class="section-number">3. </span>Newton’s Method via JAX<a class="headerlink" href="#newtons-method-via-jax" title="Permalink to this heading">#</a></h1>
 <div class="warning admonition">
 <p class="admonition-title">GPU</p>
-<p>This lecture is accelerated via <a class="reference internal" href="status.html#status-machine-details"><span class="std std-ref">hardware</span></a> that has access to a GPU and JAX for GPU programming.</p>
-<p>Free GPUs are available on Google Colab. To use this option, please click on the play icon top right, select Colab, and set the runtime environment to include a GPU.</p>
-<p>Alternatively, if you have your own GPU, you can follow the <a class="reference external" href="https://github.com/google/jax">instructions</a> for installing JAX with GPU support. If you would like to install JAX running on the <code class="docutils literal notranslate"><span class="pre">cpu</span></code> only you can use <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">jax[cpu]</span></code></p>
+<p>This lecture was built using <a class="reference internal" href="status.html#status-machine-details"><span class="std std-ref">hardware</span></a> that has access to a GPU.</p>
+<p>To run this lecture on <a class="reference external" href="https://colab.research.google.com/">Google Colab</a>, click on the “play” icon top right, select Colab, and set the runtime environment to include a GPU.</p>
+<p>To run this lecture on your own machine, you need to install <a class="reference external" href="https://github.com/google/jax">Google JAX</a>.</p>
 </div>
 <section id="overview">
 <h2><span class="section-number">3.1. </span>Overview<a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
@@ -239,6 +239,40 @@ in <a class="reference external" href="https://python.quantecon.org/newton_metho
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">jax</span>
 <span class="kn">import</span> <span class="nn">jax.numpy</span> <span class="k">as</span> <span class="nn">jnp</span>
 <span class="kn">from</span> <span class="nn">scipy.optimize</span> <span class="kn">import</span> <span class="n">root</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s check the GPU we are running</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>nvidia-smi
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Tue May 16 11:16:15 2023       
++-----------------------------------------------------------------------------+
+| NVIDIA-SMI 470.182.03   Driver Version: 470.182.03   CUDA Version: 12.1     |
+|-------------------------------+----------------------+----------------------+
+| GPU  Name        Persistence-M| Bus-Id        Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp  Perf  Pwr:Usage/Cap|         Memory-Usage | GPU-Util  Compute M. |
+|                               |                      |               MIG M. |
+|===============================+======================+======================|
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>|   0  Tesla V100-SXM2...  Off  | 00000000:00:1E.0 Off |                    0 |
+| N/A   30C    P0    38W / 300W |      0MiB / 16160MiB |      2%      Default |
+|                               |                      |                  N/A |
++-------------------------------+----------------------+----------------------+
+                                                                               
++-----------------------------------------------------------------------------+
+| Processes:                                                                  |
+|  GPU   GI   CI        PID   Type   Process name                  GPU Memory |
+|        ID   ID                                                   Usage      |
+|=============================================================================|
+|  No running processes found                                                 |
++-----------------------------------------------------------------------------+
 </pre></div>
 </div>
 </div>
@@ -415,8 +449,8 @@ iteration 6, error = 4.6261807256087195e-06
 
 Result = [1.4999796 1.503175  1.4918782 ... 1.4914232 1.4956646 1.4976945] 
 
-CPU times: user 4.76 s, sys: 1.45 s, total: 6.21 s
-Wall time: 4.28 s
+CPU times: user 4.76 s, sys: 1.44 s, total: 6.21 s
+Wall time: 4.26 s
 </pre></div>
 </div>
 </div>
@@ -448,8 +482,8 @@ even with the Jacobian supplied.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 2min 22s, sys: 326 ms, total: 2min 22s
-Wall time: 2min 22s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 2min 25s, sys: 381 ms, total: 2min 26s
+Wall time: 2min 26s
 </pre></div>
 </div>
 </div>
@@ -476,7 +510,8 @@ Wall time: 2min 22s
 
 <p class="admonition-title"><span class="caption-number">Exercise 3.1 </span></p>
 <section id="exercise-content">
-<p>Consider a three-dimensional extension of the Solow fixed point problem with</p>
+<p>Consider a three-dimensional extension of <a class="reference external" href="https://python.quantecon.org/newton_method.html#the-solow-model">the Solow fixed point
+problem</a> with</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
 A = \begin{pmatrix}
@@ -575,8 +610,8 @@ iteration 6, error = 8.92080606718082e-07
 
 Result = [3.8405814 3.870718  3.4109194] 
 
-CPU times: user 860 ms, sys: 8.68 ms, total: 869 ms
-Wall time: 660 ms
+CPU times: user 805 ms, sys: 25.2 ms, total: 830 ms
+Wall time: 678 ms
 ----------------------------------------------------------------
 Attempt 2: Starting value is [3. 5. 5.] 
 </pre></div>
@@ -588,8 +623,8 @@ iteration 4, error = 3.3717478231665154e-07
 
 Result = [3.8405814 3.8707182 3.4109197] 
 
-CPU times: user 567 ms, sys: 16 ms, total: 583 ms
-Wall time: 224 ms
+CPU times: user 588 ms, sys: 4.07 ms, total: 592 ms
+Wall time: 220 ms
 ----------------------------------------------------------------
 Attempt 3: Starting value is [50. 50. 50.] 
 </pre></div>
@@ -605,8 +640,8 @@ iteration 6, error = 9.830249609876773e-07
 
 Result = [3.840581  3.8707182 3.41092  ] 
 
-CPU times: user 1.23 s, sys: 4.68 ms, total: 1.23 s
-Wall time: 497 ms
+CPU times: user 1.23 s, sys: 3.97 ms, total: 1.23 s
+Wall time: 508 ms
 ----------------------------------------------------------------
 </pre></div>
 </div>
@@ -653,8 +688,8 @@ iteration 4, error = 8.259061701210157e-07
 
 Result = [1.7846744 1.7846744 1.7846744] 
 
-CPU times: user 1.14 s, sys: 20.8 ms, total: 1.16 s
-Wall time: 490 ms
+CPU times: user 1.16 s, sys: 16.2 ms, total: 1.17 s
+Wall time: 507 ms
 </pre></div>
 </div>
 </div>
@@ -682,8 +717,8 @@ iteration 5, error = 1.538370149106851e-15
 
 Result = [1.78467418 1.78467418 1.78467418] 
 
-CPU times: user 924 ms, sys: 8.27 ms, total: 932 ms
-Wall time: 712 ms
+CPU times: user 848 ms, sys: 16.4 ms, total: 865 ms
+Wall time: 697 ms
 </pre></div>
 </div>
 </div>
@@ -778,7 +813,7 @@ c = \begin{pmatrix}
 <span class="ne">Exception</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
 <span class="n">File</span> <span class="o">&lt;</span><span class="n">timed</span> <span class="n">exec</span><span class="o">&gt;</span><span class="p">:</span><span class="mi">1</span>
 
-<span class="nn">Cell In[3], line 13,</span> in <span class="ni">newton</span><span class="nt">(f, x_0, tol, max_iter)</span>
+<span class="nn">Cell In[4], line 13,</span> in <span class="ni">newton</span><span class="nt">(f, x_0, tol, max_iter)</span>
 <span class="g g-Whitespace">     </span><span class="mi">11</span> <span class="n">y</span> <span class="o">=</span> <span class="n">q</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
 <span class="g g-Whitespace">     </span><span class="mi">12</span> <span class="k">if</span> <span class="n">jnp</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">y</span><span class="p">)):</span>
 <span class="ne">---&gt; </span><span class="mi">13</span>     <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;Solution not found with NaN generated&#39;</span><span class="p">)</span>
@@ -793,7 +828,9 @@ Attempt 2: Starting value is [4.5 0.1 4. ]
 
 iteration 1, error = 4.892018895185869
 iteration 2, error = 1.2120550201694784
-iteration 3, error = 0.6942087122866175
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>iteration 3, error = 0.6942087122866175
 iteration 4, error = 0.168951089180319
 iteration 5, error = 0.005209730313222213
 iteration 6, error = 4.3632751705775364e-06
@@ -802,8 +839,8 @@ iteration 8, error = 0.0
 
 Result = [1.49744442 1.49744442 1.49744442] 
 
-CPU times: user 832 ms, sys: 4.38 ms, total: 837 ms
-Wall time: 231 ms
+CPU times: user 839 ms, sys: 8.37 ms, total: 848 ms
+Wall time: 235 ms
 ----------------------------------------------------------------
 </pre></div>
 </div>
@@ -900,6 +937,11 @@ Wall time: 231 ms
    3. Newton’s Method via JAX
   </a>
  </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="markov_asset.html">
+   4. An Asset Pricing Problem
+  </a>
+ </li>
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
@@ -909,17 +951,17 @@ Wall time: 231 ms
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="inventory_dynamics.html">
-   4. Inventory Dynamics
+   5. Inventory Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kesten_processes.html">
-   5. Kesten Processes and Firm Dynamics
+   6. Kesten Processes and Firm Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wealth_dynamics.html">
-   6. Wealth Distribution Dynamics
+   7. Wealth Distribution Dynamics
   </a>
  </li>
 </ul>
@@ -931,27 +973,32 @@ Wall time: 231 ms
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="short_path.html">
-   7. Shortest Paths
+   8. Shortest Paths
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="opt_invest.html">
-   8. Optimal Investment
+   9. Optimal Investment
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="opt_savings.html">
-   9. Optimal Savings
+   10. Optimal Savings
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ifp_egm.html">
+   11. Endogenous Grid Method
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="arellano.html">
-   10. Default Risk and Income Fluctuations
+   12. Default Risk and Income Fluctuations
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="aiyagari_jax.html">
-   11. The Aiyagari Model
+   13. The Aiyagari Model
   </a>
  </li>
 </ul>
@@ -963,17 +1010,17 @@ Wall time: 231 ms
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   12. Troubleshooting
+   14. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   13. References
+   15. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   14. Execution Statistics
+   16. Execution Statistics
   </a>
  </li>
 </ul>
@@ -1009,9 +1056,8 @@ Wall time: 231 ms
                     <li data-tippy-content="Increase font size" class="btn__plus"><i data-feather="plus-circle"></i></li>
                     <li data-tippy-content="Decrease font size" class="btn__minus"><i data-feather="minus-circle"></i></li>
                     <li data-tippy-content="Change contrast" class="btn__contrast"><i data-feather="sunset"></i></li>
-                    <li data-tippy-content="Download Notebook"><a href="/_notebooks/newtons_method.ipynb" download><i data-feather="download-cloud"></i></a></li>
                     <li class="settings-button" id="settingsButton"><div data-tippy-content="Launch Notebook"><i data-feather="play-circle"></i></div></li>
-                        <li class="download-pdf" id="downloadButton"><i data-feather="file"></i></li>
+                        <li data-tippy-content="Download PDF" onClick="window.print()"><i data-feather="file"></i></li>
                     <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-jax/blob/main/lectures/newtons_method.md" download><i data-feather="github"></i></a></li>
                 </ul>
 
@@ -1024,7 +1070,7 @@ Wall time: 231 ms
                     <p>Lecture (PDF)</p>
                 </li>
                 <li class="download-pdf-file">
-                    <a href="/_pdf/quantecon-jax.pdf" download><p>Book (PDF)</p></a>
+                    <a href="" download><p>Book (PDF)</p></a>
                 </li>
             </ul>
         </div>

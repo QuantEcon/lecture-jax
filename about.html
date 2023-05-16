@@ -112,7 +112,7 @@ const thebe_selector_output = ".output, .cell_output"
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="2. An Introduction to JAX" href="jax_intro.html" />
-    <link rel="prev" title="Quantitative Economics with Python (JAX)" href="intro.html" />
+    <link rel="prev" title="Quantitative Economics with JAX" href="intro.html" />
 
 <!-- Normal Meta Tags -->
 <meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
@@ -210,7 +210,34 @@ const thebe_selector_output = ".output, .cell_output"
                         
   <section class="tex2jax_ignore mathjax_ignore" id="about">
 <h1><span class="section-number">1. </span>About<a class="headerlink" href="#about" title="Permalink to this heading">#</a></h1>
-<p>This lecture series provides an introduction to quantitative economics using <a class="reference external" href="https://github.com/google/jax">Google JAX</a>.</p>
+<p>Perhaps the single most notable feature of scientific computing in the past
+two decades is the rise and rise of parallel computation.</p>
+<p>For example, the advanced artificial intelligence applications now shaking the
+worlds of business and academia require massive computer power to train, and the
+great majority of that computer power is supplied by GPUs.</p>
+<p>For us economists, with our ever-growing need for more compute cycles,
+parallel computing provides both opportunities and new difficulties.</p>
+<p>The main difficulty we face vis-a-vis parallel computation is accessibility.</p>
+<p>Even for those with time to invest in careful parallelization of their programs,
+exploiting the full power of parallel hardware is challenging for non-experts.</p>
+<p>Moreover, that hardware changes from year to year, so any human capital
+associated with mastering intricacies of a particular GPU has a very high
+depreciation rate.</p>
+<p>For these reasons, we find <a class="reference external" href="https://github.com/google/jax">Google JAX</a> compelling.</p>
+<p>In short, JAX makes high performance and parallel computing accessible (and fun!).</p>
+<p>It provides a familiar array programming interface based on NumPy, and, as long as
+some simple conventions are adhered to, this code compiles to extremely
+efficient and well-parallelized machine code.</p>
+<p>One of the most agreeable features of JAX is that the same code set and be run on
+either CPUs or GPUs, which allows users to test and develop locally, before
+deploying to a more powerful machine for heavier computations.</p>
+<p>JAX is relatively easy to learn and highly portable, allowing us programmers to
+focus on the algorithms we want to implement, rather than particular features of
+our hardware.</p>
+<p>This lecture series provides an introduction to using Google JAX for
+quantitative economics.</p>
+<p>The rest of this page provides some background information on JAX, notes on
+how to run the lectures, and credits for our colleagues and RAs.</p>
 <section id="what-is-jax">
 <h2><span class="section-number">1.1. </span>What is JAX?<a class="headerlink" href="#what-is-jax" title="Permalink to this heading">#</a></h2>
 <p>JAX is an open source Python library developed by Google Research to support
@@ -223,8 +250,6 @@ algebra operations and automatic differentiation.</p>
 <li><p>automated GPU/TPU support</p></li>
 <li><p>a just-in-time compiler</p></li>
 </ul>
-<p>One of the great benefits of JAX is that exactly the same code can be run either
-on the CPU or on a hardware accelerator, such as a GPU or TPU.</p>
 <p>In short, JAX delivers</p>
 <ol class="arabic simple">
 <li><p>high execution speeds on CPUs due to efficient parallelization and JIT
@@ -342,6 +367,11 @@ series <a class="reference external" href="https://python-programming.quantecon.
    3. Newton’s Method via JAX
   </a>
  </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="markov_asset.html">
+   4. An Asset Pricing Problem
+  </a>
+ </li>
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
@@ -351,17 +381,17 @@ series <a class="reference external" href="https://python-programming.quantecon.
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="inventory_dynamics.html">
-   4. Inventory Dynamics
+   5. Inventory Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kesten_processes.html">
-   5. Kesten Processes and Firm Dynamics
+   6. Kesten Processes and Firm Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wealth_dynamics.html">
-   6. Wealth Distribution Dynamics
+   7. Wealth Distribution Dynamics
   </a>
  </li>
 </ul>
@@ -373,27 +403,32 @@ series <a class="reference external" href="https://python-programming.quantecon.
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="short_path.html">
-   7. Shortest Paths
+   8. Shortest Paths
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="opt_invest.html">
-   8. Optimal Investment
+   9. Optimal Investment
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="opt_savings.html">
-   9. Optimal Savings
+   10. Optimal Savings
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ifp_egm.html">
+   11. Endogenous Grid Method
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="arellano.html">
-   10. Default Risk and Income Fluctuations
+   12. Default Risk and Income Fluctuations
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="aiyagari_jax.html">
-   11. The Aiyagari Model
+   13. The Aiyagari Model
   </a>
  </li>
 </ul>
@@ -405,17 +440,17 @@ series <a class="reference external" href="https://python-programming.quantecon.
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   12. Troubleshooting
+   14. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   13. References
+   15. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   14. Execution Statistics
+   16. Execution Statistics
   </a>
  </li>
 </ul>
@@ -451,9 +486,8 @@ series <a class="reference external" href="https://python-programming.quantecon.
                     <li data-tippy-content="Increase font size" class="btn__plus"><i data-feather="plus-circle"></i></li>
                     <li data-tippy-content="Decrease font size" class="btn__minus"><i data-feather="minus-circle"></i></li>
                     <li data-tippy-content="Change contrast" class="btn__contrast"><i data-feather="sunset"></i></li>
-                    <li data-tippy-content="Download Notebook"><a href="/_notebooks/about.ipynb" download><i data-feather="download-cloud"></i></a></li>
                     <li class="settings-button" id="settingsButton"><div data-tippy-content="Launch Notebook"><i data-feather="play-circle"></i></div></li>
-                        <li class="download-pdf" id="downloadButton"><i data-feather="file"></i></li>
+                        <li data-tippy-content="Download PDF" onClick="window.print()"><i data-feather="file"></i></li>
                     <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-jax/blob/main/lectures/about.md" download><i data-feather="github"></i></a></li>
                 </ul>
 
@@ -466,7 +500,7 @@ series <a class="reference external" href="https://python-programming.quantecon.
                     <p>Lecture (PDF)</p>
                 </li>
                 <li class="download-pdf-file">
-                    <a href="/_pdf/quantecon-jax.pdf" download><p>Book (PDF)</p></a>
+                    <a href="" download><p>Book (PDF)</p></a>
                 </li>
             </ul>
         </div>
