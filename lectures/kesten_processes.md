@@ -11,7 +11,6 @@ kernelspec:
   name: python3
 ---
 
-
 ```{raw} html
 <div id="qe-notebook-header" align="right" style="text-align:right;">
         <a href="https://quantecon.org/" title="quantecon.org">
@@ -40,7 +39,6 @@ In addition to what's in Anaconda, this lecture will need the following librarie
 !pip install quantecon
 ```
 
-
 ## Overview
 
 This lecture describes Kesten processes, which are an important class of
@@ -63,7 +61,6 @@ import jax
 import jax.numpy as jnp
 from jax import random
 ```
-
 
 ## Kesten processes
 
@@ -201,7 +198,6 @@ For sufficiently large `T`, the cross-section it returns (the cross-section at
 time `T`) corresponds to firm size distribution in (approximate) equilibrium.
 
 ```{code-cell} ipython3
-
 def generate_draws(M=1_000_000,
                    μ_a=-0.5,
                    σ_a=0.1,
@@ -236,6 +232,12 @@ def generate_draws(M=1_000_000,
 %time data = generate_draws().block_until_ready()
 ```
 
+Running the above function again so we can see the speed with and without compile time.
+
+```{code-cell} ipython3
+%time data = generate_draws().block_until_ready()
+```
+
 Notice that we do not JIT-compile the `for` loops, since
 
 1. acceleration of the outer loop makes little difference terms of compute
@@ -254,7 +256,6 @@ ax.set_ylabel("log size")
 
 plt.show()
 ```
-
 
 The plot produces a straight line, consistent with a Pareto tail.
 
