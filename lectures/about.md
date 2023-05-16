@@ -2,10 +2,10 @@
 # About
 
 Perhaps the single most notable feature of scientific computing in the past
-decades is the rise and rise of parallel computation.
+two decades is the rise and rise of parallel computation.
 
-For example, the advanced artificial intelligence applications now shaking 
-business and academia require massive computer power to train, and the
+For example, the advanced artificial intelligence applications now shaking the
+worlds of business and academia require massive computer power to train, and the
 great majority of that computer power is supplied by GPUs.
 
 For us economists, with our ever-growing need for more compute cycles,
@@ -22,7 +22,7 @@ depreciation rate.
 
 For these reasons, we find [Google JAX](https://github.com/google/jax) compelling.
 
-In short, JAX makes high performance and parallel computing accessible. 
+In short, JAX makes high performance and parallel computing accessible (and fun!). 
 
 It provides a familiar array programming interface based on NumPy, and, as long as
 some simple conventions are adhered to, this code compiles to extremely
