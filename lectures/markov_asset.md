@@ -820,10 +820,6 @@ ax.legend()
 plt.show()
 ```
 
-```{code-cell} ipython3
-
-```
-
 
 ## JAX Version
 
@@ -906,9 +902,6 @@ def sv_pd_ratio_jax(sv_model, shapes):
     N = I * J * K
 
     H = compute_H_jax(sv_model, shapes)
-    # Make sure that a unique solution exists
-    if test_stable:
-        test_stability(H)
 
     # Compute v, reshape and return
     ones_array = jnp.ones(N)
@@ -916,7 +909,6 @@ def sv_pd_ratio_jax(sv_model, shapes):
     v = jax.scipy.linalg.solve(Id - H, H @ ones_array)
     return jnp.reshape(v, (I, J, K))
 ```
-
 
 Now let's target these functions for JIT-compilation, while using `static_argnums` to indicate that the function will need to be recompiled when `shapes` changes.
 
@@ -1048,7 +1040,6 @@ jnp_time_multi_0 = qe.toc()
 print(jnp.allclose(v, v_jax_multi))
 ```
 
-
 Now let's run again without compile time.
 
 ```{code-cell} ipython3
@@ -1056,7 +1047,6 @@ qe.tic()
 v_jax_multi = sv_pd_ratio_jax(sv_model, shapes).block_until_ready()
 jnp_time_multi_1 = qe.toc()
 ```
-
 
 The speed gain is not large but now we can work with much larger grides.
 
