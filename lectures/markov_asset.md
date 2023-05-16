@@ -1048,7 +1048,15 @@ v_jax_multi = sv_pd_ratio_jax(sv_model, shapes).block_until_ready()
 jnp_time_multi_1 = qe.toc()
 ```
 
-The speed gain is not large but now we can work with much larger grides.
+Here's the ratio of times (Efficient JAX / JAX):
+
+```{code-cell} ipython3
+jnp_time_multi_1 / jnp_time_1  
+```
+
+The speed is about the same but now we can work with much larger grids.
+
+Here's a moderately large example, where the state space has 15,625 elements.
 
 ```{code-cell} ipython3
 sv_model = create_sv_model(I=25, J=25, K=25)
@@ -1069,6 +1077,3 @@ v_jax_multi = sv_pd_ratio_jax(sv_model, shapes).block_until_ready()
 jnp_time_multi_1 = qe.toc()
 ```
 
-```{code-cell} ipython3
-
-```
