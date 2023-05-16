@@ -62,6 +62,12 @@ import jax.numpy as jnp
 from jax import random
 ```
 
+Let's check the GPU we are running
+
+```{code-cell} ipython3
+!nvidia-smi
+```
+
 ## Kesten processes
 
 ```{index} single: Kesten processes; heavy tails

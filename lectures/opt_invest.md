@@ -25,7 +25,6 @@ We require the following library to be installed.
 !pip install --upgrade quantecon
 ```
 
-
 A monopolist faces inverse demand
 curve
 
@@ -64,6 +63,12 @@ import quantecon as qe
 import jax
 import jax.numpy as jnp
 import matplotlib.pyplot as plt
+```
+
+Let's check the GPU we are running
+
+```{code-cell} ipython3
+!nvidia-smi
 ```
 
 We will use 64 bit floats with JAX in order to increase the precision.

@@ -29,3 +29,9 @@ import jax
 # Check if JAX is using GPU
 print(f"JAX backend: {jax.devices()[0].platform}")
 ```
+
+and the hardware we are running on:
+
+```{code-cell} ipython3
+!nvidia-smi
+```

@@ -30,6 +30,12 @@ import jax.numpy as jnp
 import jax
 ```
 
+Let's check the GPU we are running
+
+```{code-cell} ipython3
+!nvidia-smi
+```
+
 ## Solving for Minimum Cost-to-Go
 
 Let $J(v)$ denote the minimum cost-to-go from node $v$,

@@ -29,7 +29,7 @@ import jax.numpy as jnp
 from collections import namedtuple
 ```
 
-Let's check the hardware we are running on:
+Let's check the GPU we are running
 
 ```{code-cell} ipython3
 !nvidia-smi

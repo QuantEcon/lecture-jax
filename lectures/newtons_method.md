@@ -35,6 +35,12 @@ import jax.numpy as jnp
 from scipy.optimize import root
 ```
 
+Let's check the GPU we are running
+
+```{code-cell} ipython3
+!nvidia-smi
+```
+
 ## The Equilibrium Problem
 
 In this section we describe the market equilibrium problem we will solve with

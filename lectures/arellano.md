@@ -79,8 +79,16 @@ import jax
 import jax.numpy as jnp
 ```
 
+Let's check the GPU we are running
+
 ```{code-cell} ipython3
-jax.config.update('jax_enable_x64', True)
+!nvidia-smi
+```
+
+We will use 64 bit floats with JAX in order to increase the precision.
+
+```{code-cell} ipython3
+jax.config.update("jax_enable_x64", True)
 ```
 
 ## Structure
