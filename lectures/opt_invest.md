@@ -65,7 +65,7 @@ import jax.numpy as jnp
 import matplotlib.pyplot as plt
 ```
 
-We can also check the `gpu` hardware we are running on using `nvidia-smi`.
+Let's check the GPU we are running
 
 ```{code-cell} ipython3
 !nvidia-smi
