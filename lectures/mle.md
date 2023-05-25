@@ -153,6 +153,7 @@ def create_poisson_model(X, y):
 At present, JAX doesn't have an implementation to compute factorial directly.
 
 In order to compute the factorial efficiently such that we can JIT it, we use
+
 $$
     n! = e^{log(\Gamma(n+1))}
 $$
@@ -235,8 +236,7 @@ def newton_raphson(model, β, tol=1e-3, max_iter=100, display=True):
     print(f'Number of iterations: {i}')
     print(f'β_hat = {β.flatten()}')
 
-    # Return a flat array for β (instead of a k_by_1 column vector)
-    return β.flatten()
+    return β
 ```
 
 
