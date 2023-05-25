@@ -27,6 +27,8 @@ This lecture is the extended JAX implementation of [this section](https://python
 
 Please refer that lecture for all background and notation.
 
+Here we will exploit the automatic differentiation capabilities of JAX rather than calculating derivatives by hand.
+
 We'll require the following imports:
 
 ```{code-cell} ipython3
@@ -36,6 +38,7 @@ plt.rcParams["figure.figsize"] = (11, 5)  # set default figure size
 from collections import namedtuple
 import jax.numpy as jnp
 import jax
+from statsmodels.api import Poisson
 ```
 
 Let's check the GPU we are running
@@ -44,7 +47,15 @@ Let's check the GPU we are running
 !nvidia-smi
 ```
 
-## MLE with Numerical Methods
+
+We will use 64 bit floats with JAX in order to increase the precision.
+
+```{code-cell} ipython3
+jax.config.update("jax_enable_x64", True)
+```
+
+
+## MLE with Numerical Methods (JAX)
 
 Many distributions do not have nice, analytical solutions and therefore require
 numerical methods to solve for parameter estimates.
@@ -139,7 +150,16 @@ def create_poisson_model(X, y):
 ```
 
 
-The following function computes the `factorial`.
+At present, JAX doesn't have an implementation to compute factorial directly.
+
+In order to compute the factorial efficiently such that we can JIT it, we use
+$$
+    n! = e^{log(\Gamma(n+1))}
+$$
+
+since [jax.lax.lgamma](https://jax.readthedocs.io/en/latest/_autosummary/jax.lax.lgamma.html) and [jax.lax.exp](https://jax.readthedocs.io/en/latest/_autosummary/jax.lax.exp.html) are available.
+
+The following function `jax_factorial` computes the factorial using this idea.
 
 ```{code-cell} ipython3
 @jax.jit
@@ -156,14 +176,21 @@ Let's define the Poisson Regression's log likelihood function.
 @jax.jit
 def poisson_logL(β, model):
     y = model.y
-    μ = jnp.exp(jnp.dot(model.X, β))
+    μ = jnp.exp(model.X @ β)
     return jnp.sum(model.y * jnp.log(μ) - μ - jnp.log(jax_factorial(y)))
 ```
 
 
 To find the gradient of the `poisson_logL`, we again use [jax.grad](https://jax.readthedocs.io/en/latest/_autosummary/jax.grad.html).
 
-To find the Hessian, we can directly use [jax.jacfwd](https://jax.readthedocs.io/en/latest/notebooks/autodiff_cookbook.html#jacobians-and-hessians-using-jacfwd-and-jacrev).
+According to [the documentation](https://jax.readthedocs.io/en/latest/notebooks/autodiff_cookbook.html#jacobians-and-hessians-using-jacfwd-and-jacrev),
+
+* `jax.jacfwd` uses forward-mode automatic differentiation, which is more efficient for “tall” Jacobian matrices, while
+* `jax.jacrev` uses reverse-mode, which is more efficient for “wide” Jacobian matrices.
+
+(The documentation also states that when matrices that are near-square, `jax.jacfwd` probably has an edge over `jax.jacrev`.)
+
+Therefore, to find the Hessian, we can directly use `jax.jacfwd`.
 
 ```{code-cell} ipython3
 G_poisson_logL = jax.grad(poisson_logL)
@@ -177,7 +204,6 @@ that has an initial guess of the parameter vector $\boldsymbol{\beta}_0$.
 The algorithm will update the parameter vector according to the updating
 rule, and recalculate the gradient and Hessian matrices at the new
 parameter estimates.
-
 
 ```{code-cell} ipython3
 def newton_raphson(model, β, tol=1e-3, max_iter=100, display=True):
@@ -199,7 +225,6 @@ def newton_raphson(model, β, tol=1e-3, max_iter=100, display=True):
         error = jnp.abs(β_new - β)
         β = β_new
 
-        # Print iterations
         if display:
             β_list = [f'{t:.3}' for t in list(β.flatten())]
             update = f'{i:<13}{poisson_logL(β, model):<16.8}{β_list}'
@@ -215,35 +240,56 @@ def newton_raphson(model, β, tol=1e-3, max_iter=100, display=True):
 ```
 
 
-
 Let's try out our algorithm with a small dataset of 5 observations and 3
 variables in $\mathbf{X}$.
 
 ```{code-cell} ipython3
 X = jnp.array([[1, 2, 5],
-              [1, 1, 3],
-              [1, 4, 2],
-              [1, 5, 2],
-              [1, 3, 1]])
+               [1, 1, 3],
+               [1, 4, 2],
+               [1, 5, 2],
+               [1, 3, 1]])
 
 y = jnp.array([1, 0, 1, 1, 0])
 
 # Take a guess at initial βs
-init_β = jnp.array([0.1, 0.1, 0.1])
+init_β = jnp.array([0.1, 0.1, 0.1]).reshape(X.shape[1], 1)
 
 # Create an object with Poisson model values
 poi = create_poisson_model(X, y)
 
 # Use newton_raphson to find the MLE
-β_hat = newton_raphson(poi,init_β, display=True)
+β_hat = newton_raphson(poi, init_β, display=True)
 ```
 
 
 As this was a simple model with few observations, the algorithm achieved
-convergence in only 5 iterations.
+convergence in only 7 iterations.
 
 The gradient vector should be close to 0 at $\hat{\boldsymbol{\beta}}$
 
 ```{code-cell} ipython3
 G_poisson_logL(β_hat, poi)
+```
+
+
+## MLE with `statsmodels`
+
+We’ll use the Poisson regression model in `statsmodels` to verify the results
+obtained using JAX.
+
+`statsmodels` uses the same algorithm as above to find the maximum
+likelihood estimates.
+
+Now, as `statsmodels` accepts only NumPy arrays, we can use the `__array__` method
+of JAX arrays to convert it to NumPy arrays.
+
+```{code-cell} ipython3
+X_numpy = X.__array__()
+y_numpy = y.__array__()
+```
+
+```{code-cell} ipython3
+stats_poisson = Poisson(y_numpy, X_numpy).fit()
+print(stats_poisson.summary())
 ```
