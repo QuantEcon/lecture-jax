@@ -155,7 +155,7 @@ At present, JAX doesn't have an implementation to compute factorial directly.
 In order to compute the factorial efficiently such that we can JIT it, we use
 
 $$
-    n! = e^{log(\Gamma(n+1))}
+    n! = e^{\log(\Gamma(n+1))}
 $$
 
 since [jax.lax.lgamma](https://jax.readthedocs.io/en/latest/_autosummary/jax.lax.lgamma.html) and [jax.lax.exp](https://jax.readthedocs.io/en/latest/_autosummary/jax.lax.exp.html) are available.
