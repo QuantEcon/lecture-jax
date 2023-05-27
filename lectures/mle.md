@@ -142,9 +142,9 @@ Then we use the updating rule involving gradient information to iterate the algo
 
 Please refer to [this section](https://python.quantecon.org/mle.html#mle-with-numerical-methods) for the detailed algorithm.
 
-Let's have a go at implementing the Newton-Raphson algorithm to calculate the maximum likelihood estimations of a Poisson  Regression.
+Let's have a go at implementing the Newton-Raphson algorithm to calculate the maximum likelihood estimations of a Poisson  regression.
 
-The Poisson Regression has a joint pmf:
+The Poisson regression has a joint pmf:
 
 $$
 f(y_1, y_2, \ldots, y_n \mid \mathbf{x}_1, \mathbf{x}_2, \ldots, \mathbf{x}_n; \boldsymbol{\beta})
@@ -173,7 +173,7 @@ def create_poisson_model(X, y):
 
 +++ {"user_expressions": []}
 
-The log likelihood function of the Poisson Regression is
+The log likelihood function of the Poisson regression is
 
 $$
 \underset{\beta}{\max} \Big(
