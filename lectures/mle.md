@@ -41,6 +41,7 @@ import jax
 from statsmodels.api import Poisson
 ```
 
+
 Let's check the GPU we are running
 
 ```{code-cell} ipython3
@@ -292,4 +293,120 @@ y_numpy = y.__array__()
 ```{code-cell} ipython3
 stats_poisson = Poisson(y_numpy, X_numpy).fit()
 print(stats_poisson.summary())
+```
+
+
+```{exercise-start}
+:label: newton_mle1
+```
+
+Define a quadratic model for a single, continuous explanatory variable, given by,
+
+$$
+    \log(\lambda_t) = \beta_0 + \beta_1 x_t + \beta_2 x_{t}^2
+$$
+
+Calculate the mean on the original scale instead of the log scale by exponentiating both sides of the above equation, which gives,
+
+```{math}
+:label: lambda_mle
+    \lambda_t = \exp(\beta_0 + \beta_1 x_t + \beta_2 x_{t}^2)
+```
+
+Simulate the values of $x_t$ and $\lambda_t$ by using the following constants:
+
+$$
+    \beta_0 = -2.5,\\
+    \beta_1 = 0.25, \\
+    \beta_2 = 0.5
+$$
+
+Try to obtain the approximate values of $\beta_0,\beta_1,\beta_2$, by simulating a Poission Regression Model such that
+
+$$
+      y_t \sim Poisson(\lambda_t)
+$$
+
+By using sufficient large sample sizes, you should get the approximate values of $\beta_0,\beta_1,\beta_2$ by using `newton_raphson` function on the $X = [1, x_t, x_t^{2}]$ and $y_t$.
+
+
+```{exercise-end}
+```
+
+```{solution-start} newton_mle1
+:class: dropdown
+```
+
+Let's start by defining the constants.
+
+```{code-cell} ipython3
+b0 = -2.5
+b1 = 0.25
+b2 = 0.5
+```
+
+
+To simulate the model, we sample 500,000 values of $x_t$ from the uniform distribution.
+
+```{code-cell} ipython3
+seed = 32
+shape = (500_000, 1)
+key = jax.random.PRNGKey(seed)
+x = jax.random.uniform(key, shape)
+```
+
+
+Compute $\lambda$ using {eq}`lambda_mle`
+
+```{code-cell} ipython3
+λ = jnp.exp(b0 + b1*x + b2*x**2)
+```
+
+```{code-cell} ipython3
+fig, (ax1, ax2) = plt.subplots(2, sharex=True, figsize=(12, 8))
+
+ax1.scatter(x, λ, lw=2)
+ax2.scatter(x, jnp.log(λ), lw=2)
+
+ax1.set_ylabel(r'$\lambda$',
+               rotation=0,
+               labelpad=20,
+               fontsize=15)
+ax2.set_ylabel(r'$\log(\lambda)$ ',
+               rotation=0,
+               labelpad=20,
+               fontsize=15)
+
+ax2.set_xlabel(r'$x$', fontsize=15)
+ax1.grid(), ax2.grid()
+plt.axhline(c='black')
+plt.show()
+```
+
+
+Let's define $y_t$ by sampling from a poission distribution with mean as $\lambda_t$.
+
+This adds Poission error to the mean.
+
+```{code-cell} ipython3
+y = jax.random.poisson(key, λ, shape)
+```
+
+```{code-cell} ipython3
+X = jnp.hstack((jnp.ones(shape), x, x**2))
+
+# Take a guess at initial βs
+init_β = jnp.array([0.1, 0.1, 0.1]).reshape(X.shape[1], 1)
+
+# Create an object with Poisson model values
+poi = create_poisson_model(X, poiss_y)
+
+# Use newton_raphson to find the MLE
+β_hat = newton_raphson(poi, init_β, tol=1e-6, display=True)
+```
+
+
+We obtain $\beta_0 \approx -2.5, \beta_1 \approx 0.287,$ and $\beta_2 \approx 0.455$ after 7 iterations.
+
+```{solution-end}
 ```
