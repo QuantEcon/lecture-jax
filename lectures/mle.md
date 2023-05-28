@@ -399,7 +399,7 @@ X = jnp.hstack((jnp.ones(shape), x, x**2))
 init_β = jnp.array([0.1, 0.1, 0.1]).reshape(X.shape[1], 1)
 
 # Create an object with Poisson model values
-poi = create_poisson_model(X, poiss_y)
+poi = create_poisson_model(X, y)
 
 # Use newton_raphson to find the MLE
 β_hat = newton_raphson(poi, init_β, tol=1e-6, display=True)
