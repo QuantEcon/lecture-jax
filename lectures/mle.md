@@ -11,8 +11,6 @@ kernelspec:
   name: python3
 ---
 
-+++ {"user_expressions": []}
-
 # Maximum Likelihood Estimation
 
 ```{contents} Contents
@@ -42,23 +40,17 @@ import jax
 from statsmodels.api import Poisson
 ```
 
-+++ {"user_expressions": []}
-
 Let's check the GPU we are running
 
 ```{code-cell} ipython3
 !nvidia-smi
 ```
 
-+++ {"user_expressions": []}
-
 We will use 64 bit floats with JAX in order to increase the precision.
 
 ```{code-cell} ipython3
 jax.config.update("jax_enable_x64", True)
 ```
-
-+++ {"user_expressions": []}
 
 ## MLE with numerical methods (JAX)
 
@@ -85,8 +77,6 @@ Define the function `logL`.
 def logL(β):
     return -(β - 10) ** 2 - 10
 ```
-
-+++ {"user_expressions": []}
 
 To find the value of $\frac{d \log \mathcal{L(\boldsymbol{\beta})}}{d \boldsymbol{\beta}}$, we can use [jax.grad](https://jax.readthedocs.io/en/latest/_autosummary/jax.grad.html) which auto-differentiates the given function.
 
@@ -118,8 +108,6 @@ ax1.grid(), ax2.grid()
 plt.axhline(c='black')
 plt.show()
 ```
-
-+++ {"user_expressions": []}
 
 The plot shows that the maximum likelihood value (the top plot) occurs
 when $\frac{d \log \mathcal{L(\boldsymbol{\beta})}}{d \boldsymbol{\beta}} = 0$ (the bottom
@@ -171,8 +159,6 @@ def create_poisson_model(X, y):
     return PoissonRegressionModel(X=X, y=y)
 ```
 
-+++ {"user_expressions": []}
-
 The log likelihood function of the Poisson regression is
 
 $$
@@ -206,7 +192,6 @@ def _factorial(n):
 jax_factorial = jax.vmap(_factorial)
 ```
 
-+++ {"user_expressions": []}
 
 Now we can define the log likelihood function in Python
 
@@ -218,7 +203,6 @@ def poisson_logL(β, model):
     return jnp.sum(model.y * jnp.log(μ) - μ - jnp.log(jax_factorial(y)))
 ```
 
-+++ {"user_expressions": []}
 
 To find the gradient of the `poisson_logL`, we again use [jax.grad](https://jax.readthedocs.io/en/latest/_autosummary/jax.grad.html).
 
@@ -235,8 +219,6 @@ Therefore, to find the Hessian, we can directly use `jax.jacfwd`.
 G_poisson_logL = jax.grad(poisson_logL)
 H_poisson_logL = jax.jacfwd(G_poisson_logL)
 ```
-
-+++ {"user_expressions": []}
 
 Our function `newton_raphson` will take a `PoissonRegressionModel` object
 that has an initial guess of the parameter vector $\boldsymbol{\beta}_0$.
@@ -278,8 +260,6 @@ def newton_raphson(model, β, tol=1e-3, max_iter=100, display=True):
     return β
 ```
 
-+++ {"user_expressions": []}
-
 Let's try out our algorithm with a small dataset of 5 observations and 3
 variables in $\mathbf{X}$.
 
@@ -302,8 +282,6 @@ poi = create_poisson_model(X, y)
 β_hat = newton_raphson(poi, init_β, display=True)
 ```
 
-+++ {"user_expressions": []}
-
 As this was a simple model with few observations, the algorithm achieved
 convergence in only 7 iterations.
 
@@ -312,8 +290,6 @@ The gradient vector should be close to 0 at $\hat{\boldsymbol{\beta}}$
 ```{code-cell} ipython3
 G_poisson_logL(β_hat, poi)
 ```
-
-+++ {"user_expressions": []}
 
 ## MLE with `statsmodels`
 
