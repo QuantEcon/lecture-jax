@@ -11,7 +11,6 @@ kernelspec:
   name: python3
 ---
 
-
 # Maximum Likelihood Estimation
 
 ```{contents} Contents
@@ -41,20 +40,17 @@ import jax
 from statsmodels.api import Poisson
 ```
 
-
 Let's check the GPU we are running
 
 ```{code-cell} ipython3
 !nvidia-smi
 ```
 
-
 We will use 64 bit floats with JAX in order to increase the precision.
 
 ```{code-cell} ipython3
 jax.config.update("jax_enable_x64", True)
 ```
-
 
 ## MLE with Numerical Methods (JAX)
 
@@ -81,7 +77,6 @@ Define the function `logL`.
 def logL(β):
     return -(β - 10) ** 2 - 10
 ```
-
 
 To find the value of $\frac{d \log \mathcal{L(\boldsymbol{\beta})}}{d \boldsymbol{\beta}}$, we can use [jax.grad](https://jax.readthedocs.io/en/latest/_autosummary/jax.grad.html) which auto-differentiates the given function.
 
@@ -113,7 +108,6 @@ ax1.grid(), ax2.grid()
 plt.axhline(c='black')
 plt.show()
 ```
-
 
 The plot shows that the maximum likelihood value (the top plot) occurs
 when $\frac{d \log \mathcal{L(\boldsymbol{\beta})}}{d \boldsymbol{\beta}} = 0$ (the bottom
@@ -150,7 +144,6 @@ def create_poisson_model(X, y):
     return PoissonRegressionModel(X=X, y=y)
 ```
 
-
 At present, JAX doesn't have an implementation to compute factorial directly.
 
 In order to compute the factorial efficiently such that we can JIT it, we use
@@ -171,7 +164,6 @@ def _factorial(n):
 jax_factorial = jax.vmap(_factorial)
 ```
 
-
 Let's define the Poisson Regression's log likelihood function.
 
 ```{code-cell} ipython3
@@ -181,7 +173,6 @@ def poisson_logL(β, model):
     μ = jnp.exp(model.X @ β)
     return jnp.sum(model.y * jnp.log(μ) - μ - jnp.log(jax_factorial(y)))
 ```
-
 
 To find the gradient of the `poisson_logL`, we again use [jax.grad](https://jax.readthedocs.io/en/latest/_autosummary/jax.grad.html).
 
@@ -198,7 +189,6 @@ Therefore, to find the Hessian, we can directly use `jax.jacfwd`.
 G_poisson_logL = jax.grad(poisson_logL)
 H_poisson_logL = jax.jacfwd(G_poisson_logL)
 ```
-
 
 Our function `newton_raphson` will take a `PoissonRegressionModel` object
 that has an initial guess of the parameter vector $\boldsymbol{\beta}_0$.
@@ -240,7 +230,6 @@ def newton_raphson(model, β, tol=1e-3, max_iter=100, display=True):
     return β
 ```
 
-
 Let's try out our algorithm with a small dataset of 5 observations and 3
 variables in $\mathbf{X}$.
 
@@ -263,7 +252,6 @@ poi = create_poisson_model(X, y)
 β_hat = newton_raphson(poi, init_β, display=True)
 ```
 
-
 As this was a simple model with few observations, the algorithm achieved
 convergence in only 7 iterations.
 
@@ -272,7 +260,6 @@ The gradient vector should be close to 0 at $\hat{\boldsymbol{\beta}}$
 ```{code-cell} ipython3
 G_poisson_logL(β_hat, poi)
 ```
-
 
 ## MLE with `statsmodels`
 
@@ -295,25 +282,24 @@ stats_poisson = Poisson(y_numpy, X_numpy).fit()
 print(stats_poisson.summary())
 ```
 
-
 ```{exercise-start}
 :label: newton_mle1
 ```
 
-Define a quadratic model for a single, continuous explanatory variable, given by,
+We define a quadratic model for a single explanatory variable by
 
 $$
     \log(\lambda_t) = \beta_0 + \beta_1 x_t + \beta_2 x_{t}^2
 $$
 
-Calculate the mean on the original scale instead of the log scale by exponentiating both sides of the above equation, which gives,
+We calculate the mean on the original scale instead of the log scale by exponentiating both sides of the above equation, which gives
 
 ```{math}
 :label: lambda_mle
     \lambda_t = \exp(\beta_0 + \beta_1 x_t + \beta_2 x_{t}^2)
 ```
 
-Simulate the values of $x_t$ and $\lambda_t$ by using the following constants:
+Simulate the values of $x_t$ by sampling from a uniform distribution and $\lambda_t$ by using {eq}`lambda_mle` and the following constants:
 
 $$
     \beta_0 = -2.5,\\
@@ -345,7 +331,6 @@ b1 = 0.25
 b2 = 0.5
 ```
 
-
 To simulate the model, we sample 500,000 values of $x_t$ from the uniform distribution.
 
 ```{code-cell} ipython3
@@ -354,7 +339,6 @@ shape = (500_000, 1)
 key = jax.random.PRNGKey(seed)
 x = jax.random.uniform(key, shape)
 ```
-
 
 Compute $\lambda$ using {eq}`lambda_mle`
 
@@ -383,7 +367,6 @@ plt.axhline(c='black')
 plt.show()
 ```
 
-
 Let's define $y_t$ by sampling from a poission distribution with mean as $\lambda_t$.
 
 This adds Poission error to the mean.
@@ -402,11 +385,10 @@ init_β = jnp.array([0.1, 0.1, 0.1]).reshape(X.shape[1], 1)
 poi = create_poisson_model(X, y)
 
 # Use newton_raphson to find the MLE
-β_hat = newton_raphson(poi, init_β, tol=1e-6, display=True)
+β_hat = newton_raphson(poi, init_β, tol=5e-1, display=True)
 ```
 
-
-We obtain $\beta_0 \approx -2.5, \beta_1 \approx 0.287,$ and $\beta_2 \approx 0.455$ after 7 iterations.
+We obtain $\beta_0 \approx -2.46, \beta_1 \approx 0.25,$ and $\beta_2 \approx 0.46$ after 4 iterations.
 
 ```{solution-end}
 ```
