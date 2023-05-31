@@ -302,18 +302,25 @@ We calculate the mean on the original scale instead of the log scale by exponent
 Simulate the values of $x_t$ by sampling from a uniform distribution and $\lambda_t$ by using {eq}`lambda_mle` and the following constants:
 
 $$
-    \beta_0 = -2.5,\\
-    \beta_1 = 0.25, \\
+    \beta_0 = -2.5,
+    \quad
+    \beta_1 = 0.25, 
+    \quad
     \beta_2 = 0.5
 $$
 
 Try to obtain the approximate values of $\beta_0,\beta_1,\beta_2$, by simulating a Poission Regression Model such that
 
 $$
-      y_t \sim Poisson(\lambda_t)
+      y_t \sim {\rm Poisson}(\lambda_t)
+      \quad \text{for all } t.
 $$
 
-By using sufficient large sample sizes, you should get the approximate values of $\beta_0,\beta_1,\beta_2$ by using `newton_raphson` function on the $X = [1, x_t, x_t^{2}]$ and $y_t$.
+Using our `newton_raphson` function on the data set $X = [1, x_t, x_t^{2}]$ and
+$y$, obtain the maximum likelihood estimates of $\beta_0,\beta_1,\beta_2$.
+
+With a sufficient large sample size, you should approximately
+recover the true values of of these parameters.
 
 
 ```{exercise-end}
@@ -323,12 +330,12 @@ By using sufficient large sample sizes, you should get the approximate values of
 :class: dropdown
 ```
 
-Let's start by defining the constants.
+Let's start by defining "true" parameter values.
 
 ```{code-cell} ipython3
-b0 = -2.5
-b1 = 0.25
-b2 = 0.5
+β_0 = -2.5
+β_1 = 0.25
+β_2 = 0.5
 ```
 
 To simulate the model, we sample 500,000 values of $x_t$ from the uniform distribution.
@@ -340,40 +347,21 @@ key = jax.random.PRNGKey(seed)
 x = jax.random.uniform(key, shape)
 ```
 
-Compute $\lambda$ using {eq}`lambda_mle`
+We compute $\lambda$ using {eq}`lambda_mle`
 
 ```{code-cell} ipython3
-λ = jnp.exp(b0 + b1*x + b2*x**2)
+λ = jnp.exp(β_0 + β_1 * x + β_2 * x**2)
 ```
 
-```{code-cell} ipython3
-fig, (ax1, ax2) = plt.subplots(2, sharex=True, figsize=(12, 8))
-
-ax1.scatter(x, λ, lw=2)
-ax2.scatter(x, jnp.log(λ), lw=2)
-
-ax1.set_ylabel(r'$\lambda$',
-               rotation=0,
-               labelpad=20,
-               fontsize=15)
-ax2.set_ylabel(r'$\log(\lambda)$ ',
-               rotation=0,
-               labelpad=20,
-               fontsize=15)
-
-ax2.set_xlabel(r'$x$', fontsize=15)
-ax1.grid(), ax2.grid()
-plt.axhline(c='black')
-plt.show()
-```
-
-Let's define $y_t$ by sampling from a poission distribution with mean as $\lambda_t$.
-
-This adds Poission error to the mean.
+Let's define $y_t$ by sampling from a Poission distribution with mean as $\lambda_t$.
 
 ```{code-cell} ipython3
 y = jax.random.poisson(key, λ, shape)
 ```
+
+Now let's try to recover the true parameter values using the Newton-Raphson
+method described above.
+
 
 ```{code-cell} ipython3
 X = jnp.hstack((jnp.ones(shape), x, x**2))
@@ -385,10 +373,10 @@ init_β = jnp.array([0.1, 0.1, 0.1]).reshape(X.shape[1], 1)
 poi = create_poisson_model(X, y)
 
 # Use newton_raphson to find the MLE
-β_hat = newton_raphson(poi, init_β, tol=5e-1, display=True)
+β_hat = newton_raphson(poi, init_β, tol=1e-5, display=True)
 ```
 
-We obtain $\beta_0 \approx -2.46, \beta_1 \approx 0.25,$ and $\beta_2 \approx 0.46$ after 4 iterations.
+The maximum likelihood estimates are similar to the true parameter values.
 
 ```{solution-end}
 ```
