@@ -149,14 +149,14 @@ $$
 We create a `namedtuple` to store the observed values
 
 ```{code-cell} ipython3
-PoissonRegressionModel = namedtuple('PoissonRegressionModel', ['X', 'y'])
+RegressionModel= namedtuple('RegressionModel', ['X', 'y'])
 
 def create_poisson_model(X, y):
     n, k = X.shape
     # Reshape y as a n_by_1 column vector
     y = y.reshape(n, 1)
     X, y = jax.device_put((X, y))
-    return PoissonRegressionModel(X=X, y=y)
+    return RegressionModel(X=X, y=y)
 ```
 
 The log likelihood function of the Poisson regression is
@@ -219,7 +219,7 @@ G_poisson_logL = jax.grad(poisson_logL)
 H_poisson_logL = jax.jacfwd(G_poisson_logL)
 ```
 
-Our function `newton_raphson` will take a `PoissonRegressionModel` object
+Our function `newton_raphson` will take a `RegressionModel` object
 that has an initial guess of the parameter vector $\boldsymbol{\beta}_0$.
 
 The algorithm will update the parameter vector according to the updating
@@ -311,6 +311,11 @@ stats_poisson = Poisson(y_numpy, X_numpy).fit()
 print(stats_poisson.summary())
 ```
 
+The benefit of writing our own procedure, relative to statsmodels is that
+
+* we can exploit the power of the GPU and
+* we learn the underlying methodology, which can be extended to complex situations where no existing routines are available.
+
 ```{exercise-start}
 :label: newton_mle1
 ```
@@ -367,13 +372,13 @@ Let's start by defining "true" parameter values.
 β_2 = 0.5
 ```
 
-To simulate the model, we sample 500,000 values of $x_t$ from the uniform distribution.
+To simulate the model, we sample 500,000 values of $x_t$ from the standard normal distribution.
 
 ```{code-cell} ipython3
 seed = 32
 shape = (500_000, 1)
 key = jax.random.PRNGKey(seed)
-x = jax.random.uniform(key, shape)
+x = jax.random.normal(key, shape)
 ```
 
 We compute $\lambda$ using {eq}`lambda_mle`
