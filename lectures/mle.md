@@ -143,7 +143,7 @@ $$
      = \exp(\mathbf{x}_i' \boldsymbol{\beta})
      = \exp(\beta_0 + \beta_1 x_{i1} + \ldots + \beta_k x_{ik})
 $$
-     
+
 We create a `namedtuple` to store the observed values
 
 ```{code-cell} ipython3
@@ -331,12 +331,12 @@ We calculate the mean on the original scale instead of the log scale by exponent
     \lambda_t = \exp(\beta_0 + \beta_1 x_t + \beta_2 x_{t}^2)
 ```
 
-Simulate the values of $x_t$ by sampling from a uniform distribution and $\lambda_t$ by using {eq}`lambda_mle` and the following constants:
+Simulate the values of $x_t$ by sampling from a normal distribution and $\lambda_t$ by using {eq}`lambda_mle` and the following constants:
 
 $$
     \beta_0 = -2.5,
     \quad
-    \beta_1 = 0.25, 
+    \beta_1 = 0.25,
     \quad
     \beta_2 = 0.5
 $$
