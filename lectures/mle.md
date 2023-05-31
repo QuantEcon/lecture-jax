@@ -31,9 +31,7 @@ Here we will exploit the automatic differentiation capabilities of JAX rather th
 We'll require the following imports:
 
 ```{code-cell} ipython3
-%matplotlib inline
 import matplotlib.pyplot as plt
-plt.rcParams["figure.figsize"] = (11, 5)  # set default figure size
 from collections import namedtuple
 import jax.numpy as jnp
 import jax
