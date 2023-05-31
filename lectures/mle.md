@@ -57,6 +57,10 @@ numerical methods to solve for parameter estimates.
 
 One such numerical method is the Newton-Raphson algorithm.
 
+Let's start with a simple example to illustrate the algorithm.
+
+### A toy model
+
 Our goal is to find the maximum likelihood estimate $\hat{\boldsymbol{\beta}}$.
 
 At $\hat{\boldsymbol{\beta}}$, the first derivative of the log-likelihood
@@ -128,6 +132,8 @@ Then we use the updating rule involving gradient information to iterate the algo
 
 Please refer to [this section](https://python.quantecon.org/mle.html#mle-with-numerical-methods) for the detailed algorithm.
 
+### A Poisson model
+
 Let's have a go at implementing the Newton-Raphson algorithm to calculate the maximum likelihood estimations of a Poisson  regression.
 
 The Poisson regression has a joint pmf:
@@ -147,9 +153,9 @@ $$
 We create a `namedtuple` to store the observed values
 
 ```{code-cell} ipython3
-RegressionModel= namedtuple('RegressionModel', ['X', 'y'])
+RegressionModel = namedtuple('RegressionModel', ['X', 'y'])
 
-def create_poisson_model(X, y):
+def create_regression_model(X, y):
     n, k = X.shape
     # Reshape y as a n_by_1 column vector
     y = y.reshape(n, 1)
@@ -273,7 +279,7 @@ y = jnp.array([1, 0, 1, 1, 0])
 init_β = jnp.array([0.1, 0.1, 0.1]).reshape(X.shape[1], 1)
 
 # Create an object with Poisson model values
-poi = create_poisson_model(X, y)
+poi = create_regression_model(X, y)
 
 # Use newton_raphson to find the MLE
 β_hat = newton_raphson(poi, init_β, display=True)
@@ -402,7 +408,7 @@ X = jnp.hstack((jnp.ones(shape), x, x**2))
 init_β = jnp.array([0.1, 0.1, 0.1]).reshape(X.shape[1], 1)
 
 # Create an object with Poisson model values
-poi = create_poisson_model(X, y)
+poi = create_regression_model(X, y)
 
 # Use newton_raphson to find the MLE
 β_hat = newton_raphson(poi, init_β, tol=1e-5, display=True)
