@@ -52,7 +52,7 @@ We will use 64 bit floats with JAX in order to increase the precision.
 jax.config.update("jax_enable_x64", True)
 ```
 
-## MLE with Numerical Methods (JAX)
+## MLE with numerical methods (JAX)
 
 Many distributions do not have nice, analytical solutions and therefore require
 numerical methods to solve for parameter estimates.
@@ -124,14 +124,29 @@ The Newton-Raphson algorithm finds a point where the first derivative is
 
 To use the algorithm, we take an initial guess at the maximum value,
 $\beta_0$ (the OLS parameter estimates might be a reasonable
-guess), then
+guess).
 
+Then we use the updating rule involving gradient information to iterate the algorithm until the error is sufficiently small or the algorithm reaches the maximum number of iterations.
 
 Please refer to [this section](https://python.quantecon.org/mle.html#mle-with-numerical-methods) for the detailed algorithm.
 
-Let's have a go at implementing the Newton-Raphson algorithm.
+Let's have a go at implementing the Newton-Raphson algorithm to calculate the maximum likelihood estimations of a Poisson  regression.
 
-First, we'll create a `PoissonRegressionModel`.
+The Poisson regression has a joint pmf:
+
+$$
+f(y_1, y_2, \ldots, y_n \mid \mathbf{x}_1, \mathbf{x}_2, \ldots, \mathbf{x}_n; \boldsymbol{\beta})
+    = \prod_{i=1}^{n} \frac{\mu_i^{y_i}}{y_i!} e^{-\mu_i}
+
+$$
+
+$$
+\text{where}\ \mu_i
+     = \exp(\mathbf{x}_i' \boldsymbol{\beta})
+     = \exp(\beta_0 + \beta_1 x_{i1} + \ldots + \beta_k x_{ik})
+$$
+     
+We create a `namedtuple` to store the observed values
 
 ```{code-cell} ipython3
 PoissonRegressionModel = namedtuple('PoissonRegressionModel', ['X', 'y'])
@@ -144,7 +159,18 @@ def create_poisson_model(X, y):
     return PoissonRegressionModel(X=X, y=y)
 ```
 
-At present, JAX doesn't have an implementation to compute factorial directly.
+The log likelihood function of the Poisson regression is
+
+$$
+\underset{\beta}{\max} \Big(
+\sum_{i=1}^{n} y_i \log{\mu_i} -
+\sum_{i=1}^{n} \mu_i -
+\sum_{i=1}^{n} \log y! \Big)
+$$
+
+The full derivation can be found [here](https://python.quantecon.org/mle.html#id2).
+
+The log likelihood function involves factorial, but JAX doesn't have a readily available implementation to compute factorial directly.
 
 In order to compute the factorial efficiently such that we can JIT it, we use
 
@@ -156,6 +182,8 @@ since [jax.lax.lgamma](https://jax.readthedocs.io/en/latest/_autosummary/jax.lax
 
 The following function `jax_factorial` computes the factorial using this idea.
 
+Let's define this function in Python
+
 ```{code-cell} ipython3
 @jax.jit
 def _factorial(n):
@@ -164,7 +192,8 @@ def _factorial(n):
 jax_factorial = jax.vmap(_factorial)
 ```
 
-Let's define the Poisson Regression's log likelihood function.
+
+Now we can define the log likelihood function in Python
 
 ```{code-cell} ipython3
 @jax.jit
