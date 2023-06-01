@@ -31,9 +31,7 @@ Here we will exploit the automatic differentiation capabilities of JAX rather th
 We'll require the following imports:
 
 ```{code-cell} ipython3
-%matplotlib inline
 import matplotlib.pyplot as plt
-plt.rcParams["figure.figsize"] = (11, 5)  # set default figure size
 from collections import namedtuple
 import jax.numpy as jnp
 import jax
@@ -58,6 +56,10 @@ Many distributions do not have nice, analytical solutions and therefore require
 numerical methods to solve for parameter estimates.
 
 One such numerical method is the Newton-Raphson algorithm.
+
+Let's start with a simple example to illustrate the algorithm.
+
+### A toy model
 
 Our goal is to find the maximum likelihood estimate $\hat{\boldsymbol{\beta}}$.
 
@@ -130,6 +132,8 @@ Then we use the updating rule involving gradient information to iterate the algo
 
 Please refer to [this section](https://python.quantecon.org/mle.html#mle-with-numerical-methods) for the detailed algorithm.
 
+### A Poisson model
+
 Let's have a go at implementing the Newton-Raphson algorithm to calculate the maximum likelihood estimations of a Poisson  regression.
 
 The Poisson regression has a joint pmf:
@@ -145,18 +149,18 @@ $$
      = \exp(\mathbf{x}_i' \boldsymbol{\beta})
      = \exp(\beta_0 + \beta_1 x_{i1} + \ldots + \beta_k x_{ik})
 $$
-     
+
 We create a `namedtuple` to store the observed values
 
 ```{code-cell} ipython3
-PoissonRegressionModel = namedtuple('PoissonRegressionModel', ['X', 'y'])
+RegressionModel = namedtuple('RegressionModel', ['X', 'y'])
 
-def create_poisson_model(X, y):
+def create_regression_model(X, y):
     n, k = X.shape
     # Reshape y as a n_by_1 column vector
     y = y.reshape(n, 1)
     X, y = jax.device_put((X, y))
-    return PoissonRegressionModel(X=X, y=y)
+    return RegressionModel(X=X, y=y)
 ```
 
 The log likelihood function of the Poisson regression is
@@ -203,7 +207,6 @@ def poisson_logL(β, model):
     return jnp.sum(model.y * jnp.log(μ) - μ - jnp.log(jax_factorial(y)))
 ```
 
-
 To find the gradient of the `poisson_logL`, we again use [jax.grad](https://jax.readthedocs.io/en/latest/_autosummary/jax.grad.html).
 
 According to [the documentation](https://jax.readthedocs.io/en/latest/notebooks/autodiff_cookbook.html#jacobians-and-hessians-using-jacfwd-and-jacrev),
@@ -220,7 +223,7 @@ G_poisson_logL = jax.grad(poisson_logL)
 H_poisson_logL = jax.jacfwd(G_poisson_logL)
 ```
 
-Our function `newton_raphson` will take a `PoissonRegressionModel` object
+Our function `newton_raphson` will take a `RegressionModel` object
 that has an initial guess of the parameter vector $\boldsymbol{\beta}_0$.
 
 The algorithm will update the parameter vector according to the updating
@@ -276,7 +279,7 @@ y = jnp.array([1, 0, 1, 1, 0])
 init_β = jnp.array([0.1, 0.1, 0.1]).reshape(X.shape[1], 1)
 
 # Create an object with Poisson model values
-poi = create_poisson_model(X, y)
+poi = create_regression_model(X, y)
 
 # Use newton_raphson to find the MLE
 β_hat = newton_raphson(poi, init_β, display=True)
@@ -310,4 +313,108 @@ y_numpy = y.__array__()
 ```{code-cell} ipython3
 stats_poisson = Poisson(y_numpy, X_numpy).fit()
 print(stats_poisson.summary())
+```
+
+The benefit of writing our own procedure, relative to statsmodels is that
+
+* we can exploit the power of the GPU and
+* we learn the underlying methodology, which can be extended to complex situations where no existing routines are available.
+
+```{exercise-start}
+:label: newton_mle1
+```
+
+We define a quadratic model for a single explanatory variable by
+
+$$
+    \log(\lambda_t) = \beta_0 + \beta_1 x_t + \beta_2 x_{t}^2
+$$
+
+We calculate the mean on the original scale instead of the log scale by exponentiating both sides of the above equation, which gives
+
+```{math}
+:label: lambda_mle
+    \lambda_t = \exp(\beta_0 + \beta_1 x_t + \beta_2 x_{t}^2)
+```
+
+Simulate the values of $x_t$ by sampling from a normal distribution and $\lambda_t$ by using {eq}`lambda_mle` and the following constants:
+
+$$
+    \beta_0 = -2.5,
+    \quad
+    \beta_1 = 0.25,
+    \quad
+    \beta_2 = 0.5
+$$
+
+Try to obtain the approximate values of $\beta_0,\beta_1,\beta_2$, by simulating a Poission Regression Model such that
+
+$$
+      y_t \sim {\rm Poisson}(\lambda_t)
+      \quad \text{for all } t.
+$$
+
+Using our `newton_raphson` function on the data set $X = [1, x_t, x_t^{2}]$ and
+$y$, obtain the maximum likelihood estimates of $\beta_0,\beta_1,\beta_2$.
+
+With a sufficient large sample size, you should approximately
+recover the true values of of these parameters.
+
+
+```{exercise-end}
+```
+
+```{solution-start} newton_mle1
+:class: dropdown
+```
+
+Let's start by defining "true" parameter values.
+
+```{code-cell} ipython3
+β_0 = -2.5
+β_1 = 0.25
+β_2 = 0.5
+```
+
+To simulate the model, we sample 500,000 values of $x_t$ from the standard normal distribution.
+
+```{code-cell} ipython3
+seed = 32
+shape = (500_000, 1)
+key = jax.random.PRNGKey(seed)
+x = jax.random.normal(key, shape)
+```
+
+We compute $\lambda$ using {eq}`lambda_mle`
+
+```{code-cell} ipython3
+λ = jnp.exp(β_0 + β_1 * x + β_2 * x**2)
+```
+
+Let's define $y_t$ by sampling from a Poission distribution with mean as $\lambda_t$.
+
+```{code-cell} ipython3
+y = jax.random.poisson(key, λ, shape)
+```
+
+Now let's try to recover the true parameter values using the Newton-Raphson
+method described above.
+
+
+```{code-cell} ipython3
+X = jnp.hstack((jnp.ones(shape), x, x**2))
+
+# Take a guess at initial βs
+init_β = jnp.array([0.1, 0.1, 0.1]).reshape(X.shape[1], 1)
+
+# Create an object with Poisson model values
+poi = create_regression_model(X, y)
+
+# Use newton_raphson to find the MLE
+β_hat = newton_raphson(poi, init_β, tol=1e-5, display=True)
+```
+
+The maximum likelihood estimates are similar to the true parameter values.
+
+```{solution-end}
 ```
