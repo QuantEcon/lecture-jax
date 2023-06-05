@@ -16,7 +16,7 @@ kernelspec:
 
 ## Overview
 
-In this lecture we consider a some asset pricing problems and use them to
+In this lecture we consider some asset pricing problems and use them to
 illustrate some foundations of JAX programming.
 
 Most of the heavy lifting will be done through routines from linear algebra.
@@ -630,15 +630,14 @@ We define the multi-index array $H$ by
 $$
     H[i, j, k, i', j', k']
     =
-    \beta \sum_{i', j', k'}
-        \kappa[i, j, k] P[i, i']Q[j, j']R[k, k']
+    \beta \kappa[i, j, k] P[i, i']Q[j, j']R[k, k']
 $$
 
 then {eq}`neweqn104_new` becomes
 
 $$
     v[i, j, k] =
-    \beta \sum_{i', j', k'}
+    \sum_{i', j', k'}
         H[i, j, k, i', j', k'] (1 + v[i', j', k'])
 $$ (eq:neweqn105)
 
