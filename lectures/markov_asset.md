@@ -17,8 +17,8 @@ kernelspec:
 
 ## Overview
 
-In this lecture we use asset pricing problems to illustrate
-some foundations of JAX programming.
+In this lecture we consider some asset pricing problems and use them to
+illustrate some foundations of JAX programming.
 
 Most of the heavy lifting is done through routines from linear algebra.
 
@@ -648,15 +648,14 @@ We define the multi-index array $H$ by
 $$
     H[i, j, k, i', j', k']
     =
-    \beta \sum_{i', j', k'}
-        \kappa[i, j, k] P[i, i']Q[j, j']R[k, k']
+    \beta \kappa[i, j, k] P[i, i']Q[j, j']R[k, k']
 $$
 
 then {eq}`neweqn104_new` becomes
 
 $$
     v[i, j, k] =
-    \beta \sum_{i', j', k'}
+    \sum_{i', j', k'}
         H[i, j, k, i', j', k'] (1 + v[i', j', k'])
 $$ (eq:neweqn105)
 
@@ -1108,9 +1107,15 @@ Whether or not we get a speed gain over the previous version depends on the size
 
 In general, the linear operator approach will be slower for small grids but faster for later ones.
 
-Moreover, the linear operator approach allows us to work with larger grids than would be possible for the matrix approach.
+Here's the ratio of times (Efficient JAX / JAX):
 
-Here is a moderately large example.
+```{code-cell} ipython3
+jnp_time_multi_1 / jnp_time_1  
+```
+
+The speed is about the same but now we can work with much larger grids.
+
+Here's a moderately large example, where the state space has 15,625 elements.
 
 ```{code-cell} ipython3
 sv_model = create_sv_model(I=25, J=25, K=25)

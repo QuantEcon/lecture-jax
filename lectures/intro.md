@@ -9,13 +9,13 @@ kernelspec:
   name: python3
 ---
 
-# Quantitative Economics with Python (JAX)
+# Quantitative Economics with JAX
 
-This website presents a set of lectures on quantitative economic modeling, designed and written by
-[Thomas J. Sargent](http://www.tomsargent.com/) and [John Stachurski](https://johnstachurski.net/)
-specifically using [JAX](https://jax.readthedocs.io) and accelerating using the `GPU`.
+This website presents a set of lectures on quantitative economic modeling
+using GPUs and [Google JAX](https://jax.readthedocs.io).   The lectures
+are designed and written by [Thomas J. Sargent](http://www.tomsargent.com/) and
+[John Stachurski](https://johnstachurski.net/).
 
-For an overview of the series, see [this page](https://quantecon.org/projects/#filter=lecture)
 
 ```{tableofcontents}
 ```
