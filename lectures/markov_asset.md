@@ -31,7 +31,7 @@ you can jump to [](eq:ntecx2).
 
 In addition to what's in Anaconda, this lecture will need the following libraries:
 
-```{code-cell}
+```{code-cell} ipython3
 :tags: [hide-output]
 
 !pip install quantecon
@@ -1132,16 +1132,4 @@ jnp_time_multi_1 = qe.toc()
 
 ```{code-cell}
 jnp_time_multi_1 / jnp_time_1 
-```
-
-```{code-cell}
-
-```
-
-```{code-cell}
-
-```
-
-```{code-cell}
-
 ```
