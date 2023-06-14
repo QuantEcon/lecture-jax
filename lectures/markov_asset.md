@@ -4,7 +4,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.14.6
+    jupytext_version: 1.14.5
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -1030,11 +1030,10 @@ def H_operator(g, sv_model, shapes):
 +++ {"user_expressions": []}
 
 The next function modifies our earlier `power_iteration_sr` function so that it
-can act on linear operators rather than matrices.
+can act on linear operators rather than matrices, also the spectral radius of the transition matrix less than one ensures the convergence of our calculations in the model.
 
 ```{code-cell} ipython3
-def power_iteration(H_operator, sv_model, shapes, num_iterations=20):
-    
+def update_g(H_operator, sv_model, shapes, num_iterations=20):    
     g_k = jnp.ones(shapes)
     for _ in range(num_iterations):
         g_k1 = H_operator(g_k, sv_model, shapes)
@@ -1051,7 +1050,7 @@ Let's check the output
 
 ```{code-cell} ipython3
 qe.tic()
-sr = power_iteration(H_operator, sv_model, shapes)
+sr = update_g(H_operator, sv_model, shapes)
 qe.toc()
 print(sr)
 ```
@@ -1124,8 +1123,4 @@ shapes = len(hc_grid), len(hd_grid), len(z_grid)
 qe.tic()
 v_jax_multi = sv_pd_ratio_jax_multi(sv_model, shapes).block_until_ready()
 jnp_time_multi_1 = qe.toc()
-```
-
-```{code-cell} ipython3
-
 ```
