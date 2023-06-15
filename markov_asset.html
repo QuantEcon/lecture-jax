@@ -227,7 +227,7 @@ const thebe_selector_output = ".output, .cell_output"
 <h1><span class="section-number">4. </span>An Asset Pricing Problem<a class="headerlink" href="#an-asset-pricing-problem" title="Permalink to this heading">#</a></h1>
 <section id="overview">
 <h2><span class="section-number">4.1. </span>Overview<a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
-<p>In this lecture we consider a some asset pricing problems and use them to
+<p>In this lecture we consider some asset pricing problems and use them to
 illustrate some foundations of JAX programming.</p>
 <p>Most of the heavy lifting will be done through routines from linear algebra.</p>
 <p>Along the way, we will show how to solve some memory-intensive problems with large state spaces.</p>
@@ -247,20 +247,18 @@ solve, you can jump to <a class="reference internal" href="#equation-eq-ntecx2">
 <span class="expanded">Hide code cell output</span>
 </summary>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /opt/conda/envs/quantecon/lib/python3.10/site-packages (0.7.0)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: sympy in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (1.11.1)
-Requirement already satisfied: requests in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (2.28.1)
-Requirement already satisfied: scipy&gt;=1.5.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (1.10.0)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /opt/conda/envs/quantecon/lib/python3.10/site-packages (0.7.1)
 Requirement already satisfied: numba&gt;=0.49.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (0.56.4)
+Requirement already satisfied: scipy&gt;=1.5.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (1.10.0)
+Requirement already satisfied: sympy in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (1.11.1)
+Requirement already satisfied: requests in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (2.28.1)
 Requirement already satisfied: numpy&gt;=1.17.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (1.23.5)
 Requirement already satisfied: llvmlite&lt;0.40,&gt;=0.39.0dev0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from numba&gt;=0.49.0-&gt;quantecon) (0.39.1)
 Requirement already satisfied: setuptools in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from numba&gt;=0.49.0-&gt;quantecon) (65.6.3)
 Requirement already satisfied: idna&lt;4,&gt;=2.5 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (3.4)
+Requirement already satisfied: urllib3&lt;1.27,&gt;=1.21.1 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (1.26.14)
 Requirement already satisfied: certifi&gt;=2017.4.17 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (2022.12.7)
 Requirement already satisfied: charset-normalizer&lt;3,&gt;=2 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (2.0.4)
-Requirement already satisfied: urllib3&lt;1.27,&gt;=1.21.1 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (1.26.14)
 Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/envs/quantecon/lib/python3.10/site-packages/mpmath-1.2.1-py3.10.egg (from sympy-&gt;quantecon) (1.2.1)
 </pre></div>
 </div>
@@ -774,14 +772,13 @@ indices for <span class="math notranslate nohighlight">\((h_c, h_z, z)\)</span>.
 \[
     H[i, j, k, i', j', k']
     =
-    \beta \sum_{i', j', k'}
-        \kappa[i, j, k] P[i, i']Q[j, j']R[k, k']
+    \beta \kappa[i, j, k] P[i, i']Q[j, j']R[k, k']
 \]</div>
 <p>then <a class="reference internal" href="#equation-neweqn104-new">(4.20)</a> becomes</p>
 <div class="math notranslate nohighlight" id="equation-eq-neweqn105">
 <span class="eqno">(4.21)<a class="headerlink" href="#equation-eq-neweqn105" title="Permalink to this equation">#</a></span>\[
     v[i, j, k] =
-    \beta \sum_{i', j', k'}
+    \sum_{i', j', k'}
         H[i, j, k, i', j', k'] (1 + v[i', j', k'])
 \]</div>
 <p>One way to understand this is to reshape <span class="math notranslate nohighlight">\(v\)</span> into an <span class="math notranslate nohighlight">\(N\)</span>-vector, where <span class="math notranslate nohighlight">\(N = I \times J \times K\)</span>,
@@ -932,7 +929,7 @@ and <span class="math notranslate nohighlight">\(H\)</span> into an <span class=
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:1.15
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:1.17
 </pre></div>
 </div>
 </div>
@@ -1101,7 +1098,7 @@ and <span class="math notranslate nohighlight">\(H\)</span> into an <span class=
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:0.35
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:0.38
 </pre></div>
 </div>
 </div>
@@ -1129,7 +1126,7 @@ and <span class="math notranslate nohighlight">\(H\)</span> into an <span class=
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.013664354468294065
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.013394107047686725
 </pre></div>
 </div>
 </div>
@@ -1267,7 +1264,7 @@ and <span class="math notranslate nohighlight">\(H\)</span> into an <span class=
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1.2227654261560215
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1.034272634945658
 </pre></div>
 </div>
 </div>
@@ -1293,7 +1290,7 @@ and <span class="math notranslate nohighlight">\(H\)</span> into an <span class=
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:0.88
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:0.86
 </pre></div>
 </div>
 </div>
@@ -1307,7 +1304,7 @@ and <span class="math notranslate nohighlight">\(H\)</span> into an <span class=
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:0.50
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:0.49
 </pre></div>
 </div>
 </div>
@@ -1415,38 +1412,50 @@ and <span class="math notranslate nohighlight">\(H\)</span> into an <span class=
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
+  Data and Empirics
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="mle.html">
+   8. Maximum Likelihood Estimation
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
   Dynamic Programming
  </span>
 </p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="short_path.html">
-   8. Shortest Paths
+   9. Shortest Paths
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="opt_invest.html">
-   9. Optimal Investment
+   10. Optimal Investment
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="opt_savings.html">
-   10. Optimal Savings
+   11. Optimal Savings
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_egm.html">
-   11. Endogenous Grid Method
+   12. Endogenous Grid Method
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="arellano.html">
-   12. Default Risk and Income Fluctuations
+   13. Default Risk and Income Fluctuations
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="aiyagari_jax.html">
-   13. The Aiyagari Model
+   14. The Aiyagari Model
   </a>
  </li>
 </ul>
@@ -1458,17 +1467,17 @@ and <span class="math notranslate nohighlight">\(H\)</span> into an <span class=
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   14. Troubleshooting
+   15. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   15. References
+   16. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   16. Execution Statistics
+   17. Execution Statistics
   </a>
  </li>
 </ul>
@@ -1504,8 +1513,9 @@ and <span class="math notranslate nohighlight">\(H\)</span> into an <span class=
                     <li data-tippy-content="Increase font size" class="btn__plus"><i data-feather="plus-circle"></i></li>
                     <li data-tippy-content="Decrease font size" class="btn__minus"><i data-feather="minus-circle"></i></li>
                     <li data-tippy-content="Change contrast" class="btn__contrast"><i data-feather="sunset"></i></li>
+                    <li data-tippy-content="Download Notebook"><a href="/_notebooks/markov_asset.ipynb" download><i data-feather="download-cloud"></i></a></li>
                     <li class="settings-button" id="settingsButton"><div data-tippy-content="Launch Notebook"><i data-feather="play-circle"></i></div></li>
-                        <li data-tippy-content="Download PDF" onClick="window.print()"><i data-feather="file"></i></li>
+                        <li class="download-pdf" id="downloadButton"><i data-feather="file"></i></li>
                     <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-jax/blob/main/lectures/markov_asset.md" download><i data-feather="github"></i></a></li>
                 </ul>
 
@@ -1518,7 +1528,7 @@ and <span class="math notranslate nohighlight">\(H\)</span> into an <span class=
                     <p>Lecture (PDF)</p>
                 </li>
                 <li class="download-pdf-file">
-                    <a href="" download><p>Book (PDF)</p></a>
+                    <a href="/_pdf/quantecon-jax.pdf" download><p>Book (PDF)</p></a>
                 </li>
             </ul>
         </div>

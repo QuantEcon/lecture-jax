@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>9. Optimal Investment &#8212; Quantitative Economics with Python using JAX</title>
+    <title>10. Optimal Investment &#8212; Quantitative Economics with Python using JAX</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
@@ -120,8 +120,8 @@ const thebe_selector_output = ".output, .cell_output"
     <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="10. Optimal Savings" href="opt_savings.html" />
-    <link rel="prev" title="8. Shortest Paths" href="short_path.html" />
+    <link rel="next" title="11. Optimal Savings" href="opt_savings.html" />
+    <link rel="prev" title="9. Shortest Paths" href="short_path.html" />
 
 <!-- Normal Meta Tags -->
 <meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
@@ -210,7 +210,7 @@ const thebe_selector_output = ".output, .cell_output"
                     <div>
                         
   <section class="tex2jax_ignore mathjax_ignore" id="optimal-investment">
-<h1><span class="section-number">9. </span>Optimal Investment<a class="headerlink" href="#optimal-investment" title="Permalink to this heading">#</a></h1>
+<h1><span class="section-number">10. </span>Optimal Investment<a class="headerlink" href="#optimal-investment" title="Permalink to this heading">#</a></h1>
 <div class="warning admonition">
 <p class="admonition-title">GPU</p>
 <p>This lecture was built using <a class="reference internal" href="status.html#status-machine-details"><span class="std std-ref">hardware</span></a> that has access to a GPU.</p>
@@ -230,20 +230,22 @@ const thebe_selector_output = ".output, .cell_output"
 <span class="expanded">Hide code cell output</span>
 </summary>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /opt/conda/envs/quantecon/lib/python3.10/site-packages (0.7.0)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /opt/conda/envs/quantecon/lib/python3.10/site-packages (0.7.1)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: numba&gt;=0.49.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (0.56.4)
-Requirement already satisfied: requests in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (2.28.1)
-Requirement already satisfied: scipy&gt;=1.5.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (1.10.0)
-Requirement already satisfied: numpy&gt;=1.17.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (1.23.5)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: requests in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (2.28.1)
 Requirement already satisfied: sympy in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (1.11.1)
+Requirement already satisfied: scipy&gt;=1.5.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (1.10.0)
+Requirement already satisfied: numba&gt;=0.49.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (0.56.4)
+Requirement already satisfied: numpy&gt;=1.17.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (1.23.5)
 Requirement already satisfied: setuptools in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from numba&gt;=0.49.0-&gt;quantecon) (65.6.3)
 Requirement already satisfied: llvmlite&lt;0.40,&gt;=0.39.0dev0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from numba&gt;=0.49.0-&gt;quantecon) (0.39.1)
-Requirement already satisfied: charset-normalizer&lt;3,&gt;=2 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (2.0.4)
 Requirement already satisfied: idna&lt;4,&gt;=2.5 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (3.4)
-Requirement already satisfied: urllib3&lt;1.27,&gt;=1.21.1 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (1.26.14)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: charset-normalizer&lt;3,&gt;=2 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (2.0.4)
 Requirement already satisfied: certifi&gt;=2017.4.17 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (2022.12.7)
+Requirement already satisfied: urllib3&lt;1.27,&gt;=1.21.1 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (1.26.14)
 Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/envs/quantecon/lib/python3.10/site-packages/mpmath-1.2.1-py3.10.egg (from sympy-&gt;quantecon) (1.2.1)
 </pre></div>
 </div>
@@ -272,10 +274,10 @@ P_t = a_0 - a_1 Y_t + Z_t,
 \[ P_t Y_t - c Y_t - \gamma (Y_{t+1} - Y_t)^2 \]</div>
 <p>Combining with the demand curve and writing <span class="math notranslate nohighlight">\(y, y'\)</span> for <span class="math notranslate nohighlight">\(Y_t, Y_{t+1}\)</span>, this becomes</p>
 <div class="math notranslate nohighlight">
-\[    r(y, z, y′) := (a_0 - a_1  y + z - c) y - γ  (y′ - y)^2 \]</div>
+\[    r(y, z, y') := (a_0 - a_1  y + z - c) y - γ  (y' - y)^2 \]</div>
 <p>The firm maximizes present value of expected discounted profits.  The Bellman equation is</p>
 <div class="math notranslate nohighlight">
-\[   v(y, z) = \max_{y'} \left\{ r(y, z, y′) + β \sum_{z′} v(y′, z′) Q(z, z′) \right\}. \]</div>
+\[   v(y, z) = \max_{y'} \left\{ r(y, z, y') + β \sum_{z'} v(y', z') Q(z, z') \right\}. \]</div>
 <p>We discretize <span class="math notranslate nohighlight">\(y\)</span> to a finite grid <code class="docutils literal notranslate"><span class="pre">y_grid</span></code>.</p>
 <p>In essence, the firm tries to choose output close to the monopolist profit maximizer, given <span class="math notranslate nohighlight">\(Z_t\)</span>, but is constrained by adjustment costs.</p>
 <p>Let’s begin with the following imports</p>
@@ -297,7 +299,7 @@ P_t = a_0 - a_1 Y_t + Z_t,
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Thu May 18 10:15:55 2023       
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Mon Jun  5 10:10:51 2023       
 +-----------------------------------------------------------------------------+
 | NVIDIA-SMI 470.182.03   Driver Version: 470.182.03   CUDA Version: 12.1     |
 |-------------------------------+----------------------+----------------------+
@@ -305,8 +307,10 @@ P_t = a_0 - a_1 Y_t + Z_t,
 | Fan  Temp  Perf  Pwr:Usage/Cap|         Memory-Usage | GPU-Util  Compute M. |
 |                               |                      |               MIG M. |
 |===============================+======================+======================|
-|   0  Tesla V100-SXM2...  Off  | 00000000:00:1E.0 Off |                    0 |
-| N/A   47C    P0    43W / 300W |      0MiB / 16160MiB |      2%      Default |
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>|   0  Tesla V100-SXM2...  Off  | 00000000:00:1E.0 Off |                    0 |
+| N/A   32C    P0    39W / 300W |      0MiB / 16160MiB |      2%      Default |
 |                               |                      |                  N/A |
 +-------------------------------+----------------------+----------------------+
                                                                                
@@ -677,7 +681,7 @@ Concluded loop 9 with error 1.
 Concluded loop 10 with error 1.
 Concluded loop 11 with error 1.
 Concluded loop 12 with error 0.
-TOC: Elapsed: 0:00:1.28
+TOC: Elapsed: 0:00:1.29
 [[ 2  2  2 ...  6  6  6]
  [ 3  3  3 ...  7  7  7]
  [ 4  4  4 ...  7  7  7]
@@ -685,7 +689,7 @@ TOC: Elapsed: 0:00:1.28
  [82 82 82 ... 86 86 86]
  [83 83 83 ... 86 86 86]
  [84 84 84 ... 87 87 87]]
-HPI completed in 1.2840802669525146 seconds.
+HPI completed in 1.2958908081054688 seconds.
 </pre></div>
 </div>
 </div>
@@ -711,7 +715,7 @@ HPI completed in 1.2840802669525146 seconds.
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Starting VFI.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:1.77
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:1.78
 [[ 2  2  2 ...  6  6  6]
  [ 3  3  3 ...  7  7  7]
  [ 4  4  4 ...  7  7  7]
@@ -719,7 +723,7 @@ HPI completed in 1.2840802669525146 seconds.
  [82 82 82 ... 86 86 86]
  [83 83 83 ... 86 86 86]
  [84 84 84 ... 87 87 87]]
-VFI completed in 1.7789876461029053 seconds.
+VFI completed in 1.7888319492340088 seconds.
 </pre></div>
 </div>
 </div>
@@ -753,7 +757,7 @@ VFI completed in 1.7789876461029053 seconds.
  [82 82 82 ... 86 86 86]
  [83 83 83 ... 86 86 86]
  [84 84 84 ... 87 87 87]]
-OPI completed in 0.8873908519744873 seconds.
+OPI completed in 0.8848123550415039 seconds.
 </pre></div>
 </div>
 </div>
@@ -851,12 +855,12 @@ TOC: Elapsed: 0:00:0.05
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>PI completed in 0.053636789321899414 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>PI completed in 0.052329063415527344 seconds.
 Running value function iteration.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:1.31
-VFI completed in 1.313732385635376 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:1.32
+VFI completed in 1.3225862979888916 seconds.
 </pre></div>
 </div>
 </div>
@@ -884,152 +888,152 @@ VFI completed in 1.313732385635376 seconds.
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:0.86
-OPI with m=5 completed in 0.8635470867156982 seconds.
+OPI with m=5 completed in 0.8648579120635986 seconds.
 Running optimistic policy iteration with m=105.
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:0.74
-OPI with m=105 completed in 0.7404594421386719 seconds.
+OPI with m=105 completed in 0.7416694164276123 seconds.
 Running optimistic policy iteration with m=205.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:0.82
-OPI with m=205 completed in 0.8286828994750977 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:0.91
+OPI with m=205 completed in 0.9157986640930176 seconds.
 Running optimistic policy iteration with m=305.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:1.15
-OPI with m=305 completed in 1.156510829925537 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:1.13
+OPI with m=305 completed in 1.138962745666504 seconds.
 Running optimistic policy iteration with m=405.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:1.45
-OPI with m=405 completed in 1.4553484916687012 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:1.48
+OPI with m=405 completed in 1.4860150814056396 seconds.
 Running optimistic policy iteration with m=505.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:1.80
-OPI with m=505 completed in 1.8039305210113525 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:1.86
+OPI with m=505 completed in 1.8664228916168213 seconds.
 Running optimistic policy iteration with m=605.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:2.16
-OPI with m=605 completed in 2.168231725692749 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:2.21
+OPI with m=605 completed in 2.2199323177337646 seconds.
 Running optimistic policy iteration with m=705.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:2.58
-OPI with m=705 completed in 2.5865414142608643 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:2.61
+OPI with m=705 completed in 2.616574764251709 seconds.
 Running optimistic policy iteration with m=805.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:2.87
-OPI with m=805 completed in 2.870591163635254 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:2.94
+OPI with m=805 completed in 2.9413602352142334 seconds.
 Running optimistic policy iteration with m=905.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:3.31
-OPI with m=905 completed in 3.313539981842041 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:3.37
+OPI with m=905 completed in 3.370462417602539 seconds.
 Running optimistic policy iteration with m=1005.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:3.64
-OPI with m=1005 completed in 3.6429443359375 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:3.69
+OPI with m=1005 completed in 3.6919431686401367 seconds.
 Running optimistic policy iteration with m=1105.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:3.99
-OPI with m=1105 completed in 3.995893716812134 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:4.09
+OPI with m=1105 completed in 4.092310428619385 seconds.
 Running optimistic policy iteration with m=1205.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:4.36
-OPI with m=1205 completed in 4.36538028717041 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:4.45
+OPI with m=1205 completed in 4.451117992401123 seconds.
 Running optimistic policy iteration with m=1305.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:4.74
-OPI with m=1305 completed in 4.7427027225494385 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:4.78
+OPI with m=1305 completed in 4.781446933746338 seconds.
 Running optimistic policy iteration with m=1405.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:5.10
-OPI with m=1405 completed in 5.107543706893921 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:5.20
+OPI with m=1405 completed in 5.206829071044922 seconds.
 Running optimistic policy iteration with m=1505.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:5.41
-OPI with m=1505 completed in 5.417302131652832 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:5.54
+OPI with m=1505 completed in 5.544825553894043 seconds.
 Running optimistic policy iteration with m=1605.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:5.78
-OPI with m=1605 completed in 5.7853498458862305 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:5.89
+OPI with m=1605 completed in 5.894176959991455 seconds.
 Running optimistic policy iteration with m=1705.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:6.25
-OPI with m=1705 completed in 6.255780220031738 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:6.20
+OPI with m=1705 completed in 6.205058336257935 seconds.
 Running optimistic policy iteration with m=1805.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:6.54
-OPI with m=1805 completed in 6.542508602142334 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:6.62
+OPI with m=1805 completed in 6.6228132247924805 seconds.
 Running optimistic policy iteration with m=1905.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:6.80
-OPI with m=1905 completed in 6.809491872787476 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:6.94
+OPI with m=1905 completed in 6.949822902679443 seconds.
 Running optimistic policy iteration with m=2005.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:7.42
-OPI with m=2005 completed in 7.421900749206543 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:7.33
+OPI with m=2005 completed in 7.339763641357422 seconds.
 Running optimistic policy iteration with m=2105.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:7.52
-OPI with m=2105 completed in 7.521477460861206 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:7.66
+OPI with m=2105 completed in 7.664538621902466 seconds.
 Running optimistic policy iteration with m=2205.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:7.92
-OPI with m=2205 completed in 7.925204753875732 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:8.10
+OPI with m=2205 completed in 8.103809356689453 seconds.
 Running optimistic policy iteration with m=2305.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:8.34
-OPI with m=2305 completed in 8.348284244537354 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:8.46
+OPI with m=2305 completed in 8.468895435333252 seconds.
 Running optimistic policy iteration with m=2405.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:8.85
-OPI with m=2405 completed in 8.854137897491455 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:8.89
+OPI with m=2405 completed in 8.896317481994629 seconds.
 Running optimistic policy iteration with m=2505.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:9.03
-OPI with m=2505 completed in 9.036672115325928 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:9.24
+OPI with m=2505 completed in 9.242063045501709 seconds.
 Running optimistic policy iteration with m=2605.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:9.39
-OPI with m=2605 completed in 9.390666484832764 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:9.54
+OPI with m=2605 completed in 9.548007011413574 seconds.
 Running optimistic policy iteration with m=2705.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:9.62
-OPI with m=2705 completed in 9.621620416641235 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:9.94
+OPI with m=2705 completed in 9.949474334716797 seconds.
 Running optimistic policy iteration with m=2805.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:10.07
-OPI with m=2805 completed in 10.079921007156372 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:10.28
+OPI with m=2805 completed in 10.283809185028076 seconds.
 Running optimistic policy iteration with m=2905.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:10.52
-OPI with m=2905 completed in 10.523735046386719 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:11.30
+OPI with m=2905 completed in 11.305145978927612 seconds.
 </pre></div>
 </div>
 </div>
@@ -1051,7 +1055,7 @@ OPI with m=2905 completed in 10.523735046386719 seconds.
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/ea793abb9a88d73bb42a367953833f834c97444439baa004ce1ee0027a043d13.png"><img alt="_images/ea793abb9a88d73bb42a367953833f834c97444439baa004ce1ee0027a043d13.png" src="_images/ea793abb9a88d73bb42a367953833f834c97444439baa004ce1ee0027a043d13.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/30599ead0711f5289b774b8ed68d5c24560438d508410f0cce685e683559189d.png"><img alt="_images/30599ead0711f5289b774b8ed68d5c24560438d508410f0cce685e683559189d.png" src="_images/30599ead0711f5289b774b8ed68d5c24560438d508410f0cce685e683559189d.png" style="width: 80%;" /></a>
 </div>
 </div>
 </section>
@@ -1156,38 +1160,50 @@ OPI with m=2905 completed in 10.523735046386719 seconds.
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
+  Data and Empirics
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="mle.html">
+   8. Maximum Likelihood Estimation
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
   Dynamic Programming
  </span>
 </p>
 <ul class="current nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="short_path.html">
-   8. Shortest Paths
+   9. Shortest Paths
   </a>
  </li>
  <li class="toctree-l1 current active active">
   <a class="current reference internal" href="#">
-   9. Optimal Investment
+   10. Optimal Investment
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="opt_savings.html">
-   10. Optimal Savings
+   11. Optimal Savings
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_egm.html">
-   11. Endogenous Grid Method
+   12. Endogenous Grid Method
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="arellano.html">
-   12. Default Risk and Income Fluctuations
+   13. Default Risk and Income Fluctuations
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="aiyagari_jax.html">
-   13. The Aiyagari Model
+   14. The Aiyagari Model
   </a>
  </li>
 </ul>
@@ -1199,17 +1215,17 @@ OPI with m=2905 completed in 10.523735046386719 seconds.
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   14. Troubleshooting
+   15. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   15. References
+   16. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   16. Execution Statistics
+   17. Execution Statistics
   </a>
  </li>
 </ul>
@@ -1245,8 +1261,9 @@ OPI with m=2905 completed in 10.523735046386719 seconds.
                     <li data-tippy-content="Increase font size" class="btn__plus"><i data-feather="plus-circle"></i></li>
                     <li data-tippy-content="Decrease font size" class="btn__minus"><i data-feather="minus-circle"></i></li>
                     <li data-tippy-content="Change contrast" class="btn__contrast"><i data-feather="sunset"></i></li>
+                    <li data-tippy-content="Download Notebook"><a href="/_notebooks/opt_invest.ipynb" download><i data-feather="download-cloud"></i></a></li>
                     <li class="settings-button" id="settingsButton"><div data-tippy-content="Launch Notebook"><i data-feather="play-circle"></i></div></li>
-                        <li data-tippy-content="Download PDF" onClick="window.print()"><i data-feather="file"></i></li>
+                        <li class="download-pdf" id="downloadButton"><i data-feather="file"></i></li>
                     <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-jax/blob/main/lectures/opt_invest.md" download><i data-feather="github"></i></a></li>
                 </ul>
 
@@ -1259,7 +1276,7 @@ OPI with m=2905 completed in 10.523735046386719 seconds.
                     <p>Lecture (PDF)</p>
                 </li>
                 <li class="download-pdf-file">
-                    <a href="" download><p>Book (PDF)</p></a>
+                    <a href="/_pdf/quantecon-jax.pdf" download><p>Book (PDF)</p></a>
                 </li>
             </ul>
         </div>

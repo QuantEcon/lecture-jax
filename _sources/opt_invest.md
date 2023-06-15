@@ -46,11 +46,11 @@ $$ P_t Y_t - c Y_t - \gamma (Y_{t+1} - Y_t)^2 $$
 
 Combining with the demand curve and writing $y, y'$ for $Y_t, Y_{t+1}$, this becomes
 
-$$    r(y, z, y′) := (a_0 - a_1  y + z - c) y - γ  (y′ - y)^2 $$
+$$    r(y, z, y') := (a_0 - a_1  y + z - c) y - γ  (y' - y)^2 $$
 
 The firm maximizes present value of expected discounted profits.  The Bellman equation is
 
-$$   v(y, z) = \max_{y'} \left\{ r(y, z, y′) + β \sum_{z′} v(y′, z′) Q(z, z′) \right\}. $$
+$$   v(y, z) = \max_{y'} \left\{ r(y, z, y') + β \sum_{z'} v(y', z') Q(z, z') \right\}. $$
 
 We discretize $y$ to a finite grid `y_grid`.
 

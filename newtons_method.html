@@ -258,7 +258,7 @@ in <a class="reference external" href="https://python.quantecon.org/newton_metho
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Thu May 18 10:13:06 2023       
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Mon Jun  5 10:07:59 2023       
 +-----------------------------------------------------------------------------+
 | NVIDIA-SMI 470.182.03   Driver Version: 470.182.03   CUDA Version: 12.1     |
 |-------------------------------+----------------------+----------------------+
@@ -269,7 +269,7 @@ in <a class="reference external" href="https://python.quantecon.org/newton_metho
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>|   0  Tesla V100-SXM2...  Off  | 00000000:00:1E.0 Off |                    0 |
-| N/A   47C    P0    43W / 300W |      0MiB / 16160MiB |      2%      Default |
+| N/A   33C    P0    39W / 300W |      0MiB / 16160MiB |      2%      Default |
 |                               |                      |                  N/A |
 +-------------------------------+----------------------+----------------------+
                                                                                
@@ -456,8 +456,8 @@ iteration 6, error = 4.6261807256087195e-06
 
 Result = [1.4999796 1.503175  1.4918782 ... 1.4914232 1.4956646 1.4976945] 
 
-CPU times: user 4.98 s, sys: 1.3 s, total: 6.28 s
-Wall time: 4.34 s
+CPU times: user 4.85 s, sys: 1.36 s, total: 6.21 s
+Wall time: 4.27 s
 </pre></div>
 </div>
 </div>
@@ -489,8 +489,8 @@ even with the Jacobian supplied.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 2min 23s, sys: 362 ms, total: 2min 23s
-Wall time: 2min 23s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 2min 25s, sys: 350 ms, total: 2min 26s
+Wall time: 2min 25s
 </pre></div>
 </div>
 </div>
@@ -617,8 +617,8 @@ iteration 6, error = 8.92080606718082e-07
 
 Result = [3.8405814 3.870718  3.4109194] 
 
-CPU times: user 886 ms, sys: 8.82 ms, total: 895 ms
-Wall time: 679 ms
+CPU times: user 833 ms, sys: 12.3 ms, total: 845 ms
+Wall time: 687 ms
 ----------------------------------------------------------------
 Attempt 2: Starting value is [3. 5. 5.] 
 </pre></div>
@@ -630,8 +630,8 @@ iteration 4, error = 3.3717478231665154e-07
 
 Result = [3.8405814 3.8707182 3.4109197] 
 
-CPU times: user 591 ms, sys: 8.48 ms, total: 599 ms
-Wall time: 222 ms
+CPU times: user 596 ms, sys: 4.57 ms, total: 601 ms
+Wall time: 230 ms
 ----------------------------------------------------------------
 Attempt 3: Starting value is [50. 50. 50.] 
 </pre></div>
@@ -647,8 +647,8 @@ iteration 6, error = 9.830249609876773e-07
 
 Result = [3.840581  3.8707182 3.41092  ] 
 
-CPU times: user 1.23 s, sys: 6.69 ms, total: 1.23 s
-Wall time: 509 ms
+CPU times: user 1.21 s, sys: 24.7 ms, total: 1.23 s
+Wall time: 497 ms
 ----------------------------------------------------------------
 </pre></div>
 </div>
@@ -695,8 +695,8 @@ iteration 4, error = 8.259061701210157e-07
 
 Result = [1.7846744 1.7846744 1.7846744] 
 
-CPU times: user 1.25 s, sys: 4.18 ms, total: 1.25 s
-Wall time: 499 ms
+CPU times: user 1.17 s, sys: 20.3 ms, total: 1.19 s
+Wall time: 509 ms
 </pre></div>
 </div>
 </div>
@@ -724,8 +724,8 @@ iteration 5, error = 1.538370149106851e-15
 
 Result = [1.78467418 1.78467418 1.78467418] 
 
-CPU times: user 840 ms, sys: 24.1 ms, total: 864 ms
-Wall time: 707 ms
+CPU times: user 854 ms, sys: 12.7 ms, total: 867 ms
+Wall time: 709 ms
 </pre></div>
 </div>
 </div>
@@ -834,9 +834,7 @@ c = \begin{pmatrix}
 Attempt 2: Starting value is [4.5 0.1 4. ] 
 
 iteration 1, error = 4.892018895185869
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>iteration 2, error = 1.2120550201694784
+iteration 2, error = 1.2120550201694784
 iteration 3, error = 0.6942087122866175
 iteration 4, error = 0.168951089180319
 iteration 5, error = 0.005209730313222213
@@ -845,9 +843,10 @@ iteration 7, error = 3.0460818773540415e-12
 iteration 8, error = 0.0
 
 Result = [1.49744442 1.49744442 1.49744442] 
-
-CPU times: user 828 ms, sys: 24.5 ms, total: 853 ms
-Wall time: 233 ms
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 853 ms, sys: 8.03 ms, total: 861 ms
+Wall time: 238 ms
 ----------------------------------------------------------------
 </pre></div>
 </div>
@@ -974,38 +973,50 @@ Wall time: 233 ms
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
+  Data and Empirics
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="mle.html">
+   8. Maximum Likelihood Estimation
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
   Dynamic Programming
  </span>
 </p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="short_path.html">
-   8. Shortest Paths
+   9. Shortest Paths
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="opt_invest.html">
-   9. Optimal Investment
+   10. Optimal Investment
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="opt_savings.html">
-   10. Optimal Savings
+   11. Optimal Savings
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_egm.html">
-   11. Endogenous Grid Method
+   12. Endogenous Grid Method
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="arellano.html">
-   12. Default Risk and Income Fluctuations
+   13. Default Risk and Income Fluctuations
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="aiyagari_jax.html">
-   13. The Aiyagari Model
+   14. The Aiyagari Model
   </a>
  </li>
 </ul>
@@ -1017,17 +1028,17 @@ Wall time: 233 ms
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   14. Troubleshooting
+   15. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   15. References
+   16. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   16. Execution Statistics
+   17. Execution Statistics
   </a>
  </li>
 </ul>
@@ -1063,8 +1074,9 @@ Wall time: 233 ms
                     <li data-tippy-content="Increase font size" class="btn__plus"><i data-feather="plus-circle"></i></li>
                     <li data-tippy-content="Decrease font size" class="btn__minus"><i data-feather="minus-circle"></i></li>
                     <li data-tippy-content="Change contrast" class="btn__contrast"><i data-feather="sunset"></i></li>
+                    <li data-tippy-content="Download Notebook"><a href="/_notebooks/newtons_method.ipynb" download><i data-feather="download-cloud"></i></a></li>
                     <li class="settings-button" id="settingsButton"><div data-tippy-content="Launch Notebook"><i data-feather="play-circle"></i></div></li>
-                        <li data-tippy-content="Download PDF" onClick="window.print()"><i data-feather="file"></i></li>
+                        <li class="download-pdf" id="downloadButton"><i data-feather="file"></i></li>
                     <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-jax/blob/main/lectures/newtons_method.md" download><i data-feather="github"></i></a></li>
                 </ul>
 
@@ -1077,7 +1089,7 @@ Wall time: 233 ms
                     <p>Lecture (PDF)</p>
                 </li>
                 <li class="download-pdf-file">
-                    <a href="" download><p>Book (PDF)</p></a>
+                    <a href="/_pdf/quantecon-jax.pdf" download><p>Book (PDF)</p></a>
                 </li>
             </ul>
         </div>
