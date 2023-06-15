@@ -11,8 +11,6 @@ kernelspec:
   name: python3
 ---
 
-
-
 # An Asset Pricing Problem
 
 ## Overview
@@ -37,8 +35,6 @@ In addition to what's in Anaconda, this lecture will need the following librarie
 !pip install quantecon
 ```
 
-
-
 Below we use the following imports
 
 ```{code-cell} ipython3
@@ -51,15 +47,11 @@ import jax.numpy as jnp
 from collections import namedtuple
 ```
 
-
-
 We will use 64 bit floats with JAX in order to increase precision.
 
 ```{code-cell} ipython3
 jax.config.update("jax_enable_x64", True)
 ```
-
-
 
 ## Pricing a single payoff
 
@@ -365,8 +357,6 @@ def power_iteration_sr(A, num_iterations=15, seed=1234):
 power_iteration_sr = jax.jit(power_iteration_sr, static_argnums=(1,2))
 ```
 
-
-
 The next function verifies that the spectral radius of a given matrix is $< 1$.
 
 ```{code-cell} ipython3
@@ -377,8 +367,6 @@ def test_stability(Q):
     sr = power_iteration_sr(Q)
     assert sr < 1, f"Spectral radius condition failed with radius = {sr}"
 ```
-
-
 
 In what follows we assume that $\{X_t\}$, the state process, is a discretization of the AR(1) process
 
@@ -415,8 +403,6 @@ def create_model(N=100,         # size of state space for Markov chain
     return Model(P=P, S=S, β=β, γ=γ, μ_c=μ_c, μ_d=μ_d, σ_c=σ_c, σ_d=σ_d)
 ```
 
-
-
 Our first step is to construct the matrix $K$.
 
 To exploit the parallelization capabilities of JAX, we use a vectorized (i.e., loop-free) implementation.
@@ -433,8 +419,6 @@ def compute_K(model):
     K = β * e * P
     return K
 ```
-
-
 
 Just to double check, let's write a loop version and check we get the same matrix.
 
@@ -458,8 +442,6 @@ K1 = compute_K(model)
 K2 = compute_K_loop(model)
 jnp.allclose(K1, K2)
 ```
-
-
 
 Now we can compute the price-dividend ratio:
 
@@ -493,8 +475,6 @@ def price_dividend_ratio(model, test_stable=True):
     return v
 ```
 
-
-
 Here's a plot of $v$ as a function of the state for several values of $\gamma$.
 
 ```{code-cell} ipython3
@@ -514,8 +494,6 @@ ax.set_xlabel("state")
 ax.legend(loc='upper right')
 plt.show()
 ```
-
-
 
 Notice that $v$ is decreasing in each case.
 
@@ -729,8 +707,6 @@ def create_sv_model(β=0.98,        # discount factor
                    β=β, γ=γ, bar_σ=bar_σ, μ_c=μ_c, μ_d=μ_d)
 ```
 
-
-
 Now we provide a function to compute the matrix $H$.
 
 ```{code-cell} ipython3
@@ -754,8 +730,6 @@ def compute_H(sv_model):
     H = np.reshape(H, (N, N))
     return H
 ```
-
-
 
 Here's our function to compute the price-dividend ratio for the stochastic volatility model.
 
@@ -795,8 +769,6 @@ def sv_pd_ratio(sv_model, test_stable=True):
     return v
 ```
 
-
-
 Let's create an instance of the model and solve it.
 
 ```{code-cell} ipython3
@@ -809,8 +781,6 @@ qe.tic()
 v = sv_pd_ratio(sv_model)
 np_time = qe.toc()
 ```
-
-
 
 Here are some plots of the solution $v$ along the three dimensions.
 
@@ -841,8 +811,6 @@ ax.legend()
 plt.show()
 ```
 
-
-
 ## JAX Version
 
 
@@ -867,8 +835,6 @@ def create_sv_model_jax(sv_model):    # mean growth of dividends
                    R=R, z_grid=z_grid,
                    β=β, γ=γ, bar_σ=bar_σ, μ_c=μ_c, μ_d=μ_d)
 ```
-
-
 
 Here's a function to compute $H$.
 
@@ -897,8 +863,6 @@ def compute_H_jax(sv_model, shapes):
     H = jnp.reshape(H, (N, N))
     return H
 ```
-
-
 
 Here's the function that computes the solution.
 
@@ -934,8 +898,6 @@ def sv_pd_ratio_jax(sv_model, shapes):
     return jnp.reshape(v, (I, J, K))
 ```
 
-
-
 Now let's target these functions for JIT-compilation, while using `static_argnums` to indicate that the function will need to be recompiled when `shapes` changes.
 
 ```{code-cell} ipython3
@@ -950,8 +912,6 @@ P, hc_grid, Q, hd_grid, R, z_grid, β, γ, bar_σ, μ_c, μ_d = sv_model_jax
 shapes = len(hc_grid), len(hd_grid), len(z_grid)
 ```
 
-
-
 Let's see how long it takes to run with compile time included.
 
 ```{code-cell} ipython3
@@ -959,8 +919,6 @@ qe.tic()
 v_jax = sv_pd_ratio_jax(sv_model_jax, shapes).block_until_ready()
 jnp_time_0 = qe.toc()
 ```
-
-
 
 And now let's see without compile time.
 
@@ -970,15 +928,11 @@ v_jax = sv_pd_ratio_jax(sv_model_jax, shapes).block_until_ready()
 jnp_time_1 = qe.toc()
 ```
 
-
-
 Here's the ratio of times:
 
 ```{code-cell} ipython3
 jnp_time_1 / np_time
 ```
-
-
 
 Let's check that the NumPy and JAX versions realize the same solution.
 
@@ -987,8 +941,6 @@ v = jax.device_put(v)
 
 print(jnp.allclose(v, v_jax))
 ```
-
-
 
 ## A memory-efficient JAX version
 
@@ -1026,8 +978,6 @@ def H_operator(g, sv_model, shapes):
     return Hg
 ```
 
-
-
 The next function modifies our earlier `power_iteration_sr` function so that it
 can act on linear operators rather than matrices, also the spectral radius of the transition matrix less than one ensures the convergence of our calculations in the model.
 
@@ -1043,8 +993,6 @@ def update_g(H_operator, sv_model, shapes, num_iterations=20):
     return sr
 ```
 
-
-
 Let's check the output
 
 ```{code-cell} ipython3
@@ -1053,8 +1001,6 @@ sr = update_g(H_operator, sv_model, shapes)
 qe.toc()
 print(sr)
 ```
-
-
 
 Now we write a version of the solution function for the price-dividend ratio
 that acts directly on the linear operator `H_operator`.
@@ -1078,16 +1024,12 @@ def sv_pd_ratio_jax_multi(sv_model, shapes):
     return v
 ```
 
-
-
 Let's target these functions for JIT compilation.
 
 ```{code-cell} ipython3
 H_operator = jax.jit(H_operator, static_argnums=(2,))
 sv_pd_ratio_jax_multi = jax.jit(sv_pd_ratio_jax_multi, static_argnums=(1,))
 ```
-
-
 
 Let's time the solution with compile time included.
 
@@ -1139,4 +1081,16 @@ jnp_time_multi_2 = qe.toc()
 
 ```{code-cell} ipython3
 jnp_time_multi_1 / jnp_time_1
+```
+
+```{code-cell} ipython3
+
+```
+
+```{code-cell} ipython3
+# test ipython3 bug 
+```
+
+```{code-cell} ipython3
+
 ```
