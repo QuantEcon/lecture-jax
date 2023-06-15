@@ -11,7 +11,7 @@ kernelspec:
   name: python3
 ---
 
-+++ {"user_expressions": []}
+
 
 # An Asset Pricing Problem
 
@@ -26,7 +26,7 @@ Along the way, we will show how to solve some memory-intensive problems with lar
 
 We do this using elegant techniques made available by JAX, involving the use of linear operators to avoid instantiating large matrices.
 
-If you wish to skip all motivation and move straight to the first equation we plan to solve, 
+If you wish to skip all motivation and move straight to the first equation we plan to solve,
 you can jump to [](eq:ntecx2).
 
 In addition to what's in Anaconda, this lecture will need the following libraries:
@@ -37,11 +37,11 @@ In addition to what's in Anaconda, this lecture will need the following librarie
 !pip install quantecon
 ```
 
-+++ {"user_expressions": []}
+
 
 Below we use the following imports
 
-```{code-cell}
+```{code-cell} ipython3
 import scipy
 import quantecon as qe
 import matplotlib.pyplot as plt
@@ -51,15 +51,15 @@ import jax.numpy as jnp
 from collections import namedtuple
 ```
 
-+++ {"user_expressions": []}
+
 
 We will use 64 bit floats with JAX in order to increase precision.
 
-```{code-cell}
+```{code-cell} ipython3
 jax.config.update("jax_enable_x64", True)
 ```
 
-+++ {"user_expressions": []}
+
 
 ## Pricing a single payoff
 
@@ -338,7 +338,7 @@ We will use the [power iteration algorithm](https://en.wikipedia.org/wiki/Power_
 
 The function below computes the spectral radius of `A`.
 
-```{code-cell}
+```{code-cell} ipython3
 def power_iteration_sr(A, num_iterations=15, seed=1234):
     " Estimates the spectral radius of A via power iteration. "
 
@@ -365,11 +365,11 @@ def power_iteration_sr(A, num_iterations=15, seed=1234):
 power_iteration_sr = jax.jit(power_iteration_sr, static_argnums=(1,2))
 ```
 
-+++ {"user_expressions": []}
+
 
 The next function verifies that the spectral radius of a given matrix is $< 1$.
 
-```{code-cell}
+```{code-cell} ipython3
 def test_stability(Q):
     """
     Assert that the spectral radius of matrix Q is < 1.
@@ -378,7 +378,7 @@ def test_stability(Q):
     assert sr < 1, f"Spectral radius condition failed with radius = {sr}"
 ```
 
-+++ {"user_expressions": []}
+
 
 In what follows we assume that $\{X_t\}$, the state process, is a discretization of the AR(1) process
 
@@ -392,7 +392,7 @@ To discretize this process we use QuantEcon.py's `tauchen` function.
 
 Below we write a function called `create_model()` that returns a namedtuple storing the relevant parameters and arrays.
 
-```{code-cell}
+```{code-cell} ipython3
 Model = namedtuple('Model',
                    ('P', 'S', 'β', 'γ', 'μ_c', 'μ_d', 'σ_c', 'σ_d'))
 
@@ -415,13 +415,13 @@ def create_model(N=100,         # size of state space for Markov chain
     return Model(P=P, S=S, β=β, γ=γ, μ_c=μ_c, μ_d=μ_d, σ_c=σ_c, σ_d=σ_d)
 ```
 
-+++ {"user_expressions": []}
+
 
 Our first step is to construct the matrix $K$.
 
 To exploit the parallelization capabilities of JAX, we use a vectorized (i.e., loop-free) implementation.
 
-```{code-cell}
+```{code-cell} ipython3
 def compute_K(model):
     # Setp up
     P, S, β, γ, μ_c, μ_d, σ_c, σ_d = model
@@ -434,11 +434,11 @@ def compute_K(model):
     return K
 ```
 
-+++ {"user_expressions": []}
+
 
 Just to double check, let's write a loop version and check we get the same matrix.
 
-```{code-cell}
+```{code-cell} ipython3
 def compute_K_loop(model):
     # Setp up
     P, S, β, γ, μ_c, μ_d, σ_c, σ_d = model
@@ -452,18 +452,18 @@ def compute_K_loop(model):
     return K
 ```
 
-```{code-cell}
+```{code-cell} ipython3
 model = create_model(N=10)
 K1 = compute_K(model)
 K2 = compute_K_loop(model)
 jnp.allclose(K1, K2)
 ```
 
-+++ {"user_expressions": []}
+
 
 Now we can compute the price-dividend ratio:
 
-```{code-cell}
+```{code-cell} ipython3
 def price_dividend_ratio(model, test_stable=True):
     """
     Computes the price-dividend ratio of the asset.
@@ -493,11 +493,11 @@ def price_dividend_ratio(model, test_stable=True):
     return v
 ```
 
-+++ {"user_expressions": []}
+
 
 Here's a plot of $v$ as a function of the state for several values of $\gamma$.
 
-```{code-cell}
+```{code-cell} ipython3
 model = create_model()
 S = model.S
 γs = jnp.linspace(2.0, 3.0, 5)
@@ -515,7 +515,7 @@ ax.legend(loc='upper right')
 plt.show()
 ```
 
-+++ {"user_expressions": []}
+
 
 Notice that $v$ is decreasing in each case.
 
@@ -691,7 +691,7 @@ $$
     Z_{t+1} = \rho_z Z_t + \sigma_z \xi_{t+1}
 $$
 
-```{code-cell}
+```{code-cell} ipython3
 SVModel = namedtuple('SVModel',
                         ('P', 'hc_grid',
                          'Q', 'hd_grid',
@@ -729,11 +729,11 @@ def create_sv_model(β=0.98,        # discount factor
                    β=β, γ=γ, bar_σ=bar_σ, μ_c=μ_c, μ_d=μ_d)
 ```
 
-+++ {"user_expressions": []}
+
 
 Now we provide a function to compute the matrix $H$.
 
-```{code-cell}
+```{code-cell} ipython3
 def compute_H(sv_model):
     # Set up
     P, hc_grid, Q, hd_grid, R, z_grid, β, γ, bar_σ, μ_c, μ_d = sv_model
@@ -755,11 +755,11 @@ def compute_H(sv_model):
     return H
 ```
 
-+++ {"user_expressions": []}
+
 
 Here's our function to compute the price-dividend ratio for the stochastic volatility model.
 
-```{code-cell}
+```{code-cell} ipython3
 def sv_pd_ratio(sv_model, test_stable=True):
     """
     Computes the price-dividend ratio of the asset for the stochastic volatility
@@ -795,26 +795,26 @@ def sv_pd_ratio(sv_model, test_stable=True):
     return v
 ```
 
-+++ {"user_expressions": []}
+
 
 Let's create an instance of the model and solve it.
 
-```{code-cell}
+```{code-cell} ipython3
 sv_model = create_sv_model()
 P, hc_grid, Q, hd_grid, R, z_grid, β, γ, bar_σ, μ_c, μ_d = sv_model
 ```
 
-```{code-cell}
+```{code-cell} ipython3
 qe.tic()
 v = sv_pd_ratio(sv_model)
 np_time = qe.toc()
 ```
 
-+++ {"user_expressions": []}
+
 
 Here are some plots of the solution $v$ along the three dimensions.
 
-```{code-cell}
+```{code-cell} ipython3
 fig, ax = plt.subplots()
 ax.plot(hc_grid, v[:, 0, 0], lw=2, alpha=0.6, label="$v$ as a function of $H^c$")
 ax.set_ylabel("price-dividend ratio")
@@ -823,7 +823,7 @@ ax.legend()
 plt.show()
 ```
 
-```{code-cell}
+```{code-cell} ipython3
 fig, ax = plt.subplots()
 ax.plot(hd_grid, v[0, :, 0], lw=2, alpha=0.6, label="$v$ as a function of $H^d$")
 ax.set_ylabel("price-dividend ratio")
@@ -832,7 +832,7 @@ ax.legend()
 plt.show()
 ```
 
-```{code-cell}
+```{code-cell} ipython3
 fig, ax = plt.subplots()
 ax.plot(z_grid, v[0, 0, :], lw=2, alpha=0.6, label="$v$ as a function of $Z$")
 ax.set_ylabel("price-dividend ratio")
@@ -841,7 +841,7 @@ ax.legend()
 plt.show()
 ```
 
-+++ {"user_expressions": []}
+
 
 ## JAX Version
 
@@ -851,7 +851,7 @@ Now let's write a JAX version that is a simple transformation of the NumPy versi
 
 (Below we will write a more efficient version using JAX's ability to work with linear operators.)
 
-```{code-cell}
+```{code-cell} ipython3
 def create_sv_model_jax(sv_model):    # mean growth of dividends
 
     # Take the contents of a NumPy sv_model instance
@@ -868,7 +868,7 @@ def create_sv_model_jax(sv_model):    # mean growth of dividends
                    β=β, γ=γ, bar_σ=bar_σ, μ_c=μ_c, μ_d=μ_d)
 ```
 
-+++ {"user_expressions": []}
+
 
 Here's a function to compute $H$.
 
@@ -876,7 +876,7 @@ We include the extra argument `shapes` to help the compiler understand the size 
 
 This is important when we JIT-compile the function below.
 
-```{code-cell}
+```{code-cell} ipython3
 def compute_H_jax(sv_model, shapes):
     # Set up
     P, hc_grid, Q, hd_grid, R, z_grid, β, γ, bar_σ, μ_c, μ_d = sv_model
@@ -898,11 +898,11 @@ def compute_H_jax(sv_model, shapes):
     return H
 ```
 
-+++ {"user_expressions": []}
+
 
 Here's the function that computes the solution.
 
-```{code-cell}
+```{code-cell} ipython3
 def sv_pd_ratio_jax(sv_model, shapes):
     """
     Computes the price-dividend ratio of the asset for the stochastic volatility
@@ -934,61 +934,61 @@ def sv_pd_ratio_jax(sv_model, shapes):
     return jnp.reshape(v, (I, J, K))
 ```
 
-+++ {"user_expressions": []}
+
 
 Now let's target these functions for JIT-compilation, while using `static_argnums` to indicate that the function will need to be recompiled when `shapes` changes.
 
-```{code-cell}
+```{code-cell} ipython3
 compute_H_jax = jax.jit(compute_H_jax, static_argnums=(1,))
 sv_pd_ratio_jax = jax.jit(sv_pd_ratio_jax, static_argnums=(1,))
 ```
 
-```{code-cell}
+```{code-cell} ipython3
 sv_model = create_sv_model()
 sv_model_jax = create_sv_model_jax(sv_model)
 P, hc_grid, Q, hd_grid, R, z_grid, β, γ, bar_σ, μ_c, μ_d = sv_model_jax
 shapes = len(hc_grid), len(hd_grid), len(z_grid)
 ```
 
-+++ {"user_expressions": []}
+
 
 Let's see how long it takes to run with compile time included.
 
-```{code-cell}
+```{code-cell} ipython3
 qe.tic()
 v_jax = sv_pd_ratio_jax(sv_model_jax, shapes).block_until_ready()
 jnp_time_0 = qe.toc()
 ```
 
-+++ {"user_expressions": []}
+
 
 And now let's see without compile time.
 
-```{code-cell}
+```{code-cell} ipython3
 qe.tic()
 v_jax = sv_pd_ratio_jax(sv_model_jax, shapes).block_until_ready()
 jnp_time_1 = qe.toc()
 ```
 
-+++ {"user_expressions": []}
+
 
 Here's the ratio of times:
 
-```{code-cell}
+```{code-cell} ipython3
 jnp_time_1 / np_time
 ```
 
-+++ {"user_expressions": []}
+
 
 Let's check that the NumPy and JAX versions realize the same solution.
 
-```{code-cell}
+```{code-cell} ipython3
 v = jax.device_put(v)
 
 print(jnp.allclose(v, v_jax))
 ```
 
-+++ {"user_expressions": []}
+
 
 ## A memory-efficient JAX version
 
@@ -1006,7 +1006,7 @@ $$
         \kappa[i, j, k] g[i', j', k'] P[i, i']Q[j, j']R[k, k']
 $$
 
-```{code-cell}
+```{code-cell} ipython3
 def H_operator(g, sv_model, shapes):
     # Set up
     P, hc_grid, Q, hd_grid, R, z_grid, β, γ, bar_σ, μ_c, μ_d = sv_model
@@ -1026,40 +1026,40 @@ def H_operator(g, sv_model, shapes):
     return Hg
 ```
 
-+++ {"user_expressions": []}
+
 
 The next function modifies our earlier `power_iteration_sr` function so that it
 can act on linear operators rather than matrices, also the spectral radius of the transition matrix less than one ensures the convergence of our calculations in the model.
 
-```{code-cell}
-def update_g(H_operator, sv_model, shapes, num_iterations=20):    
+```{code-cell} ipython3
+def update_g(H_operator, sv_model, shapes, num_iterations=20):
     g_k = jnp.ones(shapes)
     for _ in range(num_iterations):
         g_k1 = H_operator(g_k, sv_model, shapes)
         sr = jnp.sum(g_k1 * g_k) / jnp.sum(g_k * g_k)
         g_k1_norm = jnp.linalg.norm(g_k1)
         g_k = g_k1 / g_k1_norm
-            
+
     return sr
 ```
 
-+++ {"user_expressions": []}
+
 
 Let's check the output
 
-```{code-cell}
+```{code-cell} ipython3
 qe.tic()
 sr = update_g(H_operator, sv_model, shapes)
 qe.toc()
 print(sr)
 ```
 
-+++ {"user_expressions": []}
+
 
 Now we write a version of the solution function for the price-dividend ratio
 that acts directly on the linear operator `H_operator`.
 
-```{code-cell}
+```{code-cell} ipython3
 def sv_pd_ratio_jax_multi(sv_model, shapes):
 
     # Setp up
@@ -1078,20 +1078,20 @@ def sv_pd_ratio_jax_multi(sv_model, shapes):
     return v
 ```
 
-+++ {"user_expressions": []}
+
 
 Let's target these functions for JIT compilation.
 
-```{code-cell}
+```{code-cell} ipython3
 H_operator = jax.jit(H_operator, static_argnums=(2,))
 sv_pd_ratio_jax_multi = jax.jit(sv_pd_ratio_jax_multi, static_argnums=(1,))
 ```
 
-+++ {"user_expressions": []}
+
 
 Let's time the solution with compile time included.
 
-```{code-cell}
+```{code-cell} ipython3
 qe.tic()
 v_jax_multi = sv_pd_ratio_jax_multi(sv_model, shapes).block_until_ready()
 jnp_time_multi_0 = qe.toc()
@@ -1117,7 +1117,7 @@ Let's verify the solution again:
 print(jnp.allclose(v, v_jax_multi))
 ```
 
-+++ {"user_expressions": []}
+
 
 Whether or not we get a speed gain over the previous version depends on the size of the grids.
 
@@ -1125,27 +1125,27 @@ In general, the linear operator approach will be slower for small grids but fast
 
 Here's the ratio of times (Efficient JAX / JAX):
 
-```{code-cell}
-jnp_time_multi_0 / jnp_time_1  
+```{code-cell} ipython3
+jnp_time_multi_0 / jnp_time_1
 ```
 
 The speed is about the same but now we can work with much larger grids.
 
 Here's a moderately large example, where the state space has 15,625 elements.
 
-```{code-cell}
+```{code-cell} ipython3
 sv_model = create_sv_model(I=25, J=25, K=25)
 sv_model_jax = create_sv_model_jax(sv_model)
 P, hc_grid, Q, hd_grid, R, z_grid, β, γ, bar_σ, μ_c, μ_d = sv_model_jax
 shapes = len(hc_grid), len(hd_grid), len(z_grid)
 ```
 
-```{code-cell}
+```{code-cell} ipython3
 qe.tic()
 v_jax_multi = sv_pd_ratio_jax_multi(sv_model, shapes).block_until_ready()
 jnp_time_multi_2 = qe.toc()
 ```
 
-```{code-cell}
-jnp_time_multi_1 / jnp_time_1 
+```{code-cell} ipython3
+jnp_time_multi_1 / jnp_time_1
 ```
