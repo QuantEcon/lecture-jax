@@ -1105,31 +1105,22 @@ v_jax_multi = sv_pd_ratio_jax_multi(sv_model, shapes).block_until_ready()
 jnp_time_multi_1 = qe.toc()
 ```
 
-Here’s the ratio of times between memory-efficient and direct version:
-
-```{code-cell} ipython3
-jnp_time_multi_1 / jnp_time_1
-```
-
 Let's verify the solution again:
 
 ```{code-cell} ipython3
 print(jnp.allclose(v, v_jax_multi))
 ```
 
-+++ {"user_expressions": []}
+Here’s the ratio of times between memory-efficient and direct version:
 
-Whether or not we get a speed gain over the previous version depends on the size of the grids.
-
-In general, the linear operator approach will be slower for small grids but faster for later ones.
-
-Here's the ratio of times (Efficient JAX / JAX):
-
-```{code-cell}
-jnp_time_multi_0 / jnp_time_1  
+```{code-cell} ipython3
+jnp_time_multi_1 / jnp_time_1
 ```
 
-The speed is about the same but now we can work with much larger grids.
+The speed is about the same but,
+
+1. now we can work with much larger grids, and
+2. the memory efficient version will be significantly faster with larger grids.
 
 Here's a moderately large example, where the state space has 15,625 elements.
 
