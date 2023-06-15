@@ -1099,6 +1099,22 @@ v_jax_multi = sv_pd_ratio_jax_multi(sv_model, shapes).block_until_ready()
 jnp_time_multi_0 = qe.toc()
 ```
 
+And now let’s see without compile time.
+
+```{code-cell} ipython3
+qe.tic()
+v_jax_multi = sv_pd_ratio_jax_multi(sv_model, shapes).block_until_ready()
+jnp_time_multi_1 = qe.toc()
+```
+
+Here’s the ratio of times between memory-efficient and direct version:
+
+```{code-cell} ipython3
+jnp_time_multi_1 / jnp_time_1
+```
+
+Let's verify the solution again:
+
 ```{code-cell} ipython3
 print(jnp.allclose(v, v_jax_multi))
 ```
@@ -1123,7 +1139,7 @@ shapes = len(hc_grid), len(hd_grid), len(z_grid)
 ```{code-cell} ipython3
 qe.tic()
 v_jax_multi = sv_pd_ratio_jax_multi(sv_model, shapes).block_until_ready()
-jnp_time_multi_1 = qe.toc()
+jnp_time_multi_2 = qe.toc()
 ```
 
 ```{code-cell} ipython3
