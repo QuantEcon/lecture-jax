@@ -1094,3 +1094,11 @@ jnp_time_multi_1 / jnp_time_1
 ```{code-cell} ipython3
 
 ```
+
+```{code-cell} ipython3
+# test ipython3 bug using jupyter lab
+```
+
+```{code-cell} ipython3
+
+```
