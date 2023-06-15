@@ -252,7 +252,8 @@ The result is also less accurate.
 :label: newton_ex1
 ```
 
-Consider a three-dimensional extension of the Solow fixed point problem with
+Consider a three-dimensional extension of [the Solow fixed point
+problem](https://python.quantecon.org/newton_method.html#the-solow-model) with
 
 $$
 A = \begin{pmatrix}
