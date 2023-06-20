@@ -1084,15 +1084,3 @@ jnp_time_multi_2 = qe.toc()
 ```{code-cell} ipython3
 jnp_time_multi_1 / jnp_time_1
 ```
-
-```{code-cell} ipython3
-# test after update jupyterlab-myst
-```
-
-```{code-cell} ipython3
-
-```
-
-```{code-cell} ipython3
-
-```
