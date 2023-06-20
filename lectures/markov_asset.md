@@ -979,7 +979,11 @@ def H_operator(g, sv_model, shapes):
 ```
 
 The next function modifies our earlier `power_iteration_sr` function so that it
-can act on linear operators rather than matrices, also the spectral radius of the transition matrix less than one ensures the convergence of our calculations in the model.
+can act on linear operators rather than matrices,
+
++++
+
+also the spectral radius of the transition matrix less than one ensures the convergence of our calculations in the model.
 
 ```{code-cell} ipython3
 def update_g(H_operator, sv_model, shapes, num_iterations=20):
@@ -1059,7 +1063,7 @@ Here’s the ratio of times between memory-efficient and direct version:
 jnp_time_multi_1 / jnp_time_1
 ```
 
-The speed is about the same but,
+The speed is somewhat faster. In addition,
 
 1. now we can work with much larger grids, and
 2. the memory efficient version will be significantly faster with larger grids.
