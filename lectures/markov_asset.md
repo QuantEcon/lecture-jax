@@ -981,8 +981,6 @@ def H_operator(g, sv_model, shapes):
 The next function modifies our earlier `power_iteration_sr` function so that it
 can act on linear operators rather than matrices,
 
-+++
-
 also the spectral radius of the transition matrix less than one ensures the convergence of our calculations in the model.
 
 ```{code-cell} ipython3
