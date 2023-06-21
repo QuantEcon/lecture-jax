@@ -11,6 +11,11 @@ kernelspec:
   name: python3
 ---
 
+# Cake Eating: Numerical Methods
+
+```{include} _admonition/gpu.md
+```
+
 ```{code-cell} ipython3
 import matplotlib.pyplot as plt
 import jax
@@ -29,7 +34,7 @@ def v_star(x, β, γ):
 ```
 
 ```{code-cell} ipython3
-CEM = namedtuple('CakeEatingModel', 
+CEM = namedtuple('CakeEatingModel',
                     ('β', 'γ', 'x_grid'))
 ```
 
@@ -47,11 +52,7 @@ def create_cake_eating_model(β=0.96,           # discount factor
 # Utility function
 @jax.jit
 def u(c, cem):
-    def gamma_one():
-        return jnp.log(c)
-    def gamma_not_one():
-        return (c ** (1 - cem.γ)) / (1 - cem.γ)
-    return jax.lax.cond(cem.γ == 1, gamma_one, gamma_not_one)
+    return jnp.where(cem.γ == 1, jnp.log(c), (c ** (1 - cem.γ)) / (1 - cem.γ))
 ```
 
 ```{code-cell} ipython3
@@ -67,9 +68,9 @@ def state_action_value(x, c, v_array, cem):
     """
     Right hand side of the Bellman equation given x and c.
     """
-    
+
     return jnp.where(c <= x,
-                     u(c, cem) + cem.β * jax.numpy.interp(x - c, cem.x_grid, v_array),
+                     u(c, cem) + cem.β * jnp.interp(x - c, cem.x_grid, v_array),
                      -jnp.inf)
 ```
 
@@ -195,5 +196,44 @@ plt.show()
 ```
 
 ```{code-cell} ipython3
+@jax.jit
+def maximizer(x, v_array, cem):
+    """
+    Returns the maximizer.
+    """
+    c_grid = jnp.linspace(1e-10, x.max(), 100_000)
+    i_cs =  jnp.argmax(state_action_value_vec(x, c_grid, v_array, cem), axis=1)
+    return c_grid[i_cs]
+```
 
+```{code-cell} ipython3
+@jax.jit
+def σ(ce, v):
+    """
+    The optimal policy function. Given the value function,
+    it finds optimal consumption in each state.
+
+    * ce is an instance of CakeEating
+    * v is a value function array
+
+    """
+    return maximizer(ce.x_grid, v, ce)
+```
+
+```{code-cell} ipython3
+c = σ(ce, v)
+```
+
+```{code-cell} ipython3
+c_analytical = c_star(ce.x_grid, ce.β, ce.γ)
+
+fig, ax = plt.subplots()
+
+ax.plot(ce.x_grid, c_analytical, label='analytical')
+ax.plot(ce.x_grid, c, label='numerical')
+ax.set_ylabel(r'$\sigma(x)$')
+ax.set_xlabel('$x$')
+ax.legend()
+
+plt.show()
 ```
