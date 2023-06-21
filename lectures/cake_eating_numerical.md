@@ -56,13 +56,6 @@ def u(c, cem):
 ```
 
 ```{code-cell} ipython3
-# first derivative of utility function
-@jax.jit
-def u_prime(c, cem):
-    return c ** (-cem.γ)
-```
-
-```{code-cell} ipython3
 @jax.jit
 def state_action_value(x, c, v_array, cem):
     """
