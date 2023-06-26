@@ -16,13 +16,54 @@ kernelspec:
 ```{include} _admonition/gpu.md
 ```
 
+This lecture is the extended JAX implementation of [this lecture](https://python.quantecon.org/cake_eating_numerical.html).
+
+Please refer that lecture for all background and notation.
+
+In addition to what's in Anaconda, this lecture will need the following libraries:
+
 ```{code-cell} ipython3
-import matplotlib.pyplot as plt
+:tags: [hide-output]
+
+!pip install interpolation
+```
+
+We will use the following imports.
+
+
+```{code-cell} ipython3
 import jax
 import jax.numpy as jnp
+import matplotlib.pyplot as plt
 from collections import namedtuple
 import time
 ```
+
+Let's check the GPU we are running
+
+```{code-cell} ipython3
+!nvidia-smi
+```
+
+## Reviewing the Model
+
+Recall in particular that the Bellman equation is
+
+```{math}
+:label: bellman-cen
+
+v(x) = \max_{0\leq c \leq x} \{u(c) + \beta v(x-c)\}
+\quad \text{for all } x \geq 0.
+```
+
+where $u$ is the CRRA utility function.
+
+
+## Implementation using JAX
+
+
+The analytical solutions for the value function and optimal policy were found
+to be as follows.
 
 ```{code-cell} ipython3
 @jax.jit
@@ -34,9 +75,11 @@ def v_star(x, β, γ):
     return (1 - β**(1 / γ))**(-γ) * (x**(1-γ) / (1-γ))
 ```
 
+Let's define a model to represent the Cake Eating Problem.
+
 ```{code-cell} ipython3
 CEM = namedtuple('CakeEatingModel',
-                    ('β', 'γ', 'x_grid'))
+                    ('β', 'γ', 'x_grid', 'c_grid'))
 ```
 
 ```{code-cell} ipython3
@@ -44,29 +87,56 @@ def create_cake_eating_model(β=0.96,           # discount factor
                              γ=1.5,            # degree of relative risk aversion
                              x_grid_min=1e-3,  # exclude zero for numerical stability
                              x_grid_max=2.5,   # size of cake
-                             x_grid_size=120):
+                             x_grid_size=200):
     x_grid = jnp.linspace(x_grid_min, x_grid_max, x_grid_size)
-    return CEM(β=β, γ=γ, x_grid=x_grid)
+
+    # c_grid used for finding maximize function values using brute force
+    c_grid = jnp.linspace(x_grid_min, x_grid_max, 100*x_grid_size)
+    return CEM(β=β, γ=γ, x_grid=x_grid, c_grid=c_grid)
 ```
+
+Now let's define the CRRA utility function.
 
 ```{code-cell} ipython3
 # Utility function
 @jax.jit
 def u(c, cem):
-    return jnp.where(cem.γ == 1, jnp.log(c), (c ** (1 - cem.γ)) / (1 - cem.γ))
+    return (c ** (1 - cem.γ)) / (1 - cem.γ)
 ```
+
+### The Bellman Operator
+
+We introduce the **Bellman operator** $T$ that takes a function v as an
+argument and returns a new function $Tv$ defined by
+
+$$
+Tv(x) = \max_{0 \leq c \leq x} \{u(c) + \beta v(x - c)\}
+$$
+
+From $v$ we get $Tv$, and applying $T$ to this yields
+$T^2 v := T (Tv)$ and so on.
+
+This is called **iterating with the Bellman operator** from initial guess
+$v$.
 
 ```{code-cell} ipython3
 @jax.jit
-def state_action_value(x, c, v_array, cem):
+def state_action_value(x, c, v_array, ce):
     """
     Right hand side of the Bellman equation given x and c.
+    * x: scalar element `x`
+    * c: c_grid, 1-D array
+    * v_array: value function array guess, 1-D array
+    * ce: Cake Eating Model instance
     """
 
     return jnp.where(c <= x,
-                     u(c, cem) + cem.β * jnp.interp(x - c, cem.x_grid, v_array),
+                     u(c, ce) + ce.β * jnp.interp(x - c, ce.x_grid, v_array),
                      -jnp.inf)
 ```
+
+In order to create a vectorized function using `state_action_value`, we use [jax.vmap](https://jax.readthedocs.io/en/latest/_autosummary/jax.vmap.html).
+This function returns a new vectorized version of the above function which is vectorized on the argument `x`.
 
 ```{code-cell} ipython3
 state_action_value_vec = jax.vmap(state_action_value, (0, None, None, None))
@@ -74,36 +144,27 @@ state_action_value_vec = jax.vmap(state_action_value, (0, None, None, None))
 
 ```{code-cell} ipython3
 @jax.jit
-def maximize(x, v_array, cem):
-    """
-    Maximize the function g over the interval (0, x).
-
-    We use the fact that the maximizer of g on any interval is
-    also the minimizer of -g.  The tuple args collects any extra
-    arguments to g.
-
-    Returns the maximal value and the maximizer.
-    """
-    c_grid = jnp.linspace(1e-10, x.max(), 200_000)
-    return jnp.max(state_action_value_vec(x, c_grid, v_array, cem), axis=1)
-```
-
-```{code-cell} ipython3
-@jax.jit
 def T(v, ce):
     """
-    The Bellman operator.  Updates the guess of the value function.
+    The Bellman operator. Updates the guess of the value function.
 
-    * ce is an instance of CakeEating
-    * v is an array representing a guess of the value function
+    * ce: Cake Eating Model instance
+    * v: value function array guess, 1-D array
 
     """
-    return maximize(ce.x_grid, v, ce)
+    return jnp.max(state_action_value_vec(ce.x_grid, ce.c_grid, v, ce), axis=1)
 ```
+
+Let’s start by creating a Cake Eating Model instance using the default parameterization.
 
 ```{code-cell} ipython3
 ce = create_cake_eating_model()
 ```
+
+Now let's see the iteration of the value function in action.
+
+We start from guess $v$ given by $v(x) = u(x)$ for every
+$x$ grid point.
 
 ```{code-cell} ipython3
 x_grid = ce.x_grid
@@ -126,6 +187,9 @@ ax.set_title('Value function iterations')
 
 plt.show()
 ```
+
+Let's introduce a wrapper function called `compute_value_function`
+that iterates until some convergence conditions are satisfied.
 
 ```{code-cell} ipython3
 def compute_value_function(ce,
@@ -175,6 +239,8 @@ ax.legend()
 plt.show()
 ```
 
+Next let’s compare it to the analytical solution.
+
 ```{code-cell} ipython3
 v_analytical = v_star(ce.x_grid, ce.β, ce.γ)
 ```
@@ -191,16 +257,28 @@ ax.set_title('Comparison between analytical and numerical value functions')
 plt.show()
 ```
 
-```{code-cell} ipython3
-@jax.jit
-def maximizer(x, v_array, cem):
-    """
-    Returns the maximizer.
-    """
-    c_grid = jnp.linspace(1e-10, x.max(), 100_000)
-    i_cs =  jnp.argmax(state_action_value_vec(x, c_grid, v_array, cem), axis=1)
-    return c_grid[i_cs]
-```
+### Policy Function
+
+Recall that the optimal consumption policy was shown to be
+
+$$
+\sigma^*(x) = \left(1-\beta^{1/\gamma} \right) x
+$$
+
+Let's see if our numerical results lead to something similar.
+
+Our numerical strategy will be to compute
+
+$$
+\sigma(x) = \arg \max_{0 \leq c \leq x} \{u(c) + \beta v(x - c)\}
+$$
+
+on a grid of $x$ points and then interpolate.
+
+For $v$ we will use the approximation of the value function we obtained
+above.
+
+Here's the function:
 
 ```{code-cell} ipython3
 @jax.jit
@@ -209,16 +287,21 @@ def σ(ce, v):
     The optimal policy function. Given the value function,
     it finds optimal consumption in each state.
 
-    * ce is an instance of CakeEating
-    * v is a value function array
+    * ce: Cake Eating Model instance
+    * v: value function array guess, 1-D array
 
     """
-    return maximizer(ce.x_grid, v, ce)
+    i_cs =  jnp.argmax(state_action_value_vec(ce.x_grid, ce.c_grid, v, ce), axis=1)
+    return ce.c_grid[i_cs]
 ```
+
+Now let’s pass the approximate value function and compute optimal consumption:
 
 ```{code-cell} ipython3
 c = σ(ce, v_jax)
 ```
+
+Let’s plot this next to the true analytical solution
 
 ```{code-cell} ipython3
 c_analytical = c_star(ce.x_grid, ce.β, ce.γ)
@@ -236,27 +319,13 @@ plt.show()
 
 ## NumPy implementation
 
-```{code-cell} ipython3
-!pip install interpolation
-```
+This section of the lecture is directly adapted from [this lecture](https://python.quantecon.org/cake_eating_numerical.html)
+for the purpose of comparing the results of JAX implementation
 
 ```{code-cell} ipython3
-import matplotlib.pyplot as plt
-plt.rcParams["figure.figsize"] = (11, 5)  #set default figure size
 import numpy as np
 from interpolation import interp
 from scipy.optimize import minimize_scalar, bisect
-```
-
-```{code-cell} ipython3
-def c_star(x, β, γ):
-
-    return (1 - β ** (1/γ)) * x
-
-
-def v_star(x, β, γ):
-
-    return (1 - β**(1 / γ))**(-γ) * (x**(1-γ) / (1-γ))
 ```
 
 ```{code-cell} ipython3
@@ -319,7 +388,7 @@ class CakeEating:
 ```
 
 ```{code-cell} ipython3
-def T(v, ce):
+def T_np(v, ce):
     """
     The Bellman operator.  Updates the guess of the value function.
 
@@ -337,7 +406,7 @@ def T(v, ce):
 ```
 
 ```{code-cell} ipython3
-def compute_value_function(ce,
+def compute_value_function_np(ce,
                            tol=1e-4,
                            max_iter=1000,
                            verbose=True,
@@ -349,7 +418,7 @@ def compute_value_function(ce,
     error = tol + 1
 
     while i < max_iter and error > tol:
-        v_new = T(v, ce)
+        v_new = T_np(v, ce)
 
         error = np.max(np.abs(v - v_new))
         i += 1
@@ -373,10 +442,11 @@ ce = CakeEating()
 
 ```{code-cell} ipython3
 in_time = time.time()
-v_np = compute_value_function(ce)
+v_np = compute_value_function_np(ce)
 np_time = time.time() - in_time
 ```
 
 ```{code-cell} ipython3
-jax_time, np_time
+ratio = np_time/jax_time
+print(f"JAX implementation is {ratio} times faster than NumPy.")
 ```
