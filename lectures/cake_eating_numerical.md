@@ -354,7 +354,7 @@ class CakeEating:
                  γ=1.5,            # degree of relative risk aversion
                  x_grid_min=1e-3,  # exclude zero for numerical stability
                  x_grid_max=2.5,   # size of cake
-                 x_grid_size=120):
+                 x_grid_size=200):
 
         self.β, self.γ = β, γ
 
