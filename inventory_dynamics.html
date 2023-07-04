@@ -272,7 +272,7 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Mon Jun  5 10:00:14 2023       
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Thu Jun 29 09:34:08 2023       
 +-----------------------------------------------------------------------------+
 | NVIDIA-SMI 470.182.03   Driver Version: 470.182.03   CUDA Version: 12.1     |
 |-------------------------------+----------------------+----------------------+
@@ -280,10 +280,8 @@ const thebe_selector_output = ".output, .cell_output"
 | Fan  Temp  Perf  Pwr:Usage/Cap|         Memory-Usage | GPU-Util  Compute M. |
 |                               |                      |               MIG M. |
 |===============================+======================+======================|
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>|   0  Tesla V100-SXM2...  Off  | 00000000:00:1E.0 Off |                    0 |
-| N/A   32C    P0    39W / 300W |      0MiB / 16160MiB |      2%      Default |
+|   0  Tesla V100-SXM2...  Off  | 00000000:00:1E.0 Off |                    0 |
+| N/A   33C    P0    38W / 300W |      0MiB / 16160MiB |      2%      Default |
 |                               |                      |                  N/A |
 +-------------------------------+----------------------+----------------------+
                                                                                
@@ -418,7 +416,7 @@ distributions are getting smaller.</p>
         <span class="n">_</span><span class="p">,</span> <span class="n">key</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
         
         <span class="c1"># draw a sample at the sample dates</span>
-        <span class="k">if</span> <span class="p">(</span><span class="n">i</span> <span class="ow">in</span> <span class="n">sample_dates</span><span class="p">):</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span> <span class="ow">in</span> <span class="n">sample_dates</span><span class="p">):</span>
           <span class="n">res</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">res</span><span class="p">,</span> <span class="n">X</span><span class="p">))</span>
 
     <span class="k">return</span> <span class="n">res</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
@@ -449,11 +447,11 @@ distributions are getting smaller.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 2.85 s, sys: 486 ms, total: 3.33 s
-Wall time: 2.66 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 2.79 s, sys: 538 ms, total: 3.33 s
+Wall time: 2.73 s
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="_images/9ba36e0e7bebf031401c3a5b2e900f204adfcddf94a4ead0239abb4927a251f2.png"><img alt="_images/9ba36e0e7bebf031401c3a5b2e900f204adfcddf94a4ead0239abb4927a251f2.png" src="_images/9ba36e0e7bebf031401c3a5b2e900f204adfcddf94a4ead0239abb4927a251f2.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/741901a18debea0ae9eb6721eacc097a246709cd88dc3db718970f7a2d18b1dd.png"><img alt="_images/741901a18debea0ae9eb6721eacc097a246709cd88dc3db718970f7a2d18b1dd.png" src="_images/741901a18debea0ae9eb6721eacc097a246709cd88dc3db718970f7a2d18b1dd.png" style="width: 80%;" /></a>
 </div>
 </div>
 <p>Note that we did not JIT-compile the outer loop, since</p>
@@ -519,8 +517,8 @@ equilibrium.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 982 ms, sys: 0 ns, total: 982 ms
-Wall time: 376 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 996 ms, sys: 0 ns, total: 996 ms
+Wall time: 377 ms
 </pre></div>
 </div>
 <a class="reference internal image-reference" href="_images/db5bcba37f118e95a7a6a19f8e7e4471f5d4d01c648f8f83a6842c416b6c6b0d.png"><img alt="_images/db5bcba37f118e95a7a6a19f8e7e4471f5d4d01c648f8f83a6842c416b6c6b0d.png" src="_images/db5bcba37f118e95a7a6a19f8e7e4471f5d4d01c648f8f83a6842c416b6c6b0d.png" style="width: 80%;" /></a>
@@ -552,8 +550,8 @@ long-run outcomes.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 902 ms, sys: 0 ns, total: 902 ms
-Wall time: 318 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 905 ms, sys: 0 ns, total: 905 ms
+Wall time: 300 ms
 </pre></div>
 </div>
 <a class="reference internal image-reference" href="_images/a89ccee605d93748ead554bd7ccb751bfce2ba1a82dd8fe4279d661333134230.png"><img alt="_images/a89ccee605d93748ead554bd7ccb751bfce2ba1a82dd8fe4279d661333134230.png" src="_images/a89ccee605d93748ead554bd7ccb751bfce2ba1a82dd8fe4279d661333134230.png" style="width: 80%;" /></a>
@@ -616,8 +614,8 @@ periods.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 939 ms, sys: 0 ns, total: 939 ms
-Wall time: 1.21 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 982 ms, sys: 0 ns, total: 982 ms
+Wall time: 1.25 s
 Frequency of at least two stock outs = 0.4472379982471466
 </pre></div>
 </div>
@@ -679,7 +677,7 @@ Frequency of at least two stock outs = 0.4472379982471466
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1.01 s, sys: 0 ns, total: 1.01 s
-Wall time: 395 ms
+Wall time: 399 ms
 Frequency of at least two stock outs = 0.44674399495124817
 </pre></div>
 </div>
@@ -835,6 +833,11 @@ Frequency of at least two stock outs = 0.44674399495124817
    14. The Aiyagari Model
   </a>
  </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="cake_eating_numerical.html">
+   15. Cake Eating: Numerical Methods
+  </a>
+ </li>
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
@@ -844,17 +847,17 @@ Frequency of at least two stock outs = 0.44674399495124817
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   15. Troubleshooting
+   16. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   16. References
+   17. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   17. Execution Statistics
+   18. Execution Statistics
   </a>
  </li>
 </ul>

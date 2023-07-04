@@ -182,7 +182,7 @@ def shift_firms_forward(x_init, firm, sample_dates,
         _, key = random.split(key)
         
         # draw a sample at the sample dates
-        if (i in sample_dates):
+        if (i+1 in sample_dates):
           res = jnp.vstack((res, X))
 
     return res[1:]

@@ -178,7 +178,7 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#an-extended-example">4.7. An Extended Example</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#numpy-version">4.8. Numpy Version</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#jax-version">4.9. JAX Version</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#efficient-jax-version">4.10. Efficient JAX Version</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-memory-efficient-jax-version">4.10. A memory-efficient JAX version</a></li>
 </ul>
                             <p class="logo">
                                 
@@ -229,11 +229,11 @@ const thebe_selector_output = ".output, .cell_output"
 <h2><span class="section-number">4.1. </span>Overview<a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
 <p>In this lecture we consider some asset pricing problems and use them to
 illustrate some foundations of JAX programming.</p>
-<p>Most of the heavy lifting will be done through routines from linear algebra.</p>
+<p>Most of the heavy lifting is done through routines from linear algebra.</p>
 <p>Along the way, we will show how to solve some memory-intensive problems with large state spaces.</p>
 <p>We do this using elegant techniques made available by JAX, involving the use of linear operators to avoid instantiating large matrices.</p>
-<p>If you wish to skip all motivation and move straight to the first equation we plan to
-solve, you can jump to <a class="reference internal" href="#equation-eq-ntecx2">(4.13)</a>.</p>
+<p>If you wish to skip all motivation and move straight to the first equation we plan to solve,
+you can jump to <a class="reference internal" href="#equation-eq-ntecx2">(4.13)</a>.</p>
 <p>In addition to what’s in Anaconda, this lecture will need the following libraries:</p>
 <div class="cell tag_hide-output docutils container">
 <div class="cell_input above-output-prompt docutils container">
@@ -248,17 +248,19 @@ solve, you can jump to <a class="reference internal" href="#equation-eq-ntecx2">
 </summary>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /opt/conda/envs/quantecon/lib/python3.10/site-packages (0.7.1)
-Requirement already satisfied: numba&gt;=0.49.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (0.56.4)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: requests in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (2.28.1)
 Requirement already satisfied: scipy&gt;=1.5.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (1.10.0)
+Requirement already satisfied: numba&gt;=0.49.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (0.56.4)
 Requirement already satisfied: sympy in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (1.11.1)
-Requirement already satisfied: requests in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (2.28.1)
 Requirement already satisfied: numpy&gt;=1.17.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (1.23.5)
 Requirement already satisfied: llvmlite&lt;0.40,&gt;=0.39.0dev0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from numba&gt;=0.49.0-&gt;quantecon) (0.39.1)
 Requirement already satisfied: setuptools in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from numba&gt;=0.49.0-&gt;quantecon) (65.6.3)
 Requirement already satisfied: idna&lt;4,&gt;=2.5 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (3.4)
 Requirement already satisfied: urllib3&lt;1.27,&gt;=1.21.1 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (1.26.14)
-Requirement already satisfied: certifi&gt;=2017.4.17 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (2022.12.7)
 Requirement already satisfied: charset-normalizer&lt;3,&gt;=2 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (2.0.4)
+Requirement already satisfied: certifi&gt;=2017.4.17 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (2022.12.7)
 Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/envs/quantecon/lib/python3.10/site-packages/mpmath-1.2.1-py3.10.egg (from sympy-&gt;quantecon) (1.2.1)
 </pre></div>
 </div>
@@ -493,15 +495,17 @@ then compute the solution <a class="reference internal" href="#equation-eq-ntecx
 <section id="code">
 <h2><span class="section-number">4.6. </span>Code<a class="headerlink" href="#code" title="Permalink to this heading">#</a></h2>
 <p>We will use the <a class="reference external" href="https://en.wikipedia.org/wiki/Power_iteration">power iteration algorithm</a> to check the spectral radius condition.</p>
+<p>The function below computes the spectral radius of <code class="docutils literal notranslate"><span class="pre">A</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">power_iteration_sr</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">num_iterations</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">1234</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Power iteration method to find the spectral radius</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="s2">&quot; Estimates the spectral radius of A via power iteration. &quot;</span>
+
+    <span class="c1"># Initialize</span>
     <span class="n">key</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">PRNGKey</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
     <span class="n">b_k</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],))</span>
     <span class="n">sr</span> <span class="o">=</span> <span class="mi">0</span>
+
     <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_iterations</span><span class="p">):</span>
         <span class="c1"># calculate the matrix-by-vector product Ab</span>
         <span class="n">b_k1</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">b_k</span><span class="p">)</span>
@@ -509,9 +513,10 @@ then compute the solution <a class="reference internal" href="#equation-eq-ntecx
         <span class="c1"># calculate the norm</span>
         <span class="n">b_k1_norm</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">b_k1</span><span class="p">)</span>
 
-        <span class="n">sr</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">b_k1</span><span class="o">*</span><span class="n">b_k</span><span class="p">)</span><span class="o">/</span><span class="n">jnp</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">b_k</span><span class="o">*</span><span class="n">b_k</span><span class="p">)</span>
+        <span class="c1"># Record the current estimate of the spectral radius</span>
+        <span class="n">sr</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">b_k1</span> <span class="o">*</span> <span class="n">b_k</span><span class="p">)</span><span class="o">/</span><span class="n">jnp</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">b_k</span> <span class="o">*</span> <span class="n">b_k</span><span class="p">)</span>
 
-        <span class="c1"># re normalize the vector</span>
+        <span class="c1"># re-normalize the vector and continue</span>
         <span class="n">b_k</span> <span class="o">=</span> <span class="n">b_k1</span> <span class="o">/</span> <span class="n">b_k1_norm</span>
 
     <span class="k">return</span> <span class="n">sr</span>
@@ -521,6 +526,7 @@ then compute the solution <a class="reference internal" href="#equation-eq-ntecx
 </div>
 </div>
 </div>
+<p>The next function verifies that the spectral radius of a given matrix is <span class="math notranslate nohighlight">\(&lt; 1\)</span>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">test_stability</span><span class="p">(</span><span class="n">Q</span><span class="p">):</span>
@@ -929,7 +935,7 @@ and <span class="math notranslate nohighlight">\(H\)</span> into an <span class=
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:1.17
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:1.16
 </pre></div>
 </div>
 </div>
@@ -1126,7 +1132,7 @@ and <span class="math notranslate nohighlight">\(H\)</span> into an <span class=
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.013394107047686725
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.013475294475587275
 </pre></div>
 </div>
 </div>
@@ -1147,8 +1153,8 @@ and <span class="math notranslate nohighlight">\(H\)</span> into an <span class=
 </div>
 </div>
 </section>
-<section id="efficient-jax-version">
-<h2><span class="section-number">4.10. </span>Efficient JAX Version<a class="headerlink" href="#efficient-jax-version" title="Permalink to this heading">#</a></h2>
+<section id="a-memory-efficient-jax-version">
+<h2><span class="section-number">4.10. </span>A memory-efficient JAX version<a class="headerlink" href="#a-memory-efficient-jax-version" title="Permalink to this heading">#</a></h2>
 <p>One problem with the code above is that we instantiate a matrix of size <span class="math notranslate nohighlight">\(N = I \times J \times K\)</span>.</p>
 <p>This quickly becomes impossible as <span class="math notranslate nohighlight">\(I, J, K\)</span> increase.</p>
 <p>Fortunately, JAX makes it possible to solve for the price-dividend ratio without instantiating this large matrix.</p>
@@ -1182,7 +1188,43 @@ and <span class="math notranslate nohighlight">\(H\)</span> into an <span class=
 </div>
 </div>
 </div>
-<p>Now we write a version of the solution function that acts directly on this linear operator.</p>
+<p>The next function modifies our earlier <code class="docutils literal notranslate"><span class="pre">power_iteration_sr</span></code> function so that it
+can act on linear operators rather than matrices,</p>
+<p>also the spectral radius of the transition matrix less than one ensures the convergence of our calculations in the model.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">update_g</span><span class="p">(</span><span class="n">H_operator</span><span class="p">,</span> <span class="n">sv_model</span><span class="p">,</span> <span class="n">shapes</span><span class="p">,</span> <span class="n">num_iterations</span><span class="o">=</span><span class="mi">20</span><span class="p">):</span>
+    <span class="n">g_k</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">shapes</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_iterations</span><span class="p">):</span>
+        <span class="n">g_k1</span> <span class="o">=</span> <span class="n">H_operator</span><span class="p">(</span><span class="n">g_k</span><span class="p">,</span> <span class="n">sv_model</span><span class="p">,</span> <span class="n">shapes</span><span class="p">)</span>
+        <span class="n">sr</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">g_k1</span> <span class="o">*</span> <span class="n">g_k</span><span class="p">)</span> <span class="o">/</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">g_k</span> <span class="o">*</span> <span class="n">g_k</span><span class="p">)</span>
+        <span class="n">g_k1_norm</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">g_k1</span><span class="p">)</span>
+        <span class="n">g_k</span> <span class="o">=</span> <span class="n">g_k1</span> <span class="o">/</span> <span class="n">g_k1_norm</span>
+
+    <span class="k">return</span> <span class="n">sr</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s check the output</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">qe</span><span class="o">.</span><span class="n">tic</span><span class="p">()</span>
+<span class="n">sr</span> <span class="o">=</span> <span class="n">update_g</span><span class="p">(</span><span class="n">H_operator</span><span class="p">,</span> <span class="n">sv_model</span><span class="p">,</span> <span class="n">shapes</span><span class="p">)</span>
+<span class="n">qe</span><span class="o">.</span><span class="n">toc</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">sr</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:1.90
+0.9975973011724226
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now we write a version of the solution function for the price-dividend ratio
+that acts directly on the linear operator <code class="docutils literal notranslate"><span class="pre">H_operator</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">sv_pd_ratio_jax_multi</span><span class="p">(</span><span class="n">sv_model</span><span class="p">,</span> <span class="n">shapes</span><span class="p">):</span>
@@ -1218,17 +1260,33 @@ and <span class="math notranslate nohighlight">\(H\)</span> into an <span class=
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">qe</span><span class="o">.</span><span class="n">tic</span><span class="p">()</span>
-<span class="n">v_jax_multi</span> <span class="o">=</span> <span class="n">sv_pd_ratio_jax</span><span class="p">(</span><span class="n">sv_model</span><span class="p">,</span> <span class="n">shapes</span><span class="p">)</span><span class="o">.</span><span class="n">block_until_ready</span><span class="p">()</span>
+<span class="n">v_jax_multi</span> <span class="o">=</span> <span class="n">sv_pd_ratio_jax_multi</span><span class="p">(</span><span class="n">sv_model</span><span class="p">,</span> <span class="n">shapes</span><span class="p">)</span><span class="o">.</span><span class="n">block_until_ready</span><span class="p">()</span>
 <span class="n">jnp_time_multi_0</span> <span class="o">=</span> <span class="n">qe</span><span class="o">.</span><span class="n">toc</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:0.01
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:0.82
 </pre></div>
 </div>
 </div>
 </div>
+<p>And now let’s see without compile time.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">qe</span><span class="o">.</span><span class="n">tic</span><span class="p">()</span>
+<span class="n">v_jax_multi</span> <span class="o">=</span> <span class="n">sv_pd_ratio_jax_multi</span><span class="p">(</span><span class="n">sv_model</span><span class="p">,</span> <span class="n">shapes</span><span class="p">)</span><span class="o">.</span><span class="n">block_until_ready</span><span class="p">()</span>
+<span class="n">jnp_time_multi_1</span> <span class="o">=</span> <span class="n">qe</span><span class="o">.</span><span class="n">toc</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:0.00
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s verify the solution again:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">v_jax_multi</span><span class="p">))</span>
@@ -1241,35 +1299,24 @@ and <span class="math notranslate nohighlight">\(H\)</span> into an <span class=
 </div>
 </div>
 </div>
-<p>Now let’s run again without compile time.</p>
+<p>Here’s the ratio of times between memory-efficient and direct version:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">qe</span><span class="o">.</span><span class="n">tic</span><span class="p">()</span>
-<span class="n">v_jax_multi</span> <span class="o">=</span> <span class="n">sv_pd_ratio_jax</span><span class="p">(</span><span class="n">sv_model</span><span class="p">,</span> <span class="n">shapes</span><span class="p">)</span><span class="o">.</span><span class="n">block_until_ready</span><span class="p">()</span>
-<span class="n">jnp_time_multi_1</span> <span class="o">=</span> <span class="n">qe</span><span class="o">.</span><span class="n">toc</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">jnp_time_multi_1</span> <span class="o">/</span> <span class="n">jnp_time_1</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:0.01
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.4190792668123331
 </pre></div>
 </div>
 </div>
 </div>
-<p>Here’s the ratio of times (Efficient JAX / JAX):</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">jnp_time_multi_1</span> <span class="o">/</span> <span class="n">jnp_time_1</span>  
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1.034272634945658
-</pre></div>
-</div>
-</div>
-</div>
-<p>The speed is about the same but now we can work with much larger grids.</p>
+<p>The speed is somewhat faster. In addition,</p>
+<ol class="arabic simple">
+<li><p>now we can work with much larger grids, and</p></li>
+<li><p>the memory efficient version will be significantly faster with larger grids.</p></li>
+</ol>
 <p>Here’s a moderately large example, where the state space has 15,625 elements.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1284,8 +1331,8 @@ and <span class="math notranslate nohighlight">\(H\)</span> into an <span class=
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">qe</span><span class="o">.</span><span class="n">tic</span><span class="p">()</span>
-<span class="n">v_jax_multi</span> <span class="o">=</span> <span class="n">sv_pd_ratio_jax</span><span class="p">(</span><span class="n">sv_model</span><span class="p">,</span> <span class="n">shapes</span><span class="p">)</span><span class="o">.</span><span class="n">block_until_ready</span><span class="p">()</span>
-<span class="n">jnp_time_multi_1</span> <span class="o">=</span> <span class="n">qe</span><span class="o">.</span><span class="n">toc</span><span class="p">()</span>
+<span class="n">v_jax_multi</span> <span class="o">=</span> <span class="n">sv_pd_ratio_jax_multi</span><span class="p">(</span><span class="n">sv_model</span><span class="p">,</span> <span class="n">shapes</span><span class="p">)</span><span class="o">.</span><span class="n">block_until_ready</span><span class="p">()</span>
+<span class="n">jnp_time_multi_2</span> <span class="o">=</span> <span class="n">qe</span><span class="o">.</span><span class="n">toc</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -1297,14 +1344,12 @@ and <span class="math notranslate nohighlight">\(H\)</span> into an <span class=
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">qe</span><span class="o">.</span><span class="n">tic</span><span class="p">()</span>
-<span class="n">v_jax_multi</span> <span class="o">=</span> <span class="n">sv_pd_ratio_jax</span><span class="p">(</span><span class="n">sv_model</span><span class="p">,</span> <span class="n">shapes</span><span class="p">)</span><span class="o">.</span><span class="n">block_until_ready</span><span class="p">()</span>
-<span class="n">jnp_time_multi_1</span> <span class="o">=</span> <span class="n">qe</span><span class="o">.</span><span class="n">toc</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">jnp_time_multi_1</span> <span class="o">/</span> <span class="n">jnp_time_1</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:0.49
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.4190792668123331
 </pre></div>
 </div>
 </div>
@@ -1458,6 +1503,11 @@ and <span class="math notranslate nohighlight">\(H\)</span> into an <span class=
    14. The Aiyagari Model
   </a>
  </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="cake_eating_numerical.html">
+   15. Cake Eating: Numerical Methods
+  </a>
+ </li>
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
@@ -1467,17 +1517,17 @@ and <span class="math notranslate nohighlight">\(H\)</span> into an <span class=
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   15. Troubleshooting
+   16. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   16. References
+   17. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   17. Execution Statistics
+   18. Execution Statistics
   </a>
  </li>
 </ul>
