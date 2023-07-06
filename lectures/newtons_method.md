@@ -105,7 +105,7 @@ for this particular question.
 
 ### A High-Dimensional Version
 
-Let's now shift to a linear algebra formulation, which alllows us to handle
+Let's now shift to a linear algebra formulation, which allows us to handle
 arbitrarily many goods.
 
 The supply function remains unchanged,
@@ -325,7 +325,7 @@ initLs = [jnp.ones(3),
 ```
 
 
-Then define the multivariate version of the formula for the [law of motion of captial](https://python.quantecon.org/newton_method.html#solow)
+Then define the multivariate version of the formula for the [law of motion of capital](https://python.quantecon.org/newton_method.html#solow)
 
 ```{code-cell} ipython3
 def multivariate_solow(k, A=A, s=s, α=α, δ=δ):

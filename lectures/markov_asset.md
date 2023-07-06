@@ -205,7 +205,7 @@ $$
 $$
 
 Here $\{\epsilon_{c, t}\}$ and $\{\epsilon_{d, t}\}$ are IID and standard
-normal, and independent of eachother.
+normal, and independent of each other.
 
 We can think of $\{X_t\}$ as an aggregate shock that affects both consumption
 growth and firm profits (and hence dividends).
