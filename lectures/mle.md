@@ -347,7 +347,7 @@ $$
     \beta_2 = 0.5
 $$
 
-Try to obtain the approximate values of $\beta_0,\beta_1,\beta_2$, by simulating a Poission Regression Model such that
+Try to obtain the approximate values of $\beta_0,\beta_1,\beta_2$, by simulating a Poisson Regression Model such that
 
 $$
       y_t \sim {\rm Poisson}(\lambda_t)
@@ -391,7 +391,7 @@ We compute $\lambda$ using {eq}`lambda_mle`
 λ = jnp.exp(β_0 + β_1 * x + β_2 * x**2)
 ```
 
-Let's define $y_t$ by sampling from a Poission distribution with mean as $\lambda_t$.
+Let's define $y_t$ by sampling from a Poisson distribution with mean as $\lambda_t$.
 
 ```{code-cell} ipython3
 y = jax.random.poisson(key, λ, shape)
