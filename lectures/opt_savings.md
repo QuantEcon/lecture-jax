@@ -19,6 +19,8 @@ kernelspec:
 In addition to what’s in Anaconda, this lecture will need the following libraries:
 
 ```{code-cell} ipython3
+:tags: [hide-output]
+
 !pip install quantecon
 ```
 
@@ -119,7 +121,7 @@ def create_consumption_model(R=1.01,                    # Gross interest rate
 ```
 
 ```{code-cell} ipython3
-def create_consumption_model_jax(R=1.01,                    # Gross interest rate
+def create_consumption_model_jax(R=1.01,                # Gross interest rate
                              β=0.98,                    # Discount factor
                              γ=2.5,                     # CRRA parameter
                              w_min=0.01,                # Min wealth
@@ -460,8 +462,4 @@ ax.legend(fontsize=fontsize, frameon=False)
 ax.set_xlabel("$m$", fontsize=fontsize)
 ax.set_ylabel("time", fontsize=fontsize)
 plt.show()
-```
-
-```{code-cell} ipython3
-
 ```
