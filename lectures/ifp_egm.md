@@ -317,7 +317,7 @@ Notice in the code below that
 ```{code-cell} ipython3
 def K_egm(a_in, σ_in, constants, sizes, arrays):
     """
-    The vectorzied operator K using EGM.
+    The vectorized operator K using EGM.
 
     """
     
@@ -598,7 +598,7 @@ plt.show()
 
 ### Timing
 
-Now let's compare excution time of the two methods
+Now let's compare execution time of the two methods
 
 ```{code-cell} ipython3
 qe.tic()
