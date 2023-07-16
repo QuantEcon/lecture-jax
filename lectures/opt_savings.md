@@ -19,6 +19,8 @@ kernelspec:
 In addition to what’s in Anaconda, this lecture will need the following libraries:
 
 ```{code-cell} ipython3
+:tags: [hide-output]
+
 !pip install quantecon
 ```
 
@@ -119,7 +121,7 @@ def create_consumption_model(R=1.01,                    # Gross interest rate
 ```
 
 ```{code-cell} ipython3
-def create_consumption_model_jax(R=1.01,                    # Gross interest rate
+def create_consumption_model_jax(R=1.01,                # Gross interest rate
                              β=0.98,                    # Discount factor
                              γ=2.5,                     # CRRA parameter
                              w_min=0.01,                # Min wealth
@@ -127,8 +129,8 @@ def create_consumption_model_jax(R=1.01,                    # Gross interest rat
                              w_size=150,                # Grid side
                              ρ=0.9, ν=0.1, y_size=100): # Income parameters
     """
-    A function that takes in parameters and returns a JAX-compatible version of Model that
-    contains data for the optimal savings problem.
+    A function that takes in parameters and returns a JAX-compatible version of 
+    Model that contains data for the optimal savings problem.
     """
     w_grid = jnp.linspace(w_min, w_max, w_size)
     mc = qe.tauchen(n=y_size, rho=ρ, sigma=ν)
@@ -460,8 +462,4 @@ ax.legend(fontsize=fontsize, frameon=False)
 ax.set_xlabel("$m$", fontsize=fontsize)
 ax.set_ylabel("time", fontsize=fontsize)
 plt.show()
-```
-
-```{code-cell} ipython3
-
 ```
