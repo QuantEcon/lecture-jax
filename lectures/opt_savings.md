@@ -129,8 +129,8 @@ def create_consumption_model_jax(R=1.01,                # Gross interest rate
                              w_size=150,                # Grid side
                              ρ=0.9, ν=0.1, y_size=100): # Income parameters
     """
-    A function that takes in parameters and returns a JAX-compatible version of Model that
-    contains data for the optimal savings problem.
+    A function that takes in parameters and returns a JAX-compatible version of 
+    Model that contains data for the optimal savings problem.
     """
     w_grid = jnp.linspace(w_min, w_max, w_size)
     mc = qe.tauchen(n=y_size, rho=ρ, sigma=ν)
