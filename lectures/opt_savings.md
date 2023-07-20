@@ -223,7 +223,7 @@ def T_σ(v, σ, constants, sizes, arrays):
     # Calculate the expected sum Σ_jp v[σ[i, j], jp] * Q[i, j, jp]
     Ev = jnp.sum(V * Q, axis=2)
 
-    return r_σ + β * jnp.sum(V * Q, axis=2)
+    return r_σ + β * Ev
 ```
 
 and the Bellman operator $T$
@@ -354,7 +354,6 @@ def value_iteration(model, tol=1e-5):
 def policy_iteration(model):
     "Howard policy iteration routine."
     constants, sizes, arrays = model
-    vz = jnp.zeros(sizes)
     σ = jnp.zeros(sizes, dtype=int)
     i, error = 0, 1.0
     while error > 0:
@@ -387,14 +386,19 @@ def optimistic_policy_iteration(model, tol=1e-5, m=10):
 Create a JAX model for consumption, perform policy iteration, and plot the resulting optimal policy function.
 
 ```{code-cell} ipython3
-fontsize=12
+fontsize = 12
 model = create_consumption_model_jax()
+
 # Unpack
 constants, sizes, arrays = model
 β, R, γ = constants
 w_size, y_size = sizes
 w_grid, y_grid, Q = arrays
+```
+
+```{code-cell} ipython3
 σ_star = policy_iteration(model)
+
 fig, ax = plt.subplots(figsize=(9, 5.2))
 ax.plot(w_grid, w_grid, "k--", label="45")
 ax.plot(w_grid, w_grid[σ_star[:, 1]], label="$\\sigma^*(\cdot, y_1)$")
@@ -443,7 +447,9 @@ def run_algorithm(algorithm, model, **kwargs):
     elapsed_time = end_time - start_time
     print(f"{algorithm.__name__} completed in {elapsed_time:.2f} seconds.")
     return result, elapsed_time
+```
 
+```{code-cell} ipython3
 model = create_consumption_model_jax()
 σ_pi, pi_time = run_algorithm(policy_iteration, model)
 σ_vfi, vfi_time = run_algorithm(value_iteration, model, tol=1e-5)
@@ -453,7 +459,9 @@ opi_times = []
 for m in m_vals:
     σ_opi, opi_time = run_algorithm(optimistic_policy_iteration, model, m=m, tol=1e-5)
     opi_times.append(opi_time)
+```
 
+```{code-cell} ipython3
 fig, ax = plt.subplots(figsize=(9, 5.2))
 ax.plot(m_vals, jnp.full(len(m_vals), pi_time), lw=2, label="Howard policy iteration")
 ax.plot(m_vals, jnp.full(len(m_vals), vfi_time), lw=2, label="value function iteration")
