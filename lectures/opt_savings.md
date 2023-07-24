@@ -250,23 +250,6 @@ The code below
 3. converts back to multi-index arrays.
 
 ```{code-cell} ipython3
-def get_value(σ, constants, sizes, arrays):
-    "Get the value v_σ of policy σ by inverting the linear map R_σ."
-
-    # Unpack
-    β, R, γ = constants
-    w_size, y_size = sizes
-    w_grid, y_grid, Q = arrays
-
-    r_σ = compute_r_σ(σ, constants, sizes, arrays)
-
-    # Reduce R_σ to a function in v
-    partial_R_σ = lambda v: R_σ(v, σ, constants, sizes, arrays)
-
-    return jax.scipy.sparse.linalg.bicgstab(partial_R_σ, r_σ)[0]
-```
-
-```{code-cell} ipython3
 def R_σ(v, σ, constants, sizes, arrays):
     """
     The value v_σ of a policy σ is defined as
