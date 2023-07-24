@@ -2,7 +2,6 @@
 
 def policy_iteration(model, maxiter=250):
     constants, sizes, arrays = model
-    vz = jnp.zeros(sizes)
     σ = jnp.zeros(sizes, dtype=int)
     i, error = 0, 1.0
     while error > 0 and i < maxiter:

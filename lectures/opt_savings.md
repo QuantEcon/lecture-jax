@@ -70,27 +70,7 @@ $$   u(c) = \frac{c^{1-\gamma}}{1-\gamma} $$
 We use successive approximation for VFI.
 
 ```{code-cell} ipython3
-def successive_approx(T,                     # Operator (callable)
-                      x_0,                   # Initial condition
-                      tolerance=1e-6,        # Error tolerance
-                      max_iter=10_000,       # Max iteration bound
-                      print_step=25,         # Print at multiples
-                      verbose=False):
-    x = x_0
-    error = tolerance + 1
-    k = 1
-    while error > tolerance and k <= max_iter:
-        x_new = T(x)
-        error = jnp.max(jnp.abs(x_new - x))
-        if verbose and k % print_step == 0:
-            print(f"Completed iteration {k} with error {error}.")
-        x = x_new
-        k += 1
-    if error > tolerance:
-        print(f"Warning: Iteration hit upper bound {max_iter}.")
-    elif verbose:
-        print(f"Terminated successfully in {k} iterations.")
-    return x
+:load: _static/lecture_specific/successive_approx.py
 ```
 
 ## Model primitives
@@ -270,6 +250,23 @@ The code below
 3. converts back to multi-index arrays.
 
 ```{code-cell} ipython3
+def get_value(σ, constants, sizes, arrays):
+    "Get the value v_σ of policy σ by inverting the linear map R_σ."
+
+    # Unpack
+    β, R, γ = constants
+    w_size, y_size = sizes
+    w_grid, y_grid, Q = arrays
+
+    r_σ = compute_r_σ(σ, constants, sizes, arrays)
+
+    # Reduce R_σ to a function in v
+    partial_R_σ = lambda v: R_σ(v, σ, constants, sizes, arrays)
+
+    return jax.scipy.sparse.linalg.bicgstab(partial_R_σ, r_σ)[0]
+```
+
+```{code-cell} ipython3
 def R_σ(v, σ, constants, sizes, arrays):
     """
     The value v_σ of a policy σ is defined as
@@ -339,46 +336,15 @@ R_σ = jax.jit(R_σ, static_argnums=(3,))
 Now we define the solvers, which implement VFI, HPI and OPI.
 
 ```{code-cell} ipython3
-def value_iteration(model, tol=1e-5):
-    "Implements VFI."
-
-    constants, sizes, arrays = model
-    _T = lambda v: T(v, constants, sizes, arrays)
-    vz = jnp.zeros(sizes)
-
-    v_star = successive_approx(_T, vz, tolerance=tol)
-    return get_greedy(v_star, constants, sizes, arrays)
+:load: _static/lecture_specific/vfi.py
 ```
 
 ```{code-cell} ipython3
-def policy_iteration(model):
-    "Howard policy iteration routine."
-    constants, sizes, arrays = model
-    σ = jnp.zeros(sizes, dtype=int)
-    i, error = 0, 1.0
-    while error > 0:
-        v_σ = get_value(σ, constants, sizes, arrays)
-        σ_new = get_greedy(v_σ, constants, sizes, arrays)
-        error = jnp.max(jnp.abs(σ_new - σ))
-        σ = σ_new
-        i = i + 1
-        print(f"Concluded loop {i} with error {error}.")
-    return σ
+:load: _static/lecture_specific/hpi.py
 ```
 
 ```{code-cell} ipython3
-def optimistic_policy_iteration(model, tol=1e-5, m=10):
-    "Implements the OPI routine."
-    constants, sizes, arrays = model
-    v = jnp.zeros(sizes)
-    error = tol + 1
-    while error > tol:
-        last_v = v
-        σ = get_greedy(v, constants, sizes, arrays)
-        for _ in range(m):
-            v = T_σ(v, σ, constants, sizes, arrays)
-        error = jnp.max(jnp.abs(v - last_v))
-    return get_greedy(v, constants, sizes, arrays)
+:load: _static/lecture_specific/opi.py
 ```
 
 ## Plots
@@ -388,7 +354,6 @@ Create a JAX model for consumption, perform policy iteration, and plot the resul
 ```{code-cell} ipython3
 fontsize = 12
 model = create_consumption_model_jax()
-
 # Unpack
 constants, sizes, arrays = model
 β, R, γ = constants
