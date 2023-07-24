@@ -25,11 +25,10 @@ In addition to what's in Anaconda, this lecture will need the following librarie
 ```{code-cell} ipython3
 :tags: [hide-output]
 
-!pip install interpolation
+!pip install interpolation quantecon
 ```
 
 We will use the following imports.
-
 
 ```{code-cell} ipython3
 import jax
@@ -317,96 +316,74 @@ ax.legend()
 plt.show()
 ```
 
-## NumPy implementation
+## Numba implementation
 
 This section of the lecture is directly adapted from [this lecture](https://python.quantecon.org/cake_eating_numerical.html)
-for the purpose of comparing the results of JAX implementation
+for the purpose of comparing the results of JAX implementation.
 
 ```{code-cell} ipython3
 import numpy as np
+from numba import prange, njit
 from interpolation import interp
-from scipy.optimize import minimize_scalar, bisect
+from quantecon.optimize import brent_max
 ```
 
 ```{code-cell} ipython3
-def maximize(g, a, b, args):
+CEMN = namedtuple('CakeEatingModelNumba',
+                    ('β', 'γ', 'x_grid'))
+```
+
+```{code-cell} ipython3
+def create_cake_eating_model_numba(β=0.96,           # discount factor
+                                   γ=1.5,            # degree of relative risk aversion
+                                   x_grid_min=1e-3,  # exclude zero for numerical stability
+                                   x_grid_max=2.5,   # size of cake
+                                   x_grid_size=200):
+    x_grid = np.linspace(x_grid_min, x_grid_max, x_grid_size)
+    return CEMN(β=β, γ=γ, x_grid=x_grid)
+```
+
+```{code-cell} ipython3
+# Utility function
+@njit
+def u_numba(c, cem):
+    return (c ** (1 - cem.γ)) / (1 - cem.γ)
+```
+
+```{code-cell} ipython3
+@njit
+def state_action_value_numba(c, x, v_array, cem):
     """
-    Maximize the function g over the interval [a, b].
-
-    We use the fact that the maximizer of g on any interval is
-    also the minimizer of -g.  The tuple args collects any extra
-    arguments to g.
-
-    Returns the maximal value and the maximizer.
+    Right hand side of the Bellman equation given x and c.
+    * x: scalar element `x`
+    * c: consumption
+    * v_array: value function array guess, 1-D array
+    * cem: Cake Eating Numba Model instance
     """
-
-    objective = lambda x: -g(x, *args)
-    result = minimize_scalar(objective, bounds=(a, b), method='bounded')
-    maximizer, maximum = result.x, -result.fun
-    return maximizer, maximum
+    return u_numba(c, cem) + cem.β * interp(cem.x_grid, v_array, x - c)
 ```
 
 ```{code-cell} ipython3
-class CakeEating:
-
-    def __init__(self,
-                 β=0.96,           # discount factor
-                 γ=1.5,            # degree of relative risk aversion
-                 x_grid_min=1e-3,  # exclude zero for numerical stability
-                 x_grid_max=2.5,   # size of cake
-                 x_grid_size=200):
-
-        self.β, self.γ = β, γ
-
-        # Set up grid
-        self.x_grid = np.linspace(x_grid_min, x_grid_max, x_grid_size)
-
-    # Utility function
-    def u(self, c):
-
-        γ = self.γ
-
-        if γ == 1:
-            return np.log(c)
-        else:
-            return (c ** (1 - γ)) / (1 - γ)
-
-    # first derivative of utility function
-    def u_prime(self, c):
-
-        return c ** (-self.γ)
-
-    def state_action_value(self, c, x, v_array):
-        """
-        Right hand side of the Bellman equation given x and c.
-        """
-
-        u, β = self.u, self.β
-        v = lambda x: interp(self.x_grid, v_array, x)
-
-        return u(c) + β * v(x - c)
-```
-
-```{code-cell} ipython3
-def T_np(v, ce):
+@njit
+def T_numba(v, ce):
     """
     The Bellman operator.  Updates the guess of the value function.
 
-    * ce is an instance of CakeEating
+    * ce is an instance of CakeEatingNumba Model
     * v is an array representing a guess of the value function
 
     """
     v_new = np.empty_like(v)
 
-    for i, x in enumerate(ce.x_grid):
+    for i in prange(len(ce.x_grid)):
         # Maximize RHS of Bellman equation at state x
-        v_new[i] = maximize(ce.state_action_value, 1e-10, x, (x, v))[1]
-
+        v_new[i] = brent_max(state_action_value_numba, 1e-10, ce.x_grid[i],
+                             args=(ce.x_grid[i], v, ce))[1]
     return v_new
 ```
 
 ```{code-cell} ipython3
-def compute_value_function_np(ce,
+def compute_value_function_numba(ce,
                            tol=1e-4,
                            max_iter=1000,
                            verbose=True,
@@ -418,7 +395,7 @@ def compute_value_function_np(ce,
     error = tol + 1
 
     while i < max_iter and error > tol:
-        v_new = T_np(v, ce)
+        v_new = T_numba(v, ce)
 
         error = np.max(np.abs(v - v_new))
         i += 1
@@ -437,16 +414,18 @@ def compute_value_function_np(ce,
 ```
 
 ```{code-cell} ipython3
-ce = CakeEating()
+cen = create_cake_eating_model_numba()
 ```
 
 ```{code-cell} ipython3
 in_time = time.time()
-v_np = compute_value_function_np(ce)
-np_time = time.time() - in_time
+v_np = compute_value_function_numba(cen)
+numba_time = time.time() - in_time
 ```
 
 ```{code-cell} ipython3
-ratio = np_time/jax_time
+ratio = numba_time/jax_time
 print(f"JAX implementation is {ratio} times faster than NumPy.")
+print(f"JAX time: {jax_time}")
+print(f"Numba time: {numba_time}")
 ```
