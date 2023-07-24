@@ -250,7 +250,7 @@ def T_σ(v, σ, constants, sizes, arrays):
     # Calculate the expected sum Σ_jp v[σ[i, j], jp] * Q[i, j, jp]
     Ev = jnp.sum(V * Q, axis=2)
 
-    return r_σ + β * jnp.sum(V * Q, axis=2)
+    return r_σ + β * Ev
 
 T_σ = jax.jit(T_σ, static_argnums=(3,))
 ```
@@ -361,7 +361,6 @@ def value_iteration(model, tol=1e-5):
 
 def policy_iteration(model, maxiter=250):
     constants, sizes, arrays = model
-    vz = jnp.zeros(sizes)
     σ = jnp.zeros(sizes, dtype=int)
     i, error = 0, 1.0
     while error > 0 and i < maxiter:
