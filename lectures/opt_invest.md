@@ -81,27 +81,7 @@ jax.config.update("jax_enable_x64", True)
 We need the following successive approximation function.
 
 ```{code-cell} ipython3
-def successive_approx(T,                     # Operator (callable)
-                      x_0,                   # Initial condition
-                      tolerance=1e-6,        # Error tolerance
-                      max_iter=10_000,       # Max iteration bound
-                      print_step=25,         # Print at multiples
-                      verbose=False):
-    x = x_0
-    error = tolerance + 1
-    k = 1
-    while error > tolerance and k <= max_iter:
-        x_new = T(x)
-        error = jnp.max(jnp.abs(x_new - x))
-        if verbose and k % print_step == 0:
-            print(f"Completed iteration {k} with error {error}.")
-        x = x_new
-        k += 1
-    if error > tolerance:
-        print(f"Warning: Iteration hit upper bound {max_iter}.")
-    elif verbose:
-        print(f"Terminated successfully in {k} iterations.")
-    return x
+:load: _static/lecture_specific/successive_approx.py
 ```
 
 
@@ -345,48 +325,15 @@ get_value = jax.jit(get_value, static_argnums=(2,))
 Now we define the solvers, which implement VFI, HPI and OPI.
 
 ```{code-cell} ipython3
-# Implements VFI-Value Function iteration
-
-def value_iteration(model, tol=1e-5):
-    constants, sizes, arrays = model
-    _T = lambda v: T(v, constants, sizes, arrays)
-    vz = jnp.zeros(sizes)
-
-    v_star = successive_approx(_T, vz, tolerance=tol)
-    return get_greedy(v_star, constants, sizes, arrays)
+:load: _static/lecture_specific/vfi.py
 ```
 
 ```{code-cell} ipython3
-# Implements HPI-Howard policy iteration routine
-
-def policy_iteration(model, maxiter=250):
-    constants, sizes, arrays = model
-    σ = jnp.zeros(sizes, dtype=int)
-    i, error = 0, 1.0
-    while error > 0 and i < maxiter:
-        v_σ = get_value(σ, constants, sizes, arrays)
-        σ_new = get_greedy(v_σ, constants, sizes, arrays)
-        error = jnp.max(jnp.abs(σ_new - σ))
-        σ = σ_new
-        i = i + 1
-        print(f"Concluded loop {i} with error {error}.")
-    return σ
+:load: _static/lecture_specific/hpi.py
 ```
 
 ```{code-cell} ipython3
-# Implements the OPI-Optimal policy Iteration routine
-
-def optimistic_policy_iteration(model, tol=1e-5, m=10):
-    constants, sizes, arrays = model
-    v = jnp.zeros(sizes)
-    error = tol + 1
-    while error > tol:
-        last_v = v
-        σ = get_greedy(v, constants, sizes, arrays)
-        for _ in range(m):
-            v = T_σ(v, σ, constants, sizes, arrays)
-        error = jnp.max(jnp.abs(v - last_v))
-    return get_greedy(v, constants, sizes, arrays)
+:load: _static/lecture_specific/opi.py
 ```
 
 ```{code-cell} ipython3
