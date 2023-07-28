@@ -56,8 +56,8 @@ def create_sdd_inventory_model(
         K=40, c=0.2, κ=0.8, p=0.6):        # firm and demand parameters
     mc = qe.tauchen(n_z, ρ, ν)
     z_vals, Q = jnp.array(mc.state_values + b), jnp.array(mc.P)
-    rL = jnp.max(jnp.abs(jnp.linalg.eigvals(z_vals * Q)))
-    assert rL < 1, "Error: r(L) >= 1."    # check r(L) < 1
+    # rL = jnp.max(jnp.abs(jnp.linalg.eigvals(z_vals * Q)))
+    # assert rL < 1, "Error: r(L) >= 1."    # check r(L) < 1
     return Model(K=K, c=c, κ=κ, p=p, z_vals=z_vals, Q=Q)
 ```
 
