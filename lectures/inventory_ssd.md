@@ -27,6 +27,8 @@ import jax.numpy as jnp
 import numpy as np
 import matplotlib.pyplot as plt
 from collections import namedtuple
+import time
+from numba import njit, prange
 ```
 
 Let's check the GPU we are running
@@ -51,19 +53,20 @@ def demand_pdf(p, d):
 ```
 
 ```{code-cell} ipython3
-def create_sdd_inventory_model(
-        ρ=0.98, ν=0.002, n_z=20, b=0.97,   # Z state parameters
-        K=40, c=0.2, κ=0.8, p=0.6):        # firm and demand parameters
-    mc = qe.tauchen(n_z, ρ, ν)
-    z_vals, Q = jnp.array(mc.state_values + b), jnp.array(mc.P)
-    # rL = jnp.max(jnp.abs(jnp.linalg.eigvals(z_vals * Q)))
-    # assert rL < 1, "Error: r(L) >= 1."    # check r(L) < 1
-    return Model(K=K, c=c, κ=κ, p=p, z_vals=z_vals, Q=Q)
+Model_K = 100
+D_MAX = 101
 ```
 
 ```{code-cell} ipython3
-Model_K = 40
-D_MAX = 101
+def create_sdd_inventory_model(
+        ρ=0.98, ν=0.002, n_z=100, b=0.97,   # Z state parameters
+        c=0.2, κ=0.8, p=0.6,                 # firm and demand parameters
+        use_numpy=False):
+    mc = qe.tauchen(n_z, ρ, ν)
+    z_vals, Q = mc.state_values + b, mc.P
+    if not use_numpy:
+        z_vals, Q = jnp.array(mc.state_values + b), jnp.array(mc.P)
+    return Model(K=Model_K, c=c, κ=κ, p=p, z_vals=z_vals, Q=Q)
 ```
 
 ```{code-cell} ipython3
@@ -112,7 +115,7 @@ def T(v, model):
     i_z_range = jnp.arange(len(z_vals))
     x_range = jnp.arange(Model_K + 1)
     res = B_vec3(x_range, i_z_range, v, model)
-    return jnp.max(res,axis=2)
+    return jnp.max(res, axis=2)
 ```
 
 ```{code-cell} ipython3
@@ -123,7 +126,7 @@ def get_greedy(v, model):
     i_z_range = jnp.arange(len(z_vals))
     x_range = jnp.arange(Model_K + 1)
     res = B_vec3(x_range, i_z_range, v, model)
-    return jnp.argmax(res,axis=2)
+    return jnp.argmax(res, axis=2)
 ```
 
 ```{code-cell} ipython3
@@ -166,7 +169,9 @@ v_init = jnp.zeros((Model_K + 1, n_z), dtype=float)
 ```
 
 ```{code-cell} ipython3
-%time v_star, σ_star = solve_inventory_model(v_init, model)
+in_time = time.time()
+v_star, σ_star = solve_inventory_model(v_init, model)
+jax_time = time.time() - in_time
 ```
 
 ```{code-cell} ipython3
@@ -213,4 +218,86 @@ def plot_ts(ts_length=400, fontsize=10):
 
 ```{code-cell} ipython3
 plot_ts()
+```
+
+## Numba implementation
+
+```{code-cell} ipython3
+@njit
+def demand_pdf_numba(p, d):
+    return (1 - p)**d * p
+
+@njit
+def B_numba(x, i_z, a, v, model, d_max=D_MAX):
+    """
+    The function B(x, z, a, v) = r(x, a) + β(z) Σ_x′ v(x′) P(x, a, x′).
+    """
+    K, c, κ, p, z_vals, Q = model
+    z = z_vals[i_z]
+    d_range = np.arange(D_MAX)
+    demand = demand_pdf_numba(p, d_range)
+    _tmp = np.minimum(x, d_range)*demand
+    reward = np.sum(_tmp) - c * a - κ * (a > 0)
+    _tmp = np.sum(v[np.maximum(x - d_range, 0) + a].T * demand, axis=1)
+    cv = np.sum(_tmp*Q[i_z])
+    return reward + z * cv
+
+
+@njit(parallel=True)
+def T_numba(v, model):
+    """The Bellman operator."""
+    K, c, κ, p, z_vals, Q = model
+    new_v = np.empty_like(v)
+    for i_z in prange(len(z_vals)):
+        for x in prange(Model_K+1):
+            _tmp = np.array([B_numba(x, i_z, a, v, model)
+                             for a in range(Model_K-x+1)])
+            new_v[x, i_z] = np.max(_tmp)
+    return new_v
+
+
+@njit(parallel=True)
+def get_greedy_numba(v, model):
+    """Get a v-greedy policy.  Returns a zero-based array."""
+    K, c, κ, p, z_vals, Q = model
+    n_z = len(z_vals)
+    σ_star = np.zeros((Model_K+1, n_z), dtype=np.int32)
+    for i_z in prange(n_z):
+        for x in range(Model_K+1):
+            _tmp = np.array([B_numba(x, i_z, a, v, model)
+                             for a in range(Model_K-x+1)])
+            σ_star[x, i_z] = np.argmax(_tmp)
+    return σ_star
+
+
+
+def solve_inventory_model_numba(v_init, model):
+    """Use successive_approx to get v_star and then compute greedy."""
+    v_star = successive_approx(lambda v: T_numba(v, model), v_init, verbose=True)
+    σ_star = get_greedy_numba(v_star, model)
+    return v_star, σ_star
+```
+
+```{code-cell} ipython3
+model = create_sdd_inventory_model(use_numpy=True)
+K, c, κ, p, z_vals, Q = model
+n_z = len(z_vals)
+v_init = np.zeros((Model_K + 1, n_z), dtype=float)
+```
+
+```{code-cell} ipython3
+in_time = time.time()
+v_star_numba, σ_star_numba = solve_inventory_model_numba(v_init, model)
+nb_time = time.time() - in_time
+```
+
+Verify that numba and JAX converges to the same solution.
+
+```{code-cell} ipython3
+np.allclose(v_star_numba, v_star)
+```
+
+```{code-cell} ipython3
+print(f"JAX vectorized implemetation is {nb_time/jax_time} faster "
+       "than numba's parallel implementation")
 ```
