@@ -43,30 +43,30 @@ jax.config.update("jax_enable_x64", True)
 
 ```{code-cell} ipython3
 # NamedTuple Model
-Model = namedtuple("Model", ("K", "c", "κ", "p", "z_vals", "Q"))
+Model = namedtuple("Model", ("K", "c", "κ", "p", "z_vals", "Q",
+                             "d_vals", "a_vals", "ϕ_vals"))
 ```
 
 ```{code-cell} ipython3
-@jax.jit
 def demand_pdf(p, d):
     return (1 - p)**d * p
 ```
 
 ```{code-cell} ipython3
-Model_K = 100
-D_MAX = 101
-```
-
-```{code-cell} ipython3
 def create_sdd_inventory_model(
-        ρ=0.98, ν=0.002, n_z=100, b=0.97,   # Z state parameters
-        c=0.2, κ=0.8, p=0.6,                 # firm and demand parameters
+        ρ=0.98, ν=0.002, n_z=100, b=0.97,          # Z state parameters
+        c=0.2, κ=0.8, p=0.6, K=100,                # firm and demand parameters
+        d_max=101,
         use_numpy=False):
     mc = qe.tauchen(n_z, ρ, ν)
     z_vals, Q = mc.state_values + b, mc.P
+    d_vals, a_vals = np.arange(d_max), np.arange(K)
+    ϕ_vals = demand_pdf(p, d_vals)
     if not use_numpy:
-        z_vals, Q = jnp.array(mc.state_values + b), jnp.array(mc.P)
-    return Model(K=Model_K, c=c, κ=κ, p=p, z_vals=z_vals, Q=Q)
+        z_vals, Q, d_vals, a_vals, ϕ_vals = map(jnp.array,
+                                        (z_vals, Q, d_vals, a_vals, ϕ_vals))
+    return Model(K=K, c=c, κ=κ, p=p, z_vals=z_vals, Q=Q,
+                 d_vals=d_vals, a_vals=a_vals, ϕ_vals=ϕ_vals)
 ```
 
 ```{code-cell} ipython3
@@ -75,19 +75,17 @@ def B(x, i_z, a, v, model):
     """
     The function B(x, z, a, v) = r(x, a) + β(z) Σ_x′ v(x′) P(x, a, x′).
     """
-    K, c, κ, p, z_vals, Q = model
+    K, c, κ, p, z_vals, Q, d_vals, a_vals, ϕ_vals = model
     z = z_vals[i_z]
-    d_range = jnp.arange(D_MAX)
-    demand = demand_pdf(p, d_range)
-    _tmp = jnp.minimum(x, d_range)*demand
+    _tmp = jnp.minimum(x, d_vals)*ϕ_vals
     reward = jnp.sum(_tmp) - c * a - κ * (a > 0)
-    _tmp = jnp.sum(v[jnp.maximum(x - d_range, 0) + a].T * demand, axis=1)
+    _tmp = ϕ_vals @ v[jnp.maximum(x - d_vals, 0) + a]
     cv = jnp.sum(_tmp*Q[i_z])
     return reward + z * cv
 ```
 
 ```{code-cell} ipython3
-B_vec1 = jax.vmap(B, in_axes=(None, None, 0, None, None))
+B_vec_a = jax.vmap(B, in_axes=(None, None, 0, None, None))
 ```
 
 ```{code-cell} ipython3
@@ -96,25 +94,24 @@ def B2(x, i_z, v, model):
     """
     The function B(x, z, a, v) = r(x, a) + β(z) Σ_x′ v(x′) P(x, a, x′).
     """
-    K, c, κ, p, z_vals, Q = model
-    a_range = jnp.arange(Model_K)
-    res = B_vec1(x, i_z, a_range, v, model)
-    return jnp.where(a_range < Model_K - x + 1, res, -jnp.inf)
+    K, c, κ, p, z_vals, Q, d_vals, a_vals, ϕ_vals = model
+    res = B_vec_a(x, i_z, a_vals, v, model)
+    return jnp.where(a_vals < K - x + 1, res, -jnp.inf)
 ```
 
 ```{code-cell} ipython3
-B_vec2 = jax.vmap(B2, in_axes=(None, 0, None, None))
-B_vec3 = jax.vmap(B_vec2, in_axes=(0, None, None, None))
+B2_vec_z = jax.vmap(B2, in_axes=(None, 0, None, None))
+B2_vec_z_x = jax.vmap(B2_vec_z, in_axes=(0, None, None, None))
 ```
 
 ```{code-cell} ipython3
 @jax.jit
 def T(v, model):
     """The Bellman operator."""
-    K, c, κ, p, z_vals, Q = model
+    K, c, κ, p, z_vals, Q, d_vals, a_vals, ϕ_vals = model
     i_z_range = jnp.arange(len(z_vals))
-    x_range = jnp.arange(Model_K + 1)
-    res = B_vec3(x_range, i_z_range, v, model)
+    x_range = jnp.arange(len(a_vals) + 1)
+    res = B2_vec_z_x(x_range, i_z_range, v, model)
     return jnp.max(res, axis=2)
 ```
 
@@ -122,10 +119,10 @@ def T(v, model):
 @jax.jit
 def get_greedy(v, model):
     """Get a v-greedy policy.  Returns a zero-based array."""
-    K, c, κ, p, z_vals, Q = model
+    K, c, κ, p, z_vals, Q, d_vals, a_vals, ϕ_vals = model
     i_z_range = jnp.arange(len(z_vals))
-    x_range = jnp.arange(Model_K + 1)
-    res = B_vec3(x_range, i_z_range, v, model)
+    x_range = jnp.arange(len(a_vals) + 1)
+    res = B2_vec_z_x(x_range, i_z_range, v, model)
     return jnp.argmax(res, axis=2)
 ```
 
@@ -163,9 +160,9 @@ def solve_inventory_model(v_init, model):
 
 ```{code-cell} ipython3
 model = create_sdd_inventory_model()
-K, c, κ, p, z_vals, Q = model
+K, c, κ, p, z_vals, Q, d_vals, a_vals, ϕ_vals = model
 n_z = len(z_vals)
-v_init = jnp.zeros((Model_K + 1, n_z), dtype=float)
+v_init = jnp.zeros((K + 1, n_z), dtype=float)
 ```
 
 ```{code-cell} ipython3
@@ -224,21 +221,15 @@ plot_ts()
 
 ```{code-cell} ipython3
 @njit
-def demand_pdf_numba(p, d):
-    return (1 - p)**d * p
-
-@njit
-def B_numba(x, i_z, a, v, model, d_max=D_MAX):
+def B_numba(x, i_z, a, v, model):
     """
     The function B(x, z, a, v) = r(x, a) + β(z) Σ_x′ v(x′) P(x, a, x′).
     """
-    K, c, κ, p, z_vals, Q = model
+    K, c, κ, p, z_vals, Q, d_vals, a_vals, ϕ_vals = model
     z = z_vals[i_z]
-    d_range = np.arange(D_MAX)
-    demand = demand_pdf_numba(p, d_range)
-    _tmp = np.minimum(x, d_range)*demand
+    _tmp = np.minimum(x, d_vals)*ϕ_vals
     reward = np.sum(_tmp) - c * a - κ * (a > 0)
-    _tmp = np.sum(v[np.maximum(x - d_range, 0) + a].T * demand, axis=1)
+    _tmp = ϕ_vals @ v[np.maximum(x - d_vals, 0) + a]
     cv = np.sum(_tmp*Q[i_z])
     return reward + z * cv
 
@@ -246,12 +237,12 @@ def B_numba(x, i_z, a, v, model, d_max=D_MAX):
 @njit(parallel=True)
 def T_numba(v, model):
     """The Bellman operator."""
-    K, c, κ, p, z_vals, Q = model
+    K, c, κ, p, z_vals, Q, d_vals, a_vals, ϕ_vals = model
     new_v = np.empty_like(v)
     for i_z in prange(len(z_vals)):
-        for x in prange(Model_K+1):
+        for x in prange(K+1):
             _tmp = np.array([B_numba(x, i_z, a, v, model)
-                             for a in range(Model_K-x+1)])
+                             for a in range(K-x+1)])
             new_v[x, i_z] = np.max(_tmp)
     return new_v
 
@@ -259,13 +250,13 @@ def T_numba(v, model):
 @njit(parallel=True)
 def get_greedy_numba(v, model):
     """Get a v-greedy policy.  Returns a zero-based array."""
-    K, c, κ, p, z_vals, Q = model
+    K, c, κ, p, z_vals, Q, d_vals, a_vals, ϕ_vals = model
     n_z = len(z_vals)
-    σ_star = np.zeros((Model_K+1, n_z), dtype=np.int32)
+    σ_star = np.zeros((K+1, n_z), dtype=np.int32)
     for i_z in prange(n_z):
-        for x in range(Model_K+1):
+        for x in range(K+1):
             _tmp = np.array([B_numba(x, i_z, a, v, model)
-                             for a in range(Model_K-x+1)])
+                             for a in range(K-x+1)])
             σ_star[x, i_z] = np.argmax(_tmp)
     return σ_star
 
@@ -280,9 +271,9 @@ def solve_inventory_model_numba(v_init, model):
 
 ```{code-cell} ipython3
 model = create_sdd_inventory_model(use_numpy=True)
-K, c, κ, p, z_vals, Q = model
+K, c, κ, p, z_vals, Q, d_vals, a_vals, ϕ_vals = model
 n_z = len(z_vals)
-v_init = np.zeros((Model_K + 1, n_z), dtype=float)
+v_init = np.zeros((K + 1, n_z), dtype=float)
 ```
 
 ```{code-cell} ipython3
@@ -291,7 +282,7 @@ v_star_numba, σ_star_numba = solve_inventory_model_numba(v_init, model)
 nb_time = time.time() - in_time
 ```
 
-Verify that numba and JAX converges to the same solution.
+Verify that numba and JAX converge to the same solution.
 
 ```{code-cell} ipython3
 np.allclose(v_star_numba, v_star)
