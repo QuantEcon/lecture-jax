@@ -124,6 +124,17 @@ def create_consumption_model_jax(R=1.01,                # Gross interest rate
 Here's the right hand side of the Bellman equation:
 
 ```{code-cell} ipython3
+@jax.jit
+def compute_c(R, w, y, wp):
+    return R * w + y - wp
+
+compute_c_vec1 = jax.vmap(compute_c, in_axes=(None, None, None, 0))
+compute_c_vec2 = jax.vmap(compute_c_vec1, in_axes=(None, None, 0, None))
+compute_c_vec3 = jax.vmap(compute_c_vec2, in_axes=(None, 0, None, None))
+```
+
+
+```{code-cell} ipython3
 def B(v, constants, sizes, arrays):
     """
     A vectorized version of the right-hand side of the Bellman equation
@@ -140,10 +151,7 @@ def B(v, constants, sizes, arrays):
     w_grid, y_grid, Q = arrays
 
     # Compute current rewards r(w, y, wp) as array r[i, j, ip]
-    w  = jnp.reshape(w_grid, (w_size, 1, 1))    # w[i]   ->  w[i, j, ip]
-    y  = jnp.reshape(y_grid, (1, y_size, 1))    # z[j]   ->  z[i, j, ip]
-    wp = jnp.reshape(w_grid, (1, 1, w_size))    # wp[ip] -> wp[i, j, ip]
-    c = R * w + y - wp
+    c = compute_c_vec3(R, w_grid, y_grid, w_grid)
 
     # Calculate continuation rewards at all combinations of (w, y, wp)
     v = jnp.reshape(v, (1, 1, w_size, y_size))  # v[ip, jp] -> v[i, j, ip, jp]
