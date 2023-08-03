@@ -585,7 +585,7 @@ For sample size and initial conditions, use
 ```{code-cell} ipython3
 num_households = 250_000
 T = 500 # Shift forward T periods
-ψ_0 = jnp.full((num_households, ), wdy.y_mean) # initial distribution
+ψ_0 = jnp.full((num_households, ), wdy.y_mean) # Initial distribution
 ```
 
 ```{exercise-end}
