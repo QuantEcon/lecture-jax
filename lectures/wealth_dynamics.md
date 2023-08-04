@@ -314,16 +314,6 @@ w_jax_result = wealth_time_series_for_loop_jax(wdy.y_mean,
                                                ts_length, wdy, size).block_until_ready()
 ```
 
-Running the above function again will be even faster because of JAX's JIT.
-
-```{code-cell} ipython3
-%%time
-
-# 2nd time is expected to be very fast because of JIT
-w_jax_result = wealth_time_series_scan_jax(wdy.y_mean,
-                                               ts_length, wdy, size).block_until_ready()
-```
-
 ```{code-cell} ipython3
 fig, ax = plt.subplots()
 ax.plot(w_jax_result)
@@ -391,7 +381,7 @@ Running the above function again will be even faster because of JAX's JIT.
 %%time
 
 # 2nd time is expected to be very fast because of JIT
-w_jax_result = wealth_time_series_for_loop_jax(wdy.y_mean, ts_length, wdy, size).block_until_ready()
+w_jax_result = wealth_time_series_jax(wdy.y_mean, ts_length, wdy, size).block_until_ready()
 ```
 
 ```{code-cell} ipython3
@@ -592,6 +582,11 @@ this what you see?
 
 For sample size and initial conditions, use
 
+```{code-cell} ipython3
+num_households = 250_000
+T = 500 # Shift forward T periods
+ψ_0 = jnp.full((num_households, ), wdy.y_mean) # Initial distribution
+```
 
 ```{exercise-end}
 ```
