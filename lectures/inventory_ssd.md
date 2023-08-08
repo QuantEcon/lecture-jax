@@ -81,7 +81,7 @@ def B(x, i_z, a, v, model):
     ϕ_vals = demand_pdf(p, d_vals)
     _tmp = jnp.minimum(x, d_vals)*ϕ_vals
     reward = jnp.sum(_tmp) - c * a - κ * (a > 0)
-    _tmp = jnp.sum(v[jnp.maximum(x - d_range, 0) + a].T * ϕ_vals, axis=1)
+    _tmp = jnp.sum(v[jnp.maximum(x - d_vals, 0) + a].T * ϕ_vals, axis=1)
     cv = jnp.sum(_tmp*Q[i_z])
     return reward + z * cv
 ```
@@ -238,7 +238,7 @@ def B_numba(x, i_z, a, v, model):
     ϕ_vals = demand_pdf_numba(p, d_vals)
     _tmp = np.minimum(x, d_vals)*ϕ_vals
     reward = np.sum(_tmp) - c * a - κ * (a > 0)
-    _tmp = jnp.sum(v[np.maximum(x - d_range, 0) + a].T * ϕ_vals, axis=1)
+    _tmp = np.sum(v[np.maximum(x - d_vals, 0) + a].T * ϕ_vals, axis=1)
     cv = np.sum(_tmp*Q[i_z])
     return reward + z * cv
 
