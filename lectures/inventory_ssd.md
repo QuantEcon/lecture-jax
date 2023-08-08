@@ -16,9 +16,137 @@ kernelspec:
 ```{include} _admonition/gpu.md
 ```
 
+We require the following library to be installed.
+
 ```{code-cell} ipython3
-!pip install quantecon
+:tags: [hide-output]
+
+!pip install --upgrade quantecon
 ```
+
+## The Model
+
+
+We study a firm where a manager tries to maximize shareholder value. To
+simplify the problem, we ignore exit options (so that firm value is the
+expected present value of profits) and assume that the firm only sells one
+product. Letting $\pi_t$ be profits at time $t$ and $r > 0$ be the interest
+rate, the value of the firm is
+
+$$
+    V_0 = \sum_{t \geq 0} \beta^t \pi_t
+    \qquad
+    \text{ where }
+    \quad \beta := \frac{1}{1+r}.
+$$
+
+Suppose the firm faces exogenous demand process
+$(D_t)_{t \geq 0}$. We assume $(D_t)_{t \geq 0}$ is **IID** with common
+distribution $\phi \in (Z_+)$.  Inventory $(X_t)_{t \geq 0}$ of the
+product obeys
+
+$$
+    X_{t+1} = f(X_t, D_{t+1}, A_t)
+    \qquad
+    \text{where}
+    \quad
+    f(x,a,d) := (x - d)\vee 0 + a.
+$$
+
+The term $A_t$ is units of stock ordered this period, which take one period to
+arrive.  We assume that the firm can store at most $K$ items at one time.
+
+Profits are given by
+
+$$
+    \pi_t := X_t \wedge D_{t+1} - c A_t - \kappa 1\{A_t > 0\}.
+$$
+
+We take the minimum of current stock and demand because orders in excess of
+inventory are assumed to be lost rather than back-filled. Here $c$ is unit
+product cost and $\kappa$ is a fixed cost of ordering inventory.
+
+
+We can map our inventory problem into a finite state MDP with state space
+$X := \{0, \ldots, K\}$ and action space $A := X$.  The feasible
+correspondence $\Gamma$ is
+
+$$
+\Gamma(x) := \{0, \ldots, K - x\},
+$$
+
+which represents the set of feasible orders when the current inventory
+state is $x$. The reward function is expected current profits, or
+
+$$
+    r(x, a)  := \sum_{d \geq 0} (x \wedge d) \phi(d)
+        - c a - \kappa 1\{a > 0\}.
+$$
+
+The stochastic kernel from the set of feasible state-action pairs $G$
+induced by $\Gamma$ is,
+
+$$
+    P(x, a, x') := P\{ f(x, a, D) = x' \}
+    \qquad \text{when} \quad
+    D \sim \phi.
+$$
+
+The Bellman equation takes the form
+
+```{math}
+:label: inventory_ssd_v1
+    v(x)
+    = \max_{a \in \Gamma(x)} \left\{
+        r(x, a)
+        + \beta
+        \sum_{d \geq 0} v(f(x, a, d)) \phi(d)
+    \right\}
+```
+
+## Time varing discount rates
+
+
+To add time-varying discounting we replace the constant $\beta$ in
+{eq}`inventory_ssd_v1` with a stochastic process $(\beta_t)$ where $\beta_t =
+1/(1+r_t)$.  We suppose that the dynamics can be expressed as $\beta_t =
+\beta(Z_t)$, where the exogenous process $(Z_t)_{t \geq 0}$ is $Q$-Markov on
+$Z$. After relabeling the endogenous state $X_t$ as $Y_t$ and $x$ as $y$, the Bellman equation
+becomes
+
+$$
+    v(y, z) = \max_{a \in \Gamma(x)} B((y, z), a, v)
+$$
+
+where
+
+```{math}
+:label: inventory_ssd_b1
+    B((y, z), a, v)
+    =
+        r(y, a)
+        + \beta(z)
+        \sum_{d, \, z'} v(f(y, a, d), z') \phi(d) Q(z, z').
+```
+
+If we set
+
+$$
+    R(y, a, y')
+        := P\{f(y, a, d) = y'\} \quad \text{when} \quad D \sim \phi,
+$$
+then $R(y, a, y')$ is the probability of realizing next period inventory level
+$y'$ when the current level is $y$ and the action is $a$.  Hence
+we can rewrite {eq}`inventory_ssd_b1` as
+
+$$
+    B((y, z), a, v)
+    =  r(y, a)
+        + \beta(z)
+        \sum_{y', z'} v(y', z') Q(z, z') R(y, a, y') .
+$$
+
+Let's begin with the following imports
 
 ```{code-cell} ipython3
 import quantecon as qe
@@ -37,13 +165,43 @@ Let's check the GPU we are running
 !nvidia-smi
 ```
 
+We will use 64 bit floats with JAX in order to increase the precision.
+
 ```{code-cell} ipython3
 jax.config.update("jax_enable_x64", True)
 ```
 
+Let's define a model to represent the inventory managment.
+
 ```{code-cell} ipython3
 # NamedTuple Model
 Model = namedtuple("Model", ("c", "κ", "p", "z_vals", "Q"))
+```
+
+We need the following successive approximation function.
+
+```{code-cell} ipython3
+def successive_approx(T,                     # Operator (callable)
+                      x_0,                   # Initial condition
+                      tolerance=1e-6,        # Error tolerance
+                      max_iter=10_000,       # Max iteration bound
+                      print_step=25,         # Print at multiples
+                      verbose=False):
+    x = x_0
+    error = tolerance + 1
+    k = 1
+    while error > tolerance and k <= max_iter:
+        x_new = T(x)
+        error = jnp.max(jnp.abs(x_new - x))
+        if verbose and k % print_step == 0:
+            print(f"Completed iteration {k} with error {error}.")
+        x = x_new
+        k += 1
+    if error > tolerance:
+        print(f"Warning: Iteration hit upper bound {max_iter}.")
+    elif verbose:
+        print(f"Terminated successfully in {k} iterations.")
+    return x
 ```
 
 ```{code-cell} ipython3
@@ -56,6 +214,8 @@ def demand_pdf(p, d):
 K = 100
 D_MAX = 101
 ```
+
+Let's define a function to create an inventory model using the given parameters.
 
 ```{code-cell} ipython3
 def create_sdd_inventory_model(
@@ -107,6 +267,8 @@ B2_vec_z = jax.vmap(B2, in_axes=(None, 0, None, None))
 B2_vec_z_x = jax.vmap(B2_vec_z, in_axes=(0, None, None, None))
 ```
 
+Define the Bellman operator.
+
 ```{code-cell} ipython3
 @jax.jit
 def T(v, model):
@@ -118,6 +280,8 @@ def T(v, model):
     return jnp.max(res, axis=2)
 ```
 
+The following function computes a v-greedy policy.
+
 ```{code-cell} ipython3
 @jax.jit
 def get_greedy(v, model):
@@ -127,30 +291,6 @@ def get_greedy(v, model):
     x_range = jnp.arange(K + 1)
     res = B2_vec_z_x(x_range, i_z_range, v, model)
     return jnp.argmax(res, axis=2)
-```
-
-```{code-cell} ipython3
-def successive_approx(T,                     # Operator (callable)
-                      x_0,                   # Initial condition
-                      tolerance=1e-6,        # Error tolerance
-                      max_iter=10_000,       # Max iteration bound
-                      print_step=25,         # Print at multiples
-                      verbose=False):
-    x = x_0
-    error = tolerance + 1
-    k = 1
-    while error > tolerance and k <= max_iter:
-        x_new = T(x)
-        error = jnp.max(jnp.abs(x_new - x))
-        if verbose and k % print_step == 0:
-            print(f"Completed iteration {k} with error {error}.")
-        x = x_new
-        k += 1
-    if error > tolerance:
-        print(f"Warning: Iteration hit upper bound {max_iter}.")
-    elif verbose:
-        print(f"Terminated successfully in {k} iterations.")
-    return x
 ```
 
 ```{code-cell} ipython3
