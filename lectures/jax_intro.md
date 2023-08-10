@@ -4,7 +4,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.14.1
+    jupytext_version: 1.14.5
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -122,7 +122,7 @@ jnp.ones(3)
 
 As a NumPy replacement, a more significant difference is that arrays are treated as **immutable**.  
 
-For example, with NumPy we can write 
+For example, with NumPy we can write
 
 ```{code-cell} ipython3
 import numpy as np
@@ -146,6 +146,7 @@ a
 
 ```{code-cell} ipython3
 :tags: [raises-exception]
+
 a[0] = 1
 ```
 
@@ -424,8 +425,63 @@ ax.legend(loc='upper center')
 plt.show()
 ```
 
-```{code-cell} ipython3
+## Vectorizing map
 
+JAX has the function [jax.vmap](https://jax.readthedocs.io/en/latest/_autosummary/jax.vmap.html) for creating a vectorized
+function of the given function argument over some axis.
+
+Consider the following function
+
+$$
+     f(x, y)= \frac{\cos(x^2 + y^2)}{(1 + x^2 + y^2)}
+$$
+
+Assume that $X$ and $Y$ are 1-D vectors, and we want to compute the result $f(x, y)$ at each pair of $x \in X$ and $ y \in Y$.
+
+```{code-cell} ipython3
+@jax.jit
+def f(x, y):
+    return jnp.cos(x**2 + y**2) / (1 + x**2 + y**2)
+```
+
+Let's start by writing a loops implementation
+
+```{code-cell} ipython3
+def f_loops(X, Y):
+    res = np.empty((X.shape[0], Y.shape[0]))
+    for i in range(X.shape[0]):
+        for j in range(Y.shape[0]):
+            res[i, j] = f(X[i], Y[j])
+    return res
+```
+
+Now, we can re-write the same function using the `jax.vmap` function.
+
+```{code-cell} ipython3
+f_vec_y = jax.vmap(f, in_axes=(None, 0))
+f_vec_xy = jax.vmap(f_vec_y, in_axes=(0, None))
+```
+
+`f_vec_y` creates a vectorized function of `f` over the axis `0` of vector $Y$ and then we
+take this function `f_vec_y` and vectorized it over the axis `0` of vector $X$ with the name
+`f_vec_xy`.
+
+This is equivalent to two nested loops.
+
+```{code-cell} ipython3
+xsize, ysize = 20, 50
+X, Y = jnp.linspace(-2, 2, xsize), jnp.linspace(2, 5, ysize)
+```
+
+Let's test both the implementations using the above values of $X$ and $Y$.
+
+```{code-cell} ipython3
+f_result_loops = f_loops(X, Y)
+f_result_vmap = f_vec_xy(X, Y)
+```
+
+```{code-cell} ipython3
+np.allclose(f_result_loops, f_result_vmap)
 ```
 
 ## Exercises
@@ -470,7 +526,6 @@ plt.show()
 ```
 
 Here's a suitable function:
-
 
 ```{code-cell} ipython3
 def newton(f, x_0, tol=1e-5):
@@ -570,7 +625,5 @@ And now let's time it:
 compute_call_price_jax().block_until_ready()
 ```
 
-
 ```{solution-end}
 ```
-
