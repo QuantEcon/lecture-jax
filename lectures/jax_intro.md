@@ -433,69 +433,54 @@ function of the given function argument over some axis.
 Consider the following function
 
 $$
-     f(x, y)= \frac{cos(x^2 + y^2)}{(1 + x^2 + y^2)}
+     f(x, y)= \frac{\cos(x^2 + y^2)}{(1 + x^2 + y^2)}
 $$
 
-Assume that $x$ and $y$ are 2-D.
-
-Let's write function `f_loops` using loops
-implementation and later we use it for testing different implementations.
+Assume that $X$ and $Y$ are 1-D vectors, and we want to compute the result $f(x, y)$ at each pair of $x \in X$ and $ y \in Y$.
 
 ```{code-cell} ipython3
 @jax.jit
 def f(x, y):
     return jnp.cos(x**2 + y**2) / (1 + x**2 + y**2)
+```
 
-def f_loops(x, y):
-    res = np.empty(x.shape)
-    for i in range(x.shape[0]):
-        for j in range(x.shape[1]):
-            res[i, j] =  f(x[i, j], y[i, j])
+Let's start by writing a loops implementation
+
+```{code-cell} ipython3
+def f_loops(X, Y):
+    res = np.empty((X.shape[0], Y.shape[0]))
+    for i in range(X.shape[0]):
+        for j in range(Y.shape[0]):
+            res[i, j] = f(X[i], Y[j])
     return res
 ```
 
-Now, we can re-write the same function using the `jax.vmap` function considering that
-$x$ and $y$ are 2 dimensional.
+Now, we can re-write the same function using the `jax.vmap` function.
 
 ```{code-cell} ipython3
-f_vec_1_axis = jax.vmap(f, in_axes=(0, 0))
-f_vec = jax.vmap(f_vec_1_axis, in_axes=(0, 0))
+f_vec_y = jax.vmap(f, in_axes=(None, 0))
+f_vec_xy = jax.vmap(f_vec_y, in_axes=(0, None))
 ```
 
-`f_vec` will take the 2-D arguments $x$ and $y$, and create a vectorized function of `f_vec_1_axis` over the first axis. Now, for `f_vec_1_axis`, the arguments are 1-D $x$ and $y$, and so to it creates a vectorized function of `f` over it's first argument.
+`f_vec_y` creates a vectorized function of `f` over the axis `0` of vector $Y$ and then we
+take this function `f_vec_y` and vectorized it over the axis `0` of vector $X$ with the name
+`f_vec_xy`.
+
+This is equivalent to two nested loops.
+
++++
+
+Let's test both the implementations using the above values of $X$ and $Y$.
 
 ```{code-cell} ipython3
-xgrid = jnp.linspace(-3, 3, 50)
-ygrid = xgrid
-x, y = jnp.meshgrid(xgrid, ygrid)
-```
-
-Let's test both the implementations using the above values of $x$ and $y$.
-
-```{code-cell} ipython3
-f_result_loops = f(x, y)
-f_result_vmap = f_vec(x, y)
+xsize, ysize = 20, 50
+X, Y = jnp.linspace(-2, 2, xsize), jnp.linspace(2, 5, ysize)
+f_result_loops = f_loops(X, Y)
+f_result_vmap = f_vec_xy(X, Y)
 ```
 
 ```{code-cell} ipython3
 np.allclose(f_result_loops, f_result_vmap)
-```
-
-```{code-cell} ipython3
-from mpl_toolkits.mplot3d.axes3d import Axes3D
-from matplotlib import cm
-
-fig = plt.figure(figsize=(10, 6))
-ax = fig.add_subplot(111, projection='3d')
-ax.plot_surface(x,
-                y,
-                f_result_vmap,
-                rstride=2, cstride=2,
-                cmap=cm.jet,
-                alpha=0.7,
-                linewidth=0.25)
-ax.set_zlim(-0.5, 1.0)
-plt.show()
 ```
 
 ## Exercises
