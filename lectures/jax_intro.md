@@ -4,7 +4,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.14.1
+    jupytext_version: 1.14.5
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -122,7 +122,7 @@ jnp.ones(3)
 
 As a NumPy replacement, a more significant difference is that arrays are treated as **immutable**.  
 
-For example, with NumPy we can write 
+For example, with NumPy we can write
 
 ```{code-cell} ipython3
 import numpy as np
@@ -146,6 +146,7 @@ a
 
 ```{code-cell} ipython3
 :tags: [raises-exception]
+
 a[0] = 1
 ```
 
@@ -424,8 +425,77 @@ ax.legend(loc='upper center')
 plt.show()
 ```
 
-```{code-cell} ipython3
+## Vectorizing map
 
+JAX has the function [jax.vmap](https://jax.readthedocs.io/en/latest/_autosummary/jax.vmap.html) for creating a vectorized
+function of the given function argument over some axis.
+
+Consider the following function
+
+$$
+     f(x, y)= \frac{cos(x^2 + y^2)}{(1 + x^2 + y^2)}
+$$
+
+Assume that $x$ and $y$ are 2-D.
+
+Let's write function `f_loops` using loops
+implementation and later we use it for testing different implementations.
+
+```{code-cell} ipython3
+@jax.jit
+def f(x, y):
+    return jnp.cos(x**2 + y**2) / (1 + x**2 + y**2)
+
+def f_loops(x, y):
+    res = np.empty(x.shape)
+    for i in range(x.shape[0]):
+        for j in range(x.shape[1]):
+            res[i, j] =  f(x[i, j], y[i, j])
+    return res
+```
+
+Now, we can re-write the same function using the `jax.vmap` function considering that
+$x$ and $y$ are 2 dimensional.
+
+```{code-cell} ipython3
+f_vec_1_axis = jax.vmap(f, in_axes=(0, 0))
+f_vec = jax.vmap(f_vec_1_axis, in_axes=(0, 0))
+```
+
+`f_vec` will take the 2-D arguments $x$ and $y$, and create a vectorized function of `f_vec_1_axis` over the first axis. Now, for `f_vec_1_axis`, the arguments are 1-D $x$ and $y$, and so to it creates a vectorized function of `f` over it's first argument.
+
+```{code-cell} ipython3
+xgrid = jnp.linspace(-3, 3, 50)
+ygrid = xgrid
+x, y = jnp.meshgrid(xgrid, ygrid)
+```
+
+Let's test both the implementations using the above values of $x$ and $y$.
+
+```{code-cell} ipython3
+f_result_loops = f(x, y)
+f_result_vmap = f_vec(x, y)
+```
+
+```{code-cell} ipython3
+np.allclose(f_result_loops, f_result_vmap)
+```
+
+```{code-cell} ipython3
+from mpl_toolkits.mplot3d.axes3d import Axes3D
+from matplotlib import cm
+
+fig = plt.figure(figsize=(10, 6))
+ax = fig.add_subplot(111, projection='3d')
+ax.plot_surface(x,
+                y,
+                f_result_vmap,
+                rstride=2, cstride=2,
+                cmap=cm.jet,
+                alpha=0.7,
+                linewidth=0.25)
+ax.set_zlim(-0.5, 1.0)
+plt.show()
 ```
 
 ## Exercises
@@ -470,7 +540,6 @@ plt.show()
 ```
 
 Here's a suitable function:
-
 
 ```{code-cell} ipython3
 def newton(f, x_0, tol=1e-5):
@@ -570,7 +639,5 @@ And now let's time it:
 compute_call_price_jax().block_until_ready()
 ```
 
-
 ```{solution-end}
 ```
-
