@@ -468,13 +468,14 @@ take this function `f_vec_y` and vectorized it over the axis `0` of vector $X$ w
 
 This is equivalent to two nested loops.
 
-+++
+```{code-cell} ipython3
+xsize, ysize = 20, 50
+X, Y = jnp.linspace(-2, 2, xsize), jnp.linspace(2, 5, ysize)
+```
 
 Let's test both the implementations using the above values of $X$ and $Y$.
 
 ```{code-cell} ipython3
-xsize, ysize = 20, 50
-X, Y = jnp.linspace(-2, 2, xsize), jnp.linspace(2, 5, ysize)
 f_result_loops = f_loops(X, Y)
 f_result_vmap = f_vec_xy(X, Y)
 ```
