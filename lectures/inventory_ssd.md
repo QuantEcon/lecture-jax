@@ -16,6 +16,9 @@ kernelspec:
 ```{include} _admonition/gpu.md
 ```
 
+
+This lecture provides a JAX implementation of a model in [Dynamic Programming](https://dp.quantecon.org/).
+
 We require the following library to be installed.
 
 ```{code-cell} ipython3
@@ -42,7 +45,7 @@ $$
 
 Suppose the firm faces exogenous demand process $(D_t)_{t \geq 0}$.
 
-We assume $(D_t)_{t \geq 0}$ is **IID** with common distribution $\phi \in (Z_+)$.
+We assume $(D_t)_{t \geq 0}$ is IID with common distribution $\phi \in (Z_+)$.
 
 Inventory $(X_t)_{t \geq 0}$ of the product obeys
 
@@ -256,11 +259,11 @@ def B(x, i_z, a, v, model):
     z = z_vals[i_z]
     d_vals = jnp.arange(D_MAX)
     ϕ_vals = demand_pdf(p, d_vals)
-    _tmp = jnp.minimum(x, d_vals)*ϕ_vals
-    reward = jnp.sum(_tmp) - c * a - κ * (a > 0)
-    _tmp = jnp.sum(v[jnp.maximum(x - d_vals, 0) + a].T * ϕ_vals, axis=1)
-    cv = jnp.sum(_tmp*Q[i_z])
-    return reward + z * cv
+    revenue = jnp.sum(jnp.minimum(x, d_vals)*ϕ_vals)
+    profit = revenue - c * a - κ * (a > 0)
+    v_R = jnp.sum(v[jnp.maximum(x - d_vals, 0) + a].T * ϕ_vals, axis=1)
+    cv = jnp.sum(v_R*Q[i_z])
+    return profit + z * cv
 ```
 
 We need to vectorize this function so that we can use it efficiently in JAX.
@@ -405,11 +408,11 @@ def B_numba(x, i_z, a, v, model):
     z = z_vals[i_z]
     d_vals = np.arange(D_MAX)
     ϕ_vals = demand_pdf_numba(p, d_vals)
-    _tmp = np.minimum(x, d_vals)*ϕ_vals
-    reward = np.sum(_tmp) - c * a - κ * (a > 0)
-    _tmp = np.sum(v[np.maximum(x - d_vals, 0) + a].T * ϕ_vals, axis=1)
-    cv = np.sum(_tmp*Q[i_z])
-    return reward + z * cv
+    revenue = np.sum(np.minimum(x, d_vals)*ϕ_vals)
+    profit = revenue - c * a - κ * (a > 0)
+    v_R = np.sum(v[np.maximum(x - d_vals, 0) + a].T * ϕ_vals, axis=1)
+    cv = np.sum(v_R*Q[i_z])
+    return profit + z * cv
 
 
 @njit(parallel=True)
@@ -419,9 +422,9 @@ def T_numba(v, model):
     new_v = np.empty_like(v)
     for i_z in prange(len(z_vals)):
         for x in prange(K+1):
-            _tmp = np.array([B_numba(x, i_z, a, v, model)
+            v_1 = np.array([B_numba(x, i_z, a, v, model)
                              for a in range(K-x+1)])
-            new_v[x, i_z] = np.max(_tmp)
+            new_v[x, i_z] = np.max(v_1)
     return new_v
 
 
@@ -433,9 +436,9 @@ def get_greedy_numba(v, model):
     σ_star = np.zeros((K+1, n_z), dtype=np.int32)
     for i_z in prange(n_z):
         for x in range(K+1):
-            _tmp = np.array([B_numba(x, i_z, a, v, model)
+            v_1 = np.array([B_numba(x, i_z, a, v, model)
                              for a in range(K-x+1)])
-            σ_star[x, i_z] = np.argmax(_tmp)
+            σ_star[x, i_z] = np.argmax(v_1)
     return σ_star
 
 
@@ -470,5 +473,5 @@ Here's the speed comparison.
 
 ```{code-cell} ipython3
 print(f"JAX vectorized implementation is {nb_time/jax_time} faster "
-       "than numba's parallel implementation")
+       "than Numba's parallel implementation")
 ```
