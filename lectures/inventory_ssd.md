@@ -40,9 +40,9 @@ $$
     \quad \beta := \frac{1}{1+r}.
 $$
 
-Suppose the firm faces exogenous demand process $(D_t)_{t \geq 0}$. 
+Suppose the firm faces exogenous demand process $(D_t)_{t \geq 0}$.
 
-We assume $(D_t)_{t \geq 0}$ is **IID** with common distribution $\phi \in (Z_+)$.  
+We assume $(D_t)_{t \geq 0}$ is **IID** with common distribution $\phi \in (Z_+)$.
 
 Inventory $(X_t)_{t \geq 0}$ of the product obeys
 
@@ -55,7 +55,7 @@ $$
 $$
 
 The term $A_t$ is units of stock ordered this period, which take one period to
-arrive.  
+arrive.
 
 We assume that the firm can store at most $K$ items at one time.
 
@@ -81,7 +81,7 @@ $$
 $$
 
 which represents the set of feasible orders when the current inventory
-state is $x$. 
+state is $x$.
 
 The reward function is expected current profits, or
 
@@ -117,13 +117,13 @@ We wish to consider a more sophisticated model with time-varying discounting.
 This time variation accommodates non-constant interest rates.
 
 To this end, we replace the constant $\beta$ in
-{eq}`inventory_ssd_v1` with a stochastic process $(\beta_t)$ where 
+{eq}`inventory_ssd_v1` with a stochastic process $(\beta_t)$ where
 
 * $\beta_t = 1/(1+r_t)$ and
 * $r_t$ is the interest rate at time $t$
 
 We suppose that the dynamics can be expressed as $\beta_t = \beta(Z_t)$, where the exogenous process $(Z_t)_{t \geq 0}$ is a Markov chain
-on $Z$ with Markov matrix $Q$. 
+on $Z$ with Markov matrix $Q$.
 
 After relabeling inventory $X_t$ as $Y_t$ and $x$ as $y$, the Bellman equation becomes
 
@@ -469,6 +469,6 @@ np.allclose(v_star_numba, v_star)
 Here's the speed comparison.
 
 ```{code-cell} ipython3
-print(f"JAX vectorized implemetation is {nb_time/jax_time} faster "
+print(f"JAX vectorized implementation is {nb_time/jax_time} faster "
        "than numba's parallel implementation")
 ```
