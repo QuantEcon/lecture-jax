@@ -24,14 +24,14 @@ We require the following library to be installed.
 !pip install --upgrade quantecon
 ```
 
-## The Model
+## A model with constant discounting
 
 
-We study a firm where a manager tries to maximize shareholder value. To
-simplify the problem, we ignore exit options (so that firm value is the
-expected present value of profits) and assume that the firm only sells one
-product. Letting $\pi_t$ be profits at time $t$ and $r > 0$ be the interest
-rate, the value of the firm is
+We study a firm where a manager tries to maximize shareholder value.
+
+To simplify the problem, we  assume that the firm only sells one product.
+
+Letting $\pi_t$ be profits at time $t$ and $r > 0$ be the interest rate, the value of the firm is
 
 $$
     V_0 = \sum_{t \geq 0} \beta^t \pi_t
@@ -40,10 +40,11 @@ $$
     \quad \beta := \frac{1}{1+r}.
 $$
 
-Suppose the firm faces exogenous demand process
-$(D_t)_{t \geq 0}$. We assume $(D_t)_{t \geq 0}$ is **IID** with common
-distribution $\phi \in (Z_+)$.  Inventory $(X_t)_{t \geq 0}$ of the
-product obeys
+Suppose the firm faces exogenous demand process $(D_t)_{t \geq 0}$. 
+
+We assume $(D_t)_{t \geq 0}$ is **IID** with common distribution $\phi \in (Z_+)$.  
+
+Inventory $(X_t)_{t \geq 0}$ of the product obeys
 
 $$
     X_{t+1} = f(X_t, D_{t+1}, A_t)
@@ -54,7 +55,9 @@ $$
 $$
 
 The term $A_t$ is units of stock ordered this period, which take one period to
-arrive.  We assume that the firm can store at most $K$ items at one time.
+arrive.  
+
+We assume that the firm can store at most $K$ items at one time.
 
 Profits are given by
 
@@ -63,28 +66,31 @@ $$
 $$
 
 We take the minimum of current stock and demand because orders in excess of
-inventory are assumed to be lost rather than back-filled. Here $c$ is unit
-product cost and $\kappa$ is a fixed cost of ordering inventory.
+inventory are assumed to be lost rather than back-filled.
+
+Here $c$ is unit product cost and $\kappa$ is a fixed cost of ordering inventory.
 
 
-We can map our inventory problem into a finite state MDP with state space
-$X := \{0, \ldots, K\}$ and action space $A := X$.  The feasible
-correspondence $\Gamma$ is
+We can map our inventory problem into a dynamic program with state space
+$X := \{0, \ldots, K\}$ and action space $A := X$.
+
+The feasible correspondence $\Gamma$ is
 
 $$
 \Gamma(x) := \{0, \ldots, K - x\},
 $$
 
 which represents the set of feasible orders when the current inventory
-state is $x$. The reward function is expected current profits, or
+state is $x$. 
+
+The reward function is expected current profits, or
 
 $$
     r(x, a)  := \sum_{d \geq 0} (x \wedge d) \phi(d)
         - c a - \kappa 1\{a > 0\}.
 $$
 
-The stochastic kernel from the set of feasible state-action pairs $G$
-induced by $\Gamma$ is,
+The stochastic kernel (i.e., state-transition probabilities) from the set of feasible state-action pairs is
 
 $$
     P(x, a, x') := P\{ f(x, a, D) = x' \}
@@ -92,7 +98,7 @@ $$
     D \sim \phi.
 $$
 
-The Bellman equation takes the form
+When discounting is constant, the Bellman equation takes the form
 
 ```{math}
 :label: inventory_ssd_v1
@@ -106,13 +112,20 @@ The Bellman equation takes the form
 
 ## Time varing discount rates
 
+We wish to consider a more sophisticated model with time-varying discounting.
 
-To add time-varying discounting we replace the constant $\beta$ in
-{eq}`inventory_ssd_v1` with a stochastic process $(\beta_t)$ where $\beta_t =
-1/(1+r_t)$.  We suppose that the dynamics can be expressed as $\beta_t =
-\beta(Z_t)$, where the exogenous process $(Z_t)_{t \geq 0}$ is $Q$-Markov on
-$Z$. After relabeling the endogenous state $X_t$ as $Y_t$ and $x$ as $y$, the Bellman equation
-becomes
+This time variation accommodates non-constant interest rates.
+
+To this end, we replace the constant $\beta$ in
+{eq}`inventory_ssd_v1` with a stochastic process $(\beta_t)$ where 
+
+* $\beta_t = 1/(1+r_t)$ and
+* $r_t$ is the interest rate at time $t$
+
+We suppose that the dynamics can be expressed as $\beta_t = \beta(Z_t)$, where the exogenous process $(Z_t)_{t \geq 0}$ is a Markov chain
+on $Z$ with Markov matrix $Q$. 
+
+After relabeling inventory $X_t$ as $Y_t$ and $x$ as $y$, the Bellman equation becomes
 
 $$
     v(y, z) = \max_{a \in \Gamma(x)} B((y, z), a, v)
@@ -129,15 +142,17 @@ where
         \sum_{d, \, z'} v(f(y, a, d), z') \phi(d) Q(z, z').
 ```
 
-If we set
+We set
 
 $$
     R(y, a, y')
         := P\{f(y, a, d) = y'\} \quad \text{when} \quad D \sim \phi,
 $$
-then $R(y, a, y')$ is the probability of realizing next period inventory level
-$y'$ when the current level is $y$ and the action is $a$.  Hence
-we can rewrite {eq}`inventory_ssd_b1` as
+
+Now $R(y, a, y')$ is the probability of realizing next period inventory level
+$y'$ when the current level is $y$ and the action is $a$.
+
+Hence we can rewrite {eq}`inventory_ssd_b1` as
 
 $$
     B((y, z), a, v)
@@ -171,7 +186,7 @@ We will use 64 bit floats with JAX in order to increase the precision.
 jax.config.update("jax_enable_x64", True)
 ```
 
-Let's define a model to represent the inventory managment.
+Let's define a model to represent the inventory management.
 
 ```{code-cell} ipython3
 # NamedTuple Model
@@ -229,6 +244,8 @@ def create_sdd_inventory_model(
     return Model(c=c, κ=κ, p=p, z_vals=z_vals, Q=Q)
 ```
 
+Here's the function `B` on the right-hand side of the Bellman equation.
+
 ```{code-cell} ipython3
 @jax.jit
 def B(x, i_z, a, v, model):
@@ -245,6 +262,11 @@ def B(x, i_z, a, v, model):
     cv = jnp.sum(_tmp*Q[i_z])
     return reward + z * cv
 ```
+
+We need to vectorize this function so that we can use it efficiently in JAX.
+
+We apply a sequence of `vmap` operations to vectorize appropriately in each
+argument.
 
 ```{code-cell} ipython3
 B_vec_a = jax.vmap(B, in_axes=(None, None, 0, None, None))
@@ -267,7 +289,7 @@ B2_vec_z = jax.vmap(B2, in_axes=(None, 0, None, None))
 B2_vec_z_x = jax.vmap(B2_vec_z, in_axes=(0, None, None, None))
 ```
 
-Define the Bellman operator.
+Next we define the Bellman operator.
 
 ```{code-cell} ipython3
 @jax.jit
@@ -293,6 +315,8 @@ def get_greedy(v, model):
     return jnp.argmax(res, axis=2)
 ```
 
+Here's code to solve the model using value function iteration.
+
 ```{code-cell} ipython3
 def solve_inventory_model(v_init, model):
     """Use successive_approx to get v_star and then compute greedy."""
@@ -300,6 +324,8 @@ def solve_inventory_model(v_init, model):
     σ_star = get_greedy(v_star, model)
     return v_star, σ_star
 ```
+
+Now let's create an instance and solve it.
 
 ```{code-cell} ipython3
 model = create_sdd_inventory_model()
@@ -361,6 +387,9 @@ plot_ts()
 ```
 
 ## Numba implementation
+
+
+Let's try the same operations in Numba in order to compare the speed.
 
 ```{code-cell} ipython3
 @njit
@@ -431,11 +460,13 @@ v_star_numba, σ_star_numba = solve_inventory_model_numba(v_init, model)
 nb_time = time.time() - in_time
 ```
 
-Verify that numba and JAX converge to the same solution.
+Let's verify that the Numba and JAX implementations converge to the same solution.
 
 ```{code-cell} ipython3
 np.allclose(v_star_numba, v_star)
 ```
+
+Here's the speed comparison.
 
 ```{code-cell} ipython3
 print(f"JAX vectorized implemetation is {nb_time/jax_time} faster "
