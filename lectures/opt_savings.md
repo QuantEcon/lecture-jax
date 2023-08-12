@@ -125,7 +125,7 @@ Here's the right hand side of the Bellman equation:
 
 ```{code-cell} ipython3
 @jax.jit
-def B(R, w, y, wp, v, Q):
+def B(constants, w, y, wp, v, Q):
     """
     A vectorized version of the right-hand side of the Bellman equation
     (before maximization), which is a 3D array representing
@@ -134,6 +134,7 @@ def B(R, w, y, wp, v, Q):
 
     for all (w, y, w′).
     """
+    β, R, γ = constants
     c = R * w + y - wp
     # Compute the right-hand side of the Bellman equation
     return jnp.where(c > 0, c**(1-γ)/(1-γ) + β * jnp.sum(v * Q), -jnp.inf)
@@ -150,10 +151,8 @@ B_vec_w_y_wp = jax.vmap(B_vec_y_wp, in_axes=(None, 0, None, None, None, None))
 ```{code-cell} ipython3
 def B_vec(v, constants, sizes, arrays):
     # Unpack
-    β, R, γ = constants
-    w_size, y_size = sizes
     w_grid, y_grid, Q = arrays
-    return B_vec_w_y_wp(R, w_grid, y_grid, w_grid, v, Q)
+    return B_vec_w_y_wp(constants, w_grid, y_grid, w_grid, v, Q)
 
 # JIT compiled the function
 B_vec = jax.jit(B_vec, static_argnums=(2,))
