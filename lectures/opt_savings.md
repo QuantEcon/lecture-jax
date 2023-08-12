@@ -164,6 +164,15 @@ B_vec = jax.jit(B_vec, static_argnums=(2,))
 Now we define the policy operator $T_\sigma$
 
 ```{code-cell} ipython3
+@jax.jit
+def compute_c(R, w, y, wp):
+    return R * w + y - wp
+
+compute_c_vec_y = jax.vmap(compute_c, in_axes=(None, None, 0, 0))
+compute_c_vec = jax.vmap(compute_c_vec_y, in_axes=(None, 0, None, 0))
+```
+
+```{code-cell} ipython3
 def compute_r_σ(σ, constants, sizes, arrays):
     """
     Compute the array r_σ[i, j] = r[i, j, σ[i, j]], which gives current
@@ -175,13 +184,9 @@ def compute_r_σ(σ, constants, sizes, arrays):
     w_size, y_size = sizes
     w_grid, y_grid, Q = arrays
 
-    # Compute r_σ[i, j]
-    w = jnp.reshape(w_grid, (w_size, 1))
-    y = jnp.reshape(y_grid, (1, y_size))
     wp = w_grid[σ]
-    c = R * w + y - wp
+    c = compute_c_vec(R, w_grid, y_grid, wp)
     r_σ = c**(1-γ)/(1-γ)
-
     return r_σ
 
 # JIT compiled the function
@@ -204,9 +209,6 @@ def T_σ(v, σ, constants, sizes, arrays):
     yp_idx = jnp.reshape(yp_idx, (1, 1, y_size))
     σ = jnp.reshape(σ, (w_size, y_size, 1))
     V = v[σ, yp_idx]
-
-    # Convert Q[j, jp] to Q[i, j, jp]
-    Q = jnp.reshape(Q, (1, y_size, y_size))
 
     # Calculate the expected sum Σ_jp v[σ[i, j], jp] * Q[i, j, jp]
     Ev = jnp.sum(V * Q, axis=2)
@@ -294,9 +296,6 @@ def R_σ(v, σ, constants, sizes, arrays):
     zp_idx = jnp.reshape(zp_idx, (1, 1, y_size))
     σ = jnp.reshape(σ, (w_size, y_size, 1))
     V = v[σ, zp_idx]
-
-    # Expand Q[j, jp] to Q[i, j, jp]
-    Q = jnp.reshape(Q, (1, y_size, y_size))
 
     # Compute and return v[i, j] - β Σ_jp v[σ[i, j], jp] * Q[j, jp]
     return v - β * jnp.sum(V * Q, axis=2)
