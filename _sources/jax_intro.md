@@ -4,7 +4,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.14.1
+    jupytext_version: 1.14.7
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -122,7 +122,7 @@ jnp.ones(3)
 
 As a NumPy replacement, a more significant difference is that arrays are treated as **immutable**.  
 
-For example, with NumPy we can write 
+For example, with NumPy we can write
 
 ```{code-cell} ipython3
 import numpy as np
@@ -146,6 +146,7 @@ a
 
 ```{code-cell} ipython3
 :tags: [raises-exception]
+
 a[0] = 1
 ```
 
@@ -424,8 +425,164 @@ ax.legend(loc='upper center')
 plt.show()
 ```
 
-```{code-cell} ipython3
+## Writing vectorized code
 
+Writing fast JAX code requires shifting repetitive tasks from loops to array processing operations, so that the JAX compiler can easily understand the whole operation and generate more efficient machine code.
+
+This procedure is called **vectorization** or **array programming**, and will be familiar to anyone who has used NumPy or MATLAB.
+
+In most ways, vectorization is the same in JAX as it is in NumPy.
+
+But there are also some differences, which we highlight here.
+
+As a running example, consider the function
+
+$$
+    f(x,y) = \frac{\cos(x^2 + y^2)}{1 + x^2 + y^2}
+$$
+
+Suppose that we want to evaluate this function on a square grid of $x$ and $y$ points and then plot it.
+
+To clarify, here is the slow `for` loop version.
+
+```{code-cell} ipython3
+@jax.jit
+def f(x, y):
+    return jnp.cos(x**2 + y**2) / (1 + x**2 + y**2)
+
+n = 80
+x = jnp.linspace(-2, 2, n)
+y = x
+
+z_loops = np.empty((n, n))
+```
+
+```{code-cell} ipython3
+%%time
+for i in range(n):
+    for j in range(n):
+        z_loops[i, j] = f(x[i], y[j])
+```
+
+Even for this very small grid, the run time is extremely slow.
+
+(Notice that we used a NumPy array for `z_loops` because we wanted to write to it.)
+
++++
+
+OK, so how can we do the same operation in vectorized form?
+
+If you are new to vectorization, you might guess that we can simply write
+
+```{code-cell} ipython3
+z_bad = f(x, y)
+```
+
+But this gives us the wrong result because JAX doesn't understand the nested for loop.
+
+```{code-cell} ipython3
+z_bad.shape
+```
+
+Here is what we actually wanted:
+
+```{code-cell} ipython3
+z_loops.shape
+```
+
+To get the right shape and the correct nested for loop calculation, we can use a `meshgrid` operation designed for this purpose:
+
+```{code-cell} ipython3
+x_mesh, y_mesh = jnp.meshgrid(x, y)
+```
+
+Now we get what we want and the execution time is very fast.
+
+```{code-cell} ipython3
+%%time
+z_mesh = f(x_mesh, y_mesh) 
+```
+
+```{code-cell} ipython3
+%%time
+z_mesh = f(x_mesh, y_mesh) 
+```
+
+Let's confirm that we got the right answer.
+
+```{code-cell} ipython3
+jnp.allclose(z_mesh, z_loops)
+```
+
+Now we can set up a serious grid and run the same calculation (on the larger grid) in a short amount of time.
+
+```{code-cell} ipython3
+n = 6000
+x = jnp.linspace(-2, 2, n)
+y = x
+x_mesh, y_mesh = jnp.meshgrid(x, y)
+```
+
+```{code-cell} ipython3
+%%time
+z_mesh = f(x_mesh, y_mesh) 
+```
+
+```{code-cell} ipython3
+%%time
+z_mesh = f(x_mesh, y_mesh) 
+```
+
+But there is one problem here: the mesh grids use a lot of memory.
+
+```{code-cell} ipython3
+x_mesh.nbytes + y_mesh.nbytes
+```
+
+By comparison, the flat array `x` is just
+
+```{code-cell} ipython3
+x.nbytes  # and y is just a pointer to x
+```
+
+This extra memory usage can be a big problem in actual research calculations.
+
+So let's try a different approach using [jax.vmap](https://jax.readthedocs.io/en/latest/_autosummary/jax.vmap.html) 
+
++++
+
+First we vectorize `f` in `y`.
+
+```{code-cell} ipython3
+f_vec_y = jax.vmap(f, in_axes=(None, 0))  
+```
+
+In the line above, `(None, 0)` indicates that we are vectorizing in the second argument, which is `y`.
+
+Next, we vectorize in the first argument, which is `x`.
+
+```{code-cell} ipython3
+f_vec = jax.vmap(f_vec_y, in_axes=(0, None))
+```
+
+With this construction, we can now call the function $f$ on flat (low memory) arrays.
+
+```{code-cell} ipython3
+%%time
+z_vmap = f_vec(x, y)
+```
+
+```{code-cell} ipython3
+%%time
+z_vmap = f_vec(x, y)
+```
+
+The execution time is essentially the same as the mesh operation but we are using much less memory.
+
+And we produce the correct answer:
+
+```{code-cell} ipython3
+jnp.allclose(z_vmap, z_mesh)
 ```
 
 ## Exercises
@@ -470,7 +627,6 @@ plt.show()
 ```
 
 Here's a suitable function:
-
 
 ```{code-cell} ipython3
 def newton(f, x_0, tol=1e-5):
@@ -570,7 +726,5 @@ And now let's time it:
 compute_call_price_jax().block_until_ready()
 ```
 
-
 ```{solution-end}
 ```
-

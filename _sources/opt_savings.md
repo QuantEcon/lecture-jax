@@ -19,6 +19,8 @@ kernelspec:
 In addition to what’s in Anaconda, this lecture will need the following libraries:
 
 ```{code-cell} ipython3
+:tags: [hide-output]
+
 !pip install quantecon
 ```
 
@@ -55,7 +57,7 @@ $$ W_{t+1} + C_t \leq R W_t + Y_t $$
 
 We assume that labor income $(Y_t)$ is a discretized AR(1) process.
 
-The right-hand side of the Bellman equation is 
+The right-hand side of the Bellman equation is
 
 $$   B((w, y), w', v) = u(Rw + y - w') + β \sum_{y'} v(w', y') Q(y, y'). $$
 
@@ -68,27 +70,7 @@ $$   u(c) = \frac{c^{1-\gamma}}{1-\gamma} $$
 We use successive approximation for VFI.
 
 ```{code-cell} ipython3
-def successive_approx(T,                     # Operator (callable)
-                      x_0,                   # Initial condition
-                      tolerance=1e-6,        # Error tolerance
-                      max_iter=10_000,       # Max iteration bound
-                      print_step=25,         # Print at multiples
-                      verbose=False): 
-    x = x_0
-    error = tolerance + 1
-    k = 1
-    while error > tolerance and k <= max_iter:
-        x_new = T(x)
-        error = jnp.max(jnp.abs(x_new - x))
-        if verbose and k % print_step == 0:
-            print(f"Completed iteration {k} with error {error}.")
-        x = x_new
-        k += 1
-    if error > tolerance:
-        print(f"Warning: Iteration hit upper bound {max_iter}.")
-    elif verbose:
-        print(f"Terminated successfully in {k} iterations.")
-    return x
+:load: _static/lecture_specific/successive_approx.py
 ```
 
 ## Model primitives
@@ -96,7 +78,7 @@ def successive_approx(T,                     # Operator (callable)
 Here’s a `namedtuple` definition for storing parameters and grids.
 
 ```{code-cell} ipython3
-Model = namedtuple('Model', 
+Model = namedtuple('Model',
                     ('β', 'R', 'γ', 'w_grid', 'y_grid', 'Q'))
 ```
 
@@ -112,14 +94,14 @@ def create_consumption_model(R=1.01,                    # Gross interest rate
     A function that takes in parameters and returns an instance of Model that
     contains data for the optimal savings problem.
     """
-    w_grid = jnp.linspace(w_min, w_max, w_size)  
+    w_grid = jnp.linspace(w_min, w_max, w_size)
     mc = qe.tauchen(n=y_size, rho=ρ, sigma=ν)
     y_grid, Q = jnp.exp(mc.state_values), mc.P
     return Model(β=β, R=R, γ=γ, w_grid=w_grid, y_grid=y_grid, Q=Q)
 ```
 
 ```{code-cell} ipython3
-def create_consumption_model_jax(R=1.01,                    # Gross interest rate
+def create_consumption_model_jax(R=1.01,                # Gross interest rate
                              β=0.98,                    # Discount factor
                              γ=2.5,                     # CRRA parameter
                              w_min=0.01,                # Min wealth
@@ -127,8 +109,8 @@ def create_consumption_model_jax(R=1.01,                    # Gross interest rat
                              w_size=150,                # Grid side
                              ρ=0.9, ν=0.1, y_size=100): # Income parameters
     """
-    A function that takes in parameters and returns a JAX-compatible version of Model that
-    contains data for the optimal savings problem.
+    A function that takes in parameters and returns a JAX-compatible version of
+    Model that contains data for the optimal savings problem.
     """
     w_grid = jnp.linspace(w_min, w_max, w_size)
     mc = qe.tauchen(n=y_size, rho=ρ, sigma=ν)
@@ -144,7 +126,7 @@ Here's the right hand side of the Bellman equation:
 ```{code-cell} ipython3
 def B(v, constants, sizes, arrays):
     """
-    A vectorized version of the right-hand side of the Bellman equation 
+    A vectorized version of the right-hand side of the Bellman equation
     (before maximization), which is a 3D array representing
 
         B(w, y, w′) = u(Rw + y - w′) + β Σ_y′ v(w′, y′) Q(y, y′)
@@ -152,7 +134,7 @@ def B(v, constants, sizes, arrays):
     for all (w, y, w′).
     """
 
-    # Unpack 
+    # Unpack
     β, R, γ = constants
     w_size, y_size = sizes
     w_grid, y_grid, Q = arrays
@@ -213,15 +195,15 @@ def T_σ(v, σ, constants, sizes, arrays):
     yp_idx = jnp.arange(y_size)
     yp_idx = jnp.reshape(yp_idx, (1, 1, y_size))
     σ = jnp.reshape(σ, (w_size, y_size, 1))
-    V = v[σ, yp_idx]      
+    V = v[σ, yp_idx]
 
-    # Convert Q[j, jp] to Q[i, j, jp] 
+    # Convert Q[j, jp] to Q[i, j, jp]
     Q = jnp.reshape(Q, (1, y_size, y_size))
 
     # Calculate the expected sum Σ_jp v[σ[i, j], jp] * Q[i, j, jp]
     Ev = jnp.sum(V * Q, axis=2)
 
-    return r_σ + β * jnp.sum(V * Q, axis=2)
+    return r_σ + β * Ev
 ```
 
 and the Bellman operator $T$
@@ -246,9 +228,9 @@ The basic problem is to solve the linear system
 
 $$ v(w,y ) = u(Rw + y - \sigma(w, y)) + β \sum_{y'} v(\sigma(w, y), y') Q(y, y) $$
 
-for $v$.  
+for $v$.
 
-It turns out to be helpful to rewrite this as 
+It turns out to be helpful to rewrite this as
 
 $$ v(w,y) = r(w, y, \sigma(w, y)) + β \sum_{w', y'} v(w', y') P_\sigma(w, y, w', y') $$
 
@@ -258,40 +240,23 @@ We want to write this as $v = r_\sigma + P_\sigma v$ and then solve for $v$
 
 Note, however,
 
-* $v$ is a 2 index array, rather than a single vector.  
-* $P_\sigma$ has four indices rather than 2 
+* $v$ is a 2 index array, rather than a single vector.
+* $P_\sigma$ has four indices rather than 2
 
-The code below 
+The code below
 
 1. reshapes $v$ and $r_\sigma$ to 1D arrays and $P_\sigma$ to a matrix
 2. solves the linear system
 3. converts back to multi-index arrays.
 
 ```{code-cell} ipython3
-def get_value(σ, constants, sizes, arrays):
-    "Get the value v_σ of policy σ by inverting the linear map R_σ."
-
-    # Unpack 
-    β, R, γ = constants
-    w_size, y_size = sizes
-    w_grid, y_grid, Q = arrays
-
-    r_σ = compute_r_σ(σ, constants, sizes, arrays)
-
-    # Reduce R_σ to a function in v
-    partial_R_σ = lambda v: R_σ(v, σ, constants, sizes, arrays)
-
-    return jax.scipy.sparse.linalg.bicgstab(partial_R_σ, r_σ)[0]
-```
-
-```{code-cell} ipython3
 def R_σ(v, σ, constants, sizes, arrays):
     """
-    The value v_σ of a policy σ is defined as 
+    The value v_σ of a policy σ is defined as
 
         v_σ = (I - β P_σ)^{-1} r_σ
 
-    Here we set up the linear map v -> R_σ v, where R_σ := I - β P_σ. 
+    Here we set up the linear map v -> R_σ v, where R_σ := I - β P_σ.
 
     In the consumption problem, this map can be expressed as
 
@@ -320,6 +285,23 @@ def R_σ(v, σ, constants, sizes, arrays):
     return v - β * jnp.sum(V * Q, axis=2)
 ```
 
+```{code-cell} ipython3
+def get_value(σ, constants, sizes, arrays):
+    "Get the value v_σ of policy σ by inverting the linear map R_σ."
+
+    # Unpack
+    β, R, γ = constants
+    w_size, y_size = sizes
+    w_grid, y_grid, Q = arrays
+
+    r_σ = compute_r_σ(σ, constants, sizes, arrays)
+
+    # Reduce R_σ to a function in v
+    partial_R_σ = lambda v: R_σ(v, σ, constants, sizes, arrays)
+
+    return jax.scipy.sparse.linalg.bicgstab(partial_R_σ, r_σ)[0]
+```
+
 ## JIT compiled versions
 
 ```{code-cell} ipython3
@@ -337,47 +319,15 @@ R_σ = jax.jit(R_σ, static_argnums=(3,))
 Now we define the solvers, which implement VFI, HPI and OPI.
 
 ```{code-cell} ipython3
-def value_iteration(model, tol=1e-5):
-    "Implements VFI."
-
-    constants, sizes, arrays = model
-    _T = lambda v: T(v, constants, sizes, arrays)
-    vz = jnp.zeros(sizes)
-
-    v_star = successive_approx(_T, vz, tolerance=tol)
-    return get_greedy(v_star, constants, sizes, arrays)
+:load: _static/lecture_specific/vfi.py
 ```
 
 ```{code-cell} ipython3
-def policy_iteration(model):
-    "Howard policy iteration routine."
-    constants, sizes, arrays = model
-    vz = jnp.zeros(sizes)
-    σ = jnp.zeros(sizes, dtype=int)
-    i, error = 0, 1.0
-    while error > 0:
-        v_σ = get_value(σ, constants, sizes, arrays)
-        σ_new = get_greedy(v_σ, constants, sizes, arrays)
-        error = jnp.max(jnp.abs(σ_new - σ))
-        σ = σ_new
-        i = i + 1
-        print(f"Concluded loop {i} with error {error}.")
-    return σ
+:load: _static/lecture_specific/hpi.py
 ```
 
 ```{code-cell} ipython3
-def optimistic_policy_iteration(model, tol=1e-5, m=10):
-    "Implements the OPI routine."
-    constants, sizes, arrays = model
-    v = jnp.zeros(sizes)
-    error = tol + 1
-    while error > tol:
-        last_v = v
-        σ = get_greedy(v, constants, sizes, arrays)
-        for _ in range(m):
-            v = T_σ(v, σ, constants, sizes, arrays)
-        error = jnp.max(jnp.abs(v - last_v))
-    return get_greedy(v, constants, sizes, arrays)
+:load: _static/lecture_specific/opi.py
 ```
 
 ## Plots
@@ -385,14 +335,18 @@ def optimistic_policy_iteration(model, tol=1e-5, m=10):
 Create a JAX model for consumption, perform policy iteration, and plot the resulting optimal policy function.
 
 ```{code-cell} ipython3
-fontsize=12
+fontsize = 12
 model = create_consumption_model_jax()
-# Unpack 
+# Unpack
 constants, sizes, arrays = model
 β, R, γ = constants
 w_size, y_size = sizes
 w_grid, y_grid, Q = arrays
+```
+
+```{code-cell} ipython3
 σ_star = policy_iteration(model)
+
 fig, ax = plt.subplots(figsize=(9, 5.2))
 ax.plot(w_grid, w_grid, "k--", label="45")
 ax.plot(w_grid, w_grid[σ_star[:, 1]], label="$\\sigma^*(\cdot, y_1)$")
@@ -441,7 +395,9 @@ def run_algorithm(algorithm, model, **kwargs):
     elapsed_time = end_time - start_time
     print(f"{algorithm.__name__} completed in {elapsed_time:.2f} seconds.")
     return result, elapsed_time
+```
 
+```{code-cell} ipython3
 model = create_consumption_model_jax()
 σ_pi, pi_time = run_algorithm(policy_iteration, model)
 σ_vfi, vfi_time = run_algorithm(value_iteration, model, tol=1e-5)
@@ -451,7 +407,9 @@ opi_times = []
 for m in m_vals:
     σ_opi, opi_time = run_algorithm(optimistic_policy_iteration, model, m=m, tol=1e-5)
     opi_times.append(opi_time)
+```
 
+```{code-cell} ipython3
 fig, ax = plt.subplots(figsize=(9, 5.2))
 ax.plot(m_vals, jnp.full(len(m_vals), pi_time), lw=2, label="Howard policy iteration")
 ax.plot(m_vals, jnp.full(len(m_vals), vfi_time), lw=2, label="value function iteration")
@@ -460,8 +418,4 @@ ax.legend(fontsize=fontsize, frameon=False)
 ax.set_xlabel("$m$", fontsize=fontsize)
 ax.set_ylabel("time", fontsize=fontsize)
 plt.show()
-```
-
-```{code-cell} ipython3
-
 ```
