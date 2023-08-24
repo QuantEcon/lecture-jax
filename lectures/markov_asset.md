@@ -354,7 +354,7 @@ def power_iteration_sr(A, num_iterations=15, seed=1234):
 
     return sr
 
-power_iteration_sr = jax.jit(power_iteration_sr, static_argnums=(1,2))
+power_iteration_sr = jax.jit(power_iteration_sr)
 ```
 
 The next function verifies that the spectral radius of a given matrix is $< 1$.
