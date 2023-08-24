@@ -925,13 +925,13 @@ And now let's see without compile time.
 ```{code-cell} ipython3
 qe.tic()
 v_jax = sv_pd_ratio_jax(sv_model_jax, shapes).block_until_ready()
-jnp_time_1 = qe.toc()
+jnp_time = qe.toc()
 ```
 
 Here's the ratio of times:
 
 ```{code-cell} ipython3
-jnp_time_1 / np_time
+jnp_time / np_time
 ```
 
 Let's check that the NumPy and JAX versions realize the same solution.
@@ -959,7 +959,7 @@ $$
 $$
 
 ```{code-cell} ipython3
-def H_operator(g, sv_model, shapes):
+def H(g, sv_model, shapes):
     # Set up
     P, hc_grid, Q, hd_grid, R, z_grid, β, γ, bar_σ, μ_c, μ_d = sv_model
     I, J, K = shapes
@@ -978,37 +978,11 @@ def H_operator(g, sv_model, shapes):
     return Hg
 ```
 
-The next function modifies our earlier `power_iteration_sr` function so that it
-can act on linear operators rather than matrices,
-
-also the spectral radius of the transition matrix less than one ensures the convergence of our calculations in the model.
-
-```{code-cell} ipython3
-def update_g(H_operator, sv_model, shapes, num_iterations=20):
-    g_k = jnp.ones(shapes)
-    for _ in range(num_iterations):
-        g_k1 = H_operator(g_k, sv_model, shapes)
-        sr = jnp.sum(g_k1 * g_k) / jnp.sum(g_k * g_k)
-        g_k1_norm = jnp.linalg.norm(g_k1)
-        g_k = g_k1 / g_k1_norm
-
-    return sr
-```
-
-Let's check the output
-
-```{code-cell} ipython3
-qe.tic()
-sr = update_g(H_operator, sv_model, shapes)
-qe.toc()
-print(sr)
-```
-
 Now we write a version of the solution function for the price-dividend ratio
-that acts directly on the linear operator `H_operator`.
+that acts directly on the linear operator `H`.
 
 ```{code-cell} ipython3
-def sv_pd_ratio_jax_multi(sv_model, shapes):
+def sv_pd_ratio_linop(sv_model, shapes):
 
     # Setp up
     P, hc_grid, Q, hd_grid, R, z_grid, β, γ, bar_σ, μ_c, μ_d = sv_model
@@ -1017,11 +991,12 @@ def sv_pd_ratio_jax_multi(sv_model, shapes):
     # Compute v
     ones_array = np.ones((I, J, K))
     # Set up the operator g -> g
-    H = lambda g: H_operator(g, sv_model, shapes)
+    H = lambda g: H(g, sv_model, shapes)
     # Set up the operator g -> (I - H) g
     J = lambda g: g - H(g)
     # Solve v = (I - H)^{-1} H 1
-    H1 = H_operator(ones_array, sv_model, shapes)
+    H1 = H(ones_array, sv_model, shapes)
+    # Apply an iterative solver that works for linear operators
     v = jax.scipy.sparse.linalg.bicgstab(J, H1)[0]
     return v
 ```
@@ -1029,42 +1004,39 @@ def sv_pd_ratio_jax_multi(sv_model, shapes):
 Let's target these functions for JIT compilation.
 
 ```{code-cell} ipython3
-H_operator = jax.jit(H_operator, static_argnums=(2,))
-sv_pd_ratio_jax_multi = jax.jit(sv_pd_ratio_jax_multi, static_argnums=(1,))
+H = jax.jit(H, static_argnums=(2,))
+sv_pd_ratio_linop = jax.jit(sv_pd_ratio_linop, static_argnums=(1,))
 ```
 
 Let's time the solution with compile time included.
 
 ```{code-cell} ipython3
 qe.tic()
-v_jax_multi = sv_pd_ratio_jax_multi(sv_model, shapes).block_until_ready()
-jnp_time_multi_0 = qe.toc()
+v_jax_linop = sv_pd_ratio_linop(sv_model, shapes).block_until_ready()
+jnp_time_linop_0 = qe.toc()
 ```
 
 And now let’s see without compile time.
 
 ```{code-cell} ipython3
 qe.tic()
-v_jax_multi = sv_pd_ratio_jax_multi(sv_model, shapes).block_until_ready()
-jnp_time_multi_1 = qe.toc()
+v_jax_linop = sv_pd_ratio_linop(sv_model, shapes).block_until_ready()
+jnp_linop_time = qe.toc()
 ```
 
 Let's verify the solution again:
 
 ```{code-cell} ipython3
-print(jnp.allclose(v, v_jax_multi))
+print(jnp.allclose(v, v_jax_linop))
 ```
 
 Here’s the ratio of times between memory-efficient and direct version:
 
 ```{code-cell} ipython3
-jnp_time_multi_1 / jnp_time_1
+jnp_linop_time / jnp_time
 ```
 
-The speed is somewhat faster. In addition,
-
-1. now we can work with much larger grids, and
-2. the memory efficient version will be significantly faster with larger grids.
+The speed is somewhat faster and, moreover, we can now work with much larger grids.
 
 Here's a moderately large example, where the state space has 15,625 elements.
 
@@ -1073,14 +1045,14 @@ sv_model = create_sv_model(I=25, J=25, K=25)
 sv_model_jax = create_sv_model_jax(sv_model)
 P, hc_grid, Q, hd_grid, R, z_grid, β, γ, bar_σ, μ_c, μ_d = sv_model_jax
 shapes = len(hc_grid), len(hd_grid), len(z_grid)
-```
 
-```{code-cell} ipython3
 qe.tic()
-v_jax_multi = sv_pd_ratio_jax_multi(sv_model, shapes).block_until_ready()
-jnp_time_multi_2 = qe.toc()
+_ = sv_pd_ratio_linop(sv_model, shapes).block_until_ready()
+qe.toc()
 ```
 
-```{code-cell} ipython3
-jnp_time_multi_1 / jnp_time_1
-```
+The solution is computed relatively quickly and without memory issues.
+
+Readers will find that they can push these numbers further, although we refrain
+from doing so here.
+
