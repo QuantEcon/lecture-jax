@@ -988,12 +988,9 @@ def sv_pd_ratio_linop(sv_model, shapes):
     P, hc_grid, Q, hd_grid, R, z_grid, β, γ, bar_σ, μ_c, μ_d = sv_model
     I, J, K = shapes
 
-    # Compute v
     ones_array = np.ones((I, J, K))
-    # Set up the operator g -> g
-    H = lambda g: H(g, sv_model, shapes)
     # Set up the operator g -> (I - H) g
-    J = lambda g: g - H(g)
+    J = lambda g: g - H(g, sv_model, shapes)
     # Solve v = (I - H)^{-1} H 1
     H1 = H(ones_array, sv_model, shapes)
     # Apply an iterative solver that works for linear operators
