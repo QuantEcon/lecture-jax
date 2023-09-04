@@ -403,7 +403,7 @@ class Arellano_Economy:
         self.y_grid = jax.device_put(y_grid)
         self.P = jax.device_put(P)
 
-        # Output recieved while in default, with same shape as y_grid
+        # Output received while in default, with same shape as y_grid
         self.def_y = jnp.minimum(def_y_param * jnp.mean(self.y_grid), self.y_grid)
 
     def params(self):
