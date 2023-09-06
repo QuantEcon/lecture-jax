@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>9. Maximum Likelihood Estimation &#8212; Quantitative Economics with Python using JAX</title>
+    <title>8. Maximum Likelihood Estimation &#8212; Quantitative Economics with Python using JAX</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
@@ -120,8 +120,8 @@ const thebe_selector_output = ".output, .cell_output"
     <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="10. Shortest Paths" href="short_path.html" />
-    <link rel="prev" title="8. Wealth Distribution Dynamics" href="wealth_dynamics.html" />
+    <link rel="next" title="9. Shortest Paths" href="short_path.html" />
+    <link rel="prev" title="7. Wealth Distribution Dynamics" href="wealth_dynamics.html" />
 
 <!-- Normal Meta Tags -->
 <meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
@@ -169,13 +169,13 @@ const thebe_selector_output = ".output, .cell_output"
 
                         <nav id="bd-toc-nav" class="qe-page__toc-nav">
                             <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">9.1. Overview</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mle-with-numerical-methods-jax">9.2. MLE with numerical methods (JAX)</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-toy-model">9.2.1. A toy model</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-poisson-model">9.2.2. A Poisson model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">8.1. Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mle-with-numerical-methods-jax">8.2. MLE with numerical methods (JAX)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-toy-model">8.2.1. A toy model</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-poisson-model">8.2.2. A Poisson model</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mle-with-statsmodels">9.3. MLE with <code class="docutils literal notranslate"><span class="pre">statsmodels</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mle-with-statsmodels">8.3. MLE with <code class="docutils literal notranslate"><span class="pre">statsmodels</span></code></a></li>
 </ul>
                             <p class="logo">
                                 
@@ -221,7 +221,7 @@ const thebe_selector_output = ".output, .cell_output"
                     <div>
                         
   <section class="tex2jax_ignore mathjax_ignore" id="maximum-likelihood-estimation">
-<h1><a class="toc-backref" href="#id1"><span class="section-number">9. </span>Maximum Likelihood Estimation</a><a class="headerlink" href="#maximum-likelihood-estimation" title="Permalink to this heading">#</a></h1>
+<h1><a class="toc-backref" href="#id1"><span class="section-number">8. </span>Maximum Likelihood Estimation</a><a class="headerlink" href="#maximum-likelihood-estimation" title="Permalink to this heading">#</a></h1>
 <div class="contents topic" id="contents">
 <p class="topic-title">Contents</p>
 <ul class="simple">
@@ -241,7 +241,7 @@ const thebe_selector_output = ".output, .cell_output"
 <p>To run this lecture on your own machine, you need to install <a class="reference external" href="https://github.com/google/jax">Google JAX</a>.</p>
 </div>
 <section id="overview">
-<h2><a class="toc-backref" href="#id2"><span class="section-number">9.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id2"><span class="section-number">8.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
 <p>This lecture is the extended JAX implementation of <a class="reference external" href="https://python.quantecon.org/mle.html#mle-with-numerical-methods">this section</a> of <a class="reference external" href="https://python.quantecon.org/mle.html">this lecture</a>.</p>
 <p>Please refer that lecture for all background and notation.</p>
 <p>Here we will exploit the automatic differentiation capabilities of JAX rather than calculating derivatives by hand.</p>
@@ -265,7 +265,7 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Mon Aug 14 04:35:59 2023       
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Mon Sep  4 03:29:08 2023       
 +-----------------------------------------------------------------------------+
 | NVIDIA-SMI 470.182.03   Driver Version: 470.182.03   CUDA Version: 12.1     |
 |-------------------------------+----------------------+----------------------+
@@ -276,7 +276,7 @@ const thebe_selector_output = ".output, .cell_output"
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>|   0  Tesla V100-SXM2...  Off  | 00000000:00:1E.0 Off |                    0 |
-| N/A   34C    P0    38W / 300W |      0MiB / 16160MiB |      2%      Default |
+| N/A   32C    P0    39W / 300W |      0MiB / 16160MiB |      2%      Default |
 |                               |                      |                  N/A |
 +-------------------------------+----------------------+----------------------+
                                                                                
@@ -301,13 +301,13 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
 </section>
 <section id="mle-with-numerical-methods-jax">
-<h2><a class="toc-backref" href="#id3"><span class="section-number">9.2. </span>MLE with numerical methods (JAX)</a><a class="headerlink" href="#mle-with-numerical-methods-jax" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id3"><span class="section-number">8.2. </span>MLE with numerical methods (JAX)</a><a class="headerlink" href="#mle-with-numerical-methods-jax" title="Permalink to this heading">#</a></h2>
 <p>Many distributions do not have nice, analytical solutions and therefore require
 numerical methods to solve for parameter estimates.</p>
 <p>One such numerical method is the Newton-Raphson algorithm.</p>
 <p>Let’s start with a simple example to illustrate the algorithm.</p>
 <section id="a-toy-model">
-<h3><span class="section-number">9.2.1. </span>A toy model<a class="headerlink" href="#a-toy-model" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">8.2.1. </span>A toy model<a class="headerlink" href="#a-toy-model" title="Permalink to this heading">#</a></h3>
 <p>Our goal is to find the maximum likelihood estimate <span class="math notranslate nohighlight">\(\hat{\boldsymbol{\beta}}\)</span>.</p>
 <p>At <span class="math notranslate nohighlight">\(\hat{\boldsymbol{\beta}}\)</span>, the first derivative of the log-likelihood
 function will be equal to 0.</p>
@@ -380,7 +380,7 @@ guess).</p>
 <p>Please refer to <a class="reference external" href="https://python.quantecon.org/mle.html#mle-with-numerical-methods">this section</a> for the detailed algorithm.</p>
 </section>
 <section id="a-poisson-model">
-<h3><span class="section-number">9.2.2. </span>A Poisson model<a class="headerlink" href="#a-poisson-model" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">8.2.2. </span>A Poisson model<a class="headerlink" href="#a-poisson-model" title="Permalink to this heading">#</a></h3>
 <p>Let’s have a go at implementing the Newton-Raphson algorithm to calculate the maximum likelihood estimations of a Poisson  regression.</p>
 <p>The Poisson regression has a joint pmf:</p>
 <div class="math notranslate nohighlight">
@@ -569,7 +569,7 @@ convergence in only 7 iterations.</p>
 </section>
 </section>
 <section id="mle-with-statsmodels">
-<h2><a class="toc-backref" href="#id4"><span class="section-number">9.3. </span>MLE with <code class="docutils literal notranslate"><span class="pre">statsmodels</span></code></a><a class="headerlink" href="#mle-with-statsmodels" title="Permalink to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id4"><span class="section-number">8.3. </span>MLE with <code class="docutils literal notranslate"><span class="pre">statsmodels</span></code></a><a class="headerlink" href="#mle-with-statsmodels" title="Permalink to this heading">#</a></h2>
 <p>We’ll use the Poisson regression model in <code class="docutils literal notranslate"><span class="pre">statsmodels</span></code> to verify the results
 obtained using JAX.</p>
 <p><code class="docutils literal notranslate"><span class="pre">statsmodels</span></code> uses the same algorithm as above to find the maximum
@@ -600,8 +600,8 @@ of JAX arrays to convert it to NumPy arrays.</p>
 Dep. Variable:                      y   No. Observations:                    5
 Model:                        Poisson   Df Residuals:                        2
 Method:                           MLE   Df Model:                            2
-Date:                Mon, 14 Aug 2023   Pseudo R-squ.:                  0.2546
-Time:                        04:36:07   Log-Likelihood:                -3.3784
+Date:                Mon, 04 Sep 2023   Pseudo R-squ.:                  0.2546
+Time:                        03:29:17   Log-Likelihood:                -3.3784
 converged:                       True   LL-Null:                       -4.5325
 Covariance Type:            nonrobust   LLR p-value:                    0.3153
 ==============================================================================
@@ -622,7 +622,7 @@ x2             0.8433      0.798      1.057      0.291      -0.720       2.407
 </ul>
 <div class="exercise admonition" id="newton_mle1">
 
-<p class="admonition-title"><span class="caption-number">Exercise 9.1 </span></p>
+<p class="admonition-title"><span class="caption-number">Exercise 8.1 </span></p>
 <section id="exercise-content">
 <p>We define a quadratic model for a single explanatory variable by</p>
 <div class="math notranslate nohighlight">
@@ -631,8 +631,8 @@ x2             0.8433      0.798      1.057      0.291      -0.720       2.407
 \]</div>
 <p>We calculate the mean on the original scale instead of the log scale by exponentiating both sides of the above equation, which gives</p>
 <div class="math notranslate nohighlight" id="equation-lambda-mle">
-<span class="eqno">(9.1)<a class="headerlink" href="#equation-lambda-mle" title="Permalink to this equation">#</a></span>\[    \lambda_t = \exp(\beta_0 + \beta_1 x_t + \beta_2 x_{t}^2)\]</div>
-<p>Simulate the values of <span class="math notranslate nohighlight">\(x_t\)</span> by sampling from a normal distribution and <span class="math notranslate nohighlight">\(\lambda_t\)</span> by using <a class="reference internal" href="#equation-lambda-mle">(9.1)</a> and the following constants:</p>
+<span class="eqno">(8.1)<a class="headerlink" href="#equation-lambda-mle" title="Permalink to this equation">#</a></span>\[    \lambda_t = \exp(\beta_0 + \beta_1 x_t + \beta_2 x_{t}^2)\]</div>
+<p>Simulate the values of <span class="math notranslate nohighlight">\(x_t\)</span> by sampling from a normal distribution and <span class="math notranslate nohighlight">\(\lambda_t\)</span> by using <a class="reference internal" href="#equation-lambda-mle">(8.1)</a> and the following constants:</p>
 <div class="math notranslate nohighlight">
 \[
     \beta_0 = -2.5,
@@ -641,7 +641,7 @@ x2             0.8433      0.798      1.057      0.291      -0.720       2.407
     \quad
     \beta_2 = 0.5
 \]</div>
-<p>Try to obtain the approximate values of <span class="math notranslate nohighlight">\(\beta_0,\beta_1,\beta_2\)</span>, by simulating a Poission Regression Model such that</p>
+<p>Try to obtain the approximate values of <span class="math notranslate nohighlight">\(\beta_0,\beta_1,\beta_2\)</span>, by simulating a Poisson Regression Model such that</p>
 <div class="math notranslate nohighlight">
 \[
       y_t \sim {\rm Poisson}(\lambda_t)
@@ -655,7 +655,7 @@ recover the true values of of these parameters.</p>
 </div>
 <div class="solution dropdown admonition" id="mle-solution-1">
 
-<p class="admonition-title">Solution to<a class="reference internal" href="#newton_mle1"> Exercise 9.1</a></p>
+<p class="admonition-title">Solution to<a class="reference internal" href="#newton_mle1"> Exercise 8.1</a></p>
 <section id="solution-content">
 <p>Let’s start by defining “true” parameter values.</p>
 <div class="cell docutils container">
@@ -678,7 +678,7 @@ recover the true values of of these parameters.</p>
 </div>
 </div>
 </div>
-<p>We compute <span class="math notranslate nohighlight">\(\lambda\)</span> using <a class="reference internal" href="#equation-lambda-mle">(9.1)</a></p>
+<p>We compute <span class="math notranslate nohighlight">\(\lambda\)</span> using <a class="reference internal" href="#equation-lambda-mle">(8.1)</a></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">λ</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">β_0</span> <span class="o">+</span> <span class="n">β_1</span> <span class="o">*</span> <span class="n">x</span> <span class="o">+</span> <span class="n">β_2</span> <span class="o">*</span> <span class="n">x</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
@@ -686,7 +686,7 @@ recover the true values of of these parameters.</p>
 </div>
 </div>
 </div>
-<p>Let’s define <span class="math notranslate nohighlight">\(y_t\)</span> by sampling from a Poission distribution with mean as <span class="math notranslate nohighlight">\(\lambda_t\)</span>.</p>
+<p>Let’s define <span class="math notranslate nohighlight">\(y_t\)</span> by sampling from a Poisson distribution with mean as <span class="math notranslate nohighlight">\(\lambda_t\)</span>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">y</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">poisson</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">λ</span><span class="p">,</span> <span class="n">shape</span><span class="p">)</span>
@@ -828,18 +828,13 @@ Number of iterations: 12
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="inventory_ssd.html">
-   6. Inventory Management Model
-  </a>
- </li>
- <li class="toctree-l1">
   <a class="reference internal" href="kesten_processes.html">
-   7. Kesten Processes and Firm Dynamics
+   6. Kesten Processes and Firm Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wealth_dynamics.html">
-   8. Wealth Distribution Dynamics
+   7. Wealth Distribution Dynamics
   </a>
  </li>
 </ul>
@@ -851,7 +846,7 @@ Number of iterations: 12
 <ul class="current nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1 current active active">
   <a class="current reference internal" href="#">
-   9. Maximum Likelihood Estimation
+   8. Maximum Likelihood Estimation
   </a>
  </li>
 </ul>
@@ -863,37 +858,37 @@ Number of iterations: 12
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="short_path.html">
-   10. Shortest Paths
+   9. Shortest Paths
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="opt_invest.html">
-   11. Optimal Investment
+   10. Optimal Investment
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="opt_savings.html">
-   12. Optimal Savings
+   11. Optimal Savings
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_egm.html">
-   13. Endogenous Grid Method
+   12. Endogenous Grid Method
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="arellano.html">
-   14. Default Risk and Income Fluctuations
+   13. Default Risk and Income Fluctuations
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="aiyagari_jax.html">
-   15. The Aiyagari Model
+   14. The Aiyagari Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_numerical.html">
-   16. Cake Eating: Numerical Methods
+   15. Cake Eating: Numerical Methods
   </a>
  </li>
 </ul>
@@ -905,17 +900,17 @@ Number of iterations: 12
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   17. Troubleshooting
+   16. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   18. References
+   17. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   19. Execution Statistics
+   18. Execution Statistics
   </a>
  </li>
 </ul>

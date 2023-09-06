@@ -671,7 +671,7 @@ Try writing a version of this operation for JAX, using all the same
 parameters.
 
 If you are running your code on a GPU, you should be able to achieve
-significantly faster exection.
+significantly faster execution.
 
 
 ```{exercise-end}

@@ -248,19 +248,19 @@ you can jump to <a class="reference internal" href="#equation-eq-ntecx2">(4.13)<
 </summary>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /opt/conda/envs/quantecon/lib/python3.10/site-packages (0.7.1)
-Requirement already satisfied: sympy in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (1.11.1)
-Requirement already satisfied: numba&gt;=0.49.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (0.56.4)
 Requirement already satisfied: scipy&gt;=1.5.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (1.10.0)
-Requirement already satisfied: requests in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (2.28.1)
+Requirement already satisfied: sympy in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (1.11.1)
 Requirement already satisfied: numpy&gt;=1.17.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (1.23.5)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: llvmlite&lt;0.40,&gt;=0.39.0dev0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from numba&gt;=0.49.0-&gt;quantecon) (0.39.1)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: requests in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (2.28.1)
+Requirement already satisfied: numba&gt;=0.49.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (0.56.4)
 Requirement already satisfied: setuptools in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from numba&gt;=0.49.0-&gt;quantecon) (65.6.3)
-Requirement already satisfied: charset-normalizer&lt;3,&gt;=2 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (2.0.4)
-Requirement already satisfied: idna&lt;4,&gt;=2.5 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (3.4)
-Requirement already satisfied: certifi&gt;=2017.4.17 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (2022.12.7)
+Requirement already satisfied: llvmlite&lt;0.40,&gt;=0.39.0dev0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from numba&gt;=0.49.0-&gt;quantecon) (0.39.1)
 Requirement already satisfied: urllib3&lt;1.27,&gt;=1.21.1 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (1.26.14)
+Requirement already satisfied: charset-normalizer&lt;3,&gt;=2 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (2.0.4)
+Requirement already satisfied: certifi&gt;=2017.4.17 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (2022.12.7)
+Requirement already satisfied: idna&lt;4,&gt;=2.5 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (3.4)
 Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/envs/quantecon/lib/python3.10/site-packages/mpmath-1.2.1-py3.10.egg (from sympy-&gt;quantecon) (1.2.1)
 </pre></div>
 </div>
@@ -398,7 +398,7 @@ the <strong>state process</strong>,  such that</p>
 \end{aligned}
 \end{split}\]</div>
 <p>Here <span class="math notranslate nohighlight">\(\{\epsilon_{c, t}\}\)</span> and <span class="math notranslate nohighlight">\(\{\epsilon_{d, t}\}\)</span> are IID and standard
-normal, and independent of eachother.</p>
+normal, and independent of each other.</p>
 <p>We can think of <span class="math notranslate nohighlight">\(\{X_t\}\)</span> as an aggregate shock that affects both consumption
 growth and firm profits (and hence dividends).</p>
 <p>We let <span class="math notranslate nohighlight">\(P\)</span> be the <a class="reference external" href="https://python.quantecon.org/finite_markov.html">stochastic matrix that governs <span class="math notranslate nohighlight">\(\{X_t\}\)</span></a> and assume <span class="math notranslate nohighlight">\(\{X_t\}\)</span> takes values in some finite set <span class="math notranslate nohighlight">\(S\)</span>.</p>
@@ -521,7 +521,7 @@ then compute the solution <a class="reference internal" href="#equation-eq-ntecx
 
     <span class="k">return</span> <span class="n">sr</span>
 
-<span class="n">power_iteration_sr</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">jit</span><span class="p">(</span><span class="n">power_iteration_sr</span><span class="p">,</span> <span class="n">static_argnums</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span>
+<span class="n">power_iteration_sr</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">jit</span><span class="p">(</span><span class="n">power_iteration_sr</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -935,7 +935,7 @@ and <span class="math notranslate nohighlight">\(H\)</span> into an <span class=
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:1.17
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:1.16
 </pre></div>
 </div>
 </div>
@@ -1114,7 +1114,7 @@ and <span class="math notranslate nohighlight">\(H\)</span> into an <span class=
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">qe</span><span class="o">.</span><span class="n">tic</span><span class="p">()</span>
 <span class="n">v_jax</span> <span class="o">=</span> <span class="n">sv_pd_ratio_jax</span><span class="p">(</span><span class="n">sv_model_jax</span><span class="p">,</span> <span class="n">shapes</span><span class="p">)</span><span class="o">.</span><span class="n">block_until_ready</span><span class="p">()</span>
-<span class="n">jnp_time_1</span> <span class="o">=</span> <span class="n">qe</span><span class="o">.</span><span class="n">toc</span><span class="p">()</span>
+<span class="n">jnp_time</span> <span class="o">=</span> <span class="n">qe</span><span class="o">.</span><span class="n">toc</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -1127,12 +1127,12 @@ and <span class="math notranslate nohighlight">\(H\)</span> into an <span class=
 <p>Here’s the ratio of times:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">jnp_time_1</span> <span class="o">/</span> <span class="n">np_time</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">jnp_time</span> <span class="o">/</span> <span class="n">np_time</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.013685233362365497
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.013942890247932535
 </pre></div>
 </div>
 </div>
@@ -1167,7 +1167,7 @@ and <span class="math notranslate nohighlight">\(H\)</span> into an <span class=
 \]</div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">H_operator</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">sv_model</span><span class="p">,</span> <span class="n">shapes</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">H</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">sv_model</span><span class="p">,</span> <span class="n">shapes</span><span class="p">):</span>
     <span class="c1"># Set up</span>
     <span class="n">P</span><span class="p">,</span> <span class="n">hc_grid</span><span class="p">,</span> <span class="n">Q</span><span class="p">,</span> <span class="n">hd_grid</span><span class="p">,</span> <span class="n">R</span><span class="p">,</span> <span class="n">z_grid</span><span class="p">,</span> <span class="n">β</span><span class="p">,</span> <span class="n">γ</span><span class="p">,</span> <span class="n">bar_σ</span><span class="p">,</span> <span class="n">μ_c</span><span class="p">,</span> <span class="n">μ_d</span> <span class="o">=</span> <span class="n">sv_model</span>
     <span class="n">I</span><span class="p">,</span> <span class="n">J</span><span class="p">,</span> <span class="n">K</span> <span class="o">=</span> <span class="n">shapes</span>
@@ -1188,59 +1188,22 @@ and <span class="math notranslate nohighlight">\(H\)</span> into an <span class=
 </div>
 </div>
 </div>
-<p>The next function modifies our earlier <code class="docutils literal notranslate"><span class="pre">power_iteration_sr</span></code> function so that it
-can act on linear operators rather than matrices,</p>
-<p>also the spectral radius of the transition matrix less than one ensures the convergence of our calculations in the model.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">update_g</span><span class="p">(</span><span class="n">H_operator</span><span class="p">,</span> <span class="n">sv_model</span><span class="p">,</span> <span class="n">shapes</span><span class="p">,</span> <span class="n">num_iterations</span><span class="o">=</span><span class="mi">20</span><span class="p">):</span>
-    <span class="n">g_k</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">shapes</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_iterations</span><span class="p">):</span>
-        <span class="n">g_k1</span> <span class="o">=</span> <span class="n">H_operator</span><span class="p">(</span><span class="n">g_k</span><span class="p">,</span> <span class="n">sv_model</span><span class="p">,</span> <span class="n">shapes</span><span class="p">)</span>
-        <span class="n">sr</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">g_k1</span> <span class="o">*</span> <span class="n">g_k</span><span class="p">)</span> <span class="o">/</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">g_k</span> <span class="o">*</span> <span class="n">g_k</span><span class="p">)</span>
-        <span class="n">g_k1_norm</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">g_k1</span><span class="p">)</span>
-        <span class="n">g_k</span> <span class="o">=</span> <span class="n">g_k1</span> <span class="o">/</span> <span class="n">g_k1_norm</span>
-
-    <span class="k">return</span> <span class="n">sr</span>
-</pre></div>
-</div>
-</div>
-</div>
-<p>Let’s check the output</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">qe</span><span class="o">.</span><span class="n">tic</span><span class="p">()</span>
-<span class="n">sr</span> <span class="o">=</span> <span class="n">update_g</span><span class="p">(</span><span class="n">H_operator</span><span class="p">,</span> <span class="n">sv_model</span><span class="p">,</span> <span class="n">shapes</span><span class="p">)</span>
-<span class="n">qe</span><span class="o">.</span><span class="n">toc</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">sr</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:1.77
-0.9975973011724226
-</pre></div>
-</div>
-</div>
-</div>
 <p>Now we write a version of the solution function for the price-dividend ratio
-that acts directly on the linear operator <code class="docutils literal notranslate"><span class="pre">H_operator</span></code>.</p>
+that acts directly on the linear operator <code class="docutils literal notranslate"><span class="pre">H</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">sv_pd_ratio_jax_multi</span><span class="p">(</span><span class="n">sv_model</span><span class="p">,</span> <span class="n">shapes</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">sv_pd_ratio_linop</span><span class="p">(</span><span class="n">sv_model</span><span class="p">,</span> <span class="n">shapes</span><span class="p">):</span>
 
     <span class="c1"># Setp up</span>
     <span class="n">P</span><span class="p">,</span> <span class="n">hc_grid</span><span class="p">,</span> <span class="n">Q</span><span class="p">,</span> <span class="n">hd_grid</span><span class="p">,</span> <span class="n">R</span><span class="p">,</span> <span class="n">z_grid</span><span class="p">,</span> <span class="n">β</span><span class="p">,</span> <span class="n">γ</span><span class="p">,</span> <span class="n">bar_σ</span><span class="p">,</span> <span class="n">μ_c</span><span class="p">,</span> <span class="n">μ_d</span> <span class="o">=</span> <span class="n">sv_model</span>
     <span class="n">I</span><span class="p">,</span> <span class="n">J</span><span class="p">,</span> <span class="n">K</span> <span class="o">=</span> <span class="n">shapes</span>
 
-    <span class="c1"># Compute v</span>
     <span class="n">ones_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">I</span><span class="p">,</span> <span class="n">J</span><span class="p">,</span> <span class="n">K</span><span class="p">))</span>
-    <span class="c1"># Set up the operator g -&gt; g</span>
-    <span class="n">H</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">g</span><span class="p">:</span> <span class="n">H_operator</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">sv_model</span><span class="p">,</span> <span class="n">shapes</span><span class="p">)</span>
     <span class="c1"># Set up the operator g -&gt; (I - H) g</span>
-    <span class="n">J</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">g</span><span class="p">:</span> <span class="n">g</span> <span class="o">-</span> <span class="n">H</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
+    <span class="n">J</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">g</span><span class="p">:</span> <span class="n">g</span> <span class="o">-</span> <span class="n">H</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">sv_model</span><span class="p">,</span> <span class="n">shapes</span><span class="p">)</span>
     <span class="c1"># Solve v = (I - H)^{-1} H 1</span>
-    <span class="n">H1</span> <span class="o">=</span> <span class="n">H_operator</span><span class="p">(</span><span class="n">ones_array</span><span class="p">,</span> <span class="n">sv_model</span><span class="p">,</span> <span class="n">shapes</span><span class="p">)</span>
+    <span class="n">H1</span> <span class="o">=</span> <span class="n">H</span><span class="p">(</span><span class="n">ones_array</span><span class="p">,</span> <span class="n">sv_model</span><span class="p">,</span> <span class="n">shapes</span><span class="p">)</span>
+    <span class="c1"># Apply an iterative solver that works for linear operators</span>
     <span class="n">v</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">scipy</span><span class="o">.</span><span class="n">sparse</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">bicgstab</span><span class="p">(</span><span class="n">J</span><span class="p">,</span> <span class="n">H1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
     <span class="k">return</span> <span class="n">v</span>
 </pre></div>
@@ -1250,8 +1213,8 @@ that acts directly on the linear operator <code class="docutils literal notransl
 <p>Let’s target these functions for JIT compilation.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">H_operator</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">jit</span><span class="p">(</span><span class="n">H_operator</span><span class="p">,</span> <span class="n">static_argnums</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,))</span>
-<span class="n">sv_pd_ratio_jax_multi</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">jit</span><span class="p">(</span><span class="n">sv_pd_ratio_jax_multi</span><span class="p">,</span> <span class="n">static_argnums</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,))</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">H</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">jit</span><span class="p">(</span><span class="n">H</span><span class="p">,</span> <span class="n">static_argnums</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,))</span>
+<span class="n">sv_pd_ratio_linop</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">jit</span><span class="p">(</span><span class="n">sv_pd_ratio_linop</span><span class="p">,</span> <span class="n">static_argnums</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,))</span>
 </pre></div>
 </div>
 </div>
@@ -1260,13 +1223,13 @@ that acts directly on the linear operator <code class="docutils literal notransl
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">qe</span><span class="o">.</span><span class="n">tic</span><span class="p">()</span>
-<span class="n">v_jax_multi</span> <span class="o">=</span> <span class="n">sv_pd_ratio_jax_multi</span><span class="p">(</span><span class="n">sv_model</span><span class="p">,</span> <span class="n">shapes</span><span class="p">)</span><span class="o">.</span><span class="n">block_until_ready</span><span class="p">()</span>
-<span class="n">jnp_time_multi_0</span> <span class="o">=</span> <span class="n">qe</span><span class="o">.</span><span class="n">toc</span><span class="p">()</span>
+<span class="n">v_jax_linop</span> <span class="o">=</span> <span class="n">sv_pd_ratio_linop</span><span class="p">(</span><span class="n">sv_model</span><span class="p">,</span> <span class="n">shapes</span><span class="p">)</span><span class="o">.</span><span class="n">block_until_ready</span><span class="p">()</span>
+<span class="n">jnp_time_linop_0</span> <span class="o">=</span> <span class="n">qe</span><span class="o">.</span><span class="n">toc</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:0.88
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:0.82
 </pre></div>
 </div>
 </div>
@@ -1275,8 +1238,8 @@ that acts directly on the linear operator <code class="docutils literal notransl
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">qe</span><span class="o">.</span><span class="n">tic</span><span class="p">()</span>
-<span class="n">v_jax_multi</span> <span class="o">=</span> <span class="n">sv_pd_ratio_jax_multi</span><span class="p">(</span><span class="n">sv_model</span><span class="p">,</span> <span class="n">shapes</span><span class="p">)</span><span class="o">.</span><span class="n">block_until_ready</span><span class="p">()</span>
-<span class="n">jnp_time_multi_1</span> <span class="o">=</span> <span class="n">qe</span><span class="o">.</span><span class="n">toc</span><span class="p">()</span>
+<span class="n">v_jax_linop</span> <span class="o">=</span> <span class="n">sv_pd_ratio_linop</span><span class="p">(</span><span class="n">sv_model</span><span class="p">,</span> <span class="n">shapes</span><span class="p">)</span><span class="o">.</span><span class="n">block_until_ready</span><span class="p">()</span>
+<span class="n">jnp_linop_time</span> <span class="o">=</span> <span class="n">qe</span><span class="o">.</span><span class="n">toc</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -1289,7 +1252,7 @@ that acts directly on the linear operator <code class="docutils literal notransl
 <p>Let’s verify the solution again:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">v_jax_multi</span><span class="p">))</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">v_jax_linop</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
@@ -1302,21 +1265,17 @@ that acts directly on the linear operator <code class="docutils literal notransl
 <p>Here’s the ratio of times between memory-efficient and direct version:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">jnp_time_multi_1</span> <span class="o">/</span> <span class="n">jnp_time_1</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">jnp_linop_time</span> <span class="o">/</span> <span class="n">jnp_time</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.43600999127980017
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.20468178493050476
 </pre></div>
 </div>
 </div>
 </div>
-<p>The speed is somewhat faster. In addition,</p>
-<ol class="arabic simple">
-<li><p>now we can work with much larger grids, and</p></li>
-<li><p>the memory efficient version will be significantly faster with larger grids.</p></li>
-</ol>
+<p>The speed is somewhat faster and, moreover, we can now work with much larger grids.</p>
 <p>Here’s a moderately large example, where the state space has 15,625 elements.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1324,36 +1283,25 @@ that acts directly on the linear operator <code class="docutils literal notransl
 <span class="n">sv_model_jax</span> <span class="o">=</span> <span class="n">create_sv_model_jax</span><span class="p">(</span><span class="n">sv_model</span><span class="p">)</span>
 <span class="n">P</span><span class="p">,</span> <span class="n">hc_grid</span><span class="p">,</span> <span class="n">Q</span><span class="p">,</span> <span class="n">hd_grid</span><span class="p">,</span> <span class="n">R</span><span class="p">,</span> <span class="n">z_grid</span><span class="p">,</span> <span class="n">β</span><span class="p">,</span> <span class="n">γ</span><span class="p">,</span> <span class="n">bar_σ</span><span class="p">,</span> <span class="n">μ_c</span><span class="p">,</span> <span class="n">μ_d</span> <span class="o">=</span> <span class="n">sv_model_jax</span>
 <span class="n">shapes</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">hc_grid</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">hd_grid</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">z_grid</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">qe</span><span class="o">.</span><span class="n">tic</span><span class="p">()</span>
-<span class="n">v_jax_multi</span> <span class="o">=</span> <span class="n">sv_pd_ratio_jax_multi</span><span class="p">(</span><span class="n">sv_model</span><span class="p">,</span> <span class="n">shapes</span><span class="p">)</span><span class="o">.</span><span class="n">block_until_ready</span><span class="p">()</span>
-<span class="n">jnp_time_multi_2</span> <span class="o">=</span> <span class="n">qe</span><span class="o">.</span><span class="n">toc</span><span class="p">()</span>
+
+<span class="n">qe</span><span class="o">.</span><span class="n">tic</span><span class="p">()</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">sv_pd_ratio_linop</span><span class="p">(</span><span class="n">sv_model</span><span class="p">,</span> <span class="n">shapes</span><span class="p">)</span><span class="o">.</span><span class="n">block_until_ready</span><span class="p">()</span>
+<span class="n">qe</span><span class="o">.</span><span class="n">toc</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:0.86
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:0.98
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.9863567352294922
 </pre></div>
 </div>
 </div>
 </div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">jnp_time_multi_1</span> <span class="o">/</span> <span class="n">jnp_time_1</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.43600999127980017
-</pre></div>
-</div>
-</div>
-</div>
+<p>The solution is computed relatively quickly and without memory issues.</p>
+<p>Readers will find that they can push these numbers further, although we refrain
+from doing so here.</p>
 </section>
 </section>
 
@@ -1445,18 +1393,13 @@ that acts directly on the linear operator <code class="docutils literal notransl
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="inventory_ssd.html">
-   6. Inventory Management Model
-  </a>
- </li>
- <li class="toctree-l1">
   <a class="reference internal" href="kesten_processes.html">
-   7. Kesten Processes and Firm Dynamics
+   6. Kesten Processes and Firm Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wealth_dynamics.html">
-   8. Wealth Distribution Dynamics
+   7. Wealth Distribution Dynamics
   </a>
  </li>
 </ul>
@@ -1468,7 +1411,7 @@ that acts directly on the linear operator <code class="docutils literal notransl
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="mle.html">
-   9. Maximum Likelihood Estimation
+   8. Maximum Likelihood Estimation
   </a>
  </li>
 </ul>
@@ -1480,37 +1423,37 @@ that acts directly on the linear operator <code class="docutils literal notransl
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="short_path.html">
-   10. Shortest Paths
+   9. Shortest Paths
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="opt_invest.html">
-   11. Optimal Investment
+   10. Optimal Investment
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="opt_savings.html">
-   12. Optimal Savings
+   11. Optimal Savings
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_egm.html">
-   13. Endogenous Grid Method
+   12. Endogenous Grid Method
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="arellano.html">
-   14. Default Risk and Income Fluctuations
+   13. Default Risk and Income Fluctuations
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="aiyagari_jax.html">
-   15. The Aiyagari Model
+   14. The Aiyagari Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_numerical.html">
-   16. Cake Eating: Numerical Methods
+   15. Cake Eating: Numerical Methods
   </a>
  </li>
 </ul>
@@ -1522,17 +1465,17 @@ that acts directly on the linear operator <code class="docutils literal notransl
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   17. Troubleshooting
+   16. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   18. References
+   17. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   19. Execution Statistics
+   18. Execution Statistics
   </a>
  </li>
 </ul>

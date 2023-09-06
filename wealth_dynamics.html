@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>8. Wealth Distribution Dynamics &#8212; Quantitative Economics with Python using JAX</title>
+    <title>7. Wealth Distribution Dynamics &#8212; Quantitative Economics with Python using JAX</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
@@ -120,8 +120,8 @@ const thebe_selector_output = ".output, .cell_output"
     <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="9. Maximum Likelihood Estimation" href="mle.html" />
-    <link rel="prev" title="7. Kesten Processes and Firm Dynamics" href="kesten_processes.html" />
+    <link rel="next" title="8. Maximum Likelihood Estimation" href="mle.html" />
+    <link rel="prev" title="6. Kesten Processes and Firm Dynamics" href="kesten_processes.html" />
 
 <!-- Normal Meta Tags -->
 <meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
@@ -169,18 +169,18 @@ const thebe_selector_output = ".output, .cell_output"
 
                         <nav id="bd-toc-nav" class="qe-page__toc-nav">
                             <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#lorenz-curves-and-the-gini-coefficient">8.1. Lorenz Curves and the Gini Coefficient</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lorenz-curves">8.1.1. Lorenz Curves</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-gini-coefficient">8.1.2. The Gini Coefficient</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#lorenz-curves-and-the-gini-coefficient">7.1. Lorenz Curves and the Gini Coefficient</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lorenz-curves">7.1.1. Lorenz Curves</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-gini-coefficient">7.1.2. The Gini Coefficient</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-model-of-wealth-dynamics">8.2. A Model of Wealth Dynamics</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implementation-using-jax">8.3. Implementation using JAX</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#applications">8.4. Applications</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#inequality-measures">8.4.1. Inequality Measures</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-model-of-wealth-dynamics">7.2. A Model of Wealth Dynamics</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implementation-using-jax">7.3. Implementation using JAX</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#applications">7.4. Applications</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#inequality-measures">7.4.1. Inequality Measures</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">8.5. Exercises</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">7.5. Exercises</a></li>
 </ul>
                             <p class="logo">
                                 
@@ -226,7 +226,7 @@ const thebe_selector_output = ".output, .cell_output"
                     <div>
                         
   <section class="tex2jax_ignore mathjax_ignore" id="wealth-distribution-dynamics">
-<h1><span class="section-number">8. </span>Wealth Distribution Dynamics<a class="headerlink" href="#wealth-distribution-dynamics" title="Permalink to this heading">#</a></h1>
+<h1><span class="section-number">7. </span>Wealth Distribution Dynamics<a class="headerlink" href="#wealth-distribution-dynamics" title="Permalink to this heading">#</a></h1>
 <div class="warning admonition">
 <p class="admonition-title">GPU</p>
 <p>This lecture was built using <a class="reference internal" href="status.html#status-machine-details"><span class="std std-ref">hardware</span></a> that has access to a GPU.</p>
@@ -254,7 +254,7 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Mon Aug 14 04:43:29 2023       
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Mon Sep  4 03:36:23 2023       
 +-----------------------------------------------------------------------------+
 | NVIDIA-SMI 470.182.03   Driver Version: 470.182.03   CUDA Version: 12.1     |
 |-------------------------------+----------------------+----------------------+
@@ -262,8 +262,10 @@ const thebe_selector_output = ".output, .cell_output"
 | Fan  Temp  Perf  Pwr:Usage/Cap|         Memory-Usage | GPU-Util  Compute M. |
 |                               |                      |               MIG M. |
 |===============================+======================+======================|
-|   0  Tesla V100-SXM2...  Off  | 00000000:00:1E.0 Off |                    0 |
-| N/A   34C    P0    39W / 300W |      0MiB / 16160MiB |      2%      Default |
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>|   0  Tesla V100-SXM2...  Off  | 00000000:00:1E.0 Off |                    0 |
+| N/A   36C    P0    40W / 300W |      0MiB / 16160MiB |      2%      Default |
 |                               |                      |                  N/A |
 +-------------------------------+----------------------+----------------------+
                                                                                
@@ -279,11 +281,11 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
 </div>
 <section id="lorenz-curves-and-the-gini-coefficient">
-<h2><span class="section-number">8.1. </span>Lorenz Curves and the Gini Coefficient<a class="headerlink" href="#lorenz-curves-and-the-gini-coefficient" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">7.1. </span>Lorenz Curves and the Gini Coefficient<a class="headerlink" href="#lorenz-curves-and-the-gini-coefficient" title="Permalink to this heading">#</a></h2>
 <p>Before we investigate wealth dynamics, we briefly review some measures of
 inequality.</p>
 <section id="lorenz-curves">
-<h3><span class="section-number">8.1.1. </span>Lorenz Curves<a class="headerlink" href="#lorenz-curves" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">7.1.1. </span>Lorenz Curves<a class="headerlink" href="#lorenz-curves" title="Permalink to this heading">#</a></h3>
 <p>One popular graphical measure of inequality is the <a class="reference external" href="https://en.wikipedia.org/wiki/Lorenz_curve">Lorenz curve</a>.</p>
 <p>To illustrate, let us define a function <code class="docutils literal notranslate"><span class="pre">lorenz_curve_jax</span></code> that returns the cumulative share of people and the cumulative share of income earned.</p>
 <div class="cell docutils container">
@@ -322,8 +324,8 @@ inequality.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1.85 s, sys: 41.3 ms, total: 1.89 s
-Wall time: 1.59 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1.82 s, sys: 14.3 ms, total: 1.84 s
+Wall time: 1.58 s
 </pre></div>
 </div>
 </div>
@@ -338,8 +340,8 @@ Wall time: 1.59 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 749 µs, sys: 257 µs, total: 1.01 ms
-Wall time: 475 µs
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 407 µs, sys: 132 µs, total: 539 µs
+Wall time: 274 µs
 </pre></div>
 </div>
 </div>
@@ -395,7 +397,7 @@ observations.</p>
 <p>This is to be expected, because a higher tail index implies less weight in the tail of the Pareto distribution.</p>
 </section>
 <section id="the-gini-coefficient">
-<h3><span class="section-number">8.1.2. </span>The Gini Coefficient<a class="headerlink" href="#the-gini-coefficient" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">7.1.2. </span>The Gini Coefficient<a class="headerlink" href="#the-gini-coefficient" title="Permalink to this heading">#</a></h3>
 <p>The definition and interpretation of the Gini coefficient can be found on the corresponding <a class="reference external" href="https://en.wikipedia.org/wiki/Gini_coefficient">Wikipedia page</a>.</p>
 <p>We can test it on the Weibull distribution with parameter <span class="math notranslate nohighlight">\(a\)</span>, where the Gini coefficient is known to be</p>
 <div class="math notranslate nohighlight">
@@ -459,11 +461,11 @@ this at each fixed value of <span class="math notranslate nohighlight">\(a\)</sp
 </section>
 </section>
 <section id="a-model-of-wealth-dynamics">
-<h2><span class="section-number">8.2. </span>A Model of Wealth Dynamics<a class="headerlink" href="#a-model-of-wealth-dynamics" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">7.2. </span>A Model of Wealth Dynamics<a class="headerlink" href="#a-model-of-wealth-dynamics" title="Permalink to this heading">#</a></h2>
 <p>Having discussed inequality measures, let us now turn to wealth dynamics.</p>
 <p>The model we will study is</p>
 <div class="math notranslate nohighlight" id="equation-wealth-dynam-ah">
-<span class="eqno">(8.1)<a class="headerlink" href="#equation-wealth-dynam-ah" title="Permalink to this equation">#</a></span>\[w_{t+1} = (1 + r_{t+1}) s(w_t) + y_{t+1}\]</div>
+<span class="eqno">(7.1)<a class="headerlink" href="#equation-wealth-dynam-ah" title="Permalink to this equation">#</a></span>\[w_{t+1} = (1 + r_{t+1}) s(w_t) + y_{t+1}\]</div>
 <p>where</p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(w_t\)</span> is wealth at time <span class="math notranslate nohighlight">\(t\)</span> for a given household,</p></li>
@@ -473,7 +475,7 @@ this at each fixed value of <span class="math notranslate nohighlight">\(a\)</sp
 </ul>
 </section>
 <section id="implementation-using-jax">
-<h2><span class="section-number">8.3. </span>Implementation using JAX<a class="headerlink" href="#implementation-using-jax" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">7.3. </span>Implementation using JAX<a class="headerlink" href="#implementation-using-jax" title="Permalink to this heading">#</a></h2>
 <p>Let’s define a model to represent the wealth dynamics.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -604,8 +606,8 @@ this at each fixed value of <span class="math notranslate nohighlight">\(a\)</sp
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 3.28 s, sys: 370 ms, total: 3.65 s
-Wall time: 3.1 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 3.14 s, sys: 340 ms, total: 3.48 s
+Wall time: 3.05 s
 </pre></div>
 </div>
 </div>
@@ -684,8 +686,8 @@ Wall time: 3.1 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1.31 s, sys: 12.9 ms, total: 1.33 s
-Wall time: 736 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1.33 s, sys: 32 ms, total: 1.36 s
+Wall time: 748 ms
 </pre></div>
 </div>
 </div>
@@ -701,8 +703,8 @@ Wall time: 736 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 7.3 ms, sys: 4.13 ms, total: 11.4 ms
-Wall time: 8.37 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 11.9 ms, sys: 559 µs, total: 12.4 ms
+Wall time: 11.6 ms
 </pre></div>
 </div>
 </div>
@@ -748,11 +750,11 @@ Wall time: 8.37 ms
 </div>
 </section>
 <section id="applications">
-<h2><span class="section-number">8.4. </span>Applications<a class="headerlink" href="#applications" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">7.4. </span>Applications<a class="headerlink" href="#applications" title="Permalink to this heading">#</a></h2>
 <p>Let’s try simulating the model at different parameter values and investigate
 the implications for the wealth distribution.</p>
 <section id="inequality-measures">
-<h3><span class="section-number">8.4.1. </span>Inequality Measures<a class="headerlink" href="#inequality-measures" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">7.4.1. </span>Inequality Measures<a class="headerlink" href="#inequality-measures" title="Permalink to this heading">#</a></h3>
 <p>Let’s look at how inequality varies with returns on financial assets.</p>
 <p>The next function generates a cross section and then computes the Lorenz
 curve and Gini coefficient.</p>
@@ -799,8 +801,8 @@ curve and Gini coefficient.</p>
 </div>
 <div class="cell_output docutils container">
 <a class="reference internal image-reference" href="_images/1c49201aa04c6be2bd75ec81cf712b0c322890ab95031b653e33a511cab1caa0.png"><img alt="_images/1c49201aa04c6be2bd75ec81cf712b0c322890ab95031b653e33a511cab1caa0.png" src="_images/1c49201aa04c6be2bd75ec81cf712b0c322890ab95031b653e33a511cab1caa0.png" style="width: 80%;" /></a>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 7.72 s, sys: 0 ns, total: 7.72 s
-Wall time: 6.37 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 7.99 s, sys: 22.9 ms, total: 8.02 s
+Wall time: 6.58 s
 </pre></div>
 </div>
 </div>
@@ -847,8 +849,8 @@ volatility term <span class="math notranslate nohighlight">\(\sigma_r\)</span> i
 </div>
 <div class="cell_output docutils container">
 <a class="reference internal image-reference" href="_images/6b088e41bf3005e7a1bd115d383a7276afffbb49c8925bbfa521b85b47e6ea4a.png"><img alt="_images/6b088e41bf3005e7a1bd115d383a7276afffbb49c8925bbfa521b85b47e6ea4a.png" src="_images/6b088e41bf3005e7a1bd115d383a7276afffbb49c8925bbfa521b85b47e6ea4a.png" style="width: 80%;" /></a>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 3.22 s, sys: 0 ns, total: 3.22 s
-Wall time: 3.16 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 3.51 s, sys: 11.2 ms, total: 3.52 s
+Wall time: 3.47 s
 </pre></div>
 </div>
 </div>
@@ -857,10 +859,10 @@ Wall time: 3.16 s
 </section>
 </section>
 <section id="exercises">
-<h2><span class="section-number">8.5. </span>Exercises<a class="headerlink" href="#exercises" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">7.5. </span>Exercises<a class="headerlink" href="#exercises" title="Permalink to this heading">#</a></h2>
 <div class="exercise admonition" id="wd_ex1">
 
-<p class="admonition-title"><span class="caption-number">Exercise 8.1 </span></p>
+<p class="admonition-title"><span class="caption-number">Exercise 7.1 </span></p>
 <section id="exercise-content">
 <p>For a wealth or income distribution with Pareto tail, a higher tail index suggests lower inequality.</p>
 <p>Indeed, it is possible to prove that the Gini coefficient of the Pareto
@@ -876,7 +878,7 @@ Gini index and <span class="math notranslate nohighlight">\(a\)</span>.</p>
 </div>
 <div class="solution dropdown admonition" id="wealth_dynamics-solution-1">
 
-<p class="admonition-title">Solution to<a class="reference internal" href="#wd_ex1"> Exercise 8.1</a></p>
+<p class="admonition-title">Solution to<a class="reference internal" href="#wd_ex1"> Exercise 7.1</a></p>
 <section id="solution-content">
 <p>Here is one solution, which produces a good match between theory and
 simulation.</p>
@@ -911,12 +913,12 @@ in the right hand tail.</p>
 </div>
 <div class="exercise admonition" id="wd_ex2">
 
-<p class="admonition-title"><span class="caption-number">Exercise 8.2 </span></p>
+<p class="admonition-title"><span class="caption-number">Exercise 7.2 </span></p>
 <section id="exercise-content">
 <p>When savings is constant, the wealth process has the same quasi-linear
 structure as a Kesten process, with multiplicative and additive shocks.</p>
 <p>The Kesten–Goldie theorem tells us that Kesten processes have Pareto tails under a range of parameterizations.</p>
-<p>The theorem does not directly apply here, since savings is not always constant and since the multiplicative and additive terms in <a class="reference internal" href="#equation-wealth-dynam-ah">(8.1)</a> are not IID.</p>
+<p>The theorem does not directly apply here, since savings is not always constant and since the multiplicative and additive terms in <a class="reference internal" href="#equation-wealth-dynam-ah">(7.1)</a> are not IID.</p>
 <p>At the same time, given the similarities, perhaps Pareto tails will arise.</p>
 <p>To test this, run a simulation that generates a cross-section of wealth and
 generate a rank-size plot.</p>
@@ -936,7 +938,7 @@ this what you see?</p>
 </div>
 <div class="solution dropdown admonition" id="wealth_dynamics-solution-3">
 
-<p class="admonition-title">Solution to<a class="reference internal" href="#wd_ex2"> Exercise 8.2</a></p>
+<p class="admonition-title">Solution to<a class="reference internal" href="#wd_ex2"> Exercise 7.2</a></p>
 <section id="solution-content">
 <p>First let’s generate the distribution:</p>
 <div class="cell docutils container">
@@ -1076,18 +1078,13 @@ this what you see?</p>
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="inventory_ssd.html">
-   6. Inventory Management Model
-  </a>
- </li>
- <li class="toctree-l1">
   <a class="reference internal" href="kesten_processes.html">
-   7. Kesten Processes and Firm Dynamics
+   6. Kesten Processes and Firm Dynamics
   </a>
  </li>
  <li class="toctree-l1 current active active">
   <a class="current reference internal" href="#">
-   8. Wealth Distribution Dynamics
+   7. Wealth Distribution Dynamics
   </a>
  </li>
 </ul>
@@ -1099,7 +1096,7 @@ this what you see?</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="mle.html">
-   9. Maximum Likelihood Estimation
+   8. Maximum Likelihood Estimation
   </a>
  </li>
 </ul>
@@ -1111,37 +1108,37 @@ this what you see?</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="short_path.html">
-   10. Shortest Paths
+   9. Shortest Paths
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="opt_invest.html">
-   11. Optimal Investment
+   10. Optimal Investment
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="opt_savings.html">
-   12. Optimal Savings
+   11. Optimal Savings
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_egm.html">
-   13. Endogenous Grid Method
+   12. Endogenous Grid Method
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="arellano.html">
-   14. Default Risk and Income Fluctuations
+   13. Default Risk and Income Fluctuations
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="aiyagari_jax.html">
-   15. The Aiyagari Model
+   14. The Aiyagari Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_numerical.html">
-   16. Cake Eating: Numerical Methods
+   15. Cake Eating: Numerical Methods
   </a>
  </li>
 </ul>
@@ -1153,17 +1150,17 @@ this what you see?</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   17. Troubleshooting
+   16. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   18. References
+   17. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   19. Execution Statistics
+   18. Execution Statistics
   </a>
  </li>
 </ul>
