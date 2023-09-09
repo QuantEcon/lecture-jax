@@ -274,7 +274,7 @@ To see the JIT compiler in action, consider the following function.
 
 ```{code-cell} ipython3
 def f(x):
-    a = 3*x + jnp.sin(x) + jnp.cos(x**2) - jnp.cos(2 * x) - x**2 * 0.4 * x**1.5
+    a = 3*x + jnp.sin(x) + jnp.cos(x**2) - jnp.cos(2*x) - x**2 * 0.4 * x**1.5
     return jnp.sum(a)
 ```
 
@@ -299,9 +299,9 @@ allows the Python interpreter to run ahead of GPU computations.
 
 ```
 
-This code quite fast because it is running on a GPU.
+The code doesn't run as fast as we might hope, given that it's running on a GPU.
 
-But if we run it a second time it becomes even faster:
+But if we run it a second time it becomes much faster:
 
 ```{code-cell} ipython3
 %time f(x).block_until_ready()
@@ -381,7 +381,7 @@ compiler is
 ```{code-cell} ipython3
 @jax.jit
 def f(x):
-    a = 3*x + jnp.sin(x) + jnp.cos(x**2) - jnp.cos(2 * x) - x**2 * 0.4 * x**1.5
+    a = 3*x + jnp.sin(x) + jnp.cos(x**2) - jnp.cos(2*x) - x**2 * 0.4 * x**1.5
     return jnp.sum(a)
 ```
 
