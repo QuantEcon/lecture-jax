@@ -541,7 +541,7 @@ where $\{Z_t\}$ is a finite Markov chain and $\{H^c_t\}$ and $\{H^d_t\}$ are vol
 We assume that $\{H^c_t\}$ and $\{H^d_t\}$ are AR(1) processes of the form
 
 $$
-    H^i_{t+1} & = \rho_i H^i_t + \sigma_i \eta_{i, t+1}, 
+    H^i_{t+1} = \rho_i H^i_t + \sigma_i \eta_{i, t+1}, 
     \qquad i \in \{c, d\}
 $$
 
