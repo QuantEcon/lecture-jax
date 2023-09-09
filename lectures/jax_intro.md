@@ -270,11 +270,12 @@ launch on the GPU / TPU (or CPU if no accelerator is detected).
 
 ### A first example
 
-To see the JIT compiler in action, consider the following pure Python function.
+To see the JIT compiler in action, consider the following function.
 
 ```{code-cell} ipython3
 def f(x):
-    return jnp.sum(3 * x + jnp.sin(x) + jnp.cos(x**2) - jnp.cos(2 * x) - x**2 * 0.4 * x**1.5)
+    a = 3*x + jnp.sin(x) + jnp.cos(x**2) - jnp.cos(2 * x) - x**2 * 0.4 * x**1.5
+    return jnp.sum(a)
 ```
 
 Let's build an array to call the function on.
@@ -298,7 +299,7 @@ allows the Python interpreter to run ahead of GPU computations.
 
 ```
 
-This code quite fast because it is running on a GPU (since `x` is a JAX array).
+This code quite fast because it is running on a GPU.
 
 But if we run it a second time it becomes even faster:
 
@@ -315,7 +316,7 @@ just providing pre-compiled versions, like NumPy?
 The reason is that the JIT compiler can specialize on the *size* of the array
 being used, which is helpful for parallelization.
 
-In the code above, the JIT compiler produced a version of `jnp.cos` that is
+For example, in running the code above, the JIT compiler produced a version of `jnp.cos` that is
 specialized to floating point arrays of size `n = 50_000_000`.
 
 We can check this by calling `f` with a new array of different size.
@@ -372,6 +373,17 @@ And now let's time it.
 Note the speed gain.
 
 This is because the array operations are fused and no intermediate arrays are created.
+
+
+Incidentally, a more common syntax when targetting a function for the JIT
+compiler is 
+
+```{code-cell} ipython3
+@jax.jit
+def f(x):
+    a = 3*x + jnp.sin(x) + jnp.cos(x**2) - jnp.cos(2 * x) - x**2 * 0.4 * x**1.5
+    return jnp.sum(a)
+```
 
 
 ## Functional Programming
