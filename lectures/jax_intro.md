@@ -94,7 +94,7 @@ from jax.numpy import linalg
 ```
 
 ```{code-cell} ipython3
-linalg.solve(B, A)
+linalg.inv(B)   # Inverse of identity is identity
 ```
 
 ```{code-cell} ipython3
@@ -104,7 +104,7 @@ linalg.eigh(B)  # Computes eigenvalues and eigenvectors
 ### Differences
 
 
-One difference between NumPy and JAX is that, when running on a GPU, JAX uses 32 bit floats by default.  
+One difference between NumPy and JAX is that JAX currently uses 32 bit floats by default.  
 
 This is standard for GPU computing and can lead to significant speed gains with small loss of precision.
 
@@ -260,19 +260,22 @@ One point to remember is that JAX expects tuples to describe array shapes, even 
 random.normal(key, (5, ))
 ```
 
-## JIT Compilation
 
 
-The JAX JIT compiler accelerates logic within functions by fusing linear
-algebra operations into a single, highly optimized kernel that the host can
+## JIT compilation
+
+The JAX just-in-time (JIT) compiler accelerates logic within functions by fusing linear
+algebra operations into a single optimized kernel that the host can
 launch on the GPU / TPU (or CPU if no accelerator is detected).
 
+### A first example
 
-Consider the following pure Python function.
+To see the JIT compiler in action, consider the following function.
 
 ```{code-cell} ipython3
-def f(x, p=1000):
-    return sum((k*x for k in range(p)))
+def f(x):
+    a = 3*x + jnp.sin(x) + jnp.cos(x**2) - jnp.cos(2*x) - x**2 * 0.4 * x**1.5
+    return jnp.sum(a)
 ```
 
 Let's build an array to call the function on.
@@ -291,18 +294,65 @@ How long does the function take to execute?
 ```{note}
 Here, in order to measure actual speed, we use the `block_until_ready()` method 
 to hold the interpreter until the results of the computation are returned from
-the device.
-
-This is necessary because JAX uses asynchronous dispatch, which allows the
-Python interpreter to run ahead of GPU computations.
+the device. This is necessary because JAX uses asynchronous dispatch, which
+allows the Python interpreter to run ahead of GPU computations.
 
 ```
 
-This code is not particularly fast.  
+The code doesn't run as fast as we might hope, given that it's running on a GPU.
 
-While it is run on the GPU (since `x` is a JAX array), each vector `k * x` has to be instantiated before the final sum is computed.
+But if we run it a second time it becomes much faster:
 
-If we JIT-compile the function with JAX, then the operations are fused and no intermediate arrays are created.
+```{code-cell} ipython3
+%time f(x).block_until_ready()
+```
+
+This is because the built in functions like `jnp.cos` are JIT compiled and the
+first run includes compile time.
+
+Why would JAX want to JIT-compile built in functions like `jnp.cos` instead of
+just providing pre-compiled versions, like NumPy?
+
+The reason is that the JIT compiler can specialize on the *size* of the array
+being used, which is helpful for parallelization.
+
+For example, in running the code above, the JIT compiler produced a version of `jnp.cos` that is
+specialized to floating point arrays of size `n = 50_000_000`.
+
+We can check this by calling `f` with a new array of different size.
+
+```{code-cell} ipython3
+m = 50_000_001
+y = jnp.ones(m)
+```
+
+```{code-cell} ipython3
+%time f(y).block_until_ready()
+```
+
+Notice that the execution time increases, because now new versions of 
+the built-ins like `jnp.cos` are being compiled, specialized to the new array
+size.
+
+If we run again, the code is dispatched to the correct compiled version and we
+get faster execution.
+
+```{code-cell} ipython3
+%time f(y).block_until_ready()
+```
+
+The compiled versions for the previous array size are still available in memory
+too, and the following call is dispatched to the correct compiled code.
+
+```{code-cell} ipython3
+%time f(x).block_until_ready()
+```
+
+
+
+### Compiling the outer function
+
+We can do even better if we manually JIT-compile the outer function.
 
 ```{code-cell} ipython3
 f_jit = jax.jit(f)   # target for JIT compilation
@@ -320,7 +370,20 @@ And now let's time it.
 %time f_jit(x).block_until_ready()
 ```
 
-Note the large speed gain.
+Note the speed gain.
+
+This is because the array operations are fused and no intermediate arrays are created.
+
+
+Incidentally, a more common syntax when targetting a function for the JIT
+compiler is 
+
+```{code-cell} ipython3
+@jax.jit
+def f(x):
+    a = 3*x + jnp.sin(x) + jnp.cos(x**2) - jnp.cos(2*x) - x**2 * 0.4 * x**1.5
+    return jnp.sum(a)
+```
 
 
 ## Functional Programming
@@ -377,7 +440,7 @@ f(x)
 Changing the dimension of the input triggers a fresh compilation of the function, at which time the change in the value of `a` takes effect:
 
 ```{code-cell} ipython3
-x = np.ones(3)
+x = jnp.ones(3)
 ```
 
 ```{code-cell} ipython3
