@@ -134,6 +134,8 @@ We can also write this as
 V_t = {\mathbb E}_t \left[ M_{t+1} \exp(G^d_{t+1}) (1 + V_{t+1}) \right]
 ```
 
+where
+
 $$
     G^d_{t+1} = \ln \frac{D_{t+1}}{D_t}
 $$
@@ -289,11 +291,12 @@ $$ (eq:ntecx2)
 
 for $i = 1, \ldots, N$.
 
-We can write [](eq:ntecx2) in vector form as
+Equivalently, we can write
+
 
 $$
-    v = K (\mathbb 1 + v)
-$$ (eq:ntecxv)
+    v[i] = \sum_{j=1}^N K[i, j] (1 + v[j])
+$$ (eq:ntecx2_2)
 
 where $K$ is the matrix defined by
 
@@ -305,12 +308,17 @@ $$
                 \frac{\sigma_d^2 + \gamma^2  \sigma_c^2}{2}
             \right]
     \right\} P[i,j]
-$$
+$$ (eq:ntecxdk)
 
+Rewriting [](eq:ntecx2_2) in vector form yields
+
+$$
+    v = K (\mathbb 1 + v)
+$$ (eq:ntecxv)
 
 Notice that [](eq:ntecxv) can be written as $(I - K)v = K \mathbb 1$.
 
-The Neumann series lemma tells us that $(I - K)$ is invertible and the solution
+The Neumann series lemma tells us that $I - K$ is invertible and the solution
 is
 
 $$
@@ -319,8 +327,11 @@ $$ (eq:ntecxvv)
 
 whenever $r(K)$, the spectral radius of $K$, is strictly less than one.
 
-Once we specify $P$ and all the parameters, we can obtain $K$ and
-then compute the solution [](eq:ntecxvv).
+Once we specify $P$ and all the parameters, we can 
+
+1. obtain $K$
+1. check the spectral radius condition $r(K) < 1$ and, assuming it holds,
+1. compute the solution via [](eq:ntecxvv).
 
 
 ## Code
@@ -403,24 +414,10 @@ def create_model(N=100,         # size of state space for Markov chain
     return Model(P=P, S=S, β=β, γ=γ, μ_c=μ_c, μ_d=μ_d, σ_c=σ_c, σ_d=σ_d)
 ```
 
-Our first step is to construct the matrix $K$.
+Our first step is to construct the matrix $K$ defined in [](eq:ntecxdk).
 
-To exploit the parallelization capabilities of JAX, we use a vectorized (i.e., loop-free) implementation.
 
-```{code-cell} ipython3
-def compute_K(model):
-    # Setp up
-    P, S, β, γ, μ_c, μ_d, σ_c, σ_d = model
-    N = len(S)
-    # Reshape and multiply pointwise using broadcasting
-    x = jnp.reshape(S, (N, 1))
-    a = μ_d - γ * μ_c
-    e = jnp.exp(a + (1 - γ) * x + (σ_d**2 + γ**2 * σ_c**2) / 2)
-    K = β * e * P
-    return K
-```
-
-Just to double check, let's write a loop version and check we get the same matrix.
+Here's a function that does this using loops.
 
 ```{code-cell} ipython3
 def compute_K_loop(model):
@@ -435,6 +432,23 @@ def compute_K_loop(model):
             K[i, j] = β * e * P[i, j]
     return K
 ```
+
+To exploit the parallelization capabilities of JAX, let's also write a vectorized (i.e., loop-free) implementation.
+
+```{code-cell} ipython3
+def compute_K(model):
+    # Setp up
+    P, S, β, γ, μ_c, μ_d, σ_c, σ_d = model
+    N = len(S)
+    # Reshape and multiply pointwise using broadcasting
+    x = jnp.reshape(S, (N, 1))
+    a = μ_d - γ * μ_c
+    e = jnp.exp(a + (1 - γ) * x + (σ_d**2 + γ**2 * σ_c**2) / 2)
+    K = β * e * P
+    return K
+```
+
+These two functions produce the saem output:
 
 ```{code-cell} ipython3
 model = create_model(N=10)
@@ -469,7 +483,7 @@ def price_dividend_ratio(model, test_stable=True):
 
     # Compute v
     I = jnp.identity(N)
-    ones_vec = np.ones(N)
+    ones_vec = jnp.ones(N)
     v = jnp.linalg.solve(I - K, K @ ones_vec)
 
     return v
@@ -514,22 +528,21 @@ exhibit bursts of volatility.
 
 To accommodate this, we now develop a *stochastic volatility* model.
 
-To begin, suppose that
+To begin, suppose that consumption and dividends grow as follows.
 
 $$
-\begin{aligned}
-    & G^c_{t+1} = \mu_c + Z_t + \bar \sigma \exp(H^c_t) \epsilon_{c, t+1} \\
-    & G^d_{t+1} = \mu_d + Z_t + \bar \sigma \exp(H^d_t) \epsilon_{d, t+1}
-\end{aligned}
+    G^i_{t+1} = \mu_i + Z_t + \bar \sigma \exp(H^i_t) \epsilon_{i, t+1},
+    \qquad i \in \{c, d\}
 $$
 
-where $\{Z_t\}$ is a finite Markov chain and $\{H^c_t\}$ and $\{H^d_t\}$ are AR(1) processes of the form
+where $\{Z_t\}$ is a finite Markov chain and $\{H^c_t\}$ and $\{H^d_t\}$ are volatility processes.
+
+
+We assume that $\{H^c_t\}$ and $\{H^d_t\}$ are AR(1) processes of the form
 
 $$
-\begin{aligned}
-    H^c_{t+1} & = \rho_c H^c_t + \sigma_c \eta_{c, t+1}  \\
-    H^d_{t+1} & = \rho_d H^d_t + \sigma_d \eta_{d, t+1}
-\end{aligned}
+    H^i_{t+1} & = \rho_i H^i_t + \sigma_i \eta_{i, t+1}, 
+    \qquad i \in \{c, d\}
 $$
 
 Here $\{\eta^c_t\}$ and $\{\eta^d_t\}$ are IID and standard normal.
@@ -584,72 +597,57 @@ expectations of lognormals to obtain
         (1 + v(X_{t+1}))
 ```
 
-Using the definition of the state and setting
+Let
 
 $$
-    \kappa(h_c, h_z, z) :=
-        \exp \left[
-            a + (1-\gamma) z +
+    A(h_c, h_z, z, h_c', h_z', z') :=
+        \beta \, 
+            \exp 
+            \left[
+                a + (1-\gamma) z +
                 \bar \sigma^2 \frac{\exp(2 h_d) + \gamma^2 \exp(2 h_c)}{2}
             \right]
+    P(h_c, h_c')Q(h_d, h_d')R(z, z')
 $$
 
-we can write this more explicitly
+where $P, Q, R$ are the stochastic matrices for, respectively, discretized
+$\{H^c_t\}$, discretized $\{H^d_t\}$ and $\{Z_t\}$,
+
+With this notation, we can write [](neweqn103_new) more explicitly as
 
 ```{math}
-:label: neweqn104_old
+:label: neweqn104_new
     v(h_c, h_d, z) =
-    \beta \sum_{h_c', h_d', z'}
-        \kappa(h_c, h_z, z)
-        (1 + v(h_c', h_d', z')) P(h_c, h_c')Q(h_d, h_d')R(z, z')
+    \sum_{h_c', h_d', z'}
+        (1 + v(h_c', h_d', z')) 
+        A(h_c, h_z, z, h_c', h_z', z')
 ```
 
-Here $P, Q, R$ are the stochastic matrices for, respectively, discretized
-$\{H^c_t\}$, discretized $\{H^d_t\}$ and $\{Z_t\}$.
 
 Let's now write the state using indices, with $(i, j, k)$ being the
 indices for $(h_c, h_z, z)$.
 
-The last expression becomes
-
-```{math}
-:label: neweqn104_new
-
-    v[i, j, k] =
-    \beta \sum_{i', j', k'}
-        \kappa[i, j, k]
-        (1 + v[i', j', k']) P[i, i']Q[j, j']R[k, k']
-```
-
-We define the multi-index array $H$ by
-
-$$
-    H[i, j, k, i', j', k']
-    =
-    \beta \kappa[i, j, k] P[i, i']Q[j, j']R[k, k']
-$$
-
-then {eq}`neweqn104_new` becomes
+Then {eq}`neweqn104_new` becomes
 
 $$
     v[i, j, k] =
     \sum_{i', j', k'}
-        H[i, j, k, i', j', k'] (1 + v[i', j', k'])
+        A[i, j, k, i', j', k'] (1 + v[i', j', k'])
 $$ (eq:neweqn105)
 
 One way to understand this is to reshape $v$ into an $N$-vector, where $N = I \times J \times K$,
-and $H$ into an $N \times N$ matrix.
+and $A$ into an $N \times N$ matrix.
 
 Then we can write [](eq:neweqn105) as
 
 $$
-    v = H(\mathbb 1 + v)
+    v = A(\mathbb 1 + v)
 $$
 
-Provided that $H$ is invertible, the solution is given by
+Provided that the spectral radius condition $r(A) < 1$ holds, the solution is given by
 
 $$
-    v = (I - H)^{-1} H \mathbb 1
+    v = (I - A)^{-1} A \mathbb 1
 $$
 
 
@@ -707,28 +705,28 @@ def create_sv_model(β=0.98,        # discount factor
                    β=β, γ=γ, bar_σ=bar_σ, μ_c=μ_c, μ_d=μ_d)
 ```
 
-Now we provide a function to compute the matrix $H$.
+Now we provide a function to compute the matrix $A$.
 
 ```{code-cell} ipython3
-def compute_H(sv_model):
+def compute_A(sv_model):
     # Set up
     P, hc_grid, Q, hd_grid, R, z_grid, β, γ, bar_σ, μ_c, μ_d = sv_model
     I, J, K = len(hc_grid), len(hd_grid), len(z_grid)
     N = I * J * K
-    # Reshape and multiply pointwise using broadcasting
-    hc = np.reshape(hc_grid, (I, 1, 1))
-    hd = np.reshape(hd_grid, (1, J, 1))
-    z = np.reshape(z_grid,   (1, 1, K))
-    P = np.reshape(P, (I, 1, 1, I, 1, 1))
-    Q = np.reshape(Q, (1, J, 1, 1, J, 1))
-    R = np.reshape(R, (1, 1, K, 1, 1, K))
-    # Compute H and then reshape to create a matrix
+    # Reshape and broadcast over (i, j, k, i', j', k')
+    hc = np.reshape(hc_grid,     (I, 1, 1, 1,  1,  1))
+    hd = np.reshape(hd_grid,     (1, J, 1, 1,  1,  1))
+    z = np.reshape(z_grid,       (1, 1, K, 1,  1,  1))
+    P = np.reshape(P,            (I, 1, 1, I,  1,  1))
+    Q = np.reshape(Q,            (1, J, 1, 1,  J,  1))
+    R = np.reshape(R,            (1, 1, K, 1,  1,  K))
+    # Compute A and then reshape to create a matrix
     a = μ_d - γ * μ_c
     b = bar_σ**2 * (np.exp(2 * hd) + γ**2 * np.exp(2 * hc)) / 2
     κ = np.exp(a + (1 - γ) * z + b)
-    H = β * κ * P * Q * R
-    H = np.reshape(H, (N, N))
-    return H
+    A = β * κ * P * Q * R
+    A = np.reshape(A, (N, N))
+    return A
 ```
 
 Here's our function to compute the price-dividend ratio for the stochastic volatility model.
@@ -755,15 +753,15 @@ def sv_pd_ratio(sv_model, test_stable=True):
     I, J, K = len(hc_grid), len(hd_grid), len(z_grid)
     N = I * J * K
 
-    H = compute_H(sv_model)
+    A = compute_A(sv_model)
     # Make sure that a unique solution exists
     if test_stable:
-        test_stability(H)
+        test_stability(A)
 
     # Compute v
     ones_array = np.ones(N)
     Id = np.identity(N)
-    v = scipy.linalg.solve(Id - H, H @ ones_array)
+    v = scipy.linalg.solve(Id - A, A @ ones_array)
     # Reshape into an array of the form v[i, j, k]
     v = np.reshape(v, (I, J, K))
     return v
@@ -786,7 +784,7 @@ Here are some plots of the solution $v$ along the three dimensions.
 
 ```{code-cell} ipython3
 fig, ax = plt.subplots()
-ax.plot(hc_grid, v[:, 0, 0], lw=2, alpha=0.6, label="$v$ as a function of $H^c$")
+ax.plot(hc_grid, v[:, 0, 0], lw=2, alpha=0.6, label="$v$ as a function of $h^c$")
 ax.set_ylabel("price-dividend ratio")
 ax.set_xlabel("state")
 ax.legend()
@@ -795,7 +793,7 @@ plt.show()
 
 ```{code-cell} ipython3
 fig, ax = plt.subplots()
-ax.plot(hd_grid, v[0, :, 0], lw=2, alpha=0.6, label="$v$ as a function of $H^d$")
+ax.plot(hd_grid, v[0, :, 0], lw=2, alpha=0.6, label="$v$ as a function of $h^d$")
 ax.set_ylabel("price-dividend ratio")
 ax.set_xlabel("state")
 ax.legend()
@@ -836,32 +834,32 @@ def create_sv_model_jax(sv_model):    # mean growth of dividends
                    β=β, γ=γ, bar_σ=bar_σ, μ_c=μ_c, μ_d=μ_d)
 ```
 
-Here's a function to compute $H$.
+Here's a function to compute $A$.
 
 We include the extra argument `shapes` to help the compiler understand the size of the arrays.
 
 This is important when we JIT-compile the function below.
 
 ```{code-cell} ipython3
-def compute_H_jax(sv_model, shapes):
+def compute_A_jax(sv_model, shapes):
     # Set up
     P, hc_grid, Q, hd_grid, R, z_grid, β, γ, bar_σ, μ_c, μ_d = sv_model
     I, J, K = shapes
     N = I * J * K
-    # Reshape and multiply pointwise using broadcasting
-    hc = jnp.reshape(hc_grid, (I, 1, 1))
-    hd = jnp.reshape(hd_grid, (1, J, 1))
-    z = jnp.reshape(z_grid, (1, 1, K))
-    P = jnp.reshape(P, (I, 1, 1, I, 1, 1))
-    Q = jnp.reshape(Q, (1, J, 1, 1, J, 1))
-    R = jnp.reshape(R, (1, 1, K, 1, 1, K))
-    # Compute H and then reshape to create a matrix
+    # Reshape and broadcast over (i, j, k, i', j', k')
+    hc = np.reshape(hc_grid,     (I, 1, 1, 1,  1,  1))
+    hd = np.reshape(hd_grid,     (1, J, 1, 1,  1,  1))
+    z = np.reshape(z_grid,       (1, 1, K, 1,  1,  1))
+    P = np.reshape(P,            (I, 1, 1, I,  1,  1))
+    Q = np.reshape(Q,            (1, J, 1, 1,  J,  1))
+    R = np.reshape(R,            (1, 1, K, 1,  1,  K))
+    # Compute A and then reshape to create a matrix
     a = μ_d - γ * μ_c
     b = bar_σ**2 * (jnp.exp(2 * hd) + γ**2 * jnp.exp(2 * hc)) / 2
     κ = jnp.exp(a + (1 - γ) * z + b)
-    H = β * κ * P * Q * R
-    H = jnp.reshape(H, (N, N))
-    return H
+    A = β * κ * P * Q * R
+    A = jnp.reshape(A, (N, N))
+    return A
 ```
 
 Here's the function that computes the solution.
@@ -889,19 +887,19 @@ def sv_pd_ratio_jax(sv_model, shapes):
     shapes = I, J, K
     N = I * J * K
 
-    H = compute_H_jax(sv_model, shapes)
+    A = compute_A_jax(sv_model, shapes)
 
     # Compute v, reshape and return
     ones_array = jnp.ones(N)
     Id = jnp.identity(N)
-    v = jax.scipy.linalg.solve(Id - H, H @ ones_array)
+    v = jax.scipy.linalg.solve(Id - A, A @ ones_array)
     return jnp.reshape(v, (I, J, K))
 ```
 
 Now let's target these functions for JIT-compilation, while using `static_argnums` to indicate that the function will need to be recompiled when `shapes` changes.
 
 ```{code-cell} ipython3
-compute_H_jax = jax.jit(compute_H_jax, static_argnums=(1,))
+compute_A_jax = jax.jit(compute_A_jax, static_argnums=(1,))
 sv_pd_ratio_jax = jax.jit(sv_pd_ratio_jax, static_argnums=(1,))
 ```
 
@@ -950,36 +948,30 @@ This quickly becomes impossible as $I, J, K$ increase.
 
 Fortunately, JAX makes it possible to solve for the price-dividend ratio without instantiating this large matrix.
 
-The first step is to think of $H$ not as a matrix, but rather as the linear operator that transforms $g$ into $Hg$ via
-
-$$
-    (Hg)[i, j, k] =
-    \beta \sum_{i', j', k'}
-        \kappa[i, j, k] g[i', j', k'] P[i, i']Q[j, j']R[k, k']
-$$
+The first step is to think of $A$ not as a matrix, but rather as the linear operator that transforms $g$ into $Ag$.
 
 ```{code-cell} ipython3
-def H(g, sv_model, shapes):
+def A(g, sv_model, shapes):
     # Set up
     P, hc_grid, Q, hd_grid, R, z_grid, β, γ, bar_σ, μ_c, μ_d = sv_model
     I, J, K = shapes
-    # Reshape and multiply pointwise using broadcasting
-    hc = jnp.reshape(hc_grid, (I, 1, 1))
-    hd = jnp.reshape(hd_grid, (1, J, 1))
-    z = jnp.reshape(z_grid, (1, 1, K))
-    P = jnp.reshape(P, (I, 1, 1, I, 1, 1))
-    Q = jnp.reshape(Q, (1, J, 1, 1, J, 1))
-    R = jnp.reshape(R, (1, 1, K, 1, 1, K))
+    # Reshape and broadcast over (i, j, k, i', j', k')
+    hc = np.reshape(hc_grid,     (I, 1, 1, 1,  1,  1))
+    hd = np.reshape(hd_grid,     (1, J, 1, 1,  1,  1))
+    z = np.reshape(z_grid,       (1, 1, K, 1,  1,  1))
+    P = np.reshape(P,            (I, 1, 1, I,  1,  1))
+    Q = np.reshape(Q,            (1, J, 1, 1,  J,  1))
+    R = np.reshape(R,            (1, 1, K, 1,  1,  K))
     a = μ_d - γ * μ_c
     b = bar_σ**2 * (jnp.exp(2 * hd) + γ**2 * jnp.exp(2 * hc)) / 2
     κ = jnp.exp(a + (1 - γ) * z + b)
-    H = β * κ * P * Q * R
-    Hg = jnp.sum(H * g, axis=(3, 4, 5))
-    return Hg
+    A = β * κ * P * Q * R
+    Ag = jnp.sum(A * g, axis=(3, 4, 5))
+    return Ag
 ```
 
 Now we write a version of the solution function for the price-dividend ratio
-that acts directly on the linear operator `H`.
+that acts directly on the linear operator `A`.
 
 ```{code-cell} ipython3
 def sv_pd_ratio_linop(sv_model, shapes):
@@ -989,19 +981,19 @@ def sv_pd_ratio_linop(sv_model, shapes):
     I, J, K = shapes
 
     ones_array = np.ones((I, J, K))
-    # Set up the operator g -> (I - H) g
-    J = lambda g: g - H(g, sv_model, shapes)
-    # Solve v = (I - H)^{-1} H 1
-    H1 = H(ones_array, sv_model, shapes)
+    # Set up the operator g -> (I - A) g
+    J = lambda g: g - A(g, sv_model, shapes)
+    # Solve v = (I - A)^{-1} A 1
+    A1 = A(ones_array, sv_model, shapes)
     # Apply an iterative solver that works for linear operators
-    v = jax.scipy.sparse.linalg.bicgstab(J, H1)[0]
+    v = jax.scipy.sparse.linalg.bicgstab(J, A1)[0]
     return v
 ```
 
 Let's target these functions for JIT compilation.
 
 ```{code-cell} ipython3
-H = jax.jit(H, static_argnums=(2,))
+A = jax.jit(A, static_argnums=(2,))
 sv_pd_ratio_linop = jax.jit(sv_pd_ratio_linop, static_argnums=(1,))
 ```
 
