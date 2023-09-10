@@ -248,14 +248,14 @@ you can jump to <a class="reference internal" href="#equation-eq-ntecx2">(4.13)<
 </summary>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /opt/conda/envs/quantecon/lib/python3.10/site-packages (0.7.1)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: numpy&gt;=1.17.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (1.23.5)
 Requirement already satisfied: sympy in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (1.11.1)
 Requirement already satisfied: numba&gt;=0.49.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (0.56.4)
-Requirement already satisfied: requests in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (2.28.1)
 Requirement already satisfied: scipy&gt;=1.5.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (1.10.0)
-Requirement already satisfied: setuptools in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from numba&gt;=0.49.0-&gt;quantecon) (65.6.3)
+Requirement already satisfied: numpy&gt;=1.17.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (1.23.5)
+Requirement already satisfied: requests in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (2.28.1)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: setuptools in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from numba&gt;=0.49.0-&gt;quantecon) (65.6.3)
 Requirement already satisfied: llvmlite&lt;0.40,&gt;=0.39.0dev0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from numba&gt;=0.49.0-&gt;quantecon) (0.39.1)
 Requirement already satisfied: urllib3&lt;1.27,&gt;=1.21.1 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (1.26.14)
 Requirement already satisfied: certifi&gt;=2017.4.17 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (2022.12.7)
@@ -346,6 +346,7 @@ easier for us to solve for the <strong>price-dividend ratio</strong> <span class
 <p>We can also write this as</p>
 <div class="math notranslate nohighlight" id="equation-pdex2">
 <span class="eqno">(4.5)<a class="headerlink" href="#equation-pdex2" title="Permalink to this equation">#</a></span>\[V_t = {\mathbb E}_t \left[ M_{t+1} \exp(G^d_{t+1}) (1 + V_{t+1}) \right]\]</div>
+<p>where</p>
 <div class="math notranslate nohighlight">
 \[
     G^d_{t+1} = \ln \frac{D_{t+1}}{D_t}
@@ -465,14 +466,14 @@ out to be correct).</p>
     P[i, j]
 \]</div>
 <p>for <span class="math notranslate nohighlight">\(i = 1, \ldots, N\)</span>.</p>
-<p>We can write <a class="reference internal" href="#equation-eq-ntecx2">(4.13)</a> in vector form as</p>
-<div class="math notranslate nohighlight" id="equation-eq-ntecxv">
-<span class="eqno">(4.14)<a class="headerlink" href="#equation-eq-ntecxv" title="Permalink to this equation">#</a></span>\[
-    v = K (\mathbb 1 + v)
+<p>Equivalently, we can write</p>
+<div class="math notranslate nohighlight" id="equation-eq-ntecx2-2">
+<span class="eqno">(4.14)<a class="headerlink" href="#equation-eq-ntecx2-2" title="Permalink to this equation">#</a></span>\[
+    v[i] = \sum_{j=1}^N K[i, j] (1 + v[j])
 \]</div>
 <p>where <span class="math notranslate nohighlight">\(K\)</span> is the matrix defined by</p>
-<div class="math notranslate nohighlight">
-\[
+<div class="math notranslate nohighlight" id="equation-eq-ntecxdk">
+<span class="eqno">(4.15)<a class="headerlink" href="#equation-eq-ntecxdk" title="Permalink to this equation">#</a></span>\[
     K[i, j]
     = \beta \left\{
         \exp \left[
@@ -481,16 +482,25 @@ out to be correct).</p>
             \right]
     \right\} P[i,j]
 \]</div>
-<p>Notice that <a class="reference internal" href="#equation-eq-ntecxv">(4.14)</a> can be written as <span class="math notranslate nohighlight">\((I - K)v = K \mathbb 1\)</span>.</p>
-<p>The Neumann series lemma tells us that <span class="math notranslate nohighlight">\((I - K)\)</span> is invertible and the solution
+<p>Rewriting <a class="reference internal" href="#equation-eq-ntecx2-2">(4.14)</a> in vector form yields</p>
+<div class="math notranslate nohighlight" id="equation-eq-ntecxv">
+<span class="eqno">(4.16)<a class="headerlink" href="#equation-eq-ntecxv" title="Permalink to this equation">#</a></span>\[
+    v = K (\mathbb 1 + v)
+\]</div>
+<p>Notice that <a class="reference internal" href="#equation-eq-ntecxv">(4.16)</a> can be written as <span class="math notranslate nohighlight">\((I - K)v = K \mathbb 1\)</span>.</p>
+<p>The Neumann series lemma tells us that <span class="math notranslate nohighlight">\(I - K\)</span> is invertible and the solution
 is</p>
 <div class="math notranslate nohighlight" id="equation-eq-ntecxvv">
-<span class="eqno">(4.15)<a class="headerlink" href="#equation-eq-ntecxvv" title="Permalink to this equation">#</a></span>\[
+<span class="eqno">(4.17)<a class="headerlink" href="#equation-eq-ntecxvv" title="Permalink to this equation">#</a></span>\[
     v = (I - K)^{-1} K \mathbb 1
 \]</div>
 <p>whenever <span class="math notranslate nohighlight">\(r(K)\)</span>, the spectral radius of <span class="math notranslate nohighlight">\(K\)</span>, is strictly less than one.</p>
-<p>Once we specify <span class="math notranslate nohighlight">\(P\)</span> and all the parameters, we can obtain <span class="math notranslate nohighlight">\(K\)</span> and
-then compute the solution <a class="reference internal" href="#equation-eq-ntecxvv">(4.15)</a>.</p>
+<p>Once we specify <span class="math notranslate nohighlight">\(P\)</span> and all the parameters, we can</p>
+<ol class="arabic simple">
+<li><p>obtain <span class="math notranslate nohighlight">\(K\)</span></p></li>
+<li><p>check the spectral radius condition <span class="math notranslate nohighlight">\(r(K) &lt; 1\)</span> and, assuming it holds,</p></li>
+<li><p>compute the solution via <a class="reference internal" href="#equation-eq-ntecxvv">(4.17)</a>.</p></li>
+</ol>
 </section>
 <section id="code">
 <h2><span class="section-number">4.6. </span>Code<a class="headerlink" href="#code" title="Permalink to this heading">#</a></h2>
@@ -573,25 +583,8 @@ then compute the solution <a class="reference internal" href="#equation-eq-ntecx
 </div>
 </div>
 </div>
-<p>Our first step is to construct the matrix <span class="math notranslate nohighlight">\(K\)</span>.</p>
-<p>To exploit the parallelization capabilities of JAX, we use a vectorized (i.e., loop-free) implementation.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">compute_K</span><span class="p">(</span><span class="n">model</span><span class="p">):</span>
-    <span class="c1"># Setp up</span>
-    <span class="n">P</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="n">β</span><span class="p">,</span> <span class="n">γ</span><span class="p">,</span> <span class="n">μ_c</span><span class="p">,</span> <span class="n">μ_d</span><span class="p">,</span> <span class="n">σ_c</span><span class="p">,</span> <span class="n">σ_d</span> <span class="o">=</span> <span class="n">model</span>
-    <span class="n">N</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">S</span><span class="p">)</span>
-    <span class="c1"># Reshape and multiply pointwise using broadcasting</span>
-    <span class="n">x</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">S</span><span class="p">,</span> <span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
-    <span class="n">a</span> <span class="o">=</span> <span class="n">μ_d</span> <span class="o">-</span> <span class="n">γ</span> <span class="o">*</span> <span class="n">μ_c</span>
-    <span class="n">e</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">a</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">γ</span><span class="p">)</span> <span class="o">*</span> <span class="n">x</span> <span class="o">+</span> <span class="p">(</span><span class="n">σ_d</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">γ</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="n">σ_c</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
-    <span class="n">K</span> <span class="o">=</span> <span class="n">β</span> <span class="o">*</span> <span class="n">e</span> <span class="o">*</span> <span class="n">P</span>
-    <span class="k">return</span> <span class="n">K</span>
-</pre></div>
-</div>
-</div>
-</div>
-<p>Just to double check, let’s write a loop version and check we get the same matrix.</p>
+<p>Our first step is to construct the matrix <span class="math notranslate nohighlight">\(K\)</span> defined in <a class="reference internal" href="#equation-eq-ntecxdk">(4.15)</a>.</p>
+<p>Here’s a function that does this using loops.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">compute_K_loop</span><span class="p">(</span><span class="n">model</span><span class="p">):</span>
@@ -609,6 +602,24 @@ then compute the solution <a class="reference internal" href="#equation-eq-ntecx
 </div>
 </div>
 </div>
+<p>To exploit the parallelization capabilities of JAX, let’s also write a vectorized (i.e., loop-free) implementation.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">compute_K</span><span class="p">(</span><span class="n">model</span><span class="p">):</span>
+    <span class="c1"># Setp up</span>
+    <span class="n">P</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="n">β</span><span class="p">,</span> <span class="n">γ</span><span class="p">,</span> <span class="n">μ_c</span><span class="p">,</span> <span class="n">μ_d</span><span class="p">,</span> <span class="n">σ_c</span><span class="p">,</span> <span class="n">σ_d</span> <span class="o">=</span> <span class="n">model</span>
+    <span class="n">N</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">S</span><span class="p">)</span>
+    <span class="c1"># Reshape and multiply pointwise using broadcasting</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">S</span><span class="p">,</span> <span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">μ_d</span> <span class="o">-</span> <span class="n">γ</span> <span class="o">*</span> <span class="n">μ_c</span>
+    <span class="n">e</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">a</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">γ</span><span class="p">)</span> <span class="o">*</span> <span class="n">x</span> <span class="o">+</span> <span class="p">(</span><span class="n">σ_d</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">γ</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="n">σ_c</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">K</span> <span class="o">=</span> <span class="n">β</span> <span class="o">*</span> <span class="n">e</span> <span class="o">*</span> <span class="n">P</span>
+    <span class="k">return</span> <span class="n">K</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>These two functions produce the saem output:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">create_model</span><span class="p">(</span><span class="n">N</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
@@ -650,7 +661,7 @@ then compute the solution <a class="reference internal" href="#equation-eq-ntecx
 
     <span class="c1"># Compute v</span>
     <span class="n">I</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">identity</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
-    <span class="n">ones_vec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
+    <span class="n">ones_vec</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
     <span class="n">v</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">I</span> <span class="o">-</span> <span class="n">K</span><span class="p">,</span> <span class="n">K</span> <span class="o">@</span> <span class="n">ones_vec</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">v</span>
@@ -695,22 +706,19 @@ discount factor, lowering the weight placed on future dividends.</p>
 <p>In reality, financial markets and growth rates of macroeconomic variables
 exhibit bursts of volatility.</p>
 <p>To accommodate this, we now develop a <em>stochastic volatility</em> model.</p>
-<p>To begin, suppose that</p>
+<p>To begin, suppose that consumption and dividends grow as follows.</p>
 <div class="math notranslate nohighlight">
-\[\begin{split}
-\begin{aligned}
-    &amp; G^c_{t+1} = \mu_c + Z_t + \bar \sigma \exp(H^c_t) \epsilon_{c, t+1} \\
-    &amp; G^d_{t+1} = \mu_d + Z_t + \bar \sigma \exp(H^d_t) \epsilon_{d, t+1}
-\end{aligned}
-\end{split}\]</div>
-<p>where <span class="math notranslate nohighlight">\(\{Z_t\}\)</span> is a finite Markov chain and <span class="math notranslate nohighlight">\(\{H^c_t\}\)</span> and <span class="math notranslate nohighlight">\(\{H^d_t\}\)</span> are AR(1) processes of the form</p>
+\[
+    G^i_{t+1} = \mu_i + Z_t + \bar \sigma \exp(H^i_t) \epsilon_{i, t+1},
+    \qquad i \in \{c, d\}
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(\{Z_t\}\)</span> is a finite Markov chain and <span class="math notranslate nohighlight">\(\{H^c_t\}\)</span> and <span class="math notranslate nohighlight">\(\{H^d_t\}\)</span> are volatility processes.</p>
+<p>We assume that <span class="math notranslate nohighlight">\(\{H^c_t\}\)</span> and <span class="math notranslate nohighlight">\(\{H^d_t\}\)</span> are AR(1) processes of the form</p>
 <div class="math notranslate nohighlight">
-\[\begin{split}
-\begin{aligned}
-    H^c_{t+1} &amp; = \rho_c H^c_t + \sigma_c \eta_{c, t+1}  \\
-    H^d_{t+1} &amp; = \rho_d H^d_t + \sigma_d \eta_{d, t+1}
-\end{aligned}
-\end{split}\]</div>
+\[
+    H^i_{t+1} = \rho_i H^i_t + \sigma_i \eta_{i, t+1}, 
+    \qquad i \in \{c, d\}
+\]</div>
 <p>Here <span class="math notranslate nohighlight">\(\{\eta^c_t\}\)</span> and <span class="math notranslate nohighlight">\(\{\eta^d_t\}\)</span> are IID and standard normal.</p>
 <p>Let <span class="math notranslate nohighlight">\(X_t = (H^c_t, H^d_t, Z_t)\)</span>.</p>
 <p>We call <span class="math notranslate nohighlight">\(\{X_t\}\)</span> the state process and guess that <span class="math notranslate nohighlight">\(V_t\)</span> is a function of
@@ -718,7 +726,7 @@ this state process, so that <span class="math notranslate nohighlight">\(V_t = v
 <p>Modifying <a class="reference internal" href="#equation-eq-neweqn101">(4.10)</a> to accommodate the new growth specifications,
 we find that <span class="math notranslate nohighlight">\(v\)</span> satisfies</p>
 <div class="math notranslate nohighlight" id="equation-eq-neweqn102">
-<span class="eqno">(4.16)<a class="headerlink" href="#equation-eq-neweqn102" title="Permalink to this equation">#</a></span>\[
+<span class="eqno">(4.18)<a class="headerlink" href="#equation-eq-neweqn102" title="Permalink to this equation">#</a></span>\[
     v(X_t) = \beta {\mathbb E}_t
     \left\{
         \exp[
@@ -732,7 +740,7 @@ we find that <span class="math notranslate nohighlight">\(v\)</span> satisfies</
 <p>where, as before, <span class="math notranslate nohighlight">\(a := \mu_d - \gamma \mu_c\)</span></p>
 <p>Conditioning on state <span class="math notranslate nohighlight">\(x = (h_c, h_d, z)\)</span>, this becomes</p>
 <div class="math notranslate nohighlight" id="equation-neweqn103-old">
-<span class="eqno">(4.17)<a class="headerlink" href="#equation-neweqn103-old" title="Permalink to this equation">#</a></span>\[    v(x) = \beta  {\mathbb E}_t
+<span class="eqno">(4.19)<a class="headerlink" href="#equation-neweqn103-old" title="Permalink to this equation">#</a></span>\[    v(x) = \beta  {\mathbb E}_t
         \exp[
             a + (1-\gamma) z +
                 \bar \sigma \exp(h_d) \epsilon_{d, t+1} -
@@ -742,62 +750,52 @@ we find that <span class="math notranslate nohighlight">\(v\)</span> satisfies</
 <p>As before, we integrate out the independent shocks and use the rules for
 expectations of lognormals to obtain</p>
 <div class="math notranslate nohighlight" id="equation-neweqn103-new">
-<span class="eqno">(4.18)<a class="headerlink" href="#equation-neweqn103-new" title="Permalink to this equation">#</a></span>\[    v(x) = \beta  {\mathbb E}_t
+<span class="eqno">(4.20)<a class="headerlink" href="#equation-neweqn103-new" title="Permalink to this equation">#</a></span>\[    v(x) = \beta  {\mathbb E}_t
         \exp \left[
             a + (1-\gamma) z +
                 \bar \sigma^2 \frac{\exp(2 h_d) + \gamma^2 \exp(2 h_c)}{2}
             \right]
         (1 + v(X_{t+1}))\]</div>
-<p>Using the definition of the state and setting</p>
+<p>Let</p>
 <div class="math notranslate nohighlight">
 \[
-    \kappa(h_c, h_z, z) :=
-        \exp \left[
-            a + (1-\gamma) z +
+    A(h_c, h_d, z, h_c', h_d', z') :=
+        \beta \, 
+            \exp 
+            \left[
+                a + (1-\gamma) z +
                 \bar \sigma^2 \frac{\exp(2 h_d) + \gamma^2 \exp(2 h_c)}{2}
             \right]
+    P(h_c, h_c')Q(h_d, h_d')R(z, z')
 \]</div>
-<p>we can write this more explicitly</p>
-<div class="math notranslate nohighlight" id="equation-neweqn104-old">
-<span class="eqno">(4.19)<a class="headerlink" href="#equation-neweqn104-old" title="Permalink to this equation">#</a></span>\[    v(h_c, h_d, z) =
-    \beta \sum_{h_c', h_d', z'}
-        \kappa(h_c, h_z, z)
-        (1 + v(h_c', h_d', z')) P(h_c, h_c')Q(h_d, h_d')R(z, z')\]</div>
-<p>Here <span class="math notranslate nohighlight">\(P, Q, R\)</span> are the stochastic matrices for, respectively, discretized
-<span class="math notranslate nohighlight">\(\{H^c_t\}\)</span>, discretized <span class="math notranslate nohighlight">\(\{H^d_t\}\)</span> and <span class="math notranslate nohighlight">\(\{Z_t\}\)</span>.</p>
-<p>Let’s now write the state using indices, with <span class="math notranslate nohighlight">\((i, j, k)\)</span> being the
-indices for <span class="math notranslate nohighlight">\((h_c, h_z, z)\)</span>.</p>
-<p>The last expression becomes</p>
+<p>where <span class="math notranslate nohighlight">\(P, Q, R\)</span> are the stochastic matrices for, respectively, discretized
+<span class="math notranslate nohighlight">\(\{H^c_t\}\)</span>, discretized <span class="math notranslate nohighlight">\(\{H^d_t\}\)</span> and <span class="math notranslate nohighlight">\(\{Z_t\}\)</span>,</p>
+<p>With this notation, we can write <a class="reference internal" href="#equation-neweqn103-new">(4.20)</a> more explicitly as</p>
 <div class="math notranslate nohighlight" id="equation-neweqn104-new">
-<span class="eqno">(4.20)<a class="headerlink" href="#equation-neweqn104-new" title="Permalink to this equation">#</a></span>\[    v[i, j, k] =
-    \beta \sum_{i', j', k'}
-        \kappa[i, j, k]
-        (1 + v[i', j', k']) P[i, i']Q[j, j']R[k, k']\]</div>
-<p>We define the multi-index array <span class="math notranslate nohighlight">\(H\)</span> by</p>
-<div class="math notranslate nohighlight">
-\[
-    H[i, j, k, i', j', k']
-    =
-    \beta \kappa[i, j, k] P[i, i']Q[j, j']R[k, k']
-\]</div>
-<p>then <a class="reference internal" href="#equation-neweqn104-new">(4.20)</a> becomes</p>
+<span class="eqno">(4.21)<a class="headerlink" href="#equation-neweqn104-new" title="Permalink to this equation">#</a></span>\[    v(h_c, h_d, z) =
+    \sum_{h_c', h_d', z'}
+        (1 + v(h_c', h_d', z')) 
+        A(h_c, h_d, z, h_c', h_d', z')\]</div>
+<p>Let’s now write the state using indices, with <span class="math notranslate nohighlight">\((i, j, k)\)</span> being the
+indices for <span class="math notranslate nohighlight">\((h_c, h_d, z)\)</span>.</p>
+<p>Then <a class="reference internal" href="#equation-neweqn104-new">(4.21)</a> becomes</p>
 <div class="math notranslate nohighlight" id="equation-eq-neweqn105">
-<span class="eqno">(4.21)<a class="headerlink" href="#equation-eq-neweqn105" title="Permalink to this equation">#</a></span>\[
+<span class="eqno">(4.22)<a class="headerlink" href="#equation-eq-neweqn105" title="Permalink to this equation">#</a></span>\[
     v[i, j, k] =
     \sum_{i', j', k'}
-        H[i, j, k, i', j', k'] (1 + v[i', j', k'])
+        A[i, j, k, i', j', k'] (1 + v[i', j', k'])
 \]</div>
 <p>One way to understand this is to reshape <span class="math notranslate nohighlight">\(v\)</span> into an <span class="math notranslate nohighlight">\(N\)</span>-vector, where <span class="math notranslate nohighlight">\(N = I \times J \times K\)</span>,
-and <span class="math notranslate nohighlight">\(H\)</span> into an <span class="math notranslate nohighlight">\(N \times N\)</span> matrix.</p>
-<p>Then we can write <a class="reference internal" href="#equation-eq-neweqn105">(4.21)</a> as</p>
+and <span class="math notranslate nohighlight">\(A\)</span> into an <span class="math notranslate nohighlight">\(N \times N\)</span> matrix.</p>
+<p>Then we can write <a class="reference internal" href="#equation-eq-neweqn105">(4.22)</a> as</p>
 <div class="math notranslate nohighlight">
 \[
-    v = H(\mathbb 1 + v)
+    v = A(\mathbb 1 + v)
 \]</div>
-<p>Provided that <span class="math notranslate nohighlight">\(H\)</span> is invertible, the solution is given by</p>
+<p>Provided that the spectral radius condition <span class="math notranslate nohighlight">\(r(A) &lt; 1\)</span> holds, the solution is given by</p>
 <div class="math notranslate nohighlight">
 \[
-    v = (I - H)^{-1} H \mathbb 1
+    v = (I - A)^{-1} A \mathbb 1
 \]</div>
 </section>
 <section id="numpy-version">
@@ -851,28 +849,28 @@ and <span class="math notranslate nohighlight">\(H\)</span> into an <span class=
 </div>
 </div>
 </div>
-<p>Now we provide a function to compute the matrix <span class="math notranslate nohighlight">\(H\)</span>.</p>
+<p>Now we provide a function to compute the matrix <span class="math notranslate nohighlight">\(A\)</span>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">compute_H</span><span class="p">(</span><span class="n">sv_model</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">compute_A</span><span class="p">(</span><span class="n">sv_model</span><span class="p">):</span>
     <span class="c1"># Set up</span>
     <span class="n">P</span><span class="p">,</span> <span class="n">hc_grid</span><span class="p">,</span> <span class="n">Q</span><span class="p">,</span> <span class="n">hd_grid</span><span class="p">,</span> <span class="n">R</span><span class="p">,</span> <span class="n">z_grid</span><span class="p">,</span> <span class="n">β</span><span class="p">,</span> <span class="n">γ</span><span class="p">,</span> <span class="n">bar_σ</span><span class="p">,</span> <span class="n">μ_c</span><span class="p">,</span> <span class="n">μ_d</span> <span class="o">=</span> <span class="n">sv_model</span>
     <span class="n">I</span><span class="p">,</span> <span class="n">J</span><span class="p">,</span> <span class="n">K</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">hc_grid</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">hd_grid</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">z_grid</span><span class="p">)</span>
     <span class="n">N</span> <span class="o">=</span> <span class="n">I</span> <span class="o">*</span> <span class="n">J</span> <span class="o">*</span> <span class="n">K</span>
-    <span class="c1"># Reshape and multiply pointwise using broadcasting</span>
-    <span class="n">hc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">hc_grid</span><span class="p">,</span> <span class="p">(</span><span class="n">I</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
-    <span class="n">hd</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">hd_grid</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">J</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
-    <span class="n">z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">z_grid</span><span class="p">,</span>   <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">K</span><span class="p">))</span>
-    <span class="n">P</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">P</span><span class="p">,</span> <span class="p">(</span><span class="n">I</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">I</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
-    <span class="n">Q</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">Q</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">J</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">J</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
-    <span class="n">R</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">R</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">K</span><span class="p">))</span>
-    <span class="c1"># Compute H and then reshape to create a matrix</span>
+    <span class="c1"># Reshape and broadcast over (i, j, k, i&#39;, j&#39;, k&#39;)</span>
+    <span class="n">hc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">hc_grid</span><span class="p">,</span>     <span class="p">(</span><span class="n">I</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span>  <span class="mi">1</span><span class="p">,</span>  <span class="mi">1</span><span class="p">))</span>
+    <span class="n">hd</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">hd_grid</span><span class="p">,</span>     <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">J</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span>  <span class="mi">1</span><span class="p">,</span>  <span class="mi">1</span><span class="p">))</span>
+    <span class="n">z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">z_grid</span><span class="p">,</span>       <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span>  <span class="mi">1</span><span class="p">,</span>  <span class="mi">1</span><span class="p">))</span>
+    <span class="n">P</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">P</span><span class="p">,</span>            <span class="p">(</span><span class="n">I</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">I</span><span class="p">,</span>  <span class="mi">1</span><span class="p">,</span>  <span class="mi">1</span><span class="p">))</span>
+    <span class="n">Q</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">Q</span><span class="p">,</span>            <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">J</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span>  <span class="n">J</span><span class="p">,</span>  <span class="mi">1</span><span class="p">))</span>
+    <span class="n">R</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">R</span><span class="p">,</span>            <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span>  <span class="mi">1</span><span class="p">,</span>  <span class="n">K</span><span class="p">))</span>
+    <span class="c1"># Compute A and then reshape to create a matrix</span>
     <span class="n">a</span> <span class="o">=</span> <span class="n">μ_d</span> <span class="o">-</span> <span class="n">γ</span> <span class="o">*</span> <span class="n">μ_c</span>
     <span class="n">b</span> <span class="o">=</span> <span class="n">bar_σ</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">hd</span><span class="p">)</span> <span class="o">+</span> <span class="n">γ</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">hc</span><span class="p">))</span> <span class="o">/</span> <span class="mi">2</span>
     <span class="n">κ</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">a</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">γ</span><span class="p">)</span> <span class="o">*</span> <span class="n">z</span> <span class="o">+</span> <span class="n">b</span><span class="p">)</span>
-    <span class="n">H</span> <span class="o">=</span> <span class="n">β</span> <span class="o">*</span> <span class="n">κ</span> <span class="o">*</span> <span class="n">P</span> <span class="o">*</span> <span class="n">Q</span> <span class="o">*</span> <span class="n">R</span>
-    <span class="n">H</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">H</span><span class="p">,</span> <span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">N</span><span class="p">))</span>
-    <span class="k">return</span> <span class="n">H</span>
+    <span class="n">A</span> <span class="o">=</span> <span class="n">β</span> <span class="o">*</span> <span class="n">κ</span> <span class="o">*</span> <span class="n">P</span> <span class="o">*</span> <span class="n">Q</span> <span class="o">*</span> <span class="n">R</span>
+    <span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">N</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">A</span>
 </pre></div>
 </div>
 </div>
@@ -901,15 +899,15 @@ and <span class="math notranslate nohighlight">\(H\)</span> into an <span class=
     <span class="n">I</span><span class="p">,</span> <span class="n">J</span><span class="p">,</span> <span class="n">K</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">hc_grid</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">hd_grid</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">z_grid</span><span class="p">)</span>
     <span class="n">N</span> <span class="o">=</span> <span class="n">I</span> <span class="o">*</span> <span class="n">J</span> <span class="o">*</span> <span class="n">K</span>
 
-    <span class="n">H</span> <span class="o">=</span> <span class="n">compute_H</span><span class="p">(</span><span class="n">sv_model</span><span class="p">)</span>
+    <span class="n">A</span> <span class="o">=</span> <span class="n">compute_A</span><span class="p">(</span><span class="n">sv_model</span><span class="p">)</span>
     <span class="c1"># Make sure that a unique solution exists</span>
     <span class="k">if</span> <span class="n">test_stable</span><span class="p">:</span>
-        <span class="n">test_stability</span><span class="p">(</span><span class="n">H</span><span class="p">)</span>
+        <span class="n">test_stability</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
 
     <span class="c1"># Compute v</span>
     <span class="n">ones_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
     <span class="n">Id</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">identity</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
-    <span class="n">v</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">Id</span> <span class="o">-</span> <span class="n">H</span><span class="p">,</span> <span class="n">H</span> <span class="o">@</span> <span class="n">ones_array</span><span class="p">)</span>
+    <span class="n">v</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">Id</span> <span class="o">-</span> <span class="n">A</span><span class="p">,</span> <span class="n">A</span> <span class="o">@</span> <span class="n">ones_array</span><span class="p">)</span>
     <span class="c1"># Reshape into an array of the form v[i, j, k]</span>
     <span class="n">v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="p">(</span><span class="n">I</span><span class="p">,</span> <span class="n">J</span><span class="p">,</span> <span class="n">K</span><span class="p">))</span>
     <span class="k">return</span> <span class="n">v</span>
@@ -935,7 +933,7 @@ and <span class="math notranslate nohighlight">\(H\)</span> into an <span class=
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:1.16
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:1.17
 </pre></div>
 </div>
 </div>
@@ -944,7 +942,7 @@ and <span class="math notranslate nohighlight">\(H\)</span> into an <span class=
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">hc_grid</span><span class="p">,</span> <span class="n">v</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;$v$ as a function of $H^c$&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">hc_grid</span><span class="p">,</span> <span class="n">v</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;$v$ as a function of $h^c$&quot;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;price-dividend ratio&quot;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;state&quot;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
@@ -953,13 +951,13 @@ and <span class="math notranslate nohighlight">\(H\)</span> into an <span class=
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/46c8a33cf439e1bffb6b88edd1e1b2f76b54ebff0eb993d63ef099a23bbe2a42.png"><img alt="_images/46c8a33cf439e1bffb6b88edd1e1b2f76b54ebff0eb993d63ef099a23bbe2a42.png" src="_images/46c8a33cf439e1bffb6b88edd1e1b2f76b54ebff0eb993d63ef099a23bbe2a42.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/6dafe47c92cb41325080f082c841dbdea676255663f96722169032fb2afc76cf.png"><img alt="_images/6dafe47c92cb41325080f082c841dbdea676255663f96722169032fb2afc76cf.png" src="_images/6dafe47c92cb41325080f082c841dbdea676255663f96722169032fb2afc76cf.png" style="width: 80%;" /></a>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">hd_grid</span><span class="p">,</span> <span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;$v$ as a function of $H^d$&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">hd_grid</span><span class="p">,</span> <span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;$v$ as a function of $h^d$&quot;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;price-dividend ratio&quot;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;state&quot;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
@@ -968,7 +966,7 @@ and <span class="math notranslate nohighlight">\(H\)</span> into an <span class=
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/cb6df627f1c984f950e0c025dc7c9a1662add6b9e29e259390186a5c25235ba7.png"><img alt="_images/cb6df627f1c984f950e0c025dc7c9a1662add6b9e29e259390186a5c25235ba7.png" src="_images/cb6df627f1c984f950e0c025dc7c9a1662add6b9e29e259390186a5c25235ba7.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/2b027b79fca9249ef7272ce0efbe80855507022a167dd84ffe092d3e166e321c.png"><img alt="_images/2b027b79fca9249ef7272ce0efbe80855507022a167dd84ffe092d3e166e321c.png" src="_images/2b027b79fca9249ef7272ce0efbe80855507022a167dd84ffe092d3e166e321c.png" style="width: 80%;" /></a>
 </div>
 </div>
 <div class="cell docutils container">
@@ -983,7 +981,7 @@ and <span class="math notranslate nohighlight">\(H\)</span> into an <span class=
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/1f38b4398f19f4df4b45fdd1b902e55ca6dc726ba24221dc60836bfe989534e8.png"><img alt="_images/1f38b4398f19f4df4b45fdd1b902e55ca6dc726ba24221dc60836bfe989534e8.png" src="_images/1f38b4398f19f4df4b45fdd1b902e55ca6dc726ba24221dc60836bfe989534e8.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/bb8c430e65ffd168a9da1438d9b161538787a469520fc45c5b4495c6835cd324.png"><img alt="_images/bb8c430e65ffd168a9da1438d9b161538787a469520fc45c5b4495c6835cd324.png" src="_images/bb8c430e65ffd168a9da1438d9b161538787a469520fc45c5b4495c6835cd324.png" style="width: 80%;" /></a>
 </div>
 </div>
 </section>
@@ -1011,30 +1009,30 @@ and <span class="math notranslate nohighlight">\(H\)</span> into an <span class=
 </div>
 </div>
 </div>
-<p>Here’s a function to compute <span class="math notranslate nohighlight">\(H\)</span>.</p>
+<p>Here’s a function to compute <span class="math notranslate nohighlight">\(A\)</span>.</p>
 <p>We include the extra argument <code class="docutils literal notranslate"><span class="pre">shapes</span></code> to help the compiler understand the size of the arrays.</p>
 <p>This is important when we JIT-compile the function below.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">compute_H_jax</span><span class="p">(</span><span class="n">sv_model</span><span class="p">,</span> <span class="n">shapes</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">compute_A_jax</span><span class="p">(</span><span class="n">sv_model</span><span class="p">,</span> <span class="n">shapes</span><span class="p">):</span>
     <span class="c1"># Set up</span>
     <span class="n">P</span><span class="p">,</span> <span class="n">hc_grid</span><span class="p">,</span> <span class="n">Q</span><span class="p">,</span> <span class="n">hd_grid</span><span class="p">,</span> <span class="n">R</span><span class="p">,</span> <span class="n">z_grid</span><span class="p">,</span> <span class="n">β</span><span class="p">,</span> <span class="n">γ</span><span class="p">,</span> <span class="n">bar_σ</span><span class="p">,</span> <span class="n">μ_c</span><span class="p">,</span> <span class="n">μ_d</span> <span class="o">=</span> <span class="n">sv_model</span>
     <span class="n">I</span><span class="p">,</span> <span class="n">J</span><span class="p">,</span> <span class="n">K</span> <span class="o">=</span> <span class="n">shapes</span>
     <span class="n">N</span> <span class="o">=</span> <span class="n">I</span> <span class="o">*</span> <span class="n">J</span> <span class="o">*</span> <span class="n">K</span>
-    <span class="c1"># Reshape and multiply pointwise using broadcasting</span>
-    <span class="n">hc</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">hc_grid</span><span class="p">,</span> <span class="p">(</span><span class="n">I</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
-    <span class="n">hd</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">hd_grid</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">J</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
-    <span class="n">z</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">z_grid</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">K</span><span class="p">))</span>
-    <span class="n">P</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">P</span><span class="p">,</span> <span class="p">(</span><span class="n">I</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">I</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
-    <span class="n">Q</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">Q</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">J</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">J</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
-    <span class="n">R</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">R</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">K</span><span class="p">))</span>
-    <span class="c1"># Compute H and then reshape to create a matrix</span>
+    <span class="c1"># Reshape and broadcast over (i, j, k, i&#39;, j&#39;, k&#39;)</span>
+    <span class="n">hc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">hc_grid</span><span class="p">,</span>     <span class="p">(</span><span class="n">I</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span>  <span class="mi">1</span><span class="p">,</span>  <span class="mi">1</span><span class="p">))</span>
+    <span class="n">hd</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">hd_grid</span><span class="p">,</span>     <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">J</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span>  <span class="mi">1</span><span class="p">,</span>  <span class="mi">1</span><span class="p">))</span>
+    <span class="n">z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">z_grid</span><span class="p">,</span>       <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span>  <span class="mi">1</span><span class="p">,</span>  <span class="mi">1</span><span class="p">))</span>
+    <span class="n">P</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">P</span><span class="p">,</span>            <span class="p">(</span><span class="n">I</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">I</span><span class="p">,</span>  <span class="mi">1</span><span class="p">,</span>  <span class="mi">1</span><span class="p">))</span>
+    <span class="n">Q</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">Q</span><span class="p">,</span>            <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">J</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span>  <span class="n">J</span><span class="p">,</span>  <span class="mi">1</span><span class="p">))</span>
+    <span class="n">R</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">R</span><span class="p">,</span>            <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span>  <span class="mi">1</span><span class="p">,</span>  <span class="n">K</span><span class="p">))</span>
+    <span class="c1"># Compute A and then reshape to create a matrix</span>
     <span class="n">a</span> <span class="o">=</span> <span class="n">μ_d</span> <span class="o">-</span> <span class="n">γ</span> <span class="o">*</span> <span class="n">μ_c</span>
     <span class="n">b</span> <span class="o">=</span> <span class="n">bar_σ</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">hd</span><span class="p">)</span> <span class="o">+</span> <span class="n">γ</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="n">jnp</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">hc</span><span class="p">))</span> <span class="o">/</span> <span class="mi">2</span>
     <span class="n">κ</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">a</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">γ</span><span class="p">)</span> <span class="o">*</span> <span class="n">z</span> <span class="o">+</span> <span class="n">b</span><span class="p">)</span>
-    <span class="n">H</span> <span class="o">=</span> <span class="n">β</span> <span class="o">*</span> <span class="n">κ</span> <span class="o">*</span> <span class="n">P</span> <span class="o">*</span> <span class="n">Q</span> <span class="o">*</span> <span class="n">R</span>
-    <span class="n">H</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">H</span><span class="p">,</span> <span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">N</span><span class="p">))</span>
-    <span class="k">return</span> <span class="n">H</span>
+    <span class="n">A</span> <span class="o">=</span> <span class="n">β</span> <span class="o">*</span> <span class="n">κ</span> <span class="o">*</span> <span class="n">P</span> <span class="o">*</span> <span class="n">Q</span> <span class="o">*</span> <span class="n">R</span>
+    <span class="n">A</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">N</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">A</span>
 </pre></div>
 </div>
 </div>
@@ -1064,12 +1062,12 @@ and <span class="math notranslate nohighlight">\(H\)</span> into an <span class=
     <span class="n">shapes</span> <span class="o">=</span> <span class="n">I</span><span class="p">,</span> <span class="n">J</span><span class="p">,</span> <span class="n">K</span>
     <span class="n">N</span> <span class="o">=</span> <span class="n">I</span> <span class="o">*</span> <span class="n">J</span> <span class="o">*</span> <span class="n">K</span>
 
-    <span class="n">H</span> <span class="o">=</span> <span class="n">compute_H_jax</span><span class="p">(</span><span class="n">sv_model</span><span class="p">,</span> <span class="n">shapes</span><span class="p">)</span>
+    <span class="n">A</span> <span class="o">=</span> <span class="n">compute_A_jax</span><span class="p">(</span><span class="n">sv_model</span><span class="p">,</span> <span class="n">shapes</span><span class="p">)</span>
 
     <span class="c1"># Compute v, reshape and return</span>
     <span class="n">ones_array</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
     <span class="n">Id</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">identity</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
-    <span class="n">v</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">scipy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">Id</span> <span class="o">-</span> <span class="n">H</span><span class="p">,</span> <span class="n">H</span> <span class="o">@</span> <span class="n">ones_array</span><span class="p">)</span>
+    <span class="n">v</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">scipy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">Id</span> <span class="o">-</span> <span class="n">A</span><span class="p">,</span> <span class="n">A</span> <span class="o">@</span> <span class="n">ones_array</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">jnp</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="p">(</span><span class="n">I</span><span class="p">,</span> <span class="n">J</span><span class="p">,</span> <span class="n">K</span><span class="p">))</span>
 </pre></div>
 </div>
@@ -1078,7 +1076,7 @@ and <span class="math notranslate nohighlight">\(H\)</span> into an <span class=
 <p>Now let’s target these functions for JIT-compilation, while using <code class="docutils literal notranslate"><span class="pre">static_argnums</span></code> to indicate that the function will need to be recompiled when <code class="docutils literal notranslate"><span class="pre">shapes</span></code> changes.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">compute_H_jax</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">jit</span><span class="p">(</span><span class="n">compute_H_jax</span><span class="p">,</span> <span class="n">static_argnums</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,))</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">compute_A_jax</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">jit</span><span class="p">(</span><span class="n">compute_A_jax</span><span class="p">,</span> <span class="n">static_argnums</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,))</span>
 <span class="n">sv_pd_ratio_jax</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">jit</span><span class="p">(</span><span class="n">sv_pd_ratio_jax</span><span class="p">,</span> <span class="n">static_argnums</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,))</span>
 </pre></div>
 </div>
@@ -1104,7 +1102,7 @@ and <span class="math notranslate nohighlight">\(H\)</span> into an <span class=
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:0.37
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:0.36
 </pre></div>
 </div>
 </div>
@@ -1132,7 +1130,7 @@ and <span class="math notranslate nohighlight">\(H\)</span> into an <span class=
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.013599479694938917
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.013514442624031526
 </pre></div>
 </div>
 </div>
@@ -1158,38 +1156,32 @@ and <span class="math notranslate nohighlight">\(H\)</span> into an <span class=
 <p>One problem with the code above is that we instantiate a matrix of size <span class="math notranslate nohighlight">\(N = I \times J \times K\)</span>.</p>
 <p>This quickly becomes impossible as <span class="math notranslate nohighlight">\(I, J, K\)</span> increase.</p>
 <p>Fortunately, JAX makes it possible to solve for the price-dividend ratio without instantiating this large matrix.</p>
-<p>The first step is to think of <span class="math notranslate nohighlight">\(H\)</span> not as a matrix, but rather as the linear operator that transforms <span class="math notranslate nohighlight">\(g\)</span> into <span class="math notranslate nohighlight">\(Hg\)</span> via</p>
-<div class="math notranslate nohighlight">
-\[
-    (Hg)[i, j, k] =
-    \beta \sum_{i', j', k'}
-        \kappa[i, j, k] g[i', j', k'] P[i, i']Q[j, j']R[k, k']
-\]</div>
+<p>The first step is to think of <span class="math notranslate nohighlight">\(A\)</span> not as a matrix, but rather as the linear operator that transforms <span class="math notranslate nohighlight">\(g\)</span> into <span class="math notranslate nohighlight">\(Ag\)</span>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">H</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">sv_model</span><span class="p">,</span> <span class="n">shapes</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">A</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">sv_model</span><span class="p">,</span> <span class="n">shapes</span><span class="p">):</span>
     <span class="c1"># Set up</span>
     <span class="n">P</span><span class="p">,</span> <span class="n">hc_grid</span><span class="p">,</span> <span class="n">Q</span><span class="p">,</span> <span class="n">hd_grid</span><span class="p">,</span> <span class="n">R</span><span class="p">,</span> <span class="n">z_grid</span><span class="p">,</span> <span class="n">β</span><span class="p">,</span> <span class="n">γ</span><span class="p">,</span> <span class="n">bar_σ</span><span class="p">,</span> <span class="n">μ_c</span><span class="p">,</span> <span class="n">μ_d</span> <span class="o">=</span> <span class="n">sv_model</span>
     <span class="n">I</span><span class="p">,</span> <span class="n">J</span><span class="p">,</span> <span class="n">K</span> <span class="o">=</span> <span class="n">shapes</span>
-    <span class="c1"># Reshape and multiply pointwise using broadcasting</span>
-    <span class="n">hc</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">hc_grid</span><span class="p">,</span> <span class="p">(</span><span class="n">I</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
-    <span class="n">hd</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">hd_grid</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">J</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
-    <span class="n">z</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">z_grid</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">K</span><span class="p">))</span>
-    <span class="n">P</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">P</span><span class="p">,</span> <span class="p">(</span><span class="n">I</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">I</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
-    <span class="n">Q</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">Q</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">J</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">J</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
-    <span class="n">R</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">R</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">K</span><span class="p">))</span>
+    <span class="c1"># Reshape and broadcast over (i, j, k, i&#39;, j&#39;, k&#39;)</span>
+    <span class="n">hc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">hc_grid</span><span class="p">,</span>     <span class="p">(</span><span class="n">I</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span>  <span class="mi">1</span><span class="p">,</span>  <span class="mi">1</span><span class="p">))</span>
+    <span class="n">hd</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">hd_grid</span><span class="p">,</span>     <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">J</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span>  <span class="mi">1</span><span class="p">,</span>  <span class="mi">1</span><span class="p">))</span>
+    <span class="n">z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">z_grid</span><span class="p">,</span>       <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span>  <span class="mi">1</span><span class="p">,</span>  <span class="mi">1</span><span class="p">))</span>
+    <span class="n">P</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">P</span><span class="p">,</span>            <span class="p">(</span><span class="n">I</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">I</span><span class="p">,</span>  <span class="mi">1</span><span class="p">,</span>  <span class="mi">1</span><span class="p">))</span>
+    <span class="n">Q</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">Q</span><span class="p">,</span>            <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">J</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span>  <span class="n">J</span><span class="p">,</span>  <span class="mi">1</span><span class="p">))</span>
+    <span class="n">R</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">R</span><span class="p">,</span>            <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span>  <span class="mi">1</span><span class="p">,</span>  <span class="n">K</span><span class="p">))</span>
     <span class="n">a</span> <span class="o">=</span> <span class="n">μ_d</span> <span class="o">-</span> <span class="n">γ</span> <span class="o">*</span> <span class="n">μ_c</span>
     <span class="n">b</span> <span class="o">=</span> <span class="n">bar_σ</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">hd</span><span class="p">)</span> <span class="o">+</span> <span class="n">γ</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="n">jnp</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">hc</span><span class="p">))</span> <span class="o">/</span> <span class="mi">2</span>
     <span class="n">κ</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">a</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">γ</span><span class="p">)</span> <span class="o">*</span> <span class="n">z</span> <span class="o">+</span> <span class="n">b</span><span class="p">)</span>
-    <span class="n">H</span> <span class="o">=</span> <span class="n">β</span> <span class="o">*</span> <span class="n">κ</span> <span class="o">*</span> <span class="n">P</span> <span class="o">*</span> <span class="n">Q</span> <span class="o">*</span> <span class="n">R</span>
-    <span class="n">Hg</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">H</span> <span class="o">*</span> <span class="n">g</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
-    <span class="k">return</span> <span class="n">Hg</span>
+    <span class="n">A</span> <span class="o">=</span> <span class="n">β</span> <span class="o">*</span> <span class="n">κ</span> <span class="o">*</span> <span class="n">P</span> <span class="o">*</span> <span class="n">Q</span> <span class="o">*</span> <span class="n">R</span>
+    <span class="n">Ag</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">A</span> <span class="o">*</span> <span class="n">g</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">Ag</span>
 </pre></div>
 </div>
 </div>
 </div>
 <p>Now we write a version of the solution function for the price-dividend ratio
-that acts directly on the linear operator <code class="docutils literal notranslate"><span class="pre">H</span></code>.</p>
+that acts directly on the linear operator <code class="docutils literal notranslate"><span class="pre">A</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">sv_pd_ratio_linop</span><span class="p">(</span><span class="n">sv_model</span><span class="p">,</span> <span class="n">shapes</span><span class="p">):</span>
@@ -1199,12 +1191,12 @@ that acts directly on the linear operator <code class="docutils literal notransl
     <span class="n">I</span><span class="p">,</span> <span class="n">J</span><span class="p">,</span> <span class="n">K</span> <span class="o">=</span> <span class="n">shapes</span>
 
     <span class="n">ones_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">I</span><span class="p">,</span> <span class="n">J</span><span class="p">,</span> <span class="n">K</span><span class="p">))</span>
-    <span class="c1"># Set up the operator g -&gt; (I - H) g</span>
-    <span class="n">J</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">g</span><span class="p">:</span> <span class="n">g</span> <span class="o">-</span> <span class="n">H</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">sv_model</span><span class="p">,</span> <span class="n">shapes</span><span class="p">)</span>
-    <span class="c1"># Solve v = (I - H)^{-1} H 1</span>
-    <span class="n">H1</span> <span class="o">=</span> <span class="n">H</span><span class="p">(</span><span class="n">ones_array</span><span class="p">,</span> <span class="n">sv_model</span><span class="p">,</span> <span class="n">shapes</span><span class="p">)</span>
+    <span class="c1"># Set up the operator g -&gt; (I - A) g</span>
+    <span class="n">J</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">g</span><span class="p">:</span> <span class="n">g</span> <span class="o">-</span> <span class="n">A</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">sv_model</span><span class="p">,</span> <span class="n">shapes</span><span class="p">)</span>
+    <span class="c1"># Solve v = (I - A)^{-1} A 1</span>
+    <span class="n">A1</span> <span class="o">=</span> <span class="n">A</span><span class="p">(</span><span class="n">ones_array</span><span class="p">,</span> <span class="n">sv_model</span><span class="p">,</span> <span class="n">shapes</span><span class="p">)</span>
     <span class="c1"># Apply an iterative solver that works for linear operators</span>
-    <span class="n">v</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">scipy</span><span class="o">.</span><span class="n">sparse</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">bicgstab</span><span class="p">(</span><span class="n">J</span><span class="p">,</span> <span class="n">H1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">v</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">scipy</span><span class="o">.</span><span class="n">sparse</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">bicgstab</span><span class="p">(</span><span class="n">J</span><span class="p">,</span> <span class="n">A1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
     <span class="k">return</span> <span class="n">v</span>
 </pre></div>
 </div>
@@ -1213,7 +1205,7 @@ that acts directly on the linear operator <code class="docutils literal notransl
 <p>Let’s target these functions for JIT compilation.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">H</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">jit</span><span class="p">(</span><span class="n">H</span><span class="p">,</span> <span class="n">static_argnums</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,))</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">A</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">jit</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">static_argnums</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,))</span>
 <span class="n">sv_pd_ratio_linop</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">jit</span><span class="p">(</span><span class="n">sv_pd_ratio_linop</span><span class="p">,</span> <span class="n">static_argnums</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,))</span>
 </pre></div>
 </div>
@@ -1229,7 +1221,7 @@ that acts directly on the linear operator <code class="docutils literal notransl
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:0.89
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:0.78
 </pre></div>
 </div>
 </div>
@@ -1270,7 +1262,7 @@ that acts directly on the linear operator <code class="docutils literal notransl
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.4215668508954728
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.20836138917568195
 </pre></div>
 </div>
 </div>
@@ -1291,10 +1283,10 @@ that acts directly on the linear operator <code class="docutils literal notransl
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:0.85
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:0.97
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.8575632572174072
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.9775826930999756
 </pre></div>
 </div>
 </div>

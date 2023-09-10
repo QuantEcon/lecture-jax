@@ -175,7 +175,11 @@ const thebe_selector_output = ".output, .cell_output"
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#random-numbers">2.2. Random Numbers</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#jit-compilation">2.3. JIT Compilation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#jit-compilation">2.3. JIT compilation</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-first-example">2.3.1. A first example</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#compiling-the-outer-function">2.3.2. Compiling the outer function</a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#functional-programming">2.4. Functional Programming</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gradients">2.5. Gradients</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#writing-vectorized-code">2.6. Writing vectorized code</a></li>
@@ -370,13 +374,13 @@ hardware accelerator (GPU or TPU).</p>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">linalg</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="n">A</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">B</span><span class="p">)</span>   <span class="c1"># Inverse of identity is identity</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Array([[1., 1.],
-       [1., 1.]], dtype=float32)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Array([[1., 0.],
+       [0., 1.]], dtype=float32)
 </pre></div>
 </div>
 </div>
@@ -398,7 +402,7 @@ hardware accelerator (GPU or TPU).</p>
 </section>
 <section id="differences">
 <h3><span class="section-number">2.1.2. </span>Differences<a class="headerlink" href="#differences" title="Permalink to this heading">#</a></h3>
-<p>One difference between NumPy and JAX is that, when running on a GPU, JAX uses 32 bit floats by default.</p>
+<p>One difference between NumPy and JAX is that JAX currently uses 32 bit floats by default.</p>
 <p>This is standard for GPU computing and can lead to significant speed gains with small loss of precision.</p>
 <p>However, for some calculations precision matters.  In these cases 64 bit floats can be enforced via the command</p>
 <div class="cell docutils container">
@@ -530,7 +534,7 @@ functional programming style.  More on this below.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1143372576
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1149425392
 </pre></div>
 </div>
 </div>
@@ -567,7 +571,7 @@ functional programming style.  More on this below.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1143372576
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1149425392
 </pre></div>
 </div>
 </div>
@@ -728,15 +732,18 @@ functional programming style.  More on this below.</p>
 </div>
 </section>
 <section id="jit-compilation">
-<h2><span class="section-number">2.3. </span>JIT Compilation<a class="headerlink" href="#jit-compilation" title="Permalink to this heading">#</a></h2>
-<p>The JAX JIT compiler accelerates logic within functions by fusing linear
-algebra operations into a single, highly optimized kernel that the host can
+<h2><span class="section-number">2.3. </span>JIT compilation<a class="headerlink" href="#jit-compilation" title="Permalink to this heading">#</a></h2>
+<p>The JAX just-in-time (JIT) compiler accelerates logic within functions by fusing linear
+algebra operations into a single optimized kernel that the host can
 launch on the GPU / TPU (or CPU if no accelerator is detected).</p>
-<p>Consider the following pure Python function.</p>
+<section id="a-first-example">
+<h3><span class="section-number">2.3.1. </span>A first example<a class="headerlink" href="#a-first-example" title="Permalink to this heading">#</a></h3>
+<p>To see the JIT compiler in action, consider the following function.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="mi">1000</span><span class="p">):</span>
-    <span class="k">return</span> <span class="nb">sum</span><span class="p">((</span><span class="n">k</span><span class="o">*</span><span class="n">x</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">p</span><span class="p">)))</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="mi">3</span><span class="o">*</span><span class="n">x</span> <span class="o">+</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">+</span> <span class="n">jnp</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="n">jnp</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">x</span><span class="p">)</span> <span class="o">-</span> <span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="mf">0.4</span> <span class="o">*</span> <span class="n">x</span><span class="o">**</span><span class="mf">1.5</span>
+    <span class="k">return</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -758,11 +765,11 @@ launch on the GPU / TPU (or CPU if no accelerator is detected).</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 565 ms, sys: 177 ms, total: 742 ms
-Wall time: 4.28 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 625 ms, sys: 21.5 ms, total: 647 ms
+Wall time: 1.11 s
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Array([499500., 499500., 499500., ..., 499500., 499500., 499500.],      dtype=float64)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Array(2.19896006e+08, dtype=float64)
 </pre></div>
 </div>
 </div>
@@ -771,13 +778,103 @@ Wall time: 4.28 s
 <p class="admonition-title">Note</p>
 <p>Here, in order to measure actual speed, we use the <code class="docutils literal notranslate"><span class="pre">block_until_ready()</span></code> method
 to hold the interpreter until the results of the computation are returned from
-the device.</p>
-<p>This is necessary because JAX uses asynchronous dispatch, which allows the
-Python interpreter to run ahead of GPU computations.</p>
+the device. This is necessary because JAX uses asynchronous dispatch, which
+allows the Python interpreter to run ahead of GPU computations.</p>
 </div>
-<p>This code is not particularly fast.</p>
-<p>While it is run on the GPU (since <code class="docutils literal notranslate"><span class="pre">x</span></code> is a JAX array), each vector <code class="docutils literal notranslate"><span class="pre">k</span> <span class="pre">*</span> <span class="pre">x</span></code> has to be instantiated before the final sum is computed.</p>
-<p>If we JIT-compile the function with JAX, then the operations are fused and no intermediate arrays are created.</p>
+<p>The code doesn’t run as fast as we might hope, given that it’s running on a GPU.</p>
+<p>But if we run it a second time it becomes much faster:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">time</span> f(x).block_until_ready()
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 940 µs, sys: 4.42 ms, total: 5.36 ms
+Wall time: 25.7 ms
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Array(2.19896006e+08, dtype=float64)
+</pre></div>
+</div>
+</div>
+</div>
+<p>This is because the built in functions like <code class="docutils literal notranslate"><span class="pre">jnp.cos</span></code> are JIT compiled and the
+first run includes compile time.</p>
+<p>Why would JAX want to JIT-compile built in functions like <code class="docutils literal notranslate"><span class="pre">jnp.cos</span></code> instead of
+just providing pre-compiled versions, like NumPy?</p>
+<p>The reason is that the JIT compiler can specialize on the <em>size</em> of the array
+being used, which is helpful for parallelization.</p>
+<p>For example, in running the code above, the JIT compiler produced a version of <code class="docutils literal notranslate"><span class="pre">jnp.cos</span></code> that is
+specialized to floating point arrays of size <code class="docutils literal notranslate"><span class="pre">n</span> <span class="pre">=</span> <span class="pre">50_000_000</span></code>.</p>
+<p>We can check this by calling <code class="docutils literal notranslate"><span class="pre">f</span></code> with a new array of different size.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">m</span> <span class="o">=</span> <span class="mi">50_000_001</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">time</span> f(y).block_until_ready()
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 588 ms, sys: 26.5 ms, total: 614 ms
+Wall time: 1.07 s
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Array(2.19896011e+08, dtype=float64)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Notice that the execution time increases, because now new versions of
+the built-ins like <code class="docutils literal notranslate"><span class="pre">jnp.cos</span></code> are being compiled, specialized to the new array
+size.</p>
+<p>If we run again, the code is dispatched to the correct compiled version and we
+get faster execution.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">time</span> f(y).block_until_ready()
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 5.42 ms, sys: 390 µs, total: 5.81 ms
+Wall time: 18.7 ms
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Array(2.19896011e+08, dtype=float64)
+</pre></div>
+</div>
+</div>
+</div>
+<p>The compiled versions for the previous array size are still available in memory
+too, and the following call is dispatched to the correct compiled code.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">time</span> f(x).block_until_ready()
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 4.88 ms, sys: 233 µs, total: 5.12 ms
+Wall time: 25.6 ms
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Array(2.19896006e+08, dtype=float64)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="compiling-the-outer-function">
+<h3><span class="section-number">2.3.2. </span>Compiling the outer function<a class="headerlink" href="#compiling-the-outer-function" title="Permalink to this heading">#</a></h3>
+<p>We can do even better if we manually JIT-compile the outer function.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">f_jit</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">jit</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>   <span class="c1"># target for JIT compilation</span>
@@ -793,7 +890,7 @@ Python interpreter to run ahead of GPU computations.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Array([499500., 499500., 499500., ..., 499500., 499500., 499500.],      dtype=float64)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Array(2.19896006e+08, dtype=float64)
 </pre></div>
 </div>
 </div>
@@ -806,16 +903,30 @@ Python interpreter to run ahead of GPU computations.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 804 µs, sys: 199 µs, total: 1 ms
-Wall time: 35.7 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 760 µs, sys: 217 µs, total: 977 µs
+Wall time: 2.91 ms
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Array([499500., 499500., 499500., ..., 499500., 499500., 499500.],      dtype=float64)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Array(2.19896006e+08, dtype=float64)
 </pre></div>
 </div>
 </div>
 </div>
-<p>Note the large speed gain.</p>
+<p>Note the speed gain.</p>
+<p>This is because the array operations are fused and no intermediate arrays are created.</p>
+<p>Incidentally, a more common syntax when targetting a function for the JIT
+compiler is</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jax</span><span class="o">.</span><span class="n">jit</span>
+<span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="mi">3</span><span class="o">*</span><span class="n">x</span> <span class="o">+</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">+</span> <span class="n">jnp</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="n">jnp</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">x</span><span class="p">)</span> <span class="o">-</span> <span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="mf">0.4</span> <span class="o">*</span> <span class="n">x</span><span class="o">**</span><span class="mf">1.5</span>
+    <span class="k">return</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
 </section>
 <section id="functional-programming">
 <h2><span class="section-number">2.4. </span>Functional Programming<a class="headerlink" href="#functional-programming" title="Permalink to this heading">#</a></h2>
@@ -885,7 +996,7 @@ Wall time: 35.7 ms
 <p>Changing the dimension of the input triggers a fresh compilation of the function, at which time the change in the value of <code class="docutils literal notranslate"><span class="pre">a</span></code> takes effect:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -995,8 +1106,8 @@ Wall time: 35.7 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 16.1 s, sys: 1.97 s, total: 18.1 s
-Wall time: 10.3 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 15.5 s, sys: 1.99 s, total: 17.5 s
+Wall time: 9.84 s
 </pre></div>
 </div>
 </div>
@@ -1055,8 +1166,8 @@ Wall time: 10.3 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 110 ms, sys: 0 ns, total: 110 ms
-Wall time: 171 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 112 ms, sys: 30 µs, total: 112 ms
+Wall time: 173 ms
 </pre></div>
 </div>
 </div>
@@ -1069,8 +1180,8 @@ Wall time: 171 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 253 µs, sys: 0 ns, total: 253 µs
-Wall time: 155 µs
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 0 ns, sys: 828 µs, total: 828 µs
+Wall time: 362 µs
 </pre></div>
 </div>
 </div>
@@ -1121,8 +1232,8 @@ Wall time: 176 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 412 µs, sys: 0 ns, total: 412 µs
-Wall time: 218 µs
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 437 µs, sys: 0 ns, total: 437 µs
+Wall time: 251 µs
 </pre></div>
 </div>
 </div>
@@ -1181,8 +1292,8 @@ Wall time: 218 µs
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 112 ms, sys: 0 ns, total: 112 ms
-Wall time: 173 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 111 ms, sys: 0 ns, total: 111 ms
+Wall time: 172 ms
 </pre></div>
 </div>
 </div>
@@ -1195,8 +1306,8 @@ Wall time: 173 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 2.25 ms, sys: 0 ns, total: 2.25 ms
-Wall time: 1.96 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 2.54 ms, sys: 0 ns, total: 2.54 ms
+Wall time: 2.13 ms
 </pre></div>
 </div>
 </div>
@@ -1290,7 +1401,7 @@ significantly faster execution.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1.51 ms, sys: 0 ns, total: 1.51 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1.91 ms, sys: 246 µs, total: 2.16 ms
 Wall time: 111 ms
 </pre></div>
 </div>
