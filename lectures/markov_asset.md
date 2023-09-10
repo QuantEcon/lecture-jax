@@ -600,7 +600,7 @@ expectations of lognormals to obtain
 Let
 
 $$
-    A(h_c, h_z, z, h_c', h_z', z') :=
+    A(h_c, h_d, z, h_c', h_d', z') :=
         \beta \, 
             \exp 
             \left[
@@ -620,12 +620,12 @@ With this notation, we can write [](neweqn103_new) more explicitly as
     v(h_c, h_d, z) =
     \sum_{h_c', h_d', z'}
         (1 + v(h_c', h_d', z')) 
-        A(h_c, h_z, z, h_c', h_z', z')
+        A(h_c, h_d, z, h_c', h_d', z')
 ```
 
 
 Let's now write the state using indices, with $(i, j, k)$ being the
-indices for $(h_c, h_z, z)$.
+indices for $(h_c, h_d, z)$.
 
 Then {eq}`neweqn104_new` becomes
 
