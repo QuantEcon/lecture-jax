@@ -86,8 +86,7 @@ def create_consumption_model(R=1.01,                # Gross interest rate
                              w_size=150,                # Grid side
                              ρ=0.9, ν=0.1, y_size=100): # Income parameters
     """
-    A function that takes in parameters and returns a JAX-compatible version of
-    Model that contains data for the optimal savings problem.
+    A function that takes in parameters and returns data for the optimal savings problem.
     """
     w_grid = jnp.linspace(w_min, w_max, w_size)
     mc = qe.tauchen(n=y_size, rho=ρ, sigma=ν)
@@ -309,7 +308,7 @@ Now we define the solvers, which implement VFI, HPI and OPI.
 
 ## Plots
 
-Create a JAX model for consumption, perform policy iteration, and plot the resulting optimal policy function.
+Create a model for consumption, perform policy iteration, and plot the resulting optimal policy function.
 
 ```{code-cell} ipython3
 fontsize = 12
