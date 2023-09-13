@@ -80,7 +80,7 @@ First we define a model that stores parameters and grids
 ```{code-cell} ipython3
 def create_consumption_model(R=1.01,                # Gross interest rate
                              β=0.98,                    # Discount factor
-                             γ=2.5,                     # CRRA parameter
+                             γ=2,                       # CRRA parameter
                              w_min=0.01,                # Min wealth
                              w_max=5.0,                 # Max wealth
                              w_size=150,                # Grid side
