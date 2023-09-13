@@ -19,6 +19,14 @@ kernelspec:
 
 This lecture provides a short introduction to [Google JAX](https://github.com/google/jax).
 
+As mentioned above, the lecture was built using a GPU:
+
+
+```{code-cell} ipython3
+!nvidia-smi
+```
+
+
 
 ## JAX as a NumPy Replacement
 
