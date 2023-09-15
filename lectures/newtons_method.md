@@ -58,7 +58,7 @@ one-dimensional root-finding problem.
 
 Let $f$ be a function from $\mathbb R$ to itself.
 
-A **root** of $f$ is an $x \in \RR$ such that $f(x)=0$.
+A **root** of $f$ is an $x \in \mathbb R$ such that $f(x)=0$.
 
 [Recall](https://python.quantecon.org/newton_method.html) that Newton's method for solving for the root of $f$ involves iterating with the map $q$ defined by
 
@@ -142,17 +142,17 @@ formed by taking the pointwise product $b_i \sqrt{p_i}$ at each $i$.)
 The demand function is
 
 $$
-    q^d (p) = \exp(- A \cdot p) + c
+    q^d (p) = \exp(- A p) + c
 $$
 
 (Here $A$ is an $n \times n$ matrix containing parameters, $c$ is an $n \times
 1$ vector and the $\exp$ function acts pointwise (element-by-element) on the
-vector $- A \cdot p$.)
+vector $- A p$.)
 
 The excess demand function is
 
 $$
-    e(p) = \exp(- A \cdot p) + c - b \sqrt{p}
+    e(p) = \exp(- A p) + c - b \sqrt{p}
 $$
 
 An **equilibrium price** vector is an $n$-vector $p$ such that $e(p) = 0$.
@@ -245,15 +245,17 @@ Here's our initial condition $p_0$
 init_p = jnp.ones(dim)
 ```
 
-By leveraging the power of Newton's method, JAX accelerated linear algebra,
+By combining the power of Newton's method, JAX accelerated linear algebra,
 automatic differentiation, and a GPU, we obtain a relatively small error for
-this very large problem in just a few seconds:
+this high-dimensional problem in just a few seconds:
 
 ```{code-cell} ipython3
 %%time
 
 p = newton(lambda p: e(p, A, b, c), init_p).block_until_ready()
 ```
+
+Here's the size of the error:
 
 ```{code-cell} ipython3
 jnp.max(jnp.abs(e(p, A, b, c)))
@@ -272,13 +274,14 @@ solution = root(lambda p: e(p, A, b, c),
                 tol=1e-5)
 ```
 
+The result is also slightly less accurate:
+
 ```{code-cell} ipython3
 p = solution.x
 jnp.max(jnp.abs(e(p, A, b, c)))
 ```
 
 
-The result is also less accurate.
 
 
 
@@ -408,7 +411,7 @@ init = jnp.repeat(1.0, 3)
                  init).block_until_ready()
 ```
 
-The result is very close to the ground truth but still slightly different.
+The result is very close to the true solution but still slightly different.
 
 We can increase the precision of the floating point numbers and restrict the tolerance to obtain a more accurate approximation (see detailed discussion in the [lecture on JAX](https://python-programming.quantecon.org/jax_intro.html#differences))
 
