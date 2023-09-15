@@ -199,7 +199,7 @@ def newton(f, x_0, tol=1e-5, max_iter=15):
     @jax.jit
     def q(x):
         " Updates the current guess. "
-        return = x - jnp.linalg.solve(f_jac(x), f(x))
+        return x - jnp.linalg.solve(f_jac(x), f(x))
     error = tol + 1
     n = 0
     while error > tol:
