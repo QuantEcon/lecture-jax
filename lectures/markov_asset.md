@@ -570,13 +570,20 @@ Modifying [](eq:neweqn101) to accommodate the new growth specifications,
 we find that $v$ satisfies
 
 $$
-\begin{align}
-    v(X_t) = \beta {\mathbb E}_t \bigg\{
-        &\exp\biggl[ a + (1-\gamma) Z_t
-        + \bar \sigma \exp(H^d_t) \epsilon_{d, t+1} \notag \\
-        & - \gamma \bar \sigma \exp(H^c_t) \epsilon_{c, t+1} \biggr] (1 + v(X_{t+1}))
-    \bigg\}
-\end{align}
+\begin{equation}
+\begin{multline}
+    v(X_t) = \beta \times \\
+        {\mathbb E}_t
+        \left\{
+            \exp[
+                a + (1-\gamma) Z_t +
+                    \bar \sigma \exp(H^d_t) \epsilon_{d, t+1} -
+                    \gamma \bar \sigma \exp(H^c_t) \epsilon_{c, t+1}
+                ]
+            (1 + v(X_{t+1}))
+        \right\}
+\end{multline}
+\end{equation}
 $$ (eq:neweqn102)
 
 where, as before, $a := \mu_d - \gamma \mu_c$
@@ -612,14 +619,18 @@ expectations of lognormals to obtain
 Let
 
 $$
-    A(h_c, h_d, z, h_c', h_d', z') :=
-        \beta \,
-            \exp
-            \left[
-                a + (1-\gamma) z +
-                \bar \sigma^2 \frac{\exp(2 h_d) + \gamma^2 \exp(2 h_c)}{2}
-            \right]
-    P(h_c, h_c')Q(h_d, h_d')R(z, z')
+\begin{equation}
+\begin{multline}
+    A(h_c, h_d, z, h_c', h_d', z') := \\
+            \beta \,
+                \exp
+                \left[
+                    a + (1-\gamma) z +
+                    \bar \sigma^2 \frac{\exp(2 h_d) + \gamma^2 \exp(2 h_c)}{2}
+                \right]
+        P(h_c, h_c')Q(h_d, h_d')R(z, z')
+\end{multline}
+\end{equation}
 $$
 
 where $P, Q, R$ are the stochastic matrices for, respectively, discretized
