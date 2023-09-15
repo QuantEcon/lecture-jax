@@ -19,13 +19,20 @@ kernelspec:
 
 ## Overview
 
-In this lecture we highlight some of the capabilities of JAX, including JIT
-compilation and automatic differentiation.
+One of the key features of JAX is automatic differentiation.
 
-The application is computing equilibria via Newton's method, which we discussed 
-in [a more elementary QuantEcon lecture](https://python.quantecon.org/newton_method.html)
+While other software packages also offer this feature, the JAX version is
+particularly powerful because it integrates so closely with other core
+components of JAX, such as accelerated linear algebra, JIT compilation and
+parallelization.
 
-Here our focus is on how to apply JAX to this problem.
+The application of automatic differentiation we consider is computing economic equilibria via Newton's method.
+
+Newton's method is a relatively simple root and fixed point solution algorithm, which we discussed 
+in [a more elementary QuantEcon lecture](https://python.quantecon.org/newton_method.html).
+
+JAX is almost ideally suited to implementing Newton's method efficiently, even
+in high dimensions.
 
 We use the following imports in this lecture
 
@@ -33,6 +40,7 @@ We use the following imports in this lecture
 import jax
 import jax.numpy as jnp
 from scipy.optimize import root
+import matplotlib.pyplot as plt
 ```
 
 Let's check the GPU we are running
@@ -48,6 +56,10 @@ Let's check the GPU we are running
 As a warm up, let's implement Newton's method in JAX for a simple
 one-dimensional root-finding problem.
 
+Let $f$ be a function from $\mathbb R$ to itself.
+
+A **root** of $f$ is an $x \in \RR$ such that $f(x)=0$.
+
 [Recall](https://python.quantecon.org/newton_method.html) that Newton's method for solving for the root of $f$ involves iterating with the map $q$ defined by
 
 $$ 
@@ -55,7 +67,8 @@ $$
 $$
 
 
-Here is a function called `newton` that takes a function $f$ plus a guess $x_0$, iterates with $q$ starting from $x0$, and returns an approximate fixed point.
+Here is a function called `newton` that takes a function $f$ plus a scalar value $x_0$,
+iterates with $q$ starting from $x_0$, and returns an approximate fixed point.
 
 
 ```{code-cell} ipython3
@@ -82,7 +95,6 @@ Let's test our `newton` routine on the function shown below.
 f = lambda x: jnp.sin(4 * (x - 1/4)) + x + x**20 - 1
 x = jnp.linspace(0, 1, 100)
 
-import matplotlib.pyplot as plt
 fig, ax = plt.subplots()
 ax.plot(x, f(x), label='$f(x)$')
 ax.axhline(ls='--', c='k')
@@ -98,7 +110,7 @@ Here we go
 newton(f, 0.2)
 ```
 
-This number looks good, given the figure.
+This number looks to be close to the root, given the figure.
 
 
 
@@ -108,87 +120,44 @@ Now let's move up to higher dimensions.
 
 First we describe a market equilibrium problem we will solve with JAX via root-finding.
 
-We begin with a two good case, 
-which is borrowed from [an earlier lecture](https://python.quantecon.org/newton_method.html).
+The market is for $n$ goods.
 
-Then we shift to higher dimensions.
+(We are extending a two-good version of the market from [an earlier lecture](https://python.quantecon.org/newton_method.html).)
 
-
-### The Two Goods Market Equilibrium
-
-Assume we have a market for two complementary goods where demand depends on the
-price of both components.
-
-We label them good 0 and good 1, with price vector $p = (p_0, p_1)$.
-
-Then the supply of good $i$ at price $p$ is,
+The supply function for the $i$-th good is
 
 $$
-q^s_i (p) = b_i \sqrt{p_i}
+    q^s_i (p) = b_i \sqrt{p_i}
 $$
 
-and the demand of good $i$ at price $p$ is,
-
-$$
-q^d_i (p) = \text{exp}(-(a_{i0} p_0 + a_{i1} p_1)) + c_i
-$$
-
-Here $a_{ij}$, $b_i$ and $c_i$ are parameters for $n \times n$ square matrix $A$ and $n \times 1$ parameter vectors $b$ and $c$.
-
-The excess demand function is,
-
-$$
-e_i(p) = q_i^d(p) - q_i^s(p), \quad i = 0, 1
-$$
-
-An equilibrium price vector $p^*$ satisfies $e_i(p^*) = 0$.
-
-We set
-
-$$
-A = \begin{pmatrix}
-            a_{00} & a_{01} \\
-            a_{10} & a_{11}
-        \end{pmatrix},
-            \qquad
-    b = \begin{pmatrix}
-            b_0 \\
-            b_1
-        \end{pmatrix}
-    \qquad \text{and} \qquad
-    c = \begin{pmatrix}
-            c_0 \\
-            c_1
-        \end{pmatrix}
-$$
-
-for this particular question.
-
-
-### A High-Dimensional Version
-
-Let's now shift to a linear algebra formulation, which allows us to handle
-arbitrarily many goods.
-
-The supply function remains unchanged,
+which we write in vector form as
 
 $$
     q^s (p) =b \sqrt{p}
 $$
 
-The demand function becomes
+(Here $\sqrt{p}$ is the square root of each $p_i$ and $b \sqrt{p}$ is the vector
+formed by taking the pointwise product $b_i \sqrt{p_i}$ at each $i$.)
+
+The demand function is
 
 $$
-    q^d (p) = \text{exp}(- A \cdot p) + c
+    q^d (p) = \exp(- A \cdot p) + c
 $$
 
-Our new excess demand function is
+(Here $A$ is an $n \times n$ matrix containing parameters, $c$ is an $n \times
+1$ vector and the $\exp$ function acts pointwise (element-by-element) on the
+vector $- A \cdot p$.)
+
+The excess demand function is
 
 $$
-e(p) = \text{exp}(- A \cdot p) + c - b \sqrt{p}
+    e(p) = \exp(- A \cdot p) + c - b \sqrt{p}
 $$
 
-The function below calculates the excess demand for the given parameters
+An **equilibrium price** vector is an $n$-vector $p$ such that $e(p) = 0$.
+
+The function below calculates the excess demand for given parameters
 
 ```{code-cell} ipython3
 def e(p, A, b, c):
@@ -206,7 +175,7 @@ In this section we describe and then implement the solution method.
 
 We use a multivariate version of Newton's method to compute the equilibrium price.
 
-The rule for updating a guess $p_n$ of the price vector is
+The rule for updating a guess $p_n$ of the equilibrium price vector is
 
 ```{math}
 :label: multi-newton
@@ -217,13 +186,20 @@ Here $J_e(p_n)$ is the Jacobian of $e$ evaluated at $p_n$.
 
 Iteration starts from initial guess $p_0$.
 
-Instead of coding the Jacobian by hand, we use `jax.jacobian()`.
+Instead of coding the Jacobian by hand, we use automatic differentiation via `jax.jacobian()`.
 
 ```{code-cell} ipython3
 def newton(f, x_0, tol=1e-5, max_iter=15):
+    """
+    A multivariate Newton root-finding routine.
+
+    """
     x = x_0
     f_jac = jax.jacobian(f)
-    q = jax.jit(lambda x: x - jnp.linalg.solve(f_jac(x), f(x)))
+    @jax.jit
+    def q(x):
+        " Updates the current guess. "
+        return = x - jnp.linalg.solve(f_jac(x), f(x))
     error = tol + 1
     n = 0
     while error > tol:
@@ -245,7 +221,7 @@ def newton(f, x_0, tol=1e-5, max_iter=15):
 
 Let's now apply the method just described to investigate a large market with 5,000 goods.
 
-We randomly generate the matrix $A$ and set the parameter vectors $b \text{ and } c$ to $1$.
+We randomly generate the matrix $A$ and set the parameter vectors $b, c$ to $1$.
 
 ```{code-cell} ipython3
 dim = 5_000
@@ -253,9 +229,7 @@ seed = 32
 
 # Create a random matrix A and normalize the rows to sum to one
 key = jax.random.PRNGKey(seed)
-
 A = jax.random.uniform(key, [dim, dim])
-
 s = jnp.sum(A, axis=0)
 A = A / s
 
@@ -387,7 +361,7 @@ initLs = [jnp.ones(3),
 ```
 
 
-Then define the multivariate version of the formula for the [law of motion of capital](https://python.quantecon.org/newton_method.html#solow)
+Then we define the multivariate version of the formula for the [law of motion of capital](https://python.quantecon.org/newton_method.html#solow)
 
 ```{code-cell} ipython3
 def multivariate_solow(k, A=A, s=s, α=α, δ=δ):
@@ -408,16 +382,15 @@ for init in initLs:
 ```
 
 
-We find that the results are invariant to the starting values given the well-defined property of this question.
+We find that the results are invariant to the starting values.
 
 But the number of iterations it takes to converge is dependent on the starting values.
 
-Let substitute the output back to the formulate to check our last result
+Let substitute the output back into the formulate to check our last result
 
 ```{code-cell} ipython3
 multivariate_solow(k) - k
 ```
-
 
 Note the error is very small.
 
@@ -434,7 +407,6 @@ init = jnp.repeat(1.0, 3)
 %time k = newton(lambda k: multivariate_solow(k, A=A, s=s, α=α, δ=δ) - k, \
                  init).block_until_ready()
 ```
-
 
 The result is very close to the ground truth but still slightly different.
 
