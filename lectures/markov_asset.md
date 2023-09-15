@@ -570,7 +570,6 @@ Modifying [](eq:neweqn101) to accommodate the new growth specifications,
 we find that $v$ satisfies
 
 $$
-\begin{equation}
 \begin{multline}
     v(X_t) = \beta \times \\
         {\mathbb E}_t
@@ -583,7 +582,6 @@ $$
             (1 + v(X_{t+1}))
         \right\}
 \end{multline}
-\end{equation}
 $$ (eq:neweqn102)
 
 where, as before, $a := \mu_d - \gamma \mu_c$
@@ -619,7 +617,6 @@ expectations of lognormals to obtain
 Let
 
 $$
-\begin{equation}
 \begin{multline}
     A(h_c, h_d, z, h_c', h_d', z') := \\
             \beta \,
@@ -630,7 +627,6 @@ $$
                 \right]
         P(h_c, h_c')Q(h_d, h_d')R(z, z')
 \end{multline}
-\end{equation}
 $$
 
 where $P, Q, R$ are the stochastic matrices for, respectively, discretized
