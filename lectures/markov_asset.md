@@ -341,7 +341,7 @@ $$ (eq:ntecxvv)
 
 whenever $r(K)$, the spectral radius of $K$, is strictly less than one.
 
-Once we specify $P$ and all the parameters, we can 
+Once we specify $P$ and all the parameters, we can
 
 1. obtain $K$
 1. check the spectral radius condition $r(K) < 1$ and, assuming it holds,
@@ -555,7 +555,7 @@ where $\{Z_t\}$ is a finite Markov chain and $\{H^c_t\}$ and $\{H^d_t\}$ are vol
 We assume that $\{H^c_t\}$ and $\{H^d_t\}$ are AR(1) processes of the form
 
 $$
-    H^i_{t+1} = \rho_i H^i_t + \sigma_i \eta_{i, t+1}, 
+    H^i_{t+1} = \rho_i H^i_t + \sigma_i \eta_{i, t+1},
     \qquad i \in \{c, d\}
 $$
 
@@ -570,15 +570,18 @@ Modifying [](eq:neweqn101) to accommodate the new growth specifications,
 we find that $v$ satisfies
 
 $$
-    v(X_t) = \beta {\mathbb E}_t
-    \left\{
-        \exp[
-            a + (1-\gamma) Z_t +
-                \bar \sigma \exp(H^d_t) \epsilon_{d, t+1} -
-                \gamma \bar \sigma \exp(H^c_t) \epsilon_{c, t+1}
-            ]
-        (1 + v(X_{t+1}))
-    \right\}
+\begin{multline}
+    v(X_t) = \beta \times \\
+        {\mathbb E}_t
+        \left\{
+            \exp[
+                a + (1-\gamma) Z_t +
+                    \bar \sigma \exp(H^d_t) \epsilon_{d, t+1} -
+                    \gamma \bar \sigma \exp(H^c_t) \epsilon_{c, t+1}
+                ]
+            (1 + v(X_{t+1}))
+        \right\}
+\end{multline}
 $$ (eq:neweqn102)
 
 where, as before, $a := \mu_d - \gamma \mu_c$
@@ -614,14 +617,16 @@ expectations of lognormals to obtain
 Let
 
 $$
-    A(h_c, h_d, z, h_c', h_d', z') :=
-        \beta \, 
-            \exp 
-            \left[
-                a + (1-\gamma) z +
-                \bar \sigma^2 \frac{\exp(2 h_d) + \gamma^2 \exp(2 h_c)}{2}
-            \right]
-    P(h_c, h_c')Q(h_d, h_d')R(z, z')
+\begin{multline}
+    A(h_c, h_d, z, h_c', h_d', z') := \\
+            \beta \,
+                \exp
+                \left[
+                    a + (1-\gamma) z +
+                    \bar \sigma^2 \frac{\exp(2 h_d) + \gamma^2 \exp(2 h_c)}{2}
+                \right]
+        P(h_c, h_c')Q(h_d, h_d')R(z, z')
+\end{multline}
 $$
 
 where $P, Q, R$ are the stochastic matrices for, respectively, discretized
@@ -633,7 +638,7 @@ With this notation, we can write [](neweqn103_new) more explicitly as
 :label: neweqn104_new
     v(h_c, h_d, z) =
     \sum_{h_c', h_d', z'}
-        (1 + v(h_c', h_d', z')) 
+        (1 + v(h_c', h_d', z'))
         A(h_c, h_d, z, h_c', h_d', z')
 ```
 
@@ -1058,4 +1063,3 @@ The solution is computed relatively quickly and without memory issues.
 
 Readers will find that they can push these numbers further, although we refrain
 from doing so here.
-
