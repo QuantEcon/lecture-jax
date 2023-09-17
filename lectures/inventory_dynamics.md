@@ -4,7 +4,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.14.5
+    jupytext_version: 1.15.2
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -92,7 +92,6 @@ Firm = namedtuple('Firm', ['s', 'S', 'mu', 'sigma'])
 firm = Firm(s=10, S=100, mu=1.0, sigma=0.5)
 ```
 
-
 ## Example 1: marginal distributions
 
 Now let’s look at the marginal distribution $\psi_T$ of $X_T$ for some fixed
@@ -168,19 +167,19 @@ def update_X(X, firm, D):
     return res
 
 
-def shift_firms_forward(x_init, firm, sample_dates, 
+def shift_firms_forward(x_init, firm, sample_dates,
                         key, num_firms=50_000, sim_length=750):
-    
+
     X = res = jnp.full((num_firms, ), x_init)
 
     # Use for loop to update X and collect samples
     for i in range(sim_length):
         Z = random.normal(key, shape=(num_firms, ))
         D = jnp.exp(firm.mu + firm.sigma * Z)
-        
+
         X = update_X(X, firm, D)
         _, key = random.split(key)
-        
+
         # draw a sample at the sample dates
         if (i+1 in sample_dates):
           res = jnp.vstack((res, X))
@@ -200,7 +199,7 @@ fig, ax = plt.subplots()
                               sample_dates, key).block_until_ready()
 
 for i, date in enumerate(sample_dates):
-   plot_kde(X[i, :], ax, label=f't = {date}')
+    plot_kde(X[i, :], ax, label=f't = {date}')
 
 ax.set_xlabel('inventory')
 ax.set_ylabel('probability')
@@ -224,16 +223,16 @@ Here is an example of the same function in `lax.scan`
 @jax.jit
 def shift_firms_forward(x_init, firm, key,
                         num_firms=50_000, sim_length=750):
-    
+
     s, S, mu, sigma = firm.s, firm.S, firm.mu, firm.sigma
     X = jnp.full((num_firms, ), x_init)
     Z = random.normal(key, shape=(sim_length, num_firms))
     D = jnp.exp(mu + sigma * Z)
-    
+
     # Define the function for each update
     def update_X(X, D):
-        res = jnp.where(X <= s, 
-                  jnp.maximum(S - D, 0), 
+        res = jnp.where(X <= s,
+                  jnp.maximum(S - D, 0),
                   jnp.maximum(X - D, 0))
         return res, res
 
@@ -263,7 +262,7 @@ fig, ax = plt.subplots()
 %time X = shift_firms_forward(x_init, firm, key).block_until_ready()
 
 for date in sample_dates:
-   plot_kde(X[date, :], ax, label=f't = {date}')
+    plot_kde(X[date, :], ax, label=f't = {date}')
 
 ax.set_xlabel('inventory')
 ax.set_ylabel('probability')
@@ -290,7 +289,7 @@ fig, ax = plt.subplots()
 %time X = shift_firms_forward(x_init, firm, key).block_until_ready()
 
 for date in sample_dates:
-   plot_kde(X[date, :], ax, label=f't = {date}')
+    plot_kde(X[date, :], ax, label=f't = {date}')
 
 ax.set_xlabel('inventory')
 ax.set_ylabel('probability')
@@ -298,12 +297,10 @@ ax.legend()
 plt.show()
 ```
 
-
-
 ## Example 2: restock frequency
 
 Let's go through another example where we calculate the probability of firms
-having restocks.  
+having restocks.
 
 Specifically we set the starting stock level to 70 ($X_0 = 70$), as we calculate
 the proportion of firms that need to order twice or more in the first 50
@@ -317,19 +314,19 @@ Again, we start with an easier `for` loop implementation
 # Define a jitted function for each update
 @jax.jit
 def update_stock(n_restock, X, firm, D):
-  n_restock = jnp.where(X <= firm.s,
-                        n_restock + 1,
-                        n_restock)
-  X = jnp.where(X <= firm.s,
-                jnp.maximum(firm.S - D, 0),
-                jnp.maximum(X - D, 0))
-  return n_restock, X, key
+    n_restock = jnp.where(X <= firm.s,
+                          n_restock + 1,
+                          n_restock)
+    X = jnp.where(X <= firm.s,
+                  jnp.maximum(firm.S - D, 0),
+                  jnp.maximum(X - D, 0))
+    return n_restock, X, key
 
-def compute_freq(firm, key, 
-                 x_init=70, 
-                 sim_length=50, 
+def compute_freq(firm, key,
+                 x_init=70,
+                 sim_length=50,
                  num_firms=1_000_000):
-    
+
     # Prepare initial arrays
     X = jnp.full((num_firms, ), x_init)
 
@@ -343,7 +340,7 @@ def compute_freq(firm, key,
         n_restock, X, key = update_stock(
             n_restock, X, firm, D)
         key = random.fold_in(key, i)
-        
+
     return jnp.mean(n_restock > 1, axis=0)
 ```
 
@@ -353,17 +350,17 @@ key = random.PRNGKey(27)
 print(f"Frequency of at least two stock outs = {freq}")
 ```
 
-### Alternative implementation with `lax.scan`
+### Alternative implementation with `lax.fori_loop`
 
-Now let's write a `lax.scan` version that JIT compiles the whole function
+Now let's write a `lax.fori_loop` version that JIT compiles the whole function
 
 ```{code-cell} ipython3
 @jax.jit
-def compute_freq(firm, key, 
-                 x_init=70, 
-                 sim_length=50, 
+def compute_freq(firm, key,
+                 x_init=70,
+                 sim_length=50,
                  num_firms=1_000_000):
-    
+
     s, S, mu, sigma = firm.s, firm.S, firm.mu, firm.sigma
     # Prepare initial arrays
     X = jnp.full((num_firms, ), x_init)
@@ -375,26 +372,23 @@ def compute_freq(firm, key,
     Xs = jnp.vstack((X, restock_count))
 
     # Define the function for each update
-    def update_X(Xs, D):
-
+    def update_X(i, Xs):
         # Separate the inventory and restock counter
-        X = Xs[0]
-        restock_count =  Xs[1]
+        x, restock_cnt = Xs[0], Xs[1]
+        restock_cnt = jnp.where(x <= s,
+                                restock_cnt + 1,
+                                restock_cnt)
+        x = jnp.where(x <= s,
+                      jnp.maximum(S - D[i], 0),
+                      jnp.maximum(x - D[i], 0))
 
-        restock_count = jnp.where(X <= s,
-                            restock_count + 1,
-                            restock_count)
-        X = jnp.where(X <= s, 
-                      jnp.maximum(S - D, 0),
-                      jnp.maximum(X - D, 0))
-        
-        Xs = jnp.vstack((X, restock_count))
-        return Xs, None
+        Xs = jnp.vstack((x, restock_cnt))
+        return Xs
 
-    # Use lax.scan to perform the calculations on all states
-    X_final, _ = lax.scan(update_X, Xs, D)
+    # Use lax.fori_loop to perform the calculations on all states
+    X_final = lax.fori_loop(0, sim_length, update_X, Xs)
 
-    return np.mean(X_final[1] > 1)
+    return jnp.mean(X_final[1] > 1)
 ```
 
 Note the time the routine takes to run, as well as the output
