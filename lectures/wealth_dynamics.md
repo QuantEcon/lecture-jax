@@ -4,7 +4,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.14.5
+    jupytext_version: 1.15.2
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -139,12 +139,11 @@ def gini_jax(y):
     n = y.shape[0]
     g_sum = 0
 
-    # Define the function for each update
-    def sum_y_gini(g_sum, i):
+    def sum_y_gini(i, g_sum):
         g_sum += jnp.sum(jnp.abs(y[i] - y))
-        return g_sum, g_sum
-
-    g_sum, _ = jax.lax.scan(sum_y_gini, 0, jnp.arange(n))
+        return g_sum
+    
+    g_sum = jax.lax.fori_loop(0, n, sum_y_gini, 0)
     return g_sum / (2 * n * jnp.sum(y))
 ```
 
