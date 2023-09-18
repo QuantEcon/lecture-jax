@@ -617,16 +617,16 @@ expectations of lognormals to obtain
 Let
 
 $$
-\begin{multline}
-    A(h_c, h_d, z, h_c', h_d', z') := \\
-            \beta \,
+\begin{aligned}
+    A(h_c, h_d, z, h_c', h_d', z') := & \\
+            & \beta \,
                 \exp
                 \left[
                     a + (1-\gamma) z +
                     \bar \sigma^2 \frac{\exp(2 h_d) + \gamma^2 \exp(2 h_c)}{2}
                 \right]
         P(h_c, h_c')Q(h_d, h_d')R(z, z')
-\end{multline}
+\end{aligned}
 $$
 
 where $P, Q, R$ are the stochastic matrices for, respectively, discretized
