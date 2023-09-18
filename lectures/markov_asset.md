@@ -570,18 +570,18 @@ Modifying [](eq:neweqn101) to accommodate the new growth specifications,
 we find that $v$ satisfies
 
 $$
-\begin{split}
-    v(X_t) = \beta \times \\
-        {\mathbb E}_t
-        \left\{
-            \exp[
+\begin{aligned}
+    v(X_t) = & \beta \times \\
+             & {\mathbb E}_t
+                \left\{
+                \exp[
                 a + (1-\gamma) Z_t +
                     \bar \sigma \exp(H^d_t) \epsilon_{d, t+1} -
                     \gamma \bar \sigma \exp(H^c_t) \epsilon_{c, t+1}
                 ]
-            (1 + v(X_{t+1}))
-        \right\}
-\end{split}
+                (1 + v(X_{t+1}))
+                \right\}
+\end{aligned}
 $$ (eq:neweqn102)
 
 where, as before, $a := \mu_d - \gamma \mu_c$
