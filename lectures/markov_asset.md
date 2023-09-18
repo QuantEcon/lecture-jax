@@ -570,7 +570,7 @@ Modifying [](eq:neweqn101) to accommodate the new growth specifications,
 we find that $v$ satisfies
 
 $$
-\begin{multline}
+\begin{split}
     v(X_t) = \beta \times \\
         {\mathbb E}_t
         \left\{
@@ -581,7 +581,7 @@ $$
                 ]
             (1 + v(X_{t+1}))
         \right\}
-\end{multline}
+\end{split}
 $$ (eq:neweqn102)
 
 where, as before, $a := \mu_d - \gamma \mu_c$
