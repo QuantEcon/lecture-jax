@@ -4,13 +4,12 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.14.5
+    jupytext_version: 1.15.2
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
   name: python3
 ---
-
 
 # Newton’s Method via JAX
 
@@ -47,9 +46,7 @@ Let's check the GPU we are running
 
 ```{code-cell} ipython3
 !nvidia-smi
-
 ```
-
 
 ## Newton in one dimension
 
@@ -69,7 +66,6 @@ $$
 
 Here is a function called `newton` that takes a function $f$ plus a scalar value $x_0$,
 iterates with $q$ starting from $x_0$, and returns an approximate fixed point.
-
 
 ```{code-cell} ipython3
 def newton(f, x_0, tol=1e-5):
@@ -164,8 +160,6 @@ def e(p, A, b, c):
     return jnp.exp(- A @ p) + c - b * jnp.sqrt(p)
 ```
 
-
-
 ## Computation
 
 In this section we describe and then implement the solution method.
@@ -196,26 +190,26 @@ def newton(f, x_0, tol=1e-5, max_iter=15):
     """
     x = x_0
     f_jac = jax.jacobian(f)
+    
     @jax.jit
     def q(x):
-        " Updates the current guess. "
-        return x - jnp.linalg.solve(f_jac(x), f(x))
+        " Compute the new guess and return it with the step size "
+        y = x - jnp.linalg.solve(f_jac(x), f(x))
+        error = jnp.linalg.norm(x - y)
+        return y, error
+    
     error = tol + 1
     n = 0
     while error > tol:
         n += 1
         if(n > max_iter):
             raise Exception('Max iteration reached without convergence')
-        y = q(x)
-        if jnp.any(jnp.isnan(y)):
-            raise Exception('Solution not found with NaN generated')
-        error = jnp.linalg.norm(x - y)
+        y, error = q(x)
+        
         x = y
         print(f'iteration {n}, error = {error}')
-    print('\n' + f'Result = {x} \n')
     return x
 ```
-
 
 ### Application
 
@@ -238,21 +232,26 @@ b = jnp.ones(dim)
 c = jnp.ones(dim)
 ```
 
-
 Here's our initial condition $p_0$
 
 ```{code-cell} ipython3
 init_p = jnp.ones(dim)
 ```
 
+#### JAX solution with matrices
+
++++
+
 By combining the power of Newton's method, JAX accelerated linear algebra,
 automatic differentiation, and a GPU, we obtain a relatively small error for
-this high-dimensional problem in just a few seconds:
+this high-dimensional problem in a few seconds:
 
 ```{code-cell} ipython3
-%%time
+%time p = newton(lambda p: e(p, A, b, c), init_p).block_until_ready()
+```
 
-p = newton(lambda p: e(p, A, b, c), init_p).block_until_ready()
+```{code-cell} ipython3
+p[0:10]
 ```
 
 Here's the size of the error:
@@ -261,8 +260,77 @@ Here's the size of the error:
 jnp.max(jnp.abs(e(p, A, b, c)))
 ```
 
+#### JAX solution with operators
+
++++
+
+Here's a more advanced solution:
+
+JAX has various routines to work with linear operators instead of matrices, which are typically more efficient.
+
+The next version of Newton's method we implement switches to this approach.  
+
+You can find the difference if you inspect the function `q`.
+
+```{code-cell} ipython3
+def newton_2(f, x_0, tol=1e-5, max_iter=15):
+    """
+    A multivariate Newton root-finding routine using operators.
+
+    """
+    x = x_0
+    f_jac = jax.jacobian(f)
+    
+    @jax.jit
+    def q(x):
+        # First we define the map v -> J v where J is the Jacobian
+        jac_operator = lambda v: jax.jvp(f, (x,), (v,))[1]
+        # Next we compute J^{-1} f(x)
+        y = x - jax.scipy.sparse.linalg.bicgstab(
+                jac_operator, f(x), 
+                atol=1e-5)[0]
+        error = jnp.linalg.norm(x - y)
+        return y, error
+    
+    error = tol + 1
+    n = 0
+    while error > tol:
+        n += 1
+        if(n > max_iter):
+            raise Exception('Max iteration reached without convergence')
+        y, error = q(x)
+        
+        x = y
+        print(f'iteration {n}, error = {error}')
+    return x
+```
+
+Let's see the timing.
+
+```{code-cell} ipython3
+%time p_2 = newton_2(lambda p: e(p, A, b, c), init_p).block_until_ready()
+```
+
+```{code-cell} ipython3
+%time p_2 = newton_2(lambda p: e(p, A, b, c), init_p).block_until_ready()
+```
+
+```{code-cell} ipython3
+p_2[0:10]
+```
+
+Here's the size of the error:
+
+```{code-cell} ipython3
+jnp.max(jnp.abs(e(p, A, b, c)))
+```
+
+#### SciPy solution
+
++++
+
 With the same tolerance, SciPy's `root` function takes much longer to run,
-even with the Jacobian supplied.
+even with the Jacobian supplied by JAX.
 
 ```{code-cell} ipython3
 %%time
@@ -274,16 +342,12 @@ solution = root(lambda p: e(p, A, b, c),
                 tol=1e-5)
 ```
 
-The result is also slightly less accurate:
+The accuracy is similar.
 
 ```{code-cell} ipython3
 p = solution.x
 jnp.max(jnp.abs(e(p, A, b, c)))
 ```
-
-
-
-
 
 ## Exercises
 
@@ -363,14 +427,12 @@ initLs = [jnp.ones(3),
           jnp.repeat(50.0, 3)]
 ```
 
-
 Then we define the multivariate version of the formula for the [law of motion of capital](https://python.quantecon.org/newton_method.html#solow)
 
 ```{code-cell} ipython3
 def multivariate_solow(k, A=A, s=s, α=α, δ=δ):
     return s * jnp.dot(A, k**α) + (1 - δ) * k
 ```
-
 
 Let's run through each starting value and see the output
 
@@ -383,7 +445,6 @@ for init in initLs:
     print('-'*64)
     attempt += 1
 ```
-
 
 We find that the results are invariant to the starting values.
 
@@ -424,7 +485,6 @@ init = init.astype('float64')
                  init,\
                  tol=1e-7).block_until_ready()
 ```
-
 
 We can see it steps towards a more accurate solution.
 
@@ -501,7 +561,6 @@ initLs = [jnp.repeat(5.0, 3),
           jnp.array([4.5, 0.1, 4.0])]
 ```
 
-
 Let’s run through each initial guess and check the output
 
 ```{code-cell} ipython3
@@ -515,7 +574,6 @@ for init in initLs:
     print('-'*64)
     attempt +=1
 ```
-
 
 We can find that Newton's method may fail for some starting values.
 
