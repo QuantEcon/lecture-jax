@@ -232,7 +232,7 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Mon Sep 11 19:02:00 2023       
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Mon Sep 18 05:51:19 2023       
 +-----------------------------------------------------------------------------+
 | NVIDIA-SMI 470.182.03   Driver Version: 470.182.03   CUDA Version: 12.1     |
 |-------------------------------+----------------------+----------------------+
@@ -243,7 +243,7 @@ const thebe_selector_output = ".output, .cell_output"
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>|   0  Tesla V100-SXM2...  Off  | 00000000:00:1E.0 Off |                    0 |
-| N/A   35C    P0    39W / 300W |      0MiB / 16160MiB |      2%      Default |
+| N/A   37C    P0    38W / 300W |      0MiB / 16160MiB |      2%      Default |
 |                               |                      |                  N/A |
 +-------------------------------+----------------------+----------------------+
                                                                                
@@ -275,7 +275,7 @@ you can jump to <a class="reference internal" href="#equation-eq-ntecx2">(4.13)<
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Mon Sep 11 19:02:02 2023       
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Mon Sep 18 05:51:21 2023       
 +-----------------------------------------------------------------------------+
 | NVIDIA-SMI 470.182.03   Driver Version: 470.182.03   CUDA Version: 12.1     |
 |-------------------------------+----------------------+----------------------+
@@ -286,7 +286,7 @@ you can jump to <a class="reference internal" href="#equation-eq-ntecx2">(4.13)<
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>|   0  Tesla V100-SXM2...  Off  | 00000000:00:1E.0 Off |                    0 |
-| N/A   35C    P0    39W / 300W |      0MiB / 16160MiB |      2%      Default |
+| N/A   37C    P0    38W / 300W |      0MiB / 16160MiB |      2%      Default |
 |                               |                      |                  N/A |
 +-------------------------------+----------------------+----------------------+
                                                                                
@@ -315,19 +315,19 @@ you can jump to <a class="reference internal" href="#equation-eq-ntecx2">(4.13)<
 </summary>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /opt/conda/envs/quantecon/lib/python3.10/site-packages (0.7.1)
+Requirement already satisfied: numba&gt;=0.49.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (0.56.4)
 Requirement already satisfied: scipy&gt;=1.5.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (1.10.0)
+Requirement already satisfied: sympy in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (1.11.1)
 Requirement already satisfied: numpy&gt;=1.17.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (1.23.5)
 Requirement already satisfied: requests in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (2.28.1)
-Requirement already satisfied: numba&gt;=0.49.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (0.56.4)
-Requirement already satisfied: sympy in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (1.11.1)
+Requirement already satisfied: llvmlite&lt;0.40,&gt;=0.39.0dev0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from numba&gt;=0.49.0-&gt;quantecon) (0.39.1)
+Requirement already satisfied: setuptools in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from numba&gt;=0.49.0-&gt;quantecon) (65.6.3)
+Requirement already satisfied: certifi&gt;=2017.4.17 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (2022.12.7)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: setuptools in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from numba&gt;=0.49.0-&gt;quantecon) (65.6.3)
-Requirement already satisfied: llvmlite&lt;0.40,&gt;=0.39.0dev0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from numba&gt;=0.49.0-&gt;quantecon) (0.39.1)
-Requirement already satisfied: certifi&gt;=2017.4.17 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (2022.12.7)
-Requirement already satisfied: urllib3&lt;1.27,&gt;=1.21.1 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (1.26.14)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: idna&lt;4,&gt;=2.5 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (3.4)
 Requirement already satisfied: charset-normalizer&lt;3,&gt;=2 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (2.0.4)
-Requirement already satisfied: idna&lt;4,&gt;=2.5 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (3.4)
+Requirement already satisfied: urllib3&lt;1.27,&gt;=1.21.1 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (1.26.14)
 Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/envs/quantecon/lib/python3.10/site-packages/mpmath-1.2.1-py3.10.egg (from sympy-&gt;quantecon) (1.2.1)
 </pre></div>
 </div>
@@ -783,7 +783,7 @@ exhibit bursts of volatility.</p>
 <p>We assume that <span class="math notranslate nohighlight">\(\{H^c_t\}\)</span> and <span class="math notranslate nohighlight">\(\{H^d_t\}\)</span> are AR(1) processes of the form</p>
 <div class="math notranslate nohighlight">
 \[
-    H^i_{t+1} = \rho_i H^i_t + \sigma_i \eta_{i, t+1}, 
+    H^i_{t+1} = \rho_i H^i_t + \sigma_i \eta_{i, t+1},
     \qquad i \in \{c, d\}
 \]</div>
 <p>Here <span class="math notranslate nohighlight">\(\{\eta^c_t\}\)</span> and <span class="math notranslate nohighlight">\(\{\eta^d_t\}\)</span> are IID and standard normal.</p>
@@ -793,17 +793,20 @@ this state process, so that <span class="math notranslate nohighlight">\(V_t = v
 <p>Modifying <a class="reference internal" href="#equation-eq-neweqn101">(4.10)</a> to accommodate the new growth specifications,
 we find that <span class="math notranslate nohighlight">\(v\)</span> satisfies</p>
 <div class="math notranslate nohighlight" id="equation-eq-neweqn102">
-<span class="eqno">(4.18)<a class="headerlink" href="#equation-eq-neweqn102" title="Permalink to this equation">#</a></span>\[
-    v(X_t) = \beta {\mathbb E}_t
-    \left\{
-        \exp[
-            a + (1-\gamma) Z_t +
-                \bar \sigma \exp(H^d_t) \epsilon_{d, t+1} -
-                \gamma \bar \sigma \exp(H^c_t) \epsilon_{c, t+1}
-            ]
-        (1 + v(X_{t+1}))
-    \right\}
-\]</div>
+<span class="eqno">(4.18)<a class="headerlink" href="#equation-eq-neweqn102" title="Permalink to this equation">#</a></span>\[\begin{split}
+\begin{aligned}
+    v(X_t) = &amp; \beta \times \\
+             &amp; {\mathbb E}_t
+                \left\{
+                \exp[
+                a + (1-\gamma) Z_t +
+                    \bar \sigma \exp(H^d_t) \epsilon_{d, t+1} -
+                    \gamma \bar \sigma \exp(H^c_t) \epsilon_{c, t+1}
+                ]
+                (1 + v(X_{t+1}))
+                \right\}
+\end{aligned}
+\end{split}\]</div>
 <p>where, as before, <span class="math notranslate nohighlight">\(a := \mu_d - \gamma \mu_c\)</span></p>
 <p>Conditioning on state <span class="math notranslate nohighlight">\(x = (h_c, h_d, z)\)</span>, this becomes</p>
 <div class="math notranslate nohighlight" id="equation-neweqn103-old">
@@ -825,23 +828,25 @@ expectations of lognormals to obtain</p>
         (1 + v(X_{t+1}))\]</div>
 <p>Let</p>
 <div class="math notranslate nohighlight">
-\[
-    A(h_c, h_d, z, h_c', h_d', z') :=
-        \beta \, 
-            \exp 
-            \left[
-                a + (1-\gamma) z +
-                \bar \sigma^2 \frac{\exp(2 h_d) + \gamma^2 \exp(2 h_c)}{2}
-            \right]
-    P(h_c, h_c')Q(h_d, h_d')R(z, z')
-\]</div>
+\[\begin{split}
+\begin{aligned}
+    A(h_c, h_d, z, h_c', h_d', z') := &amp; \\
+            &amp; \beta \,
+                \exp
+                \left[
+                    a + (1-\gamma) z +
+                    \bar \sigma^2 \frac{\exp(2 h_d) + \gamma^2 \exp(2 h_c)}{2}
+                \right]
+        P(h_c, h_c')Q(h_d, h_d')R(z, z')
+\end{aligned}
+\end{split}\]</div>
 <p>where <span class="math notranslate nohighlight">\(P, Q, R\)</span> are the stochastic matrices for, respectively, discretized
 <span class="math notranslate nohighlight">\(\{H^c_t\}\)</span>, discretized <span class="math notranslate nohighlight">\(\{H^d_t\}\)</span> and <span class="math notranslate nohighlight">\(\{Z_t\}\)</span>,</p>
 <p>With this notation, we can write <a class="reference internal" href="#equation-neweqn103-new">(4.20)</a> more explicitly as</p>
 <div class="math notranslate nohighlight" id="equation-neweqn104-new">
 <span class="eqno">(4.21)<a class="headerlink" href="#equation-neweqn104-new" title="Permalink to this equation">#</a></span>\[    v(h_c, h_d, z) =
     \sum_{h_c', h_d', z'}
-        (1 + v(h_c', h_d', z')) 
+        (1 + v(h_c', h_d', z'))
         A(h_c, h_d, z, h_c', h_d', z')\]</div>
 <p>Let’s now write the state using indices, with <span class="math notranslate nohighlight">\((i, j, k)\)</span> being the
 indices for <span class="math notranslate nohighlight">\((h_c, h_d, z)\)</span>.</p>
@@ -1169,7 +1174,7 @@ and <span class="math notranslate nohighlight">\(A\)</span> into an <span class=
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:0.44
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:0.43
 </pre></div>
 </div>
 </div>
@@ -1197,7 +1202,7 @@ and <span class="math notranslate nohighlight">\(A\)</span> into an <span class=
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.015273512736079147
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.015136883605877362
 </pre></div>
 </div>
 </div>
@@ -1288,7 +1293,7 @@ that acts directly on the linear operator <code class="docutils literal notransl
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:0.71
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:0.72
 </pre></div>
 </div>
 </div>
@@ -1329,7 +1334,7 @@ that acts directly on the linear operator <code class="docutils literal notransl
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.18086088511915066
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.1706002331002331
 </pre></div>
 </div>
 </div>
@@ -1353,7 +1358,7 @@ that acts directly on the linear operator <code class="docutils literal notransl
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:0.68
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.6869664192199707
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.685509204864502
 </pre></div>
 </div>
 </div>
