@@ -278,9 +278,6 @@ def newton_2(f, x_0, tol=1e-5, max_iter=15):
     A multivariate Newton root-finding routine using operators.
 
     """
-    x = x_0
-    f_jac = jax.jacobian(f)
-    
     @jax.jit
     def q(x):
         # First we define the map v -> J v where J is the Jacobian
@@ -292,6 +289,7 @@ def newton_2(f, x_0, tol=1e-5, max_iter=15):
         error = jnp.linalg.norm(x - y)
         return y, error
     
+    x = x_0
     error = tol + 1
     n = 0
     while error > tol:
