@@ -4,14 +4,12 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.15.2
+    jupytext_version: 1.14.5
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
   name: python3
 ---
-
-+++ {"user_expressions": []}
 
 ```{raw} html
 <div id="qe-notebook-header" align="right" style="text-align:right;">
@@ -369,20 +367,20 @@ def compute_freq(firm, key,
 
     # Stack the restock counter on top of the inventory
     restock_count = jnp.zeros((num_firms, ))
-    Xs = jnp.vstack((X, restock_count))
+    Xs = (X, restock_count)
 
     # Define the function for each update
     def update_X(i, Xs):
         # Separate the inventory and restock counter
-        x, restock_cnt = Xs[0], Xs[1]
-        restock_cnt = jnp.where(x <= s,
-                                restock_cnt + 1,
-                                restock_cnt)
+        x, restock_count = Xs[0], Xs[1]
+        restock_count = jnp.where(x <= s,
+                                restock_count + 1,
+                                restock_count)
         x = jnp.where(x <= s,
                       jnp.maximum(S - D[i], 0),
                       jnp.maximum(x - D[i], 0))
 
-        Xs = jnp.vstack((x, restock_cnt))
+        Xs = (x, restock_count)
         return Xs
 
     # Use lax.fori_loop to perform the calculations on all states
