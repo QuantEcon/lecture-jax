@@ -14,10 +14,6 @@ kernelspec:
 # An Asset Pricing Problem
 
 
-```{code-cell} ipython3
-!nvidia-smi
-```
-
 ## Overview
 
 In this lecture we consider some asset pricing problems and use them to
