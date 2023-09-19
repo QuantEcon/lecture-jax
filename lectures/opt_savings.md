@@ -101,7 +101,8 @@ def create_consumption_model(R=1.01,                # Gross interest rate
 Here's the right hand side of the Bellman equation:
 
 ```{code-cell} ipython3
-def B(v, constants, sizes, arrays):
+@jax.jit
+def B(constants, w, y, wp, v, Q):
     """
     A vectorized version of the right-hand side of the Bellman equation
     (before maximization), which is a 3D array representing
@@ -110,30 +111,42 @@ def B(v, constants, sizes, arrays):
 
     for all (w, y, w′).
     """
-
-    # Unpack
     β, R, γ = constants
-    w_size, y_size = sizes
-    w_grid, y_grid, Q = arrays
-
-    # Compute current rewards r(w, y, wp) as array r[i, j, ip]
-    w  = jnp.reshape(w_grid, (w_size, 1, 1))    # w[i]   ->  w[i, j, ip]
-    y  = jnp.reshape(y_grid, (1, y_size, 1))    # z[j]   ->  z[i, j, ip]
-    wp = jnp.reshape(w_grid, (1, 1, w_size))    # wp[ip] -> wp[i, j, ip]
     c = R * w + y - wp
-
-    # Calculate continuation rewards at all combinations of (w, y, wp)
-    v = jnp.reshape(v, (1, 1, w_size, y_size))  # v[ip, jp] -> v[i, j, ip, jp]
-    Q = jnp.reshape(Q, (1, y_size, 1, y_size))  # Q[j, jp]  -> Q[i, j, ip, jp]
-    EV = jnp.sum(v * Q, axis=3)                 # sum over last index jp
-
     # Compute the right-hand side of the Bellman equation
-    return jnp.where(c > 0, c**(1-γ)/(1-γ) + β * EV, -jnp.inf)
+    return jnp.where(c > 0, c**(1-γ)/(1-γ) + β * jnp.sum(v * Q), -jnp.inf)
+```
+
+Vectorize the Bellman function `B` over the three axes of `w`, `y`, and `wp`.
+
+```{code-cell} ipython3
+B_vec_wp = jax.vmap(B, in_axes=(None, None, None, 0, 0, None))
+B_vec_y_wp = jax.vmap(B_vec_wp, in_axes=(None, None, 0, None, None, 0))
+B_vec_w_y_wp = jax.vmap(B_vec_y_wp, in_axes=(None, 0, None, None, None, None))
+```
+
+```{code-cell} ipython3
+def B_vec(v, constants, sizes, arrays):
+    # Unpack
+    w_grid, y_grid, Q = arrays
+    return B_vec_w_y_wp(constants, w_grid, y_grid, w_grid, v, Q)
+
+# JIT compiled the function
+B_vec = jax.jit(B_vec, static_argnums=(2,))
 ```
 
 ## Operators
 
 Now we define the policy operator $T_\sigma$
+
+```{code-cell} ipython3
+@jax.jit
+def compute_c(R, w, y, wp):
+    return R * w + y - wp
+
+compute_c_vec_y = jax.vmap(compute_c, in_axes=(None, None, 0, 0))
+compute_c_vec = jax.vmap(compute_c_vec_y, in_axes=(None, 0, None, 0))
+```
 
 ```{code-cell} ipython3
 def compute_r_σ(σ, constants, sizes, arrays):
@@ -147,14 +160,13 @@ def compute_r_σ(σ, constants, sizes, arrays):
     w_size, y_size = sizes
     w_grid, y_grid, Q = arrays
 
-    # Compute r_σ[i, j]
-    w = jnp.reshape(w_grid, (w_size, 1))
-    y = jnp.reshape(y_grid, (1, y_size))
     wp = w_grid[σ]
-    c = R * w + y - wp
+    c = compute_c_vec(R, w_grid, y_grid, wp)
     r_σ = c**(1-γ)/(1-γ)
-
     return r_σ
+
+# JIT compiled the function
+compute_r_σ = jax.jit(compute_r_σ, static_argnums=(2,))
 ```
 
 ```{code-cell} ipython3
@@ -174,13 +186,13 @@ def T_σ(v, σ, constants, sizes, arrays):
     σ = jnp.reshape(σ, (w_size, y_size, 1))
     V = v[σ, yp_idx]
 
-    # Convert Q[j, jp] to Q[i, j, jp]
-    Q = jnp.reshape(Q, (1, y_size, y_size))
-
     # Calculate the expected sum Σ_jp v[σ[i, j], jp] * Q[i, j, jp]
     Ev = jnp.sum(V * Q, axis=2)
 
     return r_σ + β * Ev
+
+# JIT compiled the function
+T_σ = jax.jit(T_σ, static_argnums=(3,))
 ```
 
 and the Bellman operator $T$
@@ -188,7 +200,10 @@ and the Bellman operator $T$
 ```{code-cell} ipython3
 def T(v, constants, sizes, arrays):
     "The Bellman operator."
-    return jnp.max(B(v, constants, sizes, arrays), axis=2)
+    return jnp.max(B_vec(v, constants, sizes, arrays), axis=2)
+
+# JIT compiled the function
+T = jax.jit(T, static_argnums=(2,))
 ```
 
 The next function computes a $v$-greedy policy given $v$
@@ -196,7 +211,10 @@ The next function computes a $v$-greedy policy given $v$
 ```{code-cell} ipython3
 def get_greedy(v, constants, sizes, arrays):
     "Computes a v-greedy policy, returned as a set of indices."
-    return jnp.argmax(B(v, constants, sizes, arrays), axis=2)
+    return jnp.argmax(B_vec(v, constants, sizes, arrays), axis=2)
+
+# JIT compiled the function
+get_greedy = jax.jit(get_greedy, static_argnums=(2,))
 ```
 
 The function below computes the value $v_\sigma$ of following policy $\sigma$.
@@ -255,11 +273,11 @@ def R_σ(v, σ, constants, sizes, arrays):
     σ = jnp.reshape(σ, (w_size, y_size, 1))
     V = v[σ, zp_idx]
 
-    # Expand Q[j, jp] to Q[i, j, jp]
-    Q = jnp.reshape(Q, (1, y_size, y_size))
-
     # Compute and return v[i, j] - β Σ_jp v[σ[i, j], jp] * Q[j, jp]
     return v - β * jnp.sum(V * Q, axis=2)
+
+# JIT compiled the function
+R_σ = jax.jit(R_σ, static_argnums=(3,))
 ```
 
 ```{code-cell} ipython3
@@ -277,18 +295,9 @@ def get_value(σ, constants, sizes, arrays):
     partial_R_σ = lambda v: R_σ(v, σ, constants, sizes, arrays)
 
     return jax.scipy.sparse.linalg.bicgstab(partial_R_σ, r_σ)[0]
-```
 
-## JIT compiled versions
-
-```{code-cell} ipython3
-B = jax.jit(B, static_argnums=(2,))
-compute_r_σ = jax.jit(compute_r_σ, static_argnums=(2,))
-T = jax.jit(T, static_argnums=(2,))
-get_greedy = jax.jit(get_greedy, static_argnums=(2,))
+# JIT compiled the function
 get_value = jax.jit(get_value, static_argnums=(2,))
-T_σ = jax.jit(T_σ, static_argnums=(3,))
-R_σ = jax.jit(R_σ, static_argnums=(3,))
 ```
 
 ## Solvers
