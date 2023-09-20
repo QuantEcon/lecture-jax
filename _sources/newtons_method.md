@@ -207,12 +207,9 @@ def newton(f, x_0, tol=1e-5, max_iter=15):
         if(n > max_iter):
             raise Exception('Max iteration reached without convergence')
         y = q(x)
-        if jnp.any(jnp.isnan(y)):
-            raise Exception('Solution not found with NaN generated')
         error = jnp.linalg.norm(x - y)
         x = y
         print(f'iteration {n}, error = {error}')
-    print('\n' + f'Result = {x} \n')
     return x
 ```
 
