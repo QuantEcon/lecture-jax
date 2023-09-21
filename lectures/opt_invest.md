@@ -154,7 +154,7 @@ B = jax.jit(B, static_argnums=(2,))
 ```
 
 We define a function to compute the current rewards $r_\sigma$ given policy $\sigma$,
-which is defined as
+which is defined as the vector
 
 $$ r_\sigma(y, z) := r(y, z, \sigma(y, z)) $$
 
@@ -241,13 +241,13 @@ Next, we want to computes the lifetime value of following policy $\sigma$.
 
 This lifetime value is a function $v_\sigma$ that satisfies
 
-$$ v_\sigma(y, z) = r_\sigma(y, z) + \beta \sum_{z'} v_\sigma(\sigma(y, z), z') Q(z, z) $$
+$$ v_\sigma(y, z) = r_\sigma(y, z) + \beta \sum_{z'} v_\sigma(\sigma(y, z), z') Q(z, z') $$
 
-for $v$.
+We wish to solve this equation for $v_\sigma$.
 
 Suppose we define the linear operator $L_\sigma$ by
 
-$$ (L_\sigma v)(y, z) = v(y, z) - \beta \sum_{z'} v(\sigma(y, z), z') Q(z, z) $$
+$$ (L_\sigma v)(y, z) = v(y, z) - \beta \sum_{z'} v(\sigma(y, z), z') Q(z, z') $$
 
 With this notation, the problem is to solve for $v$ via
 
