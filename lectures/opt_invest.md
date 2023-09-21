@@ -381,7 +381,7 @@ plt.show()
 Let's plot the time taken by each of the solvers and compare them.
 
 ```{code-cell} ipython3
-m_vals = range(5, 3000, 100)
+m_vals = range(5, 600, 40)
 ```
 
 ```{code-cell} ipython3
