@@ -379,7 +379,7 @@ model = create_consumption_model()
 σ_pi, pi_time = run_algorithm(policy_iteration, model)
 σ_vfi, vfi_time = run_algorithm(value_iteration, model, tol=1e-5)
 
-m_vals = range(5, 3000, 100)
+m_vals = range(5, 600, 40)
 opi_times = []
 for m in m_vals:
     σ_opi, opi_time = run_algorithm(optimistic_policy_iteration, model, m=m, tol=1e-5)
