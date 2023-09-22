@@ -242,17 +242,19 @@ const thebe_selector_output = ".output, .cell_output"
 </summary>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /opt/conda/envs/quantecon/lib/python3.10/site-packages (0.7.1)
-Requirement already satisfied: scipy&gt;=1.5.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (1.10.0)
-Requirement already satisfied: numba&gt;=0.49.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (0.56.4)
-Requirement already satisfied: numpy&gt;=1.17.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (1.23.5)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: numba&gt;=0.49.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (0.56.4)
 Requirement already satisfied: sympy in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (1.11.1)
 Requirement already satisfied: requests in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (2.28.1)
-Requirement already satisfied: llvmlite&lt;0.40,&gt;=0.39.0dev0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from numba&gt;=0.49.0-&gt;quantecon) (0.39.1)
+Requirement already satisfied: numpy&gt;=1.17.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (1.23.5)
+Requirement already satisfied: scipy&gt;=1.5.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (1.10.0)
 Requirement already satisfied: setuptools in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from numba&gt;=0.49.0-&gt;quantecon) (65.6.3)
+Requirement already satisfied: llvmlite&lt;0.40,&gt;=0.39.0dev0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from numba&gt;=0.49.0-&gt;quantecon) (0.39.1)
 Requirement already satisfied: urllib3&lt;1.27,&gt;=1.21.1 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (1.26.14)
-Requirement already satisfied: certifi&gt;=2017.4.17 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (2022.12.7)
-Requirement already satisfied: idna&lt;4,&gt;=2.5 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (3.4)
 Requirement already satisfied: charset-normalizer&lt;3,&gt;=2 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (2.0.4)
+Requirement already satisfied: idna&lt;4,&gt;=2.5 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (3.4)
+Requirement already satisfied: certifi&gt;=2017.4.17 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (2022.12.7)
 Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/envs/quantecon/lib/python3.10/site-packages/mpmath-1.2.1-py3.10.egg (from sympy-&gt;quantecon) (1.2.1)
 </pre></div>
 </div>
@@ -284,7 +286,7 @@ Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/envs/quantecon/lib/
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Wed Sep 20 00:06:38 2023       
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Fri Sep 22 00:40:22 2023       
 +-----------------------------------------------------------------------------+
 | NVIDIA-SMI 470.182.03   Driver Version: 470.182.03   CUDA Version: 12.1     |
 |-------------------------------+----------------------+----------------------+
@@ -295,7 +297,7 @@ Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/envs/quantecon/lib/
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>|   0  Tesla V100-SXM2...  Off  | 00000000:00:1E.0 Off |                    0 |
-| N/A   35C    P0    39W / 300W |      0MiB / 16160MiB |      2%      Default |
+| N/A   29C    P0    38W / 300W |      0MiB / 16160MiB |      2%      Default |
 |                               |                      |                  N/A |
 +-------------------------------+----------------------+----------------------+
                                                                                
@@ -428,7 +430,10 @@ Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/envs/quantecon/lib/
 </section>
 <section id="operators">
 <h2><span class="section-number">11.3. </span>Operators<a class="headerlink" href="#operators" title="Permalink to this heading">#</a></h2>
-<p>Now we define the policy operator <span class="math notranslate nohighlight">\(T_\sigma\)</span></p>
+<p>We define a function to compute the current rewards <span class="math notranslate nohighlight">\(r_\sigma\)</span> given policy <span class="math notranslate nohighlight">\(\sigma\)</span>,
+which is defined as the vector</p>
+<div class="math notranslate nohighlight">
+\[ r_\sigma(w, y) := r(w, y, \sigma(w, y)) \]</div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">compute_r_σ</span><span class="p">(</span><span class="n">σ</span><span class="p">,</span> <span class="n">constants</span><span class="p">,</span> <span class="n">sizes</span><span class="p">,</span> <span class="n">arrays</span><span class="p">):</span>
@@ -454,6 +459,7 @@ Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/envs/quantecon/lib/
 </div>
 </div>
 </div>
+<p>Now we define the policy operator <span class="math notranslate nohighlight">\(T_\sigma\)</span></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">T_σ</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">σ</span><span class="p">,</span> <span class="n">constants</span><span class="p">,</span> <span class="n">sizes</span><span class="p">,</span> <span class="n">arrays</span><span class="p">):</span>
@@ -504,43 +510,31 @@ Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/envs/quantecon/lib/
 </div>
 </div>
 <p>The function below computes the value <span class="math notranslate nohighlight">\(v_\sigma\)</span> of following policy <span class="math notranslate nohighlight">\(\sigma\)</span>.</p>
-<p>The basic problem is to solve the linear system</p>
+<p>This lifetime value is a function <span class="math notranslate nohighlight">\(v_\sigma\)</span> that satisfies</p>
 <div class="math notranslate nohighlight">
-\[ v(w,y ) = u(Rw + y - \sigma(w, y)) + β \sum_{y'} v(\sigma(w, y), y') Q(y, y) \]</div>
-<p>for <span class="math notranslate nohighlight">\(v\)</span>.</p>
-<p>It turns out to be helpful to rewrite this as</p>
+\[ v_\sigma(w, y) = r_\sigma(w, y) + \beta \sum_{y'} v_\sigma(\sigma(w, y), y') Q(y, y') \]</div>
+<p>We wish to solve this equation for <span class="math notranslate nohighlight">\(v_\sigma\)</span>.</p>
+<p>Suppose we define the linear operator <span class="math notranslate nohighlight">\(L_\sigma\)</span> by</p>
 <div class="math notranslate nohighlight">
-\[ v(w,y) = r(w, y, \sigma(w, y)) + β \sum_{w', y'} v(w', y') P_\sigma(w, y, w', y') \]</div>
-<p>where <span class="math notranslate nohighlight">\(P_\sigma(w, y, w', y') = 1\{w' = \sigma(w, y)\} Q(y, y')\)</span>.</p>
-<p>We want to write this as <span class="math notranslate nohighlight">\(v = r_\sigma + P_\sigma v\)</span> and then solve for <span class="math notranslate nohighlight">\(v\)</span></p>
-<p>Note, however,</p>
-<ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(v\)</span> is a 2 index array, rather than a single vector.</p></li>
-<li><p><span class="math notranslate nohighlight">\(P_\sigma\)</span> has four indices rather than 2</p></li>
-</ul>
-<p>The code below</p>
-<ol class="arabic simple">
-<li><p>reshapes <span class="math notranslate nohighlight">\(v\)</span> and <span class="math notranslate nohighlight">\(r_\sigma\)</span> to 1D arrays and <span class="math notranslate nohighlight">\(P_\sigma\)</span> to a matrix</p></li>
-<li><p>solves the linear system</p></li>
-<li><p>converts back to multi-index arrays.</p></li>
-</ol>
+\[ (L_\sigma v)(w, y) = v(w, y) - \beta \sum_{y'} v(\sigma(w, y), y') Q(y, y') \]</div>
+<p>With this notation, the problem is to solve for <span class="math notranslate nohighlight">\(v\)</span> via</p>
+<div class="math notranslate nohighlight">
+\[
+    (L_{\sigma} v)(w, y) = r_\sigma(w, y)
+\]</div>
+<p>In vector for this is <span class="math notranslate nohighlight">\(L_\sigma v = r_\sigma\)</span>, which tells us that the function
+we seek is</p>
+<div class="math notranslate nohighlight">
+\[ v_\sigma = L_\sigma^{-1} r_\sigma \]</div>
+<p>JAX allows us to solve linear systems defined in terms of operators; the first
+step is to define the function <span class="math notranslate nohighlight">\(L_{\sigma}\)</span>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">R_σ</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">σ</span><span class="p">,</span> <span class="n">constants</span><span class="p">,</span> <span class="n">sizes</span><span class="p">,</span> <span class="n">arrays</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">L_σ</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">σ</span><span class="p">,</span> <span class="n">constants</span><span class="p">,</span> <span class="n">sizes</span><span class="p">,</span> <span class="n">arrays</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    The value v_σ of a policy σ is defined as</span>
+<span class="sd">    Here we set up the linear map v -&gt; L_σ v, where </span>
 
-<span class="sd">        v_σ = (I - β P_σ)^{-1} r_σ</span>
-
-<span class="sd">    Here we set up the linear map v -&gt; R_σ v, where R_σ := I - β P_σ.</span>
-
-<span class="sd">    In the consumption problem, this map can be expressed as</span>
-
-<span class="sd">        (R_σ v)(w, y) = v(w, y) - β Σ_y′ v(σ(w, y), y′) Q(y, y′)</span>
-
-<span class="sd">    Defining the map as above works in a more intuitive multi-index setting</span>
-<span class="sd">    (e.g. working with v[i, j] rather than flattening v to a one-dimensional</span>
-<span class="sd">    array) and avoids instantiating the large matrix P_σ.</span>
+<span class="sd">        (L_σ v)(w, y) = v(w, y) - β Σ_y′ v(σ(w, y), y′) Q(y, y′)</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -563,10 +557,11 @@ Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/envs/quantecon/lib/
 </div>
 </div>
 </div>
+<p>Now we can define a function to compute <span class="math notranslate nohighlight">\(v_{\sigma}\)</span></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_value</span><span class="p">(</span><span class="n">σ</span><span class="p">,</span> <span class="n">constants</span><span class="p">,</span> <span class="n">sizes</span><span class="p">,</span> <span class="n">arrays</span><span class="p">):</span>
-    <span class="s2">&quot;Get the value v_σ of policy σ by inverting the linear map R_σ.&quot;</span>
+    <span class="s2">&quot;Get the value v_σ of policy σ by inverting the linear map L_σ.&quot;</span>
 
     <span class="c1"># Unpack</span>
     <span class="n">β</span><span class="p">,</span> <span class="n">R</span><span class="p">,</span> <span class="n">γ</span> <span class="o">=</span> <span class="n">constants</span>
@@ -575,10 +570,10 @@ Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/envs/quantecon/lib/
 
     <span class="n">r_σ</span> <span class="o">=</span> <span class="n">compute_r_σ</span><span class="p">(</span><span class="n">σ</span><span class="p">,</span> <span class="n">constants</span><span class="p">,</span> <span class="n">sizes</span><span class="p">,</span> <span class="n">arrays</span><span class="p">)</span>
 
-    <span class="c1"># Reduce R_σ to a function in v</span>
-    <span class="n">partial_R_σ</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">R_σ</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">σ</span><span class="p">,</span> <span class="n">constants</span><span class="p">,</span> <span class="n">sizes</span><span class="p">,</span> <span class="n">arrays</span><span class="p">)</span>
+    <span class="c1"># Reduce L_σ to a function in v</span>
+    <span class="n">partial_L_σ</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">L_σ</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">σ</span><span class="p">,</span> <span class="n">constants</span><span class="p">,</span> <span class="n">sizes</span><span class="p">,</span> <span class="n">arrays</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="n">jax</span><span class="o">.</span><span class="n">scipy</span><span class="o">.</span><span class="n">sparse</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">bicgstab</span><span class="p">(</span><span class="n">partial_R_σ</span><span class="p">,</span> <span class="n">r_σ</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">jax</span><span class="o">.</span><span class="n">scipy</span><span class="o">.</span><span class="n">sparse</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">bicgstab</span><span class="p">(</span><span class="n">partial_L_σ</span><span class="p">,</span> <span class="n">r_σ</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
@@ -594,7 +589,7 @@ Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/envs/quantecon/lib/
 <span class="n">get_greedy</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">jit</span><span class="p">(</span><span class="n">get_greedy</span><span class="p">,</span> <span class="n">static_argnums</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,))</span>
 <span class="n">get_value</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">jit</span><span class="p">(</span><span class="n">get_value</span><span class="p">,</span> <span class="n">static_argnums</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,))</span>
 <span class="n">T_σ</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">jit</span><span class="p">(</span><span class="n">T_σ</span><span class="p">,</span> <span class="n">static_argnums</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,))</span>
-<span class="n">R_σ</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">jit</span><span class="p">(</span><span class="n">R_σ</span><span class="p">,</span> <span class="n">static_argnums</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,))</span>
+<span class="n">L_σ</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">jit</span><span class="p">(</span><span class="n">L_σ</span><span class="p">,</span> <span class="n">static_argnums</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,))</span>
 </pre></div>
 </div>
 </div>
@@ -736,7 +731,7 @@ Concluded loop 7 with error 1.
 Concluded loop 8 with error 1.
 Concluded loop 9 with error 1.
 Concluded loop 10 with error 0.
-HPI completed in 0.030483722686767578 seconds.
+HPI completed in 0.031373023986816406 seconds.
 </pre></div>
 </div>
 </div>
@@ -755,7 +750,7 @@ HPI completed in 0.030483722686767578 seconds.
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Starting VFI.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>VFI(jax not in succ) completed in 1.0827598571777344 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>VFI(jax not in succ) completed in 1.0236868858337402 seconds.
 </pre></div>
 </div>
 </div>
@@ -774,7 +769,7 @@ HPI completed in 0.030483722686767578 seconds.
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Starting OPI.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OPI completed in 0.27887701988220215 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OPI completed in 0.2709696292877197 seconds.
 </pre></div>
 </div>
 </div>
@@ -798,7 +793,7 @@ HPI completed in 0.030483722686767578 seconds.
 <span class="n">σ_pi</span><span class="p">,</span> <span class="n">pi_time</span> <span class="o">=</span> <span class="n">run_algorithm</span><span class="p">(</span><span class="n">policy_iteration</span><span class="p">,</span> <span class="n">model</span><span class="p">)</span>
 <span class="n">σ_vfi</span><span class="p">,</span> <span class="n">vfi_time</span> <span class="o">=</span> <span class="n">run_algorithm</span><span class="p">(</span><span class="n">value_iteration</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">)</span>
 
-<span class="n">m_vals</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">3000</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="n">m_vals</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="mi">40</span><span class="p">)</span>
 <span class="n">opi_times</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">m_vals</span><span class="p">:</span>
     <span class="n">σ_opi</span><span class="p">,</span> <span class="n">opi_time</span> <span class="o">=</span> <span class="n">run_algorithm</span><span class="p">(</span><span class="n">optimistic_policy_iteration</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="n">m</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">)</span>
@@ -820,93 +815,46 @@ Concluded loop 10 with error 0.
 policy_iteration completed in 0.03 seconds.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>value_iteration completed in 0.46 seconds.
-optimistic_policy_iteration completed in 0.15 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>value_iteration completed in 0.38 seconds.
+optimistic_policy_iteration completed in 0.17 seconds.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>optimistic_policy_iteration completed in 0.10 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>optimistic_policy_iteration completed in 0.09 seconds.
+optimistic_policy_iteration completed in 0.09 seconds.
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>optimistic_policy_iteration completed in 0.12 seconds.
 optimistic_policy_iteration completed in 0.18 seconds.
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>optimistic_policy_iteration completed in 0.22 seconds.
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>optimistic_policy_iteration completed in 0.26 seconds.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>optimistic_policy_iteration completed in 0.47 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>optimistic_policy_iteration completed in 0.30 seconds.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>optimistic_policy_iteration completed in 0.47 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>optimistic_policy_iteration completed in 0.34 seconds.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>optimistic_policy_iteration completed in 0.65 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>optimistic_policy_iteration completed in 0.38 seconds.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>optimistic_policy_iteration completed in 0.81 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>optimistic_policy_iteration completed in 0.40 seconds.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>optimistic_policy_iteration completed in 0.72 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>optimistic_policy_iteration completed in 0.51 seconds.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>optimistic_policy_iteration completed in 0.96 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>optimistic_policy_iteration completed in 0.51 seconds.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>optimistic_policy_iteration completed in 0.86 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>optimistic_policy_iteration completed in 0.53 seconds.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>optimistic_policy_iteration completed in 0.99 seconds.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>optimistic_policy_iteration completed in 1.08 seconds.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>optimistic_policy_iteration completed in 1.23 seconds.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>optimistic_policy_iteration completed in 1.25 seconds.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>optimistic_policy_iteration completed in 1.35 seconds.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>optimistic_policy_iteration completed in 1.96 seconds.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>optimistic_policy_iteration completed in 1.66 seconds.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>optimistic_policy_iteration completed in 1.96 seconds.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>optimistic_policy_iteration completed in 2.15 seconds.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>optimistic_policy_iteration completed in 1.81 seconds.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>optimistic_policy_iteration completed in 1.95 seconds.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>optimistic_policy_iteration completed in 1.92 seconds.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>optimistic_policy_iteration completed in 1.95 seconds.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>optimistic_policy_iteration completed in 2.14 seconds.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>optimistic_policy_iteration completed in 2.11 seconds.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>optimistic_policy_iteration completed in 2.16 seconds.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>optimistic_policy_iteration completed in 2.19 seconds.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>optimistic_policy_iteration completed in 2.25 seconds.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>optimistic_policy_iteration completed in 2.41 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>optimistic_policy_iteration completed in 0.55 seconds.
 </pre></div>
 </div>
 </div>
@@ -925,7 +873,7 @@ optimistic_policy_iteration completed in 0.18 seconds.
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/09803d8173b0fd148bc6189ea9a7398cdb548d9df6de6cbf745c0c9e5730974d.png"><img alt="_images/09803d8173b0fd148bc6189ea9a7398cdb548d9df6de6cbf745c0c9e5730974d.png" src="_images/09803d8173b0fd148bc6189ea9a7398cdb548d9df6de6cbf745c0c9e5730974d.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/1e04a9db03b1161069adb740b133dbfb9e99beafcce7021d613780bb66a0f084.png"><img alt="_images/1e04a9db03b1161069adb740b133dbfb9e99beafcce7021d613780bb66a0f084.png" src="_images/1e04a9db03b1161069adb740b133dbfb9e99beafcce7021d613780bb66a0f084.png" style="width: 80%;" /></a>
 </div>
 </div>
 </section>

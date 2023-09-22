@@ -25,8 +25,7 @@ We require the following library to be installed.
 !pip install --upgrade quantecon
 ```
 
-A monopolist faces inverse demand
-curve
+We study a monopolist who faces inverse demand curve
 
 $$
 P_t = a_0 - a_1 Y_t + Z_t,
@@ -38,7 +37,7 @@ where
 * $Y_t$ is output and
 * $Z_t$ is a demand shock.
 
-We assume that $Z_t$ is a discretized AR(1) process.
+We assume that $Z_t$ is a discretized AR(1) process, specified below.
 
 Current profits are
 
@@ -116,10 +115,10 @@ def create_investment_model(
 
 
 Let's re-write the vectorized version of the right-hand side of the
-Bellman equation (before maximization), which is a 3D array representing:
+Bellman equation (before maximization), which is a 3D array representing
 
 $$
-  B(y, z, y') = r(y, z, y') + \beta \sum_{z'} v(y', z') Q(z, z')
+    B(y, z, y') = r(y, z, y') + \beta \sum_{z'} v(y', z') Q(z, z')
 $$
 
 for all $(y, z, y')$.
@@ -154,8 +153,10 @@ def B(v, constants, sizes, arrays):
 B = jax.jit(B, static_argnums=(2,))
 ```
 
+We define a function to compute the current rewards $r_\sigma$ given policy $\sigma$,
+which is defined as the vector
 
-Define a function to compute the current rewards given policy $\sigma$.
+$$ r_\sigma(y, z) := r(y, z, \sigma(y, z)) $$
 
 ```{code-cell} ipython3
 def compute_r_σ(σ, constants, sizes, arrays):
@@ -238,47 +239,32 @@ T_σ = jax.jit(T_σ, static_argnums=(3,))
 
 Next, we want to computes the lifetime value of following policy $\sigma$.
 
-The basic problem is to solve the linear system
+This lifetime value is a function $v_\sigma$ that satisfies
 
-$$ v(y, z) = r(y, z, \sigma(y, z)) + \beta \sum_{z'} v(\sigma(y, z), z') Q(z, z) $$
+$$ v_\sigma(y, z) = r_\sigma(y, z) + \beta \sum_{z'} v_\sigma(\sigma(y, z), z') Q(z, z') $$
 
-for $v$.
+We wish to solve this equation for $v_\sigma$.
 
-It turns out to be helpful to rewrite this as
+Suppose we define the linear operator $L_\sigma$ by
 
-$$ v(y, z) = r(y, z, \sigma(y, z)) + \beta \sum_{y', z'} v(y', z') P_\sigma(y, z, y', z') $$
+$$ (L_\sigma v)(y, z) = v(y, z) - \beta \sum_{z'} v(\sigma(y, z), z') Q(z, z') $$
 
-where $P_\sigma(y, z, y', z') = 1\{y' = \sigma(y, z)\} Q(z, z')$.
-
-We want to write this as $v = r_\sigma + \beta P_\sigma v$ and then solve for $v$
-
-Note, however, that $v$ is a multi-index array, rather than a vector.
-
-
-The value $v_{\sigma}$ of a policy $\sigma$ is defined as
+With this notation, the problem is to solve for $v$ via
 
 $$
-        v_{\sigma} = (I - \beta P_{\sigma})^{-1} r_{\sigma}
+    (L_{\sigma} v)(y, z) = r_\sigma(y, z)
 $$
 
-Here we set up the linear map $v \mapsto R_{\sigma} v$,
+In vector for this is $L_\sigma v = r_\sigma$, which tells us that the function
+we seek is
 
-where $R_{\sigma} := I - \beta P_{\sigma}$
+$$ v_\sigma = L_\sigma^{-1} r_\sigma $$
 
-In the investment problem, this map can be expressed as
-
-$$
-    (R_{\sigma} v)(y, z) = v(y, z) - \beta \sum_{z'} v(\sigma(y, z), z') Q(z, z')
-$$
-
-Defining the map as above works in a more intuitive multi-index setting
-(e.g. working with $v[i, j]$ rather than flattening v to a one-dimensional
-array) and avoids instantiating the large matrix $P_{\sigma}$.
-
-Let's define the function $R_{\sigma}$.
+JAX allows us to solve linear systems defined in terms of operators; the first
+step is to define the function $L_{\sigma}$.
 
 ```{code-cell} ipython3
-def R_σ(v, σ, constants, sizes, arrays):
+def L_σ(v, σ, constants, sizes, arrays):
 
     β, a_0, a_1, γ, c = constants
     y_size, z_size = sizes
@@ -296,12 +282,11 @@ def R_σ(v, σ, constants, sizes, arrays):
     # Compute and return v[i, j] - β Σ_jp v[σ[i, j], jp] * Q[j, jp]
     return v - β * jnp.sum(V * Q, axis=2)
 
-R_σ = jax.jit(R_σ, static_argnums=(3,))
+L_σ = jax.jit(L_σ, static_argnums=(3,))
 ```
 
+Now we can define a function to compute $v_{\sigma}$ 
 
-Define a function to get the value $v_{\sigma}$ of policy
-$\sigma$ by inverting the linear map $R_{\sigma}$.
 
 ```{code-cell} ipython3
 def get_value(σ, constants, sizes, arrays):
@@ -313,16 +298,16 @@ def get_value(σ, constants, sizes, arrays):
 
     r_σ = compute_r_σ(σ, constants, sizes, arrays)
 
-    # Reduce R_σ to a function in v
-    partial_R_σ = lambda v: R_σ(v, σ, constants, sizes, arrays)
+    # Reduce L_σ to a function in v
+    partial_L_σ = lambda v: L_σ(v, σ, constants, sizes, arrays)
 
-    return jax.scipy.sparse.linalg.bicgstab(partial_R_σ, r_σ)[0]
+    return jax.scipy.sparse.linalg.bicgstab(partial_L_σ, r_σ)[0]
 
 get_value = jax.jit(get_value, static_argnums=(2,))
 ```
 
 
-Now we define the solvers, which implement VFI, HPI and OPI.
+Finally, we introduce the solvers that implement VFI, HPI and OPI.
 
 ```{code-cell} ipython3
 :load: _static/lecture_specific/vfi.py
@@ -396,7 +381,7 @@ plt.show()
 Let's plot the time taken by each of the solvers and compare them.
 
 ```{code-cell} ipython3
-m_vals = range(5, 3000, 100)
+m_vals = range(5, 600, 40)
 ```
 
 ```{code-cell} ipython3
