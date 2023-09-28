@@ -977,6 +977,7 @@ def A(g, sv_model, shapes):
     P = np.reshape(P,            (I, 1, 1, I,  1,  1))
     Q = np.reshape(Q,            (1, J, 1, 1,  J,  1))
     R = np.reshape(R,            (1, 1, K, 1,  1,  K))
+    g = np.reshape(g,            (1, 1, 1, I,  J,  K))
     a = μ_d - γ * μ_c
     b = bar_σ**2 * (jnp.exp(2 * hd) + γ**2 * jnp.exp(2 * hc)) / 2
     κ = jnp.exp(a + (1 - γ) * z + b)
