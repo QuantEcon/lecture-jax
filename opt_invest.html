@@ -60,18 +60,18 @@
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
-<link href="_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
-<link href="_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link href="_static/styles/theme.css?digest=ac02cc09edc035673794" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=ac02cc09edc035673794" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=ac02cc09edc035673794" rel="stylesheet" />
 
   
-  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=ac02cc09edc035673794" rel="stylesheet" />
   <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/quantecon-book-theme.5378fd3a70a129d690fd5fc99fb75ef7.css" />
+    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=cb2d6eee9712fbd5cbf7cbc2d6baf81f7f9a9912" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
@@ -80,8 +80,9 @@
     <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
-<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=ac02cc09edc035673794" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=ac02cc09edc035673794" />
+  <script src="_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=ac02cc09edc035673794"></script>
 
 
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
@@ -96,9 +97,9 @@
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="_static/togglebutton.js"></script>
+    <script src="_static/scripts/quantecon-book-theme.js?digest=b7d60282c7125f74e59bac03c2323864e0e32e1c"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script src="_static/design-tabs.js"></script>
-    <script src="_static/quantecon-book-theme.ef2ef6c3e8da75e1e736fb5fce08cde6.js"></script>
     <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-K1NYBSC1CZ"></script>
     <script>
                 window.dataLayer = window.dataLayer || [];
@@ -220,7 +221,7 @@ const thebe_selector_output = ".output, .cell_output"
 <p>We require the following library to be installed.</p>
 <div class="cell tag_hide-output docutils container">
 <div class="cell_input above-output-prompt docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install --upgrade quantecon
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>--upgrade<span class="w"> </span>quantecon
 </pre></div>
 </div>
 </div>
@@ -230,21 +231,22 @@ const thebe_selector_output = ".output, .cell_output"
 <span class="expanded">Hide code cell output</span>
 </summary>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /opt/conda/envs/quantecon/lib/python3.10/site-packages (0.7.1)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /opt/conda/envs/quantecon/lib/python3.11/site-packages (0.7.1)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: numba&gt;=0.49.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (0.56.4)
-Requirement already satisfied: requests in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (2.28.1)
-Requirement already satisfied: numpy&gt;=1.17.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (1.23.5)
-Requirement already satisfied: scipy&gt;=1.5.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (1.10.0)
-Requirement already satisfied: sympy in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (1.11.1)
-Requirement already satisfied: setuptools in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from numba&gt;=0.49.0-&gt;quantecon) (65.6.3)
-Requirement already satisfied: llvmlite&lt;0.40,&gt;=0.39.0dev0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from numba&gt;=0.49.0-&gt;quantecon) (0.39.1)
-Requirement already satisfied: urllib3&lt;1.27,&gt;=1.21.1 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (1.26.14)
-Requirement already satisfied: charset-normalizer&lt;3,&gt;=2 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (2.0.4)
-Requirement already satisfied: idna&lt;4,&gt;=2.5 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (3.4)
-Requirement already satisfied: certifi&gt;=2017.4.17 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (2022.12.7)
-Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/envs/quantecon/lib/python3.10/site-packages/mpmath-1.2.1-py3.10.egg (from sympy-&gt;quantecon) (1.2.1)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: numba&gt;=0.49.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (0.57.1)
+Requirement already satisfied: numpy&gt;=1.17.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (1.24.3)
+Requirement already satisfied: requests in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (2.31.0)
+Requirement already satisfied: scipy&gt;=1.5.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (1.11.1)
+Requirement already satisfied: sympy in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (1.11.1)
+Requirement already satisfied: llvmlite&lt;0.41,&gt;=0.40.0dev0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from numba&gt;=0.49.0-&gt;quantecon) (0.40.0)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: charset-normalizer&lt;4,&gt;=2 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests-&gt;quantecon) (2.0.4)
+Requirement already satisfied: idna&lt;4,&gt;=2.5 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests-&gt;quantecon) (3.4)
+Requirement already satisfied: urllib3&lt;3,&gt;=1.21.1 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests-&gt;quantecon) (1.26.16)
+Requirement already satisfied: certifi&gt;=2017.4.17 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests-&gt;quantecon) (2023.7.22)
+Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from sympy-&gt;quantecon) (1.3.0)
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Yellow">WARNING: Running pip as the &#39;root&#39; user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv</span>
@@ -296,7 +298,7 @@ P_t = a_0 - a_1 Y_t + Z_t,
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Fri Sep 22 00:39:42 2023       
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Wed Oct 11 04:29:22 2023       
 +-----------------------------------------------------------------------------+
 | NVIDIA-SMI 470.182.03   Driver Version: 470.182.03   CUDA Version: 12.1     |
 |-------------------------------+----------------------+----------------------+
@@ -307,7 +309,7 @@ P_t = a_0 - a_1 Y_t + Z_t,
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>|   0  Tesla V100-SXM2...  Off  | 00000000:00:1E.0 Off |                    0 |
-| N/A   29C    P0    38W / 300W |      0MiB / 16160MiB |      2%      Default |
+| N/A   31C    P0    39W / 300W |      0MiB / 16160MiB |      2%      Default |
 |                               |                      |                  N/A |
 +-------------------------------+----------------------+----------------------+
                                                                                
@@ -368,7 +370,7 @@ P_t = a_0 - a_1 Y_t + Z_t,
         <span class="n">y_min</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">y_max</span><span class="o">=</span><span class="mf">20.0</span><span class="p">,</span> <span class="n">y_size</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>   <span class="c1"># Grid for output</span>
         <span class="n">ρ</span><span class="o">=</span><span class="mf">0.9</span><span class="p">,</span> <span class="n">ν</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>                        <span class="c1"># AR(1) parameters</span>
         <span class="n">z_size</span><span class="o">=</span><span class="mi">150</span><span class="p">):</span>                         <span class="c1"># Grid size for shock</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A function that takes in parameters and returns an instance of Model that</span>
 <span class="sd">    contains data for the investment problem.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -399,7 +401,7 @@ Bellman equation (before maximization), which is a 3D array representing</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">B</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">constants</span><span class="p">,</span> <span class="n">sizes</span><span class="p">,</span> <span class="n">arrays</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A vectorized version of the right-hand side of the Bellman equation</span>
 <span class="sd">    (before maximization)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -436,7 +438,7 @@ which is defined as the vector</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">compute_r_σ</span><span class="p">(</span><span class="n">σ</span><span class="p">,</span> <span class="n">constants</span><span class="p">,</span> <span class="n">sizes</span><span class="p">,</span> <span class="n">arrays</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Compute the array r_σ[i, j] = r[i, j, σ[i, j]], which gives current</span>
 <span class="sd">    rewards given policy σ.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -465,7 +467,7 @@ which is defined as the vector</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">T</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">constants</span><span class="p">,</span> <span class="n">sizes</span><span class="p">,</span> <span class="n">arrays</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;The Bellman operator.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The Bellman operator.&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">jnp</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">B</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">constants</span><span class="p">,</span> <span class="n">sizes</span><span class="p">,</span> <span class="n">arrays</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 
 <span class="n">T</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">jit</span><span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="n">static_argnums</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,))</span>
@@ -489,7 +491,7 @@ which is defined as the vector</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">T_σ</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">σ</span><span class="p">,</span> <span class="n">constants</span><span class="p">,</span> <span class="n">sizes</span><span class="p">,</span> <span class="n">arrays</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;The σ-policy operator.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The σ-policy operator.&quot;&quot;&quot;</span>
 
     <span class="c1"># Unpack model</span>
     <span class="n">β</span><span class="p">,</span> <span class="n">a_0</span><span class="p">,</span> <span class="n">a_1</span><span class="p">,</span> <span class="n">γ</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="n">constants</span>
@@ -656,6 +658,10 @@ step is to define the function <span class="math notranslate nohighlight">\(L_{\
 <span class="expanded">Hide code cell output</span>
 </summary>
 <div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1696998563.343838    2458 tfrt_cpu_pjrt_client.cc:349] TfrtCpuClient created.
+</pre></div>
+</div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Starting HPI.
 </pre></div>
 </div>
@@ -671,7 +677,7 @@ Concluded loop 9 with error 1.
 Concluded loop 10 with error 1.
 Concluded loop 11 with error 1.
 Concluded loop 12 with error 0.
-TOC: Elapsed: 0:00:1.18
+TOC: Elapsed: 0:00:1.41
 [[ 2  2  2 ...  6  6  6]
  [ 3  3  3 ...  7  7  7]
  [ 4  4  4 ...  7  7  7]
@@ -679,7 +685,7 @@ TOC: Elapsed: 0:00:1.18
  [82 82 82 ... 86 86 86]
  [83 83 83 ... 86 86 86]
  [84 84 84 ... 87 87 87]]
-HPI completed in 1.181182622909546 seconds.
+HPI completed in 1.4112091064453125 seconds.
 </pre></div>
 </div>
 </div>
@@ -705,7 +711,7 @@ HPI completed in 1.181182622909546 seconds.
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Starting VFI.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:1.93
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:2.05
 [[ 2  2  2 ...  6  6  6]
  [ 3  3  3 ...  7  7  7]
  [ 4  4  4 ...  7  7  7]
@@ -713,7 +719,7 @@ HPI completed in 1.181182622909546 seconds.
  [82 82 82 ... 86 86 86]
  [83 83 83 ... 86 86 86]
  [84 84 84 ... 87 87 87]]
-VFI completed in 1.9344022274017334 seconds.
+VFI completed in 2.059237241744995 seconds.
 </pre></div>
 </div>
 </div>
@@ -739,7 +745,7 @@ VFI completed in 1.9344022274017334 seconds.
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Starting OPI.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:0.81
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:0.88
 [[ 2  2  2 ...  6  6  6]
  [ 3  3  3 ...  7  7  7]
  [ 4  4  4 ...  7  7  7]
@@ -747,7 +753,7 @@ VFI completed in 1.9344022274017334 seconds.
  [82 82 82 ... 86 86 86]
  [83 83 83 ... 86 86 86]
  [84 84 84 ... 87 87 87]]
-OPI completed in 0.8168623447418213 seconds.
+OPI completed in 0.8859810829162598 seconds.
 </pre></div>
 </div>
 </div>
@@ -793,7 +799,7 @@ Concluded loop 11 with error 1.
 Concluded loop 12 with error 0.
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="_images/c86c3446a7c20f5de97b1ad524c96a0d31550860af15c6ae47b8beafcc1f5fd8.png"><img alt="_images/c86c3446a7c20f5de97b1ad524c96a0d31550860af15c6ae47b8beafcc1f5fd8.png" src="_images/c86c3446a7c20f5de97b1ad524c96a0d31550860af15c6ae47b8beafcc1f5fd8.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/8f030afe3560aa996f0943b789cc85bef547c47914ba5d334331314702ea0238.png"><img alt="_images/8f030afe3560aa996f0943b789cc85bef547c47914ba5d334331314702ea0238.png" src="_images/8f030afe3560aa996f0943b789cc85bef547c47914ba5d334331314702ea0238.png" style="width: 80%;" /></a>
 </div>
 </div>
 <p>Let’s plot the time taken by each of the solvers and compare them.</p>
@@ -845,12 +851,12 @@ TOC: Elapsed: 0:00:0.04
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>PI completed in 0.04567694664001465 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>PI completed in 0.046401262283325195 seconds.
 Running value function iteration.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:1.38
-VFI completed in 1.3857970237731934 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:1.49
+VFI completed in 1.4980673789978027 seconds.
 </pre></div>
 </div>
 </div>
@@ -877,78 +883,78 @@ VFI completed in 1.3857970237731934 seconds.
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Running optimistic policy iteration with m=5.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:0.83
-OPI with m=5 completed in 0.8389298915863037 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:0.90
+OPI with m=5 completed in 0.9023690223693848 seconds.
 Running optimistic policy iteration with m=45.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:0.62
-OPI with m=45 completed in 0.6269087791442871 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:0.65
+OPI with m=45 completed in 0.656489372253418 seconds.
 Running optimistic policy iteration with m=85.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:0.66
-OPI with m=85 completed in 0.6684725284576416 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:0.70
+OPI with m=85 completed in 0.7073369026184082 seconds.
 Running optimistic policy iteration with m=125.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:0.65
-OPI with m=125 completed in 0.6595215797424316 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:0.77
+OPI with m=125 completed in 0.7719192504882812 seconds.
 Running optimistic policy iteration with m=165.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:0.72
-OPI with m=165 completed in 0.7247822284698486 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:0.79
+OPI with m=165 completed in 0.7991926670074463 seconds.
 Running optimistic policy iteration with m=205.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:0.84
-OPI with m=205 completed in 0.8463225364685059 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:0.94
+OPI with m=205 completed in 0.9435172080993652 seconds.
 Running optimistic policy iteration with m=245.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:0.93
-OPI with m=245 completed in 0.933891773223877 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:0.99
+OPI with m=245 completed in 0.9981966018676758 seconds.
 Running optimistic policy iteration with m=285.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:0.98
-OPI with m=285 completed in 0.9890823364257812 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:1.09
+OPI with m=285 completed in 1.0982065200805664 seconds.
 Running optimistic policy iteration with m=325.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:1.12
-OPI with m=325 completed in 1.123302936553955 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:1.23
+OPI with m=325 completed in 1.2321536540985107 seconds.
 Running optimistic policy iteration with m=365.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:1.28
-OPI with m=365 completed in 1.285853385925293 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:1.39
+OPI with m=365 completed in 1.39003324508667 seconds.
 Running optimistic policy iteration with m=405.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:1.41
-OPI with m=405 completed in 1.4185967445373535 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:1.54
+OPI with m=405 completed in 1.5467758178710938 seconds.
 Running optimistic policy iteration with m=445.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:1.53
-OPI with m=445 completed in 1.5304958820343018 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:1.67
+OPI with m=445 completed in 1.675046443939209 seconds.
 Running optimistic policy iteration with m=485.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:1.68
-OPI with m=485 completed in 1.6858265399932861 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:1.84
+OPI with m=485 completed in 1.8437583446502686 seconds.
 Running optimistic policy iteration with m=525.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:1.76
-OPI with m=525 completed in 1.7640738487243652 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:1.96
+OPI with m=525 completed in 1.9666788578033447 seconds.
 Running optimistic policy iteration with m=565.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:1.89
-OPI with m=565 completed in 1.8911325931549072 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:2.08
+OPI with m=565 completed in 2.089623212814331 seconds.
 </pre></div>
 </div>
 </div>
@@ -970,7 +976,7 @@ OPI with m=565 completed in 1.8911325931549072 seconds.
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/6d58ebc931b9bc834ec117aff9d3b8da7b8e27b4865944cdcc85c5adebad9221.png"><img alt="_images/6d58ebc931b9bc834ec117aff9d3b8da7b8e27b4865944cdcc85c5adebad9221.png" src="_images/6d58ebc931b9bc834ec117aff9d3b8da7b8e27b4865944cdcc85c5adebad9221.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/2a923a3d8a6ac6573734ce15a9a6d1ef1ef1fcc89a8cc567339cbc7afa497f11.png"><img alt="_images/2a923a3d8a6ac6573734ce15a9a6d1ef1ef1fcc89a8cc567339cbc7afa497f11.png" src="_images/2a923a3d8a6ac6573734ce15a9a6d1ef1ef1fcc89a8cc567339cbc7afa497f11.png" style="width: 80%;" /></a>
 </div>
 </div>
 </section>

@@ -4,7 +4,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.14.5
+    jupytext_version: 1.15.2
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -60,6 +60,7 @@ import quantecon as qe
 import jax
 import jax.numpy as jnp
 from jax import random
+from jax import lax
 ```
 
 Let's check the GPU we are running
@@ -266,26 +267,24 @@ plt.show()
 The plot produces a straight line, consistent with a Pareto tail.
 
 
-#### Alternative implementation with `lax.scan`
+#### Alternative implementation with `lax.fori_loop`
 
 If the time horizon is not too large, we can try to further accelerate our code
 by replacing the `for` loop with
-[`lax.scan`](https://jax.readthedocs.io/en/latest/_autosummary/jax.lax.scan.html).
+[`lax.fori_loop`](https://jax.readthedocs.io/en/latest/_autosummary/jax.lax.fori_loop.html).
 
 Note, however, that
 
 1. as mentioned above, there is not much speed gain in accelerating outer loops,
-2. `lax.scan` has a more complicated syntax, and, most importantly,
-3. the `lax.scan` implementation consumes far more memory, as we need to have to
+2. `lax.fori_loop` has a more complicated syntax, and, most importantly,
+3. the `lax.fori_loop` implementation consumes far more memory, as we need to have to
    store large matrices of random draws
 
 Hence the code below will fail due to out-of-memory errors when `T` and `M` are large.
 
-Here is the `lax.scan` version:
+Here is the `lax.fori_loop` version:
 
 ```{code-cell} ipython3
-from jax import lax
-
 @jax.jit
 def generate_draws_lax(μ_a=-0.5,
                        σ_a=0.1,
@@ -309,15 +308,15 @@ def generate_draws_lax(μ_a=-0.5,
     s = jnp.full((M, ), s_init)
 
     # Define the function for each update
-    def update_s(s, a_b_e_draws):
-        a, b, e = a_b_e_draws
+    def update_s(i, s):
+        a, b, e = a_random[i], b_random[i], e_random[i]
         s = jnp.where(s < s_bar,
                       jnp.exp(e),
                       jnp.exp(a) * s + jnp.exp(b))
-        return s, None
+        return s
 
     # Use lax.scan to perform the calculations on all states
-    s_final, _ = lax.scan(update_s, s, (a_random, b_random, e_random))
+    s_final = lax.fori_loop(0, T, update_s, s)
     return s_final
 
 %time data = generate_draws_lax().block_until_ready()
@@ -349,5 +348,5 @@ Let's rerun the `for` loop version on smaller `M` to compare the speed
 %time generate_draws(M=500_000).block_until_ready()
 ```
 
-We see that the `lax.scan` version is faster than the `for` loop version 
+We see that the `lax.fori_loop` version is faster than the `for` loop version 
 when memory is not an issue.

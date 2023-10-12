@@ -60,18 +60,18 @@
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
-<link href="_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
-<link href="_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link href="_static/styles/theme.css?digest=ac02cc09edc035673794" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=ac02cc09edc035673794" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=ac02cc09edc035673794" rel="stylesheet" />
 
   
-  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=ac02cc09edc035673794" rel="stylesheet" />
   <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/quantecon-book-theme.5378fd3a70a129d690fd5fc99fb75ef7.css" />
+    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=cb2d6eee9712fbd5cbf7cbc2d6baf81f7f9a9912" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
@@ -80,8 +80,9 @@
     <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
-<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=ac02cc09edc035673794" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=ac02cc09edc035673794" />
+  <script src="_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=ac02cc09edc035673794"></script>
 
 
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
@@ -96,9 +97,9 @@
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="_static/togglebutton.js"></script>
+    <script src="_static/scripts/quantecon-book-theme.js?digest=b7d60282c7125f74e59bac03c2323864e0e32e1c"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script src="_static/design-tabs.js"></script>
-    <script src="_static/quantecon-book-theme.ef2ef6c3e8da75e1e736fb5fce08cde6.js"></script>
     <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-K1NYBSC1CZ"></script>
     <script>
                 window.dataLayer = window.dataLayer || [];
@@ -242,7 +243,7 @@ you can jump to <a class="reference internal" href="#equation-eq-ntecx2">(4.13)<
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Fri Sep 22 00:36:08 2023       
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Wed Oct 11 04:25:22 2023       
 +-----------------------------------------------------------------------------+
 | NVIDIA-SMI 470.182.03   Driver Version: 470.182.03   CUDA Version: 12.1     |
 |-------------------------------+----------------------+----------------------+
@@ -253,7 +254,7 @@ you can jump to <a class="reference internal" href="#equation-eq-ntecx2">(4.13)<
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>|   0  Tesla V100-SXM2...  Off  | 00000000:00:1E.0 Off |                    0 |
-| N/A   30C    P0    38W / 300W |      0MiB / 16160MiB |      2%      Default |
+| N/A   31C    P0    39W / 300W |      0MiB / 16160MiB |      2%      Default |
 |                               |                      |                  N/A |
 +-------------------------------+----------------------+----------------------+
                                                                                
@@ -271,7 +272,7 @@ you can jump to <a class="reference internal" href="#equation-eq-ntecx2">(4.13)<
 <p>In addition to what’s in Anaconda, this lecture will need the following libraries:</p>
 <div class="cell tag_hide-output docutils container">
 <div class="cell_input above-output-prompt docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install quantecon
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>quantecon
 </pre></div>
 </div>
 </div>
@@ -281,21 +282,20 @@ you can jump to <a class="reference internal" href="#equation-eq-ntecx2">(4.13)<
 <span class="expanded">Hide code cell output</span>
 </summary>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /opt/conda/envs/quantecon/lib/python3.10/site-packages (0.7.1)
-Requirement already satisfied: numpy&gt;=1.17.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (1.23.5)
-Requirement already satisfied: numba&gt;=0.49.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (0.56.4)
-Requirement already satisfied: scipy&gt;=1.5.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (1.10.0)
-Requirement already satisfied: sympy in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (1.11.1)
-Requirement already satisfied: requests in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (2.28.1)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /opt/conda/envs/quantecon/lib/python3.11/site-packages (0.7.1)
+Requirement already satisfied: numba&gt;=0.49.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (0.57.1)
+Requirement already satisfied: numpy&gt;=1.17.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (1.24.3)
+Requirement already satisfied: requests in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (2.31.0)
+Requirement already satisfied: scipy&gt;=1.5.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (1.11.1)
+Requirement already satisfied: sympy in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (1.11.1)
+Requirement already satisfied: llvmlite&lt;0.41,&gt;=0.40.0dev0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from numba&gt;=0.49.0-&gt;quantecon) (0.40.0)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: llvmlite&lt;0.40,&gt;=0.39.0dev0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from numba&gt;=0.49.0-&gt;quantecon) (0.39.1)
-Requirement already satisfied: setuptools in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from numba&gt;=0.49.0-&gt;quantecon) (65.6.3)
-Requirement already satisfied: charset-normalizer&lt;3,&gt;=2 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (2.0.4)
-Requirement already satisfied: idna&lt;4,&gt;=2.5 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (3.4)
-Requirement already satisfied: certifi&gt;=2017.4.17 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (2022.12.7)
-Requirement already satisfied: urllib3&lt;1.27,&gt;=1.21.1 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (1.26.14)
-Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/envs/quantecon/lib/python3.10/site-packages/mpmath-1.2.1-py3.10.egg (from sympy-&gt;quantecon) (1.2.1)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: charset-normalizer&lt;4,&gt;=2 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests-&gt;quantecon) (2.0.4)
+Requirement already satisfied: idna&lt;4,&gt;=2.5 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests-&gt;quantecon) (3.4)
+Requirement already satisfied: urllib3&lt;3,&gt;=1.21.1 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests-&gt;quantecon) (1.26.16)
+Requirement already satisfied: certifi&gt;=2017.4.17 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests-&gt;quantecon) (2023.7.22)
+Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from sympy-&gt;quantecon) (1.3.0)
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Yellow">WARNING: Running pip as the &#39;root&#39; user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv</span>
@@ -574,7 +574,7 @@ is</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">test_stability</span><span class="p">(</span><span class="n">Q</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Assert that the spectral radius of matrix Q is &lt; 1.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">sr</span> <span class="o">=</span> <span class="n">power_iteration_sr</span><span class="p">(</span><span class="n">Q</span><span class="p">)</span>
@@ -664,6 +664,10 @@ is</p>
 </div>
 </div>
 <div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1696998330.972387    1697 tfrt_cpu_pjrt_client.cc:349] TfrtCpuClient created.
+</pre></div>
+</div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Array(True, dtype=bool)
 </pre></div>
 </div>
@@ -673,7 +677,7 @@ is</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">price_dividend_ratio</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">test_stable</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Computes the price-dividend ratio of the asset.</span>
 
 <span class="sd">    Parameters</span>
@@ -725,7 +729,7 @@ is</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/9acb50455f3420ea5298461fc4256cd5699dd51a3b3619dc41300c7cee23f7c6.png"><img alt="_images/9acb50455f3420ea5298461fc4256cd5699dd51a3b3619dc41300c7cee23f7c6.png" src="_images/9acb50455f3420ea5298461fc4256cd5699dd51a3b3619dc41300c7cee23f7c6.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/6f0cd2699f6368e21e8c729c015cfed34036909e43a201317453b364bab4135d.png"><img alt="_images/6f0cd2699f6368e21e8c729c015cfed34036909e43a201317453b364bab4135d.png" src="_images/6f0cd2699f6368e21e8c729c015cfed34036909e43a201317453b364bab4135d.png" style="width: 80%;" /></a>
 </div>
 </div>
 <p>Notice that <span class="math notranslate nohighlight">\(v\)</span> is decreasing in each case.</p>
@@ -918,7 +922,7 @@ and <span class="math notranslate nohighlight">\(A\)</span> into an <span class=
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">sv_pd_ratio</span><span class="p">(</span><span class="n">sv_model</span><span class="p">,</span> <span class="n">test_stable</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Computes the price-dividend ratio of the asset for the stochastic volatility</span>
 <span class="sd">    model.</span>
 
@@ -972,7 +976,7 @@ and <span class="math notranslate nohighlight">\(A\)</span> into an <span class=
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:1.07
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:1.17
 </pre></div>
 </div>
 </div>
@@ -990,7 +994,7 @@ and <span class="math notranslate nohighlight">\(A\)</span> into an <span class=
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/6dafe47c92cb41325080f082c841dbdea676255663f96722169032fb2afc76cf.png"><img alt="_images/6dafe47c92cb41325080f082c841dbdea676255663f96722169032fb2afc76cf.png" src="_images/6dafe47c92cb41325080f082c841dbdea676255663f96722169032fb2afc76cf.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/b43e672a0890ca1ea1722a587aa82926d729c559ec31523d64247521af7787ed.png"><img alt="_images/b43e672a0890ca1ea1722a587aa82926d729c559ec31523d64247521af7787ed.png" src="_images/b43e672a0890ca1ea1722a587aa82926d729c559ec31523d64247521af7787ed.png" style="width: 80%;" /></a>
 </div>
 </div>
 <div class="cell docutils container">
@@ -1005,7 +1009,7 @@ and <span class="math notranslate nohighlight">\(A\)</span> into an <span class=
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/2b027b79fca9249ef7272ce0efbe80855507022a167dd84ffe092d3e166e321c.png"><img alt="_images/2b027b79fca9249ef7272ce0efbe80855507022a167dd84ffe092d3e166e321c.png" src="_images/2b027b79fca9249ef7272ce0efbe80855507022a167dd84ffe092d3e166e321c.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/70d543b24a11ce56d028b6d78ae405a8f4b364bb6db18f65c01d6129f01acd22.png"><img alt="_images/70d543b24a11ce56d028b6d78ae405a8f4b364bb6db18f65c01d6129f01acd22.png" src="_images/70d543b24a11ce56d028b6d78ae405a8f4b364bb6db18f65c01d6129f01acd22.png" style="width: 80%;" /></a>
 </div>
 </div>
 <div class="cell docutils container">
@@ -1020,7 +1024,7 @@ and <span class="math notranslate nohighlight">\(A\)</span> into an <span class=
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/bb8c430e65ffd168a9da1438d9b161538787a469520fc45c5b4495c6835cd324.png"><img alt="_images/bb8c430e65ffd168a9da1438d9b161538787a469520fc45c5b4495c6835cd324.png" src="_images/bb8c430e65ffd168a9da1438d9b161538787a469520fc45c5b4495c6835cd324.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/711235a7a6a79931054d3ab9520b97e4be3c405cff9ef64286c18e4f08850b2c.png"><img alt="_images/711235a7a6a79931054d3ab9520b97e4be3c405cff9ef64286c18e4f08850b2c.png" src="_images/711235a7a6a79931054d3ab9520b97e4be3c405cff9ef64286c18e4f08850b2c.png" style="width: 80%;" /></a>
 </div>
 </div>
 </section>
@@ -1080,7 +1084,7 @@ and <span class="math notranslate nohighlight">\(A\)</span> into an <span class=
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">sv_pd_ratio_jax</span><span class="p">(</span><span class="n">sv_model</span><span class="p">,</span> <span class="n">shapes</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Computes the price-dividend ratio of the asset for the stochastic volatility</span>
 <span class="sd">    model.</span>
 
@@ -1141,7 +1145,7 @@ and <span class="math notranslate nohighlight">\(A\)</span> into an <span class=
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:0.43
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:0.34
 </pre></div>
 </div>
 </div>
@@ -1169,7 +1173,7 @@ and <span class="math notranslate nohighlight">\(A\)</span> into an <span class=
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.015320819199617019
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.013887630560552916
 </pre></div>
 </div>
 </div>
@@ -1209,6 +1213,7 @@ and <span class="math notranslate nohighlight">\(A\)</span> into an <span class=
     <span class="n">P</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">P</span><span class="p">,</span>            <span class="p">(</span><span class="n">I</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">I</span><span class="p">,</span>  <span class="mi">1</span><span class="p">,</span>  <span class="mi">1</span><span class="p">))</span>
     <span class="n">Q</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">Q</span><span class="p">,</span>            <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">J</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span>  <span class="n">J</span><span class="p">,</span>  <span class="mi">1</span><span class="p">))</span>
     <span class="n">R</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">R</span><span class="p">,</span>            <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span>  <span class="mi">1</span><span class="p">,</span>  <span class="n">K</span><span class="p">))</span>
+    <span class="n">g</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">g</span><span class="p">,</span>            <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">I</span><span class="p">,</span>  <span class="n">J</span><span class="p">,</span>  <span class="n">K</span><span class="p">))</span>
     <span class="n">a</span> <span class="o">=</span> <span class="n">μ_d</span> <span class="o">-</span> <span class="n">γ</span> <span class="o">*</span> <span class="n">μ_c</span>
     <span class="n">b</span> <span class="o">=</span> <span class="n">bar_σ</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">hd</span><span class="p">)</span> <span class="o">+</span> <span class="n">γ</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="n">jnp</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">hc</span><span class="p">))</span> <span class="o">/</span> <span class="mi">2</span>
     <span class="n">κ</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">a</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">γ</span><span class="p">)</span> <span class="o">*</span> <span class="n">z</span> <span class="o">+</span> <span class="n">b</span><span class="p">)</span>
@@ -1260,7 +1265,7 @@ that acts directly on the linear operator <code class="docutils literal notransl
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:0.70
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:1.15
 </pre></div>
 </div>
 </div>
@@ -1301,7 +1306,7 @@ that acts directly on the linear operator <code class="docutils literal notransl
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.36353378564092176
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.18051025163094128
 </pre></div>
 </div>
 </div>
@@ -1322,10 +1327,10 @@ that acts directly on the linear operator <code class="docutils literal notransl
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:0.68
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:0.91
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.6870722770690918
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.9170897006988525
 </pre></div>
 </div>
 </div>

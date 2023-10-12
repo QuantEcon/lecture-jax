@@ -60,18 +60,18 @@
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
-<link href="_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
-<link href="_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link href="_static/styles/theme.css?digest=ac02cc09edc035673794" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=ac02cc09edc035673794" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=ac02cc09edc035673794" rel="stylesheet" />
 
   
-  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=ac02cc09edc035673794" rel="stylesheet" />
   <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/quantecon-book-theme.5378fd3a70a129d690fd5fc99fb75ef7.css" />
+    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=cb2d6eee9712fbd5cbf7cbc2d6baf81f7f9a9912" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
@@ -80,8 +80,9 @@
     <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
-<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=ac02cc09edc035673794" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=ac02cc09edc035673794" />
+  <script src="_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=ac02cc09edc035673794"></script>
 
 
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
@@ -96,9 +97,9 @@
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="_static/togglebutton.js"></script>
+    <script src="_static/scripts/quantecon-book-theme.js?digest=b7d60282c7125f74e59bac03c2323864e0e32e1c"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script src="_static/design-tabs.js"></script>
-    <script src="_static/quantecon-book-theme.ef2ef6c3e8da75e1e736fb5fce08cde6.js"></script>
     <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-K1NYBSC1CZ"></script>
     <script>
                 window.dataLayer = window.dataLayer || [];
@@ -245,7 +246,7 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Fri Sep 22 00:34:55 2023       
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Wed Oct 11 04:24:19 2023       
 +-----------------------------------------------------------------------------+
 | NVIDIA-SMI 470.182.03   Driver Version: 470.182.03   CUDA Version: 12.1     |
 |-------------------------------+----------------------+----------------------+
@@ -256,7 +257,7 @@ const thebe_selector_output = ".output, .cell_output"
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>|   0  Tesla V100-SXM2...  Off  | 00000000:00:1E.0 Off |                    0 |
-| N/A   30C    P0    38W / 300W |      0MiB / 16160MiB |      2%      Default |
+| N/A   31C    P0    39W / 300W |      0MiB / 16160MiB |      2%      Default |
 |                               |                      |                  N/A |
 +-------------------------------+----------------------+----------------------+
                                                                                
@@ -290,6 +291,12 @@ similarities and differences.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">a</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">asarray</span><span class="p">((</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">3.2</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.5</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1696998260.511893    1286 tfrt_cpu_pjrt_client.cc:349] TfrtCpuClient created.
 </pre></div>
 </div>
 </div>
@@ -515,13 +522,13 @@ hardware accelerator (GPU or TPU).</p>
 <span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">20</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
 <span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
 
-<span class="nn">File /opt/conda/envs/quantecon/lib/python3.10/site-packages/jax/_src/numpy/array_methods.py:268,</span> in <span class="ni">_unimplemented_setitem</span><span class="nt">(self, i, x)</span>
-<span class="g g-Whitespace">    </span><span class="mi">263</span> <span class="k">def</span> <span class="nf">_unimplemented_setitem</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
-<span class="g g-Whitespace">    </span><span class="mi">264</span>   <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;&#39;</span><span class="si">{}</span><span class="s2">&#39; object does not support item assignment. JAX arrays are &quot;</span>
-<span class="g g-Whitespace">    </span><span class="mi">265</span>          <span class="s2">&quot;immutable. Instead of ``x[idx] = y``, use ``x = x.at[idx].set(y)`` &quot;</span>
-<span class="g g-Whitespace">    </span><span class="mi">266</span>          <span class="s2">&quot;or another .at[] method: &quot;</span>
-<span class="g g-Whitespace">    </span><span class="mi">267</span>          <span class="s2">&quot;https://jax.readthedocs.io/en/latest/_autosummary/jax.numpy.ndarray.at.html&quot;</span><span class="p">)</span>
-<span class="ne">--&gt; </span><span class="mi">268</span>   <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="n">msg</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)))</span>
+<span class="nn">File /opt/conda/envs/quantecon/lib/python3.11/site-packages/jax/_src/numpy/array_methods.py:270,</span> in <span class="ni">_unimplemented_setitem</span><span class="nt">(self, i, x)</span>
+<span class="g g-Whitespace">    </span><span class="mi">265</span> <span class="k">def</span> <span class="nf">_unimplemented_setitem</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+<span class="g g-Whitespace">    </span><span class="mi">266</span>   <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;&#39;</span><span class="si">{}</span><span class="s2">&#39; object does not support item assignment. JAX arrays are &quot;</span>
+<span class="g g-Whitespace">    </span><span class="mi">267</span>          <span class="s2">&quot;immutable. Instead of ``x[idx] = y``, use ``x = x.at[idx].set(y)`` &quot;</span>
+<span class="g g-Whitespace">    </span><span class="mi">268</span>          <span class="s2">&quot;or another .at[] method: &quot;</span>
+<span class="g g-Whitespace">    </span><span class="mi">269</span>          <span class="s2">&quot;https://jax.readthedocs.io/en/latest/_autosummary/jax.numpy.ndarray.at.html&quot;</span><span class="p">)</span>
+<span class="ne">--&gt; </span><span class="mi">270</span>   <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="n">msg</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)))</span>
 
 <span class="ne">TypeError</span>: &#39;&lt;class &#39;jaxlib.xla_extension.ArrayImpl&#39;&gt;&#39; object does not support item assignment. JAX arrays are immutable. Instead of ``x[idx] = y``, use ``x = x.at[idx].set(y)`` or another .at[] method: https://jax.readthedocs.io/en/latest/_autosummary/jax.numpy.ndarray.at.html
 </pre></div>
@@ -568,7 +575,7 @@ functional programming style.  More on this below.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1491487408
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1499308256
 </pre></div>
 </div>
 </div>
@@ -605,7 +612,7 @@ functional programming style.  More on this below.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1491487408
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1499308256
 </pre></div>
 </div>
 </div>
@@ -799,8 +806,8 @@ launch on the GPU / TPU (or CPU if no accelerator is detected).</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 433 ms, sys: 17.8 ms, total: 451 ms
-Wall time: 907 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 441 ms, sys: 10.1 ms, total: 451 ms
+Wall time: 950 ms
 </pre></div>
 </div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Array(2.19896006e+08, dtype=float64)
@@ -824,8 +831,8 @@ allows the Python interpreter to run ahead of GPU computations.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 4.03 ms, sys: 1.48 ms, total: 5.51 ms
-Wall time: 25.6 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 5.8 ms, sys: 0 ns, total: 5.8 ms
+Wall time: 25.8 ms
 </pre></div>
 </div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Array(2.19896006e+08, dtype=float64)
@@ -857,8 +864,8 @@ specialized to floating point arrays of size <code class="docutils literal notra
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 436 ms, sys: 9.44 ms, total: 445 ms
-Wall time: 895 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 432 ms, sys: 13.4 ms, total: 445 ms
+Wall time: 942 ms
 </pre></div>
 </div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Array(2.19896011e+08, dtype=float64)
@@ -878,8 +885,8 @@ get faster execution.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 4.94 ms, sys: 315 µs, total: 5.26 ms
-Wall time: 18.5 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 5.61 ms, sys: 618 µs, total: 6.23 ms
+Wall time: 18.6 ms
 </pre></div>
 </div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Array(2.19896011e+08, dtype=float64)
@@ -896,8 +903,8 @@ too, and the following call is dispatched to the correct compiled code.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 4.22 ms, sys: 1.42 ms, total: 5.64 ms
-Wall time: 25.8 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 3.85 ms, sys: 1.53 ms, total: 5.38 ms
+Wall time: 25.7 ms
 </pre></div>
 </div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Array(2.19896006e+08, dtype=float64)
@@ -937,8 +944,8 @@ Wall time: 25.8 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1.08 ms, sys: 0 ns, total: 1.08 ms
-Wall time: 3.1 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 743 µs, sys: 284 µs, total: 1.03 ms
+Wall time: 3.12 ms
 </pre></div>
 </div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Array(2.19896006e+08, dtype=float64)
@@ -1098,7 +1105,7 @@ compiler is</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/98d8ad6885f397353a235bbc67f91823a2b6bbea2bbd8d90999973ef5fbb0361.png"><img alt="_images/98d8ad6885f397353a235bbc67f91823a2b6bbea2bbd8d90999973ef5fbb0361.png" src="_images/98d8ad6885f397353a235bbc67f91823a2b6bbea2bbd8d90999973ef5fbb0361.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/37cd75e2bfb253d7e3cffd7e717aedd33e1ea400077bfcb5f08b7f02ac5c2bc9.png"><img alt="_images/37cd75e2bfb253d7e3cffd7e717aedd33e1ea400077bfcb5f08b7f02ac5c2bc9.png" src="_images/37cd75e2bfb253d7e3cffd7e717aedd33e1ea400077bfcb5f08b7f02ac5c2bc9.png" style="width: 80%;" /></a>
 </div>
 </div>
 </section>
@@ -1140,8 +1147,8 @@ compiler is</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 16.3 s, sys: 2.17 s, total: 18.5 s
-Wall time: 10.6 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 15.2 s, sys: 2 s, total: 17.2 s
+Wall time: 9.33 s
 </pre></div>
 </div>
 </div>
@@ -1200,8 +1207,8 @@ Wall time: 10.6 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 66.1 ms, sys: 0 ns, total: 66.1 ms
-Wall time: 127 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 64.3 ms, sys: 1.36 ms, total: 65.6 ms
+Wall time: 129 ms
 </pre></div>
 </div>
 </div>
@@ -1214,8 +1221,8 @@ Wall time: 127 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 432 µs, sys: 0 ns, total: 432 µs
-Wall time: 213 µs
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 591 µs, sys: 109 µs, total: 700 µs
+Wall time: 270 µs
 </pre></div>
 </div>
 </div>
@@ -1252,8 +1259,8 @@ Wall time: 213 µs
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 67.6 ms, sys: 0 ns, total: 67.6 ms
-Wall time: 130 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 67.7 ms, sys: 0 ns, total: 67.7 ms
+Wall time: 132 ms
 </pre></div>
 </div>
 </div>
@@ -1266,8 +1273,8 @@ Wall time: 130 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 441 µs, sys: 0 ns, total: 441 µs
-Wall time: 203 µs
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 299 µs, sys: 0 ns, total: 299 µs
+Wall time: 174 µs
 </pre></div>
 </div>
 </div>
@@ -1326,7 +1333,7 @@ Wall time: 203 µs
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 69 ms, sys: 0 ns, total: 69 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 67 ms, sys: 0 ns, total: 67 ms
 Wall time: 130 ms
 </pre></div>
 </div>
@@ -1340,8 +1347,8 @@ Wall time: 130 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 2.72 ms, sys: 0 ns, total: 2.72 ms
-Wall time: 2.09 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 2.52 ms, sys: 0 ns, total: 2.52 ms
+Wall time: 1.98 ms
 </pre></div>
 </div>
 </div>
@@ -1435,8 +1442,8 @@ significantly faster execution.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1.5 ms, sys: 0 ns, total: 1.5 ms
-Wall time: 74.4 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1.74 ms, sys: 0 ns, total: 1.74 ms
+Wall time: 75.2 ms
 </pre></div>
 </div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Array(180876.48840921, dtype=float64)

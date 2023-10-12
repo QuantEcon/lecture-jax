@@ -60,18 +60,18 @@
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
-<link href="_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
-<link href="_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link href="_static/styles/theme.css?digest=ac02cc09edc035673794" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=ac02cc09edc035673794" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=ac02cc09edc035673794" rel="stylesheet" />
 
   
-  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=ac02cc09edc035673794" rel="stylesheet" />
   <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/quantecon-book-theme.5378fd3a70a129d690fd5fc99fb75ef7.css" />
+    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=cb2d6eee9712fbd5cbf7cbc2d6baf81f7f9a9912" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
@@ -80,8 +80,9 @@
     <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
-<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=ac02cc09edc035673794" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=ac02cc09edc035673794" />
+  <script src="_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=ac02cc09edc035673794"></script>
 
 
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
@@ -96,9 +97,9 @@
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="_static/togglebutton.js"></script>
+    <script src="_static/scripts/quantecon-book-theme.js?digest=b7d60282c7125f74e59bac03c2323864e0e32e1c"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script src="_static/design-tabs.js"></script>
-    <script src="_static/quantecon-book-theme.ef2ef6c3e8da75e1e736fb5fce08cde6.js"></script>
     <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-K1NYBSC1CZ"></script>
     <script>
                 window.dataLayer = window.dataLayer || [];
@@ -174,7 +175,7 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#application-firm-dynamics">6.2.1. Application: firm dynamics</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#gibrats-law">6.2.1.1. Gibrat’s law</a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#heavy-tails">6.2.1.2. Heavy tails</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#alternative-implementation-with-lax-scan">6.2.1.3. Alternative implementation with <code class="docutils literal notranslate"><span class="pre">lax.scan</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#alternative-implementation-with-lax-fori-loop">6.2.1.3. Alternative implementation with <code class="docutils literal notranslate"><span class="pre">lax.fori_loop</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -249,7 +250,7 @@ const thebe_selector_output = ".output, .cell_output"
 <p>In addition to what’s in Anaconda, this lecture will need the following libraries:</p>
 <div class="cell tag_hide-output docutils container">
 <div class="cell_input above-output-prompt docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip install quantecon
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>quantecon
 </pre></div>
 </div>
 </div>
@@ -259,21 +260,20 @@ const thebe_selector_output = ".output, .cell_output"
 <span class="expanded">Hide code cell output</span>
 </summary>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /opt/conda/envs/quantecon/lib/python3.10/site-packages (0.7.1)
-Requirement already satisfied: requests in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (2.28.1)
-Requirement already satisfied: sympy in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (1.11.1)
-Requirement already satisfied: numpy&gt;=1.17.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (1.23.5)
-Requirement already satisfied: numba&gt;=0.49.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (0.56.4)
-Requirement already satisfied: scipy&gt;=1.5.0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from quantecon) (1.10.0)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /opt/conda/envs/quantecon/lib/python3.11/site-packages (0.7.1)
+Requirement already satisfied: numba&gt;=0.49.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (0.57.1)
+Requirement already satisfied: numpy&gt;=1.17.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (1.24.3)
+Requirement already satisfied: requests in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (2.31.0)
+Requirement already satisfied: scipy&gt;=1.5.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (1.11.1)
+Requirement already satisfied: sympy in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (1.11.1)
+Requirement already satisfied: llvmlite&lt;0.41,&gt;=0.40.0dev0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from numba&gt;=0.49.0-&gt;quantecon) (0.40.0)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: llvmlite&lt;0.40,&gt;=0.39.0dev0 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from numba&gt;=0.49.0-&gt;quantecon) (0.39.1)
-Requirement already satisfied: setuptools in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from numba&gt;=0.49.0-&gt;quantecon) (65.6.3)
-Requirement already satisfied: certifi&gt;=2017.4.17 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (2022.12.7)
-Requirement already satisfied: charset-normalizer&lt;3,&gt;=2 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (2.0.4)
-Requirement already satisfied: idna&lt;4,&gt;=2.5 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (3.4)
-Requirement already satisfied: urllib3&lt;1.27,&gt;=1.21.1 in /opt/conda/envs/quantecon/lib/python3.10/site-packages (from requests-&gt;quantecon) (1.26.14)
-Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/envs/quantecon/lib/python3.10/site-packages/mpmath-1.2.1-py3.10.egg (from sympy-&gt;quantecon) (1.2.1)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: charset-normalizer&lt;4,&gt;=2 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests-&gt;quantecon) (2.0.4)
+Requirement already satisfied: idna&lt;4,&gt;=2.5 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests-&gt;quantecon) (3.4)
+Requirement already satisfied: urllib3&lt;3,&gt;=1.21.1 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests-&gt;quantecon) (1.26.16)
+Requirement already satisfied: certifi&gt;=2017.4.17 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests-&gt;quantecon) (2023.7.22)
+Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from sympy-&gt;quantecon) (1.3.0)
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Yellow">WARNING: Running pip as the &#39;root&#39; user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv</span>
@@ -300,6 +300,7 @@ to accelerate the computations.</p>
 <span class="kn">import</span> <span class="nn">jax</span>
 <span class="kn">import</span> <span class="nn">jax.numpy</span> <span class="k">as</span> <span class="nn">jnp</span>
 <span class="kn">from</span> <span class="nn">jax</span> <span class="kn">import</span> <span class="n">random</span>
+<span class="kn">from</span> <span class="nn">jax</span> <span class="kn">import</span> <span class="n">lax</span>
 </pre></div>
 </div>
 </div>
@@ -312,7 +313,7 @@ to accelerate the computations.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Fri Sep 22 00:35:38 2023       
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Wed Oct 11 04:25:03 2023       
 +-----------------------------------------------------------------------------+
 | NVIDIA-SMI 470.182.03   Driver Version: 470.182.03   CUDA Version: 12.1     |
 |-------------------------------+----------------------+----------------------+
@@ -323,7 +324,7 @@ to accelerate the computations.</p>
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>|   0  Tesla V100-SXM2...  Off  | 00000000:00:1E.0 Off |                    0 |
-| N/A   29C    P0    38W / 300W |      0MiB / 16160MiB |      2%      Default |
+| N/A   31C    P0    39W / 300W |      0MiB / 16160MiB |      2%      Default |
 |                               |                      |                  N/A |
 +-------------------------------+----------------------+----------------------+
                                                                                
@@ -468,8 +469,12 @@ time <code class="docutils literal notranslate"><span class="pre">T</span></code
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 11 s, sys: 3.08 s, total: 14.1 s
-Wall time: 9.87 s
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+I0000 00:00:1696998303.677174    1558 tfrt_cpu_pjrt_client.cc:349] TfrtCpuClient created.
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 6.45 s, sys: 2.71 s, total: 9.16 s
+Wall time: 7.26 s
 </pre></div>
 </div>
 </div>
@@ -482,8 +487,8 @@ Wall time: 9.87 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 9.37 s, sys: 1.25 s, total: 10.6 s
-Wall time: 5.71 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 3.61 s, sys: 922 ms, total: 4.53 s
+Wall time: 2.24 s
 </pre></div>
 </div>
 </div>
@@ -509,30 +514,28 @@ time and</p></li>
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/248dc4f87254f072c97ea24cd3a3c6dd1640e6b4f0f7e307790985ef8997cb11.png"><img alt="_images/248dc4f87254f072c97ea24cd3a3c6dd1640e6b4f0f7e307790985ef8997cb11.png" src="_images/248dc4f87254f072c97ea24cd3a3c6dd1640e6b4f0f7e307790985ef8997cb11.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/93a276a6796206637df80c117797cb61c99020989359d47886bc234d18dff2e8.png"><img alt="_images/93a276a6796206637df80c117797cb61c99020989359d47886bc234d18dff2e8.png" src="_images/93a276a6796206637df80c117797cb61c99020989359d47886bc234d18dff2e8.png" style="width: 80%;" /></a>
 </div>
 </div>
 <p>The plot produces a straight line, consistent with a Pareto tail.</p>
 </section>
-<section id="alternative-implementation-with-lax-scan">
-<h4><span class="section-number">6.2.1.3. </span>Alternative implementation with <code class="docutils literal notranslate"><span class="pre">lax.scan</span></code><a class="headerlink" href="#alternative-implementation-with-lax-scan" title="Permalink to this heading">#</a></h4>
+<section id="alternative-implementation-with-lax-fori-loop">
+<h4><span class="section-number">6.2.1.3. </span>Alternative implementation with <code class="docutils literal notranslate"><span class="pre">lax.fori_loop</span></code><a class="headerlink" href="#alternative-implementation-with-lax-fori-loop" title="Permalink to this heading">#</a></h4>
 <p>If the time horizon is not too large, we can try to further accelerate our code
 by replacing the <code class="docutils literal notranslate"><span class="pre">for</span></code> loop with
-<a class="reference external" href="https://jax.readthedocs.io/en/latest/_autosummary/jax.lax.scan.html"><code class="docutils literal notranslate"><span class="pre">lax.scan</span></code></a>.</p>
+<a class="reference external" href="https://jax.readthedocs.io/en/latest/_autosummary/jax.lax.fori_loop.html"><code class="docutils literal notranslate"><span class="pre">lax.fori_loop</span></code></a>.</p>
 <p>Note, however, that</p>
 <ol class="arabic simple">
 <li><p>as mentioned above, there is not much speed gain in accelerating outer loops,</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">lax.scan</span></code> has a more complicated syntax, and, most importantly,</p></li>
-<li><p>the <code class="docutils literal notranslate"><span class="pre">lax.scan</span></code> implementation consumes far more memory, as we need to have to
+<li><p><code class="docutils literal notranslate"><span class="pre">lax.fori_loop</span></code> has a more complicated syntax, and, most importantly,</p></li>
+<li><p>the <code class="docutils literal notranslate"><span class="pre">lax.fori_loop</span></code> implementation consumes far more memory, as we need to have to
 store large matrices of random draws</p></li>
 </ol>
 <p>Hence the code below will fail due to out-of-memory errors when <code class="docutils literal notranslate"><span class="pre">T</span></code> and <code class="docutils literal notranslate"><span class="pre">M</span></code> are large.</p>
-<p>Here is the <code class="docutils literal notranslate"><span class="pre">lax.scan</span></code> version:</p>
+<p>Here is the <code class="docutils literal notranslate"><span class="pre">lax.fori_loop</span></code> version:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">jax</span> <span class="kn">import</span> <span class="n">lax</span>
-
-<span class="nd">@jax</span><span class="o">.</span><span class="n">jit</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jax</span><span class="o">.</span><span class="n">jit</span>
 <span class="k">def</span> <span class="nf">generate_draws_lax</span><span class="p">(</span><span class="n">μ_a</span><span class="o">=-</span><span class="mf">0.5</span><span class="p">,</span>
                        <span class="n">σ_a</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
                        <span class="n">μ_b</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
@@ -555,15 +558,15 @@ store large matrices of random draws</p></li>
     <span class="n">s</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">full</span><span class="p">((</span><span class="n">M</span><span class="p">,</span> <span class="p">),</span> <span class="n">s_init</span><span class="p">)</span>
 
     <span class="c1"># Define the function for each update</span>
-    <span class="k">def</span> <span class="nf">update_s</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">a_b_e_draws</span><span class="p">):</span>
-        <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">e</span> <span class="o">=</span> <span class="n">a_b_e_draws</span>
+    <span class="k">def</span> <span class="nf">update_s</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">s</span><span class="p">):</span>
+        <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">e</span> <span class="o">=</span> <span class="n">a_random</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">b_random</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">e_random</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
         <span class="n">s</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">s</span> <span class="o">&lt;</span> <span class="n">s_bar</span><span class="p">,</span>
                       <span class="n">jnp</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">e</span><span class="p">),</span>
                       <span class="n">jnp</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="o">*</span> <span class="n">s</span> <span class="o">+</span> <span class="n">jnp</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">b</span><span class="p">))</span>
-        <span class="k">return</span> <span class="n">s</span><span class="p">,</span> <span class="kc">None</span>
+        <span class="k">return</span> <span class="n">s</span>
 
     <span class="c1"># Use lax.scan to perform the calculations on all states</span>
-    <span class="n">s_final</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">lax</span><span class="o">.</span><span class="n">scan</span><span class="p">(</span><span class="n">update_s</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="p">(</span><span class="n">a_random</span><span class="p">,</span> <span class="n">b_random</span><span class="p">,</span> <span class="n">e_random</span><span class="p">))</span>
+    <span class="n">s_final</span> <span class="o">=</span> <span class="n">lax</span><span class="o">.</span><span class="n">fori_loop</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">update_s</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">s_final</span>
 
 <span class="o">%</span><span class="k">time</span> data = generate_draws_lax().block_until_ready()
@@ -571,8 +574,8 @@ store large matrices of random draws</p></li>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 502 ms, sys: 0 ns, total: 502 ms
-Wall time: 440 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 536 ms, sys: 0 ns, total: 536 ms
+Wall time: 484 ms
 </pre></div>
 </div>
 </div>
@@ -586,8 +589,8 @@ we see some speed gain over the for loop implementation:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 3.67 ms, sys: 0 ns, total: 3.67 ms
-Wall time: 34.7 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 3.89 ms, sys: 0 ns, total: 3.89 ms
+Wall time: 34.9 ms
 </pre></div>
 </div>
 </div>
@@ -607,7 +610,7 @@ Wall time: 34.7 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/d32a51c81915dc7b62560b2e083a0df3bff4e39b01adfa4af13f9badd1d7292e.png"><img alt="_images/d32a51c81915dc7b62560b2e083a0df3bff4e39b01adfa4af13f9badd1d7292e.png" src="_images/d32a51c81915dc7b62560b2e083a0df3bff4e39b01adfa4af13f9badd1d7292e.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/fe3a6e136b7384db597c8b24444c646ef3ea6d451d777e74a282e25f5e78cfd7.png"><img alt="_images/fe3a6e136b7384db597c8b24444c646ef3ea6d451d777e74a282e25f5e78cfd7.png" src="_images/fe3a6e136b7384db597c8b24444c646ef3ea6d451d777e74a282e25f5e78cfd7.png" style="width: 80%;" /></a>
 </div>
 </div>
 <p>Let’s rerun the <code class="docutils literal notranslate"><span class="pre">for</span></code> loop version on smaller <code class="docutils literal notranslate"><span class="pre">M</span></code> to compare the speed</p>
@@ -618,8 +621,8 @@ Wall time: 34.7 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 10.6 s, sys: 896 ms, total: 11.5 s
-Wall time: 6.78 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 4.1 s, sys: 716 ms, total: 4.81 s
+Wall time: 2.75 s
 </pre></div>
 </div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Array([2.389801 , 2.2558599, 3.3113828, ..., 2.7102313, 2.5520844,
@@ -628,7 +631,7 @@ Wall time: 6.78 s
 </div>
 </div>
 </div>
-<p>We see that the <code class="docutils literal notranslate"><span class="pre">lax.scan</span></code> version is faster than the <code class="docutils literal notranslate"><span class="pre">for</span></code> loop version
+<p>We see that the <code class="docutils literal notranslate"><span class="pre">lax.fori_loop</span></code> version is faster than the <code class="docutils literal notranslate"><span class="pre">for</span></code> loop version
 when memory is not an issue.</p>
 </section>
 </section>
