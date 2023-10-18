@@ -77,6 +77,7 @@ import random
 
 import jax
 import jax.numpy as jnp
+from collections import namedtuple
 ```
 
 Let's check the GPU we are running
@@ -365,55 +366,43 @@ The output process is discretized using a [quadrature method due to Tauchen](htt
 
 As we have in other places, we accelerate our code using Numba.
 
-We define a class that will store parameters, grids and transition
+We define a namedtuple to store parameters, grids and transition
 probabilities.
 
 ```{code-cell} ipython3
-:hide-output: false
+Arellano = namedtuple('Arellano', ('β', 'γ', 'r', 'ρ', 'η', 'θ', \
+                                  'B_size', 'y_size', \
+                                  'P', 'B_grid', 'y_grid', 'def_y'))
+```
 
-class Arellano_Economy:
-    " Stores data and creates primitives for the Arellano economy. "
+```{code-cell} ipython3
+def create_arellano(B_size=251,   # Grid size for bonds
+                    B_min=-0.45,   # Smallest B value
+                    B_max=0.45,    # Largest B value
+                    y_size=51,     # Grid size for income
+                    β=0.953,            # Time discount parameter
+                    γ=2.0,              # Utility parameter
+                    r=0.017,            # Lending rate
+                    ρ=0.945,            # Persistence in the income process
+                    η=0.025,            # Standard deviation of the income process
+                    θ=0.282,            # Prob of re-entering financial markets
+                    def_y_param=0.969): # Parameter governing income in default
+    # Set up grids
+    B_grid = jnp.linspace(B_min, B_max, B_size)
+    mc = qe.markov.tauchen(y_size, ρ, η)
+    y_grid, P = jnp.exp(mc.state_values), mc.P
 
-    def __init__(self,
-            B_grid_size=251,   # Grid size for bonds
-            B_grid_min=-0.45,   # Smallest B value
-            B_grid_max=0.45,    # Largest B value
-            y_grid_size=51,     # Grid size for income
-            β=0.953,            # Time discount parameter
-            γ=2.0,              # Utility parameter
-            r=0.017,            # Lending rate
-            ρ=0.945,            # Persistence in the income process
-            η=0.025,            # Standard deviation of the income process
-            θ=0.282,            # Prob of re-entering financial markets
-            def_y_param=0.969): # Parameter governing income in default
+    # Put grids on the device
+    B_grid = jax.device_put(B_grid)
+    y_grid = jax.device_put(y_grid)
+    P = jax.device_put(P)
 
-        # Save parameters
-        self.β, self.γ, self.r, = β, γ, r
-        self.ρ, self.η, self.θ = ρ, η, θ
-
-        # Set up grids
-        self.y_grid_size = y_grid_size
-        self.B_grid_size = B_grid_size
-        B_grid = jnp.linspace(B_grid_min, B_grid_max, B_grid_size)
-        mc = qe.markov.tauchen(y_grid_size, ρ, η)
-        y_grid, P = jnp.exp(mc.state_values), mc.P
-
-        # Put grids on the device
-        self.B_grid = jax.device_put(B_grid)
-        self.y_grid = jax.device_put(y_grid)
-        self.P = jax.device_put(P)
-
-        # Output received while in default, with same shape as y_grid
-        self.def_y = jnp.minimum(def_y_param * jnp.mean(self.y_grid), self.y_grid)
-
-    def params(self):
-        return self.β, self.γ, self.r, self.ρ, self.η, self.θ
-
-    def sizes(self):
-        return self.B_grid_size, self.y_grid_size
-
-    def arrays(self):
-        return self.P, self.B_grid, self.y_grid, self.def_y
+    # Output received while in default, with same shape as y_grid
+    def_y = jnp.minimum(def_y_param * jnp.mean(y_grid), y_grid)
+    
+    return Arellano(β=β, γ=γ, r=r, ρ=ρ, η=η, θ=θ, B_size=B_size, \
+                    y_size=y_size, P=P, B_grid=B_grid, y_grid=y_grid, \
+                    def_y=def_y)
 ```
 
 Here is the utility function.
@@ -519,7 +508,6 @@ def bellman(v_c, v_d, q, params, sizes, arrays):
     # Return new_v_c[i_B, i_y, i_Bp]
     val = jnp.where(c > 0, u(c, γ) + β * continuation_value, -jnp.inf)
     return val
-
 ```
 
 ```{code-cell} ipython3
@@ -558,11 +546,11 @@ def update_values_and_prices(v_c, v_d, params, sizes, arrays):
     return new_v_c, new_v_d
 ```
 
-We can now write a function that will use the `Arellano_Economy` class and the
+We can now write a function that will use the `Arellano` namedtuple and the
 functions defined above to compute the solution to our model.
 
 One of the jobs of this function is to take an instance of
-`Arellano_Economy`, which is hard for the JIT compiler to handle, and strip it
+`Arellano`, which is hard for the JIT compiler to handle, and strip it
 down to more basic objects, which are then passed out to jitted functions.
 
 ```{code-cell} ipython3
@@ -570,14 +558,16 @@ down to more basic objects, which are then passed out to jitted functions.
 
 def solve(model, tol=1e-8, max_iter=10_000):
     """
-    Given an instance of Arellano_Economy, this function computes the optimal
+    Given an instance of Arellano, this function computes the optimal
     policy and value functions.
     """
     # Unpack
-    params = model.params()
-    sizes = model.sizes()
-    arrays = model.arrays()
-    B_size, y_size = sizes
+    
+    β, γ, r, ρ, η, θ, B_size, y_size, P, B_grid, y_grid, def_y = model
+    
+    params = β, γ, r, ρ, η, θ
+    sizes = B_size, y_size
+    arrays = P, B_grid, y_grid, def_y
 
     # Initial conditions for v_c and v_d
     v_c = jnp.zeros((B_size, y_size))
@@ -605,7 +595,7 @@ Let's try solving the model.
 ```{code-cell} ipython3
 :hide-output: false
 
-ae = Arellano_Economy()
+ae = create_arellano()
 ```
 
 ```{code-cell} ipython3
@@ -631,13 +621,13 @@ def simulate(model, T, v_c, v_d, q, B_star, key):
     """
     Simulates the Arellano 2008 model of sovereign debt
 
-    Here `model` is an instance of `Arellano_Economy` and `T` is the length of
+    Here `model` is an instance of `Arellano` and `T` is the length of
     the simulation.  Endogenous objects `v_c`, `v_d`, `q` and `B_star` are
     assumed to come from a solution to `model`.
 
     """
     # Unpack elements of the model
-    B_size, y_size = model.sizes()
+    B_size, y_size = model.B_size, model.y_size
     B_grid, y_grid, P = model.B_grid, model.y_grid, model.P
     B0_idx = jnp.searchsorted(B_grid, 1e-10)  # Index at which B is near zero
 
@@ -697,8 +687,7 @@ Let’s start by trying to replicate the results obtained in {cite}`Are08`.
 
 In what follows, all results are computed using Arellano’s parameter values.
 
-The values can be seen in the `__init__` method of the `Arellano_Economy`
-shown above.
+The values can be seen in the `create_arellano` method shown above.
 
 For example, `r=0.017` matches the average quarterly rate on a 5 year US treasury over the period 1983–2001.
 
@@ -716,7 +705,7 @@ values of output $ y $.
 - $ y_H $ is 5% above  the mean of the $ y $ grid values
 
 
-The grid used to compute this figure was relatively fine (`y_grid_size, B_grid_size = 51, 251`), which explains the minor differences between this and
+The grid used to compute this figure was relatively fine (`y_size, B_size = 51, 251`), which explains the minor differences between this and
 Arrelano’s figure.
 
 The figure shows that
@@ -766,7 +755,7 @@ Periods of relative stability are followed by sharp spikes in the discount rate 
 
 To the extent that you can, replicate the figures shown above
 
-- Use the parameter values listed as defaults in `Arellano_Economy`.
+- Use the parameter values listed as defaults in `Arellano`.
 - The time series will of course vary depending on the shock draws.
 
 ```{exercise-end}
@@ -785,7 +774,7 @@ Compute the value function, policy and equilibrium prices
 ```{code-cell} ipython3
 :hide-output: false
 
-ae = Arellano_Economy()
+ae = create_arellano()
 v_c, v_d, q, B_star = solve(ae)
 ```
 
@@ -796,7 +785,7 @@ Compute the bond price schedule as seen in figure 3 of Arellano (2008)
 
 # Unpack some useful names
 B_grid, y_grid, P = ae.B_grid, ae.y_grid, ae.P
-B_size, y_size = ae.sizes()
+B_size, y_size = ae.B_size, ae.y_size
 r = ae.r
 
 # Create "Y High" and "Y Low" values as 5% devs from mean
