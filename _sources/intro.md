@@ -12,9 +12,7 @@ kernelspec:
 # Quantitative Economics with JAX
 
 This website presents a set of lectures on quantitative economic modeling
-using GPUs and [Google JAX](https://jax.readthedocs.io).   The lectures
-are designed and written by [Thomas J. Sargent](http://www.tomsargent.com/) and
-[John Stachurski](https://johnstachurski.net/).
+using GPUs and [Google JAX](https://jax.readthedocs.io).
 
 
 ```{tableofcontents}
