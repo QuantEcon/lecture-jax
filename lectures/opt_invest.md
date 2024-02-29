@@ -4,13 +4,12 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.14.5
+    jupytext_version: 1.16.1
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
   name: python3
 ---
-
 
 # Optimal Investment
 
@@ -76,14 +75,6 @@ We will use 64 bit floats with JAX in order to increase the precision.
 jax.config.update("jax_enable_x64", True)
 ```
 
-
-We need the following successive approximation function.
-
-```{code-cell} ipython3
-:load: _static/lecture_specific/successive_approx.py
-```
-
-
 Let's define a function to create an investment model using the given parameters.
 
 ```{code-cell} ipython3
@@ -112,7 +103,6 @@ def create_investment_model(
     arrays = tuple(map(jax.device_put, arrays))
     return constants, sizes, arrays
 ```
-
 
 Let's re-write the vectorized version of the right-hand side of the
 Bellman equation (before maximization), which is a 3D array representing
@@ -183,7 +173,6 @@ def compute_r_σ(σ, constants, sizes, arrays):
 compute_r_σ = jax.jit(compute_r_σ, static_argnums=(2,))
 ```
 
-
 Define the Bellman operator.
 
 ```{code-cell} ipython3
@@ -194,7 +183,6 @@ def T(v, constants, sizes, arrays):
 T = jax.jit(T, static_argnums=(2,))
 ```
 
-
 The following function computes a v-greedy policy.
 
 ```{code-cell} ipython3
@@ -204,7 +192,6 @@ def get_greedy(v, constants, sizes, arrays):
 
 get_greedy = jax.jit(get_greedy, static_argnums=(2,))
 ```
-
 
 Define the $\sigma$-policy operator.
 
@@ -235,7 +222,6 @@ def T_σ(v, σ, constants, sizes, arrays):
 
 T_σ = jax.jit(T_σ, static_argnums=(3,))
 ```
-
 
 Next, we want to computes the lifetime value of following policy $\sigma$.
 
@@ -285,8 +271,7 @@ def L_σ(v, σ, constants, sizes, arrays):
 L_σ = jax.jit(L_σ, static_argnums=(3,))
 ```
 
-Now we can define a function to compute $v_{\sigma}$ 
-
+Now we can define a function to compute $v_{\sigma}$
 
 ```{code-cell} ipython3
 def get_value(σ, constants, sizes, arrays):
@@ -306,6 +291,11 @@ def get_value(σ, constants, sizes, arrays):
 get_value = jax.jit(get_value, static_argnums=(2,))
 ```
 
+We use successive approximation for VFI.
+
+```{code-cell} ipython3
+:load: _static/lecture_specific/successive_approx.py
+```
 
 Finally, we introduce the solvers that implement VFI, HPI and OPI.
 
@@ -355,7 +345,6 @@ print(out)
 print(f"OPI completed in {elapsed} seconds.")
 ```
 
-
 Here's the plot of the Howard policy, as a function of $y$ at the highest and lowest values of $z$.
 
 ```{code-cell} ipython3
@@ -376,7 +365,6 @@ ax.plot(y_grid, y_grid[σ_star[:, -1]], label="$\\sigma^*(\cdot, z_N)$")
 ax.legend(fontsize=12)
 plt.show()
 ```
-
 
 Let's plot the time taken by each of the solvers and compare them.
 
@@ -403,6 +391,7 @@ print(f"VFI completed in {vfi_time} seconds.")
 
 ```{code-cell} ipython3
 :tags: [hide-output]
+
 opi_times = []
 for m in m_vals:
     print(f"Running optimistic policy iteration with m={m}.")
