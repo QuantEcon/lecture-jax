@@ -13,6 +13,8 @@ kernelspec:
 
 # An Asset Pricing Problem
 
+```{include} _admonition/gpu.md
+```
 
 ## Overview
 

@@ -27,10 +27,6 @@ kernelspec:
 ```{index} single: Markov process, inventory
 ```
 
-```{contents} Contents
-:depth: 2
-```
-
 ## Overview
 
 This lecture explores JAX implementations of the exercises in the lecture on [inventory dynamics](https://python.quantecon.org/inventory_dynamics.html).
