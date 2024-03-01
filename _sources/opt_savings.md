@@ -4,7 +4,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.14.5
+    jupytext_version: 1.16.1
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -65,20 +65,13 @@ where
 
 $$   u(c) = \frac{c^{1-\gamma}}{1-\gamma} $$
 
-+++
-
-We use successive approximation for VFI.
-
-```{code-cell} ipython3
-:load: _static/lecture_specific/successive_approx.py
-```
 
 ## Model primitives
 
 First we define a model that stores parameters and grids
 
 ```{code-cell} ipython3
-def create_consumption_model(R=1.01,                # Gross interest rate
+def create_consumption_model(R=1.01,                    # Gross interest rate
                              β=0.98,                    # Discount factor
                              γ=2,                       # CRRA parameter
                              w_min=0.01,                # Min wealth
@@ -140,8 +133,6 @@ which is defined as the vector
 
 $$ r_\sigma(w, y) := r(w, y, \sigma(w, y)) $$
 
-
-
 ```{code-cell} ipython3
 def compute_r_σ(σ, constants, sizes, arrays):
     """
@@ -187,9 +178,9 @@ def T_σ(v, σ, constants, sizes, arrays):
     Q = jnp.reshape(Q, (1, y_size, y_size))
 
     # Calculate the expected sum Σ_jp v[σ[i, j], jp] * Q[i, j, jp]
-    Ev = jnp.sum(V * Q, axis=2)
+    EV = jnp.sum(V * Q, axis=2)
 
-    return r_σ + β * Ev
+    return r_σ + β * EV
 ```
 
 and the Bellman operator $T$
@@ -260,7 +251,7 @@ def L_σ(v, σ, constants, sizes, arrays):
     return v - β * jnp.sum(V * Q, axis=2)
 ```
 
-Now we can define a function to compute $v_{\sigma}$ 
+Now we can define a function to compute $v_{\sigma}$
 
 ```{code-cell} ipython3
 def get_value(σ, constants, sizes, arrays):
@@ -289,6 +280,12 @@ get_greedy = jax.jit(get_greedy, static_argnums=(2,))
 get_value = jax.jit(get_value, static_argnums=(2,))
 T_σ = jax.jit(T_σ, static_argnums=(3,))
 L_σ = jax.jit(L_σ, static_argnums=(3,))
+```
+
+We use successive approximation for VFI.
+
+```{code-cell} ipython3
+:load: _static/lecture_specific/successive_approx.py
 ```
 
 ## Solvers
@@ -353,7 +350,7 @@ print("Starting VFI.")
 start_time = time.time()
 out = value_iteration(model)
 elapsed = time.time() - start_time
-print(f"VFI(jax not in succ) completed in {elapsed} seconds.")
+print(f"VFI completed in {elapsed} seconds.")
 ```
 
 ```{code-cell} ipython3

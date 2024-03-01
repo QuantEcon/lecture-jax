@@ -312,7 +312,7 @@ P_t = a_0 - a_1 Y_t + Z_t,
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Thu Dec 21 00:59:38 2023       
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Fri Mar  1 22:33:19 2024       
 +-----------------------------------------------------------------------------+
 | NVIDIA-SMI 470.182.03   Driver Version: 470.182.03   CUDA Version: 12.1     |
 |-------------------------------+----------------------+----------------------+
@@ -323,7 +323,7 @@ P_t = a_0 - a_1 Y_t + Z_t,
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>|   0  Tesla V100-SXM2...  Off  | 00000000:00:1E.0 Off |                    0 |
-| N/A   33C    P0    39W / 300W |      0MiB / 16160MiB |      2%      Default |
+| N/A   29C    P0    37W / 300W |      0MiB / 16160MiB |      2%      Default |
 |                               |                      |                  N/A |
 +-------------------------------+----------------------+----------------------+
                                                                                
@@ -342,34 +342,6 @@ P_t = a_0 - a_1 Y_t + Z_t,
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">jax</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="s2">&quot;jax_enable_x64&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<p>We need the following successive approximation function.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">successive_approx</span><span class="p">(</span><span class="n">T</span><span class="p">,</span>                     <span class="c1"># Operator (callable)</span>
-                      <span class="n">x_0</span><span class="p">,</span>                   <span class="c1"># Initial condition</span>
-                      <span class="n">tolerance</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">,</span>        <span class="c1"># Error tolerance</span>
-                      <span class="n">max_iter</span><span class="o">=</span><span class="mi">10_000</span><span class="p">,</span>       <span class="c1"># Max iteration bound</span>
-                      <span class="n">print_step</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span>         <span class="c1"># Print at multiples</span>
-                      <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-    <span class="n">x</span> <span class="o">=</span> <span class="n">x_0</span>
-    <span class="n">error</span> <span class="o">=</span> <span class="n">tolerance</span> <span class="o">+</span> <span class="mi">1</span>
-    <span class="n">k</span> <span class="o">=</span> <span class="mi">1</span>
-    <span class="k">while</span> <span class="n">error</span> <span class="o">&gt;</span> <span class="n">tolerance</span> <span class="ow">and</span> <span class="n">k</span> <span class="o">&lt;=</span> <span class="n">max_iter</span><span class="p">:</span>
-        <span class="n">x_new</span> <span class="o">=</span> <span class="n">T</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-        <span class="n">error</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">x_new</span> <span class="o">-</span> <span class="n">x</span><span class="p">))</span>
-        <span class="k">if</span> <span class="n">verbose</span> <span class="ow">and</span> <span class="n">k</span> <span class="o">%</span> <span class="n">print_step</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Completed iteration </span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2"> with error </span><span class="si">{</span><span class="n">error</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
-        <span class="n">x</span> <span class="o">=</span> <span class="n">x_new</span>
-        <span class="n">k</span> <span class="o">+=</span> <span class="mi">1</span>
-    <span class="k">if</span> <span class="n">error</span> <span class="o">&gt;</span> <span class="n">tolerance</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Warning: Iteration hit upper bound </span><span class="si">{</span><span class="n">max_iter</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="n">verbose</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Terminated successfully in </span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2"> iterations.&quot;</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">x</span>
 </pre></div>
 </div>
 </div>
@@ -599,6 +571,34 @@ step is to define the function <span class="math notranslate nohighlight">\(L_{\
 </div>
 </div>
 </div>
+<p>We use successive approximation for VFI.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">successive_approx_jax</span><span class="p">(</span><span class="n">x_0</span><span class="p">,</span>                   <span class="c1"># Initial condition</span>
+                          <span class="n">constants</span><span class="p">,</span>
+                          <span class="n">sizes</span><span class="p">,</span>
+                          <span class="n">arrays</span><span class="p">,</span>                 
+                          <span class="n">tolerance</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">,</span>        <span class="c1"># Error tolerance</span>
+                          <span class="n">max_iter</span><span class="o">=</span><span class="mi">10_000</span><span class="p">):</span>      <span class="c1"># Max iteration bound</span>
+
+    <span class="k">def</span> <span class="nf">body_fun</span><span class="p">(</span><span class="n">k_x_err</span><span class="p">):</span>
+        <span class="n">k</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">error</span> <span class="o">=</span> <span class="n">k_x_err</span>
+        <span class="n">x_new</span> <span class="o">=</span> <span class="n">T</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">constants</span><span class="p">,</span> <span class="n">sizes</span><span class="p">,</span> <span class="n">arrays</span><span class="p">)</span>
+        <span class="n">error</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">x_new</span> <span class="o">-</span> <span class="n">x</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">x_new</span><span class="p">,</span> <span class="n">error</span>
+
+    <span class="k">def</span> <span class="nf">cond_fun</span><span class="p">(</span><span class="n">k_x_err</span><span class="p">):</span>
+        <span class="n">k</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">error</span> <span class="o">=</span> <span class="n">k_x_err</span>
+        <span class="k">return</span> <span class="n">jnp</span><span class="o">.</span><span class="n">logical_and</span><span class="p">(</span><span class="n">error</span> <span class="o">&gt;</span> <span class="n">tolerance</span><span class="p">,</span> <span class="n">k</span> <span class="o">&lt;</span> <span class="n">max_iter</span><span class="p">)</span>
+
+    <span class="n">k</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">error</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">lax</span><span class="o">.</span><span class="n">while_loop</span><span class="p">(</span><span class="n">cond_fun</span><span class="p">,</span> <span class="n">body_fun</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">x_0</span><span class="p">,</span> <span class="n">tolerance</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">x</span>
+
+<span class="n">successive_approx_jax</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">jit</span><span class="p">(</span><span class="n">successive_approx_jax</span><span class="p">,</span> <span class="n">static_argnums</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,))</span>
+</pre></div>
+</div>
+</div>
+</div>
 <p>Finally, we introduce the solvers that implement VFI, HPI and OPI.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -606,10 +606,9 @@ step is to define the function <span class="math notranslate nohighlight">\(L_{\
 
 <span class="k">def</span> <span class="nf">value_iteration</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">):</span>
     <span class="n">constants</span><span class="p">,</span> <span class="n">sizes</span><span class="p">,</span> <span class="n">arrays</span> <span class="o">=</span> <span class="n">model</span>
-    <span class="n">_T</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">T</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">constants</span><span class="p">,</span> <span class="n">sizes</span><span class="p">,</span> <span class="n">arrays</span><span class="p">)</span>
     <span class="n">vz</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">sizes</span><span class="p">)</span>
 
-    <span class="n">v_star</span> <span class="o">=</span> <span class="n">successive_approx</span><span class="p">(</span><span class="n">_T</span><span class="p">,</span> <span class="n">vz</span><span class="p">,</span> <span class="n">tolerance</span><span class="o">=</span><span class="n">tol</span><span class="p">)</span>
+    <span class="n">v_star</span> <span class="o">=</span> <span class="n">successive_approx_jax</span><span class="p">(</span><span class="n">vz</span><span class="p">,</span> <span class="n">constants</span><span class="p">,</span> <span class="n">sizes</span><span class="p">,</span> <span class="n">arrays</span><span class="p">,</span> <span class="n">tolerance</span><span class="o">=</span><span class="n">tol</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">get_greedy</span><span class="p">(</span><span class="n">v_star</span><span class="p">,</span> <span class="n">constants</span><span class="p">,</span> <span class="n">sizes</span><span class="p">,</span> <span class="n">arrays</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -687,7 +686,7 @@ Concluded loop 9 with error 1.
 Concluded loop 10 with error 1.
 Concluded loop 11 with error 1.
 Concluded loop 12 with error 0.
-TOC: Elapsed: 0:00:1.30
+TOC: Elapsed: 0:00:1.36
 [[ 2  2  2 ...  6  6  6]
  [ 3  3  3 ...  7  7  7]
  [ 4  4  4 ...  7  7  7]
@@ -695,7 +694,7 @@ TOC: Elapsed: 0:00:1.30
  [82 82 82 ... 86 86 86]
  [83 83 83 ... 86 86 86]
  [84 84 84 ... 87 87 87]]
-HPI completed in 1.3070704936981201 seconds.
+HPI completed in 1.3695476055145264 seconds.
 </pre></div>
 </div>
 </div>
@@ -721,7 +720,7 @@ HPI completed in 1.3070704936981201 seconds.
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Starting VFI.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:2.04
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:0.48
 [[ 2  2  2 ...  6  6  6]
  [ 3  3  3 ...  7  7  7]
  [ 4  4  4 ...  7  7  7]
@@ -729,7 +728,7 @@ HPI completed in 1.3070704936981201 seconds.
  [82 82 82 ... 86 86 86]
  [83 83 83 ... 86 86 86]
  [84 84 84 ... 87 87 87]]
-VFI completed in 2.0406382083892822 seconds.
+VFI completed in 0.48784327507019043 seconds.
 </pre></div>
 </div>
 </div>
@@ -755,7 +754,7 @@ VFI completed in 2.0406382083892822 seconds.
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Starting OPI.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:0.82
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:1.25
 [[ 2  2  2 ...  6  6  6]
  [ 3  3  3 ...  7  7  7]
  [ 4  4  4 ...  7  7  7]
@@ -763,7 +762,7 @@ VFI completed in 2.0406382083892822 seconds.
  [82 82 82 ... 86 86 86]
  [83 83 83 ... 86 86 86]
  [84 84 84 ... 87 87 87]]
-OPI completed in 0.8238322734832764 seconds.
+OPI completed in 1.2522227764129639 seconds.
 </pre></div>
 </div>
 </div>
@@ -861,12 +860,10 @@ TOC: Elapsed: 0:00:0.04
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>PI completed in 0.04577064514160156 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>PI completed in 0.04635930061340332 seconds.
 Running value function iteration.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:1.44
-VFI completed in 1.442993402481079 seconds.
+TOC: Elapsed: 0:00:0.09
+VFI completed in 0.09667754173278809 seconds.
 </pre></div>
 </div>
 </div>
@@ -893,78 +890,78 @@ VFI completed in 1.442993402481079 seconds.
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Running optimistic policy iteration with m=5.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:0.83
-OPI with m=5 completed in 0.8374240398406982 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:0.89
+OPI with m=5 completed in 0.8921821117401123 seconds.
 Running optimistic policy iteration with m=45.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:0.63
-OPI with m=45 completed in 0.6356334686279297 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:0.67
+OPI with m=45 completed in 0.6748077869415283 seconds.
 Running optimistic policy iteration with m=85.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:0.66
-OPI with m=85 completed in 0.6696212291717529 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:0.70
+OPI with m=85 completed in 0.702730655670166 seconds.
 Running optimistic policy iteration with m=125.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:0.68
-OPI with m=125 completed in 0.6830582618713379 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:0.71
+OPI with m=125 completed in 0.7186985015869141 seconds.
 Running optimistic policy iteration with m=165.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:0.73
-OPI with m=165 completed in 0.7334933280944824 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:0.78
+OPI with m=165 completed in 0.7884385585784912 seconds.
 Running optimistic policy iteration with m=205.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:0.84
-OPI with m=205 completed in 0.8447787761688232 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:0.90
+OPI with m=205 completed in 0.9016647338867188 seconds.
 Running optimistic policy iteration with m=245.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:0.90
-OPI with m=245 completed in 0.905911922454834 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:0.98
+OPI with m=245 completed in 0.9810824394226074 seconds.
 Running optimistic policy iteration with m=285.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:0.97
-OPI with m=285 completed in 0.9756362438201904 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:1.06
+OPI with m=285 completed in 1.060594081878662 seconds.
 Running optimistic policy iteration with m=325.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:1.12
-OPI with m=325 completed in 1.120331048965454 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:1.21
+OPI with m=325 completed in 1.2161359786987305 seconds.
 Running optimistic policy iteration with m=365.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:1.27
-OPI with m=365 completed in 1.2743430137634277 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:1.35
+OPI with m=365 completed in 1.3567640781402588 seconds.
 Running optimistic policy iteration with m=405.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:1.40
-OPI with m=405 completed in 1.4083504676818848 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:1.48
+OPI with m=405 completed in 1.486661672592163 seconds.
 Running optimistic policy iteration with m=445.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:1.56
-OPI with m=445 completed in 1.5652389526367188 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:1.66
+OPI with m=445 completed in 1.664196491241455 seconds.
 Running optimistic policy iteration with m=485.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:1.67
-OPI with m=485 completed in 1.675036907196045 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:1.78
+OPI with m=485 completed in 1.7889108657836914 seconds.
 Running optimistic policy iteration with m=525.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:1.82
-OPI with m=525 completed in 1.8284337520599365 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:1.94
+OPI with m=525 completed in 1.9443671703338623 seconds.
 Running optimistic policy iteration with m=565.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:1.96
-OPI with m=565 completed in 1.9662644863128662 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:2.05
+OPI with m=565 completed in 2.0563035011291504 seconds.
 </pre></div>
 </div>
 </div>
@@ -986,7 +983,7 @@ OPI with m=565 completed in 1.9662644863128662 seconds.
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/ec75c921c4d1eaf5c4046411ef3fbf036d336fae698e3aadad01375fdb5aedc6.png"><img alt="_images/ec75c921c4d1eaf5c4046411ef3fbf036d336fae698e3aadad01375fdb5aedc6.png" src="_images/ec75c921c4d1eaf5c4046411ef3fbf036d336fae698e3aadad01375fdb5aedc6.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/c9fdbfc4ad89cef6f9b88a349a7b4d3e87e6d09a0d5b004cd58be5e385c77376.png"><img alt="_images/c9fdbfc4ad89cef6f9b88a349a7b4d3e87e6d09a0d5b004cd58be5e385c77376.png" src="_images/c9fdbfc4ad89cef6f9b88a349a7b4d3e87e6d09a0d5b004cd58be5e385c77376.png" style="width: 80%;" /></a>
 </div>
 </div>
 </section>
@@ -1197,9 +1194,8 @@ OPI with m=565 completed in 1.9662644863128662 seconds.
                     <li data-tippy-content="Increase font size" class="btn__plus"><i data-feather="plus-circle"></i></li>
                     <li data-tippy-content="Decrease font size" class="btn__minus"><i data-feather="minus-circle"></i></li>
                     <li data-tippy-content="Change contrast" class="btn__contrast"><i data-feather="sunset"></i></li>
-                    <li data-tippy-content="Download Notebook"><a href="/_notebooks/opt_invest.ipynb" download><i data-feather="download-cloud"></i></a></li>
                     <li class="settings-button" id="settingsButton"><div data-tippy-content="Launch Notebook"><i data-feather="play-circle"></i></div></li>
-                        <li class="download-pdf" id="downloadButton"><i data-feather="file"></i></li>
+                        <li data-tippy-content="Download PDF" onClick="window.print()"><i data-feather="file"></i></li>
                     <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-jax/blob/main/lectures/opt_invest.md" download><i data-feather="github"></i></a></li>
                 </ul>
 
@@ -1212,7 +1208,7 @@ OPI with m=565 completed in 1.9662644863128662 seconds.
                     <p>Lecture (PDF)</p>
                 </li>
                 <li class="download-pdf-file">
-                    <a href="/_pdf/quantecon-jax.pdf" download><p>Book (PDF)</p></a>
+                    <a href="" download><p>Book (PDF)</p></a>
                 </li>
             </ul>
         </div>

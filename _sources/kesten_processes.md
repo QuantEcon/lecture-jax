@@ -24,10 +24,6 @@ kernelspec:
 ```{index} single: Linear State Space Models
 ```
 
-```{contents} Contents
-:depth: 2
-```
-
 ```{include} _admonition/gpu.md
 ```
 
