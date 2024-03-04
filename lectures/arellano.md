@@ -370,16 +370,25 @@ We define a namedtuple to store parameters, grids and transition
 probabilities.
 
 ```{code-cell} ipython3
-Arellano_Economy = namedtuple('Arellano_Economy', ('β', 'γ', 'r', 'ρ', 'η', 'θ', \
-                                                  'B_size', 'y_size', \
-                                                  'P', 'B_grid', 'y_grid', 'def_y'))
+ArellanoEconomy = namedtuple('ArellanoEconomy', ('β',       # Time discount parameter
+                                                   'γ',       # Utility parameter
+                                                   'r',       # Lending rate
+                                                   'ρ',       # Persistence in the income process
+                                                   'η',       # Standard deviation of the income process
+                                                   'θ',       # Prob of re-entering financial markets
+                                                   'B_size',  # Grid size for bonds
+                                                   'y_size',  # Grid size for income
+                                                   'P',       # Markov matrix governing the income process
+                                                   'B_grid',  # Bond unit grid
+                                                   'y_grid',  # State values of the income process  
+                                                   'def_y'))  # Default income process
 ```
 
 ```{code-cell} ipython3
-def create_arellano(B_size=251,   # Grid size for bonds
-                    B_min=-0.45,   # Smallest B value
-                    B_max=0.45,    # Largest B value
-                    y_size=51,     # Grid size for income
+def create_arellano(B_size=251,         # Grid size for bonds
+                    B_min=-0.45,        # Smallest B value
+                    B_max=0.45,         # Largest B value
+                    y_size=51,          # Grid size for income
                     β=0.953,            # Time discount parameter
                     γ=2.0,              # Utility parameter
                     r=0.017,            # Lending rate
@@ -400,8 +409,8 @@ def create_arellano(B_size=251,   # Grid size for bonds
     # Output received while in default, with same shape as y_grid
     def_y = jnp.minimum(def_y_param * jnp.mean(y_grid), y_grid)
     
-    return Arellano_Economy(β=β, γ=γ, r=r, ρ=ρ, η=η, θ=θ, B_size=B_size, \
-                            y_size=y_size, P=P, B_grid=B_grid, y_grid=y_grid, \
+    return ArellanoEconomy(β=β, γ=γ, r=r, ρ=ρ, η=η, θ=θ, B_size=B_size, 
+                            y_size=y_size, P=P, B_grid=B_grid, y_grid=y_grid, 
                             def_y=def_y)
 ```
 
@@ -547,11 +556,11 @@ def update_values_and_prices(v_c, v_d, params, sizes, arrays):
     return new_v_c, new_v_d
 ```
 
-We can now write a function that will use an instance of `Arellano_Economy` and 
+We can now write a function that will use an instance of `ArellanoEconomy` and 
 the functions defined above to compute the solution to our model.
 
 One of the jobs of this function is to take an instance of
-`Arellano_Economy`, which is hard for the JIT compiler to handle, and strip it
+`ArellanoEconomy`, which is hard for the JIT compiler to handle, and strip it
 down to more basic objects, which are then passed out to jitted functions.
 
 ```{code-cell} ipython3
@@ -559,7 +568,7 @@ down to more basic objects, which are then passed out to jitted functions.
 
 def solve(model, tol=1e-8, max_iter=10_000):
     """
-    Given an instance of `Arellano_Economy`, this function computes the optimal
+    Given an instance of `ArellanoEconomy`, this function computes the optimal
     policy and value functions.
     """
     # Unpack
@@ -622,7 +631,7 @@ def simulate(model, T, v_c, v_d, q, B_star, key):
     """
     Simulates the Arellano 2008 model of sovereign debt
 
-    Here `model` is an instance of `Arellano_Economy` and `T` is the length of
+    Here `model` is an instance of `ArellanoEconomy` and `T` is the length of
     the simulation.  Endogenous objects `v_c`, `v_d`, `q` and `B_star` are
     assumed to come from a solution to `model`.
 
@@ -687,7 +696,7 @@ def simulate(model, T, v_c, v_d, q, B_star, key):
 
 Let’s start by trying to replicate the results obtained in {cite}`Are08`.
 
-In what follows, all results are computed using parameter values of `Arellano_Economy` created by `create_arellano`.
+In what follows, all results are computed using parameter values of `ArellanoEconomy` created by `create_arellano`.
 
 For example, `r=0.017` matches the average quarterly rate on a 5 year US treasury over the period 1983–2001.
 
@@ -755,7 +764,7 @@ Periods of relative stability are followed by sharp spikes in the discount rate 
 
 To the extent that you can, replicate the figures shown above
 
-- Use the parameter values listed as defaults in `Arellano_Economy` created by `create_arellano`.
+- Use the parameter values listed as defaults in `ArellanoEconomy` created by `create_arellano`.
 - The time series will of course vary depending on the shock draws.
 
 ```{exercise-end}
