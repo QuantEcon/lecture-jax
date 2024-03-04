@@ -4,7 +4,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.14.5
+    jupytext_version: 1.16.1
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -50,7 +50,8 @@ A less sophisticated version of this lecture (without JAX) can be found
 
 We use the following imports
 
-```{code-cell} ipython3
+```{code-cell}
+import time
 import matplotlib.pyplot as plt
 import numpy as np
 import jax
@@ -60,19 +61,19 @@ from collections import namedtuple
 
 Let's check the GPU we are running
 
-```{code-cell} ipython3
+```{code-cell}
 !nvidia-smi
 ```
 
 We will use 64 bit floats with JAX in order to increase the precision.
 
-```{code-cell} ipython3
+```{code-cell}
 jax.config.update("jax_enable_x64", True)
 ```
 
 We will use the following function to compute stationary distributions of stochastic matrices.  (For a reference to the algorithm, see p. 88 of [Economic Dynamics](https://johnstachurski.net/edtc).)
 
-```{code-cell} ipython3
+```{code-cell}
 # Compute the stationary distribution of P by matrix inversion.
 
 @jax.jit
@@ -117,7 +118,7 @@ The parameter $ \delta $ is the depreciation rate.
 
 These parameters are stored in the following namedtuple.
 
-```{code-cell} ipython3
+```{code-cell}
 Firm = namedtuple('Firm', ('A', 'N', 'α', 'β', 'δ'))
 
 def create_firm(A=1.0,
@@ -125,6 +126,7 @@ def create_firm(A=1.0,
                 α=0.33,
                 β=0.96,
                 δ=0.05):
+
     return Firm(A=A, N=N, α=α, β=β, δ=δ)
 ```
 
@@ -138,16 +140,14 @@ the firm’s inverse demand for capital is
 r = A \alpha  \left( \frac{N}{K} \right)^{1 - \alpha} - \delta
 ```
 
-```{code-cell} ipython3
-def rd(K, f):
+```{code-cell}
+def r_given_k(K, firm):
     """
     Inverse demand curve for capital.  The interest rate associated with a
     given demand for capital K.
     """
-    A, N, α, β, δ = f
+    A, N, α, β, δ = firm
     return A * α * (N / K)**(1 - α) - δ
-
-rd = jax.jit(rd, static_argnums=(1,))
 ```
 
 Using {eq}`equation-aiy-rgk` and the firm’s first-order condition for labor, 
@@ -160,15 +160,13 @@ we can pin down the equilibrium wage rate as a function of $ r $ as
 w(r) = A  (1 - \alpha)  (A \alpha / (r + \delta))^{\alpha / (1 - \alpha)}
 ```
 
-```{code-cell} ipython3
+```{code-cell}
 def r_to_w(r, f):
     """
     Equilibrium wages associated with a given interest rate r.
     """
     A, N, α, β, δ = f
     return A * (1 - α) * (A * α / (r + δ))**(α / (1 - α))
-
-r_to_w = jax.jit(r_to_w, static_argnums=(1,))
 ```
 
 ## Households
@@ -221,7 +219,7 @@ For now we assume that $u(c) = \log(c)$.
 This namedtuple stores the parameters that define a household asset
 accumulation problem and the grids used to solve it.
 
-```{code-cell} ipython3
+```{code-cell}
 Household = namedtuple('Household', ('r', 'w', 'β', 'a_size', 'z_size', \
                                      'a_grid', 'z_grid', 'Π'))
 
@@ -244,8 +242,7 @@ def create_household(r=0.01,                      # Interest rate
                      a_grid=a_grid, z_grid=z_grid, Π=Π)
 ```
 
-```{code-cell} ipython3
-@jax.jit
+```{code-cell}
 def u(c):
     return jnp.log(c)
 ```
@@ -258,7 +255,7 @@ $$
 $$
 for all $(a, z, a')$.
 
-```{code-cell} ipython3
+```{code-cell}
 def B(v, constants, sizes, arrays):
     # Unpack
     r, w, β = constants
@@ -284,7 +281,7 @@ B = jax.jit(B, static_argnums=(2,))
 
 The next function computes greedy policies.
 
-```{code-cell} ipython3
+```{code-cell}
 # Computes a v-greedy policy, returned as a set of indices
 def get_greedy(v, constants, sizes, arrays):
     return jnp.argmax(B(v, constants, sizes, arrays), axis=2)
@@ -303,7 +300,7 @@ $$
     r_{\sigma}[i, j] = r[i, j, \sigma[i, j]]
 $$
 
-```{code-cell} ipython3
+```{code-cell}
 def compute_r_σ(σ, constants, sizes, arrays):
     # Unpack
     r, w, β = constants
@@ -342,9 +339,7 @@ Defining the map as above works in a more intuitive multi-index setting
 
 and avoids instantiating the large matrix $P_{\sigma}$.
 
-The following linear operator is also needed for policy iteration.
-
-```{code-cell} ipython3
+```{code-cell}
 def R_σ(v, σ, constants, sizes, arrays):
     # Unpack
     r, w, β = constants
@@ -368,7 +363,7 @@ R_σ = jax.jit(R_σ, static_argnums=(3,))
 
 The next function computes the lifetime value of a given policy.
 
-```{code-cell} ipython3
+```{code-cell}
 # Get the value v_σ of policy σ by inverting the linear map R_σ
 
 def get_value(σ, constants, sizes, arrays):
@@ -382,42 +377,12 @@ def get_value(σ, constants, sizes, arrays):
 get_value = jax.jit(get_value, static_argnums=(2,))
 ```
 
-The following function is used for optimistic policy iteration.
-
-```{code-cell} ipython3
-def T_σ(v, σ, constants, sizes, arrays):
-    "The σ-policy operator."
-
-    # Unpack model
-    γ, w, β = constants
-    a_size, z_size = sizes
-    a_grid, z_grid, Π = arrays
-
-    r_σ = compute_r_σ(σ, constants, sizes, arrays)
-
-    # Compute the array v[σ[i, j], jp]
-    zp_idx = jnp.arange(z_size)
-    zp_idx = jnp.reshape(zp_idx, (1, 1, z_size))
-    σ = jnp.reshape(σ, (a_size, z_size, 1))
-    V = v[σ, zp_idx]
-
-    # Convert Q[j, jp] to Q[i, j, jp]
-    Π = jnp.reshape(Π, (1, z_size, z_size))
-
-    # Calculate the expected sum Σ_jp v[σ[i, j], jp] * Q[i, j, jp]
-    Ev = jnp.sum(V * Π, axis=2)
-
-    return r_σ + β * jnp.sum(V * Π, axis=2)
-
-T_σ = jax.jit(T_σ, static_argnums=(3,))
-```
-
 ## Solvers
 
 We will solve the household problem using Howard policy iteration.
 
-```{code-cell} ipython3
-def policy_iteration(household, verbose=True):
+```{code-cell}
+def policy_iteration(household, tol=1e-4, max_iter=10_000, verbose=False):
     """Howard policy iteration routine."""
     
     γ, w, β, a_size, z_size, a_grid, z_grid, Π = household
@@ -426,79 +391,54 @@ def policy_iteration(household, verbose=True):
     sizes = a_size, z_size
     arrays = a_grid, z_grid, Π
 
-    vz = jnp.zeros(sizes)
     σ = jnp.zeros(sizes, dtype=int)
-    i, error = 0, 1.0
-    while error > 0:
-        v_σ = get_value(σ, constants, sizes, arrays)
+    v_σ = get_value(σ, constants, sizes, arrays)
+    i = 0
+    error = tol + 1
+    while error > tol and i < max_iter:
         σ_new = get_greedy(v_σ, constants, sizes, arrays)
-        error = jnp.max(jnp.abs(σ_new - σ))
+        v_σ_new = get_value(σ_new, constants, sizes, arrays)
+        error = jnp.max(jnp.abs(v_σ_new - v_σ))
         σ = σ_new
+        v_σ = v_σ_new
         i = i + 1
         if verbose:
             print(f"Concluded loop {i} with error {error}.")
     return σ
 ```
 
-We can also solve the problem using optimistic policy iteration.
+```{code-cell}
 
-```{code-cell} ipython3
-def optimistic_policy_iteration(household, tol=1e-5, m=10):
-    
-    γ, w, β, a_size, z_size, a_grid, z_grid, Π = household
-    
-    constants = γ, w, β
-    sizes = a_size, z_size
-    arrays = a_grid, z_grid, Π
-
-    v = jnp.zeros(sizes)
-    error = tol + 1
-    while error > tol:
-        last_v = v
-        σ = get_greedy(v, constants, sizes, arrays)
-        for _ in range(m):
-            v = T_σ(v, σ, constants, sizes, arrays)
-        error = jnp.max(jnp.abs(v - last_v))
-    return get_greedy(v, constants, sizes, arrays)
 ```
 
 As a first example of what we can do, let’s compute and plot an optimal accumulation policy at fixed prices.
 
-```{code-cell} ipython3
-# Example prices
-r = 0.03
-w = 0.956
-
+```{code-cell}
 # Create an instance of Housbehold
-household = create_household(r=r, w=w)
+household = create_household()
 ```
 
-```{code-cell} ipython3
+```{code-cell}
 %%time
 
-σ_star_hpi = policy_iteration(household)
+σ_star = policy_iteration(household, verbose=True)
+
+
+# The next plot shows asset accumulation policies at different values of the exogenous state.
 ```
 
-```{code-cell} ipython3
-%%time
-
-σ_star = optimistic_policy_iteration(household)
-```
-
-The next plot shows asset accumulation policies at different values of the exogenous state.
-
-```{code-cell} ipython3
+```{code-cell}
 γ, w, β, a_size, z_size, a_grid, z_grid, Π = household
 
-fig, ax = plt.subplots(figsize=(9, 9))
-ax.plot(a_grid, a_grid, 'k--')  # 45 degrees
-for j in range(z_size):
-    lb = f'$z = {z_grid[j]:.2}$'
-    ax.plot(a_grid, a_grid[σ_star[:, j]], lw=2, alpha=0.6, label=lb)
+fig, ax = plt.subplots()
+ax.plot(a_grid, a_grid, 'k--', label="45 degrees")  
+for j, z in enumerate(z_grid):
+    lb = f'$z = {z:.2}$'
+    policy_vals = a_grid[σ_star[:, j]]
+    ax.plot(a_grid, policy_vals, lw=2, alpha=0.6, label=lb)
     ax.set_xlabel('current assets')
     ax.set_ylabel('next period assets')
 ax.legend(loc='upper left')
-
 plt.show()
 ```
 
@@ -514,7 +454,7 @@ First we compute the stationary distribution of $P_{\sigma}$, which is for the
 bivariate Markov chain of the state $(a_t, z_t)$.  Then we sum out
 $z_t$ to get the marginal distribution for $a_t$.
 
-```{code-cell} ipython3
+```{code-cell}
 def compute_asset_stationary(σ, constants, sizes, arrays):
 
     # Unpack
@@ -548,7 +488,7 @@ compute_asset_stationary = jax.jit(compute_asset_stationary,
 
 Let's give this a test run.
 
-```{code-cell} ipython3
+```{code-cell}
 γ, w, β, a_size, z_size, a_grid, z_grid, Π = household
 constants = γ, w, β
 sizes = a_size, z_size
@@ -558,13 +498,13 @@ arrays = a_grid, z_grid, Π
 
 The distribution should sum to one:
 
-```{code-cell} ipython3
+```{code-cell}
 ψ.sum()
 ```
 
 Now we are ready to compute capital supply by households given wages and interest rates.
 
-```{code-cell} ipython3
+```{code-cell}
 def capital_supply(household):
     """
     Map household decisions to the induced level of capital stock.
@@ -578,7 +518,7 @@ def capital_supply(household):
     arrays = a_grid, z_grid, Π
 
     # Compute the optimal policy
-    σ_star = optimistic_policy_iteration(household)
+    σ_star = policy_iteration(household)
     # Compute the stationary distribution
     ψ_a = compute_asset_stationary(σ_star, constants, sizes, arrays)
 
@@ -624,7 +564,7 @@ The following code draws aggregate supply and demand curves for capital.
 
 The intersection gives equilibrium interest rates and capital.
 
-```{code-cell} ipython3
+```{code-cell}
 # Create default instances
 household = create_household()
 firm = create_firm()
@@ -634,7 +574,7 @@ num_points = 50
 r_vals = np.linspace(0.005, 0.04, num_points)
 ```
 
-```{code-cell} ipython3
+```{code-cell}
 %%time
 
 # Compute supply of capital
@@ -645,13 +585,12 @@ for i, r in enumerate(r_vals):
     k_vals[i] = capital_supply(household)
 ```
 
-```{code-cell} ipython3
+```{code-cell}
 # Plot against demand for capital by firms
 
 fig, ax = plt.subplots()
 ax.plot(k_vals, r_vals, lw=2, alpha=0.6, label='supply of capital')
-ax.plot(k_vals, rd(k_vals, firm), lw=2, alpha=0.6, label='demand for capital')
-ax.grid()
+ax.plot(k_vals, r_given_k(k_vals, firm), lw=2, alpha=0.6, label='demand for capital')
 ax.set_xlabel('capital')
 ax.set_ylabel('interest rate')
 ax.legend(loc='upper right')
@@ -663,15 +602,15 @@ Here's a plot of the excess demand function.
 
 The equilibrium is the zero (root) of this function.
 
-```{code-cell} ipython3
+```{code-cell}
 def excess_demand(K, firm, household):
-    r = rd(K, firm)
+    r = r_given_k(K, firm)
     w = r_to_w(r, firm)
     household = household._replace(r=r, w=w)
     return K - capital_supply(household)
 ```
 
-```{code-cell} ipython3
+```{code-cell}
 %%time
 
 num_points = 50
@@ -679,7 +618,7 @@ k_vals = np.linspace(4, 12, num_points)
 out = [excess_demand(k, firm, household) for k in k_vals]
 ```
 
-```{code-cell} ipython3
+```{code-cell}
 fig, ax = plt.subplots()
 ax.plot(k_vals, out, lw=2, alpha=0.6, label='excess demand')
 ax.plot(k_vals, np.zeros_like(k_vals), 'k--', label="45")
@@ -695,7 +634,7 @@ Now let's compute the equilibrium
 To do so, we use the bisection method, which is implemented
 in the next function.
 
-```{code-cell} ipython3
+```{code-cell}
 def bisect(f, a, b, *args, tol=10e-2):
     """
     Implements the bisection root finding algorithm, assuming that f is a
@@ -712,18 +651,22 @@ def bisect(f, a, b, *args, tol=10e-2):
         count += 1
     if count == 10000:
         print("Root might not be accurate")
-    return 0.5 * (upper + lower)
+    return 0.5 * (upper + lower), count
 ```
 
 Now we call the bisection function on excess demand.
 
-```{code-cell} ipython3
+```{code-cell}
 def compute_equilibrium(firm, household):
-    solution = bisect(excess_demand, 6.0, 10.0, firm, household)
+    print("\nComputing equilibrium capital stock")
+    start = time.time()
+    solution, count = bisect(excess_demand, 6.0, 10.0, firm, household)
+    elapsed = time.time() - start
+    print(f"Computed equilibrium in {count} iterations and {elapsed} seconds")
     return solution
 ```
 
-```{code-cell} ipython3
+```{code-cell}
 %%time
 
 household = create_household()
@@ -751,7 +694,7 @@ showing the behaviour of equilibrium capital stock with the increase in $\beta$.
 :class: dropdown
 ```
 
-```{code-cell} ipython3
+```{code-cell}
 β_vals = np.linspace(0.9, 0.99, 40)
 eq_vals = np.empty_like(β_vals)
 
@@ -761,7 +704,7 @@ for i, β in enumerate(β_vals):
     eq_vals[i] = compute_equilibrium(firm, household)
 ```
 
-```{code-cell} ipython3
+```{code-cell}
 fig, ax = plt.subplots()
 ax.plot(β_vals, eq_vals, ms=2)
 ax.set_xlabel(r'$\beta$')
@@ -801,8 +744,7 @@ Set $\gamma=2$.
 
 Let's define the utility function
 
-```{code-cell} ipython3
-@jax.jit
+```{code-cell}
 def u(c, γ=2):
     return c**(1 - γ) / (1 - γ)
 ```
@@ -810,20 +752,19 @@ def u(c, γ=2):
 We need to re-compile all the jitted functions in order notice the change
 in the utility function.
 
-```{code-cell} ipython3
+```{code-cell}
 B = jax.jit(B, static_argnums=(2,))
 get_greedy = jax.jit(get_greedy, static_argnums=(2,))
 compute_r_σ = jax.jit(compute_r_σ, static_argnums=(2,))
 R_σ = jax.jit(R_σ, static_argnums=(3,))
 get_value = jax.jit(get_value, static_argnums=(2,))
-T_σ = jax.jit(T_σ, static_argnums=(3,))
 compute_asset_stationary = jax.jit(compute_asset_stationary,
                                    static_argnums=(2,))
 ```
 
 Now, let's plot the the demand for capital by firms
 
-```{code-cell} ipython3
+```{code-cell}
 # Create default instances
 household = create_household()
 firm = create_firm()
@@ -840,13 +781,12 @@ for i, r in enumerate(r_vals):
     k_vals[i] = capital_supply(household)
 ```
 
-```{code-cell} ipython3
+```{code-cell}
 # Plot against demand for capital by firms
 
 fig, ax = plt.subplots()
 ax.plot(k_vals, r_vals, lw=2, alpha=0.6, label='supply of capital')
-ax.plot(k_vals, rd(k_vals, firm), lw=2, alpha=0.6, label='demand for capital')
-ax.grid()
+ax.plot(k_vals, r_given_k(k_vals, firm), lw=2, alpha=0.6, label='demand for capital')
 ax.set_xlabel('capital')
 ax.set_ylabel('interest rate')
 ax.legend()
@@ -856,7 +796,7 @@ plt.show()
 
 Compute the equilibrium
 
-```{code-cell} ipython3
+```{code-cell}
 %%time
 
 household = create_household()
