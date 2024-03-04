@@ -25,7 +25,7 @@ In addition to what's in Anaconda, this lecture will need the following librarie
 ```{code-cell} ipython3
 :tags: [hide-output]
 
-!pip install interpolation quantecon
+!pip install quantecon
 ```
 
 We will use the following imports.
@@ -324,7 +324,6 @@ for the purpose of comparing the results of JAX implementation.
 ```{code-cell} ipython3
 import numpy as np
 from numba import prange, njit
-from interpolation import interp
 from quantecon.optimize import brent_max
 ```
 
@@ -360,7 +359,7 @@ def state_action_value_numba(c, x, v_array, cem):
     * v_array: value function array guess, 1-D array
     * cem: Cake Eating Numba Model instance
     """
-    return u_numba(c, cem) + cem.β * interp(cem.x_grid, v_array, x - c)
+    return u_numba(c, cem) + cem.β * np.interp(x - c, cem.x_grid, v_array)
 ```
 
 ```{code-cell} ipython3
