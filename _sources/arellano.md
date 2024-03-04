@@ -709,8 +709,8 @@ The first figure shows the bond price schedule and replicates Figure 3 of
 Arellano, where $ y_L $ and $ Y_H $ are particular below average and above average
 values of output $ y $.
 
-![https://python-advanced.quantecon.org/_static/lecture_specific/arellano/arellano_bond_prices.png](https://python-advanced.quantecon.org/_static/lecture_specific/arellano/arellano_bond_prices.png)
-
+```{figure} _static/lecture_specific/arellano/arellano_bond_prices.png
+```
 
 - $ y_L $ is 5% below the mean of the $ y $ grid values
 - $ y_H $ is 5% above  the mean of the $ y $ grid values
@@ -729,7 +729,8 @@ The figure shows that
 
 The next figure plots value functions and replicates the right hand panel of Figure 4 of {cite}`Are08`.
 
-![https://python-advanced.quantecon.org/_static/lecture_specific/arellano/arellano_value_funcs.png](https://python-advanced.quantecon.org/_static/lecture_specific/arellano/arellano_value_funcs.png)
+```{figure} _static/lecture_specific/arellano/arellano_value_funcs.png
+```
 
 
 We can use the results of the computation to study the default probability $ \delta(B', y) $
@@ -737,8 +738,8 @@ defined in {eq}`equation13_4`.
 
 The next plot shows these default probabilities over $ (B', y) $ as a heat map.
 
-![https://python-advanced.quantecon.org/_static/lecture_specific/arellano/arellano_default_probs.png](https://python-advanced.quantecon.org/_static/lecture_specific/arellano/arellano_default_probs.png)
-
+```{figure} _static/lecture_specific/arellano/arellano_default_probs.png
+```
 
 As anticipated, the probability that the government chooses to default in the following period
 increases with indebtedness and falls with income.
@@ -747,18 +748,14 @@ Next let’s run a time series simulation of $ \{y_t\} $, $ \{B_t\} $ and $ q(B_
 
 The grey vertical bars correspond to periods when the economy is excluded from financial markets because of a past default.
 
-![https://python-advanced.quantecon.org/_static/lecture_specific/arellano/arellano_time_series.png](https://python-advanced.quantecon.org/_static/lecture_specific/arellano/arellano_time_series.png)
-
+```{figure} _static/lecture_specific/arellano/arellano_time_series.png
+```
 
 One notable feature of the simulated data is the nonlinear response of interest rates.
 
 Periods of relative stability are followed by sharp spikes in the discount rate on government debt.
 
-+++
-
 ## Exercises
-
-+++
 
 ```{exercise-start}
 :label: arellano_ex1
@@ -772,13 +769,9 @@ To the extent that you can, replicate the figures shown above
 ```{exercise-end}
 ```
 
-+++
-
 ```{solution-start} arellano_ex1
 :class: dropdown
 ```
-
-Solution to this [exercise](https://python-advanced.quantecon.org/arellano.html#arella_ex1).
 
 Compute the value function, policy and equilibrium prices
 

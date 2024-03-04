@@ -270,7 +270,9 @@ const thebe_selector_output = ".output, .cell_output"
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Downloading quantecon-0.7.1-py3-none-any.whl.metadata (4.0 kB)
-Requirement already satisfied: numba&gt;=0.49.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (0.57.1)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: numba&gt;=0.49.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (0.57.1)
 Requirement already satisfied: numpy&gt;=1.17.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (1.24.3)
 Requirement already satisfied: requests in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (2.31.0)
 Requirement already satisfied: scipy&gt;=1.5.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (1.11.1)
@@ -289,7 +291,7 @@ Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/envs/quantecon/lib/
 ?25l   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">0.0/214.8 kB</span> <span class=" -Color -Color-Red">?</span> eta <span class=" -Color -Color-Cyan">-:--:--</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">214.8/214.8 kB</span> <span class=" -Color -Color-Red">6.9 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">214.8/214.8 kB</span> <span class=" -Color -Color-Red">6.3 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
 ?25h
 </pre></div>
 </div>
@@ -356,7 +358,7 @@ incentive to default.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Fri Mar  1 22:18:13 2024       
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Mon Mar  4 04:41:47 2024       
 +-----------------------------------------------------------------------------+
 | NVIDIA-SMI 470.182.03   Driver Version: 470.182.03   CUDA Version: 12.1     |
 |-------------------------------+----------------------+----------------------+
@@ -364,10 +366,8 @@ incentive to default.</p>
 | Fan  Temp  Perf  Pwr:Usage/Cap|         Memory-Usage | GPU-Util  Compute M. |
 |                               |                      |               MIG M. |
 |===============================+======================+======================|
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>|   0  Tesla V100-SXM2...  Off  | 00000000:00:1E.0 Off |                    0 |
-| N/A   29C    P0    37W / 300W |      0MiB / 16160MiB |      2%      Default |
+|   0  Tesla V100-SXM2...  Off  | 00000000:00:1E.0 Off |                    0 |
+| N/A   28C    P0    39W / 300W |      0MiB / 16160MiB |      2%      Default |
 |                               |                      |                  N/A |
 +-------------------------------+----------------------+----------------------+
                                                                                
@@ -910,8 +910,8 @@ Entering iteration 300 with error 1.151467966309383e-06.
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Terminating at iteration 399.
-CPU times: user 1.36 s, sys: 357 ms, total: 1.72 s
-Wall time: 727 ms
+CPU times: user 1.4 s, sys: 321 ms, total: 1.72 s
+Wall time: 709 ms
 </pre></div>
 </div>
 </div>
@@ -999,7 +999,9 @@ exercises.</p>
 <p>The first figure shows the bond price schedule and replicates Figure 3 of
 Arellano, where <span class="math notranslate nohighlight">\( y_L \)</span> and <span class="math notranslate nohighlight">\( Y_H \)</span> are particular below average and above average
 values of output <span class="math notranslate nohighlight">\( y \)</span>.</p>
-<p><img alt="https://python-advanced.quantecon.org/_static/lecture_specific/arellano/arellano_bond_prices.png" src="https://python-advanced.quantecon.org/_static/lecture_specific/arellano/arellano_bond_prices.png" /></p>
+<figure class="align-default">
+<img alt="_images/arellano_bond_prices.png" src="_images/arellano_bond_prices.png" />
+</figure>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\( y_L \)</span> is 5% below the mean of the <span class="math notranslate nohighlight">\( y \)</span> grid values</p></li>
 <li><p><span class="math notranslate nohighlight">\( y_H \)</span> is 5% above  the mean of the <span class="math notranslate nohighlight">\( y \)</span> grid values</p></li>
@@ -1014,16 +1016,22 @@ correspond to higher interest rates.</p></li>
 of default.</p></li>
 </ul>
 <p>The next figure plots value functions and replicates the right hand panel of Figure 4 of <span id="id4">[<a class="reference internal" href="zreferences.html#id255" title="Cristina Arellano. Default risk and income fluctuations in emerging economies. The American Economic Review, pages 690–712, 2008.">Are08</a>]</span>.</p>
-<p><img alt="https://python-advanced.quantecon.org/_static/lecture_specific/arellano/arellano_value_funcs.png" src="https://python-advanced.quantecon.org/_static/lecture_specific/arellano/arellano_value_funcs.png" /></p>
+<figure class="align-default">
+<img alt="_images/arellano_value_funcs.png" src="_images/arellano_value_funcs.png" />
+</figure>
 <p>We can use the results of the computation to study the default probability <span class="math notranslate nohighlight">\( \delta(B', y) \)</span>
 defined in <a class="reference internal" href="#equation-equation13-4">(13.4)</a>.</p>
 <p>The next plot shows these default probabilities over <span class="math notranslate nohighlight">\( (B', y) \)</span> as a heat map.</p>
-<p><img alt="https://python-advanced.quantecon.org/_static/lecture_specific/arellano/arellano_default_probs.png" src="https://python-advanced.quantecon.org/_static/lecture_specific/arellano/arellano_default_probs.png" /></p>
+<figure class="align-default">
+<img alt="_images/arellano_default_probs.png" src="_images/arellano_default_probs.png" />
+</figure>
 <p>As anticipated, the probability that the government chooses to default in the following period
 increases with indebtedness and falls with income.</p>
 <p>Next let’s run a time series simulation of <span class="math notranslate nohighlight">\( \{y_t\} \)</span>, <span class="math notranslate nohighlight">\( \{B_t\} \)</span> and <span class="math notranslate nohighlight">\( q(B_{t+1}, y_t) \)</span>.</p>
 <p>The grey vertical bars correspond to periods when the economy is excluded from financial markets because of a past default.</p>
-<p><img alt="https://python-advanced.quantecon.org/_static/lecture_specific/arellano/arellano_time_series.png" src="https://python-advanced.quantecon.org/_static/lecture_specific/arellano/arellano_time_series.png" /></p>
+<figure class="align-default">
+<img alt="_images/arellano_time_series.png" src="_images/arellano_time_series.png" />
+</figure>
 <p>One notable feature of the simulated data is the nonlinear response of interest rates.</p>
 <p>Periods of relative stability are followed by sharp spikes in the discount rate on government debt.</p>
 </section>
@@ -1044,7 +1052,6 @@ increases with indebtedness and falls with income.</p>
 
 <p class="admonition-title">Solution to<a class="reference internal" href="#arellano_ex1"> Exercise 13.1</a></p>
 <section id="solution-content">
-<p>Solution to this <a class="reference external" href="https://python-advanced.quantecon.org/arellano.html#arella_ex1">exercise</a>.</p>
 <p>Compute the value function, policy and equilibrium prices</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1210,7 +1217,7 @@ increases with indebtedness and falls with income.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/708ef1b6e76cc592fa884fa7b31bc6e7c62b769458c2139c6acb0b5d7a08f187.png"><img alt="_images/708ef1b6e76cc592fa884fa7b31bc6e7c62b769458c2139c6acb0b5d7a08f187.png" src="_images/708ef1b6e76cc592fa884fa7b31bc6e7c62b769458c2139c6acb0b5d7a08f187.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/88542d0bad2cb339b26282e1ffe12a3f329151c0d948e081f2c3e06a49528663.png"><img alt="_images/88542d0bad2cb339b26282e1ffe12a3f329151c0d948e081f2c3e06a49528663.png" src="_images/88542d0bad2cb339b26282e1ffe12a3f329151c0d948e081f2c3e06a49528663.png" style="width: 80%;" /></a>
 </div>
 </div>
 </section>
@@ -1424,8 +1431,9 @@ increases with indebtedness and falls with income.</p>
                     <li data-tippy-content="Increase font size" class="btn__plus"><i data-feather="plus-circle"></i></li>
                     <li data-tippy-content="Decrease font size" class="btn__minus"><i data-feather="minus-circle"></i></li>
                     <li data-tippy-content="Change contrast" class="btn__contrast"><i data-feather="sunset"></i></li>
+                    <li data-tippy-content="Download Notebook"><a href="/_notebooks/arellano.ipynb" download><i data-feather="download-cloud"></i></a></li>
                     <li class="settings-button" id="settingsButton"><div data-tippy-content="Launch Notebook"><i data-feather="play-circle"></i></div></li>
-                        <li data-tippy-content="Download PDF" onClick="window.print()"><i data-feather="file"></i></li>
+                        <li class="download-pdf" id="downloadButton"><i data-feather="file"></i></li>
                     <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-jax/blob/main/lectures/arellano.md" download><i data-feather="github"></i></a></li>
                 </ul>
 
@@ -1438,7 +1446,7 @@ increases with indebtedness and falls with income.</p>
                     <p>Lecture (PDF)</p>
                 </li>
                 <li class="download-pdf-file">
-                    <a href="" download><p>Book (PDF)</p></a>
+                    <a href="/_pdf/quantecon-jax.pdf" download><p>Book (PDF)</p></a>
                 </li>
             </ul>
         </div>

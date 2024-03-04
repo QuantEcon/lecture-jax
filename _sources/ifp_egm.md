@@ -33,7 +33,7 @@ We will use the following libraries and imports.
 ```{code-cell} ipython3
 :tags: [hide-output]
 
-!pip install --upgrade quantecon interpolation
+!pip install --upgrade quantecon
 ```
 
 ```{code-cell} ipython3
@@ -43,7 +43,6 @@ import numpy as np
 import jax
 import jax.numpy as jnp
 
-from interpolation import interp
 from numba import njit, float64
 from numba.experimental import jitclass
 ```
@@ -483,7 +482,7 @@ def K_egm_nb(a_in, σ_in, ifp):
     
     # Linear interpolation of policy using endogenous grid
     def σ(a, z):
-        return interp(a_in[:, z], σ_in[:, z], a)
+        return np.interp(a, a_in[:, z], σ_in[:, z])
     
     # Allocate memory for new consumption array
     σ_out = np.zeros_like(σ_in)
