@@ -4,7 +4,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.14.5
+    jupytext_version: 1.15.2
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -370,9 +370,9 @@ We define a namedtuple to store parameters, grids and transition
 probabilities.
 
 ```{code-cell} ipython3
-Arellano = namedtuple('Arellano', ('β', 'γ', 'r', 'ρ', 'η', 'θ', \
-                                  'B_size', 'y_size', \
-                                  'P', 'B_grid', 'y_grid', 'def_y'))
+Arellano_Economy = namedtuple('Arellano_Economy', ('β', 'γ', 'r', 'ρ', 'η', 'θ', \
+                                                  'B_size', 'y_size', \
+                                                  'P', 'B_grid', 'y_grid', 'def_y'))
 ```
 
 ```{code-cell} ipython3
@@ -400,9 +400,9 @@ def create_arellano(B_size=251,   # Grid size for bonds
     # Output received while in default, with same shape as y_grid
     def_y = jnp.minimum(def_y_param * jnp.mean(y_grid), y_grid)
     
-    return Arellano(β=β, γ=γ, r=r, ρ=ρ, η=η, θ=θ, B_size=B_size, \
-                    y_size=y_size, P=P, B_grid=B_grid, y_grid=y_grid, \
-                    def_y=def_y)
+    return Arellano_Economy(β=β, γ=γ, r=r, ρ=ρ, η=η, θ=θ, B_size=B_size, \
+                            y_size=y_size, P=P, B_grid=B_grid, y_grid=y_grid, \
+                            def_y=def_y)
 ```
 
 Here is the utility function.
@@ -462,6 +462,7 @@ def T_d(v_c, v_d, params, sizes, arrays):
     β, γ, r, ρ, η, θ = params
     B_size, y_size = sizes
     P, B_grid, y_grid, def_y = arrays
+
     B0_idx = jnp.searchsorted(B_grid, 1e-10)  # Index at which B is near zero
 
     current_utility = u(def_y, γ)
@@ -546,11 +547,11 @@ def update_values_and_prices(v_c, v_d, params, sizes, arrays):
     return new_v_c, new_v_d
 ```
 
-We can now write a function that will use the `Arellano` namedtuple and the
-functions defined above to compute the solution to our model.
+We can now write a function that will use an instance of `Arellano_Economy` and 
+the functions defined above to compute the solution to our model.
 
 One of the jobs of this function is to take an instance of
-`Arellano`, which is hard for the JIT compiler to handle, and strip it
+`Arellano_Economy`, which is hard for the JIT compiler to handle, and strip it
 down to more basic objects, which are then passed out to jitted functions.
 
 ```{code-cell} ipython3
@@ -558,7 +559,7 @@ down to more basic objects, which are then passed out to jitted functions.
 
 def solve(model, tol=1e-8, max_iter=10_000):
     """
-    Given an instance of Arellano, this function computes the optimal
+    Given an instance of `Arellano_Economy`, this function computes the optimal
     policy and value functions.
     """
     # Unpack
@@ -621,7 +622,7 @@ def simulate(model, T, v_c, v_d, q, B_star, key):
     """
     Simulates the Arellano 2008 model of sovereign debt
 
-    Here `model` is an instance of `Arellano` and `T` is the length of
+    Here `model` is an instance of `Arellano_Economy` and `T` is the length of
     the simulation.  Endogenous objects `v_c`, `v_d`, `q` and `B_star` are
     assumed to come from a solution to `model`.
 
@@ -629,6 +630,7 @@ def simulate(model, T, v_c, v_d, q, B_star, key):
     # Unpack elements of the model
     B_size, y_size = model.B_size, model.y_size
     B_grid, y_grid, P = model.B_grid, model.y_grid, model.P
+
     B0_idx = jnp.searchsorted(B_grid, 1e-10)  # Index at which B is near zero
 
     # Set initial conditions
@@ -685,9 +687,7 @@ def simulate(model, T, v_c, v_d, q, B_star, key):
 
 Let’s start by trying to replicate the results obtained in {cite}`Are08`.
 
-In what follows, all results are computed using Arellano’s parameter values.
-
-The values can be seen in the `create_arellano` method shown above.
+In what follows, all results are computed using parameter values of `Arellano_Economy` created by `create_arellano`.
 
 For example, `r=0.017` matches the average quarterly rate on a 5 year US treasury over the period 1983–2001.
 
@@ -695,7 +695,7 @@ Details on how to compute the figures are reported as solutions to the
 exercises.
 
 The first figure shows the bond price schedule and replicates Figure 3 of
-Arellano, where $ y_L $ and $ Y_H $ are particular below average and above average
+{cite}`Are08`, where $ y_L $ and $ Y_H $ are particular below average and above average
 values of output $ y $.
 
 ```{figure} _static/lecture_specific/arellano/arellano_bond_prices.png
@@ -752,7 +752,7 @@ Periods of relative stability are followed by sharp spikes in the discount rate 
 
 To the extent that you can, replicate the figures shown above
 
-- Use the parameter values listed as defaults in `Arellano`.
+- Use the parameter values listed as defaults in `Arellano_Economy` created by `create_arellano`.
 - The time series will of course vary depending on the shock draws.
 
 ```{exercise-end}
@@ -771,7 +771,7 @@ ae = create_arellano()
 v_c, v_d, q, B_star = solve(ae)
 ```
 
-Compute the bond price schedule as seen in figure 3 of Arellano (2008)
+Compute the bond price schedule as seen in figure 3 of {cite}`Are08`
 
 ```{code-cell} ipython3
 :hide-output: false
@@ -793,7 +793,7 @@ x = []
 q_low = []
 q_high = []
 for i, B in enumerate(B_grid):
-    if -0.35 <= B <= 0:  # To match fig 3 of Arellano
+    if -0.35 <= B <= 0:  # To match fig 3 of Arellano (2008)
         x.append(B)
         q_low.append(q[i, iy_low])
         q_high.append(q[i, iy_high])
