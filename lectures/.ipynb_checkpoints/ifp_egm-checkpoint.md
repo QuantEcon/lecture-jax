@@ -105,13 +105,13 @@ Household = namedtuple('Household', ('β', 'R', 'γ', 's_size', 'y_size', \
                                      's_grid', 'y_grid', 'P'))
 
 def create_household(R=1.01,             # gross interest rate
-                     β=0.99,             # discount factor
-                     γ=1.5,              # CRRA preference parameter
-                     s_max=16,           # savings grid max
-                     s_size=200,         # savings grid size
-                     ρ=0.99,             # income persistence
-                     ν=0.02,             # income volatility
-                     y_size=25):         # income grid size
+               β=0.99,             # discount factor
+               γ=1.5,              # CRRA preference parameter
+               s_max=16,           # savings grid max
+               s_size=200,         # savings grid size
+               ρ=0.99,             # income persistence
+               ν=0.02,             # income volatility
+               y_size=25):         # income grid size
     
     # Create income Markov chain
     mc = qe.tauchen(y_size, ρ, ν)
@@ -377,10 +377,10 @@ Next we define a successive approximator that repeatedly applies $K$.
 
 ```{code-cell} ipython3
 def successive_approx_jax(model,        
-                          tol=1e-5,
-                          max_iter=100_000,
-                          verbose=True,
-                          print_skip=25):
+            tol=1e-5,
+            max_iter=100_000,
+            verbose=True,
+            print_skip=25):
 
     # Unpack
     β, R, γ, s_size, y_size, s_grid, y_grid, P = model
@@ -503,10 +503,10 @@ def K_egm_nb(a_in, σ_in, ifp):
 
 ```{code-cell} ipython3
 def successive_approx_numba(model,        # Class with model information
-                            tol=1e-5,
-                            max_iter=100_000,
-                            verbose=True,
-                            print_skip=25):
+              tol=1e-5,
+              max_iter=100_000,
+              verbose=True,
+              print_skip=25):
 
     # Unpack
     P, s_grid = model.P, model.s_grid
@@ -556,15 +556,19 @@ ifp_numba = IFP()
 Here's a first run of the JAX code.
 
 ```{code-cell} ipython3
+qe.tic()
 a_star_egm_jax, σ_star_egm_jax = successive_approx_jax(ifp_jax,
-                                                       print_skip=100)
+                                         print_skip=100)
+qe.toc()
 ```
 
 Next let's solve the same IFP with Numba.
 
 ```{code-cell} ipython3
+qe.tic()
 a_star_egm_nb, σ_star_egm_nb = successive_approx_numba(ifp_numba,
-                                                       print_skip=100)
+                                         print_skip=100)
+qe.toc()
 ```
 
 Now let's check the outputs in a plot to make sure they are the same.
@@ -594,14 +598,14 @@ Now let's compare execution time of the two methods
 ```{code-cell} ipython3
 qe.tic()
 a_star_egm_jax, σ_star_egm_jax = successive_approx_jax(ifp_jax,
-                                                       print_skip=1000)
+                                         print_skip=1000)
 jax_time = qe.toc()
 ```
 
 ```{code-cell} ipython3
 qe.tic()
 a_star_egm_nb, σ_star_egm_nb = successive_approx_numba(ifp_numba,
-                                                       print_skip=1000)
+                                         print_skip=1000)
 numba_time = qe.toc()
 ```
 
