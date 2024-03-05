@@ -596,7 +596,8 @@ def solve(model, tol=1e-8, max_iter=10_000):
     while (current_iter < max_iter) and (error > tol):
         if current_iter % 100 == 0:
             print(f"Entering iteration {current_iter} with error {error}.")
-        new_v_c, new_v_d = update_values_and_prices(v_c, v_d, params, sizes, arrays)
+        new_v_c, new_v_d = update_values_and_prices(v_c, v_d, params, 
+                                                    sizes, arrays)
         error = jnp.max(jnp.abs(new_v_c - v_c)) + jnp.max(jnp.abs(new_v_d - v_d))
         v_c, v_d = new_v_c, new_v_d
         current_iter += 1
