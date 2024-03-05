@@ -5,10 +5,6 @@ jupytext:
     format_name: myst
     format_version: 0.13
     jupytext_version: 1.15.2
-<<<<<<< HEAD
-    jupytext_version: 1.15.2
-=======
->>>>>>> ff86e0fd39571a8a7965cd8f9c588d44310d538e
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -374,7 +370,6 @@ We define a namedtuple to store parameters, grids and transition
 probabilities.
 
 ```{code-cell} ipython3
-<<<<<<< HEAD
 ArellanoEconomy = namedtuple('ArellanoEconomy', ('β',       # Time discount parameter
                                                  'γ',       # Utility parameter
                                                  'r',       # Lending rate
@@ -394,18 +389,6 @@ def create_arellano(B_size=251,         # Grid size for bonds
                     B_min=-0.45,        # Smallest B value
                     B_max=0.45,         # Largest B value
                     y_size=51,          # Grid size for income
-=======
-Arellano_Economy = namedtuple('Arellano_Economy', ('β', 'γ', 'r', 'ρ', 'η', 'θ', \
-                                                  'B_size', 'y_size', \
-                                                  'P', 'B_grid', 'y_grid', 'def_y'))
-```
-
-```{code-cell} ipython3
-def create_arellano(B_size=251,   # Grid size for bonds
-                    B_min=-0.45,   # Smallest B value
-                    B_max=0.45,    # Largest B value
-                    y_size=51,     # Grid size for income
->>>>>>> ff86e0fd39571a8a7965cd8f9c588d44310d538e
                     β=0.953,            # Time discount parameter
                     γ=2.0,              # Utility parameter
                     r=0.017,            # Lending rate
@@ -422,24 +405,16 @@ def create_arellano(B_size=251,   # Grid size for bonds
     B_grid = jax.device_put(B_grid)
     y_grid = jax.device_put(y_grid)
     P = jax.device_put(P)
-<<<<<<< HEAD
     # Put grids on the device
     B_grid = jax.device_put(B_grid)
     y_grid = jax.device_put(y_grid)
     P = jax.device_put(P)
-=======
->>>>>>> ff86e0fd39571a8a7965cd8f9c588d44310d538e
 
     # Output received while in default, with same shape as y_grid
     def_y = jnp.minimum(def_y_param * jnp.mean(y_grid), y_grid)
     
-<<<<<<< HEAD
     return ArellanoEconomy(β=β, γ=γ, r=r, ρ=ρ, η=η, θ=θ, B_size=B_size, 
                             y_size=y_size, P=P, B_grid=B_grid, y_grid=y_grid, 
-=======
-    return Arellano_Economy(β=β, γ=γ, r=r, ρ=ρ, η=η, θ=θ, B_size=B_size, \
-                            y_size=y_size, P=P, B_grid=B_grid, y_grid=y_grid, \
->>>>>>> ff86e0fd39571a8a7965cd8f9c588d44310d538e
                             def_y=def_y)
 ```
 
@@ -501,10 +476,7 @@ def T_d(v_c, v_d, params, sizes, arrays):
     B_size, y_size = sizes
     P, B_grid, y_grid, def_y = arrays
 
-<<<<<<< HEAD
 
-=======
->>>>>>> ff86e0fd39571a8a7965cd8f9c588d44310d538e
     B0_idx = jnp.searchsorted(B_grid, 1e-10)  # Index at which B is near zero
 
     current_utility = u(def_y, γ)
@@ -589,11 +561,7 @@ def update_values_and_prices(v_c, v_d, params, sizes, arrays):
     return new_v_c, new_v_d
 ```
 
-<<<<<<< HEAD
 We can now write a function that will use an instance of `ArellanoEconomy` and 
-=======
-We can now write a function that will use an instance of `Arellano_Economy` and 
->>>>>>> ff86e0fd39571a8a7965cd8f9c588d44310d538e
 the functions defined above to compute the solution to our model.
 
 One of the jobs of this function is to take an instance of
@@ -605,11 +573,7 @@ down to more basic objects, which are then passed out to jitted functions.
 
 def solve(model, tol=1e-8, max_iter=10_000):
     """
-<<<<<<< HEAD
     Given an instance of `ArellanoEconomy`, this function computes the optimal
-=======
-    Given an instance of `Arellano_Economy`, this function computes the optimal
->>>>>>> ff86e0fd39571a8a7965cd8f9c588d44310d538e
     policy and value functions.
     """
     # Unpack
@@ -619,15 +583,12 @@ def solve(model, tol=1e-8, max_iter=10_000):
     params = β, γ, r, ρ, η, θ
     sizes = B_size, y_size
     arrays = P, B_grid, y_grid, def_y
-<<<<<<< HEAD
     
     β, γ, r, ρ, η, θ, B_size, y_size, P, B_grid, y_grid, def_y = model
     
     params = β, γ, r, ρ, η, θ
     sizes = B_size, y_size
     arrays = P, B_grid, y_grid, def_y
-=======
->>>>>>> ff86e0fd39571a8a7965cd8f9c588d44310d538e
 
     # Initial conditions for v_c and v_d
     v_c = jnp.zeros((B_size, y_size))
@@ -656,10 +617,6 @@ Let's try solving the model.
 :hide-output: false
 
 ae = create_arellano()
-<<<<<<< HEAD
-ae = create_arellano()
-=======
->>>>>>> ff86e0fd39571a8a7965cd8f9c588d44310d538e
 ```
 
 ```{code-cell} ipython3
@@ -692,15 +649,8 @@ def simulate(model, T, v_c, v_d, q, B_star, key):
     """
     # Unpack elements of the model
     B_size, y_size = model.B_size, model.y_size
-<<<<<<< HEAD
-    B_size, y_size = model.B_size, model.y_size
     B_grid, y_grid, P = model.B_grid, model.y_grid, model.P
 
-
-=======
-    B_grid, y_grid, P = model.B_grid, model.y_grid, model.P
-
->>>>>>> ff86e0fd39571a8a7965cd8f9c588d44310d538e
     B0_idx = jnp.searchsorted(B_grid, 1e-10)  # Index at which B is near zero
 
     # Set initial conditions
@@ -757,11 +707,7 @@ def simulate(model, T, v_c, v_d, q, B_star, key):
 
 Let’s start by trying to replicate the results obtained in {cite}`Are08`.
 
-<<<<<<< HEAD
 In what follows, all results are computed using parameter values of `ArellanoEconomy` created by `create_arellano`.
-=======
-In what follows, all results are computed using parameter values of `Arellano_Economy` created by `create_arellano`.
->>>>>>> ff86e0fd39571a8a7965cd8f9c588d44310d538e
 
 For example, `r=0.017` matches the average quarterly rate on a 5 year US treasury over the period 1983–2001.
 
@@ -770,10 +716,6 @@ exercises.
 
 The first figure shows the bond price schedule and replicates Figure 3 of
 {cite}`Are08`, where $ y_L $ and $ Y_H $ are particular below average and above average
-<<<<<<< HEAD
-{cite}`Are08`, where $ y_L $ and $ Y_H $ are particular below average and above average
-=======
->>>>>>> ff86e0fd39571a8a7965cd8f9c588d44310d538e
 values of output $ y $.
 
 ```{figure} _static/lecture_specific/arellano/arellano_bond_prices.png
@@ -784,10 +726,6 @@ values of output $ y $.
 
 
 The grid used to compute this figure was relatively fine (`y_size, B_size = 51, 251`), which explains the minor differences between this and
-<<<<<<< HEAD
-The grid used to compute this figure was relatively fine (`y_size, B_size = 51, 251`), which explains the minor differences between this and
-=======
->>>>>>> ff86e0fd39571a8a7965cd8f9c588d44310d538e
 Arrelano’s figure.
 
 The figure shows that
@@ -834,11 +772,7 @@ Periods of relative stability are followed by sharp spikes in the discount rate 
 
 To the extent that you can, replicate the figures shown above
 
-<<<<<<< HEAD
 - Use the parameter values listed as defaults in `ArellanoEconomy` created by `create_arellano`.
-=======
-- Use the parameter values listed as defaults in `Arellano_Economy` created by `create_arellano`.
->>>>>>> ff86e0fd39571a8a7965cd8f9c588d44310d538e
 - The time series will of course vary depending on the shock draws.
 
 ```{exercise-end}
@@ -854,18 +788,10 @@ Compute the value function, policy and equilibrium prices
 :hide-output: false
 
 ae = create_arellano()
-<<<<<<< HEAD
-ae = create_arellano()
-=======
->>>>>>> ff86e0fd39571a8a7965cd8f9c588d44310d538e
 v_c, v_d, q, B_star = solve(ae)
 ```
 
 Compute the bond price schedule as seen in figure 3 of {cite}`Are08`
-<<<<<<< HEAD
-Compute the bond price schedule as seen in figure 3 of {cite}`Are08`
-=======
->>>>>>> ff86e0fd39571a8a7965cd8f9c588d44310d538e
 
 ```{code-cell} ipython3
 :hide-output: false
@@ -873,10 +799,6 @@ Compute the bond price schedule as seen in figure 3 of {cite}`Are08`
 # Unpack some useful names
 B_grid, y_grid, P = ae.B_grid, ae.y_grid, ae.P
 B_size, y_size = ae.B_size, ae.y_size
-<<<<<<< HEAD
-B_size, y_size = ae.B_size, ae.y_size
-=======
->>>>>>> ff86e0fd39571a8a7965cd8f9c588d44310d538e
 r = ae.r
 
 # Create "Y High" and "Y Low" values as 5% devs from mean
@@ -892,10 +814,6 @@ q_low = []
 q_high = []
 for i, B in enumerate(B_grid):
     if -0.35 <= B <= 0:  # To match fig 3 of Arellano (2008)
-<<<<<<< HEAD
-    if -0.35 <= B <= 0:  # To match fig 3 of Arellano (2008)
-=======
->>>>>>> ff86e0fd39571a8a7965cd8f9c588d44310d538e
         x.append(B)
         q_low.append(q[i, iy_low])
         q_high.append(q[i, iy_high])
