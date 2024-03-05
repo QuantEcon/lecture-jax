@@ -372,32 +372,33 @@ probabilities.
 
 ```{code-cell} ipython3
 ArellanoEconomy = namedtuple('ArellanoEconomy',
-                            ('β',     # Time discount parameter
-                            'γ',      # Utility parameter
-                            'r',      # Lending rate
-                            'ρ',      # Persistence in the income process
-                            'η',      # Standard deviation of the income process
-                            'θ',      # Prob of re-entering financial markets
-                            'B_size', # Grid size for bonds
-                            'y_size', # Grid size for income
-                            'P',    # Markov matrix governing the income process
-                            'B_grid', # Bond unit grid
-                            'y_grid', # State values of the income process 
-                            'def_y')) # Default income process
+    ('β',     # Time discount parameter
+    'γ',      # Utility parameter
+    'r',      # Lending rate
+    'ρ',      # Persistence in the income process
+    'η',      # Standard deviation of the income process
+    'θ',      # Prob of re-entering financial markets
+    'B_size', # Grid size for bonds
+    'y_size', # Grid size for income
+    'P',      # Markov matrix governing the income process
+    'B_grid', # Bond unit grid
+    'y_grid', # State values of the income process 
+    'def_y')) # Default income process
 ```
 
 ```{code-cell} ipython3
 def create_arellano(B_size=251,       # Grid size for bonds
-                    B_min=-0.45,      # Smallest B value
-                    B_max=0.45,       # Largest B value
-                    y_size=51,        # Grid size for income
-                    β=0.953,          # Time discount parameter
-                    γ=2.0,            # Utility parameter
-                    r=0.017,          # Lending rate
-                    ρ=0.945,          # Persistence in the income process
-                    η=0.025,          # Standard deviation of the income process
-                    θ=0.282,            # Prob of re-entering financial markets
-                    def_y_param=0.969): # Parameter governing income in default
+    B_min=-0.45,        # Smallest B value
+    B_max=0.45,         # Largest B value
+    y_size=51,          # Grid size for income
+    β=0.953,            # Time discount parameter
+    γ=2.0,              # Utility parameter
+    r=0.017,            # Lending rate
+    ρ=0.945,            # Persistence in the income process
+    η=0.025,            # Standard deviation of the income process
+    θ=0.282,            # Prob of re-entering financial markets
+    def_y_param=0.969): # Parameter governing income in default
+
     # Set up grids
     B_grid = jnp.linspace(B_min, B_max, B_size)
     mc = qe.markov.tauchen(y_size, ρ, η)
@@ -410,7 +411,8 @@ def create_arellano(B_size=251,       # Grid size for bonds
     def_y = jnp.minimum(def_y_param * jnp.mean(y_grid), y_grid)
     
     return ArellanoEconomy(β=β, γ=γ, r=r, ρ=ρ, η=η, θ=θ, B_size=B_size, 
-                            y_size=y_size, P=P, B_grid=B_grid, y_grid=y_grid, 
+                            y_size=y_size, P=P, 
+                            B_grid=B_grid, y_grid=y_grid, 
                             def_y=def_y)
 ```
 
