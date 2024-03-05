@@ -41,7 +41,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import jax
 import jax.numpy as jnp
-import numba as nb
+import numba
 ```
 
 Let's check the GPU we are running
@@ -415,7 +415,7 @@ Most readers will want to skip ahead to the next section, where we solve the
 model and run the cross-check.
 
 ```{code-cell}
-@nb.jit
+@numba.jit
 def K_egm_nb(a_in, σ_in, constants, sizes, arrays):
     """
     The operator K using Numba.
