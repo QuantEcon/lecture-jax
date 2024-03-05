@@ -41,8 +41,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import jax
 import jax.numpy as jnp
-
-from numba import jit
+import numba as nb
 ```
 
 Let's check the GPU we are running
@@ -415,12 +414,8 @@ well as to do a runtime comparison.
 Most readers will want to skip ahead to the next section, where we solve the
 model and run the cross-check.
 
-+++
-
--
-
 ```{code-cell}
-@jit
+@nb.jit
 def K_egm_nb(a_in, σ_in, constants, sizes, arrays):
     """
     The operator K using Numba.
@@ -577,11 +572,3 @@ The JAX code is significantly faster, as expected.
 
 This difference will increase when more features (and state variables) are added
 to the model.
-
-```{code-cell}
-
-```
-
-```{code-cell}
-
-```
