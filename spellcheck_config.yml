@@ -1,0 +1,17 @@
+jobs: 4
+matrix:
+- name: Markdown
+  aspell:
+    lang: en
+  dictionary:
+    encoding: utf-8
+  pipeline:
+  - pyspelling.filters.markdown:
+  - pyspelling.filters.html:
+      comments: false
+      ignores:
+      - code
+      - pre
+  sources:
+  - 'lectures/*.md'
+  default_encoding: utf-8
