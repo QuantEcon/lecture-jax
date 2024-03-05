@@ -5,6 +5,7 @@ jupytext:
     format_name: myst
     format_version: 0.13
     jupytext_version: 1.15.2
+    jupytext_version: 1.15.2
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -371,17 +372,17 @@ probabilities.
 
 ```{code-cell} ipython3
 ArellanoEconomy = namedtuple('ArellanoEconomy', ('β',       # Time discount parameter
-                                                   'γ',       # Utility parameter
-                                                   'r',       # Lending rate
-                                                   'ρ',       # Persistence in the income process
-                                                   'η',       # Standard deviation of the income process
-                                                   'θ',       # Prob of re-entering financial markets
-                                                   'B_size',  # Grid size for bonds
-                                                   'y_size',  # Grid size for income
-                                                   'P',       # Markov matrix governing the income process
-                                                   'B_grid',  # Bond unit grid
-                                                   'y_grid',  # State values of the income process  
-                                                   'def_y'))  # Default income process
+                                                 'γ',       # Utility parameter
+                                                 'r',       # Lending rate
+                                                 'ρ',       # Persistence in the income process
+                                                 'η',       # Standard deviation of the income process
+                                                 'θ',       # Prob of re-entering financial markets
+                                                 'B_size',  # Grid size for bonds
+                                                 'y_size',  # Grid size for income
+                                                 'P',       # Markov matrix governing the income process
+                                                 'B_grid',  # Bond unit grid
+                                                 'y_grid',  # State values of the income process  
+                                                 'def_y'))  # Default income process
 ```
 
 ```{code-cell} ipython3
@@ -401,6 +402,10 @@ def create_arellano(B_size=251,         # Grid size for bonds
     mc = qe.markov.tauchen(y_size, ρ, η)
     y_grid, P = jnp.exp(mc.state_values), mc.P
 
+    # Put grids on the device
+    B_grid = jax.device_put(B_grid)
+    y_grid = jax.device_put(y_grid)
+    P = jax.device_put(P)
     # Put grids on the device
     B_grid = jax.device_put(B_grid)
     y_grid = jax.device_put(y_grid)
@@ -471,6 +476,7 @@ def T_d(v_c, v_d, params, sizes, arrays):
     β, γ, r, ρ, η, θ = params
     B_size, y_size = sizes
     P, B_grid, y_grid, def_y = arrays
+
 
     B0_idx = jnp.searchsorted(B_grid, 1e-10)  # Index at which B is near zero
 
@@ -578,6 +584,12 @@ def solve(model, tol=1e-8, max_iter=10_000):
     params = β, γ, r, ρ, η, θ
     sizes = B_size, y_size
     arrays = P, B_grid, y_grid, def_y
+    
+    β, γ, r, ρ, η, θ, B_size, y_size, P, B_grid, y_grid, def_y = model
+    
+    params = β, γ, r, ρ, η, θ
+    sizes = B_size, y_size
+    arrays = P, B_grid, y_grid, def_y
 
     # Initial conditions for v_c and v_d
     v_c = jnp.zeros((B_size, y_size))
@@ -605,6 +617,7 @@ Let's try solving the model.
 ```{code-cell} ipython3
 :hide-output: false
 
+ae = create_arellano()
 ae = create_arellano()
 ```
 
@@ -638,7 +651,9 @@ def simulate(model, T, v_c, v_d, q, B_star, key):
     """
     # Unpack elements of the model
     B_size, y_size = model.B_size, model.y_size
+    B_size, y_size = model.B_size, model.y_size
     B_grid, y_grid, P = model.B_grid, model.y_grid, model.P
+
 
     B0_idx = jnp.searchsorted(B_grid, 1e-10)  # Index at which B is near zero
 
@@ -705,15 +720,17 @@ exercises.
 
 The first figure shows the bond price schedule and replicates Figure 3 of
 {cite}`Are08`, where $ y_L $ and $ Y_H $ are particular below average and above average
+{cite}`Are08`, where $ y_L $ and $ Y_H $ are particular below average and above average
 values of output $ y $.
 
-![https://python-advanced.quantecon.org/_static/lecture_specific/arellano/arellano_bond_prices.png](https://python-advanced.quantecon.org/_static/lecture_specific/arellano/arellano_bond_prices.png)
-
+```{figure} _static/lecture_specific/arellano/arellano_bond_prices.png
+```
 
 - $ y_L $ is 5% below the mean of the $ y $ grid values
 - $ y_H $ is 5% above  the mean of the $ y $ grid values
 
 
+The grid used to compute this figure was relatively fine (`y_size, B_size = 51, 251`), which explains the minor differences between this and
 The grid used to compute this figure was relatively fine (`y_size, B_size = 51, 251`), which explains the minor differences between this and
 Arrelano’s figure.
 
@@ -727,7 +744,8 @@ The figure shows that
 
 The next figure plots value functions and replicates the right hand panel of Figure 4 of {cite}`Are08`.
 
-![https://python-advanced.quantecon.org/_static/lecture_specific/arellano/arellano_value_funcs.png](https://python-advanced.quantecon.org/_static/lecture_specific/arellano/arellano_value_funcs.png)
+```{figure} _static/lecture_specific/arellano/arellano_value_funcs.png
+```
 
 
 We can use the results of the computation to study the default probability $ \delta(B', y) $
@@ -735,8 +753,8 @@ defined in {eq}`equation13_4`.
 
 The next plot shows these default probabilities over $ (B', y) $ as a heat map.
 
-![https://python-advanced.quantecon.org/_static/lecture_specific/arellano/arellano_default_probs.png](https://python-advanced.quantecon.org/_static/lecture_specific/arellano/arellano_default_probs.png)
-
+```{figure} _static/lecture_specific/arellano/arellano_default_probs.png
+```
 
 As anticipated, the probability that the government chooses to default in the following period
 increases with indebtedness and falls with income.
@@ -745,18 +763,14 @@ Next let’s run a time series simulation of $ \{y_t\} $, $ \{B_t\} $ and $ q(B_
 
 The grey vertical bars correspond to periods when the economy is excluded from financial markets because of a past default.
 
-![https://python-advanced.quantecon.org/_static/lecture_specific/arellano/arellano_time_series.png](https://python-advanced.quantecon.org/_static/lecture_specific/arellano/arellano_time_series.png)
-
+```{figure} _static/lecture_specific/arellano/arellano_time_series.png
+```
 
 One notable feature of the simulated data is the nonlinear response of interest rates.
 
 Periods of relative stability are followed by sharp spikes in the discount rate on government debt.
 
-+++
-
 ## Exercises
-
-+++
 
 ```{exercise-start}
 :label: arellano_ex1
@@ -770,13 +784,9 @@ To the extent that you can, replicate the figures shown above
 ```{exercise-end}
 ```
 
-+++
-
 ```{solution-start} arellano_ex1
 :class: dropdown
 ```
-
-Solution to this [exercise](https://python-advanced.quantecon.org/arellano.html#arella_ex1).
 
 Compute the value function, policy and equilibrium prices
 
@@ -784,9 +794,11 @@ Compute the value function, policy and equilibrium prices
 :hide-output: false
 
 ae = create_arellano()
+ae = create_arellano()
 v_c, v_d, q, B_star = solve(ae)
 ```
 
+Compute the bond price schedule as seen in figure 3 of {cite}`Are08`
 Compute the bond price schedule as seen in figure 3 of {cite}`Are08`
 
 ```{code-cell} ipython3
@@ -794,6 +806,7 @@ Compute the bond price schedule as seen in figure 3 of {cite}`Are08`
 
 # Unpack some useful names
 B_grid, y_grid, P = ae.B_grid, ae.y_grid, ae.P
+B_size, y_size = ae.B_size, ae.y_size
 B_size, y_size = ae.B_size, ae.y_size
 r = ae.r
 
@@ -809,6 +822,7 @@ x = []
 q_low = []
 q_high = []
 for i, B in enumerate(B_grid):
+    if -0.35 <= B <= 0:  # To match fig 3 of Arellano (2008)
     if -0.35 <= B <= 0:  # To match fig 3 of Arellano (2008)
         x.append(B)
         q_low.append(q[i, iy_low])

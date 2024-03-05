@@ -13,10 +13,6 @@ kernelspec:
 
 # Maximum Likelihood Estimation
 
-```{contents} Contents
-:depth: 2
-```
-
 ```{include} _admonition/gpu.md
 ```
 
