@@ -53,8 +53,8 @@ including
 - high volatility of consumption relative to output
 
 
-Notably, long recessions caused by bad draws in the income process increase the government’s
-incentive to default.
+Notably, long recessions caused by bad draws in the income process increase 
+the government’s incentive to default.
 
 This can lead to
 
@@ -100,8 +100,8 @@ In this section we describe the main features of the model.
 
 ### Output, Consumption and Debt
 
-A small open economy is endowed with an exogenous stochastically fluctuating potential output
-stream $ \{y_t\} $.
+A small open economy is endowed with an exogenous stochastically fluctuating 
+potential output stream $ \{y_t\} $.
 
 Potential output is realized only in periods in which the government honors its sovereign debt.
 
@@ -122,21 +122,22 @@ Here
 - $ u $ is an increasing and strictly concave utility function
 
 
-Consumption sequences enjoyed by households are affected by the government’s decision to borrow or
-lend internationally.
+Consumption sequences enjoyed by households are affected by the government’s 
+decision to borrow or lend internationally.
 
 The government is benevolent in the sense that its aim is to maximize {eq}`equation13_1`.
 
 The government is the only domestic actor with access to foreign credit.
 
-Because households are averse to consumption fluctuations, the government will try to smooth
-consumption by borrowing from (and lending to) foreign creditors.
+Because households are averse to consumption fluctuations, the government will 
+try to smooth consumption by borrowing from (and lending to) foreign creditors.
 
 +++
 
 ### Asset Markets
 
-The only credit instrument available to the government is a one-period bond traded in international credit markets.
+The only credit instrument available to the government is a one-period bond 
+traded in international credit markets.
 
 The bond market has the following features
 
@@ -144,19 +145,19 @@ The bond market has the following features
 - A purchase of a bond with face value $ B' $ is a claim to $ B' $ units of the
   consumption good next period.
 - To purchase $ B' $  next period costs $ q B' $ now, or, what is equivalent.
-- For selling $ -B' $ units of next period goods the seller earns $ - q B' $ of today’s
-  goods.
-  - If $ B' < 0 $, then $ -q B' $ units of the good are received in the current period,
-    for a promise to repay $ -B' $ units next period.
-  - There is an equilibrium  price function $ q(B', y) $ that makes $ q $ depend on both
-    $ B' $ and $ y $.
+- For selling $ -B' $ units of next period goods the seller earns $ - q B' $ of 
+  today’s goods.
+  - If $ B' < 0 $, then $ -q B' $ units of the good are received in the current 
+    period, for a promise to repay $ -B' $ units next period.
+  - There is an equilibrium  price function $ q(B', y) $ that makes $ q $ depend 
+    on both $ B' $ and $ y $.
 
 
-Earnings on the government portfolio are distributed (or, if negative, taxed) lump sum to
-households.
+Earnings on the government portfolio are distributed (or, if negative, taxed) 
+lump sum to households.
 
-When the government is not excluded from financial markets, the one-period national budget
-constraint is
+When the government is not excluded from financial markets, the one-period 
+national budget constraint is
 
 $$
 c = y + B - q(B', y) B'
@@ -177,8 +178,8 @@ Foreign creditors
 - are risk neutral
 - know the domestic output stochastic process $ \{y_t\} $ and observe
   $ y_t, y_{t-1}, \ldots, $ at time $ t $
-- can borrow or lend without limit in an international credit market at a constant international
-  interest rate $ r $
+- can borrow or lend without limit in an international credit market 
+  at a constant international interest rate $ r $
 - receive full payment if the government chooses to pay
 - receive zero if the government defaults on its one-period debt due
 
@@ -201,8 +202,8 @@ Next we turn to how the government in effect chooses the default probability $ \
 At each point in time $ t $, the government chooses between
 
 1. defaulting
-1. meeting its current obligations and purchasing or selling an optimal quantity of  one-period
-  sovereign debt
+1. meeting its current obligations and purchasing or selling an optimal quantity 
+  of one-period sovereign debt
 
 
 Defaulting means declining to repay all of its current obligations.
@@ -220,8 +221,8 @@ But a sovereign default has two consequences:
 
 ### Reentering International Credit Market
 
-While in a state of default, the economy regains access to foreign credit in each subsequent
-period with probability $ \theta $.
+While in a state of default, the economy regains access to foreign credit 
+in each subsequent period with probability $ \theta $.
 
 +++
 
@@ -234,16 +235,16 @@ sequence of government default decisions and an implied flow of household consum
 1. The government maximizes household utility taking into account
   - the resource constraint
   - the effect of its choices on the price of bonds
-  - consequences of defaulting now for future net output and future borrowing and lending
-    opportunities
+  - consequences of defaulting now for future net output and future borrowing 
+    and lending opportunities
 1. The interest rate on the government’s debt includes a risk-premium sufficient to make foreign
   creditors expect on average to earn the constant risk-free international interest rate.
 
 
 To express these ideas more precisely, consider first the choices of the government, which
 
-1. enters a period with initial assets $ B $, or what is the same thing, initial debt to be
-  repaid now of $ -B $
+1. enters a period with initial assets $ B $, or what is the same thing, 
+  initial debt to be repaid now of $ -B $
 1. observes current output $ y $, and
 1. chooses either
   1. to default, or
@@ -253,14 +254,14 @@ To express these ideas more precisely, consider first the choices of the governm
 In a recursive formulation,
 
 - state variables for the government comprise the pair $ (B, y) $
-- $ v(B, y) $ is the optimum value of the government’s problem when at the beginning of a
-  period it faces the choice of whether to honor or default
+- $ v(B, y) $ is the optimum value of the government’s problem when 
+  at the beginning of a period it faces the choice of whether to honor or default
 - $ v_c(B, y) $ is the value of choosing to pay obligations falling due
 - $ v_d(y) $ is the value of choosing to default
 
 
-$ v_d(y) $ does not depend on $ B $ because, when access to credit is eventually regained,
-net foreign assets equal $ 0 $.
+$ v_d(y) $ does not depend on $ B $ because, when access to credit is 
+eventually regained, net foreign assets equal $ 0 $.
 
 Expressed recursively, the value of defaulting is
 
@@ -300,8 +301,8 @@ $$
 \delta(B', y) := \int \mathbb 1\{v_c(B', y') < v_d(y') \} p(y, y') dy'
 $$ (equation13_4)
 
-Given zero profits for foreign creditors in equilibrium, we can combine {eq}`equation13_3` and {eq}`equation13_4`
-to pin down the bond price function:
+Given zero profits for foreign creditors in equilibrium, we can combine 
+{eq}`equation13_3` and {eq}`equation13_4` to pin down the bond price function:
 
 $$
 q(B', y) = \frac{1 - \delta(B', y)}{1 + r}
@@ -315,17 +316,17 @@ An *equilibrium* is
 
 - a pricing function $ q(B',y) $,
 - a triple of value functions $ (v_c(B, y), v_d(y), v(B,y)) $,
-- a decision rule telling the government when to default and when to pay as a function of the state
-  $ (B, y) $, and
-- an asset accumulation rule that, conditional on choosing not to default, maps $ (B,y) $ into
-  $ B' $
+- a decision rule telling the government when to default and when to pay as 
+  a function of the state $ (B, y) $, and
+- an asset accumulation rule that, conditional on choosing not to default, 
+  maps $ (B,y) $ into $ B' $
 
 
 such that
 
 - The three Bellman equations for $ (v_c(B, y), v_d(y), v(B,y)) $ are satisfied
-- Given the price function $ q(B',y) $, the default decision rule and the asset accumulation
-  decision rule attain the optimal value function  $ v(B,y) $, and
+- Given the price function $ q(B',y) $, the default decision rule and the asset 
+  accumulation decision rule attain the optimal value function  $ v(B,y) $, and
 - The price function $ q(B',y) $ satisfies equation {eq}`equation13_5`
 
 +++
@@ -370,18 +371,19 @@ We define a namedtuple to store parameters, grids and transition
 probabilities.
 
 ```{code-cell} ipython3
-ArellanoEconomy = namedtuple('ArellanoEconomy', ('β',       # Time discount parameter
-                                                 'γ',       # Utility parameter
-                                                 'r',       # Lending rate
-                                                 'ρ',       # Persistence in the income process
-                                                 'η',       # Standard deviation of the income process
-                                                 'θ',       # Prob of re-entering financial markets
-                                                 'B_size',  # Grid size for bonds
-                                                 'y_size',  # Grid size for income
-                                                 'P',       # Markov matrix governing the income process
-                                                 'B_grid',  # Bond unit grid
-                                                 'y_grid',  # State values of the income process  
-                                                 'def_y'))  # Default income process
+ArellanoEconomy = namedtuple('ArellanoEconomy',
+                              ('β',       # Time discount parameter
+                              'γ',       # Utility parameter
+                              'r',       # Lending rate
+                              'ρ',       # Persistence in the income process
+                              'η',       # Standard deviation of the income process
+                              'θ',       # Prob of re-entering financial markets
+                              'B_size',  # Grid size for bonds
+                              'y_size',  # Grid size for income
+                              'P',       # Markov matrix governing the income process
+                              'B_grid',  # Bond unit grid
+                              'y_grid',  # State values of the income process 
+                              'def_y'))  # Default income process
 ```
 
 ```{code-cell} ipython3
@@ -402,12 +404,6 @@ def create_arellano(B_size=251,         # Grid size for bonds
     y_grid, P = jnp.exp(mc.state_values), mc.P
 
     # Put grids on the device
-    B_grid = jax.device_put(B_grid)
-    y_grid = jax.device_put(y_grid)
-    P = jax.device_put(P)
-    # Put grids on the device
-    B_grid = jax.device_put(B_grid)
-    y_grid = jax.device_put(y_grid)
     P = jax.device_put(P)
 
     # Output received while in default, with same shape as y_grid
@@ -537,7 +533,8 @@ def get_greedy(v_c, v_d, q, params, sizes, arrays):
     return jnp.argmax(vals, axis=2)
 ```
 
-Let's make JIT-compiled versions of these functions, with the sizes of the arrays declared as static (compile-time constants) in order to help the compiler.
+Let's make JIT-compiled versions of these functions, with the sizes of the arrays 
+declared as static (compile-time constants) in order to help the compiler.
 
 ```{code-cell} ipython3
 compute_q = jax.jit(compute_q, static_argnums=(3,))
@@ -725,8 +722,8 @@ values of output $ y $.
 - $ y_H $ is 5% above  the mean of the $ y $ grid values
 
 
-The grid used to compute this figure was relatively fine (`y_size, B_size = 51, 251`), which explains the minor differences between this and
-Arrelano’s figure.
+The grid used to compute this figure was relatively fine (`y_size, B_size = 51, 251`), 
+which explains the minor differences between this and Arrelano’s figure.
 
 The figure shows that
 
