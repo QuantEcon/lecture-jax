@@ -69,6 +69,9 @@ jobs:
         shell: bash -l {0}
         run: |
           jb build lectures --path-output ./ -n -W --keep-going
+      - name: Setup upterm session
+        uses: lhotari/action-upterm@v1
+        if: failure()
       - name: Upload build folder
         uses: actions/upload-artifact@v2
         if: failure()
