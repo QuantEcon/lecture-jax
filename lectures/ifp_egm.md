@@ -416,16 +416,16 @@ model and run the cross-check.
 
 ```{code-cell}
 @numba.jit
-def K_egm_nb(a_in, σ_in, β, R, γ, s_size, y_size, s_grid, y_grid, P):
+def K_egm_nb(a_in, σ_in, constants, sizes, arrays):
     """
     The operator K using Numba.
 
     """
     
     # Simplify names
-    # β, R, γ = constants
-    # s_size, y_size = sizes
-    # s_grid, y_grid, P = arrays
+    β, R, γ = constants
+    s_size, y_size = sizes
+    s_grid, y_grid, P = arrays
 
     def u_prime(c):
         return c**(-γ)
@@ -464,9 +464,6 @@ def successive_approx_numba(model,        # Class with model information
 
     # Unpack
     constants, sizes, arrays = model
-    β, R, γ = constants
-    s_size, y_size = sizes
-    s_grid, y_grid, P = arrays
     s_size, y_size = sizes
     # make NumPy versions of arrays
     s_grid, y_grid, P = tuple(map(np.array, arrays))  
@@ -481,7 +478,7 @@ def successive_approx_numba(model,        # Class with model information
     error = tol + 1
 
     while i < max_iter and error > tol:
-        a_new, σ_new = K_egm_nb(a_vec, σ_vec, β, R, γ, s_size, y_size, s_grid, y_grid, P)
+        a_new, σ_new = K_egm_nb(a_vec, σ_vec, constants, sizes, arrays)
         error = np.max(np.abs(σ_vec - σ_new))
         i += 1
         if verbose and i % print_skip == 0:
