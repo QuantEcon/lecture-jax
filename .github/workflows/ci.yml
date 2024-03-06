@@ -75,7 +75,7 @@ jobs:
         run: | 
           sudo apt-get update && sudo apt-get install -y tmux git
           wget https://github.com/owenthereal/upterm/releases/download/v0.13.2/upterm_linux_amd64.deb
-          sudo apt install upterm_linux_amd64.deb
+          sudo apt-get install -y ./upterm_linux_amd64.deb
       - name: Setup upterm session
         uses: lhotari/action-upterm@v1
         if: failure()
