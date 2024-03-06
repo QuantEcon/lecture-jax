@@ -4,7 +4,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.14.5
+    jupytext_version: 1.15.2
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -53,8 +53,8 @@ including
 - high volatility of consumption relative to output
 
 
-Notably, long recessions caused by bad draws in the income process increase the government’s
-incentive to default.
+Notably, long recessions caused by bad draws in the income process increase 
+the government’s incentive to default.
 
 This can lead to
 
@@ -77,6 +77,7 @@ import random
 
 import jax
 import jax.numpy as jnp
+from collections import namedtuple
 ```
 
 Let's check the GPU we are running
@@ -99,8 +100,8 @@ In this section we describe the main features of the model.
 
 ### Output, Consumption and Debt
 
-A small open economy is endowed with an exogenous stochastically fluctuating potential output
-stream $ \{y_t\} $.
+A small open economy is endowed with an exogenous stochastically fluctuating 
+potential output stream $ \{y_t\} $.
 
 Potential output is realized only in periods in which the government honors its sovereign debt.
 
@@ -121,21 +122,22 @@ Here
 - $ u $ is an increasing and strictly concave utility function
 
 
-Consumption sequences enjoyed by households are affected by the government’s decision to borrow or
-lend internationally.
+Consumption sequences enjoyed by households are affected by the government’s 
+decision to borrow or lend internationally.
 
 The government is benevolent in the sense that its aim is to maximize {eq}`equation13_1`.
 
 The government is the only domestic actor with access to foreign credit.
 
-Because households are averse to consumption fluctuations, the government will try to smooth
-consumption by borrowing from (and lending to) foreign creditors.
+Because households are averse to consumption fluctuations, the government will 
+try to smooth consumption by borrowing from (and lending to) foreign creditors.
 
 +++
 
 ### Asset Markets
 
-The only credit instrument available to the government is a one-period bond traded in international credit markets.
+The only credit instrument available to the government is a one-period bond 
+traded in international credit markets.
 
 The bond market has the following features
 
@@ -143,19 +145,19 @@ The bond market has the following features
 - A purchase of a bond with face value $ B' $ is a claim to $ B' $ units of the
   consumption good next period.
 - To purchase $ B' $  next period costs $ q B' $ now, or, what is equivalent.
-- For selling $ -B' $ units of next period goods the seller earns $ - q B' $ of today’s
-  goods.
-  - If $ B' < 0 $, then $ -q B' $ units of the good are received in the current period,
-    for a promise to repay $ -B' $ units next period.
-  - There is an equilibrium  price function $ q(B', y) $ that makes $ q $ depend on both
-    $ B' $ and $ y $.
+- For selling $ -B' $ units of next period goods the seller earns $ - q B' $ of 
+  today’s goods.
+  - If $ B' < 0 $, then $ -q B' $ units of the good are received in the current 
+    period, for a promise to repay $ -B' $ units next period.
+  - There is an equilibrium  price function $ q(B', y) $ that makes $ q $ depend 
+    on both $ B' $ and $ y $.
 
 
-Earnings on the government portfolio are distributed (or, if negative, taxed) lump sum to
-households.
+Earnings on the government portfolio are distributed (or, if negative, taxed) 
+lump sum to households.
 
-When the government is not excluded from financial markets, the one-period national budget
-constraint is
+When the government is not excluded from financial markets, the one-period 
+national budget constraint is
 
 $$
 c = y + B - q(B', y) B'
@@ -176,8 +178,8 @@ Foreign creditors
 - are risk neutral
 - know the domestic output stochastic process $ \{y_t\} $ and observe
   $ y_t, y_{t-1}, \ldots, $ at time $ t $
-- can borrow or lend without limit in an international credit market at a constant international
-  interest rate $ r $
+- can borrow or lend without limit in an international credit market 
+  at a constant international interest rate $ r $
 - receive full payment if the government chooses to pay
 - receive zero if the government defaults on its one-period debt due
 
@@ -200,8 +202,8 @@ Next we turn to how the government in effect chooses the default probability $ \
 At each point in time $ t $, the government chooses between
 
 1. defaulting
-1. meeting its current obligations and purchasing or selling an optimal quantity of  one-period
-  sovereign debt
+1. meeting its current obligations and purchasing or selling an optimal quantity 
+  of one-period sovereign debt
 
 
 Defaulting means declining to repay all of its current obligations.
@@ -219,8 +221,8 @@ But a sovereign default has two consequences:
 
 ### Reentering International Credit Market
 
-While in a state of default, the economy regains access to foreign credit in each subsequent
-period with probability $ \theta $.
+While in a state of default, the economy regains access to foreign credit 
+in each subsequent period with probability $ \theta $.
 
 +++
 
@@ -233,16 +235,16 @@ sequence of government default decisions and an implied flow of household consum
 1. The government maximizes household utility taking into account
   - the resource constraint
   - the effect of its choices on the price of bonds
-  - consequences of defaulting now for future net output and future borrowing and lending
-    opportunities
+  - consequences of defaulting now for future net output and future borrowing 
+    and lending opportunities
 1. The interest rate on the government’s debt includes a risk-premium sufficient to make foreign
   creditors expect on average to earn the constant risk-free international interest rate.
 
 
 To express these ideas more precisely, consider first the choices of the government, which
 
-1. enters a period with initial assets $ B $, or what is the same thing, initial debt to be
-  repaid now of $ -B $
+1. enters a period with initial assets $ B $, or what is the same thing, 
+  initial debt to be repaid now of $ -B $
 1. observes current output $ y $, and
 1. chooses either
   1. to default, or
@@ -252,14 +254,14 @@ To express these ideas more precisely, consider first the choices of the governm
 In a recursive formulation,
 
 - state variables for the government comprise the pair $ (B, y) $
-- $ v(B, y) $ is the optimum value of the government’s problem when at the beginning of a
-  period it faces the choice of whether to honor or default
+- $ v(B, y) $ is the optimum value of the government’s problem when 
+  at the beginning of a period it faces the choice of whether to honor or default
 - $ v_c(B, y) $ is the value of choosing to pay obligations falling due
 - $ v_d(y) $ is the value of choosing to default
 
 
-$ v_d(y) $ does not depend on $ B $ because, when access to credit is eventually regained,
-net foreign assets equal $ 0 $.
+$ v_d(y) $ does not depend on $ B $ because, when access to credit is 
+eventually regained, net foreign assets equal $ 0 $.
 
 Expressed recursively, the value of defaulting is
 
@@ -299,8 +301,8 @@ $$
 \delta(B', y) := \int \mathbb 1\{v_c(B', y') < v_d(y') \} p(y, y') dy'
 $$ (equation13_4)
 
-Given zero profits for foreign creditors in equilibrium, we can combine {eq}`equation13_3` and {eq}`equation13_4`
-to pin down the bond price function:
+Given zero profits for foreign creditors in equilibrium, we can combine 
+{eq}`equation13_3` and {eq}`equation13_4` to pin down the bond price function:
 
 $$
 q(B', y) = \frac{1 - \delta(B', y)}{1 + r}
@@ -314,17 +316,17 @@ An *equilibrium* is
 
 - a pricing function $ q(B',y) $,
 - a triple of value functions $ (v_c(B, y), v_d(y), v(B,y)) $,
-- a decision rule telling the government when to default and when to pay as a function of the state
-  $ (B, y) $, and
-- an asset accumulation rule that, conditional on choosing not to default, maps $ (B,y) $ into
-  $ B' $
+- a decision rule telling the government when to default and when to pay as 
+  a function of the state $ (B, y) $, and
+- an asset accumulation rule that, conditional on choosing not to default, 
+  maps $ (B,y) $ into $ B' $
 
 
 such that
 
 - The three Bellman equations for $ (v_c(B, y), v_d(y), v(B,y)) $ are satisfied
-- Given the price function $ q(B',y) $, the default decision rule and the asset accumulation
-  decision rule attain the optimal value function  $ v(B,y) $, and
+- Given the price function $ q(B',y) $, the default decision rule and the asset 
+  accumulation decision rule attain the optimal value function  $ v(B,y) $, and
 - The price function $ q(B',y) $ satisfies equation {eq}`equation13_5`
 
 +++
@@ -365,55 +367,53 @@ The output process is discretized using a [quadrature method due to Tauchen](htt
 
 As we have in other places, we accelerate our code using Numba.
 
-We define a class that will store parameters, grids and transition
+We define a namedtuple to store parameters, grids and transition
 probabilities.
 
 ```{code-cell} ipython3
-:hide-output: false
+ArellanoEconomy = namedtuple('ArellanoEconomy',
+    ('β',     # Time discount parameter
+    'γ',      # Utility parameter
+    'r',      # Lending rate
+    'ρ',      # Persistence in the income process
+    'η',      # Standard deviation of the income process
+    'θ',      # Prob of re-entering financial markets
+    'B_size', # Grid size for bonds
+    'y_size', # Grid size for income
+    'P',      # Markov matrix governing the income process
+    'B_grid', # Bond unit grid
+    'y_grid', # State values of the income process 
+    'def_y')) # Default income process
+```
 
-class Arellano_Economy:
-    " Stores data and creates primitives for the Arellano economy. "
+```{code-cell} ipython3
+def create_arellano(B_size=251,       # Grid size for bonds
+    B_min=-0.45,        # Smallest B value
+    B_max=0.45,         # Largest B value
+    y_size=51,          # Grid size for income
+    β=0.953,            # Time discount parameter
+    γ=2.0,              # Utility parameter
+    r=0.017,            # Lending rate
+    ρ=0.945,            # Persistence in the income process
+    η=0.025,            # Standard deviation of the income process
+    θ=0.282,            # Prob of re-entering financial markets
+    def_y_param=0.969): # Parameter governing income in default
 
-    def __init__(self,
-            B_grid_size=251,   # Grid size for bonds
-            B_grid_min=-0.45,   # Smallest B value
-            B_grid_max=0.45,    # Largest B value
-            y_grid_size=51,     # Grid size for income
-            β=0.953,            # Time discount parameter
-            γ=2.0,              # Utility parameter
-            r=0.017,            # Lending rate
-            ρ=0.945,            # Persistence in the income process
-            η=0.025,            # Standard deviation of the income process
-            θ=0.282,            # Prob of re-entering financial markets
-            def_y_param=0.969): # Parameter governing income in default
+    # Set up grids
+    B_grid = jnp.linspace(B_min, B_max, B_size)
+    mc = qe.markov.tauchen(y_size, ρ, η)
+    y_grid, P = jnp.exp(mc.state_values), mc.P
 
-        # Save parameters
-        self.β, self.γ, self.r, = β, γ, r
-        self.ρ, self.η, self.θ = ρ, η, θ
+    # Put grids on the device
+    P = jax.device_put(P)
 
-        # Set up grids
-        self.y_grid_size = y_grid_size
-        self.B_grid_size = B_grid_size
-        B_grid = jnp.linspace(B_grid_min, B_grid_max, B_grid_size)
-        mc = qe.markov.tauchen(y_grid_size, ρ, η)
-        y_grid, P = jnp.exp(mc.state_values), mc.P
-
-        # Put grids on the device
-        self.B_grid = jax.device_put(B_grid)
-        self.y_grid = jax.device_put(y_grid)
-        self.P = jax.device_put(P)
-
-        # Output received while in default, with same shape as y_grid
-        self.def_y = jnp.minimum(def_y_param * jnp.mean(self.y_grid), self.y_grid)
-
-    def params(self):
-        return self.β, self.γ, self.r, self.ρ, self.η, self.θ
-
-    def sizes(self):
-        return self.B_grid_size, self.y_grid_size
-
-    def arrays(self):
-        return self.P, self.B_grid, self.y_grid, self.def_y
+    # Output received while in default, with same shape as y_grid
+    def_y = jnp.minimum(def_y_param * jnp.mean(y_grid), y_grid)
+    
+    return ArellanoEconomy(β=β, γ=γ, r=r, ρ=ρ, η=η, θ=θ, B_size=B_size, 
+                            y_size=y_size, P=P, 
+                            B_grid=B_grid, y_grid=y_grid, 
+                            def_y=def_y)
 ```
 
 Here is the utility function.
@@ -473,6 +473,8 @@ def T_d(v_c, v_d, params, sizes, arrays):
     β, γ, r, ρ, η, θ = params
     B_size, y_size = sizes
     P, B_grid, y_grid, def_y = arrays
+
+
     B0_idx = jnp.searchsorted(B_grid, 1e-10)  # Index at which B is near zero
 
     current_utility = u(def_y, γ)
@@ -519,7 +521,6 @@ def bellman(v_c, v_d, q, params, sizes, arrays):
     # Return new_v_c[i_B, i_y, i_Bp]
     val = jnp.where(c > 0, u(c, γ) + β * continuation_value, -jnp.inf)
     return val
-
 ```
 
 ```{code-cell} ipython3
@@ -534,7 +535,8 @@ def get_greedy(v_c, v_d, q, params, sizes, arrays):
     return jnp.argmax(vals, axis=2)
 ```
 
-Let's make JIT-compiled versions of these functions, with the sizes of the arrays declared as static (compile-time constants) in order to help the compiler.
+Let's make JIT-compiled versions of these functions, with the sizes of the 
+arrays declared as static (compile-time constants) in order to help the compiler.
 
 ```{code-cell} ipython3
 compute_q = jax.jit(compute_q, static_argnums=(3,))
@@ -558,11 +560,11 @@ def update_values_and_prices(v_c, v_d, params, sizes, arrays):
     return new_v_c, new_v_d
 ```
 
-We can now write a function that will use the `Arellano_Economy` class and the
-functions defined above to compute the solution to our model.
+We can now write a function that will use an instance of `ArellanoEconomy` and 
+the functions defined above to compute the solution to our model.
 
 One of the jobs of this function is to take an instance of
-`Arellano_Economy`, which is hard for the JIT compiler to handle, and strip it
+`ArellanoEconomy`, which is hard for the JIT compiler to handle, and strip it
 down to more basic objects, which are then passed out to jitted functions.
 
 ```{code-cell} ipython3
@@ -570,14 +572,22 @@ down to more basic objects, which are then passed out to jitted functions.
 
 def solve(model, tol=1e-8, max_iter=10_000):
     """
-    Given an instance of Arellano_Economy, this function computes the optimal
+    Given an instance of `ArellanoEconomy`, this function computes the optimal
     policy and value functions.
     """
     # Unpack
-    params = model.params()
-    sizes = model.sizes()
-    arrays = model.arrays()
-    B_size, y_size = sizes
+    
+    β, γ, r, ρ, η, θ, B_size, y_size, P, B_grid, y_grid, def_y = model
+    
+    params = β, γ, r, ρ, η, θ
+    sizes = B_size, y_size
+    arrays = P, B_grid, y_grid, def_y
+    
+    β, γ, r, ρ, η, θ, B_size, y_size, P, B_grid, y_grid, def_y = model
+    
+    params = β, γ, r, ρ, η, θ
+    sizes = B_size, y_size
+    arrays = P, B_grid, y_grid, def_y
 
     # Initial conditions for v_c and v_d
     v_c = jnp.zeros((B_size, y_size))
@@ -588,7 +598,8 @@ def solve(model, tol=1e-8, max_iter=10_000):
     while (current_iter < max_iter) and (error > tol):
         if current_iter % 100 == 0:
             print(f"Entering iteration {current_iter} with error {error}.")
-        new_v_c, new_v_d = update_values_and_prices(v_c, v_d, params, sizes, arrays)
+        new_v_c, new_v_d = update_values_and_prices(v_c, v_d, params, 
+                                                    sizes, arrays)
         error = jnp.max(jnp.abs(new_v_c - v_c)) + jnp.max(jnp.abs(new_v_d - v_d))
         v_c, v_d = new_v_c, new_v_d
         current_iter += 1
@@ -605,7 +616,7 @@ Let's try solving the model.
 ```{code-cell} ipython3
 :hide-output: false
 
-ae = Arellano_Economy()
+ae = create_arellano()
 ```
 
 ```{code-cell} ipython3
@@ -631,14 +642,15 @@ def simulate(model, T, v_c, v_d, q, B_star, key):
     """
     Simulates the Arellano 2008 model of sovereign debt
 
-    Here `model` is an instance of `Arellano_Economy` and `T` is the length of
+    Here `model` is an instance of `ArellanoEconomy` and `T` is the length of
     the simulation.  Endogenous objects `v_c`, `v_d`, `q` and `B_star` are
     assumed to come from a solution to `model`.
 
     """
     # Unpack elements of the model
-    B_size, y_size = model.sizes()
+    B_size, y_size = model.B_size, model.y_size
     B_grid, y_grid, P = model.B_grid, model.y_grid, model.P
+
     B0_idx = jnp.searchsorted(B_grid, 1e-10)  # Index at which B is near zero
 
     # Set initial conditions
@@ -695,10 +707,7 @@ def simulate(model, T, v_c, v_d, q, B_star, key):
 
 Let’s start by trying to replicate the results obtained in {cite}`Are08`.
 
-In what follows, all results are computed using Arellano’s parameter values.
-
-The values can be seen in the `__init__` method of the `Arellano_Economy`
-shown above.
+In what follows, all results are computed using parameter values of `ArellanoEconomy` created by `create_arellano`.
 
 For example, `r=0.017` matches the average quarterly rate on a 5 year US treasury over the period 1983–2001.
 
@@ -706,7 +715,7 @@ Details on how to compute the figures are reported as solutions to the
 exercises.
 
 The first figure shows the bond price schedule and replicates Figure 3 of
-Arellano, where $ y_L $ and $ Y_H $ are particular below average and above average
+{cite}`Are08`, where $ y_L $ and $ Y_H $ are particular below average and above average
 values of output $ y $.
 
 ```{figure} _static/lecture_specific/arellano/arellano_bond_prices.png
@@ -716,8 +725,8 @@ values of output $ y $.
 - $ y_H $ is 5% above  the mean of the $ y $ grid values
 
 
-The grid used to compute this figure was relatively fine (`y_grid_size, B_grid_size = 51, 251`), which explains the minor differences between this and
-Arrelano’s figure.
+The grid used to compute this figure was relatively fine (`y_size, B_size = 51, 251`), 
+which explains the minor differences between this and Arrelano’s figure.
 
 The figure shows that
 
@@ -763,7 +772,7 @@ Periods of relative stability are followed by sharp spikes in the discount rate 
 
 To the extent that you can, replicate the figures shown above
 
-- Use the parameter values listed as defaults in `Arellano_Economy`.
+- Use the parameter values listed as defaults in `ArellanoEconomy` created by `create_arellano`.
 - The time series will of course vary depending on the shock draws.
 
 ```{exercise-end}
@@ -778,18 +787,18 @@ Compute the value function, policy and equilibrium prices
 ```{code-cell} ipython3
 :hide-output: false
 
-ae = Arellano_Economy()
+ae = create_arellano()
 v_c, v_d, q, B_star = solve(ae)
 ```
 
-Compute the bond price schedule as seen in figure 3 of Arellano (2008)
+Compute the bond price schedule as seen in figure 3 of {cite}`Are08`
 
 ```{code-cell} ipython3
 :hide-output: false
 
 # Unpack some useful names
 B_grid, y_grid, P = ae.B_grid, ae.y_grid, ae.P
-B_size, y_size = ae.sizes()
+B_size, y_size = ae.B_size, ae.y_size
 r = ae.r
 
 # Create "Y High" and "Y Low" values as 5% devs from mean
@@ -804,7 +813,7 @@ x = []
 q_low = []
 q_high = []
 for i, B in enumerate(B_grid):
-    if -0.35 <= B <= 0:  # To match fig 3 of Arellano
+    if -0.35 <= B <= 0:  # To match fig 3 of Arellano (2008)
         x.append(B)
         q_low.append(q[i, iy_low])
         q_high.append(q[i, iy_high])

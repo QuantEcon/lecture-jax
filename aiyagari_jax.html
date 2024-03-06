@@ -60,15 +60,15 @@
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
-<link href="_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
-<link href="_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link href="_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
 
   
-  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+  <link href="_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=b09b2da44b9015b4fa76ea072fa2d8f7faee5492" type="text/css" />
@@ -80,9 +80,9 @@
     <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
-<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
-  <script src="_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
+  <script src="_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
 
 
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
@@ -284,7 +284,8 @@ const thebe_selector_output = ".output, .cell_output"
 <p>We use the following imports</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">jax</span>
 <span class="kn">import</span> <span class="nn">jax.numpy</span> <span class="k">as</span> <span class="nn">jnp</span>
@@ -301,9 +302,13 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Mon Mar  4 04:40:39 2024       
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/opt/conda/envs/quantecon/lib/python3.11/pty.py:89: RuntimeWarning: os.fork() was called. os.fork() is incompatible with multithreaded code, and JAX is multithreaded, so this will likely lead to a deadlock.
+  pid, fd = os.forkpty()
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Tue Mar  5 09:19:57 2024       
 +-----------------------------------------------------------------------------+
-| NVIDIA-SMI 470.182.03   Driver Version: 470.182.03   CUDA Version: 12.1     |
+| NVIDIA-SMI 470.182.03   Driver Version: 470.182.03   CUDA Version: 12.3     |
 |-------------------------------+----------------------+----------------------+
 | GPU  Name        Persistence-M| Bus-Id        Disp.A | Volatile Uncorr. ECC |
 | Fan  Temp  Perf  Pwr:Usage/Cap|         Memory-Usage | GPU-Util  Compute M. |
@@ -312,7 +317,7 @@ const thebe_selector_output = ".output, .cell_output"
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>|   0  Tesla V100-SXM2...  Off  | 00000000:00:1E.0 Off |                    0 |
-| N/A   28C    P0    39W / 300W |      0MiB / 16160MiB |      2%      Default |
+| N/A   33C    P0    39W / 300W |      0MiB / 16160MiB |      2%      Default |
 |                               |                      |                  N/A |
 +-------------------------------+----------------------+----------------------+
                                                                                
@@ -386,6 +391,7 @@ Y_t = A K_t^{\alpha} N^{1 - \alpha}
                 <span class="n">α</span><span class="o">=</span><span class="mf">0.33</span><span class="p">,</span>
                 <span class="n">β</span><span class="o">=</span><span class="mf">0.96</span><span class="p">,</span>
                 <span class="n">δ</span><span class="o">=</span><span class="mf">0.05</span><span class="p">):</span>
+
     <span class="k">return</span> <span class="n">Firm</span><span class="p">(</span><span class="n">A</span><span class="o">=</span><span class="n">A</span><span class="p">,</span> <span class="n">N</span><span class="o">=</span><span class="n">N</span><span class="p">,</span> <span class="n">α</span><span class="o">=</span><span class="n">α</span><span class="p">,</span> <span class="n">β</span><span class="o">=</span><span class="n">β</span><span class="p">,</span> <span class="n">δ</span><span class="o">=</span><span class="n">δ</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -397,15 +403,13 @@ Y_t = A K_t^{\alpha} N^{1 - \alpha}
 <span class="eqno">(14.1)<a class="headerlink" href="#equation-equation-aiy-rgk" title="Permalink to this equation">#</a></span>\[r = A \alpha  \left( \frac{N}{K} \right)^{1 - \alpha} - \delta\]</div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">rd</span><span class="p">(</span><span class="n">K</span><span class="p">,</span> <span class="n">f</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">r_given_k</span><span class="p">(</span><span class="n">K</span><span class="p">,</span> <span class="n">firm</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Inverse demand curve for capital.  The interest rate associated with a</span>
 <span class="sd">    given demand for capital K.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">A</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">α</span><span class="p">,</span> <span class="n">β</span><span class="p">,</span> <span class="n">δ</span> <span class="o">=</span> <span class="n">f</span>
+    <span class="n">A</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">α</span><span class="p">,</span> <span class="n">β</span><span class="p">,</span> <span class="n">δ</span> <span class="o">=</span> <span class="n">firm</span>
     <span class="k">return</span> <span class="n">A</span> <span class="o">*</span> <span class="n">α</span> <span class="o">*</span> <span class="p">(</span><span class="n">N</span> <span class="o">/</span> <span class="n">K</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">α</span><span class="p">)</span> <span class="o">-</span> <span class="n">δ</span>
-
-<span class="n">rd</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">jit</span><span class="p">(</span><span class="n">rd</span><span class="p">,</span> <span class="n">static_argnums</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,))</span>
 </pre></div>
 </div>
 </div>
@@ -422,8 +426,6 @@ Y_t = A K_t^{\alpha} N^{1 - \alpha}
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">A</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">α</span><span class="p">,</span> <span class="n">β</span><span class="p">,</span> <span class="n">δ</span> <span class="o">=</span> <span class="n">f</span>
     <span class="k">return</span> <span class="n">A</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">α</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">A</span> <span class="o">*</span> <span class="n">α</span> <span class="o">/</span> <span class="p">(</span><span class="n">r</span> <span class="o">+</span> <span class="n">δ</span><span class="p">))</span><span class="o">**</span><span class="p">(</span><span class="n">α</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">α</span><span class="p">))</span>
-
-<span class="n">r_to_w</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">jit</span><span class="p">(</span><span class="n">r_to_w</span><span class="p">,</span> <span class="n">static_argnums</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,))</span>
 </pre></div>
 </div>
 </div>
@@ -493,8 +495,7 @@ accumulation problem and the grids used to solve it.</p>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jax</span><span class="o">.</span><span class="n">jit</span>
-<span class="k">def</span> <span class="nf">u</span><span class="p">(</span><span class="n">c</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">u</span><span class="p">(</span><span class="n">c</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">jnp</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -590,7 +591,6 @@ rewards given policy <span class="math notranslate nohighlight">\(\sigma\)</span
 <p>Defining the map as above works in a more intuitive multi-index setting</p>
 <p>(e.g. working with <span class="math notranslate nohighlight">\(v[i, j]\)</span> rather than flattening <span class="math notranslate nohighlight">\(v\)</span> to a one-dimensional array)</p>
 <p>and avoids instantiating the large matrix <span class="math notranslate nohighlight">\(P_{\sigma}\)</span>.</p>
-<p>The following linear operator is also needed for policy iteration.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">R_σ</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">σ</span><span class="p">,</span> <span class="n">constants</span><span class="p">,</span> <span class="n">sizes</span><span class="p">,</span> <span class="n">arrays</span><span class="p">):</span>
@@ -634,38 +634,6 @@ rewards given policy <span class="math notranslate nohighlight">\(\sigma\)</span
 </div>
 </div>
 </div>
-<p>The following function is used for optimistic policy iteration.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">T_σ</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">σ</span><span class="p">,</span> <span class="n">constants</span><span class="p">,</span> <span class="n">sizes</span><span class="p">,</span> <span class="n">arrays</span><span class="p">):</span>
-    <span class="s2">&quot;The σ-policy operator.&quot;</span>
-
-    <span class="c1"># Unpack model</span>
-    <span class="n">γ</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">β</span> <span class="o">=</span> <span class="n">constants</span>
-    <span class="n">a_size</span><span class="p">,</span> <span class="n">z_size</span> <span class="o">=</span> <span class="n">sizes</span>
-    <span class="n">a_grid</span><span class="p">,</span> <span class="n">z_grid</span><span class="p">,</span> <span class="n">Π</span> <span class="o">=</span> <span class="n">arrays</span>
-
-    <span class="n">r_σ</span> <span class="o">=</span> <span class="n">compute_r_σ</span><span class="p">(</span><span class="n">σ</span><span class="p">,</span> <span class="n">constants</span><span class="p">,</span> <span class="n">sizes</span><span class="p">,</span> <span class="n">arrays</span><span class="p">)</span>
-
-    <span class="c1"># Compute the array v[σ[i, j], jp]</span>
-    <span class="n">zp_idx</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">z_size</span><span class="p">)</span>
-    <span class="n">zp_idx</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">zp_idx</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">z_size</span><span class="p">))</span>
-    <span class="n">σ</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">σ</span><span class="p">,</span> <span class="p">(</span><span class="n">a_size</span><span class="p">,</span> <span class="n">z_size</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
-    <span class="n">V</span> <span class="o">=</span> <span class="n">v</span><span class="p">[</span><span class="n">σ</span><span class="p">,</span> <span class="n">zp_idx</span><span class="p">]</span>
-
-    <span class="c1"># Convert Q[j, jp] to Q[i, j, jp]</span>
-    <span class="n">Π</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">Π</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">z_size</span><span class="p">,</span> <span class="n">z_size</span><span class="p">))</span>
-
-    <span class="c1"># Calculate the expected sum Σ_jp v[σ[i, j], jp] * Q[i, j, jp]</span>
-    <span class="n">Ev</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">V</span> <span class="o">*</span> <span class="n">Π</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
-
-    <span class="k">return</span> <span class="n">r_σ</span> <span class="o">+</span> <span class="n">β</span> <span class="o">*</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">V</span> <span class="o">*</span> <span class="n">Π</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
-
-<span class="n">T_σ</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">jit</span><span class="p">(</span><span class="n">T_σ</span><span class="p">,</span> <span class="n">static_argnums</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,))</span>
-</pre></div>
-</div>
-</div>
-</div>
 </section>
 </section>
 <section id="solvers">
@@ -673,7 +641,7 @@ rewards given policy <span class="math notranslate nohighlight">\(\sigma\)</span
 <p>We will solve the household problem using Howard policy iteration.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">policy_iteration</span><span class="p">(</span><span class="n">household</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">policy_iteration</span><span class="p">(</span><span class="n">household</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">10_000</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Howard policy iteration routine.&quot;&quot;&quot;</span>
     
     <span class="n">γ</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">β</span><span class="p">,</span> <span class="n">a_size</span><span class="p">,</span> <span class="n">z_size</span><span class="p">,</span> <span class="n">a_grid</span><span class="p">,</span> <span class="n">z_grid</span><span class="p">,</span> <span class="n">Π</span> <span class="o">=</span> <span class="n">household</span>
@@ -682,14 +650,16 @@ rewards given policy <span class="math notranslate nohighlight">\(\sigma\)</span
     <span class="n">sizes</span> <span class="o">=</span> <span class="n">a_size</span><span class="p">,</span> <span class="n">z_size</span>
     <span class="n">arrays</span> <span class="o">=</span> <span class="n">a_grid</span><span class="p">,</span> <span class="n">z_grid</span><span class="p">,</span> <span class="n">Π</span>
 
-    <span class="n">vz</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">sizes</span><span class="p">)</span>
     <span class="n">σ</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">sizes</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
-    <span class="n">i</span><span class="p">,</span> <span class="n">error</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">1.0</span>
-    <span class="k">while</span> <span class="n">error</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="n">v_σ</span> <span class="o">=</span> <span class="n">get_value</span><span class="p">(</span><span class="n">σ</span><span class="p">,</span> <span class="n">constants</span><span class="p">,</span> <span class="n">sizes</span><span class="p">,</span> <span class="n">arrays</span><span class="p">)</span>
+    <span class="n">v_σ</span> <span class="o">=</span> <span class="n">get_value</span><span class="p">(</span><span class="n">σ</span><span class="p">,</span> <span class="n">constants</span><span class="p">,</span> <span class="n">sizes</span><span class="p">,</span> <span class="n">arrays</span><span class="p">)</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">error</span> <span class="o">=</span> <span class="n">tol</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="k">while</span> <span class="n">error</span> <span class="o">&gt;</span> <span class="n">tol</span> <span class="ow">and</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">max_iter</span><span class="p">:</span>
         <span class="n">σ_new</span> <span class="o">=</span> <span class="n">get_greedy</span><span class="p">(</span><span class="n">v_σ</span><span class="p">,</span> <span class="n">constants</span><span class="p">,</span> <span class="n">sizes</span><span class="p">,</span> <span class="n">arrays</span><span class="p">)</span>
-        <span class="n">error</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">σ_new</span> <span class="o">-</span> <span class="n">σ</span><span class="p">))</span>
+        <span class="n">v_σ_new</span> <span class="o">=</span> <span class="n">get_value</span><span class="p">(</span><span class="n">σ_new</span><span class="p">,</span> <span class="n">constants</span><span class="p">,</span> <span class="n">sizes</span><span class="p">,</span> <span class="n">arrays</span><span class="p">)</span>
+        <span class="n">error</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">v_σ_new</span> <span class="o">-</span> <span class="n">v_σ</span><span class="p">))</span>
         <span class="n">σ</span> <span class="o">=</span> <span class="n">σ_new</span>
+        <span class="n">v_σ</span> <span class="o">=</span> <span class="n">v_σ_new</span>
         <span class="n">i</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span>
         <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Concluded loop </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2"> with error </span><span class="si">{</span><span class="n">error</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
@@ -698,39 +668,11 @@ rewards given policy <span class="math notranslate nohighlight">\(\sigma\)</span
 </div>
 </div>
 </div>
-<p>We can also solve the problem using optimistic policy iteration.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">optimistic_policy_iteration</span><span class="p">(</span><span class="n">household</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
-    
-    <span class="n">γ</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">β</span><span class="p">,</span> <span class="n">a_size</span><span class="p">,</span> <span class="n">z_size</span><span class="p">,</span> <span class="n">a_grid</span><span class="p">,</span> <span class="n">z_grid</span><span class="p">,</span> <span class="n">Π</span> <span class="o">=</span> <span class="n">household</span>
-    
-    <span class="n">constants</span> <span class="o">=</span> <span class="n">γ</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">β</span>
-    <span class="n">sizes</span> <span class="o">=</span> <span class="n">a_size</span><span class="p">,</span> <span class="n">z_size</span>
-    <span class="n">arrays</span> <span class="o">=</span> <span class="n">a_grid</span><span class="p">,</span> <span class="n">z_grid</span><span class="p">,</span> <span class="n">Π</span>
-
-    <span class="n">v</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">sizes</span><span class="p">)</span>
-    <span class="n">error</span> <span class="o">=</span> <span class="n">tol</span> <span class="o">+</span> <span class="mi">1</span>
-    <span class="k">while</span> <span class="n">error</span> <span class="o">&gt;</span> <span class="n">tol</span><span class="p">:</span>
-        <span class="n">last_v</span> <span class="o">=</span> <span class="n">v</span>
-        <span class="n">σ</span> <span class="o">=</span> <span class="n">get_greedy</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">constants</span><span class="p">,</span> <span class="n">sizes</span><span class="p">,</span> <span class="n">arrays</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span><span class="p">):</span>
-            <span class="n">v</span> <span class="o">=</span> <span class="n">T_σ</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">σ</span><span class="p">,</span> <span class="n">constants</span><span class="p">,</span> <span class="n">sizes</span><span class="p">,</span> <span class="n">arrays</span><span class="p">)</span>
-        <span class="n">error</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">v</span> <span class="o">-</span> <span class="n">last_v</span><span class="p">))</span>
-    <span class="k">return</span> <span class="n">get_greedy</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">constants</span><span class="p">,</span> <span class="n">sizes</span><span class="p">,</span> <span class="n">arrays</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
 <p>As a first example of what we can do, let’s compute and plot an optimal accumulation policy at fixed prices.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Example prices</span>
-<span class="n">r</span> <span class="o">=</span> <span class="mf">0.03</span>
-<span class="n">w</span> <span class="o">=</span> <span class="mf">0.956</span>
-
-<span class="c1"># Create an instance of Housbehold</span>
-<span class="n">household</span> <span class="o">=</span> <span class="n">create_household</span><span class="p">(</span><span class="n">r</span><span class="o">=</span><span class="n">r</span><span class="p">,</span> <span class="n">w</span><span class="o">=</span><span class="n">w</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create an instance of Housbehold</span>
+<span class="n">household</span> <span class="o">=</span> <span class="n">create_household</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -739,67 +681,52 @@ rewards given policy <span class="math notranslate nohighlight">\(\sigma\)</span
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%time</span>
 
-<span class="n">σ_star_hpi</span> <span class="o">=</span> <span class="n">policy_iteration</span><span class="p">(</span><span class="n">household</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Concluded loop 1 with error 101.
-Concluded loop 2 with error 76.
-Concluded loop 3 with error 36.
-Concluded loop 4 with error 17.
-Concluded loop 5 with error 12.
-Concluded loop 6 with error 6.
-Concluded loop 7 with error 3.
-Concluded loop 8 with error 2.
-Concluded loop 9 with error 1.
-Concluded loop 10 with error 1.
-Concluded loop 11 with error 1.
-Concluded loop 12 with error 1.
-Concluded loop 13 with error 1.
-Concluded loop 14 with error 1.
-Concluded loop 15 with error 0.
-CPU times: user 942 ms, sys: 47.4 ms, total: 990 ms
-Wall time: 1.31 s
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%time</span>
+<span class="n">σ_star</span> <span class="o">=</span> <span class="n">policy_iteration</span><span class="p">(</span><span class="n">household</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-<span class="n">σ_star</span> <span class="o">=</span> <span class="n">optimistic_policy_iteration</span><span class="p">(</span><span class="n">household</span><span class="p">)</span>
+
+<span class="c1"># The next plot shows asset accumulation policies at different values of the exogenous state.</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 461 ms, sys: 99.8 ms, total: 561 ms
-Wall time: 534 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Concluded loop 1 with error 11.366831579022996.
+Concluded loop 2 with error 9.574522771860245.
+Concluded loop 3 with error 3.9654760004604777.
+Concluded loop 4 with error 1.1207075306313232.
+Concluded loop 5 with error 0.2524013153055833.
+Concluded loop 6 with error 0.12172293662906064.
+Concluded loop 7 with error 0.043395682867316765.
+Concluded loop 8 with error 0.012132319676439351.
+Concluded loop 9 with error 0.005822155404443308.
+Concluded loop 10 with error 0.002863165320343697.
+Concluded loop 11 with error 0.0016657175376657563.
+Concluded loop 12 with error 0.0004143776102245589.
+Concluded loop 13 with error 0.0.
+CPU times: user 657 ms, sys: 51 ms, total: 708 ms
+Wall time: 859 ms
 </pre></div>
 </div>
 </div>
 </div>
-<p>The next plot shows asset accumulation policies at different values of the exogenous state.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">γ</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">β</span><span class="p">,</span> <span class="n">a_size</span><span class="p">,</span> <span class="n">z_size</span><span class="p">,</span> <span class="n">a_grid</span><span class="p">,</span> <span class="n">z_grid</span><span class="p">,</span> <span class="n">Π</span> <span class="o">=</span> <span class="n">household</span>
 
-<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="mi">9</span><span class="p">))</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">a_grid</span><span class="p">,</span> <span class="n">a_grid</span><span class="p">,</span> <span class="s1">&#39;k--&#39;</span><span class="p">)</span>  <span class="c1"># 45 degrees</span>
-<span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">z_size</span><span class="p">):</span>
-    <span class="n">lb</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;$z = </span><span class="si">{</span><span class="n">z_grid</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="si">:</span><span class="s1">.2</span><span class="si">}</span><span class="s1">$&#39;</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">a_grid</span><span class="p">,</span> <span class="n">a_grid</span><span class="p">[</span><span class="n">σ_star</span><span class="p">[:,</span> <span class="n">j</span><span class="p">]],</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">lb</span><span class="p">)</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">a_grid</span><span class="p">,</span> <span class="n">a_grid</span><span class="p">,</span> <span class="s1">&#39;k--&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;45 degrees&quot;</span><span class="p">)</span>  
+<span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">z</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">z_grid</span><span class="p">):</span>
+    <span class="n">lb</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;$z = </span><span class="si">{</span><span class="n">z</span><span class="si">:</span><span class="s1">.2</span><span class="si">}</span><span class="s1">$&#39;</span>
+    <span class="n">policy_vals</span> <span class="o">=</span> <span class="n">a_grid</span><span class="p">[</span><span class="n">σ_star</span><span class="p">[:,</span> <span class="n">j</span><span class="p">]]</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">a_grid</span><span class="p">,</span> <span class="n">policy_vals</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">lb</span><span class="p">)</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;current assets&#39;</span><span class="p">)</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;next period assets&#39;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper left&#39;</span><span class="p">)</span>
-
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/868141a977288f783a9c9aed80f160206d860e8a514c8b2350161636a4fc0ce2.png"><img alt="_images/868141a977288f783a9c9aed80f160206d860e8a514c8b2350161636a4fc0ce2.png" src="_images/868141a977288f783a9c9aed80f160206d860e8a514c8b2350161636a4fc0ce2.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/d4a432559bb94e89bf3de30ca29fc8bfabd82f6b39860a844e5e79966f5cc45e.png"><img alt="_images/d4a432559bb94e89bf3de30ca29fc8bfabd82f6b39860a844e5e79966f5cc45e.png" src="_images/d4a432559bb94e89bf3de30ca29fc8bfabd82f6b39860a844e5e79966f5cc45e.png" style="width: 80%;" /></a>
 </div>
 </div>
 <section id="capital-supply">
@@ -886,7 +813,7 @@ bivariate Markov chain of the state <span class="math notranslate nohighlight">\
     <span class="n">arrays</span> <span class="o">=</span> <span class="n">a_grid</span><span class="p">,</span> <span class="n">z_grid</span><span class="p">,</span> <span class="n">Π</span>
 
     <span class="c1"># Compute the optimal policy</span>
-    <span class="n">σ_star</span> <span class="o">=</span> <span class="n">optimistic_policy_iteration</span><span class="p">(</span><span class="n">household</span><span class="p">)</span>
+    <span class="n">σ_star</span> <span class="o">=</span> <span class="n">policy_iteration</span><span class="p">(</span><span class="n">household</span><span class="p">)</span>
     <span class="c1"># Compute the stationary distribution</span>
     <span class="n">ψ_a</span> <span class="o">=</span> <span class="n">compute_asset_stationary</span><span class="p">(</span><span class="n">σ_star</span><span class="p">,</span> <span class="n">constants</span><span class="p">,</span> <span class="n">sizes</span><span class="p">,</span> <span class="n">arrays</span><span class="p">)</span>
 
@@ -954,8 +881,8 @@ bivariate Markov chain of the state <span class="math notranslate nohighlight">\
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 10.2 s, sys: 2.53 s, total: 12.8 s
-Wall time: 4.85 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 4.01 s, sys: 916 ms, total: 4.93 s
+Wall time: 2.87 s
 </pre></div>
 </div>
 </div>
@@ -966,8 +893,7 @@ Wall time: 4.85 s
 
 <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">k_vals</span><span class="p">,</span> <span class="n">r_vals</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;supply of capital&#39;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">k_vals</span><span class="p">,</span> <span class="n">rd</span><span class="p">(</span><span class="n">k_vals</span><span class="p">,</span> <span class="n">firm</span><span class="p">),</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;demand for capital&#39;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">k_vals</span><span class="p">,</span> <span class="n">r_given_k</span><span class="p">(</span><span class="n">k_vals</span><span class="p">,</span> <span class="n">firm</span><span class="p">),</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;demand for capital&#39;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;capital&#39;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;interest rate&#39;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper right&#39;</span><span class="p">)</span>
@@ -977,7 +903,7 @@ Wall time: 4.85 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/394c5b70cf25d42506bf52f46eebdec03431040b23056e577335c859c7522705.png"><img alt="_images/394c5b70cf25d42506bf52f46eebdec03431040b23056e577335c859c7522705.png" src="_images/394c5b70cf25d42506bf52f46eebdec03431040b23056e577335c859c7522705.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/8fdb18fa450d2de1ab811b2a03c08baad7d269dace894a7e0698858890030ca9.png"><img alt="_images/8fdb18fa450d2de1ab811b2a03c08baad7d269dace894a7e0698858890030ca9.png" src="_images/8fdb18fa450d2de1ab811b2a03c08baad7d269dace894a7e0698858890030ca9.png" style="width: 80%;" /></a>
 </div>
 </div>
 <p>Here’s a plot of the excess demand function.</p>
@@ -985,7 +911,7 @@ Wall time: 4.85 s
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">excess_demand</span><span class="p">(</span><span class="n">K</span><span class="p">,</span> <span class="n">firm</span><span class="p">,</span> <span class="n">household</span><span class="p">):</span>
-    <span class="n">r</span> <span class="o">=</span> <span class="n">rd</span><span class="p">(</span><span class="n">K</span><span class="p">,</span> <span class="n">firm</span><span class="p">)</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">r_given_k</span><span class="p">(</span><span class="n">K</span><span class="p">,</span> <span class="n">firm</span><span class="p">)</span>
     <span class="n">w</span> <span class="o">=</span> <span class="n">r_to_w</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">firm</span><span class="p">)</span>
     <span class="n">household</span> <span class="o">=</span> <span class="n">household</span><span class="o">.</span><span class="n">_replace</span><span class="p">(</span><span class="n">r</span><span class="o">=</span><span class="n">r</span><span class="p">,</span> <span class="n">w</span><span class="o">=</span><span class="n">w</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">K</span> <span class="o">-</span> <span class="n">capital_supply</span><span class="p">(</span><span class="n">household</span><span class="p">)</span>
@@ -1004,8 +930,8 @@ Wall time: 4.85 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 8.61 s, sys: 2.19 s, total: 10.8 s
-Wall time: 4.05 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 3.41 s, sys: 1.07 s, total: 4.47 s
+Wall time: 2.39 s
 </pre></div>
 </div>
 </div>
@@ -1022,7 +948,7 @@ Wall time: 4.05 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/ab5cd4ef1d26c0fef4f216064a76b22dbd7a0e14e4cd74de66f99d87cbdfec9e.png"><img alt="_images/ab5cd4ef1d26c0fef4f216064a76b22dbd7a0e14e4cd74de66f99d87cbdfec9e.png" src="_images/ab5cd4ef1d26c0fef4f216064a76b22dbd7a0e14e4cd74de66f99d87cbdfec9e.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/62c081596a45c6a04eacfd8d50a184e6db01d1a8b4ff132fe7cead765b784383.png"><img alt="_images/62c081596a45c6a04eacfd8d50a184e6db01d1a8b4ff132fe7cead765b784383.png" src="_images/62c081596a45c6a04eacfd8d50a184e6db01d1a8b4ff132fe7cead765b784383.png" style="width: 80%;" /></a>
 </div>
 </div>
 </section>
@@ -1049,7 +975,7 @@ in the next function.</p>
         <span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span>
     <span class="k">if</span> <span class="n">count</span> <span class="o">==</span> <span class="mi">10000</span><span class="p">:</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Root might not be accurate&quot;</span><span class="p">)</span>
-    <span class="k">return</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">upper</span> <span class="o">+</span> <span class="n">lower</span><span class="p">)</span>
+    <span class="k">return</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">upper</span> <span class="o">+</span> <span class="n">lower</span><span class="p">),</span> <span class="n">count</span>
 </pre></div>
 </div>
 </div>
@@ -1058,7 +984,11 @@ in the next function.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">compute_equilibrium</span><span class="p">(</span><span class="n">firm</span><span class="p">,</span> <span class="n">household</span><span class="p">):</span>
-    <span class="n">solution</span> <span class="o">=</span> <span class="n">bisect</span><span class="p">(</span><span class="n">excess_demand</span><span class="p">,</span> <span class="mf">6.0</span><span class="p">,</span> <span class="mf">10.0</span><span class="p">,</span> <span class="n">firm</span><span class="p">,</span> <span class="n">household</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Computing equilibrium capital stock&quot;</span><span class="p">)</span>
+    <span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+    <span class="n">solution</span><span class="p">,</span> <span class="n">count</span> <span class="o">=</span> <span class="n">bisect</span><span class="p">(</span><span class="n">excess_demand</span><span class="p">,</span> <span class="mf">6.0</span><span class="p">,</span> <span class="mf">10.0</span><span class="p">,</span> <span class="n">firm</span><span class="p">,</span> <span class="n">household</span><span class="p">)</span>
+    <span class="n">elapsed</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Computed equilibrium in </span><span class="si">{</span><span class="n">count</span><span class="si">}</span><span class="s2"> iterations and </span><span class="si">{</span><span class="n">elapsed</span><span class="si">}</span><span class="s2"> seconds&quot;</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">solution</span>
 </pre></div>
 </div>
@@ -1075,8 +1005,12 @@ in the next function.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 971 ms, sys: 326 ms, total: 1.3 s
-Wall time: 632 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computing equilibrium capital stock
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.2981271743774414 seconds
+CPU times: user 398 ms, sys: 155 ms, total: 553 ms
+Wall time: 300 ms
 </pre></div>
 </div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>8.09375
@@ -1114,6 +1048,201 @@ showing the behaviour of equilibrium capital stock with the increase in <span cl
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computing equilibrium capital stock
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.6299929618835449 seconds
+
+Computing equilibrium capital stock
+Computed equilibrium in 6 iterations and 0.1652226448059082 seconds
+
+Computing equilibrium capital stock
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.1723175048828125 seconds
+
+Computing equilibrium capital stock
+Computed equilibrium in 6 iterations and 0.1751391887664795 seconds
+
+Computing equilibrium capital stock
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.17848992347717285 seconds
+
+Computing equilibrium capital stock
+Computed equilibrium in 6 iterations and 0.17224955558776855 seconds
+
+Computing equilibrium capital stock
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.18408775329589844 seconds
+
+Computing equilibrium capital stock
+Computed equilibrium in 6 iterations and 0.19326472282409668 seconds
+
+Computing equilibrium capital stock
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.19845223426818848 seconds
+
+Computing equilibrium capital stock
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.20639586448669434 seconds
+
+Computing equilibrium capital stock
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.2145528793334961 seconds
+
+Computing equilibrium capital stock
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.2076563835144043 seconds
+
+Computing equilibrium capital stock
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.2089555263519287 seconds
+
+Computing equilibrium capital stock
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.2162034511566162 seconds
+
+Computing equilibrium capital stock
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.22046136856079102 seconds
+
+Computing equilibrium capital stock
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.23583674430847168 seconds
+
+Computing equilibrium capital stock
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.24550366401672363 seconds
+
+Computing equilibrium capital stock
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.24856209754943848 seconds
+
+Computing equilibrium capital stock
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.24846720695495605 seconds
+
+Computing equilibrium capital stock
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.2562065124511719 seconds
+
+Computing equilibrium capital stock
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.2525925636291504 seconds
+
+Computing equilibrium capital stock
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.27285122871398926 seconds
+
+Computing equilibrium capital stock
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.2703671455383301 seconds
+
+Computing equilibrium capital stock
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.299558162689209 seconds
+
+Computing equilibrium capital stock
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.3063473701477051 seconds
+
+Computing equilibrium capital stock
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.3147616386413574 seconds
+
+Computing equilibrium capital stock
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.2988259792327881 seconds
+
+Computing equilibrium capital stock
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 40.063034772872925 seconds
+
+Computing equilibrium capital stock
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.3241143226623535 seconds
+
+Computing equilibrium capital stock
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.30733656883239746 seconds
+
+Computing equilibrium capital stock
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.3050408363342285 seconds
+
+Computing equilibrium capital stock
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.3183767795562744 seconds
+
+Computing equilibrium capital stock
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.3248896598815918 seconds
+
+Computing equilibrium capital stock
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.34447503089904785 seconds
+
+Computing equilibrium capital stock
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.3568236827850342 seconds
+
+Computing equilibrium capital stock
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.38604068756103516 seconds
+
+Computing equilibrium capital stock
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.4039621353149414 seconds
+
+Computing equilibrium capital stock
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.4174787998199463 seconds
+
+Computing equilibrium capital stock
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.42734694480895996 seconds
+
+Computing equilibrium capital stock
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.43052029609680176 seconds
+</pre></div>
+</div>
+</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1126,7 +1255,7 @@ showing the behaviour of equilibrium capital stock with the increase in <span cl
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/640a737a69fa7e75c49a3257e16b93f167a4b26b776098d390949726d4779954.png"><img alt="_images/640a737a69fa7e75c49a3257e16b93f167a4b26b776098d390949726d4779954.png" src="_images/640a737a69fa7e75c49a3257e16b93f167a4b26b776098d390949726d4779954.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/21afa7f09b5e6b71e0fbdee2d065133aefab9abdaa38f5ff545bbd59b4170c31.png"><img alt="_images/21afa7f09b5e6b71e0fbdee2d065133aefab9abdaa38f5ff545bbd59b4170c31.png" src="_images/21afa7f09b5e6b71e0fbdee2d065133aefab9abdaa38f5ff545bbd59b4170c31.png" style="width: 80%;" /></a>
 </div>
 </div>
 </section>
@@ -1154,8 +1283,7 @@ supply of captial.</p>
 <p>Let’s define the utility function</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jax</span><span class="o">.</span><span class="n">jit</span>
-<span class="k">def</span> <span class="nf">u</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">γ</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">u</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">γ</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">c</span><span class="o">**</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">γ</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">γ</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -1170,7 +1298,6 @@ in the utility function.</p>
 <span class="n">compute_r_σ</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">jit</span><span class="p">(</span><span class="n">compute_r_σ</span><span class="p">,</span> <span class="n">static_argnums</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,))</span>
 <span class="n">R_σ</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">jit</span><span class="p">(</span><span class="n">R_σ</span><span class="p">,</span> <span class="n">static_argnums</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,))</span>
 <span class="n">get_value</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">jit</span><span class="p">(</span><span class="n">get_value</span><span class="p">,</span> <span class="n">static_argnums</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,))</span>
-<span class="n">T_σ</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">jit</span><span class="p">(</span><span class="n">T_σ</span><span class="p">,</span> <span class="n">static_argnums</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,))</span>
 <span class="n">compute_asset_stationary</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">jit</span><span class="p">(</span><span class="n">compute_asset_stationary</span><span class="p">,</span>
                                    <span class="n">static_argnums</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,))</span>
 </pre></div>
@@ -1204,8 +1331,7 @@ in the utility function.</p>
 
 <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">k_vals</span><span class="p">,</span> <span class="n">r_vals</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;supply of capital&#39;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">k_vals</span><span class="p">,</span> <span class="n">rd</span><span class="p">(</span><span class="n">k_vals</span><span class="p">,</span> <span class="n">firm</span><span class="p">),</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;demand for capital&#39;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">k_vals</span><span class="p">,</span> <span class="n">r_given_k</span><span class="p">(</span><span class="n">k_vals</span><span class="p">,</span> <span class="n">firm</span><span class="p">),</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;demand for capital&#39;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;capital&#39;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;interest rate&#39;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
@@ -1215,7 +1341,7 @@ in the utility function.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/394c5b70cf25d42506bf52f46eebdec03431040b23056e577335c859c7522705.png"><img alt="_images/394c5b70cf25d42506bf52f46eebdec03431040b23056e577335c859c7522705.png" src="_images/394c5b70cf25d42506bf52f46eebdec03431040b23056e577335c859c7522705.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/8fdb18fa450d2de1ab811b2a03c08baad7d269dace894a7e0698858890030ca9.png"><img alt="_images/8fdb18fa450d2de1ab811b2a03c08baad7d269dace894a7e0698858890030ca9.png" src="_images/8fdb18fa450d2de1ab811b2a03c08baad7d269dace894a7e0698858890030ca9.png" style="width: 80%;" /></a>
 </div>
 </div>
 <p>Compute the equilibrium</p>
@@ -1230,8 +1356,12 @@ in the utility function.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1.24 s, sys: 345 ms, total: 1.59 s
-Wall time: 720 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computing equilibrium capital stock
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.706519365310669 seconds
+CPU times: user 882 ms, sys: 129 ms, total: 1.01 s
+Wall time: 709 ms
 </pre></div>
 </div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>8.09375

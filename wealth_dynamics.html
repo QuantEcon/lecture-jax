@@ -60,15 +60,15 @@
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
-<link href="_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
-<link href="_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link href="_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
 
   
-  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+  <link href="_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=b09b2da44b9015b4fa76ea072fa2d8f7faee5492" type="text/css" />
@@ -80,9 +80,9 @@
     <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
-<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
-  <script src="_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
+  <script src="_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
 
 
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
@@ -269,9 +269,13 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Mon Mar  4 04:59:12 2024       
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/opt/conda/envs/quantecon/lib/python3.11/pty.py:89: RuntimeWarning: os.fork() was called. os.fork() is incompatible with multithreaded code, and JAX is multithreaded, so this will likely lead to a deadlock.
+  pid, fd = os.forkpty()
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Tue Mar  5 09:37:42 2024       
 +-----------------------------------------------------------------------------+
-| NVIDIA-SMI 470.182.03   Driver Version: 470.182.03   CUDA Version: 12.1     |
+| NVIDIA-SMI 470.182.03   Driver Version: 470.182.03   CUDA Version: 12.3     |
 |-------------------------------+----------------------+----------------------+
 | GPU  Name        Persistence-M| Bus-Id        Disp.A | Volatile Uncorr. ECC |
 | Fan  Temp  Perf  Pwr:Usage/Cap|         Memory-Usage | GPU-Util  Compute M. |
@@ -280,7 +284,7 @@ const thebe_selector_output = ".output, .cell_output"
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>|   0  Tesla V100-SXM2...  Off  | 00000000:00:1E.0 Off |                    0 |
-| N/A   28C    P0    39W / 300W |      0MiB / 16160MiB |      2%      Default |
+| N/A   34C    P0    39W / 300W |      0MiB / 16160MiB |      2%      Default |
 |                               |                      |                  N/A |
 +-------------------------------+----------------------+----------------------+
                                                                                
@@ -339,8 +343,8 @@ inequality.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1.63 s, sys: 14.2 ms, total: 1.65 s
-Wall time: 1.42 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 740 ms, sys: 35.5 ms, total: 776 ms
+Wall time: 1.08 s
 </pre></div>
 </div>
 </div>
@@ -355,8 +359,8 @@ Wall time: 1.42 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 560 µs, sys: 239 µs, total: 799 µs
-Wall time: 423 µs
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 432 µs, sys: 245 µs, total: 677 µs
+Wall time: 298 µs
 </pre></div>
 </div>
 </div>
@@ -372,7 +376,7 @@ Wall time: 423 µs
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/a9b59d374cb820be3645d1c75c05f535e466fb1a5f61b8845e3d4e5cf8afe121.png"><img alt="_images/a9b59d374cb820be3645d1c75c05f535e466fb1a5f61b8845e3d4e5cf8afe121.png" src="_images/a9b59d374cb820be3645d1c75c05f535e466fb1a5f61b8845e3d4e5cf8afe121.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/c31e66bf326961e43b3177ca413124dac76b8007153d411bcb5244536be5cacc.png"><img alt="_images/c31e66bf326961e43b3177ca413124dac76b8007153d411bcb5244536be5cacc.png" src="_images/c31e66bf326961e43b3177ca413124dac76b8007153d411bcb5244536be5cacc.png" style="width: 80%;" /></a>
 </div>
 </div>
 <p>Here is another example, which shows how the Lorenz curve shifts as the
@@ -405,7 +409,7 @@ observations.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/d18b8ae765440ee8cbf8bd9a394a84de3cbb2cb5ab8515b38d9f475f29554ebe.png"><img alt="_images/d18b8ae765440ee8cbf8bd9a394a84de3cbb2cb5ab8515b38d9f475f29554ebe.png" src="_images/d18b8ae765440ee8cbf8bd9a394a84de3cbb2cb5ab8515b38d9f475f29554ebe.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/c26e88534ff18381448965415b79aed95b79e3aa473a2c053a5c13c94691894e.png"><img alt="_images/c26e88534ff18381448965415b79aed95b79e3aa473a2c053a5c13c94691894e.png" src="_images/c26e88534ff18381448965415b79aed95b79e3aa473a2c053a5c13c94691894e.png" style="width: 80%;" /></a>
 </div>
 </div>
 <p>You can see that, as the tail parameter of the Pareto distribution increases, inequality decreases.</p>
@@ -468,7 +472,7 @@ this at each fixed value of <span class="math notranslate nohighlight">\(a\)</sp
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/a0208c0b25e2c80cf91459b2b1a4918fb3302993abe0dcf84dd7f03e17a4c26a.png"><img alt="_images/a0208c0b25e2c80cf91459b2b1a4918fb3302993abe0dcf84dd7f03e17a4c26a.png" src="_images/a0208c0b25e2c80cf91459b2b1a4918fb3302993abe0dcf84dd7f03e17a4c26a.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/fbd471819928ffa5cf936fabf02321395c137f82c8720e463e47980db3956e29.png"><img alt="_images/fbd471819928ffa5cf936fabf02321395c137f82c8720e463e47980db3956e29.png" src="_images/fbd471819928ffa5cf936fabf02321395c137f82c8720e463e47980db3956e29.png" style="width: 80%;" /></a>
 </div>
 </div>
 <p>The simulation shows that the fit is good.</p>
@@ -620,8 +624,8 @@ this at each fixed value of <span class="math notranslate nohighlight">\(a\)</sp
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 2.78 s, sys: 404 ms, total: 3.19 s
-Wall time: 2.68 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 2.05 s, sys: 392 ms, total: 2.44 s
+Wall time: 1.68 s
 </pre></div>
 </div>
 </div>
@@ -635,7 +639,7 @@ Wall time: 2.68 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/a8c2495f15f4c5583fd5edc0729b19842f245bc07ce2d031dbfcd1c4fe6817ef.png"><img alt="_images/a8c2495f15f4c5583fd5edc0729b19842f245bc07ce2d031dbfcd1c4fe6817ef.png" src="_images/a8c2495f15f4c5583fd5edc0729b19842f245bc07ce2d031dbfcd1c4fe6817ef.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/dc3cc1ef069abec68e8f7de47b3fc50d944753c792fe0eb52691e56ce05365a6.png"><img alt="_images/dc3cc1ef069abec68e8f7de47b3fc50d944753c792fe0eb52691e56ce05365a6.png" src="_images/dc3cc1ef069abec68e8f7de47b3fc50d944753c792fe0eb52691e56ce05365a6.png" style="width: 80%;" /></a>
 </div>
 </div>
 <p>We can further try to optimize and speed up the compile time of the above function by replacing <code class="docutils literal notranslate"><span class="pre">for</span></code> loop with <a class="reference external" href="https://jax.readthedocs.io/en/latest/_autosummary/jax.lax.scan.html"><code class="docutils literal notranslate"><span class="pre">jax.lax.scan</span></code></a>.</p>
@@ -700,8 +704,8 @@ Wall time: 2.68 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 662 ms, sys: 1.07 ms, total: 663 ms
-Wall time: 625 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 648 ms, sys: 18.8 ms, total: 667 ms
+Wall time: 524 ms
 </pre></div>
 </div>
 </div>
@@ -717,8 +721,8 @@ Wall time: 625 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 11.6 ms, sys: 0 ns, total: 11.6 ms
-Wall time: 8.62 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 9.27 ms, sys: 2.45 ms, total: 11.7 ms
+Wall time: 7.85 ms
 </pre></div>
 </div>
 </div>
@@ -732,7 +736,7 @@ Wall time: 8.62 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/a8c2495f15f4c5583fd5edc0729b19842f245bc07ce2d031dbfcd1c4fe6817ef.png"><img alt="_images/a8c2495f15f4c5583fd5edc0729b19842f245bc07ce2d031dbfcd1c4fe6817ef.png" src="_images/a8c2495f15f4c5583fd5edc0729b19842f245bc07ce2d031dbfcd1c4fe6817ef.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/dc3cc1ef069abec68e8f7de47b3fc50d944753c792fe0eb52691e56ce05365a6.png"><img alt="_images/dc3cc1ef069abec68e8f7de47b3fc50d944753c792fe0eb52691e56ce05365a6.png" src="_images/dc3cc1ef069abec68e8f7de47b3fc50d944753c792fe0eb52691e56ce05365a6.png" style="width: 80%;" /></a>
 </div>
 </div>
 <p>Now here’s function to simulate a cross section of households forward in time.</p>
@@ -814,9 +818,9 @@ curve and Gini coefficient.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/39001a5420b81430576631991280e9cf8da66b425aa10b3aa81543622ca75c9a.png"><img alt="_images/39001a5420b81430576631991280e9cf8da66b425aa10b3aa81543622ca75c9a.png" src="_images/39001a5420b81430576631991280e9cf8da66b425aa10b3aa81543622ca75c9a.png" style="width: 80%;" /></a>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 6.13 s, sys: 31.2 ms, total: 6.16 s
-Wall time: 5.9 s
+<a class="reference internal image-reference" href="_images/4dc4ccaf5676b2925868103d5146ce903e7a526f484e5c9ea8f9d85e89219d84.png"><img alt="_images/4dc4ccaf5676b2925868103d5146ce903e7a526f484e5c9ea8f9d85e89219d84.png" src="_images/4dc4ccaf5676b2925868103d5146ce903e7a526f484e5c9ea8f9d85e89219d84.png" style="width: 80%;" /></a>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 5.47 s, sys: 0 ns, total: 5.47 s
+Wall time: 5.59 s
 </pre></div>
 </div>
 </div>
@@ -834,7 +838,7 @@ Wall time: 5.9 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/9816c88b41bf1e77189aac8e1f419e312b4271048e345ed556a5491e43c7121f.png"><img alt="_images/9816c88b41bf1e77189aac8e1f419e312b4271048e345ed556a5491e43c7121f.png" src="_images/9816c88b41bf1e77189aac8e1f419e312b4271048e345ed556a5491e43c7121f.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/bc3e6223eb4fa9b032c2eb6eb8c6c13362d0eddd38504ef3a346abed6ff72f86.png"><img alt="_images/bc3e6223eb4fa9b032c2eb6eb8c6c13362d0eddd38504ef3a346abed6ff72f86.png" src="_images/bc3e6223eb4fa9b032c2eb6eb8c6c13362d0eddd38504ef3a346abed6ff72f86.png" style="width: 80%;" /></a>
 </div>
 </div>
 <p>Once again, we see that inequality increases as returns on financial income
@@ -862,9 +866,9 @@ volatility term <span class="math notranslate nohighlight">\(\sigma_r\)</span> i
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/2bb0822345b1a83c754029b592ff112c205bfa227397477bce46eb2f7d506978.png"><img alt="_images/2bb0822345b1a83c754029b592ff112c205bfa227397477bce46eb2f7d506978.png" src="_images/2bb0822345b1a83c754029b592ff112c205bfa227397477bce46eb2f7d506978.png" style="width: 80%;" /></a>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 3.1 s, sys: 7.28 ms, total: 3.11 s
-Wall time: 3.04 s
+<a class="reference internal image-reference" href="_images/9ada9c5f291592cd4a2624e2e1965f0860fe6deb7ef67b938ae82eb14f9c652b.png"><img alt="_images/9ada9c5f291592cd4a2624e2e1965f0860fe6deb7ef67b938ae82eb14f9c652b.png" src="_images/9ada9c5f291592cd4a2624e2e1965f0860fe6deb7ef67b938ae82eb14f9c652b.png" style="width: 80%;" /></a>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 2.99 s, sys: 0 ns, total: 2.99 s
+Wall time: 2.92 s
 </pre></div>
 </div>
 </div>
@@ -916,7 +920,7 @@ simulation.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/f1ef9aed22eb62ffde795a0d08e94898ff5f395a291f8a2bad55a9c5fa6667a8.png"><img alt="_images/f1ef9aed22eb62ffde795a0d08e94898ff5f395a291f8a2bad55a9c5fa6667a8.png" src="_images/f1ef9aed22eb62ffde795a0d08e94898ff5f395a291f8a2bad55a9c5fa6667a8.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/6a8b8339f43f30eeae299af9c772334e308985fc62e283fd82a91afa63917e9f.png"><img alt="_images/6a8b8339f43f30eeae299af9c772334e308985fc62e283fd82a91afa63917e9f.png" src="_images/6a8b8339f43f30eeae299af9c772334e308985fc62e283fd82a91afa63917e9f.png" style="width: 80%;" /></a>
 </div>
 </div>
 <p>In general, for a Pareto distribution, a higher tail index implies less weight
@@ -996,7 +1000,7 @@ this what you see?</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/e0fc5477b14a56de66ed95d5cf491f7d82829e79a97ed368cb976bbb15b42b58.png"><img alt="_images/e0fc5477b14a56de66ed95d5cf491f7d82829e79a97ed368cb976bbb15b42b58.png" src="_images/e0fc5477b14a56de66ed95d5cf491f7d82829e79a97ed368cb976bbb15b42b58.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/c3c74e867b8bf12f5a8f38a8b713d6279fb5b6edc16443c55f6b9b5a1dba4f46.png"><img alt="_images/c3c74e867b8bf12f5a8f38a8b713d6279fb5b6edc16443c55f6b9b5a1dba4f46.png" src="_images/c3c74e867b8bf12f5a8f38a8b713d6279fb5b6edc16443c55f6b9b5a1dba4f46.png" style="width: 80%;" /></a>
 </div>
 </div>
 </section>
