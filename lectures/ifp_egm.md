@@ -416,7 +416,7 @@ model and run the cross-check.
 
 ```{code-cell}
 @numba.jit
-def K_egm_nb(a_in, σ_in, constants, sizes, arrays):
+def K_egm_nb(a_in, σ_in, constants, sizes, s_grid, y_grid, P):
     """
     The operator K using Numba.
 
@@ -478,7 +478,7 @@ def successive_approx_numba(model,        # Class with model information
     error = tol + 1
 
     while i < max_iter and error > tol:
-        a_new, σ_new = K_egm_nb(a_vec, σ_vec, constants, sizes, arrays)
+        a_new, σ_new = K_egm_nb(a_vec, σ_vec, constants, sizes, s_grid, y_grid, P)
         error = np.max(np.abs(σ_vec - σ_new))
         i += 1
         if verbose and i % print_skip == 0:
