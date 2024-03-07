@@ -4,8 +4,8 @@ jobs:
   deploy-runner:
     runs-on: ubuntu-latest
     steps:
-      - uses: iterative/setup-cml@v1
-      - uses: actions/checkout@v3
+      - uses: iterative/setup-cml@v2
+      - uses: actions/checkout@v4
         with:
           ref: ${{ github.event.pull_request.head.sha }}
       - name: Deploy runner on EC2
@@ -27,14 +27,17 @@ jobs:
       image: docker://mmcky/quantecon-lecture-python:cuda-12.3.1-anaconda-2024-02-py311
       options: --gpus all
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           ref: ${{ github.event.pull_request.head.sha }}
-      # Check nvidia-smi
       - name: Check nvidia drivers
         shell: bash -l {0}
         run: |
           nvidia-smi
+      - name: Check python version
+        shell: bash -l {0}
+        run: |
+          python --version
       - name: Display Conda Environment Versions
         shell: bash -l {0}
         run: conda list
@@ -42,7 +45,7 @@ jobs:
         shell: bash -l {0}
         run: pip list
       - name: Download "build" folder (cache)
-        uses: dawidd6/action-download-artifact@v2
+        uses: dawidd6/action-download-artifact@v3
         with:
           workflow: cache.yml
           branch: main
@@ -66,6 +69,12 @@ jobs:
         shell: bash -l {0}
         run: |
           jb build lectures --path-output ./ -n -W --keep-going
+      - name: Upload build folder
+        uses: actions/upload-artifact@v2
+        if: failure()
+        with:
+          name: _build
+          path: _build/
       - name: Upload Execution Reports
         uses: actions/upload-artifact@v2
         if: failure()
