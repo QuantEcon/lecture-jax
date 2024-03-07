@@ -301,9 +301,7 @@ Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/envs/quantecon/lib/
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">jax</span>
 <span class="kn">import</span> <span class="nn">jax.numpy</span> <span class="k">as</span> <span class="nn">jnp</span>
-
-<span class="kn">from</span> <span class="nn">numba</span> <span class="kn">import</span> <span class="n">njit</span><span class="p">,</span> <span class="n">float64</span>
-<span class="kn">from</span> <span class="nn">numba.experimental</span> <span class="kn">import</span> <span class="n">jitclass</span>
+<span class="kn">import</span> <span class="nn">numba</span>
 </pre></div>
 </div>
 </div>
@@ -320,7 +318,7 @@ Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/envs/quantecon/lib/
   pid, fd = os.forkpty()
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Tue Mar  5 09:22:01 2024       
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Thu Mar  7 01:45:38 2024       
 +-----------------------------------------------------------------------------+
 | NVIDIA-SMI 470.182.03   Driver Version: 470.182.03   CUDA Version: 12.3     |
 |-------------------------------+----------------------+----------------------+
@@ -328,8 +326,10 @@ Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/envs/quantecon/lib/
 | Fan  Temp  Perf  Pwr:Usage/Cap|         Memory-Usage | GPU-Util  Compute M. |
 |                               |                      |               MIG M. |
 |===============================+======================+======================|
-|   0  Tesla V100-SXM2...  Off  | 00000000:00:1E.0 Off |                    0 |
-| N/A   35C    P0    39W / 300W |      0MiB / 16160MiB |      2%      Default |
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>|   0  Tesla V100-SXM2...  Off  | 00000000:00:1E.0 Off |                    0 |
+| N/A   32C    P0    37W / 300W |      0MiB / 16160MiB |      2%      Default |
 |                               |                      |                  N/A |
 +-------------------------------+----------------------+----------------------+
                                                                                
@@ -395,20 +395,19 @@ fluctuation problem and creates suitable arrays.</p>
         <span class="n">ν</span><span class="o">=</span><span class="mf">0.02</span><span class="p">,</span>             <span class="c1"># income volatility</span>
         <span class="n">y_size</span><span class="o">=</span><span class="mi">25</span><span class="p">):</span>         <span class="c1"># income grid size</span>
   
+    <span class="c1"># require R β &lt; 1 for convergence</span>
+    <span class="k">assert</span> <span class="n">R</span> <span class="o">*</span> <span class="n">β</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;Stability condition failed.&quot;</span>
     <span class="c1"># Create income Markov chain</span>
     <span class="n">mc</span> <span class="o">=</span> <span class="n">qe</span><span class="o">.</span><span class="n">tauchen</span><span class="p">(</span><span class="n">y_size</span><span class="p">,</span> <span class="n">ρ</span><span class="p">,</span> <span class="n">ν</span><span class="p">)</span>
     <span class="n">y_grid</span><span class="p">,</span> <span class="n">P</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">mc</span><span class="o">.</span><span class="n">state_values</span><span class="p">),</span> <span class="n">mc</span><span class="o">.</span><span class="n">P</span>
     <span class="c1"># Shift to JAX arrays</span>
     <span class="n">P</span><span class="p">,</span> <span class="n">y_grid</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">device_put</span><span class="p">((</span><span class="n">P</span><span class="p">,</span> <span class="n">y_grid</span><span class="p">))</span>
-    
     <span class="n">s_grid</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">s_max</span><span class="p">,</span> <span class="n">s_size</span><span class="p">)</span>
+    <span class="c1"># Pack and return</span>
+    <span class="n">constants</span> <span class="o">=</span> <span class="n">β</span><span class="p">,</span> <span class="n">R</span><span class="p">,</span> <span class="n">γ</span>
     <span class="n">sizes</span> <span class="o">=</span> <span class="n">s_size</span><span class="p">,</span> <span class="n">y_size</span>
-    <span class="n">s_grid</span><span class="p">,</span> <span class="n">y_grid</span><span class="p">,</span> <span class="n">P</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">device_put</span><span class="p">((</span><span class="n">s_grid</span><span class="p">,</span> <span class="n">y_grid</span><span class="p">,</span> <span class="n">P</span><span class="p">))</span>
-
-    <span class="c1"># require R β &lt; 1 for convergence</span>
-    <span class="k">assert</span> <span class="n">R</span> <span class="o">*</span> <span class="n">β</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;Stability condition violated.&quot;</span>
-        
-    <span class="k">return</span> <span class="p">(</span><span class="n">β</span><span class="p">,</span> <span class="n">R</span><span class="p">,</span> <span class="n">γ</span><span class="p">),</span> <span class="n">sizes</span><span class="p">,</span> <span class="p">(</span><span class="n">s_grid</span><span class="p">,</span> <span class="n">y_grid</span><span class="p">,</span> <span class="n">P</span><span class="p">)</span>
+    <span class="n">arrays</span> <span class="o">=</span> <span class="n">s_grid</span><span class="p">,</span> <span class="n">y_grid</span><span class="p">,</span> <span class="n">P</span>
+    <span class="k">return</span> <span class="n">constants</span><span class="p">,</span> <span class="n">sizes</span><span class="p">,</span> <span class="n">arrays</span>
 </pre></div>
 </div>
 </div>
@@ -584,8 +583,8 @@ c = \begin{cases}
     <span class="k">def</span> <span class="nf">u_prime</span><span class="p">(</span><span class="n">c</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">c</span><span class="o">**</span><span class="p">(</span><span class="o">-</span><span class="n">γ</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">u_prime_inv</span><span class="p">(</span><span class="n">u_prime</span><span class="p">):</span>
-            <span class="k">return</span> <span class="n">u_prime</span><span class="o">**</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="o">/</span><span class="n">γ</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">u_prime_inv</span><span class="p">(</span><span class="n">u</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">u</span><span class="o">**</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="o">/</span><span class="n">γ</span><span class="p">)</span>
 
     <span class="c1"># Linearly interpolate σ(a, y)</span>
     <span class="k">def</span> <span class="nf">σ</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
@@ -640,7 +639,6 @@ c = \begin{cases}
 
     <span class="c1"># Unpack</span>
     <span class="n">constants</span><span class="p">,</span> <span class="n">sizes</span><span class="p">,</span> <span class="n">arrays</span> <span class="o">=</span> <span class="n">model</span>
-    
     <span class="n">β</span><span class="p">,</span> <span class="n">R</span><span class="p">,</span> <span class="n">γ</span> <span class="o">=</span> <span class="n">constants</span>
     <span class="n">s_size</span><span class="p">,</span> <span class="n">y_size</span> <span class="o">=</span> <span class="n">sizes</span>
     <span class="n">s_grid</span><span class="p">,</span> <span class="n">y_grid</span><span class="p">,</span> <span class="n">P</span> <span class="o">=</span> <span class="n">arrays</span>
@@ -682,64 +680,24 @@ well as to do a runtime comparison.</p>
 model and run the cross-check.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ifp_data</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="p">(</span><span class="s1">&#39;R&#39;</span><span class="p">,</span> <span class="n">float64</span><span class="p">),</span>              
-    <span class="p">(</span><span class="s1">&#39;β&#39;</span><span class="p">,</span> <span class="n">float64</span><span class="p">),</span>             
-    <span class="p">(</span><span class="s1">&#39;γ&#39;</span><span class="p">,</span> <span class="n">float64</span><span class="p">),</span>            
-    <span class="p">(</span><span class="s1">&#39;P&#39;</span><span class="p">,</span> <span class="n">float64</span><span class="p">[:,</span> <span class="p">:]),</span>     
-    <span class="p">(</span><span class="s1">&#39;y_grid&#39;</span><span class="p">,</span> <span class="n">float64</span><span class="p">[:]),</span>  
-    <span class="p">(</span><span class="s1">&#39;s_grid&#39;</span><span class="p">,</span> <span class="n">float64</span><span class="p">[:])</span>    
-<span class="p">]</span>
-
-<span class="c1"># Use the JAX IFP data as our defaults for the Numba version</span>
-<span class="n">model</span> <span class="o">=</span> <span class="n">ifp</span><span class="p">()</span>
-<span class="n">constants</span><span class="p">,</span> <span class="n">sizes</span><span class="p">,</span> <span class="n">arrays</span> <span class="o">=</span> <span class="n">model</span>
-<span class="n">β</span><span class="p">,</span> <span class="n">R</span><span class="p">,</span> <span class="n">γ</span> <span class="o">=</span> <span class="n">constants</span>
-<span class="n">s_size</span><span class="p">,</span> <span class="n">y_size</span> <span class="o">=</span> <span class="n">sizes</span>
-<span class="n">s_grid</span><span class="p">,</span> <span class="n">y_grid</span><span class="p">,</span> <span class="n">P</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">arrays</span><span class="p">)</span>
-
-<span class="nd">@jitclass</span><span class="p">(</span><span class="n">ifp_data</span><span class="p">)</span>
-<span class="k">class</span> <span class="nc">IFP</span><span class="p">:</span>
-
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
-                 <span class="n">R</span><span class="o">=</span><span class="n">R</span><span class="p">,</span>
-                 <span class="n">β</span><span class="o">=</span><span class="n">β</span><span class="p">,</span>
-                 <span class="n">γ</span><span class="o">=</span><span class="n">γ</span><span class="p">,</span>
-                 <span class="n">P</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">P</span><span class="p">),</span>
-                 <span class="n">y_grid</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">y_grid</span><span class="p">),</span>
-                 <span class="n">s_grid</span><span class="o">=</span><span class="n">s_grid</span><span class="p">):</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">R</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">β</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">γ</span> <span class="o">=</span> <span class="n">R</span><span class="p">,</span> <span class="n">β</span><span class="p">,</span> <span class="n">γ</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">P</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y_grid</span> <span class="o">=</span> <span class="n">P</span><span class="p">,</span> <span class="n">y_grid</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">s_grid</span> <span class="o">=</span> <span class="n">s_grid</span>
-
-        <span class="c1"># Recall that we need R β &lt; 1 for convergence.</span>
-        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">R</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">β</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;Stability condition violated.&quot;</span>
-
-    <span class="k">def</span> <span class="nf">u_prime</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">c</span><span class="o">**</span><span class="p">(</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">γ</span><span class="p">)</span>
-    
-    <span class="k">def</span> <span class="nf">u_prime_inv</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u_prime</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">u_prime</span><span class="o">**</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">γ</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@njit</span>
-<span class="k">def</span> <span class="nf">K_egm_nb</span><span class="p">(</span><span class="n">a_in</span><span class="p">,</span> <span class="n">σ_in</span><span class="p">,</span> <span class="n">ifp</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@numba</span><span class="o">.</span><span class="n">jit</span>
+<span class="k">def</span> <span class="nf">K_egm_nb</span><span class="p">(</span><span class="n">a_in</span><span class="p">,</span> <span class="n">σ_in</span><span class="p">,</span> <span class="n">constants</span><span class="p">,</span> <span class="n">sizes</span><span class="p">,</span> <span class="n">arrays</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    The operator K using Numba.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     
     <span class="c1"># Simplify names</span>
-    <span class="n">R</span><span class="p">,</span> <span class="n">P</span><span class="p">,</span> <span class="n">y_grid</span><span class="p">,</span> <span class="n">β</span><span class="p">,</span> <span class="n">γ</span>  <span class="o">=</span> <span class="n">ifp</span><span class="o">.</span><span class="n">R</span><span class="p">,</span> <span class="n">ifp</span><span class="o">.</span><span class="n">P</span><span class="p">,</span> <span class="n">ifp</span><span class="o">.</span><span class="n">y_grid</span><span class="p">,</span> <span class="n">ifp</span><span class="o">.</span><span class="n">β</span><span class="p">,</span> <span class="n">ifp</span><span class="o">.</span><span class="n">γ</span>
-    <span class="n">s_grid</span><span class="p">,</span> <span class="n">u_prime</span> <span class="o">=</span> <span class="n">ifp</span><span class="o">.</span><span class="n">s_grid</span><span class="p">,</span> <span class="n">ifp</span><span class="o">.</span><span class="n">u_prime</span>
-    <span class="n">u_prime_inv</span> <span class="o">=</span> <span class="n">ifp</span><span class="o">.</span><span class="n">u_prime_inv</span>
-    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">y_grid</span><span class="p">)</span>
-    
+    <span class="n">β</span><span class="p">,</span> <span class="n">R</span><span class="p">,</span> <span class="n">γ</span> <span class="o">=</span> <span class="n">constants</span>
+    <span class="n">s_size</span><span class="p">,</span> <span class="n">y_size</span> <span class="o">=</span> <span class="n">sizes</span>
+    <span class="n">s_grid</span><span class="p">,</span> <span class="n">y_grid</span><span class="p">,</span> <span class="n">P</span> <span class="o">=</span> <span class="n">arrays</span>
+
+    <span class="k">def</span> <span class="nf">u_prime</span><span class="p">(</span><span class="n">c</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">c</span><span class="o">**</span><span class="p">(</span><span class="o">-</span><span class="n">γ</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">u_prime_inv</span><span class="p">(</span><span class="n">u</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">u</span><span class="o">**</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="o">/</span><span class="n">γ</span><span class="p">)</span>
+
     <span class="c1"># Linear interpolation of policy using endogenous grid</span>
     <span class="k">def</span> <span class="nf">σ</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">a_in</span><span class="p">[:,</span> <span class="n">z</span><span class="p">],</span> <span class="n">σ_in</span><span class="p">[:,</span> <span class="n">z</span><span class="p">])</span>
@@ -750,9 +708,9 @@ model and run the cross-check.</p>
     
     <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">s_grid</span><span class="p">[</span><span class="mi">1</span><span class="p">:]):</span>
         <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
-        <span class="k">for</span> <span class="n">z</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">z</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">y_size</span><span class="p">):</span>
             <span class="n">expect</span> <span class="o">=</span> <span class="mf">0.0</span>
-            <span class="k">for</span> <span class="n">z_hat</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">z_hat</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">y_size</span><span class="p">):</span>
                 <span class="n">expect</span> <span class="o">+=</span> <span class="n">u_prime</span><span class="p">(</span><span class="n">σ</span><span class="p">(</span><span class="n">R</span> <span class="o">*</span> <span class="n">s</span> <span class="o">+</span> <span class="n">y_grid</span><span class="p">[</span><span class="n">z_hat</span><span class="p">],</span> <span class="n">z_hat</span><span class="p">))</span> <span class="o">*</span> \
                             <span class="n">P</span><span class="p">[</span><span class="n">z</span><span class="p">,</span> <span class="n">z_hat</span><span class="p">]</span>
             <span class="n">c</span> <span class="o">=</span> <span class="n">u_prime_inv</span><span class="p">(</span><span class="n">β</span> <span class="o">*</span> <span class="n">R</span> <span class="o">*</span> <span class="n">expect</span><span class="p">)</span>
@@ -767,14 +725,17 @@ model and run the cross-check.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">successive_approx_numba</span><span class="p">(</span><span class="n">model</span><span class="p">,</span>        <span class="c1"># Class with model information</span>
-              <span class="n">tol</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">,</span>
-              <span class="n">max_iter</span><span class="o">=</span><span class="mi">100_000</span><span class="p">,</span>
-              <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-              <span class="n">print_skip</span><span class="o">=</span><span class="mi">25</span><span class="p">):</span>
+                              <span class="n">tol</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">,</span>
+                              <span class="n">max_iter</span><span class="o">=</span><span class="mi">100_000</span><span class="p">,</span>
+                              <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                              <span class="n">print_skip</span><span class="o">=</span><span class="mi">25</span><span class="p">):</span>
 
     <span class="c1"># Unpack</span>
-    <span class="n">P</span><span class="p">,</span> <span class="n">s_grid</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">P</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">s_grid</span>
-    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">P</span><span class="p">)</span>
+    <span class="n">constants</span><span class="p">,</span> <span class="n">sizes</span><span class="p">,</span> <span class="n">arrays</span> <span class="o">=</span> <span class="n">model</span>
+    <span class="n">s_size</span><span class="p">,</span> <span class="n">y_size</span> <span class="o">=</span> <span class="n">sizes</span>
+    <span class="c1"># make NumPy versions of arrays</span>
+    <span class="n">arrays</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="n">arrays</span><span class="p">))</span>
+    <span class="n">s_grid</span><span class="p">,</span> <span class="n">y_grid</span><span class="p">,</span> <span class="n">P</span> <span class="o">=</span> <span class="n">arrays</span>
     
     <span class="n">σ_init</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">s_grid</span><span class="p">,</span> <span class="n">y_size</span><span class="p">)</span>
     <span class="n">σ_init</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">σ_init</span><span class="p">,</span> <span class="p">(</span><span class="n">s_size</span><span class="p">,</span> <span class="n">y_size</span><span class="p">))</span>
@@ -786,7 +747,7 @@ model and run the cross-check.</p>
     <span class="n">error</span> <span class="o">=</span> <span class="n">tol</span> <span class="o">+</span> <span class="mi">1</span>
 
     <span class="k">while</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">max_iter</span> <span class="ow">and</span> <span class="n">error</span> <span class="o">&gt;</span> <span class="n">tol</span><span class="p">:</span>
-        <span class="n">a_new</span><span class="p">,</span> <span class="n">σ_new</span> <span class="o">=</span> <span class="n">K_egm_nb</span><span class="p">(</span><span class="n">a_vec</span><span class="p">,</span> <span class="n">σ_vec</span><span class="p">,</span> <span class="n">model</span><span class="p">)</span>
+        <span class="n">a_new</span><span class="p">,</span> <span class="n">σ_new</span> <span class="o">=</span> <span class="n">K_egm_nb</span><span class="p">(</span><span class="n">a_vec</span><span class="p">,</span> <span class="n">σ_vec</span><span class="p">,</span> <span class="n">constants</span><span class="p">,</span> <span class="n">sizes</span><span class="p">,</span> <span class="n">arrays</span><span class="p">)</span>
         <span class="n">error</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">σ_vec</span> <span class="o">-</span> <span class="n">σ_new</span><span class="p">))</span>
         <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
         <span class="k">if</span> <span class="n">verbose</span> <span class="ow">and</span> <span class="n">i</span> <span class="o">%</span> <span class="n">print_skip</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
@@ -813,14 +774,7 @@ model and run the cross-check.</p>
 <h3><span class="section-number">12.4.1. </span>Outputs<a class="headerlink" href="#outputs" title="Permalink to this heading">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ifp_jax</span> <span class="o">=</span> <span class="n">ifp</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ifp_numba</span> <span class="o">=</span> <span class="n">IFP</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">ifp</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -828,8 +782,8 @@ model and run the cross-check.</p>
 <p>Here’s a first run of the JAX code.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">a_star_egm_jax</span><span class="p">,</span> <span class="n">σ_star_egm_jax</span> <span class="o">=</span> <span class="n">successive_approx_jax</span><span class="p">(</span><span class="n">ifp_jax</span><span class="p">,</span>
-                                         <span class="n">print_skip</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">a_star_egm_jax</span><span class="p">,</span> <span class="n">σ_star_egm_jax</span> <span class="o">=</span> <span class="n">successive_approx_jax</span><span class="p">(</span><span class="n">model</span><span class="p">,</span>
+                                                       <span class="n">print_skip</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -885,8 +839,8 @@ Converged in 2192 iterations.
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">qe</span><span class="o">.</span><span class="n">tic</span><span class="p">()</span>
-<span class="n">a_star_egm_nb</span><span class="p">,</span> <span class="n">σ_star_egm_nb</span> <span class="o">=</span> <span class="n">successive_approx_numba</span><span class="p">(</span><span class="n">ifp_numba</span><span class="p">,</span>
-                                         <span class="n">print_skip</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+<span class="n">a_star_egm_nb</span><span class="p">,</span> <span class="n">σ_star_egm_nb</span> <span class="o">=</span> <span class="n">successive_approx_numba</span><span class="p">(</span><span class="n">model</span><span class="p">,</span>
+                                                        <span class="n">print_skip</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
 <span class="n">qe</span><span class="o">.</span><span class="n">toc</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -956,10 +910,10 @@ Converged in 2192 iterations.
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Converged in 2192 iterations.
-TOC: Elapsed: 0:01:23.54
+TOC: Elapsed: 0:01:19.89
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>83.54370617866516
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>79.89156293869019
 </pre></div>
 </div>
 </div>
@@ -967,9 +921,14 @@ TOC: Elapsed: 0:01:23.54
 <p>Now let’s check the outputs in a plot to make sure they are the same.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">constants</span><span class="p">,</span> <span class="n">sizes</span><span class="p">,</span> <span class="n">arrays</span> <span class="o">=</span> <span class="n">model</span>
+<span class="n">β</span><span class="p">,</span> <span class="n">R</span><span class="p">,</span> <span class="n">γ</span> <span class="o">=</span> <span class="n">constants</span>
+<span class="n">s_size</span><span class="p">,</span> <span class="n">y_size</span> <span class="o">=</span> <span class="n">sizes</span>
+<span class="n">s_grid</span><span class="p">,</span> <span class="n">y_grid</span><span class="p">,</span> <span class="n">P</span> <span class="o">=</span> <span class="n">arrays</span>
 
-<span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">ifp_numba</span><span class="o">.</span><span class="n">P</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+
 <span class="k">for</span> <span class="n">z</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">y_size</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">a_star_egm_nb</span><span class="p">[:,</span> <span class="n">z</span><span class="p">],</span> 
             <span class="n">σ_star_egm_nb</span><span class="p">[:,</span> <span class="n">z</span><span class="p">],</span> 
@@ -996,7 +955,7 @@ TOC: Elapsed: 0:01:23.54
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">qe</span><span class="o">.</span><span class="n">tic</span><span class="p">()</span>
-<span class="n">a_star_egm_jax</span><span class="p">,</span> <span class="n">σ_star_egm_jax</span> <span class="o">=</span> <span class="n">successive_approx_jax</span><span class="p">(</span><span class="n">ifp_jax</span><span class="p">,</span>
+<span class="n">a_star_egm_jax</span><span class="p">,</span> <span class="n">σ_star_egm_jax</span> <span class="o">=</span> <span class="n">successive_approx_jax</span><span class="p">(</span><span class="n">model</span><span class="p">,</span>
                                          <span class="n">print_skip</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
 <span class="n">jax_time</span> <span class="o">=</span> <span class="n">qe</span><span class="o">.</span><span class="n">toc</span><span class="p">()</span>
 </pre></div>
@@ -1010,7 +969,7 @@ TOC: Elapsed: 0:01:23.54
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Converged in 2192 iterations.
-TOC: Elapsed: 0:00:3.38
+TOC: Elapsed: 0:00:3.34
 </pre></div>
 </div>
 </div>
@@ -1018,7 +977,7 @@ TOC: Elapsed: 0:00:3.38
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">qe</span><span class="o">.</span><span class="n">tic</span><span class="p">()</span>
-<span class="n">a_star_egm_nb</span><span class="p">,</span> <span class="n">σ_star_egm_nb</span> <span class="o">=</span> <span class="n">successive_approx_numba</span><span class="p">(</span><span class="n">ifp_numba</span><span class="p">,</span>
+<span class="n">a_star_egm_nb</span><span class="p">,</span> <span class="n">σ_star_egm_nb</span> <span class="o">=</span> <span class="n">successive_approx_numba</span><span class="p">(</span><span class="n">model</span><span class="p">,</span>
                                          <span class="n">print_skip</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
 <span class="n">numba_time</span> <span class="o">=</span> <span class="n">qe</span><span class="o">.</span><span class="n">toc</span><span class="p">()</span>
 </pre></div>
@@ -1032,7 +991,7 @@ TOC: Elapsed: 0:00:3.38
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Converged in 2192 iterations.
-TOC: Elapsed: 0:01:17.97
+TOC: Elapsed: 0:01:17.99
 </pre></div>
 </div>
 </div>
@@ -1044,7 +1003,7 @@ TOC: Elapsed: 0:01:17.97
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.04343585137768951
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.04289122571255506
 </pre></div>
 </div>
 </div>
@@ -1262,9 +1221,8 @@ to the model.</p>
                     <li data-tippy-content="Increase font size" class="btn__plus"><i data-feather="plus-circle"></i></li>
                     <li data-tippy-content="Decrease font size" class="btn__minus"><i data-feather="minus-circle"></i></li>
                     <li data-tippy-content="Change contrast" class="btn__contrast"><i data-feather="sunset"></i></li>
-                    <li data-tippy-content="Download Notebook"><a href="/_notebooks/ifp_egm.ipynb" download><i data-feather="download-cloud"></i></a></li>
                     <li class="settings-button" id="settingsButton"><div data-tippy-content="Launch Notebook"><i data-feather="play-circle"></i></div></li>
-                        <li class="download-pdf" id="downloadButton"><i data-feather="file"></i></li>
+                        <li data-tippy-content="Download PDF" onClick="window.print()"><i data-feather="file"></i></li>
                     <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-jax/blob/main/lectures/ifp_egm.md" download><i data-feather="github"></i></a></li>
                 </ul>
 
@@ -1277,7 +1235,7 @@ to the model.</p>
                     <p>Lecture (PDF)</p>
                 </li>
                 <li class="download-pdf-file">
-                    <a href="/_pdf/quantecon-jax.pdf" download><p>Book (PDF)</p></a>
+                    <a href="" download><p>Book (PDF)</p></a>
                 </li>
             </ul>
         </div>

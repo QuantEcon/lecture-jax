@@ -260,7 +260,7 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Tue Mar  5 09:32:15 2024       
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Thu Mar  7 01:55:53 2024       
 +-----------------------------------------------------------------------------+
 | NVIDIA-SMI 470.182.03   Driver Version: 470.182.03   CUDA Version: 12.3     |
 |-------------------------------+----------------------+----------------------+
@@ -268,8 +268,10 @@ const thebe_selector_output = ".output, .cell_output"
 | Fan  Temp  Perf  Pwr:Usage/Cap|         Memory-Usage | GPU-Util  Compute M. |
 |                               |                      |               MIG M. |
 |===============================+======================+======================|
-|   0  Tesla V100-SXM2...  Off  | 00000000:00:1E.0 Off |                    0 |
-| N/A   33C    P0    38W / 300W |      0MiB / 16160MiB |      2%      Default |
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>|   0  Tesla V100-SXM2...  Off  | 00000000:00:1E.0 Off |                    0 |
+| N/A   31C    P0    37W / 300W |      0MiB / 16160MiB |      2%      Default |
 |                               |                      |                  N/A |
 +-------------------------------+----------------------+----------------------+
                                                                                
@@ -278,9 +280,7 @@ const thebe_selector_output = ".output, .cell_output"
 |  GPU   GI   CI        PID   Type   Process name                  GPU Memory |
 |        ID   ID                                                   Usage      |
 |=============================================================================|
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>|  No running processes found                                                 |
+|  No running processes found                                                 |
 +-----------------------------------------------------------------------------+
 </pre></div>
 </div>
@@ -582,7 +582,7 @@ functional programming style.  More on this below.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>128063584
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>114649584
 </pre></div>
 </div>
 </div>
@@ -619,7 +619,7 @@ functional programming style.  More on this below.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>128063584
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>114649584
 </pre></div>
 </div>
 </div>
@@ -813,8 +813,8 @@ launch on the GPU / TPU (or CPU if no accelerator is detected).</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 275 ms, sys: 8.57 ms, total: 284 ms
-Wall time: 493 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 268 ms, sys: 6.19 ms, total: 275 ms
+Wall time: 479 ms
 </pre></div>
 </div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Array(2.19896006e+08, dtype=float64)
@@ -838,8 +838,8 @@ allows the Python interpreter to run ahead of GPU computations.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 5.29 ms, sys: 503 µs, total: 5.79 ms
-Wall time: 25.7 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1.22 ms, sys: 4.79 ms, total: 6.01 ms
+Wall time: 25.8 ms
 </pre></div>
 </div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Array(2.19896006e+08, dtype=float64)
@@ -871,8 +871,8 @@ specialized to floating point arrays of size <code class="docutils literal notra
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 269 ms, sys: 0 ns, total: 269 ms
-Wall time: 474 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 244 ms, sys: 16.2 ms, total: 260 ms
+Wall time: 462 ms
 </pre></div>
 </div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Array(2.19896011e+08, dtype=float64)
@@ -892,8 +892,8 @@ get faster execution.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 5.38 ms, sys: 683 µs, total: 6.06 ms
-Wall time: 19 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 5.59 ms, sys: 562 µs, total: 6.15 ms
+Wall time: 18.8 ms
 </pre></div>
 </div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Array(2.19896011e+08, dtype=float64)
@@ -910,8 +910,8 @@ too, and the following call is dispatched to the correct compiled code.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 6.11 ms, sys: 0 ns, total: 6.11 ms
-Wall time: 25.5 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 4.13 ms, sys: 1.7 ms, total: 5.83 ms
+Wall time: 25.7 ms
 </pre></div>
 </div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Array(2.19896006e+08, dtype=float64)
@@ -951,7 +951,7 @@ Wall time: 25.5 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 890 µs, sys: 378 µs, total: 1.27 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1.14 ms, sys: 434 µs, total: 1.57 ms
 Wall time: 114 ms
 </pre></div>
 </div>
@@ -1154,8 +1154,8 @@ compiler is</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 13.4 s, sys: 2.13 s, total: 15.5 s
-Wall time: 7.24 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 12.4 s, sys: 2.24 s, total: 14.6 s
+Wall time: 6.71 s
 </pre></div>
 </div>
 </div>
@@ -1214,8 +1214,8 @@ Wall time: 7.24 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 47.5 ms, sys: 0 ns, total: 47.5 ms
-Wall time: 80.3 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 47 ms, sys: 0 ns, total: 47 ms
+Wall time: 79.4 ms
 </pre></div>
 </div>
 </div>
@@ -1228,8 +1228,8 @@ Wall time: 80.3 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 786 µs, sys: 0 ns, total: 786 µs
-Wall time: 335 µs
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 230 µs, sys: 0 ns, total: 230 µs
+Wall time: 139 µs
 </pre></div>
 </div>
 </div>
@@ -1266,8 +1266,8 @@ Wall time: 335 µs
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 50.5 ms, sys: 0 ns, total: 50.5 ms
-Wall time: 86.2 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 49.5 ms, sys: 0 ns, total: 49.5 ms
+Wall time: 84.9 ms
 </pre></div>
 </div>
 </div>
@@ -1280,8 +1280,8 @@ Wall time: 86.2 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 289 µs, sys: 0 ns, total: 289 µs
-Wall time: 151 µs
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 794 µs, sys: 0 ns, total: 794 µs
+Wall time: 364 µs
 </pre></div>
 </div>
 </div>
@@ -1340,8 +1340,8 @@ Wall time: 151 µs
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 56.3 ms, sys: 0 ns, total: 56.3 ms
-Wall time: 91.7 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 51.5 ms, sys: 1.29 ms, total: 52.8 ms
+Wall time: 88.3 ms
 </pre></div>
 </div>
 </div>
@@ -1354,8 +1354,8 @@ Wall time: 91.7 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1.63 ms, sys: 328 µs, total: 1.96 ms
-Wall time: 1.5 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 2.08 ms, sys: 0 ns, total: 2.08 ms
+Wall time: 1.61 ms
 </pre></div>
 </div>
 </div>
@@ -1449,7 +1449,7 @@ significantly faster execution.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1.36 ms, sys: 0 ns, total: 1.36 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1.39 ms, sys: 0 ns, total: 1.39 ms
 Wall time: 122 ms
 </pre></div>
 </div>
@@ -1669,9 +1669,8 @@ Wall time: 122 ms
                     <li data-tippy-content="Increase font size" class="btn__plus"><i data-feather="plus-circle"></i></li>
                     <li data-tippy-content="Decrease font size" class="btn__minus"><i data-feather="minus-circle"></i></li>
                     <li data-tippy-content="Change contrast" class="btn__contrast"><i data-feather="sunset"></i></li>
-                    <li data-tippy-content="Download Notebook"><a href="/_notebooks/jax_intro.ipynb" download><i data-feather="download-cloud"></i></a></li>
                     <li class="settings-button" id="settingsButton"><div data-tippy-content="Launch Notebook"><i data-feather="play-circle"></i></div></li>
-                        <li class="download-pdf" id="downloadButton"><i data-feather="file"></i></li>
+                        <li data-tippy-content="Download PDF" onClick="window.print()"><i data-feather="file"></i></li>
                     <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-jax/blob/main/lectures/jax_intro.md" download><i data-feather="github"></i></a></li>
                 </ul>
 
@@ -1684,7 +1683,7 @@ Wall time: 122 ms
                     <p>Lecture (PDF)</p>
                 </li>
                 <li class="download-pdf-file">
-                    <a href="/_pdf/quantecon-jax.pdf" download><p>Book (PDF)</p></a>
+                    <a href="" download><p>Book (PDF)</p></a>
                 </li>
             </ul>
         </div>
