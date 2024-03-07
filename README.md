@@ -10,7 +10,7 @@ via the website.
 
 ## Submission of issues
 
-To contribute to the lectures please [raise an issue]({ link to issues }) for any errata
+To contribute to the lectures please [raise an issue](https://github.com/QuantEcon/lecture-jax/issues) for any errata
 that you may find when reading the lectures or please submit a Pull Request with 
 a suggested fix.
 
