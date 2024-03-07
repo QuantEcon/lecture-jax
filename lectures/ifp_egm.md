@@ -425,7 +425,7 @@ def K_egm_nb(a_in, σ_in, constants, sizes, s_grid, y_grid, P):
     # Simplify names
     β, R, γ = constants
     s_size, y_size = sizes
-    s_grid, y_grid, P = arrays
+    # s_grid, y_grid, P = arrays
 
     def u_prime(c):
         return c**(-γ)
