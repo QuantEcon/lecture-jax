@@ -14,3 +14,5 @@ def successive_approx_jax(T,                     # Operator (callable)
 
     k, x, error = jax.lax.while_loop(cond_fun, body_fun, (1, x_0, tolerance + 1))
     return x
+
+successive_approx_jax = jax.jit(successive_approx_jax, static_argnums=(0,))
