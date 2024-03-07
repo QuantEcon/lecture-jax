@@ -1,16 +1,17 @@
 # Quantitative Economics with JAX
 
-Smit proposes the following approach:
+This website presents a set of lectures on quantitative economic modeling
+using GPUs and [Google JAX](https://jax.readthedocs.io).
 
-1. Prioritize the lectures that need to be converted to JAX and are doable without external library support.
-2. Start tackling them one by one in a weekly sprint.
-3. Once we have some requirement like `brent_max` -- open an issue to track this and move on to the next lecture.
-4. We can do this for let's say 10 lectures, and, then come back to those issues and look for fixing or implementing them.
-5. Create a new repository for these JAX lectures until we have substantial lectures so that it will not affect current lectures -- considering build issues due to new releases of JAX.
+## Jupyter notebooks
 
+Jupyter notebook versions of each lecture are available for download
+via the website.
 
-Comments from JS
+## Contributions
 
-1. JS to-do: prioritize lectures
-1. Suggest a benchmark example that we can build off
-1. We will probably think differently about how to approximate and optimize
+To comment on the lectures please add to or open an issue in the issue tracker (see above).
+
+We welcome pull requests!  
+
+Please read the [QuantEcon style guide](https://manual.quantecon.org/intro.html) first, so that you can match our style.
