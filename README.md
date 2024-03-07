@@ -8,10 +8,10 @@ using GPUs and [Google JAX](https://jax.readthedocs.io).
 Jupyter notebook versions of each lecture are available for download
 via the website.
 
-## Submission of issues
+## Contributions
 
-To contribute to the lectures please [raise an issue](https://github.com/QuantEcon/lecture-jax/issues) for any errata
-that you may find when reading the lectures or please submit a Pull Request with 
-a suggested fix.
+To comment on the lectures please add to or open an issue in the issue tracker (see above).
 
-If submitting a pull request, please read the [QuantEcon style guide](https://manual.quantecon.org/intro.html).
+We welcome pull requests!  
+
+Please read the [QuantEcon style guide](https://manual.quantecon.org/intro.html) first, so that you can match our style.
