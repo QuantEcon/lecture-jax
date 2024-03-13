@@ -1,20 +1,42 @@
----
-jupytext:
-  text_representation:
-    extension: .md
-    format_name: myst
-    format_version: 0.13
-    jupytext_version: 1.16.1
-kernelspec:
-  display_name: Python 3 (ipykernel)
-  language: python
-  name: python3
----
-
-# Optimal Savings
+# Optimal Savings II: Alternative Algorithms
 
 ```{include} _admonition/gpu.md
 ```
+
+In {doc}`opt_savings_1` we solved a simple version of the household optimal
+savings problem via value function iteration (VFI) using JAX.
+
+In this lecture we tackle exactly the same problem while adding in two
+alternative algorithms:
+
+* optimistic policy iteration (OPI) and
+* Howard policy iteration (HPI).
+
+
+We will see that both of these algorithms outperform traditional VFI.
+
+One reason for this is that the algorithms have good convergence properties.
+
+Another is that one of them, HPI, is particularly well suited to pairing with
+JAX.
+
+The reason is that HPI uses a relatively small number of computationally expensive steps,
+whereas VFI uses a longer sequence of small steps.
+
+In other words, VFI is inherently more sequential than HPI, and sequential
+routines are hard to parallelize.
+
+By comparison, HPI is less sequential -- the small number of computationally
+intensive steps can be effectively parallelized by JAX.
+
+This is particularly valuable when the underlying hardware includes a GPU.
+
+Details on VFI, HPI and OPI can be found in [this book](https://dp.quantecon.org), for which a PDF is freely available.
+
+Here we assume readers have some knowledge of the algorithms and focus on
+computation.
+
+For the details of the savings model, readers can refer to {doc}`opt_savings_1`.
 
 In addition to what’s in Anaconda, this lecture will need the following libraries:
 
@@ -35,40 +57,24 @@ import matplotlib.pyplot as plt
 import time
 ```
 
-Let's check the GPU we are running
+Let's check the GPU we are running.
 
 ```{code-cell} ipython3
 !nvidia-smi
 ```
 
-Use 64 bit floats with JAX in order to match NumPy code
-- By default, JAX uses 32-bit datatypes.
-- By default, NumPy uses 64-bit datatypes.
+We'll use 64 bit floats to gain extra precision.
 
 ```{code-cell} ipython3
 jax.config.update("jax_enable_x64", True)
 ```
 
-## Overview
-
-We consider an optimal savings problem with CRRA utility and budget constraint
-
-$$ W_{t+1} + C_t \leq R W_t + Y_t $$
-
-We assume that labor income $(Y_t)$ is a discretized AR(1) process.
-
-The right-hand side of the Bellman equation is
-
-$$   B((w, y), w', v) = u(Rw + y - w') + β \sum_{y'} v(w', y') Q(y, y'). $$
-
-where
-
-$$   u(c) = \frac{c^{1-\gamma}}{1-\gamma} $$
-
 
 ## Model primitives
 
-First we define a model that stores parameters and grids
+First we define a model that stores parameters and grids.
+
+The following code is repeated from {doc}`opt_savings_1`.
 
 ```{code-cell} ipython3
 def create_consumption_model(R=1.01,                    # Gross interest rate
@@ -392,4 +398,4 @@ ax.legend(fontsize=fontsize, frameon=False)
 ax.set_xlabel("$m$", fontsize=fontsize)
 ax.set_ylabel("time", fontsize=fontsize)
 plt.show()
-```
+`
