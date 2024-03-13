@@ -90,9 +90,7 @@ def create_consumption_model(R=1.01,                    # Gross interest rate
     """
     w_grid = jnp.linspace(w_min, w_max, w_size)
     mc = qe.tauchen(n=y_size, rho=ρ, sigma=ν)
-    y_grid, Q = jnp.exp(mc.state_values), mc.P
-    β, R, γ = jax.device_put([β, R, γ])
-    w_grid, y_grid, Q = tuple(map(jax.device_put, [w_grid, y_grid, Q]))
+    y_grid, Q = jnp.exp(mc.state_values), jax.device_put(mc.P)
     sizes = w_size, y_size
     return (β, R, γ), sizes, (w_grid, y_grid, Q)
 ```
