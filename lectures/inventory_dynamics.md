@@ -227,18 +227,23 @@ def compute_cross_section_fori(params, x_init, T, key, num_firms=50_000):
     X = jnp.full((num_firms, ), x_init)
 
     # Define the function for each update
-    def update_cross_section(i, inputs):
+    def fori_update(t, inputs):
+        # Unpack
         X, key = inputs
+        # Draw shocks using key
         Z = random.normal(key, shape=(num_firms,))
         D = jnp.exp(mu + sigma * Z)
+        # Update X
         X = jnp.where(X <= s,
                   jnp.maximum(S - D, 0),
                   jnp.maximum(X - D, 0))
+        # Refresh the key
         key, subkey = random.split(key)
         return X, subkey
 
-    # Use lax.scan to perform the calculations on all states
-    X, key = lax.fori_loop(0, T, update_cross_section, (X, key))
+    # Loop t from 0 to T, applying update each time.
+    # The initial condition for update is (X, key)
+    X, key = lax.fori_loop(0, T, fori_update, (X, key))
 
     return X
 
@@ -285,14 +290,12 @@ def compute_cross_section_fori(params, x_init, T, key, num_firms=50_000):
     Z = random.normal(key, shape=(T, num_firms))
     D = jnp.exp(mu + sigma * Z)
 
-    # Define the function for each update
     def update_cross_section(i, X):
         X = jnp.where(X <= s,
                   jnp.maximum(S - D[i, :], 0),
                   jnp.maximum(X - D[i, :], 0))
         return X
 
-    # Use lax.scan to perform the calculations on all states
     X = lax.fori_loop(0, T, update_cross_section, X)
 
     return X
@@ -328,7 +331,9 @@ The high memory consumption becomes problematic for large problems.
 
 ## Distribution dynamics
 
-Let's take a look at how the distribution sequence evolves over time.
+Next let's take a look at how the distribution sequence evolves over time.
+
+We will go back to using ordinary Python `for` loops.
 
 Here is code that repeatedly shifts the cross-section forward while
 recording the cross-section at the dates in `sample_dates`.
