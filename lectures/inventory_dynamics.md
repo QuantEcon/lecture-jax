@@ -99,10 +99,10 @@ and standard normal.
 Here's a `namedtuple` that stores parameters.
 
 ```{code-cell} ipython3
-Parameters = namedtuple('Parameters', ['s', 'S', 'mu', 'sigma'])
+Parameters = namedtuple('Parameters', ['s', 'S', 'μ', 'σ'])
 
 # Create a default instance
-params = Parameters(s=10, S=100, mu=1.0, sigma=0.5)
+params = Parameters(s=10, S=100, μ=1.0, σ=0.5)
 ```
 
 ## Marginal distributions
@@ -165,7 +165,7 @@ def compute_cross_section(params, x_init, T, key, num_firms=50_000):
     # Loop
     for i in range(T):
         Z = random.normal(key, shape=(num_firms, ))
-        D = jnp.exp(params.mu + params.sigma * Z)
+        D = jnp.exp(params.μ + params.σ * Z)
 
         X_vec = update_cross_section(params, X_vec, D)
         _, key = random.split(key)
@@ -208,9 +208,6 @@ ax.legend()
 plt.show()
 ```
 
-
-
-
 ### Compiling the outer loop
 
 Now let's see if we can gain some speed by compiling the outer loop, which steps
@@ -218,12 +215,10 @@ through the time dimension.
 
 We will do this using `jax.jit` and a `fori_loop`, which is a compiler-ready version of a for loop provided by JAX.
 
-
-
 ```{code-cell} ipython3
 def compute_cross_section_fori(params, x_init, T, key, num_firms=50_000):
 
-    s, S, mu, sigma = params.s, params.S, params.mu, params.sigma
+    s, S, μ, σ = params.s, params.S, params.μ, params.σ
     X = jnp.full((num_firms, ), x_init)
 
     # Define the function for each update
@@ -232,7 +227,7 @@ def compute_cross_section_fori(params, x_init, T, key, num_firms=50_000):
         X, key = inputs
         # Draw shocks using key
         Z = random.normal(key, shape=(num_firms,))
-        D = jnp.exp(mu + sigma * Z)
+        D = jnp.exp(μ + σ * Z)
         # Update X
         X = jnp.where(X <= s,
                   jnp.maximum(S - D, 0),
@@ -285,10 +280,10 @@ This improves efficiency because we are taking more operations out of the loop.
 ```{code-cell} ipython3
 def compute_cross_section_fori(params, x_init, T, key, num_firms=50_000):
 
-    s, S, mu, sigma = params.s, params.S, params.mu, params.sigma
+    s, S, μ, σ = params.s, params.S, params.μ, params.σ
     X = jnp.full((num_firms, ), x_init)
     Z = random.normal(key, shape=(T, num_firms))
-    D = jnp.exp(mu + sigma * Z)
+    D = jnp.exp(μ + σ * Z)
 
     def update_cross_section(i, X):
         X = jnp.where(X <= s,
@@ -347,7 +342,7 @@ def shift_forward_and_sample(x_init, params, sample_dates,
     # Use for loop to update X and collect samples
     for i in range(sim_length):
         Z = random.normal(key, shape=(num_firms, ))
-        D = jnp.exp(params.mu + params.sigma * Z)
+        D = jnp.exp(params.μ + params.σ * Z)
 
         X = update_cross_section(params, X, D)
         _, key = random.split(key)
@@ -449,7 +444,7 @@ def compute_freq(params, key,
     # Use a for loop to perform the calculations on all states
     for i in range(sim_length):
         Z = random.normal(key, shape=(num_firms, ))
-        D = jnp.exp(params.mu + params.sigma * Z)
+        D = jnp.exp(params.μ + params.σ * Z)
         n_restock, X, key = update_stock(
             n_restock, X, params, D)
         key = random.fold_in(key, i)
@@ -474,11 +469,11 @@ def compute_freq(params, key,
                  sim_length=50,
                  num_firms=1_000_000):
 
-    s, S, mu, sigma = params.s, params.S, params.mu, params.sigma
+    s, S, μ, σ = params.s, params.S, params.μ, params.σ
     # Prepare initial arrays
     X = jnp.full((num_firms, ), x_init)
     Z = random.normal(key, shape=(sim_length, num_firms))
-    D = jnp.exp(mu + sigma * Z)
+    D = jnp.exp(μ + σ * Z)
 
     # Stack the restock counter on top of the inventory
     restock_count = jnp.zeros((num_firms, ))
