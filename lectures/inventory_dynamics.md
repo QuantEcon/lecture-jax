@@ -85,8 +85,6 @@ X_{t+1} =
     \end{cases}
 $$
 
-(See our earlier [lecture on inventory dynamics](https://python.quantecon.org/inventory_dynamics.html) for background and motivation.)
-
 In what follows, we will assume that each $D_t$ is lognormal, so that
 
 $$
@@ -105,9 +103,15 @@ Parameters = namedtuple('Parameters', ['s', 'S', 'μ', 'σ'])
 params = Parameters(s=10, S=100, μ=1.0, σ=0.5)
 ```
 
-## Marginal distributions
+
+
+
+## Cross-sectional distributions
 
 Now let’s look at the marginal distribution $\psi_T$ of $X_T$ for some fixed $T$.
+
+The probability distribution $\psi_T$ is the time $T$ distribution of firm
+inventory levels implied by the model.
 
 We will approximate this distribution by 
 
@@ -115,14 +119,11 @@ We will approximate this distribution by
    simulation,
 1. fixing $T$, the time period we are interested in,
 1. generating $n$ independent draws from some fixed distribution $\psi_0$ that gives the
-   initial cross-sectional distribution of firms, and
-1. shift this distribution forward in time $T$ periods, by updating each firm
-   independently via the dynamics described above.
+   initial cross-section of inventories for the $n$ firms, and
+1. shifting this distribution forward in time $T$ periods, updating each firm
+    $T$ times via the dynamics described above (independent of other firms).
 
-This process gives us $\psi_T$, a distribution of firm inventory levels.
-
-We will then use various methods to visualize $\psi_T$, such as historgrams and
-kernel density estimates.
+We will then visualize $\psi_T$ by histogramming the cross-section.
 
 We will use the following code to update the cross-section of firms by one period.
 
@@ -144,13 +145,18 @@ def update_cross_section(params, X_vec, D):
     return X_new
 ```
 
+
+
+
 ### For loop version
 
-Here's code to compute the cross-sectional distribution $\psi_T$ given some
+Now we provide code to compute the cross-sectional distribution $\psi_T$ given some
 initial distribution $\psi_0$ and a positive integer $T$.
 
-In this code we use an ordinary Python `for` loop, which is reasonable here because
-efficiency of outer loops has less influence on runtime than efficiency of inner loops.
+In this code we use an ordinary Python `for` loop to step forward through time
+
+While Python loops are slow, this approach is reasonable here because
+efficiency of outer loops has far less influence on runtime than efficiency of inner loops.
 
 (Below we will squeeze out more speed by compiling the outer loop as well as the
 update rule.)
@@ -236,8 +242,8 @@ def compute_cross_section_fori(params, x_init, T, key, num_firms=50_000):
         key, subkey = random.split(key)
         return X, subkey
 
-    # Loop t from 0 to T, applying update each time.
-    # The initial condition for update is (X, key)
+    # Loop t from 0 to T, applying fori_update each time.
+    # The initial condition for fori_update is (X, key).
     X, key = lax.fori_loop(0, T, fori_update, (X, key))
 
     return X
@@ -273,7 +279,7 @@ This is due to the fact that we have compiled the whole operation.
 ### Further vectorization
 
 For relatively small problems, we can make this code run even faster by generating
-all random variables at ones.
+all random variables at once.
 
 This improves efficiency because we are taking more operations out of the loop.
 
