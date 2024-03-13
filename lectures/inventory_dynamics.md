@@ -4,7 +4,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.14.5
+    jupytext_version: 1.16.1
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -29,7 +29,21 @@ kernelspec:
 
 ## Overview
 
-This lecture explores JAX implementations of the exercises in the lecture on [inventory dynamics](https://python.quantecon.org/inventory_dynamics.html).
+This lecture explores the inventory dynamics of a firm using so-called s-S inventory control.
+
+Loosely speaking, this means that the firm 
+
+* waits until inventory falls below some value $s$
+* and then restocks with a bulk order of $S$ units (or, in some models, restocks up to level $S$).
+
+We will be interested in the stationary distribution of the model, which can be
+thought of as a steady state cross-sectional distribution of inventory levels
+across a large number of firms, all of which have the same dynamics.
+
+We studied this distribution in a [separate
+lecture](https://python.quantecon.org/inventory_dynamics.html), using Numba.
+
+Here we study the same problem using JAX.
 
 We will use the following imports:
 
@@ -42,7 +56,7 @@ from jax import random, lax
 from collections import namedtuple
 ```
 
-Let's check the GPU we are running
+Here's a description of our GPU:
 
 ```{code-cell} ipython3
 !nvidia-smi
@@ -81,54 +95,220 @@ and standard normal.
 Here's a `namedtuple` that stores parameters.
 
 ```{code-cell} ipython3
-Firm = namedtuple('Firm', ['s', 'S', 'mu', 'sigma'])
+Parameters = namedtuple('Parameters', ['s', 'S', 'mu', 'sigma'])
 
-firm = Firm(s=10, S=100, mu=1.0, sigma=0.5)
+# Create a default instance
+params = Parameters(s=10, S=100, mu=1.0, sigma=0.5)
 ```
 
-## Example 1: marginal distributions
+## Marginal distributions
 
-Now let’s look at the marginal distribution $\psi_T$ of $X_T$ for some fixed
-$T$.
+Now let’s look at the marginal distribution $\psi_T$ of $X_T$ for some fixed $T$.
 
-We can approximate the distribution using a [kernel density estimator](https://en.wikipedia.org/wiki/Kernel_density_estimation).
+We will approximate this distribution by 
+
+1. fixing $n$ to be some large number, indicating the number of firms in the
+   simulation,
+1. fixing $T$, the time period we are interested in,
+1. generating $n$ independent draws from some fixed distribution $\psi_0$ that gives the
+   initial cross-sectional distribution of firms, and
+1. shift this distribution forward in time $T$ periods, by updating each firm
+   independently via the dynamics described above.
+
+This process gives us $\psi_T$, a distribution of firm inventory levels.
+
+We will then use various methods to visualize $\psi_T$, such as historgrams and
+kernel density estimates.
+
+We will use the following code to update a cross-section of firms by one period.
+
+```{code-cell} ipython3
+# Define a jit-compiled function to update X and key
+@jax.jit
+def update_cross_section(params, X_vec, D):
+    """
+    Update cross-section X_vec by one period, given the vector of demand shocks
+    in D (D[i] is the shock for firm i with current inventory X_vec[i]).
+
+    """
+    # Unpack
+    s, S = params.s, params.S
+    # Restock if the inventory is below the threshold
+    X_new = jnp.where(X_vec <= s, 
+                      jnp.maximum(S - D, 0), jnp.maximum(X_vec - D, 0))
+    return X_new
+```
+
+### For loop version
+
+Here's code to compute the cross-sectional distribution $\psi_T$.
+
+In this code we use an ordinary Python `for` loop.
+
+Using an ordinary `for` loop is reasonable here because
+
+1. efficiency of outer loops has less influence on runtime than efficiency of inner loops.
+1. using `jax.jit` to compile `for` loops can be time consuming.
+
+```{code-cell} ipython3
+def compute_cross_section(params, x_init, T, key, num_firms=50_000):
+    # Set up initial distribution
+    X_vec = jnp.full((num_firms, ), x_init)
+    # Loop
+    for i in range(T):
+        Z = random.normal(key, shape=(num_firms, ))
+        D = jnp.exp(params.mu + params.sigma * Z)
+
+        X_vec = update_cross_section(params, X_vec, D)
+        _, key = random.split(key)
+
+    return X_vec
+```
+
+```{code-cell} ipython3
+x_init = 50
+T = 500
+key = random.PRNGKey(10)
+```
+
+```{code-cell} ipython3
+%time X_vec = compute_cross_section(params, x_init, T, key).block_until_ready()
+```
+
+```{code-cell} ipython3
+%time X_vec = compute_cross_section(params, x_init, T, key).block_until_ready()
+```
+
+```{code-cell} ipython3
+fig, ax = plt.subplots()
+ax.hist(X_vec, bins=50, 
+        density=True, 
+        label=f'cross-section when $t = {T}$')
+ax.set_xlabel('inventory')
+ax.set_ylabel('probability')
+ax.legend()
+plt.show()
+```
+
+## Compiling the outer loop
+
+For relatively small problems, we can make this code run faster by compiling the outer loop as well.
+
+We will do this using `jax.jit` and a `fori_loop`, which is a compiler-ready version of a for loop provided by JAX.
+
+```{code-cell} ipython3
+def compute_cross_section_fori(params, x_init, T, key, num_firms=50_000):
+
+    s, S, mu, sigma = params.s, params.S, params.mu, params.sigma
+    X = jnp.full((num_firms, ), x_init)
+    Z = random.normal(key, shape=(T, num_firms))
+    D = jnp.exp(mu + sigma * Z)
+
+    # Define the function for each update
+    def update_cross_section(i, X):
+        X = jnp.where(X <= s,
+                  jnp.maximum(S - D[i, :], 0),
+                  jnp.maximum(X - D[i, :], 0))
+        return X
+
+    # Use lax.scan to perform the calculations on all states
+    X = lax.fori_loop(0, T, update_cross_section, X)
+
+    return X
+
+# Compile taking T and num_firms as static (changes trigger recomplie)
+compute_cross_section_fori = jax.jit(
+    compute_cross_section_fori, static_argnums=(2, 4))
+```
+
+Let's test it.
+
+```{code-cell} ipython3
+%time X_vec = compute_cross_section_fori(params, x_init, T, key).block_until_ready()
+```
+
+```{code-cell} ipython3
+%time X_vec = compute_cross_section_compiled(params, x_init, T, key).block_until_ready()
+```
+
+The benefit of the `fori_loop` implementation is that we compile the whole
+operation.
+
+The disadvantages are that
+
+1. there are only limited speed gains in accelerating outer loops,
+2. `lax.fori_loop` has a more complicated syntax, and, most importantly,
+3. the `lax.fori_loop` implementation consumes far more memory, as we need to have to
+   store large matrices of random draws
+
+The high memory consumption aspect of the `fori_loop` version becomes problematic for large problems.
+
++++
+
+## Plotting with a kernel density estimate
+
+
+We can also represent the distribution using a [kernel density
+estimator](https://en.wikipedia.org/wiki/Kernel_density_estimation).
 
 Kernel density estimators can be thought of as smoothed histograms.
 
+The advantage of a kernel density estimator for this setting is that it's
+relatively easy to plot the cross section at multiple dates on the same plot.
+
 We will use a kernel density estimator from [scikit-learn](https://scikit-learn.org/stable/).
 
-Here is an example of using kernel density estimators and plotting the result
+We will generate and plot the sequence $\{\psi_t\}$ at times
+$t = 10, 50, 250, 500, 750$ using the kernel density estimator.
+
+Here is code that repeatedly shifts the cross-section forward in time while
+recording the cross-section at the dates in `sample_dates`.
 
 ```{code-cell} ipython3
-from sklearn.neighbors import KernelDensity
+def shift_forward_and_sample(x_init, params, sample_dates,
+                        key, num_firms=50_000, sim_length=750):
 
-def plot_kde(sample, ax, label=''):
-    xmin, xmax = 0.9 * min(sample), 1.1 * max(sample)
-    xgrid = np.linspace(xmin, xmax, 200)
-    kde = KernelDensity(kernel='gaussian').fit(sample[:, None])
-    log_dens = kde.score_samples(xgrid[:, None])
+    X = res = jnp.full((num_firms, ), x_init)
 
-    ax.plot(xgrid, np.exp(log_dens), label=label)
+    # Use for loop to update X and collect samples
+    for i in range(sim_length):
+        Z = random.normal(key, shape=(num_firms, ))
+        D = jnp.exp(params.mu + params.sigma * Z)
 
-# Generate simulated data
-np.random.seed(42)
-sample_1 = np.random.normal(0, 2, size=10_000)
-sample_2 = np.random.gamma(2, 2, size=10_000)
+        X = update_cross_section(params, X, D)
+        _, key = random.split(key)
 
-# Create a plot
+        # draw a sample at the sample dates
+        if (i+1 in sample_dates):
+          res = jnp.vstack((res, X))
+
+    return res[1:]
+```
+
+Let's test it
+
+```{code-cell} ipython3
+x_init = 50
+num_firms = 10_000
+sample_dates = 10, 50, 250, 500, 750
+key = random.PRNGKey(10)
+
+
+%time X = shift_forward_and_sample(x_init, params, \
+                              sample_dates, key).block_until_ready()
+```
+
+```{code-cell} ipython3
 fig, ax = plt.subplots()
 
-# Plot the samples
-ax.hist(sample_1, alpha=0.2, density=True, bins=50)
-ax.hist(sample_2, alpha=0.2, density=True, bins=50)
+for i, date in enumerate(sample_dates):
+    ax.hist(X[i, :], bins=50, 
+            density=True, 
+            histtype='step',
+            label=f'cross-section when $t = {date}$')
 
-# Plot the KDE for each sample
-plot_kde(sample_1, ax, label=r'KDE over $X \sim N(0, 2)$')
-plot_kde(sample_2, ax, label=r'KDE over $X \sim Gamma(0, 2)$')
-ax.set_xlabel('value')
-ax.set_ylabel('density')
-ax.set_xlim([-5, 10])
-ax.set_title('KDE of Simulated Normal and Gamma Data')
+ax.set_xlabel('inventory')
+ax.set_ylabel('probability')
 ax.legend()
 plt.show()
 ```
@@ -140,183 +320,44 @@ In particular, the sequence of marginal distributions $\{\psi_t\}$
 converges to a unique limiting distribution that does not depend on
 initial conditions.
 
-Although we will not prove this here, we can investigate it using simulation.
+Although we will not prove this here, we see it in the simulation above.
 
-We can generate and plot the sequence $\{\psi_t\}$ at times
-$t = 10, 50, 250, 500, 750$ based on the kernel density estimator.
+By $t=500$ or $t=750$ the densities are barely changing.
 
-We will see convergence, in the sense that differences between successive
-distributions are getting smaller.
-
-Here is one realization of the process in JAX using `for` loop
-
-```{code-cell} ipython3
-# Define a jit-compiled function to update X and key
-@jax.jit
-def update_X(X, firm, D):
-    # Restock if the inventory is below the threshold
-    res = jnp.where(X <= firm.s,
-            jnp.maximum(firm.S - D, 0),
-            jnp.maximum(X - D, 0))
-    return res
+If you test a few different initial conditions, you will see that they do not affect long-run outcomes.
 
 
-def shift_firms_forward(x_init, firm, sample_dates,
-                        key, num_firms=50_000, sim_length=750):
+## Restock frequency
 
-    X = res = jnp.full((num_firms, ), x_init)
+As an exercise, let's study the probability of firms needing to restock over a
+given time perion.
 
-    # Use for loop to update X and collect samples
-    for i in range(sim_length):
-        Z = random.normal(key, shape=(num_firms, ))
-        D = jnp.exp(firm.mu + firm.sigma * Z)
+In the exercise, we will
 
-        X = update_X(X, firm, D)
-        _, key = random.split(key)
+* set the starting stock level to $X_0 = 70$ and
+* calculate the proportion of firms that need to order twice or more in the first 50 periods.
 
-        # draw a sample at the sample dates
-        if (i+1 in sample_dates):
-          res = jnp.vstack((res, X))
-
-    return res[1:]
-```
-
-```{code-cell} ipython3
-x_init = 50
-num_firms = 50_000
-sample_dates = 10, 50, 250, 500, 750
-key = random.PRNGKey(10)
-
-fig, ax = plt.subplots()
-
-%time X = shift_firms_forward(x_init, firm, \
-                              sample_dates, key).block_until_ready()
-
-for i, date in enumerate(sample_dates):
-    plot_kde(X[i, :], ax, label=f't = {date}')
-
-ax.set_xlabel('inventory')
-ax.set_ylabel('probability')
-ax.legend()
-plt.show()
-```
-
-Note that we did not JIT-compile the outer loop, since
-
-1. `jit` compilation of the `for` loop can be very time consuming and
-1. compiling outer loops only leads to minor speed gains.
+This proportion approximates the probability of the event when the sample size
+is large.
 
 
-### Alternative implementation with `lax.scan`
+### For loop version
 
-An alternative to the `for` loop implementation is `lax.scan`.
-
-Here is an example of the same function in `lax.scan`
-
-```{code-cell} ipython3
-@jax.jit
-def shift_firms_forward(x_init, firm, key,
-                        num_firms=50_000, sim_length=750):
-
-    s, S, mu, sigma = firm.s, firm.S, firm.mu, firm.sigma
-    X = jnp.full((num_firms, ), x_init)
-    Z = random.normal(key, shape=(sim_length, num_firms))
-    D = jnp.exp(mu + sigma * Z)
-
-    # Define the function for each update
-    def update_X(X, D):
-        res = jnp.where(X <= s,
-                  jnp.maximum(S - D, 0),
-                  jnp.maximum(X - D, 0))
-        return res, res
-
-    # Use lax.scan to perform the calculations on all states
-    _, X_final = lax.scan(update_X, X, D)
-
-    return X_final
-```
-
-The benefit of the `lax.scan` implementation is that we compile the whole
-operation.
-
-The disadvantages are that
-
-1. as mentioned above, there are only limited speed gains in accelerating outer loops,
-2. `lax.scan` has a more complicated syntax, and, most importantly,
-3. the `lax.scan` implementation consumes far more memory, as we need to have to
-   store large matrices of random draws
-
-
-Let's call the code to generate a cross-section that is in approximate
-equilibrium.
-
-```{code-cell} ipython3
-fig, ax = plt.subplots()
-
-%time X = shift_firms_forward(x_init, firm, key).block_until_ready()
-
-for date in sample_dates:
-    plot_kde(X[date, :], ax, label=f't = {date}')
-
-ax.set_xlabel('inventory')
-ax.set_ylabel('probability')
-ax.legend()
-plt.show()
-```
-
-Notice that by $t=500$ or $t=750$ the densities are barely
-changing.
-
-We have reached a reasonable approximation of the stationary density.
-
-You can test a few more initial conditions to show that they do not affect
-long-run outcomes.
-
-For example, try rerunning the code above with all firms starting at
-$X_0 = 20$
-
-```{code-cell} ipython3
-x_init = 20.0
-
-fig, ax = plt.subplots()
-
-%time X = shift_firms_forward(x_init, firm, key).block_until_ready()
-
-for date in sample_dates:
-    plot_kde(X[date, :], ax, label=f't = {date}')
-
-ax.set_xlabel('inventory')
-ax.set_ylabel('probability')
-ax.legend()
-plt.show()
-```
-
-## Example 2: restock frequency
-
-Let's go through another example where we calculate the probability of firms
-having restocks.
-
-Specifically we set the starting stock level to 70 ($X_0 = 70$), as we calculate
-the proportion of firms that need to order twice or more in the first 50
-periods.
-
-You will need a large sample size to get an accurate reading.
-
-Again, we start with an easier `for` loop implementation
+We start with an easier `for` loop implementation
 
 ```{code-cell} ipython3
 # Define a jitted function for each update
 @jax.jit
-def update_stock(n_restock, X, firm, D):
-    n_restock = jnp.where(X <= firm.s,
+def update_stock(n_restock, X, params, D):
+    n_restock = jnp.where(X <= params.s,
                           n_restock + 1,
                           n_restock)
-    X = jnp.where(X <= firm.s,
-                  jnp.maximum(firm.S - D, 0),
+    X = jnp.where(X <= params.s,
+                  jnp.maximum(params.S - D, 0),
                   jnp.maximum(X - D, 0))
     return n_restock, X, key
 
-def compute_freq(firm, key,
+def compute_freq(params, key,
                  x_init=70,
                  sim_length=50,
                  num_firms=1_000_000):
@@ -330,9 +371,9 @@ def compute_freq(firm, key,
     # Use a for loop to perform the calculations on all states
     for i in range(sim_length):
         Z = random.normal(key, shape=(num_firms, ))
-        D = jnp.exp(firm.mu + firm.sigma * Z)
+        D = jnp.exp(params.mu + params.sigma * Z)
         n_restock, X, key = update_stock(
-            n_restock, X, firm, D)
+            n_restock, X, params, D)
         key = random.fold_in(key, i)
 
     return jnp.mean(n_restock > 1, axis=0)
@@ -340,7 +381,7 @@ def compute_freq(firm, key,
 
 ```{code-cell} ipython3
 key = random.PRNGKey(27)
-%time freq = compute_freq(firm, key).block_until_ready()
+%time freq = compute_freq(params, key).block_until_ready()
 print(f"Frequency of at least two stock outs = {freq}")
 ```
 
@@ -350,12 +391,12 @@ Now let's write a `lax.fori_loop` version that JIT compiles the whole function
 
 ```{code-cell} ipython3
 @jax.jit
-def compute_freq(firm, key,
+def compute_freq(params, key,
                  x_init=70,
                  sim_length=50,
                  num_firms=1_000_000):
 
-    s, S, mu, sigma = firm.s, firm.S, firm.mu, firm.sigma
+    s, S, mu, sigma = params.s, params.S, params.mu, params.sigma
     # Prepare initial arrays
     X = jnp.full((num_firms, ), x_init)
     Z = random.normal(key, shape=(sim_length, num_firms))
@@ -366,7 +407,7 @@ def compute_freq(firm, key,
     Xs = (X, restock_count)
 
     # Define the function for each update
-    def update_X(i, Xs):
+    def update_cross_section(i, Xs):
         # Separate the inventory and restock counter
         x, restock_count = Xs[0], Xs[1]
         restock_count = jnp.where(x <= s,
@@ -380,7 +421,7 @@ def compute_freq(firm, key,
         return Xs
 
     # Use lax.fori_loop to perform the calculations on all states
-    X_final = lax.fori_loop(0, sim_length, update_X, Xs)
+    X_final = lax.fori_loop(0, sim_length, update_cross_section, Xs)
 
     return jnp.mean(X_final[1] > 1)
 ```
@@ -388,6 +429,12 @@ def compute_freq(firm, key,
 Note the time the routine takes to run, as well as the output
 
 ```{code-cell} ipython3
-%time freq = compute_freq(firm, key).block_until_ready()
+%time freq = compute_freq(params, key).block_until_ready()
+%time freq = compute_freq(params, key).block_until_ready()
+
 print(f"Frequency of at least two stock outs = {freq}")
+```
+
+```{code-cell} ipython3
+
 ```
