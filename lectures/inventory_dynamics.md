@@ -149,7 +149,7 @@ def update_cross_section(params, X_vec, D):
 Here's code to compute the cross-sectional distribution $\psi_T$ given some
 initial distribution $\psi_0$ and a positive integer $T$.
 
-In this code we use an ordinary Python `for` loop, which reasonable here because
+In this code we use an ordinary Python `for` loop, which is reasonable here because
 efficiency of outer loops has less influence on runtime than efficiency of inner loops.
 
 (Below we will squeeze out more speed by compiling the outer loop as well as the
@@ -213,7 +213,7 @@ plt.show()
 Now let's see if we can gain some speed by compiling the outer loop, which steps
 through the time dimension.
 
-We will do this using `jax.jit` and a `fori_loop`, which is a compiler-ready version of a for loop provided by JAX.
+We will do this using `jax.jit` and a `fori_loop`, which is a compiler-ready version of a `for` loop provided by JAX.
 
 ```{code-cell} ipython3
 def compute_cross_section_fori(params, x_init, T, key, num_firms=50_000):
@@ -403,7 +403,7 @@ If you test a few different initial conditions, you will see that they do not af
 
 ## Restock frequency
 
-As an exercise, let's study the probability that firms need to restock over a given time perion.
+As an exercise, let's study the probability that firms need to restock over a given time period.
 
 In the exercise, we will
 
