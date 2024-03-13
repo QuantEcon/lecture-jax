@@ -458,9 +458,21 @@ key = random.PRNGKey(27)
 print(f"Frequency of at least two stock outs = {freq}")
 ```
 
-### Alternative implementation with `lax.fori_loop`
+```{exercise-start}
+:label: inventory_dynamics_ex1
+```
 
-Now let's write a `lax.fori_loop` version that JIT compiles the whole function
+Write a `fori_loop` version of the last function.  See if you can increase the 
+speed while generating a similar answer.
+
+```{exercise-end}
+```
+
+```{solution-start} inventory_dynamics_ex1
+:class: dropdown
+```
+
+Here is a `lax.fori_loop` version that JIT compiles the whole function
 
 ```{code-cell} ipython3
 @jax.jit
@@ -508,6 +520,5 @@ Note the time the routine takes to run, as well as the output
 print(f"Frequency of at least two stock outs = {freq}")
 ```
 
-```{code-cell} ipython3
-
+```{solution-end}
 ```
