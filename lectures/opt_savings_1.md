@@ -11,7 +11,7 @@ kernelspec:
   name: python3
 ---
 
-# Optimal Savings
+# Optimal Savings I: Value Function Iteration
 
 ```{include} _admonition/gpu.md
 ```

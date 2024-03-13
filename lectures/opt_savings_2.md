@@ -1,3 +1,17 @@
+---
+jupytext:
+  text_representation:
+    extension: .md
+    format_name: myst
+    format_version: 0.13
+    jupytext_version: 1.16.1
+kernelspec:
+  display_name: Python 3 (ipykernel)
+  language: python
+  name: python3
+---
+
+
 # Optimal Savings II: Alternative Algorithms
 
 ```{include} _admonition/gpu.md
@@ -134,8 +148,8 @@ def B(v, constants, sizes, arrays):
 We define a function to compute the current rewards $r_\sigma$ given policy $\sigma$,
 which is defined as the vector
 
-
 $$ r_\sigma(w, y) := r(w, y, \sigma(w, y)) $$
+
 
 ```{code-cell} ipython3
 def compute_r_σ(σ, constants, sizes, arrays):
