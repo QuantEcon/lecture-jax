@@ -410,4 +410,4 @@ ax.legend(fontsize=fontsize, frameon=False)
 ax.set_xlabel("$m$", fontsize=fontsize)
 ax.set_ylabel("time", fontsize=fontsize)
 plt.show()
-`
+```
