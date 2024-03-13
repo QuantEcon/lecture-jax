@@ -94,6 +94,25 @@ def create_consumption_model(R=1.01,                    # Gross interest rate
 Here's the right hand side of the Bellman equation:
 
 ```{code-cell} ipython3
+@jax.jit
+def compute_c(R, w, y, wp):
+    return R * w + y - wp
+
+compute_c_vec1 = jax.vmap(compute_c, in_axes=(None, None, None, 0))
+compute_c_vec2 = jax.vmap(compute_c_vec1, in_axes=(None, None, 0, None))
+compute_c_vec3 = jax.vmap(compute_c_vec2, in_axes=(None, 0, None, None))
+```
+
+```{code-cell} ipython3
+@jax.jit
+def compute_v_q_prod(v, q):
+    return v*q
+
+compute_v_q_prod_vec1 = jax.vmap(compute_v_q_prod, in_axes=(0, None))
+compute_v_q_prod_vec2 = jax.vmap(compute_v_q_prod_vec1, in_axes=(None, 0))
+```
+
+```{code-cell} ipython3
 def B(v, constants, sizes, arrays):
     """
     A vectorized version of the right-hand side of the Bellman equation
@@ -110,15 +129,10 @@ def B(v, constants, sizes, arrays):
     w_grid, y_grid, Q = arrays
 
     # Compute current rewards r(w, y, wp) as array r[i, j, ip]
-    w  = jnp.reshape(w_grid, (w_size, 1, 1))    # w[i]   ->  w[i, j, ip]
-    y  = jnp.reshape(y_grid, (1, y_size, 1))    # z[j]   ->  z[i, j, ip]
-    wp = jnp.reshape(w_grid, (1, 1, w_size))    # wp[ip] -> wp[i, j, ip]
-    c = R * w + y - wp
+    c = compute_c_vec3(R, w_grid, y_grid, w_grid)
 
-    # Calculate continuation rewards at all combinations of (w, y, wp)
-    v = jnp.reshape(v, (1, 1, w_size, y_size))  # v[ip, jp] -> v[i, j, ip, jp]
-    Q = jnp.reshape(Q, (1, y_size, 1, y_size))  # Q[j, jp]  -> Q[i, j, ip, jp]
-    EV = jnp.sum(v * Q, axis=3)                 # sum over last index jp
+    prod = compute_v_q_prod_vec2(v, Q)
+    EV = jnp.sum(prod, axis=2)                 # sum over last index jp
 
     # Compute the right-hand side of the Bellman equation
     return jnp.where(c > 0, c**(1-γ)/(1-γ) + β * EV, -jnp.inf)
@@ -134,22 +148,24 @@ which is defined as the vector
 $$ r_\sigma(w, y) := r(w, y, \sigma(w, y)) $$
 
 ```{code-cell} ipython3
+compute_c_vec4 = jax.vmap(compute_c, in_axes=(None, None, 0, 0))
+compute_c_vec5 = jax.vmap(compute_c_vec4, in_axes=(None, 0, None, 0))
+```
+
+```{code-cell} ipython3
 def compute_r_σ(σ, constants, sizes, arrays):
     """
     Compute the array r_σ[i, j] = r[i, j, σ[i, j]], which gives current
     rewards given policy σ.
     """
-
     # Unpack model
     β, R, γ = constants
     w_size, y_size = sizes
     w_grid, y_grid, Q = arrays
 
     # Compute r_σ[i, j]
-    w = jnp.reshape(w_grid, (w_size, 1))
-    y = jnp.reshape(y_grid, (1, y_size))
     wp = w_grid[σ]
-    c = R * w + y - wp
+    c = compute_c_vec5(R, w_grid, y_grid, wp)
     r_σ = c**(1-γ)/(1-γ)
 
     return r_σ
@@ -173,9 +189,6 @@ def T_σ(v, σ, constants, sizes, arrays):
     yp_idx = jnp.reshape(yp_idx, (1, 1, y_size))
     σ = jnp.reshape(σ, (w_size, y_size, 1))
     V = v[σ, yp_idx]
-
-    # Convert Q[j, jp] to Q[i, j, jp]
-    Q = jnp.reshape(Q, (1, y_size, y_size))
 
     # Calculate the expected sum Σ_jp v[σ[i, j], jp] * Q[i, j, jp]
     EV = jnp.sum(V * Q, axis=2)
@@ -243,9 +256,6 @@ def L_σ(v, σ, constants, sizes, arrays):
     zp_idx = jnp.reshape(zp_idx, (1, 1, y_size))
     σ = jnp.reshape(σ, (w_size, y_size, 1))
     V = v[σ, zp_idx]
-
-    # Expand Q[j, jp] to Q[i, j, jp]
-    Q = jnp.reshape(Q, (1, y_size, y_size))
 
     # Compute and return v[i, j] - β Σ_jp v[σ[i, j], jp] * Q[j, jp]
     return v - β * jnp.sum(V * Q, axis=2)
