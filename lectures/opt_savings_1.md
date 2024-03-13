@@ -386,7 +386,7 @@ Let's see how long it takes to solve this model.
 ```{code-cell} ipython3
 print("Starting VFI using vectorization.")
 start_time = time.time()
-v_star, σ_star = value_iteration(model)
+v_star_jax, σ_star_jax = value_iteration(model)
 jax_elapsed = time.time() - start_time
 print(f"VFI completed in {jax_elapsed} seconds.")
 ```
@@ -420,7 +420,7 @@ Here's a version that
 First let's rewrite `B`
 
 ```{code-cell} ipython3
-def B(v, i, j, ip, constants, sizes, arrays):
+def B(v, constants, sizes, arrays, i, j, ip):
     """
     The right-hand side of the Bellman equation before maximization, which takes
     the form
@@ -445,9 +445,9 @@ def B(v, i, j, ip, constants, sizes, arrays):
 Now we successively apply `vmap` to simulate nested loops.
 
 ```{code-cell} ipython3
-B_1    = jax.vmap(B,   in_axes=(None, None, None, 0, None, None, None))
-B_2    = jax.vmap(B_1, in_axes=(None, None, 0, None, None, None, None))
-B_vmap = jax.vmap(B_2, in_axes=(None, 0, None, None, None, None, None))
+B_1    = jax.vmap(B,   in_axes=(None, None, None, None, None, None, 0))
+B_2    = jax.vmap(B_1, in_axes=(None, None, None, None, None, 0,    None))
+B_vmap = jax.vmap(B_2, in_axes=(None, None, None, None, 0,    None, None))
 ```
 
 Here's the Bellman operator and the `get_greedy` functions for the `vmap` case.
@@ -457,9 +457,8 @@ def T_vmap(v, constants, sizes, arrays):
     "The Bellman operator."
     w_size, y_size = sizes
     w_indices, y_indices = jnp.arange(w_size), jnp.arange(y_size)
-    return jnp.max(B_vmap(v, 
-                          w_indices, y_indices, w_indices, 
-                          constants, sizes, arrays), axis=2)
+    val = B_vmap(v, constants, sizes, arrays, w_indices, y_indices, w_indices)
+    return jnp.max(val, axis=-1)
 
 T_vmap = jax.jit(T_vmap, static_argnums=(2,))
 
@@ -467,9 +466,8 @@ def get_greedy_vmap(v, constants, sizes, arrays):
     "Computes a v-greedy policy, returned as a set of indices."
     w_size, y_size = sizes
     w_indices, y_indices = jnp.arange(w_size), jnp.arange(y_size)
-    return jnp.argmax(B_vmap(v, 
-                          w_indices, y_indices, w_indices, 
-                          constants, sizes, arrays), axis=2)
+    val = B_vmap(v, constants, sizes, arrays, w_indices, y_indices, w_indices)
+    return jnp.argmax(val, axis=-1)
 
 get_greedy_vmap = jax.jit(get_greedy_vmap, static_argnums=(2,))
 
@@ -478,7 +476,7 @@ get_greedy_vmap = jax.jit(get_greedy_vmap, static_argnums=(2,))
 Here's the iteration routine.
 
 ```{code-cell} ipython3
-def value_iteration(model, tol=1e-5):
+def value_iteration_vmap(model, tol=1e-5):
     constants, sizes, arrays = model
     vz = jnp.zeros(sizes)
     _T = lambda v: T_vmap(v, constants, sizes, arrays)
@@ -491,9 +489,16 @@ Let's see how long it takes to solve the model using the `vmap` method.
 ```{code-cell} ipython3
 print("Starting VFI using vmap.")
 start_time = time.time()
-v_star, σ_star = value_iteration(model)
+v_star_vmap, σ_star_vmap = value_iteration_vmap(model)
 jax_vmap_elapsed = time.time() - start_time
 print(f"VFI completed in {jax_vmap_elapsed} seconds.")
+```
+
+We need to make sure that we got the same result.
+
+```{code-cell} ipython3
+print(jnp.allclose(v_star_vmap, v_star_jax))
+print(jnp.allclose(σ_star_vmap, σ_star_jax))
 ```
 
 The relative speed is
