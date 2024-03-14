@@ -314,6 +314,22 @@ def successive_approx_jax(T,                     # Operator (callable)
 successive_approx_jax = jax.jit(successive_approx_jax, static_argnums=(0,))
 ```
 
+For OPI we'll add a compiled routine that computes $T_σ^m v$.
+
+```{code-cell} ipython3
+def iterate_policy_operator(σ, v, m, params, sizes, arrays):
+
+    def update(i, v):
+        v = T_σ(v, σ, params, sizes, arrays)
+        return v
+    
+    v = jax.lax.fori_loop(0, m, update, v)
+    return v
+
+iterate_policy_operator = jax.jit(iterate_policy_operator,
+                                  static_argnums=(4,))
+```
+
 Finally, we introduce the solvers that implement VFI, HPI and OPI.
 
 ```{code-cell} ipython3
@@ -357,8 +373,7 @@ def optimistic_policy_iteration(model, tol=1e-5, m=10):
     while error > tol:
         last_v = v
         σ = get_greedy(v, params, sizes, arrays)
-        for _ in range(m):
-            v = T_σ(v, σ, params, sizes, arrays)
+        v = iterate_policy_operator(σ, v, m, params, sizes, arrays)
         error = jnp.max(jnp.abs(v - last_v))
     return get_greedy(v, params, sizes, arrays)
 ```
@@ -369,7 +384,7 @@ def optimistic_policy_iteration(model, tol=1e-5, m=10):
 model = create_investment_model()
 print("Starting HPI.")
 qe.tic()
-out = policy_iteration(model)
+out = howard_policy_iteration(model)
 elapsed = qe.toc()
 print(out)
 print(f"HPI completed in {elapsed} seconds.")
@@ -380,7 +395,7 @@ print(f"HPI completed in {elapsed} seconds.")
 
 print("Starting VFI.")
 qe.tic()
-out = value_iteration(model)
+out = value_function_iteration(model)
 elapsed = qe.toc()
 print(out)
 print(f"VFI completed in {elapsed} seconds.")
@@ -408,7 +423,7 @@ y_grid, z_grid, Q = arrays
 ```
 
 ```{code-cell} ipython3
-σ_star = policy_iteration(model)
+σ_star = howard_policy_iteration(model)
 
 fig, ax = plt.subplots(figsize=(9, 5))
 ax.plot(y_grid, y_grid, "k--", label="45")
@@ -428,7 +443,7 @@ m_vals = range(5, 600, 40)
 model = create_investment_model()
 print("Running Howard policy iteration.")
 qe.tic()
-σ_pi = policy_iteration(model)
+σ_pi = howard_policy_iteration(model)
 pi_time = qe.toc()
 ```
 
@@ -436,7 +451,7 @@ pi_time = qe.toc()
 print(f"PI completed in {pi_time} seconds.")
 print("Running value function iteration.")
 qe.tic()
-σ_vfi = value_iteration(model, tol=1e-5)
+σ_vfi = value_function_iteration(model, tol=1e-5)
 vfi_time = qe.toc()
 print(f"VFI completed in {vfi_time} seconds.")
 ```
