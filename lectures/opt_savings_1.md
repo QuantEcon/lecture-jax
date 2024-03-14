@@ -399,8 +399,7 @@ print(f"Relative speed gain = {numpy_elapsed / jax_elapsed}")
 This is an impressive speed up and in fact we can do better still by switching
 to alternative algorithms that are better suited to parallelization.
 
-These algorithms are discussed in a {doct}`separate lecture <opt_savings_2>` in
-this series.
+These algorithms are discussed in a {doc}`separate lecture <opt_savings_2>`.
 
 
 ## Switching to vmap
