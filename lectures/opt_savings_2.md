@@ -110,8 +110,6 @@ def create_consumption_model(R=1.01,                    # Gross interest rate
 Here's the right hand side of the Bellman equation:
 
 ```{code-cell} ipython3
-:tags: [hide-input]
-
 def B(v, constants, sizes, arrays):
     """
     A vectorized version of the right-hand side of the Bellman equation
