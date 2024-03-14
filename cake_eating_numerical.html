@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>15. Cake Eating: Numerical Methods &#8212; Quantitative Economics with Python using JAX</title>
+    <title>17. Cake Eating: Numerical Methods &#8212; Quantitative Economics with Python using JAX</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
@@ -121,8 +121,8 @@ const thebe_selector_output = ".output, .cell_output"
     <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="16. Troubleshooting" href="troubleshooting.html" />
-    <link rel="prev" title="14. The Aiyagari Model" href="aiyagari_jax.html" />
+    <link rel="next" title="18. Troubleshooting" href="troubleshooting.html" />
+    <link rel="prev" title="16. The Aiyagari Model" href="aiyagari_jax.html" />
 
 <!-- Normal Meta Tags -->
 <meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
@@ -170,13 +170,13 @@ const thebe_selector_output = ".output, .cell_output"
 
                         <nav id="bd-toc-nav" class="qe-page__toc-nav">
                             <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reviewing-the-model">15.1. Reviewing the Model</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implementation-using-jax">15.2. Implementation using JAX</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-bellman-operator">15.2.1. The Bellman Operator</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#policy-function">15.2.2. Policy Function</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reviewing-the-model">17.1. Reviewing the Model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implementation-using-jax">17.2. Implementation using JAX</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-bellman-operator">17.2.1. The Bellman Operator</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#policy-function">17.2.2. Policy Function</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#numba-implementation">15.3. Numba implementation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#numba-implementation">17.3. Numba implementation</a></li>
 </ul>
                             <p class="logo">
                                 
@@ -236,7 +236,7 @@ const thebe_selector_output = ".output, .cell_output"
                     <div>
                         
   <section class="tex2jax_ignore mathjax_ignore" id="cake-eating-numerical-methods">
-<h1><span class="section-number">15. </span>Cake Eating: Numerical Methods<a class="headerlink" href="#cake-eating-numerical-methods" title="Permalink to this heading">#</a></h1>
+<h1><span class="section-number">17. </span>Cake Eating: Numerical Methods<a class="headerlink" href="#cake-eating-numerical-methods" title="Permalink to this heading">#</a></h1>
 <div class="warning admonition">
 <p class="admonition-title">GPU</p>
 <p>This lecture was built using <a class="reference internal" href="status.html#status-machine-details"><span class="std std-ref">hardware</span></a> that has access to a GPU.</p>
@@ -305,7 +305,7 @@ Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/envs/quantecon/lib/
   pid, fd = os.forkpty()
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Thu Mar  7 01:45:18 2024       
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Thu Mar 14 01:41:41 2024       
 +-----------------------------------------------------------------------------+
 | NVIDIA-SMI 470.182.03   Driver Version: 470.182.03   CUDA Version: 12.3     |
 |-------------------------------+----------------------+----------------------+
@@ -316,7 +316,7 @@ Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/envs/quantecon/lib/
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>|   0  Tesla V100-SXM2...  Off  | 00000000:00:1E.0 Off |                    0 |
-| N/A   33C    P0    38W / 300W |      0MiB / 16160MiB |      2%      Default |
+| N/A   31C    P0    37W / 300W |      0MiB / 16160MiB |      2%      Default |
 |                               |                      |                  N/A |
 +-------------------------------+----------------------+----------------------+
                                                                                
@@ -332,15 +332,15 @@ Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/envs/quantecon/lib/
 </div>
 </div>
 <section id="reviewing-the-model">
-<h2><span class="section-number">15.1. </span>Reviewing the Model<a class="headerlink" href="#reviewing-the-model" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">17.1. </span>Reviewing the Model<a class="headerlink" href="#reviewing-the-model" title="Permalink to this heading">#</a></h2>
 <p>Recall in particular that the Bellman equation is</p>
 <div class="math notranslate nohighlight" id="equation-bellman-cen">
-<span class="eqno">(15.1)<a class="headerlink" href="#equation-bellman-cen" title="Permalink to this equation">#</a></span>\[v(x) = \max_{0\leq c \leq x} \{u(c) + \beta v(x-c)\}
+<span class="eqno">(17.1)<a class="headerlink" href="#equation-bellman-cen" title="Permalink to this equation">#</a></span>\[v(x) = \max_{0\leq c \leq x} \{u(c) + \beta v(x-c)\}
 \quad \text{for all } x \geq 0.\]</div>
 <p>where <span class="math notranslate nohighlight">\(u\)</span> is the CRRA utility function.</p>
 </section>
 <section id="implementation-using-jax">
-<h2><span class="section-number">15.2. </span>Implementation using JAX<a class="headerlink" href="#implementation-using-jax" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">17.2. </span>Implementation using JAX<a class="headerlink" href="#implementation-using-jax" title="Permalink to this heading">#</a></h2>
 <p>The analytical solutions for the value function and optimal policy were found
 to be as follows.</p>
 <div class="cell docutils container">
@@ -393,7 +393,7 @@ to be as follows.</p>
 </div>
 </div>
 <section id="the-bellman-operator">
-<h3><span class="section-number">15.2.1. </span>The Bellman Operator<a class="headerlink" href="#the-bellman-operator" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">17.2.1. </span>The Bellman Operator<a class="headerlink" href="#the-bellman-operator" title="Permalink to this heading">#</a></h3>
 <p>We introduce the <strong>Bellman operator</strong> <span class="math notranslate nohighlight">\(T\)</span> that takes a function v as an
 argument and returns a new function <span class="math notranslate nohighlight">\(Tv\)</span> defined by</p>
 <div class="math notranslate nohighlight">
@@ -605,7 +605,7 @@ Converged in 351 iterations.
 </div>
 </section>
 <section id="policy-function">
-<h3><span class="section-number">15.2.2. </span>Policy Function<a class="headerlink" href="#policy-function" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">17.2.2. </span>Policy Function<a class="headerlink" href="#policy-function" title="Permalink to this heading">#</a></h3>
 <p>Recall that the optimal consumption policy was shown to be</p>
 <div class="math notranslate nohighlight">
 \[
@@ -671,7 +671,7 @@ above.</p>
 </section>
 </section>
 <section id="numba-implementation">
-<h2><span class="section-number">15.3. </span>Numba implementation<a class="headerlink" href="#numba-implementation" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">17.3. </span>Numba implementation<a class="headerlink" href="#numba-implementation" title="Permalink to this heading">#</a></h2>
 <p>This section of the lecture is directly adapted from <a class="reference external" href="https://python.quantecon.org/cake_eating_numerical.html">this lecture</a>
 for the purpose of comparing the results of JAX implementation.</p>
 <div class="cell docutils container">
@@ -833,9 +833,9 @@ Converged in 329 iterations.
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>JAX implementation is 2.587911676343642 times faster than NumPy.
-JAX time: 1.177682876586914
-Numba time: 3.047739267349243
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>JAX implementation is 2.7332607604303685 times faster than NumPy.
+JAX time: 1.1701984405517578
+Numba time: 3.1984574794769287
 </pre></div>
 </div>
 </div>
@@ -960,38 +960,48 @@ Numba time: 3.047739267349243
 </p>
 <ul class="current nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
+  <a class="reference internal" href="opt_savings_1.html">
+   9. Optimal Savings I: Value Function Iteration
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="opt_savings_2.html">
+   10. Optimal Savings II: Alternative Algorithms
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="short_path.html">
-   9. Shortest Paths
+   11. Shortest Paths
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="opt_invest.html">
-   10. Optimal Investment
+   12. Optimal Investment
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="opt_savings.html">
-   11. Optimal Savings
+  <a class="reference internal" href="inventory_ssd.html">
+   13. Inventory Management Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_egm.html">
-   12. Endogenous Grid Method
+   14. Endogenous Grid Method
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="arellano.html">
-   13. Default Risk and Income Fluctuations
+   15. Default Risk and Income Fluctuations
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="aiyagari_jax.html">
-   14. The Aiyagari Model
+   16. The Aiyagari Model
   </a>
  </li>
  <li class="toctree-l1 current active active">
   <a class="current reference internal" href="#">
-   15. Cake Eating: Numerical Methods
+   17. Cake Eating: Numerical Methods
   </a>
  </li>
 </ul>
@@ -1003,17 +1013,17 @@ Numba time: 3.047739267349243
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   16. Troubleshooting
+   18. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   17. References
+   19. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   18. Execution Statistics
+   20. Execution Statistics
   </a>
  </li>
 </ul>

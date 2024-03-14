@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>14. The Aiyagari Model &#8212; Quantitative Economics with Python using JAX</title>
+    <title>16. The Aiyagari Model &#8212; Quantitative Economics with Python using JAX</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
@@ -121,8 +121,8 @@ const thebe_selector_output = ".output, .cell_output"
     <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="15. Cake Eating: Numerical Methods" href="cake_eating_numerical.html" />
-    <link rel="prev" title="13. Default Risk and Income Fluctuations" href="arellano.html" />
+    <link rel="next" title="17. Cake Eating: Numerical Methods" href="cake_eating_numerical.html" />
+    <link rel="prev" title="15. Default Risk and Income Fluctuations" href="arellano.html" />
 
 <!-- Normal Meta Tags -->
 <meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
@@ -170,26 +170,26 @@ const thebe_selector_output = ".output, .cell_output"
 
                         <nav id="bd-toc-nav" class="qe-page__toc-nav">
                             <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">14.1. Overview</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#references">14.1.1. References</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#preliminaries">14.1.2. Preliminaries</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">16.1. Overview</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#references">16.1.1. References</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#preliminaries">16.1.2. Preliminaries</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#firms">14.2. Firms</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#households">14.3. Households</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#primitives-and-operators">14.3.1. Primitives and Operators</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#firms">16.2. Firms</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#households">16.3. Households</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#primitives-and-operators">16.3.1. Primitives and Operators</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#solvers">14.4. Solvers</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#capital-supply">14.4.1. Capital Supply</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#solvers">16.4. Solvers</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#capital-supply">16.4.1. Capital Supply</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#equilibrium">14.5. Equilibrium</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#visual-inspection">14.5.1. Visual inspection</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#computing-the-equilibrium">14.5.2. Computing the equilibrium</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#equilibrium">16.5. Equilibrium</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#visual-inspection">16.5.1. Visual inspection</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#computing-the-equilibrium">16.5.2. Computing the equilibrium</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">14.6. Exercises</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">16.6. Exercises</a></li>
 </ul>
                             <p class="logo">
                                 
@@ -249,7 +249,7 @@ const thebe_selector_output = ".output, .cell_output"
                     <div>
                         
   <section class="tex2jax_ignore mathjax_ignore" id="the-aiyagari-model">
-<h1><span class="section-number">14. </span>The Aiyagari Model<a class="headerlink" href="#the-aiyagari-model" title="Permalink to this heading">#</a></h1>
+<h1><span class="section-number">16. </span>The Aiyagari Model<a class="headerlink" href="#the-aiyagari-model" title="Permalink to this heading">#</a></h1>
 <div class="warning admonition">
 <p class="admonition-title">GPU</p>
 <p>This lecture was built using <a class="reference internal" href="status.html#status-machine-details"><span class="std std-ref">hardware</span></a> that has access to a GPU.</p>
@@ -257,7 +257,7 @@ const thebe_selector_output = ".output, .cell_output"
 <p>To run this lecture on your own machine, you need to install <a class="reference external" href="https://github.com/google/jax">Google JAX</a>.</p>
 </div>
 <section id="overview">
-<h2><span class="section-number">14.1. </span>Overview<a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">16.1. </span>Overview<a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
 <p>In this lecture, we describe the structure of a class of models that build on work by Truman Bewley [<a class="reference external" href="https://python.quantecon.org/zreferences.html#id173">Bew77</a>].</p>
 <p>We begin by discussing an example of a Bewley model due to Rao Aiyagari [<a class="reference external" href="https://python.quantecon.org/zreferences.html#id137">Aiy94</a>].</p>
 <p>The model features</p>
@@ -273,14 +273,14 @@ const thebe_selector_output = ".output, .cell_output"
 <li><p>the shape of the wealth distribution [<a class="reference external" href="https://python.quantecon.org/zreferences.html#id131">BBZ15</a>]</p></li>
 </ul>
 <section id="references">
-<h3><span class="section-number">14.1.1. </span>References<a class="headerlink" href="#references" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">16.1.1. </span>References<a class="headerlink" href="#references" title="Permalink to this heading">#</a></h3>
 <p>The primary reference for this lecture is [<a class="reference external" href="https://python.quantecon.org/zreferences.html#id138">Aiy94</a>].</p>
 <p>A textbook treatment is available in chapter 18 of [<a class="reference external" href="https://python.quantecon.org/zreferences.html#id183">LS18</a>].</p>
 <p>A less sophisticated version of this lecture (without JAX) can be found
 <a class="reference external" href="https://python.quantecon.org/aiyagari.html">here</a>.</p>
 </section>
 <section id="preliminaries">
-<h3><span class="section-number">14.1.2. </span>Preliminaries<a class="headerlink" href="#preliminaries" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">16.1.2. </span>Preliminaries<a class="headerlink" href="#preliminaries" title="Permalink to this heading">#</a></h3>
 <p>We use the following imports</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -306,7 +306,7 @@ const thebe_selector_output = ".output, .cell_output"
   pid, fd = os.forkpty()
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Thu Mar  7 01:43:37 2024       
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Thu Mar 14 01:40:03 2024       
 +-----------------------------------------------------------------------------+
 | NVIDIA-SMI 470.182.03   Driver Version: 470.182.03   CUDA Version: 12.3     |
 |-------------------------------+----------------------+----------------------+
@@ -317,7 +317,7 @@ const thebe_selector_output = ".output, .cell_output"
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>|   0  Tesla V100-SXM2...  Off  | 00000000:00:1E.0 Off |                    0 |
-| N/A   33C    P0    38W / 300W |      0MiB / 16160MiB |      2%      Default |
+| N/A   30C    P0    37W / 300W |      0MiB / 16160MiB |      2%      Default |
 |                               |                      |                  N/A |
 +-------------------------------+----------------------+----------------------+
                                                                                
@@ -359,7 +359,7 @@ const thebe_selector_output = ".output, .cell_output"
 </section>
 </section>
 <section id="firms">
-<h2><span class="section-number">14.2. </span>Firms<a class="headerlink" href="#firms" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">16.2. </span>Firms<a class="headerlink" href="#firms" title="Permalink to this heading">#</a></h2>
 <p>Firms produce output by hiring capital and labor.</p>
 <p>Firms act competitively and face constant returns to scale.</p>
 <p>Since returns to scale are constant the number of firms does not matter.</p>
@@ -400,7 +400,7 @@ Y_t = A K_t^{\alpha} N^{1 - \alpha}
 <p>From the first-order condition with respect to capital,</p>
 <p>the firm’s inverse demand for capital is</p>
 <div class="math notranslate nohighlight" id="equation-equation-aiy-rgk">
-<span class="eqno">(14.1)<a class="headerlink" href="#equation-equation-aiy-rgk" title="Permalink to this equation">#</a></span>\[r = A \alpha  \left( \frac{N}{K} \right)^{1 - \alpha} - \delta\]</div>
+<span class="eqno">(16.1)<a class="headerlink" href="#equation-equation-aiy-rgk" title="Permalink to this equation">#</a></span>\[r = A \alpha  \left( \frac{N}{K} \right)^{1 - \alpha} - \delta\]</div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">r_given_k</span><span class="p">(</span><span class="n">K</span><span class="p">,</span> <span class="n">firm</span><span class="p">):</span>
@@ -414,10 +414,10 @@ Y_t = A K_t^{\alpha} N^{1 - \alpha}
 </div>
 </div>
 </div>
-<p>Using <a class="reference internal" href="#equation-equation-aiy-rgk">(14.1)</a> and the firm’s first-order condition for labor,</p>
+<p>Using <a class="reference internal" href="#equation-equation-aiy-rgk">(16.1)</a> and the firm’s first-order condition for labor,</p>
 <p>we can pin down the equilibrium wage rate as a function of <span class="math notranslate nohighlight">\( r \)</span> as</p>
 <div class="math notranslate nohighlight" id="equation-equation-aiy-wgr">
-<span class="eqno">(14.2)<a class="headerlink" href="#equation-equation-aiy-wgr" title="Permalink to this equation">#</a></span>\[w(r) = A  (1 - \alpha)  (A \alpha / (r + \delta))^{\alpha / (1 - \alpha)}\]</div>
+<span class="eqno">(16.2)<a class="headerlink" href="#equation-equation-aiy-wgr" title="Permalink to this equation">#</a></span>\[w(r) = A  (1 - \alpha)  (A \alpha / (r + \delta))^{\alpha / (1 - \alpha)}\]</div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">r_to_w</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">f</span><span class="p">):</span>
@@ -432,7 +432,7 @@ Y_t = A K_t^{\alpha} N^{1 - \alpha}
 </div>
 </section>
 <section id="households">
-<h2><span class="section-number">14.3. </span>Households<a class="headerlink" href="#households" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">16.3. </span>Households<a class="headerlink" href="#households" title="Permalink to this heading">#</a></h2>
 <p>Infinitely lived households / consumers face idiosyncratic income shocks.</p>
 <p>A unit interval of  <em>ex-ante</em> identical households face a common borrowing constraint.</p>
 <p>The savings problem faced by a typical  household is</p>
@@ -464,7 +464,7 @@ a_t \geq -B
 <p>For now we assume that <span class="math notranslate nohighlight">\(u(c) = \log(c)\)</span>.</p>
 <p>(CRRA utility is treated in the exercises.)</p>
 <section id="primitives-and-operators">
-<h3><span class="section-number">14.3.1. </span>Primitives and Operators<a class="headerlink" href="#primitives-and-operators" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">16.3.1. </span>Primitives and Operators<a class="headerlink" href="#primitives-and-operators" title="Permalink to this heading">#</a></h3>
 <p>This namedtuple stores the parameters that define a household asset
 accumulation problem and the grids used to solve it.</p>
 <div class="cell docutils container">
@@ -637,7 +637,7 @@ rewards given policy <span class="math notranslate nohighlight">\(\sigma\)</span
 </section>
 </section>
 <section id="solvers">
-<h2><span class="section-number">14.4. </span>Solvers<a class="headerlink" href="#solvers" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">16.4. </span>Solvers<a class="headerlink" href="#solvers" title="Permalink to this heading">#</a></h2>
 <p>We will solve the household problem using Howard policy iteration.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -702,8 +702,8 @@ Concluded loop 10 with error 0.002863165320343697.
 Concluded loop 11 with error 0.0016657175376657563.
 Concluded loop 12 with error 0.0004143776102245589.
 Concluded loop 13 with error 0.0.
-CPU times: user 556 ms, sys: 71.2 ms, total: 627 ms
-Wall time: 779 ms
+CPU times: user 663 ms, sys: 48.5 ms, total: 712 ms
+Wall time: 876 ms
 </pre></div>
 </div>
 </div>
@@ -730,7 +730,7 @@ Wall time: 779 ms
 </div>
 </div>
 <section id="capital-supply">
-<h3><span class="section-number">14.4.1. </span>Capital Supply<a class="headerlink" href="#capital-supply" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">16.4.1. </span>Capital Supply<a class="headerlink" href="#capital-supply" title="Permalink to this heading">#</a></h3>
 <p>To start thinking about equilibrium, we need to know how much capital households supply at a given interest rate <span class="math notranslate nohighlight">\(r\)</span>.</p>
 <p>This quantity can be calculated by taking the stationary distribution of assets under the optimal policy and computing the mean.</p>
 <p>The next function implements this calculation for a given policy <span class="math notranslate nohighlight">\(\sigma\)</span>.</p>
@@ -826,7 +826,7 @@ bivariate Markov chain of the state <span class="math notranslate nohighlight">\
 </section>
 </section>
 <section id="equilibrium">
-<h2><span class="section-number">14.5. </span>Equilibrium<a class="headerlink" href="#equilibrium" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">16.5. </span>Equilibrium<a class="headerlink" href="#equilibrium" title="Permalink to this heading">#</a></h2>
 <p>We construct  a <em>stationary rational expectations equilibrium</em> (SREE).</p>
 <p>In such an equilibrium</p>
 <ul class="simple">
@@ -843,14 +843,14 @@ bivariate Markov chain of the state <span class="math notranslate nohighlight">\
 <p>In practice, once parameter values are set, we can check for an SREE by the following steps</p>
 <ol class="arabic simple">
 <li><p>pick a proposed quantity <span class="math notranslate nohighlight">\( K \)</span> for aggregate capital</p></li>
-<li><p>determine corresponding prices, with interest rate <span class="math notranslate nohighlight">\( r \)</span> determined by <a class="reference internal" href="#equation-equation-aiy-rgk">(14.1)</a> and a wage rate <span class="math notranslate nohighlight">\( w(r) \)</span> as given in <a class="reference internal" href="#equation-equation-aiy-wgr">(14.2)</a>.</p></li>
+<li><p>determine corresponding prices, with interest rate <span class="math notranslate nohighlight">\( r \)</span> determined by <a class="reference internal" href="#equation-equation-aiy-rgk">(16.1)</a> and a wage rate <span class="math notranslate nohighlight">\( w(r) \)</span> as given in <a class="reference internal" href="#equation-equation-aiy-wgr">(16.2)</a>.</p></li>
 <li><p>determine the common optimal savings policy of the households given these prices</p></li>
 <li><p>compute aggregate capital as the mean of steady state capital given this savings policy</p></li>
 </ol>
 <p>If this final quantity agrees with <span class="math notranslate nohighlight">\( K \)</span> then we have a SREE.  Otherwise we adjust <span class="math notranslate nohighlight">\(K\)</span>.</p>
 <p>These steps describe a fixed point problem which we solve below.</p>
 <section id="visual-inspection">
-<h3><span class="section-number">14.5.1. </span>Visual inspection<a class="headerlink" href="#visual-inspection" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">16.5.1. </span>Visual inspection<a class="headerlink" href="#visual-inspection" title="Permalink to this heading">#</a></h3>
 <p>Let’s inspect visually as a first pass.</p>
 <p>The following code draws aggregate supply and demand curves for capital.</p>
 <p>The intersection gives equilibrium interest rates and capital.</p>
@@ -881,8 +881,8 @@ bivariate Markov chain of the state <span class="math notranslate nohighlight">\
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 3.9 s, sys: 970 ms, total: 4.87 s
-Wall time: 2.85 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 3.99 s, sys: 943 ms, total: 4.94 s
+Wall time: 2.89 s
 </pre></div>
 </div>
 </div>
@@ -930,8 +930,8 @@ Wall time: 2.85 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 3.61 s, sys: 922 ms, total: 4.53 s
-Wall time: 2.39 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 3.61 s, sys: 993 ms, total: 4.61 s
+Wall time: 2.51 s
 </pre></div>
 </div>
 </div>
@@ -953,7 +953,7 @@ Wall time: 2.39 s
 </div>
 </section>
 <section id="computing-the-equilibrium">
-<h3><span class="section-number">14.5.2. </span>Computing the equilibrium<a class="headerlink" href="#computing-the-equilibrium" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">16.5.2. </span>Computing the equilibrium<a class="headerlink" href="#computing-the-equilibrium" title="Permalink to this heading">#</a></h3>
 <p>Now let’s compute the equilibrium</p>
 <p>To do so, we use the bisection method, which is implemented
 in the next function.</p>
@@ -1008,9 +1008,9 @@ in the next function.</p>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computing equilibrium capital stock
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.29039788246154785 seconds
-CPU times: user 423 ms, sys: 122 ms, total: 545 ms
-Wall time: 292 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.3204948902130127 seconds
+CPU times: user 444 ms, sys: 134 ms, total: 577 ms
+Wall time: 322 ms
 </pre></div>
 </div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>8.09375
@@ -1023,10 +1023,10 @@ method such as bisection.</p>
 </section>
 </section>
 <section id="exercises">
-<h2><span class="section-number">14.6. </span>Exercises<a class="headerlink" href="#exercises" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">16.6. </span>Exercises<a class="headerlink" href="#exercises" title="Permalink to this heading">#</a></h2>
 <div class="exercise admonition" id="aygr_ex1">
 
-<p class="admonition-title"><span class="caption-number">Exercise 14.1 </span></p>
+<p class="admonition-title"><span class="caption-number">Exercise 16.1 </span></p>
 <section id="exercise-content">
 <p>Using the default household and firm model, produce a graph
 showing the behaviour of equilibrium capital stock with the increase in <span class="math notranslate nohighlight">\(\beta\)</span>.</p>
@@ -1034,7 +1034,7 @@ showing the behaviour of equilibrium capital stock with the increase in <span cl
 </div>
 <div class="solution dropdown admonition" id="aiyagari_jax-solution-1">
 
-<p class="admonition-title">Solution to<a class="reference internal" href="#aygr_ex1"> Exercise 14.1</a></p>
+<p class="admonition-title">Solution to<a class="reference internal" href="#aygr_ex1"> Exercise 16.1</a></p>
 <section id="solution-content">
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1052,192 +1052,194 @@ showing the behaviour of equilibrium capital stock with the increase in <span cl
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computing equilibrium capital stock
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.6170046329498291 seconds
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.6693158149719238 seconds
 
 Computing equilibrium capital stock
-Computed equilibrium in 6 iterations and 0.1648421287536621 seconds
-
-Computing equilibrium capital stock
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.17183423042297363 seconds
-
-Computing equilibrium capital stock
-Computed equilibrium in 6 iterations and 0.17861652374267578 seconds
+Computed equilibrium in 6 iterations and 0.18530964851379395 seconds
 
 Computing equilibrium capital stock
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.18250656127929688 seconds
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.1802060604095459 seconds
 
 Computing equilibrium capital stock
-Computed equilibrium in 6 iterations and 0.1736447811126709 seconds
-
-Computing equilibrium capital stock
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.17560863494873047 seconds
-
-Computing equilibrium capital stock
-Computed equilibrium in 6 iterations and 0.18543529510498047 seconds
+Computed equilibrium in 6 iterations and 0.17821788787841797 seconds
 
 Computing equilibrium capital stock
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.19296813011169434 seconds
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.18711566925048828 seconds
 
 Computing equilibrium capital stock
-Computed equilibrium in 6 iterations and 0.19742941856384277 seconds
-
-Computing equilibrium capital stock
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.21056890487670898 seconds
+Computed equilibrium in 6 iterations and 0.18343448638916016 seconds
 
 Computing equilibrium capital stock
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.20766592025756836 seconds
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.1859743595123291 seconds
 
 Computing equilibrium capital stock
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.21311330795288086 seconds
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.20029878616333008 seconds
+
+Computing equilibrium capital stock
+Computed equilibrium in 6 iterations and 0.19321513175964355 seconds
 
 Computing equilibrium capital stock
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.21612238883972168 seconds
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.2088792324066162 seconds
 
 Computing equilibrium capital stock
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.2225031852722168 seconds
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.2172858715057373 seconds
 
 Computing equilibrium capital stock
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.24371123313903809 seconds
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.20640134811401367 seconds
 
 Computing equilibrium capital stock
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.24948549270629883 seconds
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.20471978187561035 seconds
 
 Computing equilibrium capital stock
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.23943305015563965 seconds
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.21394705772399902 seconds
 
 Computing equilibrium capital stock
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.24951958656311035 seconds
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.2210378646850586 seconds
 
 Computing equilibrium capital stock
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.26020097732543945 seconds
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.2356264591217041 seconds
 
 Computing equilibrium capital stock
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.26179051399230957 seconds
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.23839330673217773 seconds
 
 Computing equilibrium capital stock
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.27277660369873047 seconds
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.25259900093078613 seconds
 
 Computing equilibrium capital stock
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.2665727138519287 seconds
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.25734877586364746 seconds
 
 Computing equilibrium capital stock
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.2839384078979492 seconds
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.27091431617736816 seconds
 
 Computing equilibrium capital stock
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.3116903305053711 seconds
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.2585256099700928 seconds
 
 Computing equilibrium capital stock
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.3259413242340088 seconds
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.2821989059448242 seconds
 
 Computing equilibrium capital stock
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.308016300201416 seconds
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.27442383766174316 seconds
 
 Computing equilibrium capital stock
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 38.483412981033325 seconds
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.3002126216888428 seconds
 
 Computing equilibrium capital stock
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.3109877109527588 seconds
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.3061854839324951 seconds
 
 Computing equilibrium capital stock
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.3064582347869873 seconds
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.3134498596191406 seconds
 
 Computing equilibrium capital stock
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.297745943069458 seconds
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.3054008483886719 seconds
 
 Computing equilibrium capital stock
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.3194918632507324 seconds
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 34.226059675216675 seconds
 
 Computing equilibrium capital stock
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.32149815559387207 seconds
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.2920494079589844 seconds
 
 Computing equilibrium capital stock
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.34038519859313965 seconds
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.2800300121307373 seconds
 
 Computing equilibrium capital stock
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.3504364490509033 seconds
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.2586369514465332 seconds
 
 Computing equilibrium capital stock
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.3791191577911377 seconds
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.28540849685668945 seconds
 
 Computing equilibrium capital stock
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.4052906036376953 seconds
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.283170223236084 seconds
 
 Computing equilibrium capital stock
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.4225654602050781 seconds
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.30927228927612305 seconds
 
 Computing equilibrium capital stock
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.4194366931915283 seconds
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.33368563652038574 seconds
 
 Computing equilibrium capital stock
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.4325869083404541 seconds
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.35190629959106445 seconds
+
+Computing equilibrium capital stock
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.3563191890716553 seconds
+
+Computing equilibrium capital stock
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.37440919876098633 seconds
+
+Computing equilibrium capital stock
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.37244391441345215 seconds
+
+Computing equilibrium capital stock
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.38067030906677246 seconds
 </pre></div>
 </div>
 </div>
@@ -1260,7 +1262,7 @@ Computing equilibrium capital stock
 </div>
 <div class="exercise admonition" id="aygr_ex2">
 
-<p class="admonition-title"><span class="caption-number">Exercise 14.2 </span></p>
+<p class="admonition-title"><span class="caption-number">Exercise 16.2 </span></p>
 <section id="exercise-content">
 <p>Switch to the CRRA utility function</p>
 <div class="math notranslate nohighlight">
@@ -1276,7 +1278,7 @@ supply of captial.</p>
 </div>
 <div class="solution dropdown admonition" id="aiyagari_jax-solution-3">
 
-<p class="admonition-title">Solution to<a class="reference internal" href="#aygr_ex2"> Exercise 14.2</a></p>
+<p class="admonition-title">Solution to<a class="reference internal" href="#aygr_ex2"> Exercise 16.2</a></p>
 <section id="solution-content">
 <p>Let’s define the utility function</p>
 <div class="cell docutils container">
@@ -1357,9 +1359,9 @@ in the utility function.</p>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computing equilibrium capital stock
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.6988515853881836 seconds
-CPU times: user 947 ms, sys: 80.4 ms, total: 1.03 s
-Wall time: 700 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.6918995380401611 seconds
+CPU times: user 926 ms, sys: 73 ms, total: 999 ms
+Wall time: 694 ms
 </pre></div>
 </div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>8.09375
@@ -1489,38 +1491,48 @@ Wall time: 700 ms
 </p>
 <ul class="current nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
+  <a class="reference internal" href="opt_savings_1.html">
+   9. Optimal Savings I: Value Function Iteration
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="opt_savings_2.html">
+   10. Optimal Savings II: Alternative Algorithms
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="short_path.html">
-   9. Shortest Paths
+   11. Shortest Paths
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="opt_invest.html">
-   10. Optimal Investment
+   12. Optimal Investment
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="opt_savings.html">
-   11. Optimal Savings
+  <a class="reference internal" href="inventory_ssd.html">
+   13. Inventory Management Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_egm.html">
-   12. Endogenous Grid Method
+   14. Endogenous Grid Method
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="arellano.html">
-   13. Default Risk and Income Fluctuations
+   15. Default Risk and Income Fluctuations
   </a>
  </li>
  <li class="toctree-l1 current active active">
   <a class="current reference internal" href="#">
-   14. The Aiyagari Model
+   16. The Aiyagari Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_numerical.html">
-   15. Cake Eating: Numerical Methods
+   17. Cake Eating: Numerical Methods
   </a>
  </li>
 </ul>
@@ -1532,17 +1544,17 @@ Wall time: 700 ms
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   16. Troubleshooting
+   18. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   17. References
+   19. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   18. Execution Statistics
+   20. Execution Statistics
   </a>
  </li>
 </ul>

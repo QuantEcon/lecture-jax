@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>10. Optimal Investment &#8212; Quantitative Economics with Python using JAX</title>
+    <title>12. Optimal Investment &#8212; Quantitative Economics with Python using JAX</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
@@ -121,8 +121,8 @@ const thebe_selector_output = ".output, .cell_output"
     <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="11. Optimal Savings" href="opt_savings.html" />
-    <link rel="prev" title="9. Shortest Paths" href="short_path.html" />
+    <link rel="next" title="13. Inventory Management Model" href="inventory_ssd.html" />
+    <link rel="prev" title="11. Shortest Paths" href="short_path.html" />
 
 <!-- Normal Meta Tags -->
 <meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
@@ -225,7 +225,7 @@ const thebe_selector_output = ".output, .cell_output"
                     <div>
                         
   <section class="tex2jax_ignore mathjax_ignore" id="optimal-investment">
-<h1><span class="section-number">10. </span>Optimal Investment<a class="headerlink" href="#optimal-investment" title="Permalink to this heading">#</a></h1>
+<h1><span class="section-number">12. </span>Optimal Investment<a class="headerlink" href="#optimal-investment" title="Permalink to this heading">#</a></h1>
 <div class="warning admonition">
 <p class="admonition-title">GPU</p>
 <p>This lecture was built using <a class="reference internal" href="status.html#status-machine-details"><span class="std std-ref">hardware</span></a> that has access to a GPU.</p>
@@ -316,7 +316,7 @@ P_t = a_0 - a_1 Y_t + Z_t,
   pid, fd = os.forkpty()
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Thu Mar  7 02:00:02 2024       
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Thu Mar 14 02:15:16 2024       
 +-----------------------------------------------------------------------------+
 | NVIDIA-SMI 470.182.03   Driver Version: 470.182.03   CUDA Version: 12.3     |
 |-------------------------------+----------------------+----------------------+
@@ -327,7 +327,7 @@ P_t = a_0 - a_1 Y_t + Z_t,
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>|   0  Tesla V100-SXM2...  Off  | 00000000:00:1E.0 Off |                    0 |
-| N/A   29C    P0    37W / 300W |      0MiB / 16160MiB |      2%      Default |
+| N/A   26C    P0    36W / 300W |      0MiB / 16160MiB |      2%      Default |
 |                               |                      |                  N/A |
 +-------------------------------+----------------------+----------------------+
                                                                                
@@ -578,16 +578,13 @@ step is to define the function <span class="math notranslate nohighlight">\(L_{\
 <p>We use successive approximation for VFI.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">successive_approx_jax</span><span class="p">(</span><span class="n">x_0</span><span class="p">,</span>                   <span class="c1"># Initial condition</span>
-                          <span class="n">constants</span><span class="p">,</span>
-                          <span class="n">sizes</span><span class="p">,</span>
-                          <span class="n">arrays</span><span class="p">,</span>                 
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">successive_approx_jax</span><span class="p">(</span><span class="n">T</span><span class="p">,</span>                     <span class="c1"># Operator (callable)</span>
+                          <span class="n">x_0</span><span class="p">,</span>                   <span class="c1"># Initial condition                </span>
                           <span class="n">tolerance</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">,</span>        <span class="c1"># Error tolerance</span>
                           <span class="n">max_iter</span><span class="o">=</span><span class="mi">10_000</span><span class="p">):</span>      <span class="c1"># Max iteration bound</span>
-
     <span class="k">def</span> <span class="nf">body_fun</span><span class="p">(</span><span class="n">k_x_err</span><span class="p">):</span>
         <span class="n">k</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">error</span> <span class="o">=</span> <span class="n">k_x_err</span>
-        <span class="n">x_new</span> <span class="o">=</span> <span class="n">T</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">constants</span><span class="p">,</span> <span class="n">sizes</span><span class="p">,</span> <span class="n">arrays</span><span class="p">)</span>
+        <span class="n">x_new</span> <span class="o">=</span> <span class="n">T</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
         <span class="n">error</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">x_new</span> <span class="o">-</span> <span class="n">x</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">x_new</span><span class="p">,</span> <span class="n">error</span>
 
@@ -598,7 +595,7 @@ step is to define the function <span class="math notranslate nohighlight">\(L_{\
     <span class="n">k</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">error</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">lax</span><span class="o">.</span><span class="n">while_loop</span><span class="p">(</span><span class="n">cond_fun</span><span class="p">,</span> <span class="n">body_fun</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">x_0</span><span class="p">,</span> <span class="n">tolerance</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
     <span class="k">return</span> <span class="n">x</span>
 
-<span class="n">successive_approx_jax</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">jit</span><span class="p">(</span><span class="n">successive_approx_jax</span><span class="p">,</span> <span class="n">static_argnums</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,))</span>
+<span class="n">successive_approx_jax</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">jit</span><span class="p">(</span><span class="n">successive_approx_jax</span><span class="p">,</span> <span class="n">static_argnums</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,))</span>
 </pre></div>
 </div>
 </div>
@@ -611,8 +608,8 @@ step is to define the function <span class="math notranslate nohighlight">\(L_{\
 <span class="k">def</span> <span class="nf">value_iteration</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">):</span>
     <span class="n">constants</span><span class="p">,</span> <span class="n">sizes</span><span class="p">,</span> <span class="n">arrays</span> <span class="o">=</span> <span class="n">model</span>
     <span class="n">vz</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">sizes</span><span class="p">)</span>
-
-    <span class="n">v_star</span> <span class="o">=</span> <span class="n">successive_approx_jax</span><span class="p">(</span><span class="n">vz</span><span class="p">,</span> <span class="n">constants</span><span class="p">,</span> <span class="n">sizes</span><span class="p">,</span> <span class="n">arrays</span><span class="p">,</span> <span class="n">tolerance</span><span class="o">=</span><span class="n">tol</span><span class="p">)</span>
+    <span class="n">_T</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">T</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">constants</span><span class="p">,</span> <span class="n">sizes</span><span class="p">,</span> <span class="n">arrays</span><span class="p">)</span>
+    <span class="n">v_star</span> <span class="o">=</span> <span class="n">successive_approx_jax</span><span class="p">(</span><span class="n">_T</span><span class="p">,</span> <span class="n">vz</span><span class="p">,</span> <span class="n">tolerance</span><span class="o">=</span><span class="n">tol</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">get_greedy</span><span class="p">(</span><span class="n">v_star</span><span class="p">,</span> <span class="n">constants</span><span class="p">,</span> <span class="n">sizes</span><span class="p">,</span> <span class="n">arrays</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -690,7 +687,7 @@ Concluded loop 9 with error 1.
 Concluded loop 10 with error 1.
 Concluded loop 11 with error 1.
 Concluded loop 12 with error 0.
-TOC: Elapsed: 0:00:0.99
+TOC: Elapsed: 0:00:0.97
 [[ 2  2  2 ...  6  6  6]
  [ 3  3  3 ...  7  7  7]
  [ 4  4  4 ...  7  7  7]
@@ -698,7 +695,7 @@ TOC: Elapsed: 0:00:0.99
  [82 82 82 ... 86 86 86]
  [83 83 83 ... 86 86 86]
  [84 84 84 ... 87 87 87]]
-HPI completed in 0.9979579448699951 seconds.
+HPI completed in 0.9747223854064941 seconds.
 </pre></div>
 </div>
 </div>
@@ -724,7 +721,7 @@ HPI completed in 0.9979579448699951 seconds.
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Starting VFI.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:0.58
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:0.28
 [[ 2  2  2 ...  6  6  6]
  [ 3  3  3 ...  7  7  7]
  [ 4  4  4 ...  7  7  7]
@@ -732,7 +729,7 @@ HPI completed in 0.9979579448699951 seconds.
  [82 82 82 ... 86 86 86]
  [83 83 83 ... 86 86 86]
  [84 84 84 ... 87 87 87]]
-VFI completed in 0.5883402824401855 seconds.
+VFI completed in 0.288358211517334 seconds.
 </pre></div>
 </div>
 </div>
@@ -758,7 +755,7 @@ VFI completed in 0.5883402824401855 seconds.
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Starting OPI.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:1.54
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:1.26
 [[ 2  2  2 ...  6  6  6]
  [ 3  3  3 ...  7  7  7]
  [ 4  4  4 ...  7  7  7]
@@ -766,7 +763,7 @@ VFI completed in 0.5883402824401855 seconds.
  [82 82 82 ... 86 86 86]
  [83 83 83 ... 86 86 86]
  [84 84 84 ... 87 87 87]]
-OPI completed in 1.5429823398590088 seconds.
+OPI completed in 1.2651097774505615 seconds.
 </pre></div>
 </div>
 </div>
@@ -864,10 +861,12 @@ TOC: Elapsed: 0:00:0.06
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>PI completed in 0.06407737731933594 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>PI completed in 0.06425070762634277 seconds.
 Running value function iteration.
-TOC: Elapsed: 0:00:0.07
-VFI completed in 0.07216668128967285 seconds.
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:0.18
+VFI completed in 0.18608903884887695 seconds.
 </pre></div>
 </div>
 </div>
@@ -894,78 +893,78 @@ VFI completed in 0.07216668128967285 seconds.
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Running optimistic policy iteration with m=5.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:1.12
-OPI with m=5 completed in 1.1297650337219238 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:1.09
+OPI with m=5 completed in 1.0995681285858154 seconds.
 Running optimistic policy iteration with m=45.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:0.95
-OPI with m=45 completed in 0.9561493396759033 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:0.93
+OPI with m=45 completed in 0.932544469833374 seconds.
 Running optimistic policy iteration with m=85.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:0.99
-OPI with m=85 completed in 0.9999616146087646 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:0.98
+OPI with m=85 completed in 0.9840917587280273 seconds.
 Running optimistic policy iteration with m=125.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:1.03
-OPI with m=125 completed in 1.036729097366333 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:1.00
+OPI with m=125 completed in 1.007293701171875 seconds.
 Running optimistic policy iteration with m=165.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:1.14
-OPI with m=165 completed in 1.1485474109649658 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:1.10
+OPI with m=165 completed in 1.1015675067901611 seconds.
 Running optimistic policy iteration with m=205.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:1.29
-OPI with m=205 completed in 1.2931492328643799 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:1.26
+OPI with m=205 completed in 1.2673366069793701 seconds.
 Running optimistic policy iteration with m=245.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:1.39
-OPI with m=245 completed in 1.3931818008422852 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:1.41
+OPI with m=245 completed in 1.4119179248809814 seconds.
 Running optimistic policy iteration with m=285.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:1.51
-OPI with m=285 completed in 1.5128016471862793 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:1.47
+OPI with m=285 completed in 1.4790170192718506 seconds.
 Running optimistic policy iteration with m=325.
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:1.70
-OPI with m=325 completed in 1.7029333114624023 seconds.
+OPI with m=325 completed in 1.709052324295044 seconds.
 Running optimistic policy iteration with m=365.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:1.94
-OPI with m=365 completed in 1.9467973709106445 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:1.89
+OPI with m=365 completed in 1.8917505741119385 seconds.
 Running optimistic policy iteration with m=405.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:2.15
-OPI with m=405 completed in 2.15097975730896 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:2.07
+OPI with m=405 completed in 2.077754497528076 seconds.
 Running optimistic policy iteration with m=445.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:2.36
-OPI with m=445 completed in 2.3671889305114746 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:2.30
+OPI with m=445 completed in 2.302006244659424 seconds.
 Running optimistic policy iteration with m=485.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:2.54
-OPI with m=485 completed in 2.5419766902923584 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:2.51
+OPI with m=485 completed in 2.51322865486145 seconds.
 Running optimistic policy iteration with m=525.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:2.76
-OPI with m=525 completed in 2.7646234035491943 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:2.73
+OPI with m=525 completed in 2.73667573928833 seconds.
 Running optimistic policy iteration with m=565.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:2.97
-OPI with m=565 completed in 2.9790232181549072 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:2.87
+OPI with m=565 completed in 2.8727223873138428 seconds.
 </pre></div>
 </div>
 </div>
@@ -987,7 +986,7 @@ OPI with m=565 completed in 2.9790232181549072 seconds.
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/b6a1fa9480bc7af23666770e5cd1c6532a924fe1cbc96457783e41c3949a2919.png"><img alt="_images/b6a1fa9480bc7af23666770e5cd1c6532a924fe1cbc96457783e41c3949a2919.png" src="_images/b6a1fa9480bc7af23666770e5cd1c6532a924fe1cbc96457783e41c3949a2919.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/9f1f5362cc0b87eedeceb95dbc2d0d52ff02021dc610c6988e85a05baca08fc8.png"><img alt="_images/9f1f5362cc0b87eedeceb95dbc2d0d52ff02021dc610c6988e85a05baca08fc8.png" src="_images/9f1f5362cc0b87eedeceb95dbc2d0d52ff02021dc610c6988e85a05baca08fc8.png" style="width: 80%;" /></a>
 </div>
 </div>
 </section>
@@ -1109,38 +1108,48 @@ OPI with m=565 completed in 2.9790232181549072 seconds.
 </p>
 <ul class="current nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
+  <a class="reference internal" href="opt_savings_1.html">
+   9. Optimal Savings I: Value Function Iteration
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="opt_savings_2.html">
+   10. Optimal Savings II: Alternative Algorithms
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="short_path.html">
-   9. Shortest Paths
+   11. Shortest Paths
   </a>
  </li>
  <li class="toctree-l1 current active active">
   <a class="current reference internal" href="#">
-   10. Optimal Investment
+   12. Optimal Investment
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="opt_savings.html">
-   11. Optimal Savings
+  <a class="reference internal" href="inventory_ssd.html">
+   13. Inventory Management Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_egm.html">
-   12. Endogenous Grid Method
+   14. Endogenous Grid Method
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="arellano.html">
-   13. Default Risk and Income Fluctuations
+   15. Default Risk and Income Fluctuations
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="aiyagari_jax.html">
-   14. The Aiyagari Model
+   16. The Aiyagari Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_numerical.html">
-   15. Cake Eating: Numerical Methods
+   17. Cake Eating: Numerical Methods
   </a>
  </li>
 </ul>
@@ -1152,17 +1161,17 @@ OPI with m=565 completed in 2.9790232181549072 seconds.
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   16. Troubleshooting
+   18. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   17. References
+   19. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   18. Execution Statistics
+   20. Execution Statistics
   </a>
  </li>
 </ul>

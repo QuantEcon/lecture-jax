@@ -11,10 +11,45 @@ kernelspec:
   name: python3
 ---
 
-# Optimal Savings
+
+# Optimal Savings II: Alternative Algorithms
 
 ```{include} _admonition/gpu.md
 ```
+
+In {doc}`opt_savings_1` we solved a simple version of the household optimal
+savings problem via value function iteration (VFI) using JAX.
+
+In this lecture we tackle exactly the same problem while adding in two
+alternative algorithms:
+
+* optimistic policy iteration (OPI) and
+* Howard policy iteration (HPI).
+
+We will see that both of these algorithms outperform traditional VFI.
+
+One reason for this is that the algorithms have good convergence properties.
+
+Another is that one of them, HPI, is particularly well suited to pairing with
+JAX.
+
+The reason is that HPI uses a relatively small number of computationally expensive steps,
+whereas VFI uses a longer sequence of small steps.
+
+In other words, VFI is inherently more sequential than HPI, and sequential
+routines are hard to parallelize.
+
+By comparison, HPI is less sequential -- the small number of computationally
+intensive steps can be effectively parallelized by JAX.
+
+This is particularly valuable when the underlying hardware includes a GPU.
+
+Details on VFI, HPI and OPI can be found in [this book](https://dp.quantecon.org), for which a PDF is freely available.
+
+Here we assume readers have some knowledge of the algorithms and focus on
+computation.
+
+For the details of the savings model, readers can refer to {doc}`opt_savings_1`.
 
 In addition to what’s in Anaconda, this lecture will need the following libraries:
 
@@ -35,40 +70,23 @@ import matplotlib.pyplot as plt
 import time
 ```
 
-Let's check the GPU we are running
+Let's check the GPU we are running.
 
 ```{code-cell} ipython3
 !nvidia-smi
 ```
 
-Use 64 bit floats with JAX in order to match NumPy code
-- By default, JAX uses 32-bit datatypes.
-- By default, NumPy uses 64-bit datatypes.
+We'll use 64 bit floats to gain extra precision.
 
 ```{code-cell} ipython3
 jax.config.update("jax_enable_x64", True)
 ```
 
-## Overview
-
-We consider an optimal savings problem with CRRA utility and budget constraint
-
-$$ W_{t+1} + C_t \leq R W_t + Y_t $$
-
-We assume that labor income $(Y_t)$ is a discretized AR(1) process.
-
-The right-hand side of the Bellman equation is
-
-$$   B((w, y), w', v) = u(Rw + y - w') + β \sum_{y'} v(w', y') Q(y, y'). $$
-
-where
-
-$$   u(c) = \frac{c^{1-\gamma}}{1-\gamma} $$
-
-
 ## Model primitives
 
-First we define a model that stores parameters and grids
+First we define a model that stores parameters and grids.
+
+The {ref}`following code <prgm:create-consumption-model>` is repeated from {doc}`opt_savings_1`.
 
 ```{code-cell} ipython3
 def create_consumption_model(R=1.01,                    # Gross interest rate
@@ -84,9 +102,7 @@ def create_consumption_model(R=1.01,                    # Gross interest rate
     """
     w_grid = jnp.linspace(w_min, w_max, w_size)
     mc = qe.tauchen(n=y_size, rho=ρ, sigma=ν)
-    y_grid, Q = jnp.exp(mc.state_values), mc.P
-    β, R, γ = jax.device_put([β, R, γ])
-    w_grid, y_grid, Q = tuple(map(jax.device_put, [w_grid, y_grid, Q]))
+    y_grid, Q = jnp.exp(mc.state_values), jax.device_put(mc.P)
     sizes = w_size, y_size
     return (β, R, γ), sizes, (w_grid, y_grid, Q)
 ```
@@ -94,6 +110,8 @@ def create_consumption_model(R=1.01,                    # Gross interest rate
 Here's the right hand side of the Bellman equation:
 
 ```{code-cell} ipython3
+:tags: [hide-input]
+
 def B(v, constants, sizes, arrays):
     """
     A vectorized version of the right-hand side of the Bellman equation
@@ -126,12 +144,12 @@ def B(v, constants, sizes, arrays):
 
 ## Operators
 
-
 We define a function to compute the current rewards $r_\sigma$ given policy $\sigma$,
 which is defined as the vector
 
-
-$$ r_\sigma(w, y) := r(w, y, \sigma(w, y)) $$
+$$
+r_\sigma(w, y) := r(w, y, \sigma(w, y)) 
+$$
 
 ```{code-cell} ipython3
 def compute_r_σ(σ, constants, sizes, arrays):
@@ -203,24 +221,30 @@ The function below computes the value $v_\sigma$ of following policy $\sigma$.
 
 This lifetime value is a function $v_\sigma$ that satisfies
 
-$$ v_\sigma(w, y) = r_\sigma(w, y) + \beta \sum_{y'} v_\sigma(\sigma(w, y), y') Q(y, y') $$
+$$
+v_\sigma(w, y) = r_\sigma(w, y) + \beta \sum_{y'} v_\sigma(\sigma(w, y), y') Q(y, y')
+$$
 
 We wish to solve this equation for $v_\sigma$.
 
 Suppose we define the linear operator $L_\sigma$ by
 
-$$ (L_\sigma v)(w, y) = v(w, y) - \beta \sum_{y'} v(\sigma(w, y), y') Q(y, y') $$
+$$ 
+(L_\sigma v)(w, y) = v(w, y) - \beta \sum_{y'} v(\sigma(w, y), y') Q(y, y')
+$$
 
 With this notation, the problem is to solve for $v$ via
 
 $$
-    (L_{\sigma} v)(w, y) = r_\sigma(w, y)
+(L_{\sigma} v)(w, y) = r_\sigma(w, y)
 $$
 
 In vector for this is $L_\sigma v = r_\sigma$, which tells us that the function
 we seek is
 
-$$ v_\sigma = L_\sigma^{-1} r_\sigma $$
+$$ 
+v_\sigma = L_\sigma^{-1} r_\sigma 
+$$
 
 JAX allows us to solve linear systems defined in terms of operators; the first
 step is to define the function $L_{\sigma}$.
@@ -309,7 +333,6 @@ Now we define the solvers, which implement VFI, HPI and OPI.
 Create a model for consumption, perform policy iteration, and plot the resulting optimal policy function.
 
 ```{code-cell} ipython3
-fontsize = 12
 model = create_consumption_model()
 # Unpack
 constants, sizes, arrays = model
@@ -319,13 +342,19 @@ w_grid, y_grid, Q = arrays
 ```
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Optimal policy function
+    name: optimal-policy-function
+---
 σ_star = policy_iteration(model)
 
-fig, ax = plt.subplots(figsize=(9, 5.2))
+fig, ax = plt.subplots()
 ax.plot(w_grid, w_grid, "k--", label="45")
 ax.plot(w_grid, w_grid[σ_star[:, 1]], label="$\\sigma^*(\cdot, y_1)$")
 ax.plot(w_grid, w_grid[σ_star[:, -1]], label="$\\sigma^*(\cdot, y_N)$")
-ax.legend(fontsize=fontsize)
+ax.legend()
 plt.show()
 ```
 
@@ -384,12 +413,18 @@ for m in m_vals:
 ```
 
 ```{code-cell} ipython3
-fig, ax = plt.subplots(figsize=(9, 5.2))
+---
+mystnb:
+  figure:
+    caption: Solver times
+    name: howard+value+optimistic-solver-times
+---
+fig, ax = plt.subplots()
 ax.plot(m_vals, jnp.full(len(m_vals), pi_time), lw=2, label="Howard policy iteration")
 ax.plot(m_vals, jnp.full(len(m_vals), vfi_time), lw=2, label="value function iteration")
 ax.plot(m_vals, opi_times, lw=2, label="optimistic policy iteration")
-ax.legend(fontsize=fontsize, frameon=False)
-ax.set_xlabel("$m$", fontsize=fontsize)
-ax.set_ylabel("time", fontsize=fontsize)
+ax.legend(frameon=False)
+ax.set_xlabel("$m$")
+ax.set_ylabel("time")
 plt.show()
 ```

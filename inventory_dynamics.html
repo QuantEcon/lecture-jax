@@ -172,12 +172,15 @@ const thebe_selector_output = ".output, .cell_output"
                             <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">5.1. Overview</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sample-paths">5.2. Sample paths</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-1-marginal-distributions">5.3. Example 1: marginal distributions</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#alternative-implementation-with-lax-scan">5.3.1. Alternative implementation with <code class="docutils literal notranslate"><span class="pre">lax.scan</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cross-sectional-distributions">5.3. Cross-sectional distributions</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#for-loop-version">5.3.1. For loop version</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#compiling-the-outer-loop">5.3.2. Compiling the outer loop</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#further-vectorization">5.3.3. Further vectorization</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-2-restock-frequency">5.4. Example 2: restock frequency</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#alternative-implementation-with-lax-fori-loop">5.4.1. Alternative implementation with <code class="docutils literal notranslate"><span class="pre">lax.fori_loop</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#distribution-dynamics">5.4. Distribution dynamics</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#restock-frequency">5.5. Restock frequency</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">5.5.1. For loop version</a></li>
 </ul>
 </li>
 </ul>
@@ -252,7 +255,22 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
 <section id="overview">
 <span id="index-0"></span><h2><span class="section-number">5.1. </span>Overview<a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
-<p>This lecture explores JAX implementations of the exercises in the lecture on <a class="reference external" href="https://python.quantecon.org/inventory_dynamics.html">inventory dynamics</a>.</p>
+<p>This lecture explores the inventory dynamics of a firm using so-called s-S inventory control.</p>
+<p>Loosely speaking, this means that the firm</p>
+<ul class="simple">
+<li><p>waits until inventory falls below some value <span class="math notranslate nohighlight">\(s\)</span></p></li>
+<li><p>and then restocks with a bulk order of <span class="math notranslate nohighlight">\(S\)</span> units (or, in some models, restocks up to level <span class="math notranslate nohighlight">\(S\)</span>).</p></li>
+</ul>
+<p>We will be interested in the distribution of the associated Markov process,
+which can be thought of as cross-sectional distributions of inventory levels
+across a large number of firms, all of which</p>
+<ol class="arabic simple">
+<li><p>evolve independently and</p></li>
+<li><p>have the same dynamics.</p></li>
+</ol>
+<p>Note that we also studied this model in a <a class="reference external" href="https://python.quantecon.org/inventory_dynamics.html">separate
+lecture</a>, using Numba.</p>
+<p>Here we study the same problem using JAX.</p>
 <p>We will use the following imports:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -266,7 +284,7 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
 </div>
 </div>
-<p>Let’s check the GPU we are running</p>
+<p>Here’s a description of our GPU:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>nvidia-smi
@@ -278,7 +296,7 @@ const thebe_selector_output = ".output, .cell_output"
   pid, fd = os.forkpty()
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Thu Mar  7 01:48:33 2024       
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Thu Mar 14 01:44:57 2024       
 +-----------------------------------------------------------------------------+
 | NVIDIA-SMI 470.182.03   Driver Version: 470.182.03   CUDA Version: 12.3     |
 |-------------------------------+----------------------+----------------------+
@@ -289,7 +307,7 @@ const thebe_selector_output = ".output, .cell_output"
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>|   0  Tesla V100-SXM2...  Off  | 00000000:00:1E.0 Off |                    0 |
-| N/A   30C    P0    37W / 300W |      0MiB / 16160MiB |      2%      Default |
+| N/A   27C    P0    36W / 300W |      0MiB / 16160MiB |      2%      Default |
 |                               |                      |                  N/A |
 +-------------------------------+----------------------+----------------------+
                                                                                
@@ -309,7 +327,8 @@ const thebe_selector_output = ".output, .cell_output"
 <h2><span class="section-number">5.2. </span>Sample paths<a class="headerlink" href="#sample-paths" title="Permalink to this heading">#</a></h2>
 <p>Consider a firm with inventory <span class="math notranslate nohighlight">\(X_t\)</span>.</p>
 <p>The firm waits until <span class="math notranslate nohighlight">\(X_t \leq s\)</span> and then restocks up to <span class="math notranslate nohighlight">\(S\)</span> units.</p>
-<p>It faces stochastic demand <span class="math notranslate nohighlight">\(\{ D_t \}\)</span>, which we assume is IID.</p>
+<p>It faces stochastic demand <span class="math notranslate nohighlight">\(\{ D_t \}\)</span>, which we assume is IID across time and
+firms.</p>
 <p>With notation <span class="math notranslate nohighlight">\(a^+ := \max\{a, 0\}\)</span>, inventory dynamics can be written
 as</p>
 <div class="math notranslate nohighlight">
@@ -320,7 +339,6 @@ X_{t+1} =
       ( X_t - D_{t+1} )^+ &amp;  \quad \text{if } X_t &gt; s
     \end{cases}
 \end{split}\]</div>
-<p>(See our earlier <a class="reference external" href="https://python.quantecon.org/inventory_dynamics.html">lecture on inventory dynamics</a> for background and motivation.)</p>
 <p>In what follows, we will assume that each <span class="math notranslate nohighlight">\(D_t\)</span> is lognormal, so that</p>
 <div class="math notranslate nohighlight">
 \[
@@ -331,86 +349,293 @@ and standard normal.</p>
 <p>Here’s a <code class="docutils literal notranslate"><span class="pre">namedtuple</span></code> that stores parameters.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Firm</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s1">&#39;Firm&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;s&#39;</span><span class="p">,</span> <span class="s1">&#39;S&#39;</span><span class="p">,</span> <span class="s1">&#39;mu&#39;</span><span class="p">,</span> <span class="s1">&#39;sigma&#39;</span><span class="p">])</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Parameters</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s1">&#39;Parameters&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;s&#39;</span><span class="p">,</span> <span class="s1">&#39;S&#39;</span><span class="p">,</span> <span class="s1">&#39;μ&#39;</span><span class="p">,</span> <span class="s1">&#39;σ&#39;</span><span class="p">])</span>
 
-<span class="n">firm</span> <span class="o">=</span> <span class="n">Firm</span><span class="p">(</span><span class="n">s</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">S</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">mu</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="c1"># Create a default instance</span>
+<span class="n">params</span> <span class="o">=</span> <span class="n">Parameters</span><span class="p">(</span><span class="n">s</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">S</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">μ</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">σ</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
 </section>
-<section id="example-1-marginal-distributions">
-<h2><span class="section-number">5.3. </span>Example 1: marginal distributions<a class="headerlink" href="#example-1-marginal-distributions" title="Permalink to this heading">#</a></h2>
-<p>Now let’s look at the marginal distribution <span class="math notranslate nohighlight">\(\psi_T\)</span> of <span class="math notranslate nohighlight">\(X_T\)</span> for some fixed
-<span class="math notranslate nohighlight">\(T\)</span>.</p>
-<p>We can approximate the distribution using a <a class="reference external" href="https://en.wikipedia.org/wiki/Kernel_density_estimation">kernel density estimator</a>.</p>
-<p>Kernel density estimators can be thought of as smoothed histograms.</p>
-<p>We will use a kernel density estimator from <a class="reference external" href="https://scikit-learn.org/stable/">scikit-learn</a>.</p>
-<p>Here is an example of using kernel density estimators and plotting the result</p>
+<section id="cross-sectional-distributions">
+<h2><span class="section-number">5.3. </span>Cross-sectional distributions<a class="headerlink" href="#cross-sectional-distributions" title="Permalink to this heading">#</a></h2>
+<p>Now let’s look at the marginal distribution <span class="math notranslate nohighlight">\(\psi_T\)</span> of <span class="math notranslate nohighlight">\(X_T\)</span> for some fixed <span class="math notranslate nohighlight">\(T\)</span>.</p>
+<p>The probability distribution <span class="math notranslate nohighlight">\(\psi_T\)</span> is the time <span class="math notranslate nohighlight">\(T\)</span> distribution of firm
+inventory levels implied by the model.</p>
+<p>We will approximate this distribution by</p>
+<ol class="arabic simple">
+<li><p>fixing <span class="math notranslate nohighlight">\(n\)</span> to be some large number, indicating the number of firms in the
+simulation,</p></li>
+<li><p>fixing <span class="math notranslate nohighlight">\(T\)</span>, the time period we are interested in,</p></li>
+<li><p>generating <span class="math notranslate nohighlight">\(n\)</span> independent draws from some fixed distribution <span class="math notranslate nohighlight">\(\psi_0\)</span> that gives the
+initial cross-section of inventories for the <span class="math notranslate nohighlight">\(n\)</span> firms, and</p></li>
+<li><p>shifting this distribution forward in time <span class="math notranslate nohighlight">\(T\)</span> periods, updating each firm
+<span class="math notranslate nohighlight">\(T\)</span> times via the dynamics described above (independent of other firms).</p></li>
+</ol>
+<p>We will then visualize <span class="math notranslate nohighlight">\(\psi_T\)</span> by histogramming the cross-section.</p>
+<p>We will use the following code to update the cross-section of firms by one period.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.neighbors</span> <span class="kn">import</span> <span class="n">KernelDensity</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jax</span><span class="o">.</span><span class="n">jit</span>
+<span class="k">def</span> <span class="nf">update_cross_section</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">X_vec</span><span class="p">,</span> <span class="n">D</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Update by one period a cross-section of firms with inventory levels given by</span>
+<span class="sd">    X_vec, given the vector of demand shocks in D.</span>
 
-<span class="k">def</span> <span class="nf">plot_kde</span><span class="p">(</span><span class="n">sample</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
-    <span class="n">xmin</span><span class="p">,</span> <span class="n">xmax</span> <span class="o">=</span> <span class="mf">0.9</span> <span class="o">*</span> <span class="nb">min</span><span class="p">(</span><span class="n">sample</span><span class="p">),</span> <span class="mf">1.1</span> <span class="o">*</span> <span class="nb">max</span><span class="p">(</span><span class="n">sample</span><span class="p">)</span>
-    <span class="n">xgrid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">xmin</span><span class="p">,</span> <span class="n">xmax</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
-    <span class="n">kde</span> <span class="o">=</span> <span class="n">KernelDensity</span><span class="p">(</span><span class="n">kernel</span><span class="o">=</span><span class="s1">&#39;gaussian&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">sample</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">])</span>
-    <span class="n">log_dens</span> <span class="o">=</span> <span class="n">kde</span><span class="o">.</span><span class="n">score_samples</span><span class="p">(</span><span class="n">xgrid</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">])</span>
+<span class="sd">       * D[i] is the demand shock for firm i with current inventory X_vec[i]</span>
 
-    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xgrid</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">log_dens</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Unpack</span>
+    <span class="n">s</span><span class="p">,</span> <span class="n">S</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="n">s</span><span class="p">,</span> <span class="n">params</span><span class="o">.</span><span class="n">S</span>
+    <span class="c1"># Restock if the inventory is below the threshold</span>
+    <span class="n">X_new</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">X_vec</span> <span class="o">&lt;=</span> <span class="n">s</span><span class="p">,</span> 
+                      <span class="n">jnp</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">S</span> <span class="o">-</span> <span class="n">D</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">jnp</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">X_vec</span> <span class="o">-</span> <span class="n">D</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">X_new</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="for-loop-version">
+<h3><span class="section-number">5.3.1. </span>For loop version<a class="headerlink" href="#for-loop-version" title="Permalink to this heading">#</a></h3>
+<p>Now we provide code to compute the cross-sectional distribution <span class="math notranslate nohighlight">\(\psi_T\)</span> given some
+initial distribution <span class="math notranslate nohighlight">\(\psi_0\)</span> and a positive integer <span class="math notranslate nohighlight">\(T\)</span>.</p>
+<p>In this code we use an ordinary Python <code class="docutils literal notranslate"><span class="pre">for</span></code> loop to step forward through time</p>
+<p>While Python loops are slow, this approach is reasonable here because
+efficiency of outer loops has far less influence on runtime than efficiency of inner loops.</p>
+<p>(Below we will squeeze out more speed by compiling the outer loop as well as the
+update rule.)</p>
+<p>In the code below, the initial distribution <span class="math notranslate nohighlight">\(\psi_0\)</span> takes all firms to have
+initial inventory <code class="docutils literal notranslate"><span class="pre">x_init</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">compute_cross_section</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">x_init</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">num_firms</span><span class="o">=</span><span class="mi">50_000</span><span class="p">):</span>
+    <span class="c1"># Set up initial distribution</span>
+    <span class="n">X_vec</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">full</span><span class="p">((</span><span class="n">num_firms</span><span class="p">,</span> <span class="p">),</span> <span class="n">x_init</span><span class="p">)</span>
+    <span class="c1"># Loop</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">T</span><span class="p">):</span>
+        <span class="n">Z</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">num_firms</span><span class="p">,</span> <span class="p">))</span>
+        <span class="n">D</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">μ</span> <span class="o">+</span> <span class="n">params</span><span class="o">.</span><span class="n">σ</span> <span class="o">*</span> <span class="n">Z</span><span class="p">)</span>
 
-<span class="c1"># Generate simulated data</span>
-<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
-<span class="n">sample_1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">10_000</span><span class="p">)</span>
-<span class="n">sample_2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">gamma</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">10_000</span><span class="p">)</span>
+        <span class="n">X_vec</span> <span class="o">=</span> <span class="n">update_cross_section</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">X_vec</span><span class="p">,</span> <span class="n">D</span><span class="p">)</span>
+        <span class="n">_</span><span class="p">,</span> <span class="n">key</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
 
-<span class="c1"># Create a plot</span>
-<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
-
-<span class="c1"># Plot the samples</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">sample_1</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">density</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">sample_2</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">density</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
-
-<span class="c1"># Plot the KDE for each sample</span>
-<span class="n">plot_kde</span><span class="p">(</span><span class="n">sample_1</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;KDE over $X \sim N(0, 2)$&#39;</span><span class="p">)</span>
-<span class="n">plot_kde</span><span class="p">(</span><span class="n">sample_2</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;KDE over $X \sim Gamma(0, 2)$&#39;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;value&#39;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;density&#39;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">([</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">])</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;KDE of Simulated Normal and Gamma Data&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">X_vec</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We’ll use the following specification</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x_init</span> <span class="o">=</span> <span class="mi">50</span>
+<span class="n">T</span> <span class="o">=</span> <span class="mi">500</span>
+<span class="c1"># Initialize random number generator</span>
+<span class="n">key</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">PRNGKey</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s look at the timing.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">time</span> X_vec = compute_cross_section(params, \
+        <span class="n">x_init</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span><span class="o">.</span><span class="n">block_until_ready</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1.31 s, sys: 447 ms, total: 1.75 s
+Wall time: 976 ms
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">time</span> X_vec = compute_cross_section(params, \
+        <span class="n">x_init</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span><span class="o">.</span><span class="n">block_until_ready</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1.06 s, sys: 345 ms, total: 1.4 s
+Wall time: 562 ms
+</pre></div>
+</div>
+</div>
+</div>
+<p>Here’s a histogram of inventory levels at time <span class="math notranslate nohighlight">\(T\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">X_vec</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> 
+        <span class="n">density</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> 
+        <span class="n">histtype</span><span class="o">=</span><span class="s1">&#39;step&#39;</span><span class="p">,</span> 
+        <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;cross-section when $t = </span><span class="si">{</span><span class="n">T</span><span class="si">}</span><span class="s1">$&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;inventory&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;probability&#39;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/32f043ed67cd3182983b1b12c30ce40cf4ff0b74f4845eb444d7494283d7ba08.png"><img alt="_images/32f043ed67cd3182983b1b12c30ce40cf4ff0b74f4845eb444d7494283d7ba08.png" src="_images/32f043ed67cd3182983b1b12c30ce40cf4ff0b74f4845eb444d7494283d7ba08.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/ac0fe867ee7589c0e0e628174a1981b2912315372378d24095c1d3701f7b15f2.png"><img alt="_images/ac0fe867ee7589c0e0e628174a1981b2912315372378d24095c1d3701f7b15f2.png" src="_images/ac0fe867ee7589c0e0e628174a1981b2912315372378d24095c1d3701f7b15f2.png" style="width: 80%;" /></a>
 </div>
 </div>
-<p>This model for inventory dynamics is asymptotically stationary, with a unique
-stationary distribution.</p>
-<p>In particular, the sequence of marginal distributions <span class="math notranslate nohighlight">\(\{\psi_t\}\)</span>
-converges to a unique limiting distribution that does not depend on
-initial conditions.</p>
-<p>Although we will not prove this here, we can investigate it using simulation.</p>
-<p>We can generate and plot the sequence <span class="math notranslate nohighlight">\(\{\psi_t\}\)</span> at times
-<span class="math notranslate nohighlight">\(t = 10, 50, 250, 500, 750\)</span> based on the kernel density estimator.</p>
-<p>We will see convergence, in the sense that differences between successive
-distributions are getting smaller.</p>
-<p>Here is one realization of the process in JAX using <code class="docutils literal notranslate"><span class="pre">for</span></code> loop</p>
+</section>
+<section id="compiling-the-outer-loop">
+<h3><span class="section-number">5.3.2. </span>Compiling the outer loop<a class="headerlink" href="#compiling-the-outer-loop" title="Permalink to this heading">#</a></h3>
+<p>Now let’s see if we can gain some speed by compiling the outer loop, which steps
+through the time dimension.</p>
+<p>We will do this using <code class="docutils literal notranslate"><span class="pre">jax.jit</span></code> and a <code class="docutils literal notranslate"><span class="pre">fori_loop</span></code>, which is a compiler-ready version of a <code class="docutils literal notranslate"><span class="pre">for</span></code> loop provided by JAX.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define a jit-compiled function to update X and key</span>
-<span class="nd">@jax</span><span class="o">.</span><span class="n">jit</span>
-<span class="k">def</span> <span class="nf">update_X</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">firm</span><span class="p">,</span> <span class="n">D</span><span class="p">):</span>
-    <span class="c1"># Restock if the inventory is below the threshold</span>
-    <span class="n">res</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">X</span> <span class="o">&lt;=</span> <span class="n">firm</span><span class="o">.</span><span class="n">s</span><span class="p">,</span>
-            <span class="n">jnp</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">firm</span><span class="o">.</span><span class="n">S</span> <span class="o">-</span> <span class="n">D</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
-            <span class="n">jnp</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">X</span> <span class="o">-</span> <span class="n">D</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
-    <span class="k">return</span> <span class="n">res</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">compute_cross_section_fori</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">x_init</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">num_firms</span><span class="o">=</span><span class="mi">50_000</span><span class="p">):</span>
 
+    <span class="n">s</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="n">μ</span><span class="p">,</span> <span class="n">σ</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="n">s</span><span class="p">,</span> <span class="n">params</span><span class="o">.</span><span class="n">S</span><span class="p">,</span> <span class="n">params</span><span class="o">.</span><span class="n">μ</span><span class="p">,</span> <span class="n">params</span><span class="o">.</span><span class="n">σ</span>
+    <span class="n">X</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">full</span><span class="p">((</span><span class="n">num_firms</span><span class="p">,</span> <span class="p">),</span> <span class="n">x_init</span><span class="p">)</span>
 
-<span class="k">def</span> <span class="nf">shift_firms_forward</span><span class="p">(</span><span class="n">x_init</span><span class="p">,</span> <span class="n">firm</span><span class="p">,</span> <span class="n">sample_dates</span><span class="p">,</span>
+    <span class="c1"># Define the function for each update</span>
+    <span class="k">def</span> <span class="nf">fori_update</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">inputs</span><span class="p">):</span>
+        <span class="c1"># Unpack</span>
+        <span class="n">X</span><span class="p">,</span> <span class="n">key</span> <span class="o">=</span> <span class="n">inputs</span>
+        <span class="c1"># Draw shocks using key</span>
+        <span class="n">Z</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">num_firms</span><span class="p">,))</span>
+        <span class="n">D</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">μ</span> <span class="o">+</span> <span class="n">σ</span> <span class="o">*</span> <span class="n">Z</span><span class="p">)</span>
+        <span class="c1"># Update X</span>
+        <span class="n">X</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">X</span> <span class="o">&lt;=</span> <span class="n">s</span><span class="p">,</span>
+                  <span class="n">jnp</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">S</span> <span class="o">-</span> <span class="n">D</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+                  <span class="n">jnp</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">X</span> <span class="o">-</span> <span class="n">D</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+        <span class="c1"># Refresh the key</span>
+        <span class="n">key</span><span class="p">,</span> <span class="n">subkey</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">X</span><span class="p">,</span> <span class="n">subkey</span>
+
+    <span class="c1"># Loop t from 0 to T, applying fori_update each time.</span>
+    <span class="c1"># The initial condition for fori_update is (X, key).</span>
+    <span class="n">X</span><span class="p">,</span> <span class="n">key</span> <span class="o">=</span> <span class="n">lax</span><span class="o">.</span><span class="n">fori_loop</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">fori_update</span><span class="p">,</span> <span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">key</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">X</span>
+
+<span class="c1"># Compile taking T and num_firms as static (changes trigger recompile)</span>
+<span class="n">compute_cross_section_fori</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">jit</span><span class="p">(</span>
+    <span class="n">compute_cross_section_fori</span><span class="p">,</span> <span class="n">static_argnums</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s see how fast this runs with compile time.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">time</span> X_vec = compute_cross_section_fori(params, \
+    <span class="n">x_init</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span><span class="o">.</span><span class="n">block_until_ready</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 300 ms, sys: 0 ns, total: 300 ms
+Wall time: 209 ms
+</pre></div>
+</div>
+</div>
+</div>
+<p>And let’s see how fast it runs without compile time.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">time</span> X_vec = compute_cross_section_fori(params, \
+    <span class="n">x_init</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span><span class="o">.</span><span class="n">block_until_ready</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 17 ms, sys: 0 ns, total: 17 ms
+Wall time: 14.8 ms
+</pre></div>
+</div>
+</div>
+</div>
+<p>Compared to the original version with a pure Python outer loop, we have
+produced a nontrivial speed gain.</p>
+<p>This is due to the fact that we have compiled the whole operation.</p>
+</section>
+<section id="further-vectorization">
+<h3><span class="section-number">5.3.3. </span>Further vectorization<a class="headerlink" href="#further-vectorization" title="Permalink to this heading">#</a></h3>
+<p>For relatively small problems, we can make this code run even faster by generating
+all random variables at once.</p>
+<p>This improves efficiency because we are taking more operations out of the loop.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">compute_cross_section_fori</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">x_init</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">num_firms</span><span class="o">=</span><span class="mi">50_000</span><span class="p">):</span>
+
+    <span class="n">s</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="n">μ</span><span class="p">,</span> <span class="n">σ</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="n">s</span><span class="p">,</span> <span class="n">params</span><span class="o">.</span><span class="n">S</span><span class="p">,</span> <span class="n">params</span><span class="o">.</span><span class="n">μ</span><span class="p">,</span> <span class="n">params</span><span class="o">.</span><span class="n">σ</span>
+    <span class="n">X</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">full</span><span class="p">((</span><span class="n">num_firms</span><span class="p">,</span> <span class="p">),</span> <span class="n">x_init</span><span class="p">)</span>
+    <span class="n">Z</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="n">num_firms</span><span class="p">))</span>
+    <span class="n">D</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">μ</span> <span class="o">+</span> <span class="n">σ</span> <span class="o">*</span> <span class="n">Z</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">update_cross_section</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+        <span class="n">X</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">X</span> <span class="o">&lt;=</span> <span class="n">s</span><span class="p">,</span>
+                  <span class="n">jnp</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">S</span> <span class="o">-</span> <span class="n">D</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:],</span> <span class="mi">0</span><span class="p">),</span>
+                  <span class="n">jnp</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">X</span> <span class="o">-</span> <span class="n">D</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:],</span> <span class="mi">0</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">X</span>
+
+    <span class="n">X</span> <span class="o">=</span> <span class="n">lax</span><span class="o">.</span><span class="n">fori_loop</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">update_cross_section</span><span class="p">,</span> <span class="n">X</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">X</span>
+
+<span class="c1"># Compile taking T and num_firms as static (changes trigger recompile)</span>
+<span class="n">compute_cross_section_fori</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">jit</span><span class="p">(</span>
+    <span class="n">compute_cross_section_fori</span><span class="p">,</span> <span class="n">static_argnums</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s test it with compile time included.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">time</span> X_vec = compute_cross_section_fori(params, \
+    <span class="n">x_init</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span><span class="o">.</span><span class="n">block_until_ready</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 230 ms, sys: 0 ns, total: 230 ms
+Wall time: 212 ms
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s run again to eliminate compile time.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">time</span> X_vec = compute_cross_section_fori(params, \
+    <span class="n">x_init</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span><span class="o">.</span><span class="n">block_until_ready</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 5.8 ms, sys: 0 ns, total: 5.8 ms
+Wall time: 4.85 ms
+</pre></div>
+</div>
+</div>
+</div>
+<p>On one hand, this version is faster than the previous one, where random variables were
+generated inside the loop.</p>
+<p>On the other hand, this implementation consumes far more memory, as we need to
+store large arrays of random draws.</p>
+<p>The high memory consumption becomes problematic for large problems.</p>
+</section>
+</section>
+<section id="distribution-dynamics">
+<h2><span class="section-number">5.4. </span>Distribution dynamics<a class="headerlink" href="#distribution-dynamics" title="Permalink to this heading">#</a></h2>
+<p>Next let’s take a look at how the distribution sequence evolves over time.</p>
+<p>We will go back to using ordinary Python <code class="docutils literal notranslate"><span class="pre">for</span></code> loops.</p>
+<p>Here is code that repeatedly shifts the cross-section forward while
+recording the cross-section at the dates in <code class="docutils literal notranslate"><span class="pre">sample_dates</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">shift_forward_and_sample</span><span class="p">(</span><span class="n">x_init</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">sample_dates</span><span class="p">,</span>
                         <span class="n">key</span><span class="p">,</span> <span class="n">num_firms</span><span class="o">=</span><span class="mi">50_000</span><span class="p">,</span> <span class="n">sim_length</span><span class="o">=</span><span class="mi">750</span><span class="p">):</span>
 
     <span class="n">X</span> <span class="o">=</span> <span class="n">res</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">full</span><span class="p">((</span><span class="n">num_firms</span><span class="p">,</span> <span class="p">),</span> <span class="n">x_init</span><span class="p">)</span>
@@ -418,9 +643,9 @@ distributions are getting smaller.</p>
     <span class="c1"># Use for loop to update X and collect samples</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">sim_length</span><span class="p">):</span>
         <span class="n">Z</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">num_firms</span><span class="p">,</span> <span class="p">))</span>
-        <span class="n">D</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">firm</span><span class="o">.</span><span class="n">mu</span> <span class="o">+</span> <span class="n">firm</span><span class="o">.</span><span class="n">sigma</span> <span class="o">*</span> <span class="n">Z</span><span class="p">)</span>
+        <span class="n">D</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">μ</span> <span class="o">+</span> <span class="n">params</span><span class="o">.</span><span class="n">σ</span> <span class="o">*</span> <span class="n">Z</span><span class="p">)</span>
 
-        <span class="n">X</span> <span class="o">=</span> <span class="n">update_X</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">firm</span><span class="p">,</span> <span class="n">D</span><span class="p">)</span>
+        <span class="n">X</span> <span class="o">=</span> <span class="n">update_cross_section</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">D</span><span class="p">)</span>
         <span class="n">_</span><span class="p">,</span> <span class="n">key</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
 
         <span class="c1"># draw a sample at the sample dates</span>
@@ -432,123 +657,37 @@ distributions are getting smaller.</p>
 </div>
 </div>
 </div>
+<p>Let’s test it</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x_init</span> <span class="o">=</span> <span class="mi">50</span>
-<span class="n">num_firms</span> <span class="o">=</span> <span class="mi">50_000</span>
+<span class="n">num_firms</span> <span class="o">=</span> <span class="mi">10_000</span>
 <span class="n">sample_dates</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">250</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">750</span>
 <span class="n">key</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">PRNGKey</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
 
-<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
 
-<span class="o">%</span><span class="k">time</span> X = shift_firms_forward(x_init, firm, \
+<span class="o">%</span><span class="k">time</span> X = shift_forward_and_sample(x_init, params, \
                               <span class="n">sample_dates</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span><span class="o">.</span><span class="n">block_until_ready</span><span class="p">()</span>
-
-<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">date</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">sample_dates</span><span class="p">):</span>
-    <span class="n">plot_kde</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:],</span> <span class="n">ax</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;t = </span><span class="si">{</span><span class="n">date</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-
-<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;inventory&#39;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;probability&#39;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 2.12 s, sys: 540 ms, total: 2.66 s
-Wall time: 1.49 s
-</pre></div>
-</div>
-<a class="reference internal image-reference" href="_images/678102672b5ac6b1e5f749ec4af2b6c7afb2e62877647237f032e89e7b4485a1.png"><img alt="_images/678102672b5ac6b1e5f749ec4af2b6c7afb2e62877647237f032e89e7b4485a1.png" src="_images/678102672b5ac6b1e5f749ec4af2b6c7afb2e62877647237f032e89e7b4485a1.png" style="width: 80%;" /></a>
-</div>
-</div>
-<p>Note that we did not JIT-compile the outer loop, since</p>
-<ol class="arabic simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">jit</span></code> compilation of the <code class="docutils literal notranslate"><span class="pre">for</span></code> loop can be very time consuming and</p></li>
-<li><p>compiling outer loops only leads to minor speed gains.</p></li>
-</ol>
-<section id="alternative-implementation-with-lax-scan">
-<h3><span class="section-number">5.3.1. </span>Alternative implementation with <code class="docutils literal notranslate"><span class="pre">lax.scan</span></code><a class="headerlink" href="#alternative-implementation-with-lax-scan" title="Permalink to this heading">#</a></h3>
-<p>An alternative to the <code class="docutils literal notranslate"><span class="pre">for</span></code> loop implementation is <code class="docutils literal notranslate"><span class="pre">lax.scan</span></code>.</p>
-<p>Here is an example of the same function in <code class="docutils literal notranslate"><span class="pre">lax.scan</span></code></p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jax</span><span class="o">.</span><span class="n">jit</span>
-<span class="k">def</span> <span class="nf">shift_firms_forward</span><span class="p">(</span><span class="n">x_init</span><span class="p">,</span> <span class="n">firm</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span>
-                        <span class="n">num_firms</span><span class="o">=</span><span class="mi">50_000</span><span class="p">,</span> <span class="n">sim_length</span><span class="o">=</span><span class="mi">750</span><span class="p">):</span>
-
-    <span class="n">s</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">sigma</span> <span class="o">=</span> <span class="n">firm</span><span class="o">.</span><span class="n">s</span><span class="p">,</span> <span class="n">firm</span><span class="o">.</span><span class="n">S</span><span class="p">,</span> <span class="n">firm</span><span class="o">.</span><span class="n">mu</span><span class="p">,</span> <span class="n">firm</span><span class="o">.</span><span class="n">sigma</span>
-    <span class="n">X</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">full</span><span class="p">((</span><span class="n">num_firms</span><span class="p">,</span> <span class="p">),</span> <span class="n">x_init</span><span class="p">)</span>
-    <span class="n">Z</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">sim_length</span><span class="p">,</span> <span class="n">num_firms</span><span class="p">))</span>
-    <span class="n">D</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">mu</span> <span class="o">+</span> <span class="n">sigma</span> <span class="o">*</span> <span class="n">Z</span><span class="p">)</span>
-
-    <span class="c1"># Define the function for each update</span>
-    <span class="k">def</span> <span class="nf">update_X</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">D</span><span class="p">):</span>
-        <span class="n">res</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">X</span> <span class="o">&lt;=</span> <span class="n">s</span><span class="p">,</span>
-                  <span class="n">jnp</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">S</span> <span class="o">-</span> <span class="n">D</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
-                  <span class="n">jnp</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">X</span> <span class="o">-</span> <span class="n">D</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
-        <span class="k">return</span> <span class="n">res</span><span class="p">,</span> <span class="n">res</span>
-
-    <span class="c1"># Use lax.scan to perform the calculations on all states</span>
-    <span class="n">_</span><span class="p">,</span> <span class="n">X_final</span> <span class="o">=</span> <span class="n">lax</span><span class="o">.</span><span class="n">scan</span><span class="p">(</span><span class="n">update_X</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">D</span><span class="p">)</span>
-
-    <span class="k">return</span> <span class="n">X_final</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 2.17 s, sys: 0 ns, total: 2.17 s
+Wall time: 1.04 s
 </pre></div>
 </div>
 </div>
 </div>
-<p>The benefit of the <code class="docutils literal notranslate"><span class="pre">lax.scan</span></code> implementation is that we compile the whole
-operation.</p>
-<p>The disadvantages are that</p>
-<ol class="arabic simple">
-<li><p>as mentioned above, there are only limited speed gains in accelerating outer loops,</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">lax.scan</span></code> has a more complicated syntax, and, most importantly,</p></li>
-<li><p>the <code class="docutils literal notranslate"><span class="pre">lax.scan</span></code> implementation consumes far more memory, as we need to have to
-store large matrices of random draws</p></li>
-</ol>
-<p>Let’s call the code to generate a cross-section that is in approximate
-equilibrium.</p>
+<p>Let’s plot the output.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
 
-<span class="o">%</span><span class="k">time</span> X = shift_firms_forward(x_init, firm, key).block_until_ready()
-
-<span class="k">for</span> <span class="n">date</span> <span class="ow">in</span> <span class="n">sample_dates</span><span class="p">:</span>
-    <span class="n">plot_kde</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">date</span><span class="p">,</span> <span class="p">:],</span> <span class="n">ax</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;t = </span><span class="si">{</span><span class="n">date</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-
-<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;inventory&#39;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;probability&#39;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 292 ms, sys: 0 ns, total: 292 ms
-Wall time: 233 ms
-</pre></div>
-</div>
-<a class="reference internal image-reference" href="_images/e673a669ea7b99b41d181196212cf23529eb9076c8e8784a6a93fb567270d406.png"><img alt="_images/e673a669ea7b99b41d181196212cf23529eb9076c8e8784a6a93fb567270d406.png" src="_images/e673a669ea7b99b41d181196212cf23529eb9076c8e8784a6a93fb567270d406.png" style="width: 80%;" /></a>
-</div>
-</div>
-<p>Notice that by <span class="math notranslate nohighlight">\(t=500\)</span> or <span class="math notranslate nohighlight">\(t=750\)</span> the densities are barely
-changing.</p>
-<p>We have reached a reasonable approximation of the stationary density.</p>
-<p>You can test a few more initial conditions to show that they do not affect
-long-run outcomes.</p>
-<p>For example, try rerunning the code above with all firms starting at
-<span class="math notranslate nohighlight">\(X_0 = 20\)</span></p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x_init</span> <span class="o">=</span> <span class="mf">20.0</span>
-
-<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
-
-<span class="o">%</span><span class="k">time</span> X = shift_firms_forward(x_init, firm, key).block_until_ready()
-
-<span class="k">for</span> <span class="n">date</span> <span class="ow">in</span> <span class="n">sample_dates</span><span class="p">:</span>
-    <span class="n">plot_kde</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">date</span><span class="p">,</span> <span class="p">:],</span> <span class="n">ax</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;t = </span><span class="si">{</span><span class="n">date</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">date</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">sample_dates</span><span class="p">):</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:],</span> <span class="n">bins</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> 
+            <span class="n">density</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> 
+            <span class="n">histtype</span><span class="o">=</span><span class="s1">&#39;step&#39;</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;cross-section when $t = </span><span class="si">{</span><span class="n">date</span><span class="si">}</span><span class="s1">$&#39;</span><span class="p">)</span>
 
 <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;inventory&#39;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;probability&#39;</span><span class="p">)</span>
@@ -558,38 +697,45 @@ long-run outcomes.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 274 ms, sys: 0 ns, total: 274 ms
-Wall time: 215 ms
-</pre></div>
-</div>
-<a class="reference internal image-reference" href="_images/53221690969b3fa6350a80fe9adae06dafea9c574add334e4e0915810ddd604d.png"><img alt="_images/53221690969b3fa6350a80fe9adae06dafea9c574add334e4e0915810ddd604d.png" src="_images/53221690969b3fa6350a80fe9adae06dafea9c574add334e4e0915810ddd604d.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/c2eec719c15411ac368b6151e5d6cb51739f91fdea11e2f92f481035a2d8d6de.png"><img alt="_images/c2eec719c15411ac368b6151e5d6cb51739f91fdea11e2f92f481035a2d8d6de.png" src="_images/c2eec719c15411ac368b6151e5d6cb51739f91fdea11e2f92f481035a2d8d6de.png" style="width: 80%;" /></a>
 </div>
 </div>
+<p>This model for inventory dynamics is asymptotically stationary, with a unique
+stationary distribution.</p>
+<p>In particular, the sequence of marginal distributions <span class="math notranslate nohighlight">\(\{\psi_t\}\)</span>
+converges to a unique limiting distribution that does not depend on
+initial conditions.</p>
+<p>Although we will not prove this here, we can see it in the simulation above.</p>
+<p>By <span class="math notranslate nohighlight">\(t=500\)</span> or <span class="math notranslate nohighlight">\(t=750\)</span> the distributions are barely changing.</p>
+<p>If you test a few different initial conditions, you will see that they do not affect long-run outcomes.</p>
 </section>
-</section>
-<section id="example-2-restock-frequency">
-<h2><span class="section-number">5.4. </span>Example 2: restock frequency<a class="headerlink" href="#example-2-restock-frequency" title="Permalink to this heading">#</a></h2>
-<p>Let’s go through another example where we calculate the probability of firms
-having restocks.</p>
-<p>Specifically we set the starting stock level to 70 (<span class="math notranslate nohighlight">\(X_0 = 70\)</span>), as we calculate
-the proportion of firms that need to order twice or more in the first 50
-periods.</p>
-<p>You will need a large sample size to get an accurate reading.</p>
-<p>Again, we start with an easier <code class="docutils literal notranslate"><span class="pre">for</span></code> loop implementation</p>
+<section id="restock-frequency">
+<h2><span class="section-number">5.5. </span>Restock frequency<a class="headerlink" href="#restock-frequency" title="Permalink to this heading">#</a></h2>
+<p>As an exercise, let’s study the probability that firms need to restock over a given time period.</p>
+<p>In the exercise, we will</p>
+<ul class="simple">
+<li><p>set the starting stock level to <span class="math notranslate nohighlight">\(X_0 = 70\)</span> and</p></li>
+<li><p>calculate the proportion of firms that need to order twice or more in the first 50 periods.</p></li>
+</ul>
+<p>This proportion approximates the probability of the event when the sample size
+is large.</p>
+<section id="id1">
+<h3><span class="section-number">5.5.1. </span>For loop version<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h3>
+<p>We start with an easier <code class="docutils literal notranslate"><span class="pre">for</span></code> loop implementation</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define a jitted function for each update</span>
 <span class="nd">@jax</span><span class="o">.</span><span class="n">jit</span>
-<span class="k">def</span> <span class="nf">update_stock</span><span class="p">(</span><span class="n">n_restock</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">firm</span><span class="p">,</span> <span class="n">D</span><span class="p">):</span>
-    <span class="n">n_restock</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">X</span> <span class="o">&lt;=</span> <span class="n">firm</span><span class="o">.</span><span class="n">s</span><span class="p">,</span>
+<span class="k">def</span> <span class="nf">update_stock</span><span class="p">(</span><span class="n">n_restock</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">D</span><span class="p">):</span>
+    <span class="n">n_restock</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">X</span> <span class="o">&lt;=</span> <span class="n">params</span><span class="o">.</span><span class="n">s</span><span class="p">,</span>
                           <span class="n">n_restock</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
                           <span class="n">n_restock</span><span class="p">)</span>
-    <span class="n">X</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">X</span> <span class="o">&lt;=</span> <span class="n">firm</span><span class="o">.</span><span class="n">s</span><span class="p">,</span>
-                  <span class="n">jnp</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">firm</span><span class="o">.</span><span class="n">S</span> <span class="o">-</span> <span class="n">D</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+    <span class="n">X</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">X</span> <span class="o">&lt;=</span> <span class="n">params</span><span class="o">.</span><span class="n">s</span><span class="p">,</span>
+                  <span class="n">jnp</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">S</span> <span class="o">-</span> <span class="n">D</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
                   <span class="n">jnp</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">X</span> <span class="o">-</span> <span class="n">D</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
     <span class="k">return</span> <span class="n">n_restock</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">key</span>
 
-<span class="k">def</span> <span class="nf">compute_freq</span><span class="p">(</span><span class="n">firm</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span>
+<span class="k">def</span> <span class="nf">compute_freq</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span>
                  <span class="n">x_init</span><span class="o">=</span><span class="mi">70</span><span class="p">,</span>
                  <span class="n">sim_length</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
                  <span class="n">num_firms</span><span class="o">=</span><span class="mi">1_000_000</span><span class="p">):</span>
@@ -603,9 +749,9 @@ periods.</p>
     <span class="c1"># Use a for loop to perform the calculations on all states</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">sim_length</span><span class="p">):</span>
         <span class="n">Z</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">num_firms</span><span class="p">,</span> <span class="p">))</span>
-        <span class="n">D</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">firm</span><span class="o">.</span><span class="n">mu</span> <span class="o">+</span> <span class="n">firm</span><span class="o">.</span><span class="n">sigma</span> <span class="o">*</span> <span class="n">Z</span><span class="p">)</span>
+        <span class="n">D</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">μ</span> <span class="o">+</span> <span class="n">params</span><span class="o">.</span><span class="n">σ</span> <span class="o">*</span> <span class="n">Z</span><span class="p">)</span>
         <span class="n">n_restock</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">key</span> <span class="o">=</span> <span class="n">update_stock</span><span class="p">(</span>
-            <span class="n">n_restock</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">firm</span><span class="p">,</span> <span class="n">D</span><span class="p">)</span>
+            <span class="n">n_restock</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">D</span><span class="p">)</span>
         <span class="n">key</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">fold_in</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">jnp</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">n_restock</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
@@ -616,42 +762,52 @@ periods.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">key</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">PRNGKey</span><span class="p">(</span><span class="mi">27</span><span class="p">)</span>
-<span class="o">%</span><span class="k">time</span> freq = compute_freq(firm, key).block_until_ready()
+<span class="o">%</span><span class="k">time</span> freq = compute_freq(params, key).block_until_ready()
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Frequency of at least two stock outs = </span><span class="si">{</span><span class="n">freq</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 626 ms, sys: 0 ns, total: 626 ms
-Wall time: 615 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 644 ms, sys: 0 ns, total: 644 ms
+Wall time: 632 ms
 Frequency of at least two stock outs = 0.4472379982471466
 </pre></div>
 </div>
 </div>
 </div>
-<section id="alternative-implementation-with-lax-fori-loop">
-<h3><span class="section-number">5.4.1. </span>Alternative implementation with <code class="docutils literal notranslate"><span class="pre">lax.fori_loop</span></code><a class="headerlink" href="#alternative-implementation-with-lax-fori-loop" title="Permalink to this heading">#</a></h3>
-<p>Now let’s write a <code class="docutils literal notranslate"><span class="pre">lax.fori_loop</span></code> version that JIT compiles the whole function</p>
+<div class="exercise admonition" id="inventory_dynamics_ex1">
+
+<p class="admonition-title"><span class="caption-number">Exercise 5.1 </span></p>
+<section id="exercise-content">
+<p>Write a <code class="docutils literal notranslate"><span class="pre">fori_loop</span></code> version of the last function.  See if you can increase the
+speed while generating a similar answer.</p>
+</section>
+</div>
+<div class="solution dropdown admonition" id="inventory_dynamics-solution-1">
+
+<p class="admonition-title">Solution to<a class="reference internal" href="#inventory_dynamics_ex1"> Exercise 5.1</a></p>
+<section id="solution-content">
+<p>Here is a <code class="docutils literal notranslate"><span class="pre">lax.fori_loop</span></code> version that JIT compiles the whole function</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jax</span><span class="o">.</span><span class="n">jit</span>
-<span class="k">def</span> <span class="nf">compute_freq</span><span class="p">(</span><span class="n">firm</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span>
+<span class="k">def</span> <span class="nf">compute_freq</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span>
                  <span class="n">x_init</span><span class="o">=</span><span class="mi">70</span><span class="p">,</span>
                  <span class="n">sim_length</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
                  <span class="n">num_firms</span><span class="o">=</span><span class="mi">1_000_000</span><span class="p">):</span>
 
-    <span class="n">s</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">sigma</span> <span class="o">=</span> <span class="n">firm</span><span class="o">.</span><span class="n">s</span><span class="p">,</span> <span class="n">firm</span><span class="o">.</span><span class="n">S</span><span class="p">,</span> <span class="n">firm</span><span class="o">.</span><span class="n">mu</span><span class="p">,</span> <span class="n">firm</span><span class="o">.</span><span class="n">sigma</span>
+    <span class="n">s</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="n">μ</span><span class="p">,</span> <span class="n">σ</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="n">s</span><span class="p">,</span> <span class="n">params</span><span class="o">.</span><span class="n">S</span><span class="p">,</span> <span class="n">params</span><span class="o">.</span><span class="n">μ</span><span class="p">,</span> <span class="n">params</span><span class="o">.</span><span class="n">σ</span>
     <span class="c1"># Prepare initial arrays</span>
     <span class="n">X</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">full</span><span class="p">((</span><span class="n">num_firms</span><span class="p">,</span> <span class="p">),</span> <span class="n">x_init</span><span class="p">)</span>
     <span class="n">Z</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">sim_length</span><span class="p">,</span> <span class="n">num_firms</span><span class="p">))</span>
-    <span class="n">D</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">mu</span> <span class="o">+</span> <span class="n">sigma</span> <span class="o">*</span> <span class="n">Z</span><span class="p">)</span>
+    <span class="n">D</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">μ</span> <span class="o">+</span> <span class="n">σ</span> <span class="o">*</span> <span class="n">Z</span><span class="p">)</span>
 
     <span class="c1"># Stack the restock counter on top of the inventory</span>
     <span class="n">restock_count</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">num_firms</span><span class="p">,</span> <span class="p">))</span>
     <span class="n">Xs</span> <span class="o">=</span> <span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">restock_count</span><span class="p">)</span>
 
     <span class="c1"># Define the function for each update</span>
-    <span class="k">def</span> <span class="nf">update_X</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">Xs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">update_cross_section</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">Xs</span><span class="p">):</span>
         <span class="c1"># Separate the inventory and restock counter</span>
         <span class="n">x</span><span class="p">,</span> <span class="n">restock_count</span> <span class="o">=</span> <span class="n">Xs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">Xs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
         <span class="n">restock_count</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">x</span> <span class="o">&lt;=</span> <span class="n">s</span><span class="p">,</span>
@@ -665,7 +821,7 @@ Frequency of at least two stock outs = 0.4472379982471466
         <span class="k">return</span> <span class="n">Xs</span>
 
     <span class="c1"># Use lax.fori_loop to perform the calculations on all states</span>
-    <span class="n">X_final</span> <span class="o">=</span> <span class="n">lax</span><span class="o">.</span><span class="n">fori_loop</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">sim_length</span><span class="p">,</span> <span class="n">update_X</span><span class="p">,</span> <span class="n">Xs</span><span class="p">)</span>
+    <span class="n">X_final</span> <span class="o">=</span> <span class="n">lax</span><span class="o">.</span><span class="n">fori_loop</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">sim_length</span><span class="p">,</span> <span class="n">update_cross_section</span><span class="p">,</span> <span class="n">Xs</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">jnp</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">X_final</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">)</span>
 </pre></div>
@@ -675,18 +831,24 @@ Frequency of at least two stock outs = 0.4472379982471466
 <p>Note the time the routine takes to run, as well as the output</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">time</span> freq = compute_freq(firm, key).block_until_ready()
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">time</span> freq = compute_freq(params, key).block_until_ready()
+<span class="o">%</span><span class="k">time</span> freq = compute_freq(params, key).block_until_ready()
+
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Frequency of at least two stock outs = </span><span class="si">{</span><span class="n">freq</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 334 ms, sys: 0 ns, total: 334 ms
-Wall time: 286 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 335 ms, sys: 0 ns, total: 335 ms
+Wall time: 287 ms
+CPU times: user 2.47 ms, sys: 0 ns, total: 2.47 ms
+Wall time: 4.83 ms
 Frequency of at least two stock outs = 0.44674399495124817
 </pre></div>
 </div>
 </div>
+</div>
+</section>
 </div>
 </section>
 </section>
@@ -809,38 +971,48 @@ Frequency of at least two stock outs = 0.44674399495124817
 </p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
+  <a class="reference internal" href="opt_savings_1.html">
+   9. Optimal Savings I: Value Function Iteration
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="opt_savings_2.html">
+   10. Optimal Savings II: Alternative Algorithms
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="short_path.html">
-   9. Shortest Paths
+   11. Shortest Paths
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="opt_invest.html">
-   10. Optimal Investment
+   12. Optimal Investment
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="opt_savings.html">
-   11. Optimal Savings
+  <a class="reference internal" href="inventory_ssd.html">
+   13. Inventory Management Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_egm.html">
-   12. Endogenous Grid Method
+   14. Endogenous Grid Method
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="arellano.html">
-   13. Default Risk and Income Fluctuations
+   15. Default Risk and Income Fluctuations
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="aiyagari_jax.html">
-   14. The Aiyagari Model
+   16. The Aiyagari Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_numerical.html">
-   15. Cake Eating: Numerical Methods
+   17. Cake Eating: Numerical Methods
   </a>
  </li>
 </ul>
@@ -852,17 +1024,17 @@ Frequency of at least two stock outs = 0.44674399495124817
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   16. Troubleshooting
+   18. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   17. References
+   19. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   18. Execution Statistics
+   20. Execution Statistics
   </a>
  </li>
 </ul>
