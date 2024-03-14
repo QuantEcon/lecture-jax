@@ -1,12 +1,13 @@
-# Implements HPI-Howard policy iteration routine
-
-def policy_iteration(model, maxiter=250):
-    constants, sizes, arrays = model
+def howard_policy_iteration(model, maxiter=250):
+    """
+    Implements Howard policy iteration (see dp.quantecon.org)
+    """
+    params, sizes, arrays = model
     σ = jnp.zeros(sizes, dtype=int)
     i, error = 0, 1.0
     while error > 0 and i < maxiter:
-        v_σ = get_value(σ, constants, sizes, arrays)
-        σ_new = get_greedy(v_σ, constants, sizes, arrays)
+        v_σ = get_value(σ, params, sizes, arrays)
+        σ_new = get_greedy(v_σ, params, sizes, arrays)
         error = jnp.max(jnp.abs(σ_new - σ))
         σ = σ_new
         i = i + 1

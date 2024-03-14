@@ -110,7 +110,7 @@ def create_consumption_model(R=1.01,                    # Gross interest rate
 Here's the right hand side of the Bellman equation:
 
 ```{code-cell} ipython3
-def B(v, constants, sizes, arrays):
+def B(v, params, sizes, arrays):
     """
     A vectorized version of the right-hand side of the Bellman equation
     (before maximization), which is a 3D array representing
@@ -121,7 +121,7 @@ def B(v, constants, sizes, arrays):
     """
 
     # Unpack
-    β, R, γ = constants
+    β, R, γ = params
     w_size, y_size = sizes
     w_grid, y_grid, Q = arrays
 
@@ -150,14 +150,14 @@ r_\sigma(w, y) := r(w, y, \sigma(w, y))
 $$
 
 ```{code-cell} ipython3
-def compute_r_σ(σ, constants, sizes, arrays):
+def compute_r_σ(σ, params, sizes, arrays):
     """
     Compute the array r_σ[i, j] = r[i, j, σ[i, j]], which gives current
     rewards given policy σ.
     """
 
     # Unpack model
-    β, R, γ = constants
+    β, R, γ = params
     w_size, y_size = sizes
     w_grid, y_grid, Q = arrays
 
@@ -174,15 +174,15 @@ def compute_r_σ(σ, constants, sizes, arrays):
 Now we define the policy operator $T_\sigma$
 
 ```{code-cell} ipython3
-def T_σ(v, σ, constants, sizes, arrays):
+def T_σ(v, σ, params, sizes, arrays):
     "The σ-policy operator."
 
     # Unpack model
-    β, R, γ = constants
+    β, R, γ = params
     w_size, y_size = sizes
     w_grid, y_grid, Q = arrays
 
-    r_σ = compute_r_σ(σ, constants, sizes, arrays)
+    r_σ = compute_r_σ(σ, params, sizes, arrays)
 
     # Compute the array v[σ[i, j], jp]
     yp_idx = jnp.arange(y_size)
@@ -202,17 +202,17 @@ def T_σ(v, σ, constants, sizes, arrays):
 and the Bellman operator $T$
 
 ```{code-cell} ipython3
-def T(v, constants, sizes, arrays):
+def T(v, params, sizes, arrays):
     "The Bellman operator."
-    return jnp.max(B(v, constants, sizes, arrays), axis=2)
+    return jnp.max(B(v, params, sizes, arrays), axis=2)
 ```
 
 The next function computes a $v$-greedy policy given $v$
 
 ```{code-cell} ipython3
-def get_greedy(v, constants, sizes, arrays):
+def get_greedy(v, params, sizes, arrays):
     "Computes a v-greedy policy, returned as a set of indices."
-    return jnp.argmax(B(v, constants, sizes, arrays), axis=2)
+    return jnp.argmax(B(v, params, sizes, arrays), axis=2)
 ```
 
 The function below computes the value $v_\sigma$ of following policy $\sigma$.
@@ -248,7 +248,7 @@ JAX allows us to solve linear systems defined in terms of operators; the first
 step is to define the function $L_{\sigma}$.
 
 ```{code-cell} ipython3
-def L_σ(v, σ, constants, sizes, arrays):
+def L_σ(v, σ, params, sizes, arrays):
     """
     Here we set up the linear map v -> L_σ v, where 
 
@@ -256,7 +256,7 @@ def L_σ(v, σ, constants, sizes, arrays):
 
     """
 
-    β, R, γ = constants
+    β, R, γ = params
     w_size, y_size = sizes
     w_grid, y_grid, Q = arrays
 
@@ -276,18 +276,18 @@ def L_σ(v, σ, constants, sizes, arrays):
 Now we can define a function to compute $v_{\sigma}$
 
 ```{code-cell} ipython3
-def get_value(σ, constants, sizes, arrays):
+def get_value(σ, params, sizes, arrays):
     "Get the value v_σ of policy σ by inverting the linear map L_σ."
 
     # Unpack
-    β, R, γ = constants
+    β, R, γ = params
     w_size, y_size = sizes
     w_grid, y_grid, Q = arrays
 
-    r_σ = compute_r_σ(σ, constants, sizes, arrays)
+    r_σ = compute_r_σ(σ, params, sizes, arrays)
 
     # Reduce L_σ to a function in v
-    partial_L_σ = lambda v: L_σ(v, σ, constants, sizes, arrays)
+    partial_L_σ = lambda v: L_σ(v, σ, params, sizes, arrays)
 
     return jax.scipy.sparse.linalg.bicgstab(partial_L_σ, r_σ)[0]
 ```
@@ -307,7 +307,24 @@ L_σ = jax.jit(L_σ, static_argnums=(3,))
 We use successive approximation for VFI.
 
 ```{code-cell} ipython3
-:load: _static/lecture_specific/successive_approx.py
+def successive_approx_jax(T,                     # Operator (callable)
+                          x_0,                   # Initial condition                
+                          tol=1e-6,              # Error tolerance
+                          max_iter=10_000):      # Max iteration bound
+    def body_fun(k_x_err):
+        k, x, error = k_x_err
+        x_new = T(x)
+        error = jnp.max(jnp.abs(x_new - x))
+        return k + 1, x_new, error
+
+    def cond_fun(k_x_err):
+        k, x, error = k_x_err
+        return jnp.logical_and(error > tol, k < max_iter)
+
+    k, x, error = jax.lax.while_loop(cond_fun, body_fun, (1, x_0, tol + 1))
+    return x
+
+successive_approx_jax = jax.jit(successive_approx_jax, static_argnums=(0,))
 ```
 
 ## Solvers
@@ -315,15 +332,50 @@ We use successive approximation for VFI.
 Now we define the solvers, which implement VFI, HPI and OPI.
 
 ```{code-cell} ipython3
-:load: _static/lecture_specific/vfi.py
+def value_function_iteration(model, tol=1e-5):
+    """
+    Implements value function iteration.
+    """
+    params, sizes, arrays = model
+    vz = jnp.zeros(sizes)
+    _T = lambda v: T(v, params, sizes, arrays)
+    v_star = successive_approx_jax(_T, vz, tolerance=tol)
+    return get_greedy(v_star, params, sizes, arrays)
 ```
 
 ```{code-cell} ipython3
-:load: _static/lecture_specific/hpi.py
+def howard_policy_iteration(model, maxiter=250):
+    """
+    Implements Howard policy iteration (see dp.quantecon.org)
+    """
+    params, sizes, arrays = model
+    σ = jnp.zeros(sizes, dtype=int)
+    i, error = 0, 1.0
+    while error > 0 and i < maxiter:
+        v_σ = get_value(σ, params, sizes, arrays)
+        σ_new = get_greedy(v_σ, params, sizes, arrays)
+        error = jnp.max(jnp.abs(σ_new - σ))
+        σ = σ_new
+        i = i + 1
+        print(f"Concluded loop {i} with error {error}.")
+    return σ
 ```
 
 ```{code-cell} ipython3
-:load: _static/lecture_specific/opi.py
+def optimistic_policy_iteration(model, tol=1e-5, m=10):
+    """
+    Implements optimistic policy iteration (see dp.quantecon.org)
+    """
+    params, sizes, arrays = model
+    v = jnp.zeros(sizes)
+    error = tol + 1
+    while error > tol:
+        last_v = v
+        σ = get_greedy(v, params, sizes, arrays)
+        for _ in range(m):
+            v = T_σ(v, σ, params, sizes, arrays)
+        error = jnp.max(jnp.abs(v - last_v))
+    return get_greedy(v, params, sizes, arrays)
 ```
 
 ## Plots
@@ -333,8 +385,8 @@ Create a model for consumption, perform policy iteration, and plot the resulting
 ```{code-cell} ipython3
 model = create_consumption_model()
 # Unpack
-constants, sizes, arrays = model
-β, R, γ = constants
+params, sizes, arrays = model
+β, R, γ = params
 w_size, y_size = sizes
 w_grid, y_grid, Q = arrays
 ```
@@ -346,7 +398,7 @@ mystnb:
     caption: Optimal policy function
     name: optimal-policy-function
 ---
-σ_star = policy_iteration(model)
+σ_star = howard_policy_iteration(model)
 
 fig, ax = plt.subplots()
 ax.plot(w_grid, w_grid, "k--", label="45")
@@ -367,7 +419,7 @@ model = create_consumption_model()
 ```{code-cell} ipython3
 print("Starting HPI.")
 start_time = time.time()
-out = policy_iteration(model)
+out = howard_policy_iteration(model)
 elapsed = time.time() - start_time
 print(f"HPI completed in {elapsed} seconds.")
 ```
@@ -375,7 +427,7 @@ print(f"HPI completed in {elapsed} seconds.")
 ```{code-cell} ipython3
 print("Starting VFI.")
 start_time = time.time()
-out = value_iteration(model)
+out = vfi(model)
 elapsed = time.time() - start_time
 print(f"VFI completed in {elapsed} seconds.")
 ```
@@ -400,8 +452,8 @@ def run_algorithm(algorithm, model, **kwargs):
 
 ```{code-cell} ipython3
 model = create_consumption_model()
-σ_pi, pi_time = run_algorithm(policy_iteration, model)
-σ_vfi, vfi_time = run_algorithm(value_iteration, model, tol=1e-5)
+σ_pi, pi_time = run_algorithm(howard_policy_iteration, model)
+σ_vfi, vfi_time = run_algorithm(vfi, model, tol=1e-5)
 
 m_vals = range(5, 600, 40)
 opi_times = []
