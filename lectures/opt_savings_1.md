@@ -52,19 +52,23 @@ jax.config.update("jax_enable_x64", True)
 
 We consider an optimal savings problem with CRRA utility and budget constraint
 
-$$ W_{t+1} + C_t \leq R W_t + Y_t $$
+$$ 
+W_{t+1} + C_t \leq R W_t + Y_t 
+$$
 
 We assume that labor income $(Y_t)$ is a discretized AR(1) process.
 
 The right-hand side of the Bellman equation is
 
-$$   B((w, y), w', v) = u(Rw + y - w') + β \sum_{y'} v(w', y') Q(y, y'). $$
+$$   
+B((w, y), w', v) = u(Rw + y - w') + β \sum_{y'} v(w', y') Q(y, y'). 
+$$
 
 where
 
-$$   u(c) = \frac{c^{1-\gamma}}{1-\gamma} $$
-
-
+$$
+u(c) = \frac{c^{1-\gamma}}{1-\gamma} 
+$$
 
 ## Starting with NumPy
 
@@ -168,7 +172,6 @@ def get_greedy(v, constants, sizes, arrays):
 
 Here's a routine that performs value function iteration.
 
-
 ```{code-cell} ipython3
 def vfi(model, max_iter=10_000, tol=1e-5):
     constants, sizes, arrays = model
@@ -182,12 +185,10 @@ def vfi(model, max_iter=10_000, tol=1e-5):
     return v, get_greedy(v, constants, sizes, arrays)
 ```
 
-
 Now we create an instance, unpack it, and test how long it takes to solve the
 model.
 
 ```{code-cell} ipython3
-fontsize = 12
 model = create_consumption_model()
 # Unpack
 constants, sizes, arrays = model
@@ -200,21 +201,24 @@ start_time = time.time()
 v_star, σ_star = vfi(model)
 numpy_elapsed = time.time() - start_time
 print(f"VFI completed in {numpy_elapsed} seconds.")
-
 ```
 
 Here's a plot of the policy function.
 
 ```{code-cell} ipython3
-fig, ax = plt.subplots(figsize=(9, 5.2))
+---
+mystnb:
+  figure:
+    caption: Policy function
+    name: policy-function
+---
+fig, ax = plt.subplots()
 ax.plot(w_grid, w_grid, "k--", label="45")
 ax.plot(w_grid, w_grid[σ_star[:, 1]], label="$\\sigma^*(\cdot, y_1)$")
 ax.plot(w_grid, w_grid[σ_star[:, -1]], label="$\\sigma^*(\cdot, y_N)$")
-ax.legend(fontsize=fontsize)
+ax.legend()
 plt.show()
 ```
-
-
 
 ## Switching to JAX
 
@@ -225,6 +229,8 @@ To switch over to JAX, we change `np` to `jnp` throughout and add some
 ### Functions and operators
 
 We redefine `create_consumption_model` to produce JAX arrays.
+
+(prgm:create-consumption-model)=
 
 ```{code-cell} ipython3
 def create_consumption_model(R=1.01,                    # Gross interest rate
@@ -311,10 +317,7 @@ def get_greedy(v, constants, sizes, arrays):
     return jnp.argmax(B(v, constants, sizes, arrays), axis=2)
 
 get_greedy = jax.jit(get_greedy, static_argnums=(2,))
-
 ```
-
-
 
 ### Successive approximation
 
@@ -365,14 +368,11 @@ def value_iteration(model, tol=1e-5):
     return v_star, get_greedy(v_star, constants, sizes, arrays)
 ```
 
-
-
 ### Timing
 
 Let's create an instance and unpack it. 
 
 ```{code-cell} ipython3
-fontsize = 12
 model = create_consumption_model()
 # Unpack
 constants, sizes, arrays = model
@@ -396,8 +396,6 @@ The relative speed gain is
 ```{code-cell} ipython3
 print(f"Relative speed gain = {numpy_elapsed / jax_elapsed}")
 ```
-
-
 
 ## Switching to vmap
 
@@ -438,8 +436,6 @@ def B(v, constants, sizes, arrays, i, j, ip):
     c = R * w + y - wp
     EV = jnp.sum(v[ip, :] * Q[j, :]) 
     return jnp.where(c > 0, c**(1-γ)/(1-γ) + β * EV, -jnp.inf)
-
-
 ```
 
 Now we successively apply `vmap` to simulate nested loops.
@@ -506,5 +502,3 @@ The relative speed is
 ```{code-cell} ipython3
 print(f"Relative speed = {jax_vmap_elapsed / jax_elapsed}")
 ```
-
-

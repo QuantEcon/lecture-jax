@@ -26,7 +26,6 @@ alternative algorithms:
 * optimistic policy iteration (OPI) and
 * Howard policy iteration (HPI).
 
-
 We will see that both of these algorithms outperform traditional VFI.
 
 One reason for this is that the algorithms have good convergence properties.
@@ -83,14 +82,15 @@ We'll use 64 bit floats to gain extra precision.
 jax.config.update("jax_enable_x64", True)
 ```
 
-
 ## Model primitives
 
 First we define a model that stores parameters and grids.
 
-The following code is repeated from {doc}`opt_savings_1`.
+The {ref}`following code <prgm:create-consumption-model>` is repeated from {doc}`opt_savings_1`.
 
 ```{code-cell} ipython3
+:tags: [hide-input]
+
 def create_consumption_model(R=1.01,                    # Gross interest rate
                              β=0.98,                    # Discount factor
                              γ=2,                       # CRRA parameter
@@ -112,6 +112,8 @@ def create_consumption_model(R=1.01,                    # Gross interest rate
 Here's the right hand side of the Bellman equation:
 
 ```{code-cell} ipython3
+:tags: [hide-input]
+
 def B(v, constants, sizes, arrays):
     """
     A vectorized version of the right-hand side of the Bellman equation
@@ -144,12 +146,12 @@ def B(v, constants, sizes, arrays):
 
 ## Operators
 
-
 We define a function to compute the current rewards $r_\sigma$ given policy $\sigma$,
 which is defined as the vector
 
-$$ r_\sigma(w, y) := r(w, y, \sigma(w, y)) $$
-
+$$
+r_\sigma(w, y) := r(w, y, \sigma(w, y)) 
+$$
 
 ```{code-cell} ipython3
 def compute_r_σ(σ, constants, sizes, arrays):
@@ -221,24 +223,30 @@ The function below computes the value $v_\sigma$ of following policy $\sigma$.
 
 This lifetime value is a function $v_\sigma$ that satisfies
 
-$$ v_\sigma(w, y) = r_\sigma(w, y) + \beta \sum_{y'} v_\sigma(\sigma(w, y), y') Q(y, y') $$
+$$
+v_\sigma(w, y) = r_\sigma(w, y) + \beta \sum_{y'} v_\sigma(\sigma(w, y), y') Q(y, y')
+$$
 
 We wish to solve this equation for $v_\sigma$.
 
 Suppose we define the linear operator $L_\sigma$ by
 
-$$ (L_\sigma v)(w, y) = v(w, y) - \beta \sum_{y'} v(\sigma(w, y), y') Q(y, y') $$
+$$ 
+(L_\sigma v)(w, y) = v(w, y) - \beta \sum_{y'} v(\sigma(w, y), y') Q(y, y')
+$$
 
 With this notation, the problem is to solve for $v$ via
 
 $$
-    (L_{\sigma} v)(w, y) = r_\sigma(w, y)
+(L_{\sigma} v)(w, y) = r_\sigma(w, y)
 $$
 
 In vector for this is $L_\sigma v = r_\sigma$, which tells us that the function
 we seek is
 
-$$ v_\sigma = L_\sigma^{-1} r_\sigma $$
+$$ 
+v_\sigma = L_\sigma^{-1} r_\sigma 
+$$
 
 JAX allows us to solve linear systems defined in terms of operators; the first
 step is to define the function $L_{\sigma}$.
@@ -327,7 +335,6 @@ Now we define the solvers, which implement VFI, HPI and OPI.
 Create a model for consumption, perform policy iteration, and plot the resulting optimal policy function.
 
 ```{code-cell} ipython3
-fontsize = 12
 model = create_consumption_model()
 # Unpack
 constants, sizes, arrays = model
@@ -337,13 +344,19 @@ w_grid, y_grid, Q = arrays
 ```
 
 ```{code-cell} ipython3
+---
+mystnb:
+  figure:
+    caption: Optimal policy function
+    name: optimal-policy-function
+---
 σ_star = policy_iteration(model)
 
-fig, ax = plt.subplots(figsize=(9, 5.2))
+fig, ax = plt.subplots()
 ax.plot(w_grid, w_grid, "k--", label="45")
 ax.plot(w_grid, w_grid[σ_star[:, 1]], label="$\\sigma^*(\cdot, y_1)$")
 ax.plot(w_grid, w_grid[σ_star[:, -1]], label="$\\sigma^*(\cdot, y_N)$")
-ax.legend(fontsize=fontsize)
+ax.legend()
 plt.show()
 ```
 
@@ -402,12 +415,18 @@ for m in m_vals:
 ```
 
 ```{code-cell} ipython3
-fig, ax = plt.subplots(figsize=(9, 5.2))
+---
+mystnb:
+  figure:
+    caption: Solver times
+    name: howard+value+optimistic-solver-times
+---
+fig, ax = plt.subplots()
 ax.plot(m_vals, jnp.full(len(m_vals), pi_time), lw=2, label="Howard policy iteration")
 ax.plot(m_vals, jnp.full(len(m_vals), vfi_time), lw=2, label="value function iteration")
 ax.plot(m_vals, opi_times, lw=2, label="optimistic policy iteration")
-ax.legend(fontsize=fontsize, frameon=False)
-ax.set_xlabel("$m$", fontsize=fontsize)
-ax.set_ylabel("time", fontsize=fontsize)
+ax.legend(frameon=False)
+ax.set_xlabel("$m$")
+ax.set_ylabel("time")
 plt.show()
 ```
