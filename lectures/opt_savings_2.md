@@ -89,8 +89,6 @@ First we define a model that stores parameters and grids.
 The {ref}`following code <prgm:create-consumption-model>` is repeated from {doc}`opt_savings_1`.
 
 ```{code-cell} ipython3
-:tags: [hide-input]
-
 def create_consumption_model(R=1.01,                    # Gross interest rate
                              β=0.98,                    # Discount factor
                              γ=2,                       # CRRA parameter
