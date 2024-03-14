@@ -483,8 +483,8 @@ def T_vmap(v, params, sizes, arrays):
     "The Bellman operator."
     w_size, y_size = sizes
     w_indices, y_indices = jnp.arange(w_size), jnp.arange(y_size)
-    val = B_vmap(v, params, arrays, w_indices, y_indices, w_indices)
-    return jnp.max(val, axis=-1)
+    B_values = B_vmap(v, params, arrays, w_indices, y_indices, w_indices)
+    return jnp.max(B_values, axis=-1)
 
 T_vmap = jax.jit(T_vmap, static_argnums=(2,))
 
@@ -492,8 +492,8 @@ def get_greedy_vmap(v, params, sizes, arrays):
     "Computes a v-greedy policy, returned as a set of indices."
     w_size, y_size = sizes
     w_indices, y_indices = jnp.arange(w_size), jnp.arange(y_size)
-    val = B_vmap(v, params, arrays, w_indices, y_indices, w_indices)
-    return jnp.argmax(val, axis=-1)
+    B_values = B_vmap(v, params, arrays, w_indices, y_indices, w_indices)
+    return jnp.argmax(B_values, axis=-1)
 
 get_greedy_vmap = jax.jit(get_greedy_vmap, static_argnums=(2,))
 ```

@@ -324,7 +324,7 @@ def value_function_iteration(model, tol=1e-5):
     params, sizes, arrays = model
     vz = jnp.zeros(sizes)
     _T = lambda v: T(v, params, sizes, arrays)
-    v_star = successive_approx_jax(_T, vz, tolerance=tol)
+    v_star = successive_approx_jax(_T, vz, tol=tol)
     return get_greedy(v_star, params, sizes, arrays)
 ```
 
