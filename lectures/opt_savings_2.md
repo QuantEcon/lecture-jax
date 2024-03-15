@@ -100,53 +100,86 @@ def create_consumption_model(R=1.01,                    # Gross interest rate
     A function that takes in parameters and returns parameters and grids 
     for the optimal savings problem.
     """
+    # Build grids and transition probabilities
     w_grid = jnp.linspace(w_min, w_max, w_size)
     mc = qe.tauchen(n=y_size, rho=ρ, sigma=ν)
-    y_grid, Q = jnp.exp(mc.state_values), jax.device_put(mc.P)
+    y_grid, Q = jnp.exp(mc.state_values), mc.P
+    # Pack and return
+    params = β, R, γ
     sizes = w_size, y_size
-    return (β, R, γ), sizes, (w_grid, y_grid, Q)
+    arrays = w_grid, y_grid, jnp.array(Q)
+    return params, sizes, arrays
 ```
 
 Here's the right hand side of the Bellman equation:
 
 ```{code-cell} ipython3
-def B(v, params, sizes, arrays):
+def _B(v, params, arrays, i, j, ip):
     """
-    A vectorized version of the right-hand side of the Bellman equation
-    (before maximization), which is a 3D array representing
+    The right-hand side of the Bellman equation before maximization, which takes
+    the form
 
         B(w, y, w′) = u(Rw + y - w′) + β Σ_y′ v(w′, y′) Q(y, y′)
 
-    for all (w, y, w′).
+    The indices are (i, j, ip) -> (w, y, w′).
     """
-
-    # Unpack
     β, R, γ = params
-    w_size, y_size = sizes
     w_grid, y_grid, Q = arrays
-
-    # Compute current rewards r(w, y, wp) as array r[i, j, ip]
-    w  = jnp.reshape(w_grid, (w_size, 1, 1))    # w[i]   ->  w[i, j, ip]
-    y  = jnp.reshape(y_grid, (1, y_size, 1))    # z[j]   ->  z[i, j, ip]
-    wp = jnp.reshape(w_grid, (1, 1, w_size))    # wp[ip] -> wp[i, j, ip]
+    w, y, wp  = w_grid[i], y_grid[j], w_grid[ip]
     c = R * w + y - wp
-
-    # Calculate continuation rewards at all combinations of (w, y, wp)
-    v = jnp.reshape(v, (1, 1, w_size, y_size))  # v[ip, jp] -> v[i, j, ip, jp]
-    Q = jnp.reshape(Q, (1, y_size, 1, y_size))  # Q[j, jp]  -> Q[i, j, ip, jp]
-    EV = jnp.sum(v * Q, axis=3)                 # sum over last index jp
-
-    # Compute the right-hand side of the Bellman equation
+    EV = jnp.sum(v[ip, :] * Q[j, :]) 
     return jnp.where(c > 0, c**(1-γ)/(1-γ) + β * EV, -jnp.inf)
 ```
 
+Now we successively apply `vmap` to vectorize $B$ by simulating nested loops.
+
+```{code-cell} ipython3
+B_1    = jax.vmap(_B,  in_axes=(None, None, None, None, None, 0))
+B_2    = jax.vmap(B_1, in_axes=(None, None, None, None, 0,    None))
+B_vmap = jax.vmap(B_2, in_axes=(None, None, None, 0,    None, None))
+```
+
+Here's a fully vectorized version of $B$.
+
+```{code-cell} ipython3
+def B(v, params, sizes, arrays):
+    w_size, y_size = sizes
+    w_indices, y_indices = jnp.arange(w_size), jnp.arange(y_size)
+    B_values = B_vmap(v, params, arrays, w_indices, y_indices, w_indices)
+    return B_values
+
+B = jax.jit(B, static_argnums=(2,))
+```
+
 ## Operators
+
+
+Here's the Bellman operator $T$
+
+```{code-cell} ipython3
+def T(v, params, sizes, arrays):
+    "The Bellman operator."
+    return jnp.max(B(v, params, sizes, arrays), axis=-1)
+
+T = jax.jit(T, static_argnums=(2,))
+```
+
+The next function computes a $v$-greedy policy given $v$
+
+```{code-cell} ipython3
+def get_greedy(v, params, sizes, arrays):
+    "Computes a v-greedy policy, returned as a set of indices."
+    return jnp.argmax(B(v, params, sizes, arrays), axis=-1)
+
+get_greedy = jax.jit(get_greedy, static_argnums=(2,))
+
+```
 
 We define a function to compute the current rewards $r_\sigma$ given policy $\sigma$,
 which is defined as the vector
 
 $$
-r_\sigma(w, y) := r(w, y, \sigma(w, y)) 
+    r_\sigma(w, y) := r(w, y, \sigma(w, y)) 
 $$
 
 ```{code-cell} ipython3
@@ -169,6 +202,8 @@ def compute_r_σ(σ, params, sizes, arrays):
     r_σ = c**(1-γ)/(1-γ)
 
     return r_σ
+
+compute_r_σ = jax.jit(compute_r_σ, static_argnums=(2,))
 ```
 
 Now we define the policy operator $T_\sigma$
@@ -197,23 +232,10 @@ def T_σ(v, σ, params, sizes, arrays):
     EV = jnp.sum(V * Q, axis=2)
 
     return r_σ + β * EV
+
+T_σ = jax.jit(T_σ, static_argnums=(3,))
 ```
 
-and the Bellman operator $T$
-
-```{code-cell} ipython3
-def T(v, params, sizes, arrays):
-    "The Bellman operator."
-    return jnp.max(B(v, params, sizes, arrays), axis=2)
-```
-
-The next function computes a $v$-greedy policy given $v$
-
-```{code-cell} ipython3
-def get_greedy(v, params, sizes, arrays):
-    "Computes a v-greedy policy, returned as a set of indices."
-    return jnp.argmax(B(v, params, sizes, arrays), axis=2)
-```
 
 The function below computes the value $v_\sigma$ of following policy $\sigma$.
 
@@ -271,6 +293,9 @@ def L_σ(v, σ, params, sizes, arrays):
 
     # Compute and return v[i, j] - β Σ_jp v[σ[i, j], jp] * Q[j, jp]
     return v - β * jnp.sum(V * Q, axis=2)
+
+L_σ = jax.jit(L_σ, static_argnums=(3,))
+
 ```
 
 Now we can define a function to compute $v_{\sigma}$
@@ -290,19 +315,15 @@ def get_value(σ, params, sizes, arrays):
     partial_L_σ = lambda v: L_σ(v, σ, params, sizes, arrays)
 
     return jax.scipy.sparse.linalg.bicgstab(partial_L_σ, r_σ)[0]
-```
 
-## JIT compiled versions
-
-```{code-cell} ipython3
-B = jax.jit(B, static_argnums=(2,))
-compute_r_σ = jax.jit(compute_r_σ, static_argnums=(2,))
-T = jax.jit(T, static_argnums=(2,))
-get_greedy = jax.jit(get_greedy, static_argnums=(2,))
 get_value = jax.jit(get_value, static_argnums=(2,))
-T_σ = jax.jit(T_σ, static_argnums=(3,))
-L_σ = jax.jit(L_σ, static_argnums=(3,))
+
 ```
+
+
+
+## Iteration
+
 
 We use successive approximation for VFI.
 

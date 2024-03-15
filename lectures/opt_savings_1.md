@@ -120,11 +120,15 @@ def create_consumption_model(R=1.01,                    # Gross interest rate
     A function that takes in parameters and returns parameters and grids 
     for the optimal savings problem.
     """
+    # Build grids and transition probabilities
     w_grid = np.linspace(w_min, w_max, w_size)
     mc = qe.tauchen(n=y_size, rho=ρ, sigma=ν)
     y_grid, Q = np.exp(mc.state_values), mc.P
+    # Pack and return
+    params = β, R, γ
     sizes = w_size, y_size
-    return (β, R, γ), sizes, (w_grid, y_grid, Q)
+    arrays = w_grid, y_grid, Q
+    return params, sizes, arrays
 ```
 
 (The function returns sizes of arrays because we use them later to help
