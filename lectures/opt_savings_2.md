@@ -145,8 +145,7 @@ Here's a fully vectorized version of $B$.
 def B(v, params, sizes, arrays):
     w_size, y_size = sizes
     w_indices, y_indices = jnp.arange(w_size), jnp.arange(y_size)
-    B_values = B_vmap(v, params, arrays, w_indices, y_indices, w_indices)
-    return B_values
+    return B_vmap(v, params, arrays, w_indices, y_indices, w_indices)
 
 B = jax.jit(B, static_argnums=(2,))
 ```
@@ -185,17 +184,18 @@ $$
 ```{code-cell} ipython3
 def _compute_r_σ(σ, params, arrays, i, j):
     """
-    Compute r_σ[i, j] = r[i, j, σ[i, j]], which gives current
-    rewards given policy σ.
+    With indices (i, j) -> (w, y) and wp = σ[i, j], compute 
+        
+        r_σ[i, j] = u(Rw + y - wp)   
+
+    which gives current rewards under policy σ.
     """
 
     # Unpack model
     β, R, γ = params
     w_grid, y_grid, Q = arrays
-
     # Compute r_σ[i, j]
-    w, y = w_grid[i], y_grid[j]
-    wp = w_grid[σ[i, j]]
+    w, y, wp = w_grid[i], y_grid[j], w_grid[σ[i, j]]
     c = R * w + y - wp
     r_σ = c**(1-γ)/(1-γ)
 
@@ -215,8 +215,7 @@ Here's a fully vectorized version of $r_\sigma$.
 def compute_r_σ(σ, params, sizes, arrays):
     w_size, y_size = sizes
     w_indices, y_indices = jnp.arange(w_size), jnp.arange(y_size)
-    r_values = r_σ_vmap(σ, params, arrays, w_indices, y_indices)
-    return r_values
+    return r_σ_vmap(σ, params, arrays, w_indices, y_indices)
 
 compute_r_σ = jax.jit(compute_r_σ, static_argnums=(2,))
 ```
@@ -244,8 +243,7 @@ T_σ_vmap = jax.vmap(T_1,  in_axes=(None, None, None, None, 0,    None))
 def T_σ(v, σ, params, sizes, arrays):
     w_size, y_size = sizes
     w_indices, y_indices = jnp.arange(w_size), jnp.arange(y_size)
-    values = T_σ_vmap(v, σ, params, arrays, w_indices, y_indices)
-    return values
+    return T_σ_vmap(v, σ, params, arrays, w_indices, y_indices)
 
 T_σ = jax.jit(T_σ, static_argnums=(3,))
 ```
@@ -303,8 +301,7 @@ L_σ_vmap = jax.vmap(L_1,  in_axes=(None, None, None, None, 0,    None))
 def L_σ(v, σ, params, sizes, arrays):
     w_size, y_size = sizes
     w_indices, y_indices = jnp.arange(w_size), jnp.arange(y_size)
-    values = L_σ_vmap(v, σ, params, arrays, w_indices, y_indices)
-    return values
+    return L_σ_vmap(v, σ, params, arrays, w_indices, y_indices)
 
 L_σ = jax.jit(L_σ, static_argnums=(3,))
 ```
