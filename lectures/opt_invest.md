@@ -344,6 +344,52 @@ def value_function_iteration(model, tol=1e-5):
     return get_greedy(v_star, params, sizes, arrays)
 ```
 
+For OPI we will use a compiled JAX `lax.while_loop` operation to speed execution.
+
+
+```{code-cell} ipython3
+def opi_loop(params, sizes, arrays, m, tol, max_iter):
+    """
+    Implements optimistic policy iteration (see dp.quantecon.org) with 
+    step size m.
+
+    """
+    v_init = jnp.zeros(sizes)
+
+    def condition_function(inputs):
+        i, v, error = inputs
+        return jnp.logical_and(error > tol, i < max_iter)
+
+    def update(inputs):
+        i, v, error = inputs
+        last_v = v
+        σ = get_greedy(v, params, sizes, arrays)
+        v = iterate_policy_operator(σ, v, m, params, sizes, arrays)
+        error = jnp.max(jnp.abs(v - last_v))
+        i += 1
+        return i, v, error
+
+    num_iter, v, error = jax.lax.while_loop(condition_function,
+                                            update,
+                                            (0, v_init, tol + 1))
+
+    return get_greedy(v, params, sizes, arrays)
+
+opi_loop = jax.jit(opi_loop, static_argnums=(1,))
+```
+
+Here's a friendly interface to OPI
+
+```{code-cell} ipython3
+def optimistic_policy_iteration(model, m=10, tol=1e-5, max_iter=10_000):
+    params, sizes, arrays = model
+    σ_star = opi_loop(params, sizes, arrays, m, tol, max_iter)
+    return σ_star
+```
+
+Here's HPI
+
+
 ```{code-cell} ipython3
 def howard_policy_iteration(model, maxiter=250):
     """
@@ -362,21 +408,6 @@ def howard_policy_iteration(model, maxiter=250):
     return σ
 ```
 
-```{code-cell} ipython3
-def optimistic_policy_iteration(model, tol=1e-5, m=10):
-    """
-    Implements optimistic policy iteration (see dp.quantecon.org)
-    """
-    params, sizes, arrays = model
-    v = jnp.zeros(sizes)
-    error = tol + 1
-    while error > tol:
-        last_v = v
-        σ = get_greedy(v, params, sizes, arrays)
-        v = iterate_policy_operator(σ, v, m, params, sizes, arrays)
-        error = jnp.max(jnp.abs(v - last_v))
-    return get_greedy(v, params, sizes, arrays)
-```
 
 ```{code-cell} ipython3
 :tags: [hide-output]

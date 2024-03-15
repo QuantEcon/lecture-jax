@@ -311,17 +311,19 @@ def successive_approx_jax(T,                     # Operator (callable)
                           x_0,                   # Initial condition                
                           tol=1e-6,              # Error tolerance
                           max_iter=10_000):      # Max iteration bound
-    def body_fun(k_x_err):
-        k, x, error = k_x_err
+    def update(inputs):
+        k, x, error = inputs
         x_new = T(x)
         error = jnp.max(jnp.abs(x_new - x))
         return k + 1, x_new, error
 
-    def cond_fun(k_x_err):
-        k, x, error = k_x_err
+    def condition_function(inputs):
+        k, x, error = inputs
         return jnp.logical_and(error > tol, k < max_iter)
 
-    k, x, error = jax.lax.while_loop(cond_fun, body_fun, (1, x_0, tol + 1))
+    k, x, error = jax.lax.while_loop(condition_function, 
+                                     update, 
+                                     (1, x_0, tol + 1))
     return x
 
 successive_approx_jax = jax.jit(successive_approx_jax, static_argnums=(0,))
@@ -362,6 +364,50 @@ def value_function_iteration(model, tol=1e-5):
     return get_greedy(v_star, params, sizes, arrays)
 ```
 
+For OPI we will use a compiled JAX `lax.while_loop` operation to speed execution.
+
+
+```{code-cell} ipython3
+def opi_loop(params, sizes, arrays, m, tol, max_iter):
+    """
+    Implements optimistic policy iteration (see dp.quantecon.org) with 
+    step size m.
+
+    """
+    v_init = jnp.zeros(sizes)
+
+    def condition_function(inputs):
+        i, v, error = inputs
+        return jnp.logical_and(error > tol, i < max_iter)
+
+    def update(inputs):
+        i, v, error = inputs
+        last_v = v
+        σ = get_greedy(v, params, sizes, arrays)
+        v = iterate_policy_operator(σ, v, m, params, sizes, arrays)
+        error = jnp.max(jnp.abs(v - last_v))
+        i += 1
+        return i, v, error
+
+    num_iter, v, error = jax.lax.while_loop(condition_function,
+                                            update,
+                                            (0, v_init, tol + 1))
+
+    return get_greedy(v, params, sizes, arrays)
+
+opi_loop = jax.jit(opi_loop, static_argnums=(1,))
+```
+
+Here's a friendly interface to OPI
+
+```{code-cell} ipython3
+def optimistic_policy_iteration(model, m=10, tol=1e-5, max_iter=10_000):
+    params, sizes, arrays = model
+    σ_star = opi_loop(params, sizes, arrays, m, tol, max_iter)
+    return σ_star
+```
+
+
 Here's HPI.
 
 ```{code-cell} ipython3
@@ -380,23 +426,6 @@ def howard_policy_iteration(model, maxiter=250):
         i = i + 1
         print(f"Concluded loop {i} with error {error}.")
     return σ
-```
-
-
-```{code-cell} ipython3
-def optimistic_policy_iteration(model, tol=1e-5, m=10):
-    """
-    Implements optimistic policy iteration (see dp.quantecon.org)
-    """
-    params, sizes, arrays = model
-    v = jnp.zeros(sizes)
-    error = tol + 1
-    while error > tol:
-        last_v = v
-        σ = get_greedy(v, params, sizes, arrays)
-        v = iterate_policy_operator(σ, v, m, params, sizes, arrays)
-        error = jnp.max(jnp.abs(v - last_v))
-    return get_greedy(v, params, sizes, arrays)
 ```
 
 ## Plots
