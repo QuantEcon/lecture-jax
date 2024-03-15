@@ -294,22 +294,120 @@ get_value = jax.jit(get_value, static_argnums=(2,))
 We use successive approximation for VFI.
 
 ```{code-cell} ipython3
-:load: _static/lecture_specific/successive_approx.py
+def successive_approx_jax(T,                     # Operator (callable)
+                          x_0,                   # Initial condition                
+                          tol=1e-6,              # Error tolerance
+                          max_iter=10_000):      # Max iteration bound
+    def body_fun(k_x_err):
+        k, x, error = k_x_err
+        x_new = T(x)
+        error = jnp.max(jnp.abs(x_new - x))
+        return k + 1, x_new, error
+
+    def cond_fun(k_x_err):
+        k, x, error = k_x_err
+        return jnp.logical_and(error > tol, k < max_iter)
+
+    k, x, error = jax.lax.while_loop(cond_fun, body_fun, (1, x_0, tol + 1))
+    return x
+
+successive_approx_jax = jax.jit(successive_approx_jax, static_argnums=(0,))
+```
+
+For OPI we'll add a compiled routine that computes $T_σ^m v$.
+
+```{code-cell} ipython3
+def iterate_policy_operator(σ, v, m, params, sizes, arrays):
+
+    def update(i, v):
+        v = T_σ(v, σ, params, sizes, arrays)
+        return v
+    
+    v = jax.lax.fori_loop(0, m, update, v)
+    return v
+
+iterate_policy_operator = jax.jit(iterate_policy_operator,
+                                  static_argnums=(4,))
 ```
 
 Finally, we introduce the solvers that implement VFI, HPI and OPI.
 
 ```{code-cell} ipython3
-:load: _static/lecture_specific/vfi.py
+def value_function_iteration(model, tol=1e-5):
+    """
+    Implements value function iteration.
+    """
+    params, sizes, arrays = model
+    vz = jnp.zeros(sizes)
+    _T = lambda v: T(v, params, sizes, arrays)
+    v_star = successive_approx_jax(_T, vz, tol=tol)
+    return get_greedy(v_star, params, sizes, arrays)
 ```
 
-```{code-cell} ipython3
-:load: _static/lecture_specific/hpi.py
-```
+For OPI we will use a compiled JAX `lax.while_loop` operation to speed execution.
+
 
 ```{code-cell} ipython3
-:load: _static/lecture_specific/opi.py
+def opi_loop(params, sizes, arrays, m, tol, max_iter):
+    """
+    Implements optimistic policy iteration (see dp.quantecon.org) with 
+    step size m.
+
+    """
+    v_init = jnp.zeros(sizes)
+
+    def condition_function(inputs):
+        i, v, error = inputs
+        return jnp.logical_and(error > tol, i < max_iter)
+
+    def update(inputs):
+        i, v, error = inputs
+        last_v = v
+        σ = get_greedy(v, params, sizes, arrays)
+        v = iterate_policy_operator(σ, v, m, params, sizes, arrays)
+        error = jnp.max(jnp.abs(v - last_v))
+        i += 1
+        return i, v, error
+
+    num_iter, v, error = jax.lax.while_loop(condition_function,
+                                            update,
+                                            (0, v_init, tol + 1))
+
+    return get_greedy(v, params, sizes, arrays)
+
+opi_loop = jax.jit(opi_loop, static_argnums=(1,))
 ```
+
+Here's a friendly interface to OPI
+
+```{code-cell} ipython3
+def optimistic_policy_iteration(model, m=10, tol=1e-5, max_iter=10_000):
+    params, sizes, arrays = model
+    σ_star = opi_loop(params, sizes, arrays, m, tol, max_iter)
+    return σ_star
+```
+
+Here's HPI
+
+
+```{code-cell} ipython3
+def howard_policy_iteration(model, maxiter=250):
+    """
+    Implements Howard policy iteration (see dp.quantecon.org)
+    """
+    params, sizes, arrays = model
+    σ = jnp.zeros(sizes, dtype=int)
+    i, error = 0, 1.0
+    while error > 0 and i < maxiter:
+        v_σ = get_value(σ, params, sizes, arrays)
+        σ_new = get_greedy(v_σ, params, sizes, arrays)
+        error = jnp.max(jnp.abs(σ_new - σ))
+        σ = σ_new
+        i = i + 1
+        print(f"Concluded loop {i} with error {error}.")
+    return σ
+```
+
 
 ```{code-cell} ipython3
 :tags: [hide-output]
@@ -317,7 +415,7 @@ Finally, we introduce the solvers that implement VFI, HPI and OPI.
 model = create_investment_model()
 print("Starting HPI.")
 qe.tic()
-out = policy_iteration(model)
+out = howard_policy_iteration(model)
 elapsed = qe.toc()
 print(out)
 print(f"HPI completed in {elapsed} seconds.")
@@ -328,7 +426,7 @@ print(f"HPI completed in {elapsed} seconds.")
 
 print("Starting VFI.")
 qe.tic()
-out = value_iteration(model)
+out = value_function_iteration(model)
 elapsed = qe.toc()
 print(out)
 print(f"VFI completed in {elapsed} seconds.")
@@ -356,7 +454,7 @@ y_grid, z_grid, Q = arrays
 ```
 
 ```{code-cell} ipython3
-σ_star = policy_iteration(model)
+σ_star = howard_policy_iteration(model)
 
 fig, ax = plt.subplots(figsize=(9, 5))
 ax.plot(y_grid, y_grid, "k--", label="45")
@@ -376,7 +474,7 @@ m_vals = range(5, 600, 40)
 model = create_investment_model()
 print("Running Howard policy iteration.")
 qe.tic()
-σ_pi = policy_iteration(model)
+σ_pi = howard_policy_iteration(model)
 pi_time = qe.toc()
 ```
 
@@ -384,7 +482,7 @@ pi_time = qe.toc()
 print(f"PI completed in {pi_time} seconds.")
 print("Running value function iteration.")
 qe.tic()
-σ_vfi = value_iteration(model, tol=1e-5)
+σ_vfi = value_function_iteration(model, tol=1e-5)
 vfi_time = qe.toc()
 print(f"VFI completed in {vfi_time} seconds.")
 ```
