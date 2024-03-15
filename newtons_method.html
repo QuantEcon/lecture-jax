@@ -280,7 +280,7 @@ in high dimensions.</p>
   pid, fd = os.forkpty()
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Thu Mar 14 02:12:30 2024       
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Thu Mar 14 20:48:39 2024       
 +-----------------------------------------------------------------------------+
 | NVIDIA-SMI 470.182.03   Driver Version: 470.182.03   CUDA Version: 12.3     |
 |-------------------------------+----------------------+----------------------+
@@ -508,8 +508,8 @@ iteration 5, error = 1.2384003639454022e-05
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>iteration 6, error = 4.883217570750276e-06
-CPU times: user 4.28 s, sys: 1.09 s, total: 5.37 s
-Wall time: 3.64 s
+CPU times: user 4.26 s, sys: 956 ms, total: 5.21 s
+Wall time: 3.6 s
 </pre></div>
 </div>
 </div>
@@ -542,8 +542,8 @@ even with the Jacobian supplied.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 2min 25s, sys: 377 ms, total: 2min 26s
-Wall time: 2min 25s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 2min 27s, sys: 359 ms, total: 2min 27s
+Wall time: 2min 26s
 </pre></div>
 </div>
 </div>
@@ -667,8 +667,8 @@ iteration 3, error = 4.294127464294434
 iteration 4, error = 0.3854290544986725
 iteration 5, error = 0.0054382034577429295
 iteration 6, error = 8.92080606718082e-07
-CPU times: user 191 ms, sys: 12.3 ms, total: 204 ms
-Wall time: 242 ms
+CPU times: user 194 ms, sys: 12.4 ms, total: 206 ms
+Wall time: 241 ms
 ----------------------------------------------------------------
 Attempt 2: Starting value is [3. 5. 5.] 
 </pre></div>
@@ -677,8 +677,8 @@ Attempt 2: Starting value is [3. 5. 5.]
 iteration 2, error = 0.12642373144626617
 iteration 3, error = 0.0006017307168804109
 iteration 4, error = 3.3717478231665154e-07
-CPU times: user 92.8 ms, sys: 12.4 ms, total: 105 ms
-Wall time: 91.9 ms
+CPU times: user 105 ms, sys: 4.1 ms, total: 110 ms
+Wall time: 93 ms
 ----------------------------------------------------------------
 Attempt 3: Starting value is [50. 50. 50.] 
 </pre></div>
@@ -691,8 +691,8 @@ iteration 3, error = 0.6806989312171936
 iteration 4, error = 0.016202213242650032
 iteration 5, error = 1.0600916539260652e-05
 iteration 6, error = 9.830249609876773e-07
-CPU times: user 237 ms, sys: 8.58 ms, total: 246 ms
-Wall time: 220 ms
+CPU times: user 230 ms, sys: 8.59 ms, total: 239 ms
+Wall time: 212 ms
 ----------------------------------------------------------------
 </pre></div>
 </div>
@@ -734,7 +734,7 @@ Wall time: 220 ms
 iteration 2, error = 0.21344946324825287
 iteration 3, error = 0.002045975998044014
 iteration 4, error = 8.259061701210157e-07
-CPU times: user 211 ms, sys: 8.44 ms, total: 220 ms
+CPU times: user 215 ms, sys: 4.67 ms, total: 219 ms
 Wall time: 222 ms
 </pre></div>
 </div>
@@ -760,8 +760,8 @@ iteration 2, error = 0.21344933091258958
 iteration 3, error = 0.0020465547718452695
 iteration 4, error = 2.0309190076799282e-07
 iteration 5, error = 1.538370149106851e-15
-CPU times: user 200 ms, sys: 12.5 ms, total: 213 ms
-Wall time: 266 ms
+CPU times: user 191 ms, sys: 20.4 ms, total: 212 ms
+Wall time: 267 ms
 </pre></div>
 </div>
 </div>
@@ -851,7 +851,7 @@ c = \begin{pmatrix}
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>iteration 1, error = 9.243805733085065
 iteration 2, error = nan
-CPU times: user 98 ms, sys: 12.2 ms, total: 110 ms
+CPU times: user 106 ms, sys: 4.35 ms, total: 111 ms
 Wall time: 130 ms
 ----------------------------------------------------------------
 Attempt 2: Starting value is [4.5 0.1 4. ] 
@@ -865,8 +865,8 @@ iteration 5, error = 0.005209730313222213
 iteration 6, error = 4.3632751705775364e-06
 iteration 7, error = 3.0460818773540415e-12
 iteration 8, error = 0.0
-CPU times: user 100 ms, sys: 452 µs, total: 101 ms
-Wall time: 83.6 ms
+CPU times: user 93.6 ms, sys: 8.29 ms, total: 102 ms
+Wall time: 83.7 ms
 ----------------------------------------------------------------
 </pre></div>
 </div>
@@ -1109,8 +1109,9 @@ Wall time: 83.6 ms
                     <li data-tippy-content="Increase font size" class="btn__plus"><i data-feather="plus-circle"></i></li>
                     <li data-tippy-content="Decrease font size" class="btn__minus"><i data-feather="minus-circle"></i></li>
                     <li data-tippy-content="Change contrast" class="btn__contrast"><i data-feather="sunset"></i></li>
+                    <li data-tippy-content="Download Notebook"><a href="/_notebooks/newtons_method.ipynb" download><i data-feather="download-cloud"></i></a></li>
                     <li class="settings-button" id="settingsButton"><div data-tippy-content="Launch Notebook"><i data-feather="play-circle"></i></div></li>
-                        <li data-tippy-content="Download PDF" onClick="window.print()"><i data-feather="file"></i></li>
+                        <li class="download-pdf" id="downloadButton"><i data-feather="file"></i></li>
                     <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-jax/blob/main/lectures/newtons_method.md" download><i data-feather="github"></i></a></li>
                 </ul>
 
@@ -1123,7 +1124,7 @@ Wall time: 83.6 ms
                     <p>Lecture (PDF)</p>
                 </li>
                 <li class="download-pdf-file">
-                    <a href="" download><p>Book (PDF)</p></a>
+                    <a href="/_pdf/quantecon-jax.pdf" download><p>Book (PDF)</p></a>
                 </li>
             </ul>
         </div>

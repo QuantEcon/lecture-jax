@@ -56,34 +56,51 @@ $$
 W_{t+1} + C_t \leq R W_t + Y_t 
 $$
 
-We assume that labor income $(Y_t)$ is a discretized AR(1) process.
+where
 
-The right-hand side of the Bellman equation is
+* $C_t$ is consumption and $C_t \geq 0$,
+* $W_t$ is wealth and $W_t \geq 0$,
+* $R > 0$ is a gross rate of return, and
+* $(Y_t)$ is labor income.
+
+We assume below that labor income is a discretized AR(1) process.
+
+The Bellman equation is
 
 $$   
-B((w, y), w', v) = u(Rw + y - w') + β \sum_{y'} v(w', y') Q(y, y'). 
+    v(w) = \max_{0 \leq w' \leq Rw + y}
+    \left\{
+        u(Rw + y - w') + β \sum_{y'} v(w', y') Q(y, y') 
+    \right\}
 $$
 
 where
 
 $$
-u(c) = \frac{c^{1-\gamma}}{1-\gamma} 
+    u(c) = \frac{c^{1-\gamma}}{1-\gamma} 
 $$
+
+In the code we use the function
+
+$$   
+    B((w, y), w', v) = u(Rw + y - w') + β \sum_{y'} v(w', y') Q(y, y'). 
+$$
+
+the encapsulate the right hand side of the Bellman equation.
+
+
 
 ## Starting with NumPy
 
-Let's start with a standard NumPy version, running on the CPU.
+Let's start with a standard NumPy version running on the CPU.
 
-This is a traditional approach using relatively old technologies.
-
-One reason we start with NumPy is that switching from NumPy to JAX will be
-relatively trivial.
-
-The other reason is that we want to know the speed gain associated with
-switching to JAX.
+Starting with this traditional approach will allow us to record the speed gain
+associated with switching to JAX.
 
 (NumPy operations are similar to MATLAB operations, so this also serves as a
 rough comparison with MATLAB.)
+
+
 
 ### Functions and operators
 
@@ -106,7 +123,6 @@ def create_consumption_model(R=1.01,                    # Gross interest rate
     w_grid = np.linspace(w_min, w_max, w_size)
     mc = qe.tauchen(n=y_size, rho=ρ, sigma=ν)
     y_grid, Q = np.exp(mc.state_values), mc.P
-    w_grid, y_grid, Q = tuple(map(jax.device_put, [w_grid, y_grid, Q]))
     sizes = w_size, y_size
     return (β, R, γ), sizes, (w_grid, y_grid, Q)
 ```
@@ -120,7 +136,7 @@ The first step is to create the right hand side of the Bellman equation as a
 multi-dimensional array with dimensions over all states and controls.
 
 ```{code-cell} ipython3
-def B(v, constants, sizes, arrays):
+def B(v, params, sizes, arrays):
     """
     A vectorized version of the right-hand side of the Bellman equation
     (before maximization), which is a 3D array representing
@@ -131,7 +147,7 @@ def B(v, constants, sizes, arrays):
     """
 
     # Unpack
-    β, R, γ = constants
+    β, R, γ = params
     w_size, y_size = sizes
     w_grid, y_grid, Q = arrays
 
@@ -158,13 +174,13 @@ The second computes a $v$-greedy policy given $v$ (i.e., the policy that
 maximizes the right-hand side of the Bellman equation.)
 
 ```{code-cell} ipython3
-def T(v, constants, sizes, arrays):
+def T(v, params, sizes, arrays):
     "The Bellman operator."
-    return np.max(B(v, constants, sizes, arrays), axis=2)
+    return np.max(B(v, params, sizes, arrays), axis=2)
 
-def get_greedy(v, constants, sizes, arrays):
+def get_greedy(v, params, sizes, arrays):
     "Computes a v-greedy policy, returned as a set of indices."
-    return np.argmax(B(v, constants, sizes, arrays), axis=2)
+    return np.argmax(B(v, params, sizes, arrays), axis=2)
 ```
 
 
@@ -173,16 +189,16 @@ def get_greedy(v, constants, sizes, arrays):
 Here's a routine that performs value function iteration.
 
 ```{code-cell} ipython3
-def vfi(model, max_iter=10_000, tol=1e-5):
-    constants, sizes, arrays = model
+def value_function_iteration(model, max_iter=10_000, tol=1e-5):
+    params, sizes, arrays = model
     v = np.zeros(sizes)
     i, error = 0, tol + 1
     while error > tol and i < max_iter:
-        v_new = T(v, constants, sizes, arrays)
+        v_new = T(v, params, sizes, arrays)
         error = np.max(np.abs(v_new - v))
         i += 1
         v = v_new
-    return v, get_greedy(v, constants, sizes, arrays)
+    return v, get_greedy(v, params, sizes, arrays)
 ```
 
 Now we create an instance, unpack it, and test how long it takes to solve the
@@ -191,14 +207,14 @@ model.
 ```{code-cell} ipython3
 model = create_consumption_model()
 # Unpack
-constants, sizes, arrays = model
-β, R, γ = constants
+params, sizes, arrays = model
+β, R, γ = params
 w_size, y_size = sizes
 w_grid, y_grid, Q = arrays
 
 print("Starting VFI.")
 start_time = time.time()
-v_star, σ_star = vfi(model)
+v_star, σ_star = value_function_iteration(model)
 numpy_elapsed = time.time() - start_time
 print(f"VFI completed in {numpy_elapsed} seconds.")
 ```
@@ -219,6 +235,8 @@ ax.plot(w_grid, w_grid[σ_star[:, -1]], label="$\\sigma^*(\cdot, y_N)$")
 ax.legend()
 plt.show()
 ```
+
+
 
 ## Switching to JAX
 
@@ -256,7 +274,7 @@ The right hand side of the Bellman equation is the same as the NumPy version
 after switching `np` to `jnp`.
 
 ```{code-cell} ipython3
-def B(v, constants, sizes, arrays):
+def B(v, params, sizes, arrays):
     """
     A vectorized version of the right-hand side of the Bellman equation
     (before maximization), which is a 3D array representing
@@ -267,7 +285,7 @@ def B(v, constants, sizes, arrays):
     """
 
     # Unpack
-    β, R, γ = constants
+    β, R, γ = params
     w_size, y_size = sizes
     w_grid, y_grid, Q = arrays
 
@@ -286,7 +304,6 @@ def B(v, constants, sizes, arrays):
     return jnp.where(c > 0, c**(1-γ)/(1-γ) + β * EV, -jnp.inf)
 
 
-B = jax.jit(B, static_argnums=(2,))
 ```
 
 Some readers might be concerned that we are creating high dimensional arrays,
@@ -297,13 +314,19 @@ Could they be avoided by more careful vectorization?
 In fact this is not necessary: this function will be JIT-compiled by JAX, and
 the JIT compiler will optimize compiled code to minimize memory use.
 
+```{code-cell} ipython3
+B = jax.jit(B, static_argnums=(2,))
+```
+
+In the call above, we indicate to the compiler that `sizes` is static, so the
+compiler can parallelize optimally while taking array sizes as fixed.
 
 The Bellman operator $T$ can be implemented by 
 
 ```{code-cell} ipython3
-def T(v, constants, sizes, arrays):
+def T(v, params, sizes, arrays):
     "The Bellman operator."
-    return jnp.max(B(v, constants, sizes, arrays), axis=2)
+    return jnp.max(B(v, params, sizes, arrays), axis=2)
 
 T = jax.jit(T, static_argnums=(2,))
 ```
@@ -312,9 +335,9 @@ The next function computes a $v$-greedy policy given $v$ (i.e., the policy that
 maximizes the right-hand side of the Bellman equation.)
 
 ```{code-cell} ipython3
-def get_greedy(v, constants, sizes, arrays):
+def get_greedy(v, params, sizes, arrays):
     "Computes a v-greedy policy, returned as a set of indices."
-    return jnp.argmax(B(v, constants, sizes, arrays), axis=2)
+    return jnp.argmax(B(v, params, sizes, arrays), axis=2)
 
 get_greedy = jax.jit(get_greedy, static_argnums=(2,))
 ```
@@ -360,12 +383,12 @@ Our value function iteration routine calls `successive_approx_jax` while passing
 in the Bellman operator.
 
 ```{code-cell} ipython3
-def value_iteration(model, tol=1e-5):
-    constants, sizes, arrays = model
+def value_function_iteration(model, tol=1e-5):
+    params, sizes, arrays = model
     vz = jnp.zeros(sizes)
-    _T = lambda v: T(v, constants, sizes, arrays)
+    _T = lambda v: T(v, params, sizes, arrays)
     v_star = successive_approx_jax(_T, vz, tolerance=tol)
-    return v_star, get_greedy(v_star, constants, sizes, arrays)
+    return v_star, get_greedy(v_star, params, sizes, arrays)
 ```
 
 ### Timing
@@ -375,8 +398,8 @@ Let's create an instance and unpack it.
 ```{code-cell} ipython3
 model = create_consumption_model()
 # Unpack
-constants, sizes, arrays = model
-β, R, γ = constants
+params, sizes, arrays = model
+β, R, γ = params
 w_size, y_size = sizes
 w_grid, y_grid, Q = arrays
 ```
@@ -386,7 +409,7 @@ Let's see how long it takes to solve this model.
 ```{code-cell} ipython3
 print("Starting VFI using vectorization.")
 start_time = time.time()
-v_star_jax, σ_star_jax = value_iteration(model)
+v_star_jax, σ_star_jax = value_function_iteration(model)
 jax_elapsed = time.time() - start_time
 print(f"VFI completed in {jax_elapsed} seconds.")
 ```
@@ -397,9 +420,19 @@ The relative speed gain is
 print(f"Relative speed gain = {numpy_elapsed / jax_elapsed}")
 ```
 
+
+This is an impressive speed up and in fact we can do better still by switching
+to alternative algorithms that are better suited to parallelization.
+
+These algorithms are discussed in a {doc}`separate lecture <opt_savings_2>`.
+
+
 ## Switching to vmap
 
-For this simple optimal savings problem direct vectorization is relatively easy.
+Before we discuss alternative algorithms, let's take another look at value
+function iteration.
+
+For this simple optimal savings problem, direct vectorization is relatively easy.
 
 In particular, it's straightforward to express the right hand side of the
 Bellman equation as an array that stores evaluations of the function at every
@@ -418,7 +451,7 @@ Here's a version that
 First let's rewrite `B`
 
 ```{code-cell} ipython3
-def B(v, constants, sizes, arrays, i, j, ip):
+def B(v, params, arrays, i, j, ip):
     """
     The right-hand side of the Bellman equation before maximization, which takes
     the form
@@ -427,12 +460,9 @@ def B(v, constants, sizes, arrays, i, j, ip):
 
     The indices are (i, j, ip) -> (w, y, w′).
     """
-    β, R, γ = constants
-    w_size, y_size = sizes
+    β, R, γ = params
     w_grid, y_grid, Q = arrays
-    w  = w_grid[i]
-    y  = y_grid[j]
-    wp = w_grid[ip]
+    w, y, wp  = w_grid[i], y_grid[j], w_grid[ip]
     c = R * w + y - wp
     EV = jnp.sum(v[ip, :] * Q[j, :]) 
     return jnp.where(c > 0, c**(1-γ)/(1-γ) + β * EV, -jnp.inf)
@@ -441,43 +471,42 @@ def B(v, constants, sizes, arrays, i, j, ip):
 Now we successively apply `vmap` to simulate nested loops.
 
 ```{code-cell} ipython3
-B_1    = jax.vmap(B,   in_axes=(None, None, None, None, None, None, 0))
-B_2    = jax.vmap(B_1, in_axes=(None, None, None, None, None, 0,    None))
-B_vmap = jax.vmap(B_2, in_axes=(None, None, None, None, 0,    None, None))
+B_1    = jax.vmap(B,   in_axes=(None, None, None, None, None, 0))
+B_2    = jax.vmap(B_1, in_axes=(None, None, None, None, 0,    None))
+B_vmap = jax.vmap(B_2, in_axes=(None, None, None, 0,    None, None))
 ```
 
 Here's the Bellman operator and the `get_greedy` functions for the `vmap` case.
 
 ```{code-cell} ipython3
-def T_vmap(v, constants, sizes, arrays):
+def T_vmap(v, params, sizes, arrays):
     "The Bellman operator."
     w_size, y_size = sizes
     w_indices, y_indices = jnp.arange(w_size), jnp.arange(y_size)
-    val = B_vmap(v, constants, sizes, arrays, w_indices, y_indices, w_indices)
-    return jnp.max(val, axis=-1)
+    B_values = B_vmap(v, params, arrays, w_indices, y_indices, w_indices)
+    return jnp.max(B_values, axis=-1)
 
 T_vmap = jax.jit(T_vmap, static_argnums=(2,))
 
-def get_greedy_vmap(v, constants, sizes, arrays):
+def get_greedy_vmap(v, params, sizes, arrays):
     "Computes a v-greedy policy, returned as a set of indices."
     w_size, y_size = sizes
     w_indices, y_indices = jnp.arange(w_size), jnp.arange(y_size)
-    val = B_vmap(v, constants, sizes, arrays, w_indices, y_indices, w_indices)
-    return jnp.argmax(val, axis=-1)
+    B_values = B_vmap(v, params, arrays, w_indices, y_indices, w_indices)
+    return jnp.argmax(B_values, axis=-1)
 
 get_greedy_vmap = jax.jit(get_greedy_vmap, static_argnums=(2,))
-
 ```
 
 Here's the iteration routine.
 
 ```{code-cell} ipython3
 def value_iteration_vmap(model, tol=1e-5):
-    constants, sizes, arrays = model
+    params, sizes, arrays = model
     vz = jnp.zeros(sizes)
-    _T = lambda v: T_vmap(v, constants, sizes, arrays)
+    _T = lambda v: T_vmap(v, params, sizes, arrays)
     v_star = successive_approx_jax(_T, vz, tolerance=tol)
-    return v_star, get_greedy(v_star, constants, sizes, arrays)
+    return v_star, get_greedy(v_star, params, sizes, arrays)
 ```
 
 Let's see how long it takes to solve the model using the `vmap` method.
@@ -497,8 +526,20 @@ print(jnp.allclose(v_star_vmap, v_star_jax))
 print(jnp.allclose(σ_star_vmap, σ_star_jax))
 ```
 
-The relative speed is
+Here's the speed gain associated with switching from the NumPy version to JAX with `vmap`:
 
 ```{code-cell} ipython3
-print(f"Relative speed = {jax_vmap_elapsed / jax_elapsed}")
+print(f"Relative speed = {numpy_elapsed / jax_vmap_elapsed}")
 ```
+
+And here's the comparison with the first JAX implementation (which used direct vectorization).
+
+```{code-cell} ipython3
+print(f"Relative speed = {jax_elapsed / jax_vmap_elapsed}")
+```
+
+The execution times for the two JAX versions are relatively similar.
+
+However, as emphasized above, having a second method up our sleeves (i.e, the
+`vmap` approach) will be helpful when confronting dynamic programs with more
+sophisticated Bellman equations.
