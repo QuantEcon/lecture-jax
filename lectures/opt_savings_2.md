@@ -183,55 +183,69 @@ $$
 $$
 
 ```{code-cell} ipython3
-def compute_r_σ(σ, params, sizes, arrays):
+def _compute_r_σ(σ, params, arrays, i, j):
     """
-    Compute the array r_σ[i, j] = r[i, j, σ[i, j]], which gives current
+    Compute r_σ[i, j] = r[i, j, σ[i, j]], which gives current
     rewards given policy σ.
     """
 
     # Unpack model
     β, R, γ = params
-    w_size, y_size = sizes
     w_grid, y_grid, Q = arrays
 
     # Compute r_σ[i, j]
-    w = jnp.reshape(w_grid, (w_size, 1))
-    y = jnp.reshape(y_grid, (1, y_size))
-    wp = w_grid[σ]
+    w, y = w_grid[i], y_grid[j]
+    wp = w_grid[σ[i, j]]
     c = R * w + y - wp
     r_σ = c**(1-γ)/(1-γ)
 
     return r_σ
+```
+
+Now we successively apply `vmap` to simulate nested loops.
+
+```{code-cell} ipython3
+r_1 = jax.vmap(_compute_r_σ,  in_axes=(None, None, None, None, 0))
+r_σ_vmap = jax.vmap(r_1,      in_axes=(None, None, None, 0,    None))
+```
+
+Here's a fully vectorized version of $r_\sigma$.
+
+```{code-cell} ipython3
+def compute_r_σ(σ, params, sizes, arrays):
+    w_size, y_size = sizes
+    w_indices, y_indices = jnp.arange(w_size), jnp.arange(y_size)
+    r_values = r_σ_vmap(σ, params, arrays, w_indices, y_indices)
+    return r_values
 
 compute_r_σ = jax.jit(compute_r_σ, static_argnums=(2,))
 ```
 
-Now we define the policy operator $T_\sigma$
+Now we define the policy operator $T_\sigma$ going through similar steps
 
 ```{code-cell} ipython3
-def T_σ(v, σ, params, sizes, arrays):
+def _T_σ(v, σ, params, arrays, i, j):
     "The σ-policy operator."
 
     # Unpack model
     β, R, γ = params
-    w_size, y_size = sizes
     w_grid, y_grid, Q = arrays
 
-    r_σ = compute_r_σ(σ, params, sizes, arrays)
-
-    # Compute the array v[σ[i, j], jp]
-    yp_idx = jnp.arange(y_size)
-    yp_idx = jnp.reshape(yp_idx, (1, 1, y_size))
-    σ = jnp.reshape(σ, (w_size, y_size, 1))
-    V = v[σ, yp_idx]
-
-    # Convert Q[j, jp] to Q[i, j, jp]
-    Q = jnp.reshape(Q, (1, y_size, y_size))
-
+    r_σ  = _compute_r_σ(σ, params, arrays, i, j)
     # Calculate the expected sum Σ_jp v[σ[i, j], jp] * Q[i, j, jp]
-    EV = jnp.sum(V * Q, axis=2)
+    EV = jnp.sum(v[σ[i, j], :] * Q[j, :])
 
     return r_σ + β * EV
+
+
+T_1 = jax.vmap(_T_σ,      in_axes=(None, None, None, None, None, 0))
+T_σ_vmap = jax.vmap(T_1,  in_axes=(None, None, None, None, 0,    None))
+
+def T_σ(v, σ, params, sizes, arrays):
+    w_size, y_size = sizes
+    w_indices, y_indices = jnp.arange(w_size), jnp.arange(y_size)
+    values = T_σ_vmap(v, σ, params, arrays, w_indices, y_indices)
+    return values
 
 T_σ = jax.jit(T_σ, static_argnums=(3,))
 ```
@@ -270,32 +284,29 @@ JAX allows us to solve linear systems defined in terms of operators; the first
 step is to define the function $L_{\sigma}$.
 
 ```{code-cell} ipython3
-def L_σ(v, σ, params, sizes, arrays):
+def _L_σ(v, σ, params, arrays, i, j):
     """
     Here we set up the linear map v -> L_σ v, where 
 
         (L_σ v)(w, y) = v(w, y) - β Σ_y′ v(σ(w, y), y′) Q(y, y′)
 
     """
-
+    # Unpack
     β, R, γ = params
-    w_size, y_size = sizes
     w_grid, y_grid, Q = arrays
-
-    # Set up the array v[σ[i, j], jp]
-    zp_idx = jnp.arange(y_size)
-    zp_idx = jnp.reshape(zp_idx, (1, 1, y_size))
-    σ = jnp.reshape(σ, (w_size, y_size, 1))
-    V = v[σ, zp_idx]
-
-    # Expand Q[j, jp] to Q[i, j, jp]
-    Q = jnp.reshape(Q, (1, y_size, y_size))
-
     # Compute and return v[i, j] - β Σ_jp v[σ[i, j], jp] * Q[j, jp]
-    return v - β * jnp.sum(V * Q, axis=2)
+    return v[i, j]  - β * jnp.sum(v[σ[i, j], :] * Q[j, :])
+
+L_1 = jax.vmap(_L_σ,      in_axes=(None, None, None, None, None, 0))
+L_σ_vmap = jax.vmap(L_1,  in_axes=(None, None, None, None, 0,    None))
+
+def L_σ(v, σ, params, sizes, arrays):
+    w_size, y_size = sizes
+    w_indices, y_indices = jnp.arange(w_size), jnp.arange(y_size)
+    values = L_σ_vmap(v, σ, params, arrays, w_indices, y_indices)
+    return values
 
 L_σ = jax.jit(L_σ, static_argnums=(3,))
-
 ```
 
 Now we can define a function to compute $v_{\sigma}$
