@@ -231,21 +231,21 @@ using GPUs and <a class="reference external" href="https://jax.readthedocs.io">G
 <li class="toctree-l1"><a class="reference internal" href="about.html">1. About</a></li>
 <li class="toctree-l1"><a class="reference internal" href="jax_intro.html">2. An Introduction to JAX</a></li>
 <li class="toctree-l1"><a class="reference internal" href="newtons_method.html">3. Newton’s Method via JAX</a></li>
-<li class="toctree-l1"><a class="reference internal" href="markov_asset.html">4. An Asset Pricing Problem</a></li>
 </ul>
 </div>
 <div class="toctree-wrapper compound">
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Simulation</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="inventory_dynamics.html">5. Inventory Dynamics</a></li>
-<li class="toctree-l1"><a class="reference internal" href="kesten_processes.html">6. Kesten Processes and Firm Dynamics</a></li>
-<li class="toctree-l1"><a class="reference internal" href="wealth_dynamics.html">7. Wealth Distribution Dynamics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="inventory_dynamics.html">4. Inventory Dynamics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="kesten_processes.html">5. Kesten Processes and Firm Dynamics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wealth_dynamics.html">6. Wealth Distribution Dynamics</a></li>
 </ul>
 </div>
 <div class="toctree-wrapper compound">
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Data and Empirics</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Asset Pricing</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="mle.html">8. Maximum Likelihood Estimation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lucas_model.html">7. Asset Pricing: The Lucas Asset Pricing Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="markov_asset.html">8. An Asset Pricing Problem</a></li>
 </ul>
 </div>
 <div class="toctree-wrapper compound">
@@ -263,11 +263,17 @@ using GPUs and <a class="reference external" href="https://jax.readthedocs.io">G
 </ul>
 </div>
 <div class="toctree-wrapper compound">
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Data and Empirics</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="mle.html">18. Maximum Likelihood Estimation</a></li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Other</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">18. Troubleshooting</a></li>
-<li class="toctree-l1"><a class="reference internal" href="zreferences.html">19. References</a></li>
-<li class="toctree-l1"><a class="reference internal" href="status.html">20. Execution Statistics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">19. Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="zreferences.html">20. References</a></li>
+<li class="toctree-l1"><a class="reference internal" href="status.html">21. Execution Statistics</a></li>
 </ul>
 </div>
 </section>
@@ -342,11 +348,6 @@ using GPUs and <a class="reference external" href="https://jax.readthedocs.io">G
    3. Newton’s Method via JAX
   </a>
  </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="markov_asset.html">
-   4. An Asset Pricing Problem
-  </a>
- </li>
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
@@ -356,29 +357,34 @@ using GPUs and <a class="reference external" href="https://jax.readthedocs.io">G
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="inventory_dynamics.html">
-   5. Inventory Dynamics
+   4. Inventory Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kesten_processes.html">
-   6. Kesten Processes and Firm Dynamics
+   5. Kesten Processes and Firm Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wealth_dynamics.html">
-   7. Wealth Distribution Dynamics
+   6. Wealth Distribution Dynamics
   </a>
  </li>
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
-  Data and Empirics
+  Asset Pricing
  </span>
 </p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
-  <a class="reference internal" href="mle.html">
-   8. Maximum Likelihood Estimation
+  <a class="reference internal" href="lucas_model.html">
+   7. Asset Pricing: The Lucas Asset Pricing Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="markov_asset.html">
+   8. An Asset Pricing Problem
   </a>
  </li>
 </ul>
@@ -436,23 +442,35 @@ using GPUs and <a class="reference external" href="https://jax.readthedocs.io">G
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
+  Data and Empirics
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="mle.html">
+   18. Maximum Likelihood Estimation
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
   Other
  </span>
 </p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   18. Troubleshooting
+   19. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   19. References
+   20. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   20. Execution Statistics
+   21. Execution Statistics
   </a>
  </li>
 </ul>

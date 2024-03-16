@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>5. Inventory Dynamics &#8212; Quantitative Economics with Python using JAX</title>
+    <title>4. Inventory Dynamics &#8212; Quantitative Economics with Python using JAX</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
@@ -121,8 +121,8 @@ const thebe_selector_output = ".output, .cell_output"
     <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="6. Kesten Processes and Firm Dynamics" href="kesten_processes.html" />
-    <link rel="prev" title="4. An Asset Pricing Problem" href="markov_asset.html" />
+    <link rel="next" title="5. Kesten Processes and Firm Dynamics" href="kesten_processes.html" />
+    <link rel="prev" title="3. Newton’s Method via JAX" href="newtons_method.html" />
 
 <!-- Normal Meta Tags -->
 <meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
@@ -170,17 +170,17 @@ const thebe_selector_output = ".output, .cell_output"
 
                         <nav id="bd-toc-nav" class="qe-page__toc-nav">
                             <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">5.1. Overview</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sample-paths">5.2. Sample paths</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cross-sectional-distributions">5.3. Cross-sectional distributions</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#for-loop-version">5.3.1. For loop version</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#compiling-the-outer-loop">5.3.2. Compiling the outer loop</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#further-vectorization">5.3.3. Further vectorization</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">4.1. Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sample-paths">4.2. Sample paths</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cross-sectional-distributions">4.3. Cross-sectional distributions</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#for-loop-version">4.3.1. For loop version</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#compiling-the-outer-loop">4.3.2. Compiling the outer loop</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#further-vectorization">4.3.3. Further vectorization</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#distribution-dynamics">5.4. Distribution dynamics</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#restock-frequency">5.5. Restock frequency</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">5.5.1. For loop version</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#distribution-dynamics">4.4. Distribution dynamics</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#restock-frequency">4.5. Restock frequency</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">4.5.1. For loop version</a></li>
 </ul>
 </li>
 </ul>
@@ -246,7 +246,7 @@ const thebe_selector_output = ".output, .cell_output"
                 <img style="width:250px;display:inline;" width="250px" src="https://assets.quantecon.org/img/qe-menubar-logo.svg" alt="QuantEcon">
         </a>
 </div><section class="tex2jax_ignore mathjax_ignore" id="inventory-dynamics">
-<h1><span class="section-number">5. </span>Inventory Dynamics<a class="headerlink" href="#inventory-dynamics" title="Permalink to this heading">#</a></h1>
+<h1><span class="section-number">4. </span>Inventory Dynamics<a class="headerlink" href="#inventory-dynamics" title="Permalink to this heading">#</a></h1>
 <div class="warning admonition">
 <p class="admonition-title">GPU</p>
 <p>This lecture was built using <a class="reference internal" href="status.html#status-machine-details"><span class="std std-ref">hardware</span></a> that has access to a GPU.</p>
@@ -254,7 +254,7 @@ const thebe_selector_output = ".output, .cell_output"
 <p>To run this lecture on your own machine, you need to install <a class="reference external" href="https://github.com/google/jax">Google JAX</a>.</p>
 </div>
 <section id="overview">
-<span id="index-0"></span><h2><span class="section-number">5.1. </span>Overview<a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
+<span id="index-0"></span><h2><span class="section-number">4.1. </span>Overview<a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
 <p>This lecture explores the inventory dynamics of a firm using so-called s-S inventory control.</p>
 <p>Loosely speaking, this means that the firm</p>
 <ul class="simple">
@@ -296,7 +296,7 @@ lecture</a>, using Numba.</p>
   pid, fd = os.forkpty()
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Thu Mar 14 20:21:20 2024       
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Sat Mar 16 19:54:04 2024       
 +-----------------------------------------------------------------------------+
 | NVIDIA-SMI 470.182.03   Driver Version: 470.182.03   CUDA Version: 12.3     |
 |-------------------------------+----------------------+----------------------+
@@ -307,7 +307,7 @@ lecture</a>, using Numba.</p>
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>|   0  Tesla V100-SXM2...  Off  | 00000000:00:1E.0 Off |                    0 |
-| N/A   28C    P0    37W / 300W |      0MiB / 16160MiB |      2%      Default |
+| N/A   27C    P0    37W / 300W |      0MiB / 16160MiB |      2%      Default |
 |                               |                      |                  N/A |
 +-------------------------------+----------------------+----------------------+
                                                                                
@@ -324,7 +324,7 @@ lecture</a>, using Numba.</p>
 </div>
 </section>
 <section id="sample-paths">
-<h2><span class="section-number">5.2. </span>Sample paths<a class="headerlink" href="#sample-paths" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">4.2. </span>Sample paths<a class="headerlink" href="#sample-paths" title="Permalink to this heading">#</a></h2>
 <p>Consider a firm with inventory <span class="math notranslate nohighlight">\(X_t\)</span>.</p>
 <p>The firm waits until <span class="math notranslate nohighlight">\(X_t \leq s\)</span> and then restocks up to <span class="math notranslate nohighlight">\(S\)</span> units.</p>
 <p>It faces stochastic demand <span class="math notranslate nohighlight">\(\{ D_t \}\)</span>, which we assume is IID across time and
@@ -359,7 +359,7 @@ and standard normal.</p>
 </div>
 </section>
 <section id="cross-sectional-distributions">
-<h2><span class="section-number">5.3. </span>Cross-sectional distributions<a class="headerlink" href="#cross-sectional-distributions" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">4.3. </span>Cross-sectional distributions<a class="headerlink" href="#cross-sectional-distributions" title="Permalink to this heading">#</a></h2>
 <p>Now let’s look at the marginal distribution <span class="math notranslate nohighlight">\(\psi_T\)</span> of <span class="math notranslate nohighlight">\(X_T\)</span> for some fixed <span class="math notranslate nohighlight">\(T\)</span>.</p>
 <p>The probability distribution <span class="math notranslate nohighlight">\(\psi_T\)</span> is the time <span class="math notranslate nohighlight">\(T\)</span> distribution of firm
 inventory levels implied by the model.</p>
@@ -397,7 +397,7 @@ initial cross-section of inventories for the <span class="math notranslate nohig
 </div>
 </div>
 <section id="for-loop-version">
-<h3><span class="section-number">5.3.1. </span>For loop version<a class="headerlink" href="#for-loop-version" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">4.3.1. </span>For loop version<a class="headerlink" href="#for-loop-version" title="Permalink to this heading">#</a></h3>
 <p>Now we provide code to compute the cross-sectional distribution <span class="math notranslate nohighlight">\(\psi_T\)</span> given some
 initial distribution <span class="math notranslate nohighlight">\(\psi_0\)</span> and a positive integer <span class="math notranslate nohighlight">\(T\)</span>.</p>
 <p>In this code we use an ordinary Python <code class="docutils literal notranslate"><span class="pre">for</span></code> loop to step forward through time</p>
@@ -445,8 +445,8 @@ initial inventory <code class="docutils literal notranslate"><span class="pre">x
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1.3 s, sys: 474 ms, total: 1.78 s
-Wall time: 931 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1.39 s, sys: 411 ms, total: 1.8 s
+Wall time: 970 ms
 </pre></div>
 </div>
 </div>
@@ -459,8 +459,8 @@ Wall time: 931 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1.09 s, sys: 364 ms, total: 1.45 s
-Wall time: 571 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1.14 s, sys: 327 ms, total: 1.47 s
+Wall time: 603 ms
 </pre></div>
 </div>
 </div>
@@ -486,7 +486,7 @@ Wall time: 571 ms
 </div>
 </section>
 <section id="compiling-the-outer-loop">
-<h3><span class="section-number">5.3.2. </span>Compiling the outer loop<a class="headerlink" href="#compiling-the-outer-loop" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">4.3.2. </span>Compiling the outer loop<a class="headerlink" href="#compiling-the-outer-loop" title="Permalink to this heading">#</a></h3>
 <p>Now let’s see if we can gain some speed by compiling the outer loop, which steps
 through the time dimension.</p>
 <p>We will do this using <code class="docutils literal notranslate"><span class="pre">jax.jit</span></code> and a <code class="docutils literal notranslate"><span class="pre">fori_loop</span></code>, which is a compiler-ready version of a <code class="docutils literal notranslate"><span class="pre">for</span></code> loop provided by JAX.</p>
@@ -534,8 +534,8 @@ through the time dimension.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 295 ms, sys: 0 ns, total: 295 ms
-Wall time: 203 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 294 ms, sys: 0 ns, total: 294 ms
+Wall time: 204 ms
 </pre></div>
 </div>
 </div>
@@ -549,8 +549,8 @@ Wall time: 203 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 16 ms, sys: 0 ns, total: 16 ms
-Wall time: 14.1 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 15.8 ms, sys: 0 ns, total: 15.8 ms
+Wall time: 14 ms
 </pre></div>
 </div>
 </div>
@@ -560,7 +560,7 @@ produced a nontrivial speed gain.</p>
 <p>This is due to the fact that we have compiled the whole operation.</p>
 </section>
 <section id="further-vectorization">
-<h3><span class="section-number">5.3.3. </span>Further vectorization<a class="headerlink" href="#further-vectorization" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">4.3.3. </span>Further vectorization<a class="headerlink" href="#further-vectorization" title="Permalink to this heading">#</a></h3>
 <p>For relatively small problems, we can make this code run even faster by generating
 all random variables at once.</p>
 <p>This improves efficiency because we are taking more operations out of the loop.</p>
@@ -599,8 +599,8 @@ all random variables at once.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 226 ms, sys: 0 ns, total: 226 ms
-Wall time: 210 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 233 ms, sys: 0 ns, total: 233 ms
+Wall time: 213 ms
 </pre></div>
 </div>
 </div>
@@ -614,8 +614,8 @@ Wall time: 210 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 5.75 ms, sys: 0 ns, total: 5.75 ms
-Wall time: 4.79 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 5.17 ms, sys: 0 ns, total: 5.17 ms
+Wall time: 4.69 ms
 </pre></div>
 </div>
 </div>
@@ -628,7 +628,7 @@ store large arrays of random draws.</p>
 </section>
 </section>
 <section id="distribution-dynamics">
-<h2><span class="section-number">5.4. </span>Distribution dynamics<a class="headerlink" href="#distribution-dynamics" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">4.4. </span>Distribution dynamics<a class="headerlink" href="#distribution-dynamics" title="Permalink to this heading">#</a></h2>
 <p>Next let’s take a look at how the distribution sequence evolves over time.</p>
 <p>We will go back to using ordinary Python <code class="docutils literal notranslate"><span class="pre">for</span></code> loops.</p>
 <p>Here is code that repeatedly shifts the cross-section forward while
@@ -672,8 +672,8 @@ recording the cross-section at the dates in <code class="docutils literal notran
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 2.31 s, sys: 0 ns, total: 2.31 s
-Wall time: 1.07 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 2.14 s, sys: 0 ns, total: 2.14 s
+Wall time: 1.02 s
 </pre></div>
 </div>
 </div>
@@ -710,7 +710,7 @@ initial conditions.</p>
 <p>If you test a few different initial conditions, you will see that they do not affect long-run outcomes.</p>
 </section>
 <section id="restock-frequency">
-<h2><span class="section-number">5.5. </span>Restock frequency<a class="headerlink" href="#restock-frequency" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">4.5. </span>Restock frequency<a class="headerlink" href="#restock-frequency" title="Permalink to this heading">#</a></h2>
 <p>As an exercise, let’s study the probability that firms need to restock over a given time period.</p>
 <p>In the exercise, we will</p>
 <ul class="simple">
@@ -720,7 +720,7 @@ initial conditions.</p>
 <p>This proportion approximates the probability of the event when the sample size
 is large.</p>
 <section id="id1">
-<h3><span class="section-number">5.5.1. </span>For loop version<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">4.5.1. </span>For loop version<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h3>
 <p>We start with an easier <code class="docutils literal notranslate"><span class="pre">for</span></code> loop implementation</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -768,8 +768,8 @@ is large.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 667 ms, sys: 0 ns, total: 667 ms
-Wall time: 638 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 608 ms, sys: 0 ns, total: 608 ms
+Wall time: 599 ms
 Frequency of at least two stock outs = 0.4472379982471466
 </pre></div>
 </div>
@@ -777,7 +777,7 @@ Frequency of at least two stock outs = 0.4472379982471466
 </div>
 <div class="exercise admonition" id="inventory_dynamics_ex1">
 
-<p class="admonition-title"><span class="caption-number">Exercise 5.1 </span></p>
+<p class="admonition-title"><span class="caption-number">Exercise 4.1 </span></p>
 <section id="exercise-content">
 <p>Write a <code class="docutils literal notranslate"><span class="pre">fori_loop</span></code> version of the last function.  See if you can increase the
 speed while generating a similar answer.</p>
@@ -785,7 +785,7 @@ speed while generating a similar answer.</p>
 </div>
 <div class="solution dropdown admonition" id="inventory_dynamics-solution-1">
 
-<p class="admonition-title">Solution to<a class="reference internal" href="#inventory_dynamics_ex1"> Exercise 5.1</a></p>
+<p class="admonition-title">Solution to<a class="reference internal" href="#inventory_dynamics_ex1"> Exercise 4.1</a></p>
 <section id="solution-content">
 <p>Here is a <code class="docutils literal notranslate"><span class="pre">lax.fori_loop</span></code> version that JIT compiles the whole function</p>
 <div class="cell docutils container">
@@ -839,10 +839,10 @@ speed while generating a similar answer.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 335 ms, sys: 0 ns, total: 335 ms
-Wall time: 285 ms
-CPU times: user 2.29 ms, sys: 0 ns, total: 2.29 ms
-Wall time: 4.77 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 340 ms, sys: 0 ns, total: 340 ms
+Wall time: 289 ms
+CPU times: user 2.41 ms, sys: 0 ns, total: 2.41 ms
+Wall time: 4.82 ms
 Frequency of at least two stock outs = 0.44674399495124817
 </pre></div>
 </div>
@@ -924,11 +924,6 @@ Frequency of at least two stock outs = 0.44674399495124817
    3. Newton’s Method via JAX
   </a>
  </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="markov_asset.html">
-   4. An Asset Pricing Problem
-  </a>
- </li>
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
@@ -938,29 +933,34 @@ Frequency of at least two stock outs = 0.44674399495124817
 <ul class="current nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1 current active active">
   <a class="current reference internal" href="#">
-   5. Inventory Dynamics
+   4. Inventory Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kesten_processes.html">
-   6. Kesten Processes and Firm Dynamics
+   5. Kesten Processes and Firm Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wealth_dynamics.html">
-   7. Wealth Distribution Dynamics
+   6. Wealth Distribution Dynamics
   </a>
  </li>
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
-  Data and Empirics
+  Asset Pricing
  </span>
 </p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
-  <a class="reference internal" href="mle.html">
-   8. Maximum Likelihood Estimation
+  <a class="reference internal" href="lucas_model.html">
+   7. Asset Pricing: The Lucas Asset Pricing Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="markov_asset.html">
+   8. An Asset Pricing Problem
   </a>
  </li>
 </ul>
@@ -1018,23 +1018,35 @@ Frequency of at least two stock outs = 0.44674399495124817
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
+  Data and Empirics
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="mle.html">
+   18. Maximum Likelihood Estimation
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
   Other
  </span>
 </p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   18. Troubleshooting
+   19. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   19. References
+   20. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   20. Execution Statistics
+   21. Execution Statistics
   </a>
  </li>
 </ul>

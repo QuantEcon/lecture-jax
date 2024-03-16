@@ -267,7 +267,7 @@ const thebe_selector_output = ".output, .cell_output"
   pid, fd = os.forkpty()
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Thu Mar 14 20:53:07 2024       
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Sat Mar 16 20:25:57 2024       
 +-----------------------------------------------------------------------------+
 | NVIDIA-SMI 470.182.03   Driver Version: 470.182.03   CUDA Version: 12.3     |
 |-------------------------------+----------------------+----------------------+
@@ -278,7 +278,7 @@ const thebe_selector_output = ".output, .cell_output"
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>|   0  Tesla V100-SXM2...  Off  | 00000000:00:1E.0 Off |                    0 |
-| N/A   27C    P0    37W / 300W |      0MiB / 16160MiB |      2%      Default |
+| N/A   28C    P0    37W / 300W |      0MiB / 16160MiB |      2%      Default |
 |                               |                      |                  N/A |
 +-------------------------------+----------------------+----------------------+
                                                                                
@@ -360,8 +360,8 @@ the method of <strong>successive approximations</strong>.</p>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The cost-to-go function is [ 8. 10.  3.  5.  4.  1.  0.]
-CPU times: user 112 ms, sys: 20.9 ms, total: 133 ms
-Wall time: 175 ms
+CPU times: user 109 ms, sys: 21.7 ms, total: 131 ms
+Wall time: 171 ms
 </pre></div>
 </div>
 </div>
@@ -411,8 +411,8 @@ Wall time: 175 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 77.1 ms, sys: 5.71 ms, total: 82.8 ms
-Wall time: 89.4 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 66.7 ms, sys: 18 ms, total: 84.7 ms
+Wall time: 91.4 ms
 </pre></div>
 </div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Array([ 8., 10.,  3.,  5.,  4.,  1.,  0.], dtype=float32)
@@ -430,7 +430,7 @@ Wall time: 89.4 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1.28 ms, sys: 1.16 ms, total: 2.45 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1.11 ms, sys: 1.26 ms, total: 2.38 ms
 Wall time: 1.04 ms
 </pre></div>
 </div>
@@ -674,8 +674,8 @@ optimal path (and its cost).</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 87.4 ms, sys: 14 ms, total: 101 ms
-Wall time: 115 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 93.3 ms, sys: 9.5 ms, total: 103 ms
+Wall time: 116 ms
 </pre></div>
 </div>
 </div>
@@ -688,8 +688,8 @@ Wall time: 115 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1.23 ms, sys: 1.04 ms, total: 2.26 ms
-Wall time: 1.09 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 559 µs, sys: 578 µs, total: 1.14 ms
+Wall time: 840 µs
 </pre></div>
 </div>
 </div>
@@ -820,11 +820,6 @@ Cost:  160.55
    3. Newton’s Method via JAX
   </a>
  </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="markov_asset.html">
-   4. An Asset Pricing Problem
-  </a>
- </li>
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
@@ -834,29 +829,34 @@ Cost:  160.55
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="inventory_dynamics.html">
-   5. Inventory Dynamics
+   4. Inventory Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kesten_processes.html">
-   6. Kesten Processes and Firm Dynamics
+   5. Kesten Processes and Firm Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wealth_dynamics.html">
-   7. Wealth Distribution Dynamics
+   6. Wealth Distribution Dynamics
   </a>
  </li>
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
-  Data and Empirics
+  Asset Pricing
  </span>
 </p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
-  <a class="reference internal" href="mle.html">
-   8. Maximum Likelihood Estimation
+  <a class="reference internal" href="lucas_model.html">
+   7. Asset Pricing: The Lucas Asset Pricing Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="markov_asset.html">
+   8. An Asset Pricing Problem
   </a>
  </li>
 </ul>
@@ -914,23 +914,35 @@ Cost:  160.55
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
+  Data and Empirics
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="mle.html">
+   18. Maximum Likelihood Estimation
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
   Other
  </span>
 </p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   18. Troubleshooting
+   19. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   19. References
+   20. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   20. Execution Statistics
+   21. Execution Statistics
   </a>
  </li>
 </ul>

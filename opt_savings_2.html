@@ -172,7 +172,7 @@ const thebe_selector_output = ".output, .cell_output"
                             <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#model-primitives">10.1. Model primitives</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#operators">10.2. Operators</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#jit-compiled-versions">10.3. JIT compiled versions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#iteration">10.3. Iteration</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#solvers">10.4. Solvers</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#plots">10.5. Plots</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tests">10.6. Tests</a></li>
@@ -279,18 +279,20 @@ computation.</p>
 </summary>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /opt/conda/envs/quantecon/lib/python3.11/site-packages (0.7.2)
-Requirement already satisfied: numba&gt;=0.49.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (0.59.0)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: numba&gt;=0.49.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (0.59.0)
 Requirement already satisfied: numpy&gt;=1.17.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (1.26.4)
 Requirement already satisfied: requests in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (2.31.0)
 Requirement already satisfied: scipy&gt;=1.5.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (1.11.4)
 Requirement already satisfied: sympy in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (1.12)
 Requirement already satisfied: llvmlite&lt;0.43,&gt;=0.42.0dev0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from numba&gt;=0.49.0-&gt;quantecon) (0.42.0)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: charset-normalizer&lt;4,&gt;=2 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests-&gt;quantecon) (2.0.4)
+Requirement already satisfied: charset-normalizer&lt;4,&gt;=2 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests-&gt;quantecon) (2.0.4)
 Requirement already satisfied: idna&lt;4,&gt;=2.5 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests-&gt;quantecon) (3.4)
 Requirement already satisfied: urllib3&lt;3,&gt;=1.21.1 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests-&gt;quantecon) (2.0.7)
-Requirement already satisfied: certifi&gt;=2017.4.17 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests-&gt;quantecon) (2024.2.2)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: certifi&gt;=2017.4.17 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests-&gt;quantecon) (2024.2.2)
 Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from sympy-&gt;quantecon) (1.3.0)
 </pre></div>
 </div>
@@ -326,7 +328,7 @@ Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/envs/quantecon/lib/
   pid, fd = os.forkpty()
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Fri Mar 15 01:03:14 2024       
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Sat Mar 16 20:25:45 2024       
 +-----------------------------------------------------------------------------+
 | NVIDIA-SMI 470.182.03   Driver Version: 470.182.03   CUDA Version: 12.3     |
 |-------------------------------+----------------------+----------------------+
@@ -337,7 +339,7 @@ Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/envs/quantecon/lib/
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>|   0  Tesla V100-SXM2...  Off  | 00000000:00:1E.0 Off |                    0 |
-| N/A   30C    P0    36W / 300W |      0MiB / 16160MiB |      2%      Default |
+| N/A   28C    P0    37W / 300W |      0MiB / 16160MiB |      2%      Default |
 |                               |                      |                  N/A |
 +-------------------------------+----------------------+----------------------+
                                                                                
@@ -377,11 +379,15 @@ Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/envs/quantecon/lib/
 <span class="sd">    A function that takes in parameters and returns parameters and grids </span>
 <span class="sd">    for the optimal savings problem.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Build grids and transition probabilities</span>
     <span class="n">w_grid</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">w_min</span><span class="p">,</span> <span class="n">w_max</span><span class="p">,</span> <span class="n">w_size</span><span class="p">)</span>
     <span class="n">mc</span> <span class="o">=</span> <span class="n">qe</span><span class="o">.</span><span class="n">tauchen</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="n">y_size</span><span class="p">,</span> <span class="n">rho</span><span class="o">=</span><span class="n">ρ</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="n">ν</span><span class="p">)</span>
-    <span class="n">y_grid</span><span class="p">,</span> <span class="n">Q</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">mc</span><span class="o">.</span><span class="n">state_values</span><span class="p">),</span> <span class="n">jax</span><span class="o">.</span><span class="n">device_put</span><span class="p">(</span><span class="n">mc</span><span class="o">.</span><span class="n">P</span><span class="p">)</span>
+    <span class="n">y_grid</span><span class="p">,</span> <span class="n">Q</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">mc</span><span class="o">.</span><span class="n">state_values</span><span class="p">),</span> <span class="n">mc</span><span class="o">.</span><span class="n">P</span>
+    <span class="c1"># Pack and return</span>
+    <span class="n">params</span> <span class="o">=</span> <span class="n">β</span><span class="p">,</span> <span class="n">R</span><span class="p">,</span> <span class="n">γ</span>
     <span class="n">sizes</span> <span class="o">=</span> <span class="n">w_size</span><span class="p">,</span> <span class="n">y_size</span>
-    <span class="k">return</span> <span class="p">(</span><span class="n">β</span><span class="p">,</span> <span class="n">R</span><span class="p">,</span> <span class="n">γ</span><span class="p">),</span> <span class="n">sizes</span><span class="p">,</span> <span class="p">(</span><span class="n">w_grid</span><span class="p">,</span> <span class="n">y_grid</span><span class="p">,</span> <span class="n">Q</span><span class="p">)</span>
+    <span class="n">arrays</span> <span class="o">=</span> <span class="n">w_grid</span><span class="p">,</span> <span class="n">y_grid</span><span class="p">,</span> <span class="n">jnp</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">Q</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">params</span><span class="p">,</span> <span class="n">sizes</span><span class="p">,</span> <span class="n">arrays</span>
 </pre></div>
 </div>
 </div>
@@ -389,34 +395,44 @@ Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/envs/quantecon/lib/
 <p>Here’s the right hand side of the Bellman equation:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">B</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">sizes</span><span class="p">,</span> <span class="n">arrays</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">_B</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">arrays</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">ip</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    A vectorized version of the right-hand side of the Bellman equation</span>
-<span class="sd">    (before maximization), which is a 3D array representing</span>
+<span class="sd">    The right-hand side of the Bellman equation before maximization, which takes</span>
+<span class="sd">    the form</span>
 
 <span class="sd">        B(w, y, w′) = u(Rw + y - w′) + β Σ_y′ v(w′, y′) Q(y, y′)</span>
 
-<span class="sd">    for all (w, y, w′).</span>
+<span class="sd">    The indices are (i, j, ip) -&gt; (w, y, w′).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="c1"># Unpack</span>
     <span class="n">β</span><span class="p">,</span> <span class="n">R</span><span class="p">,</span> <span class="n">γ</span> <span class="o">=</span> <span class="n">params</span>
-    <span class="n">w_size</span><span class="p">,</span> <span class="n">y_size</span> <span class="o">=</span> <span class="n">sizes</span>
     <span class="n">w_grid</span><span class="p">,</span> <span class="n">y_grid</span><span class="p">,</span> <span class="n">Q</span> <span class="o">=</span> <span class="n">arrays</span>
-
-    <span class="c1"># Compute current rewards r(w, y, wp) as array r[i, j, ip]</span>
-    <span class="n">w</span>  <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">w_grid</span><span class="p">,</span> <span class="p">(</span><span class="n">w_size</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>    <span class="c1"># w[i]   -&gt;  w[i, j, ip]</span>
-    <span class="n">y</span>  <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">y_grid</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">y_size</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>    <span class="c1"># z[j]   -&gt;  z[i, j, ip]</span>
-    <span class="n">wp</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">w_grid</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">w_size</span><span class="p">))</span>    <span class="c1"># wp[ip] -&gt; wp[i, j, ip]</span>
+    <span class="n">w</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">wp</span>  <span class="o">=</span> <span class="n">w_grid</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">y_grid</span><span class="p">[</span><span class="n">j</span><span class="p">],</span> <span class="n">w_grid</span><span class="p">[</span><span class="n">ip</span><span class="p">]</span>
     <span class="n">c</span> <span class="o">=</span> <span class="n">R</span> <span class="o">*</span> <span class="n">w</span> <span class="o">+</span> <span class="n">y</span> <span class="o">-</span> <span class="n">wp</span>
-
-    <span class="c1"># Calculate continuation rewards at all combinations of (w, y, wp)</span>
-    <span class="n">v</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">w_size</span><span class="p">,</span> <span class="n">y_size</span><span class="p">))</span>  <span class="c1"># v[ip, jp] -&gt; v[i, j, ip, jp]</span>
-    <span class="n">Q</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">Q</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">y_size</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">y_size</span><span class="p">))</span>  <span class="c1"># Q[j, jp]  -&gt; Q[i, j, ip, jp]</span>
-    <span class="n">EV</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">v</span> <span class="o">*</span> <span class="n">Q</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>                 <span class="c1"># sum over last index jp</span>
-
-    <span class="c1"># Compute the right-hand side of the Bellman equation</span>
+    <span class="n">EV</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="n">ip</span><span class="p">,</span> <span class="p">:]</span> <span class="o">*</span> <span class="n">Q</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="p">:])</span> 
     <span class="k">return</span> <span class="n">jnp</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">c</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">,</span> <span class="n">c</span><span class="o">**</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">γ</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">γ</span><span class="p">)</span> <span class="o">+</span> <span class="n">β</span> <span class="o">*</span> <span class="n">EV</span><span class="p">,</span> <span class="o">-</span><span class="n">jnp</span><span class="o">.</span><span class="n">inf</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now we successively apply <code class="docutils literal notranslate"><span class="pre">vmap</span></code> to vectorize <span class="math notranslate nohighlight">\(B\)</span> by simulating nested loops.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">B_1</span>    <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">vmap</span><span class="p">(</span><span class="n">_B</span><span class="p">,</span>  <span class="n">in_axes</span><span class="o">=</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+<span class="n">B_2</span>    <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">vmap</span><span class="p">(</span><span class="n">B_1</span><span class="p">,</span> <span class="n">in_axes</span><span class="o">=</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span>    <span class="kc">None</span><span class="p">))</span>
+<span class="n">B_vmap</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">vmap</span><span class="p">(</span><span class="n">B_2</span><span class="p">,</span> <span class="n">in_axes</span><span class="o">=</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span>    <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Here’s a fully vectorized version of <span class="math notranslate nohighlight">\(B\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">B</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">sizes</span><span class="p">,</span> <span class="n">arrays</span><span class="p">):</span>
+    <span class="n">w_size</span><span class="p">,</span> <span class="n">y_size</span> <span class="o">=</span> <span class="n">sizes</span>
+    <span class="n">w_indices</span><span class="p">,</span> <span class="n">y_indices</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">w_size</span><span class="p">),</span> <span class="n">jnp</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">y_size</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">B_vmap</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">arrays</span><span class="p">,</span> <span class="n">w_indices</span><span class="p">,</span> <span class="n">y_indices</span><span class="p">,</span> <span class="n">w_indices</span><span class="p">)</span>
+
+<span class="n">B</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">jit</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="n">static_argnums</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,))</span>
 </pre></div>
 </div>
 </div>
@@ -424,73 +440,14 @@ Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/envs/quantecon/lib/
 </section>
 <section id="operators">
 <h2><span class="section-number">10.2. </span>Operators<a class="headerlink" href="#operators" title="Permalink to this heading">#</a></h2>
-<p>We define a function to compute the current rewards <span class="math notranslate nohighlight">\(r_\sigma\)</span> given policy <span class="math notranslate nohighlight">\(\sigma\)</span>,
-which is defined as the vector</p>
-<div class="math notranslate nohighlight">
-\[
-r_\sigma(w, y) := r(w, y, \sigma(w, y)) 
-\]</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">compute_r_σ</span><span class="p">(</span><span class="n">σ</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">sizes</span><span class="p">,</span> <span class="n">arrays</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Compute the array r_σ[i, j] = r[i, j, σ[i, j]], which gives current</span>
-<span class="sd">    rewards given policy σ.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="c1"># Unpack model</span>
-    <span class="n">β</span><span class="p">,</span> <span class="n">R</span><span class="p">,</span> <span class="n">γ</span> <span class="o">=</span> <span class="n">params</span>
-    <span class="n">w_size</span><span class="p">,</span> <span class="n">y_size</span> <span class="o">=</span> <span class="n">sizes</span>
-    <span class="n">w_grid</span><span class="p">,</span> <span class="n">y_grid</span><span class="p">,</span> <span class="n">Q</span> <span class="o">=</span> <span class="n">arrays</span>
-
-    <span class="c1"># Compute r_σ[i, j]</span>
-    <span class="n">w</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">w_grid</span><span class="p">,</span> <span class="p">(</span><span class="n">w_size</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
-    <span class="n">y</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">y_grid</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">y_size</span><span class="p">))</span>
-    <span class="n">wp</span> <span class="o">=</span> <span class="n">w_grid</span><span class="p">[</span><span class="n">σ</span><span class="p">]</span>
-    <span class="n">c</span> <span class="o">=</span> <span class="n">R</span> <span class="o">*</span> <span class="n">w</span> <span class="o">+</span> <span class="n">y</span> <span class="o">-</span> <span class="n">wp</span>
-    <span class="n">r_σ</span> <span class="o">=</span> <span class="n">c</span><span class="o">**</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">γ</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">γ</span><span class="p">)</span>
-
-    <span class="k">return</span> <span class="n">r_σ</span>
-</pre></div>
-</div>
-</div>
-</div>
-<p>Now we define the policy operator <span class="math notranslate nohighlight">\(T_\sigma\)</span></p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">T_σ</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">σ</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">sizes</span><span class="p">,</span> <span class="n">arrays</span><span class="p">):</span>
-    <span class="s2">&quot;The σ-policy operator.&quot;</span>
-
-    <span class="c1"># Unpack model</span>
-    <span class="n">β</span><span class="p">,</span> <span class="n">R</span><span class="p">,</span> <span class="n">γ</span> <span class="o">=</span> <span class="n">params</span>
-    <span class="n">w_size</span><span class="p">,</span> <span class="n">y_size</span> <span class="o">=</span> <span class="n">sizes</span>
-    <span class="n">w_grid</span><span class="p">,</span> <span class="n">y_grid</span><span class="p">,</span> <span class="n">Q</span> <span class="o">=</span> <span class="n">arrays</span>
-
-    <span class="n">r_σ</span> <span class="o">=</span> <span class="n">compute_r_σ</span><span class="p">(</span><span class="n">σ</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">sizes</span><span class="p">,</span> <span class="n">arrays</span><span class="p">)</span>
-
-    <span class="c1"># Compute the array v[σ[i, j], jp]</span>
-    <span class="n">yp_idx</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">y_size</span><span class="p">)</span>
-    <span class="n">yp_idx</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">yp_idx</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">y_size</span><span class="p">))</span>
-    <span class="n">σ</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">σ</span><span class="p">,</span> <span class="p">(</span><span class="n">w_size</span><span class="p">,</span> <span class="n">y_size</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
-    <span class="n">V</span> <span class="o">=</span> <span class="n">v</span><span class="p">[</span><span class="n">σ</span><span class="p">,</span> <span class="n">yp_idx</span><span class="p">]</span>
-
-    <span class="c1"># Convert Q[j, jp] to Q[i, j, jp]</span>
-    <span class="n">Q</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">Q</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">y_size</span><span class="p">,</span> <span class="n">y_size</span><span class="p">))</span>
-
-    <span class="c1"># Calculate the expected sum Σ_jp v[σ[i, j], jp] * Q[i, j, jp]</span>
-    <span class="n">EV</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">V</span> <span class="o">*</span> <span class="n">Q</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
-
-    <span class="k">return</span> <span class="n">r_σ</span> <span class="o">+</span> <span class="n">β</span> <span class="o">*</span> <span class="n">EV</span>
-</pre></div>
-</div>
-</div>
-</div>
-<p>and the Bellman operator <span class="math notranslate nohighlight">\(T\)</span></p>
+<p>Here’s the Bellman operator <span class="math notranslate nohighlight">\(T\)</span></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">T</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">sizes</span><span class="p">,</span> <span class="n">arrays</span><span class="p">):</span>
     <span class="s2">&quot;The Bellman operator.&quot;</span>
-    <span class="k">return</span> <span class="n">jnp</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">B</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">sizes</span><span class="p">,</span> <span class="n">arrays</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">jnp</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">B</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">sizes</span><span class="p">,</span> <span class="n">arrays</span><span class="p">),</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="n">T</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">jit</span><span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="n">static_argnums</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,))</span>
 </pre></div>
 </div>
 </div>
@@ -500,7 +457,91 @@ r_\sigma(w, y) := r(w, y, \sigma(w, y))
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_greedy</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">sizes</span><span class="p">,</span> <span class="n">arrays</span><span class="p">):</span>
     <span class="s2">&quot;Computes a v-greedy policy, returned as a set of indices.&quot;</span>
-    <span class="k">return</span> <span class="n">jnp</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">B</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">sizes</span><span class="p">,</span> <span class="n">arrays</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">jnp</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">B</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">sizes</span><span class="p">,</span> <span class="n">arrays</span><span class="p">),</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="n">get_greedy</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">jit</span><span class="p">(</span><span class="n">get_greedy</span><span class="p">,</span> <span class="n">static_argnums</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We define a function to compute the current rewards <span class="math notranslate nohighlight">\(r_\sigma\)</span> given policy <span class="math notranslate nohighlight">\(\sigma\)</span>,
+which is defined as the vector</p>
+<div class="math notranslate nohighlight">
+\[
+    r_\sigma(w, y) := r(w, y, \sigma(w, y)) 
+\]</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">_compute_r_σ</span><span class="p">(</span><span class="n">σ</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">arrays</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    With indices (i, j) -&gt; (w, y) and wp = σ[i, j], compute </span>
+<span class="sd">        </span>
+<span class="sd">        r_σ[i, j] = u(Rw + y - wp)   </span>
+
+<span class="sd">    which gives current rewards under policy σ.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Unpack model</span>
+    <span class="n">β</span><span class="p">,</span> <span class="n">R</span><span class="p">,</span> <span class="n">γ</span> <span class="o">=</span> <span class="n">params</span>
+    <span class="n">w_grid</span><span class="p">,</span> <span class="n">y_grid</span><span class="p">,</span> <span class="n">Q</span> <span class="o">=</span> <span class="n">arrays</span>
+    <span class="c1"># Compute r_σ[i, j]</span>
+    <span class="n">w</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">wp</span> <span class="o">=</span> <span class="n">w_grid</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">y_grid</span><span class="p">[</span><span class="n">j</span><span class="p">],</span> <span class="n">w_grid</span><span class="p">[</span><span class="n">σ</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]]</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="n">R</span> <span class="o">*</span> <span class="n">w</span> <span class="o">+</span> <span class="n">y</span> <span class="o">-</span> <span class="n">wp</span>
+    <span class="n">r_σ</span> <span class="o">=</span> <span class="n">c</span><span class="o">**</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">γ</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">γ</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">r_σ</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now we successively apply <code class="docutils literal notranslate"><span class="pre">vmap</span></code> to simulate nested loops.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">r_1</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">vmap</span><span class="p">(</span><span class="n">_compute_r_σ</span><span class="p">,</span>  <span class="n">in_axes</span><span class="o">=</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+<span class="n">r_σ_vmap</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">vmap</span><span class="p">(</span><span class="n">r_1</span><span class="p">,</span>      <span class="n">in_axes</span><span class="o">=</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span>    <span class="kc">None</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Here’s a fully vectorized version of <span class="math notranslate nohighlight">\(r_\sigma\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">compute_r_σ</span><span class="p">(</span><span class="n">σ</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">sizes</span><span class="p">,</span> <span class="n">arrays</span><span class="p">):</span>
+    <span class="n">w_size</span><span class="p">,</span> <span class="n">y_size</span> <span class="o">=</span> <span class="n">sizes</span>
+    <span class="n">w_indices</span><span class="p">,</span> <span class="n">y_indices</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">w_size</span><span class="p">),</span> <span class="n">jnp</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">y_size</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">r_σ_vmap</span><span class="p">(</span><span class="n">σ</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">arrays</span><span class="p">,</span> <span class="n">w_indices</span><span class="p">,</span> <span class="n">y_indices</span><span class="p">)</span>
+
+<span class="n">compute_r_σ</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">jit</span><span class="p">(</span><span class="n">compute_r_σ</span><span class="p">,</span> <span class="n">static_argnums</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now we define the policy operator <span class="math notranslate nohighlight">\(T_\sigma\)</span> going through similar steps</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">_T_σ</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">σ</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">arrays</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">):</span>
+    <span class="s2">&quot;The σ-policy operator.&quot;</span>
+
+    <span class="c1"># Unpack model</span>
+    <span class="n">β</span><span class="p">,</span> <span class="n">R</span><span class="p">,</span> <span class="n">γ</span> <span class="o">=</span> <span class="n">params</span>
+    <span class="n">w_grid</span><span class="p">,</span> <span class="n">y_grid</span><span class="p">,</span> <span class="n">Q</span> <span class="o">=</span> <span class="n">arrays</span>
+
+    <span class="n">r_σ</span>  <span class="o">=</span> <span class="n">_compute_r_σ</span><span class="p">(</span><span class="n">σ</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">arrays</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span>
+    <span class="c1"># Calculate the expected sum Σ_jp v[σ[i, j], jp] * Q[i, j, jp]</span>
+    <span class="n">EV</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="n">σ</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">],</span> <span class="p">:]</span> <span class="o">*</span> <span class="n">Q</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="p">:])</span>
+
+    <span class="k">return</span> <span class="n">r_σ</span> <span class="o">+</span> <span class="n">β</span> <span class="o">*</span> <span class="n">EV</span>
+
+
+<span class="n">T_1</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">vmap</span><span class="p">(</span><span class="n">_T_σ</span><span class="p">,</span>      <span class="n">in_axes</span><span class="o">=</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+<span class="n">T_σ_vmap</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">vmap</span><span class="p">(</span><span class="n">T_1</span><span class="p">,</span>  <span class="n">in_axes</span><span class="o">=</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span>    <span class="kc">None</span><span class="p">))</span>
+
+<span class="k">def</span> <span class="nf">T_σ</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">σ</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">sizes</span><span class="p">,</span> <span class="n">arrays</span><span class="p">):</span>
+    <span class="n">w_size</span><span class="p">,</span> <span class="n">y_size</span> <span class="o">=</span> <span class="n">sizes</span>
+    <span class="n">w_indices</span><span class="p">,</span> <span class="n">y_indices</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">w_size</span><span class="p">),</span> <span class="n">jnp</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">y_size</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">T_σ_vmap</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">σ</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">arrays</span><span class="p">,</span> <span class="n">w_indices</span><span class="p">,</span> <span class="n">y_indices</span><span class="p">)</span>
+
+<span class="n">T_σ</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">jit</span><span class="p">(</span><span class="n">T_σ</span><span class="p">,</span> <span class="n">static_argnums</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,))</span>
 </pre></div>
 </div>
 </div>
@@ -532,29 +573,28 @@ v_\sigma = L_\sigma^{-1} r_\sigma
 step is to define the function <span class="math notranslate nohighlight">\(L_{\sigma}\)</span>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">L_σ</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">σ</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">sizes</span><span class="p">,</span> <span class="n">arrays</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">_L_σ</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">σ</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">arrays</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Here we set up the linear map v -&gt; L_σ v, where </span>
 
 <span class="sd">        (L_σ v)(w, y) = v(w, y) - β Σ_y′ v(σ(w, y), y′) Q(y, y′)</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-
+    <span class="c1"># Unpack</span>
     <span class="n">β</span><span class="p">,</span> <span class="n">R</span><span class="p">,</span> <span class="n">γ</span> <span class="o">=</span> <span class="n">params</span>
-    <span class="n">w_size</span><span class="p">,</span> <span class="n">y_size</span> <span class="o">=</span> <span class="n">sizes</span>
     <span class="n">w_grid</span><span class="p">,</span> <span class="n">y_grid</span><span class="p">,</span> <span class="n">Q</span> <span class="o">=</span> <span class="n">arrays</span>
-
-    <span class="c1"># Set up the array v[σ[i, j], jp]</span>
-    <span class="n">zp_idx</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">y_size</span><span class="p">)</span>
-    <span class="n">zp_idx</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">zp_idx</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">y_size</span><span class="p">))</span>
-    <span class="n">σ</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">σ</span><span class="p">,</span> <span class="p">(</span><span class="n">w_size</span><span class="p">,</span> <span class="n">y_size</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
-    <span class="n">V</span> <span class="o">=</span> <span class="n">v</span><span class="p">[</span><span class="n">σ</span><span class="p">,</span> <span class="n">zp_idx</span><span class="p">]</span>
-
-    <span class="c1"># Expand Q[j, jp] to Q[i, j, jp]</span>
-    <span class="n">Q</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">Q</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">y_size</span><span class="p">,</span> <span class="n">y_size</span><span class="p">))</span>
-
     <span class="c1"># Compute and return v[i, j] - β Σ_jp v[σ[i, j], jp] * Q[j, jp]</span>
-    <span class="k">return</span> <span class="n">v</span> <span class="o">-</span> <span class="n">β</span> <span class="o">*</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">V</span> <span class="o">*</span> <span class="n">Q</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">v</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span>  <span class="o">-</span> <span class="n">β</span> <span class="o">*</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="n">σ</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">],</span> <span class="p">:]</span> <span class="o">*</span> <span class="n">Q</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="p">:])</span>
+
+<span class="n">L_1</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">vmap</span><span class="p">(</span><span class="n">_L_σ</span><span class="p">,</span>      <span class="n">in_axes</span><span class="o">=</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+<span class="n">L_σ_vmap</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">vmap</span><span class="p">(</span><span class="n">L_1</span><span class="p">,</span>  <span class="n">in_axes</span><span class="o">=</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span>    <span class="kc">None</span><span class="p">))</span>
+
+<span class="k">def</span> <span class="nf">L_σ</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">σ</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">sizes</span><span class="p">,</span> <span class="n">arrays</span><span class="p">):</span>
+    <span class="n">w_size</span><span class="p">,</span> <span class="n">y_size</span> <span class="o">=</span> <span class="n">sizes</span>
+    <span class="n">w_indices</span><span class="p">,</span> <span class="n">y_indices</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">w_size</span><span class="p">),</span> <span class="n">jnp</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">y_size</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">L_σ_vmap</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">σ</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">arrays</span><span class="p">,</span> <span class="n">w_indices</span><span class="p">,</span> <span class="n">y_indices</span><span class="p">)</span>
+
+<span class="n">L_σ</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">jit</span><span class="p">(</span><span class="n">L_σ</span><span class="p">,</span> <span class="n">static_argnums</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,))</span>
 </pre></div>
 </div>
 </div>
@@ -576,26 +616,15 @@ step is to define the function <span class="math notranslate nohighlight">\(L_{\
     <span class="n">partial_L_σ</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">L_σ</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">σ</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">sizes</span><span class="p">,</span> <span class="n">arrays</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">jax</span><span class="o">.</span><span class="n">scipy</span><span class="o">.</span><span class="n">sparse</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">bicgstab</span><span class="p">(</span><span class="n">partial_L_σ</span><span class="p">,</span> <span class="n">r_σ</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="n">get_value</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">jit</span><span class="p">(</span><span class="n">get_value</span><span class="p">,</span> <span class="n">static_argnums</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,))</span>
 </pre></div>
 </div>
 </div>
 </div>
 </section>
-<section id="jit-compiled-versions">
-<h2><span class="section-number">10.3. </span>JIT compiled versions<a class="headerlink" href="#jit-compiled-versions" title="Permalink to this heading">#</a></h2>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">B</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">jit</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="n">static_argnums</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,))</span>
-<span class="n">compute_r_σ</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">jit</span><span class="p">(</span><span class="n">compute_r_σ</span><span class="p">,</span> <span class="n">static_argnums</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,))</span>
-<span class="n">T</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">jit</span><span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="n">static_argnums</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,))</span>
-<span class="n">get_greedy</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">jit</span><span class="p">(</span><span class="n">get_greedy</span><span class="p">,</span> <span class="n">static_argnums</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,))</span>
-<span class="n">get_value</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">jit</span><span class="p">(</span><span class="n">get_value</span><span class="p">,</span> <span class="n">static_argnums</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,))</span>
-<span class="n">T_σ</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">jit</span><span class="p">(</span><span class="n">T_σ</span><span class="p">,</span> <span class="n">static_argnums</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,))</span>
-<span class="n">L_σ</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">jit</span><span class="p">(</span><span class="n">L_σ</span><span class="p">,</span> <span class="n">static_argnums</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,))</span>
-</pre></div>
-</div>
-</div>
-</div>
+<section id="iteration">
+<h2><span class="section-number">10.3. </span>Iteration<a class="headerlink" href="#iteration" title="Permalink to this heading">#</a></h2>
 <p>We use successive approximation for VFI.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -812,7 +841,7 @@ Concluded loop 7 with error 1.
 Concluded loop 8 with error 1.
 Concluded loop 9 with error 1.
 Concluded loop 10 with error 0.
-HPI completed in 0.04849576950073242 seconds.
+HPI completed in 0.036144256591796875 seconds.
 </pre></div>
 </div>
 </div>
@@ -831,7 +860,7 @@ HPI completed in 0.04849576950073242 seconds.
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Starting VFI.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>VFI completed in 0.2687201499938965 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>VFI completed in 0.2846248149871826 seconds.
 </pre></div>
 </div>
 </div>
@@ -850,7 +879,7 @@ HPI completed in 0.04849576950073242 seconds.
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Starting OPI.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OPI completed in 0.4793214797973633 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OPI completed in 0.5444076061248779 seconds.
 </pre></div>
 </div>
 </div>
@@ -894,13 +923,11 @@ Concluded loop 7 with error 1.
 Concluded loop 8 with error 1.
 Concluded loop 9 with error 1.
 Concluded loop 10 with error 0.
-howard_policy_iteration completed in 0.05 seconds.
+howard_policy_iteration completed in 0.04 seconds.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>value_function_iteration completed in 0.15 seconds.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>optimistic_policy_iteration completed in 0.04 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>value_function_iteration completed in 0.17 seconds.
+optimistic_policy_iteration completed in 0.04 seconds.
 optimistic_policy_iteration completed in 0.03 seconds.
 optimistic_policy_iteration completed in 0.03 seconds.
 optimistic_policy_iteration completed in 0.04 seconds.
@@ -908,23 +935,23 @@ optimistic_policy_iteration completed in 0.05 seconds.
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>optimistic_policy_iteration completed in 0.06 seconds.
-optimistic_policy_iteration completed in 0.07 seconds.
 optimistic_policy_iteration completed in 0.08 seconds.
+optimistic_policy_iteration completed in 0.09 seconds.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>optimistic_policy_iteration completed in 0.09 seconds.
-optimistic_policy_iteration completed in 0.10 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>optimistic_policy_iteration completed in 0.10 seconds.
+optimistic_policy_iteration completed in 0.11 seconds.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>optimistic_policy_iteration completed in 0.11 seconds.
-optimistic_policy_iteration completed in 0.12 seconds.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>optimistic_policy_iteration completed in 0.13 seconds.
-optimistic_policy_iteration completed in 0.15 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>optimistic_policy_iteration completed in 0.12 seconds.
+optimistic_policy_iteration completed in 0.13 seconds.
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>optimistic_policy_iteration completed in 0.15 seconds.
+optimistic_policy_iteration completed in 0.16 seconds.
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>optimistic_policy_iteration completed in 0.17 seconds.
 </pre></div>
 </div>
 </div>
@@ -949,7 +976,7 @@ optimistic_policy_iteration completed in 0.15 seconds.
 </div>
 <div class="cell_output docutils container">
 <figure class="align-default" id="howard-value-optimistic-solver-times">
-<a class="reference internal image-reference" href="_images/818ff27907b452c7517417c65cf86f0bd8532b2765aa6b59d6f4ac50d8ab21f1.png"><img alt="_images/818ff27907b452c7517417c65cf86f0bd8532b2765aa6b59d6f4ac50d8ab21f1.png" src="_images/818ff27907b452c7517417c65cf86f0bd8532b2765aa6b59d6f4ac50d8ab21f1.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/fd39b6e2539d8ed1b80eaa86988b9a8a496b6d0587c45c3a9d2fa10bb86da541.png"><img alt="_images/fd39b6e2539d8ed1b80eaa86988b9a8a496b6d0587c45c3a9d2fa10bb86da541.png" src="_images/fd39b6e2539d8ed1b80eaa86988b9a8a496b6d0587c45c3a9d2fa10bb86da541.png" style="width: 80%;" /></a>
 <figcaption>
 <p><span class="caption-number">Fig. 10.2 </span><span class="caption-text">Solver times</span><a class="headerlink" href="#howard-value-optimistic-solver-times" title="Permalink to this image">#</a></p>
 </figcaption>
@@ -1029,11 +1056,6 @@ optimistic_policy_iteration completed in 0.15 seconds.
    3. Newton’s Method via JAX
   </a>
  </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="markov_asset.html">
-   4. An Asset Pricing Problem
-  </a>
- </li>
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
@@ -1043,29 +1065,34 @@ optimistic_policy_iteration completed in 0.15 seconds.
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="inventory_dynamics.html">
-   5. Inventory Dynamics
+   4. Inventory Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kesten_processes.html">
-   6. Kesten Processes and Firm Dynamics
+   5. Kesten Processes and Firm Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wealth_dynamics.html">
-   7. Wealth Distribution Dynamics
+   6. Wealth Distribution Dynamics
   </a>
  </li>
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
-  Data and Empirics
+  Asset Pricing
  </span>
 </p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
-  <a class="reference internal" href="mle.html">
-   8. Maximum Likelihood Estimation
+  <a class="reference internal" href="lucas_model.html">
+   7. Asset Pricing: The Lucas Asset Pricing Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="markov_asset.html">
+   8. An Asset Pricing Problem
   </a>
  </li>
 </ul>
@@ -1123,23 +1150,35 @@ optimistic_policy_iteration completed in 0.15 seconds.
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
+  Data and Empirics
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="mle.html">
+   18. Maximum Likelihood Estimation
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
   Other
  </span>
 </p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   18. Troubleshooting
+   19. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   19. References
+   20. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   20. Execution Statistics
+   21. Execution Statistics
   </a>
  </li>
 </ul>

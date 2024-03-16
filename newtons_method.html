@@ -121,7 +121,7 @@ const thebe_selector_output = ".output, .cell_output"
     <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="4. An Asset Pricing Problem" href="markov_asset.html" />
+    <link rel="next" title="4. Inventory Dynamics" href="inventory_dynamics.html" />
     <link rel="prev" title="2. An Introduction to JAX" href="jax_intro.html" />
 
 <!-- Normal Meta Tags -->
@@ -280,7 +280,7 @@ in high dimensions.</p>
   pid, fd = os.forkpty()
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Thu Mar 14 20:48:39 2024       
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Sat Mar 16 20:22:06 2024       
 +-----------------------------------------------------------------------------+
 | NVIDIA-SMI 470.182.03   Driver Version: 470.182.03   CUDA Version: 12.3     |
 |-------------------------------+----------------------+----------------------+
@@ -291,7 +291,7 @@ in high dimensions.</p>
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>|   0  Tesla V100-SXM2...  Off  | 00000000:00:1E.0 Off |                    0 |
-| N/A   27C    P0    37W / 300W |      0MiB / 16160MiB |      2%      Default |
+| N/A   28C    P0    37W / 300W |      0MiB / 16160MiB |      2%      Default |
 |                               |                      |                  N/A |
 +-------------------------------+----------------------+----------------------+
                                                                                
@@ -508,8 +508,8 @@ iteration 5, error = 1.2384003639454022e-05
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>iteration 6, error = 4.883217570750276e-06
-CPU times: user 4.26 s, sys: 956 ms, total: 5.21 s
-Wall time: 3.6 s
+CPU times: user 4.19 s, sys: 1.04 s, total: 5.24 s
+Wall time: 3.62 s
 </pre></div>
 </div>
 </div>
@@ -542,7 +542,7 @@ even with the Jacobian supplied.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 2min 27s, sys: 359 ms, total: 2min 27s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 2min 27s, sys: 390 ms, total: 2min 27s
 Wall time: 2min 26s
 </pre></div>
 </div>
@@ -667,8 +667,8 @@ iteration 3, error = 4.294127464294434
 iteration 4, error = 0.3854290544986725
 iteration 5, error = 0.0054382034577429295
 iteration 6, error = 8.92080606718082e-07
-CPU times: user 194 ms, sys: 12.4 ms, total: 206 ms
-Wall time: 241 ms
+CPU times: user 210 ms, sys: 309 µs, total: 210 ms
+Wall time: 244 ms
 ----------------------------------------------------------------
 Attempt 2: Starting value is [3. 5. 5.] 
 </pre></div>
@@ -677,8 +677,8 @@ Attempt 2: Starting value is [3. 5. 5.]
 iteration 2, error = 0.12642373144626617
 iteration 3, error = 0.0006017307168804109
 iteration 4, error = 3.3717478231665154e-07
-CPU times: user 105 ms, sys: 4.1 ms, total: 110 ms
-Wall time: 93 ms
+CPU times: user 109 ms, sys: 339 µs, total: 110 ms
+Wall time: 93.8 ms
 ----------------------------------------------------------------
 Attempt 3: Starting value is [50. 50. 50.] 
 </pre></div>
@@ -691,8 +691,8 @@ iteration 3, error = 0.6806989312171936
 iteration 4, error = 0.016202213242650032
 iteration 5, error = 1.0600916539260652e-05
 iteration 6, error = 9.830249609876773e-07
-CPU times: user 230 ms, sys: 8.59 ms, total: 239 ms
-Wall time: 212 ms
+CPU times: user 236 ms, sys: 8.54 ms, total: 245 ms
+Wall time: 218 ms
 ----------------------------------------------------------------
 </pre></div>
 </div>
@@ -734,8 +734,8 @@ Wall time: 212 ms
 iteration 2, error = 0.21344946324825287
 iteration 3, error = 0.002045975998044014
 iteration 4, error = 8.259061701210157e-07
-CPU times: user 215 ms, sys: 4.67 ms, total: 219 ms
-Wall time: 222 ms
+CPU times: user 192 ms, sys: 24.6 ms, total: 217 ms
+Wall time: 219 ms
 </pre></div>
 </div>
 </div>
@@ -760,8 +760,8 @@ iteration 2, error = 0.21344933091258958
 iteration 3, error = 0.0020465547718452695
 iteration 4, error = 2.0309190076799282e-07
 iteration 5, error = 1.538370149106851e-15
-CPU times: user 191 ms, sys: 20.4 ms, total: 212 ms
-Wall time: 267 ms
+CPU times: user 198 ms, sys: 12.5 ms, total: 211 ms
+Wall time: 266 ms
 </pre></div>
 </div>
 </div>
@@ -851,8 +851,8 @@ c = \begin{pmatrix}
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>iteration 1, error = 9.243805733085065
 iteration 2, error = nan
-CPU times: user 106 ms, sys: 4.35 ms, total: 111 ms
-Wall time: 130 ms
+CPU times: user 109 ms, sys: 162 µs, total: 110 ms
+Wall time: 129 ms
 ----------------------------------------------------------------
 Attempt 2: Starting value is [4.5 0.1 4. ] 
 </pre></div>
@@ -865,8 +865,8 @@ iteration 5, error = 0.005209730313222213
 iteration 6, error = 4.3632751705775364e-06
 iteration 7, error = 3.0460818773540415e-12
 iteration 8, error = 0.0
-CPU times: user 93.6 ms, sys: 8.29 ms, total: 102 ms
-Wall time: 83.7 ms
+CPU times: user 92.6 ms, sys: 8.2 ms, total: 101 ms
+Wall time: 82.6 ms
 ----------------------------------------------------------------
 </pre></div>
 </div>
@@ -963,11 +963,6 @@ Wall time: 83.7 ms
    3. Newton’s Method via JAX
   </a>
  </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="markov_asset.html">
-   4. An Asset Pricing Problem
-  </a>
- </li>
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
@@ -977,29 +972,34 @@ Wall time: 83.7 ms
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="inventory_dynamics.html">
-   5. Inventory Dynamics
+   4. Inventory Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kesten_processes.html">
-   6. Kesten Processes and Firm Dynamics
+   5. Kesten Processes and Firm Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wealth_dynamics.html">
-   7. Wealth Distribution Dynamics
+   6. Wealth Distribution Dynamics
   </a>
  </li>
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
-  Data and Empirics
+  Asset Pricing
  </span>
 </p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
-  <a class="reference internal" href="mle.html">
-   8. Maximum Likelihood Estimation
+  <a class="reference internal" href="lucas_model.html">
+   7. Asset Pricing: The Lucas Asset Pricing Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="markov_asset.html">
+   8. An Asset Pricing Problem
   </a>
  </li>
 </ul>
@@ -1057,23 +1057,35 @@ Wall time: 83.7 ms
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
+  Data and Empirics
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="mle.html">
+   18. Maximum Likelihood Estimation
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
   Other
  </span>
 </p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   18. Troubleshooting
+   19. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   19. References
+   20. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   20. Execution Statistics
+   21. Execution Statistics
   </a>
  </li>
 </ul>

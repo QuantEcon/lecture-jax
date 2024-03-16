@@ -21,6 +21,10 @@ kernelspec:
 In this lecture we consider some asset pricing problems and use them to
 illustrate some foundations of JAX programming.
 
+The main difference from the lecture {doc}`lucas_model`, which also considers
+asset prices, is that the the state
+spaces will be discrete and multi-dimensional.
+
 Most of the heavy lifting is done through routines from linear algebra.
 
 Along the way, we will show how to solve some memory-intensive problems with large state spaces.
@@ -160,7 +164,7 @@ Our aim is to solve [](pdex2) but before that we need to specify
 
 ## Choosing the stochastic discount factor
 
-We will adopt the stochastic discount factor described in {cite}`Lucas1978`, which has the form
+We will adopt the stochastic discount factor described in {doc}`lucas_model`, which has the form
 
 ```{math}
 :label: lucsdf
@@ -168,8 +172,6 @@ We will adopt the stochastic discount factor described in {cite}`Lucas1978`, whi
 ```
 
 where $u$ is a utility function and $C_t$ is time $t$ consumption of a representative consumer.
-
-(An explanation of the ideas behind this expression is given in [a later lecture](https://python-advanced.quantecon.org/lucas_model.html) and we omit further details and motivation.)
 
 For utility, we'll assume the **constant relative risk aversion** (CRRA) specification
 

@@ -1,0 +1,1238 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>7. Asset Pricing: The Lucas Asset Pricing Model &#8212; Quantitative Economics with Python using JAX</title>
+    <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    
+        <script>
+            MathJax = {
+            loader: {load: ['[tex]/boldsymbol', '[tex]/textmacros']},
+            tex: {
+                packages: {'[+]': ['boldsymbol', 'textmacros']},
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                processEscapes: true,
+                macros: {
+                    "argmax" : "arg\\,max",
+                    "argmin" : "arg\\,min",
+                    "col"    : "col",
+                    "Span"   :  "span",
+                    "epsilon": "\\varepsilon",
+                    "EE": "\\mathbb{E}",
+                    "PP": "\\mathbb{P}",
+                    "RR": "\\mathbb{R}",
+                    "NN": "\\mathbb{N}",
+                    "ZZ": "\\mathbb{Z}",
+                    "aA": "\\mathcal{A}",
+                    "bB": "\\mathcal{B}",
+                    "cC": "\\mathcal{C}",
+                    "dD": "\\mathcal{D}",
+                    "eE": "\\mathcal{E}",
+                    "fF": "\\mathcal{F}",
+                    "gG": "\\mathcal{G}",
+                    "hH": "\\mathcal{H}",
+                }
+            },
+            svg: {
+                fontCache: 'global',
+                scale: 0.92,
+                displayAlign: "center",
+            },
+            };
+        </script>
+    
+    
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=b09b2da44b9015b4fa76ea072fa2d8f7faee5492" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/exercise.css" />
+    <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
+  <script src="_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
+
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js"></script>
+    <script src="_static/scripts/quantecon-book-theme.js?digest=eed9c059a3ee152aae2353ec732f0a6d12e6aa07"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js"></script>
+    <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-K1NYBSC1CZ"></script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-K1NYBSC1CZ');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"tex": {"macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'lucas_model';</script>
+    <link rel="canonical" href="https://jax.quantecon.org/lucas_model.html" />
+    <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
+    <link rel="author" title="About these documents" href="about.html" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="8. An Asset Pricing Problem" href="markov_asset.html" />
+    <link rel="prev" title="6. Wealth Distribution Dynamics" href="wealth_dynamics.html" />
+
+<!-- Normal Meta Tags -->
+<meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
+<meta name="keywords" content="Python, QuantEcon, Quantitative Economics, Economics, Sloan, Alfred P. Sloan Foundation, Tom J. Sargent, John Stachurski" />
+<meta name="description" content=This website presents a set of lectures on quantitative economic modeling, designed and written by Thomas J. Sargent and John Stachurski. />
+
+<!-- Twitter tags -->
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@quantecon" />
+<meta name="twitter:title" content="Asset Pricing: The Lucas Asset Pricing Model"/>
+<meta name="twitter:description" content="This website presents a set of lectures on quantitative economic modeling, designed and written by Thomas J. Sargent and John Stachurski.">
+<meta name="twitter:creator" content="@quantecon">
+<meta name="twitter:image" content="https://assets.quantecon.org/img/qe-twitter-logo.png">
+
+<!-- Opengraph tags -->
+<meta property="og:title" content="Asset Pricing: The Lucas Asset Pricing Model" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://jax.quantecon.org/lucas_model.html" />
+<meta property="og:image" content="https://assets.quantecon.org/img/qe-og-logo.png" />
+<meta property="og:description" content="This website presents a set of lectures on quantitative economic modeling, designed and written by Thomas J. Sargent and John Stachurski." />
+<meta property="og:site_name" content="Quantitative Economics with Python using JAX" />
+<meta name="theme-color" content="#ffffff" />
+
+  </head>
+<body>
+
+
+    <span id="top"></span>
+
+    <div class="qe-wrapper">
+
+        <div class="qe-main">
+
+            <div class="qe-page" id=lucas_model>
+
+                <div class="qe-page__toc">
+
+                    <div class="inner">
+
+                        
+                        <div class="qe-page__toc-header">
+                            On this page
+                        </div>
+
+
+                        <nav id="bd-toc-nav" class="qe-page__toc-nav">
+                            <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">7.1. Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-lucas-model">7.2. The Lucas Model</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-setup">7.2.1. Basic Setup</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#assets">7.2.1.1. Assets</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#consumers">7.2.1.2. Consumers</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pricing-a-lucas-tree">7.2.2. Pricing a Lucas Tree</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#the-dynamic-program">7.2.2.1. The Dynamic Program</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#next-steps">7.2.2.2. Next Steps</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#equilibrium-constraints">7.2.2.3. Equilibrium Constraints</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#the-equilibrium-price-function">7.2.2.4. The Equilibrium Price Function</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#solving-the-model">7.2.3. Solving the Model</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#setting-up-the-problem">7.2.3.1. Setting up the Problem</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#a-little-fixed-point-theory">7.2.3.2. A Little Fixed Point Theory</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#computation">7.3. Computation</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#numba-code">7.3.1. Numba Code</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#jax-code">7.3.2. JAX Code</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">7.4. Exercises</a></li>
+</ul>
+                            <p class="logo">
+                                
+                                    
+                                    <a href=https://quantecon.org><img src="_static/qe-logo-large.png" class="logo logo-img" alt="logo"></a>
+                                    
+                                    <a href=https://quantecon.org><img src="_static/quantecon-logo-transparent.png" class="dark-logo-img" alt="logo"></a>
+                                    
+                                    
+                                
+                            </p>
+
+                            <p class="powered">Powered by <a href="https://jupyterbook.org/">Jupyter Book</a></p>
+
+                        </nav>
+
+                        <div class="qe-page__toc-footer">
+                            
+                            
+                            <p><a href="#top"><strong>Back to top</strong></a></p>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="qe-page__header">
+
+                    <div class="qe-page__header-copy">
+
+                        <p class="qe-page__header-heading"><a href="intro.html">Quantitative Economics with Python using JAX</a></p>
+
+                        <p class="qe-page__header-subheading">Asset Pricing: The Lucas Asset Pricing Model</p>
+
+                    </div>
+                    <!-- length 2, since its a string and empty dict has length 2 - {} -->
+                        <p class="qe-page__header-authors" font-size="18">
+                            
+                                
+                                    <a href="http://www.tomsargent.com/" target="_blank"><span>Thomas J. Sargent</span></a>
+                                
+                            
+                                
+                                    and <a href="https://johnstachurski.net/" target="_blank"><span>John Stachurski</span></a>
+                                
+                            
+                        </p>
+
+
+                </div> <!-- .page__header -->
+
+
+
+                
+                <main class="qe-page__content" role="main">
+                    
+                    <div>
+                        
+  <div id="qe-notebook-header" align="right" style="text-align:right;">
+        <a href="https://quantecon.org/" title="quantecon.org">
+                <img style="width:250px;display:inline;" width="250px" src="https://assets.quantecon.org/img/qe-menubar-logo.svg" alt="QuantEcon">
+        </a>
+</div><section class="tex2jax_ignore mathjax_ignore" id="asset-pricing-the-lucas-asset-pricing-model">
+<h1><a class="toc-backref" href="#id2"><span class="section-number">7. </span>Asset Pricing: The Lucas Asset Pricing Model</a><a class="headerlink" href="#asset-pricing-the-lucas-asset-pricing-model" title="Permalink to this heading">#</a></h1>
+<div class="warning admonition">
+<p class="admonition-title">GPU</p>
+<p>This lecture was built using <a class="reference internal" href="status.html#status-machine-details"><span class="std std-ref">hardware</span></a> that has access to a GPU.</p>
+<p>To run this lecture on <a class="reference external" href="https://colab.research.google.com/">Google Colab</a>, click on the “play” icon top right, select Colab, and set the runtime environment to include a GPU.</p>
+<p>To run this lecture on your own machine, you need to install <a class="reference external" href="https://github.com/google/jax">Google JAX</a>.</p>
+</div>
+<div class="contents topic" id="contents">
+<span id="index-0"></span><p class="topic-title">Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#asset-pricing-the-lucas-asset-pricing-model" id="id2">Asset Pricing: The Lucas Asset Pricing Model</a></p>
+<ul>
+<li><p><a class="reference internal" href="#overview" id="id3">Overview</a></p></li>
+<li><p><a class="reference internal" href="#the-lucas-model" id="id4">The Lucas Model</a></p></li>
+<li><p><a class="reference internal" href="#computation" id="id5">Computation</a></p></li>
+<li><p><a class="reference internal" href="#exercises" id="id6">Exercises</a></p></li>
+</ul>
+</li>
+</ul>
+</div>
+<section id="overview">
+<h2><a class="toc-backref" href="#id3"><span class="section-number">7.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
+<p>An asset is a claim on a stream of prospective payments.</p>
+<p>What is the correct price to pay for such a claim?</p>
+<p>The asset pricing model of Lucas <span id="id1">[<a class="reference internal" href="zreferences.html#id184" title="Robert E Lucas, Jr. Asset prices in an exchange economy. Econometrica: Journal of the Econometric Society, 46(6):1429–1445, 1978.">Luc78</a>]</span> attempts to answer this
+question in an equilibrium setting with risk-averse agents.</p>
+<p>Lucas’ model provides a beautiful illustration of model building in general and
+equilibrium pricing in competitive models in particular.</p>
+<p>In this lecture we work through the Lucas model and show where the fundamental
+asset pricing equation comes from.</p>
+<p>We’ll write code in both Numba and JAX.</p>
+<p>Since the model is relatively small, the speed gain from using JAX is not as
+large as it is in some other lectures.</p>
+<p>Nonetheless, the gain is nontrivial.</p>
+<p>Let’s start with some imports:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">jax.numpy</span> <span class="k">as</span> <span class="nn">jnp</span>
+<span class="kn">import</span> <span class="nn">jax</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">numba</span>
+<span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="kn">import</span> <span class="n">lognorm</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="the-lucas-model">
+<h2><a class="toc-backref" href="#id4"><span class="section-number">7.2. </span>The Lucas Model</a><a class="headerlink" href="#the-lucas-model" title="Permalink to this heading">#</a></h2>
+<p id="index-1">Lucas studied a pure exchange economy with a representative consumer (or household), where</p>
+<ul class="simple">
+<li><p><em>Pure exchange</em> means that all endowments are exogenous.</p></li>
+<li><p><em>Representative</em> consumer means that either</p>
+<ul>
+<li><p>there is a single consumer (sometimes also referred to as a household), or</p></li>
+<li><p>all consumers have identical endowments and preferences</p></li>
+</ul>
+</li>
+</ul>
+<p>Either way, the assumption of a representative agent means that prices adjust to
+eradicate desires to trade.</p>
+<p>This makes it very easy to compute competitive equilibrium prices.</p>
+<section id="basic-setup">
+<h3><span class="section-number">7.2.1. </span>Basic Setup<a class="headerlink" href="#basic-setup" title="Permalink to this heading">#</a></h3>
+<p>Let’s review the setup.</p>
+<section id="assets">
+<h4><span class="section-number">7.2.1.1. </span>Assets<a class="headerlink" href="#assets" title="Permalink to this heading">#</a></h4>
+<p id="index-2">There is a single “productive unit” that costlessly generates a sequence of consumption goods <span class="math notranslate nohighlight">\(\{y_t\}_{t=0}^{\infty}\)</span>.</p>
+<p>Another way to view <span class="math notranslate nohighlight">\(\{y_t\}_{t=0}^{\infty}\)</span> is as a <em>consumption endowment</em> for this economy.</p>
+<p>We will assume that this endowment is Markovian, following the exogenous process</p>
+<div class="math notranslate nohighlight">
+\[
+y_{t+1} = G(y_t, \xi_{t+1})
+\]</div>
+<p>Here <span class="math notranslate nohighlight">\(\{ \xi_t \}\)</span> is an IID shock sequence with known distribution <span class="math notranslate nohighlight">\(\phi\)</span> and <span class="math notranslate nohighlight">\(y_t \geq 0\)</span>.</p>
+<p>An asset is a claim on all or part of this endowment stream.</p>
+<p>The consumption goods <span class="math notranslate nohighlight">\(\{y_t\}_{t=0}^{\infty}\)</span> are nonstorable, so holding assets is the only way to transfer wealth into the future.</p>
+<p>For the purposes of intuition, it’s common to think of the productive unit as a “tree” that produces fruit.</p>
+<p>Based on this idea, a “Lucas tree” is a claim on the consumption endowment.</p>
+</section>
+<section id="consumers">
+<h4><span class="section-number">7.2.1.2. </span>Consumers<a class="headerlink" href="#consumers" title="Permalink to this heading">#</a></h4>
+<p id="index-3">A representative consumer ranks consumption streams <span class="math notranslate nohighlight">\(\{c_t\}\)</span> according to the time separable utility functional</p>
+<div class="math notranslate nohighlight" id="equation-lt-uf">
+<span class="eqno">(7.1)<a class="headerlink" href="#equation-lt-uf" title="Permalink to this equation">#</a></span>\[\mathbb{E} \sum_{t=0}^\infty \beta^t u(c_t)\]</div>
+<p>Here</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\beta \in (0,1)\)</span> is a fixed discount factor.</p></li>
+<li><p><span class="math notranslate nohighlight">\(u\)</span> is a strictly increasing, strictly concave, continuously differentiable period utility function.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\mathbb{E}\)</span> is a mathematical expectation.</p></li>
+</ul>
+</section>
+</section>
+<section id="pricing-a-lucas-tree">
+<h3><span class="section-number">7.2.2. </span>Pricing a Lucas Tree<a class="headerlink" href="#pricing-a-lucas-tree" title="Permalink to this heading">#</a></h3>
+<p id="index-4">What is an appropriate price for a claim on the consumption endowment?</p>
+<p>We’ll price an <em>ex-dividend</em> claim, meaning that</p>
+<ul class="simple">
+<li><p>the seller retains this period’s dividend</p></li>
+<li><p>the buyer pays <span class="math notranslate nohighlight">\(p_t\)</span> today to purchase a claim on</p>
+<ul>
+<li><p><span class="math notranslate nohighlight">\(y_{t+1}\)</span> and</p></li>
+<li><p>the right to sell the claim tomorrow at price <span class="math notranslate nohighlight">\(p_{t+1}\)</span></p></li>
+</ul>
+</li>
+</ul>
+<p>Since this is a competitive model, the first step is to pin down consumer
+behavior, taking prices as given.</p>
+<p>Next, we’ll impose equilibrium constraints and try to back out prices.</p>
+<p>In the consumer problem, the consumer’s control variable is the share <span class="math notranslate nohighlight">\(\pi_t\)</span> of the claim held in each period.</p>
+<p>Thus, the consumer problem is to maximize <a class="reference internal" href="#equation-lt-uf">(7.1)</a> subject to</p>
+<div class="math notranslate nohighlight">
+\[
+c_t + \pi_{t+1} p_t \leq \pi_t y_t + \pi_t p_t
+\]</div>
+<p>along with <span class="math notranslate nohighlight">\(c_t \geq 0\)</span> and <span class="math notranslate nohighlight">\(0 \leq \pi_t \leq 1\)</span> at each <span class="math notranslate nohighlight">\(t\)</span>.</p>
+<p>The decision to hold share <span class="math notranslate nohighlight">\(\pi_t\)</span> is actually made at time <span class="math notranslate nohighlight">\(t-1\)</span>.</p>
+<p>But this value is inherited as a state variable at time <span class="math notranslate nohighlight">\(t\)</span>, which explains the choice of subscript.</p>
+<section id="the-dynamic-program">
+<h4><span class="section-number">7.2.2.1. </span>The Dynamic Program<a class="headerlink" href="#the-dynamic-program" title="Permalink to this heading">#</a></h4>
+<p id="index-5">We can write the consumer problem as a dynamic programming problem.</p>
+<p>Our first observation is that prices depend on current information, and current information is really just the endowment process up until the current period.</p>
+<p>In fact, the endowment process is Markovian, so that the only relevant
+information is the current state <span class="math notranslate nohighlight">\(y \in \mathbb R_+\)</span> (dropping the time subscript).</p>
+<p>This leads us to guess an equilibrium where price is a function <span class="math notranslate nohighlight">\(p\)</span> of <span class="math notranslate nohighlight">\(y\)</span>.</p>
+<p>Remarks on the solution method</p>
+<ul class="simple">
+<li><p>Since this is a competitive (read: price taking) model, the consumer will take this function <span class="math notranslate nohighlight">\(p\)</span> as given.</p></li>
+<li><p>In this way, we determine consumer behavior given <span class="math notranslate nohighlight">\(p\)</span> and then use equilibrium conditions to recover <span class="math notranslate nohighlight">\(p\)</span>.</p></li>
+<li><p>This is the standard way to solve competitive equilibrium models.</p></li>
+</ul>
+<p>Using the assumption that price is a given function <span class="math notranslate nohighlight">\(p\)</span> of <span class="math notranslate nohighlight">\(y\)</span>, we write the value function and constraint as</p>
+<div class="math notranslate nohighlight">
+\[
+v(\pi, y) = \max_{c, \pi'}
+    \left\{
+        u(c) + \beta \int v(\pi', G(y, z)) \phi(dz)
+    \right\}
+\]</div>
+<p>subject to</p>
+<div class="math notranslate nohighlight" id="equation-preltbe">
+<span class="eqno">(7.2)<a class="headerlink" href="#equation-preltbe" title="Permalink to this equation">#</a></span>\[c + \pi' p(y) \leq \pi y + \pi p(y)\]</div>
+<p>We can invoke the fact that utility is increasing to claim equality in <a class="reference internal" href="#equation-preltbe">(7.2)</a> and hence eliminate the constraint, obtaining</p>
+<div class="math notranslate nohighlight" id="equation-ltbe">
+<span class="eqno">(7.3)<a class="headerlink" href="#equation-ltbe" title="Permalink to this equation">#</a></span>\[v(\pi, y) = \max_{\pi'}
+    \left\{
+        u[\pi (y + p(y)) - \pi' p(y) ] + \beta \int v(\pi', G(y, z)) \phi(dz)
+    \right\}\]</div>
+<p>The solution to this dynamic programming problem is an optimal policy expressing either <span class="math notranslate nohighlight">\(\pi'\)</span> or <span class="math notranslate nohighlight">\(c\)</span> as a function of the state <span class="math notranslate nohighlight">\((\pi, y)\)</span>.</p>
+<ul class="simple">
+<li><p>Each one determines the other, since <span class="math notranslate nohighlight">\(c(\pi, y) = \pi (y + p(y))- \pi' (\pi, y) p(y)\)</span></p></li>
+</ul>
+</section>
+<section id="next-steps">
+<h4><span class="section-number">7.2.2.2. </span>Next Steps<a class="headerlink" href="#next-steps" title="Permalink to this heading">#</a></h4>
+<p>What we need to do now is determine equilibrium prices.</p>
+<p>It seems that to obtain these, we will have to</p>
+<ol class="arabic simple">
+<li><p>Solve this two-dimensional dynamic programming problem for the optimal policy.</p></li>
+<li><p>Impose equilibrium constraints.</p></li>
+<li><p>Solve out for the price function <span class="math notranslate nohighlight">\(p(y)\)</span> directly.</p></li>
+</ol>
+<p>However, as Lucas showed, there is a related but more straightforward way to do this.</p>
+</section>
+<section id="equilibrium-constraints">
+<h4><span class="section-number">7.2.2.3. </span>Equilibrium Constraints<a class="headerlink" href="#equilibrium-constraints" title="Permalink to this heading">#</a></h4>
+<p id="index-6">Since the consumption good is not storable, in equilibrium we must have <span class="math notranslate nohighlight">\(c_t = y_t\)</span> for all <span class="math notranslate nohighlight">\(t\)</span>.</p>
+<p>In addition, since there is one representative consumer (alternatively, since
+all consumers are identical), there should be no trade in equilibrium.</p>
+<p>In particular, the representative consumer owns the whole tree in every period, so <span class="math notranslate nohighlight">\(\pi_t = 1\)</span> for all <span class="math notranslate nohighlight">\(t\)</span>.</p>
+<p>Prices must adjust to satisfy these two constraints.</p>
+</section>
+<section id="the-equilibrium-price-function">
+<h4><span class="section-number">7.2.2.4. </span>The Equilibrium Price Function<a class="headerlink" href="#the-equilibrium-price-function" title="Permalink to this heading">#</a></h4>
+<p id="index-7">Now observe that the first-order condition for <a class="reference internal" href="#equation-ltbe">(7.3)</a> can be written as</p>
+<div class="math notranslate nohighlight">
+\[
+u'(c)  p(y) = \beta \int v_1'(\pi', G(y, z)) \phi(dz)
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(v'_1\)</span> is the derivative of <span class="math notranslate nohighlight">\(v\)</span> with respect to its first argument.</p>
+<p>To obtain <span class="math notranslate nohighlight">\(v'_1\)</span> we can simply differentiate the right-hand side of
+<a class="reference internal" href="#equation-ltbe">(7.3)</a> with respect to <span class="math notranslate nohighlight">\(\pi\)</span>, yielding</p>
+<div class="math notranslate nohighlight">
+\[
+v'_1(\pi, y) = u'(c) (y + p(y))
+\]</div>
+<p>Next, we impose the equilibrium constraints while combining the last two
+equations to get</p>
+<div class="math notranslate nohighlight" id="equation-lteeq">
+<span class="eqno">(7.4)<a class="headerlink" href="#equation-lteeq" title="Permalink to this equation">#</a></span>\[p(y)  = \beta \int \frac{u'[G(y, z)]}{u'(y)} [G(y, z) + p(G(y, z))]  \phi(dz)\]</div>
+<p>In sequential rather than functional notation, we can also write this as</p>
+<div class="math notranslate nohighlight" id="equation-lteeqs">
+<span class="eqno">(7.5)<a class="headerlink" href="#equation-lteeqs" title="Permalink to this equation">#</a></span>\[p_t = \mathbb{E}_t \left[ \beta \frac{u'(c_{t+1})}{u'(c_t)} ( y_{t+1} + p_{t+1} ) \right]\]</div>
+<p>This is the famous consumption-based asset pricing equation.</p>
+<p>Before discussing it further we want to solve out for prices.</p>
+</section>
+</section>
+<section id="solving-the-model">
+<h3><span class="section-number">7.2.3. </span>Solving the Model<a class="headerlink" href="#solving-the-model" title="Permalink to this heading">#</a></h3>
+<p id="index-8">Equation <a class="reference internal" href="#equation-lteeq">(7.4)</a> is a <em>functional equation</em> in the unknown function <span class="math notranslate nohighlight">\(p\)</span>.</p>
+<p>The solution is an equilibrium price function <span class="math notranslate nohighlight">\(p^*\)</span>.</p>
+<p>Let’s look at how to obtain it.</p>
+<section id="setting-up-the-problem">
+<h4><span class="section-number">7.2.3.1. </span>Setting up the Problem<a class="headerlink" href="#setting-up-the-problem" title="Permalink to this heading">#</a></h4>
+<p>Instead of solving for it directly we’ll follow Lucas’ indirect approach, first setting</p>
+<div class="math notranslate nohighlight" id="equation-ltffp">
+<span class="eqno">(7.6)<a class="headerlink" href="#equation-ltffp" title="Permalink to this equation">#</a></span>\[f(y) := u'(y) p(y)\]</div>
+<p>so that <a class="reference internal" href="#equation-lteeq">(7.4)</a> becomes</p>
+<div class="math notranslate nohighlight" id="equation-lteeq2">
+<span class="eqno">(7.7)<a class="headerlink" href="#equation-lteeq2" title="Permalink to this equation">#</a></span>\[f(y) = h(y) + \beta \int f[G(y, z)] \phi(dz)\]</div>
+<p>Here <span class="math notranslate nohighlight">\(h(y) := \beta \int u'[G(y, z)] G(y, z)  \phi(dz)\)</span> is a function that
+depends only on the primitives.</p>
+<p>Equation <a class="reference internal" href="#equation-lteeq2">(7.7)</a> is a functional equation in <span class="math notranslate nohighlight">\(f\)</span>.</p>
+<p>The plan is to solve out for <span class="math notranslate nohighlight">\(f\)</span> and convert back to <span class="math notranslate nohighlight">\(p\)</span> via <a class="reference internal" href="#equation-ltffp">(7.6)</a>.</p>
+<p>To solve <a class="reference internal" href="#equation-lteeq2">(7.7)</a> we’ll use a standard method: convert it to a fixed point problem.</p>
+<p>First, we introduce the operator <span class="math notranslate nohighlight">\(T\)</span> mapping <span class="math notranslate nohighlight">\(f\)</span> into <span class="math notranslate nohighlight">\(Tf\)</span> as defined by</p>
+<div class="math notranslate nohighlight" id="equation-lteeqt">
+<span class="eqno">(7.8)<a class="headerlink" href="#equation-lteeqt" title="Permalink to this equation">#</a></span>\[(Tf)(y) = h(y) + \beta \int f[G(y, z)] \phi(dz)\]</div>
+<p>In what follows, we refer to <span class="math notranslate nohighlight">\(T\)</span> as the Lucas operator.</p>
+<p>The reason we do this is that a solution to <a class="reference internal" href="#equation-lteeq2">(7.7)</a> now corresponds to a
+function <span class="math notranslate nohighlight">\(f^*\)</span> satisfying <span class="math notranslate nohighlight">\((Tf^*)(y) = f^*(y)\)</span> for all <span class="math notranslate nohighlight">\(y\)</span>.</p>
+<p>In other words, a solution is a <em>fixed point</em> of <span class="math notranslate nohighlight">\(T\)</span>.</p>
+<p>This means that we can use fixed point theory to obtain and compute the solution.</p>
+</section>
+<section id="a-little-fixed-point-theory">
+<h4><span class="section-number">7.2.3.2. </span>A Little Fixed Point Theory<a class="headerlink" href="#a-little-fixed-point-theory" title="Permalink to this heading">#</a></h4>
+<p id="index-9">Let <span class="math notranslate nohighlight">\(cb\mathbb{R}_+\)</span> be the set of continuous bounded functions <span class="math notranslate nohighlight">\(f \colon \mathbb{R}_+ \to \mathbb{R}_+\)</span>.</p>
+<p>We now show that</p>
+<ol class="arabic simple">
+<li><p><span class="math notranslate nohighlight">\(T\)</span> has exactly one fixed point <span class="math notranslate nohighlight">\(f^*\)</span> in <span class="math notranslate nohighlight">\(cb\mathbb{R}_+\)</span>.</p></li>
+<li><p>For any <span class="math notranslate nohighlight">\(f \in cb\mathbb{R}_+\)</span>, the sequence <span class="math notranslate nohighlight">\(T^k f\)</span> converges
+uniformly to <span class="math notranslate nohighlight">\(f^*\)</span>.</p></li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If you find the mathematics heavy going you can take 1–2 as given and skip to the <a class="reference internal" href="#lt-comp-eg"><span class="std std-ref">next section</span></a></p>
+</div>
+<p>Recall the <a class="reference external" href="https://en.wikipedia.org/wiki/Banach_fixed-point_theorem">Banach contraction mapping theorem</a>.</p>
+<p>It tells us that the previous statements will be true if we can find an
+<span class="math notranslate nohighlight">\(\alpha &lt; 1\)</span> such that</p>
+<div class="math notranslate nohighlight" id="equation-ltbc">
+<span class="eqno">(7.9)<a class="headerlink" href="#equation-ltbc" title="Permalink to this equation">#</a></span>\[\| Tf - Tg \| \leq \alpha \| f - g \|,
+\qquad \forall \, f, g \in cb\mathbb{R}_+\]</div>
+<p>Here <span class="math notranslate nohighlight">\(\|h\| := \sup_{x \in \mathbb{R}_+} |h(x)|\)</span>.</p>
+<p>To see that <a class="reference internal" href="#equation-ltbc">(7.9)</a> is valid, pick any <span class="math notranslate nohighlight">\(f,g \in cb\mathbb{R}_+\)</span> and any <span class="math notranslate nohighlight">\(y \in \mathbb{R}_+\)</span>.</p>
+<p>Observe that, since integrals get larger when absolute values are moved to the
+inside,</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{aligned}
+    |Tf(y) - Tg(y)|
+    &amp; = \left| \beta \int f[G(y, z)] \phi(dz)
+        -\beta \int g[G(y, z)] \phi(dz) \right|
+    \\
+    &amp; \leq \beta \int \left| f[G(y, z)] -  g[G(y, z)] \right| \phi(dz)
+    \\
+    &amp; \leq \beta \int \| f -  g \| \phi(dz)
+    \\
+    &amp; = \beta  \| f -  g \|
+\end{aligned}
+\end{split}\]</div>
+<p>Since the right-hand side is an upper bound, taking the sup over all <span class="math notranslate nohighlight">\(y\)</span>
+on the left-hand side gives <a class="reference internal" href="#equation-ltbc">(7.9)</a> with <span class="math notranslate nohighlight">\(\alpha := \beta\)</span>.</p>
+</section>
+</section>
+</section>
+<section id="computation">
+<span id="lt-comp-eg"></span><h2><a class="toc-backref" href="#id5"><span class="section-number">7.3. </span>Computation</a><a class="headerlink" href="#computation" title="Permalink to this heading">#</a></h2>
+<p id="index-10">The preceding discussion tells that we can compute <span class="math notranslate nohighlight">\(f^*\)</span> by picking any arbitrary <span class="math notranslate nohighlight">\(f \in cb\mathbb{R}_+\)</span> and then iterating with <span class="math notranslate nohighlight">\(T\)</span>.</p>
+<p>The equilibrium price function <span class="math notranslate nohighlight">\(p^*\)</span> can then be recovered by <span class="math notranslate nohighlight">\(p^*(y) = f^*(y) / u'(y)\)</span>.</p>
+<p>Let’s try this when <span class="math notranslate nohighlight">\(\ln y_{t+1} = \alpha \ln y_t + \sigma \epsilon_{t+1}\)</span> where <span class="math notranslate nohighlight">\(\{\epsilon_t\}\)</span> is IID and standard normal.</p>
+<p>Utility will take the isoelastic form <span class="math notranslate nohighlight">\(u(c) = c^{1-\gamma}/(1-\gamma)\)</span>, where <span class="math notranslate nohighlight">\(\gamma &gt; 0\)</span> is the coefficient of relative risk aversion.</p>
+<p>We’ll use Monte Carlo to compute the integral</p>
+<div class="math notranslate nohighlight">
+\[
+    \int f[G(y, z)] \phi(dz)
+\]</div>
+<p>Monte Carlo is not always the fastest method for computing low-dimensional
+integrals, but it is extremely flexible (for example, it’s straightforward to
+change the underlying state process).</p>
+<section id="numba-code">
+<h3><span class="section-number">7.3.1. </span>Numba Code<a class="headerlink" href="#numba-code" title="Permalink to this heading">#</a></h3>
+<p>Let’s start with code using NumPy / Numba (and then compare it to code using
+JAX).</p>
+<p>We create a function that returns tuples containing parameters and arrays needed
+for computation.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">create_lucas_tree_model</span><span class="p">(</span><span class="n">γ</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>            <span class="c1"># CRRA utility parameter</span>
+                            <span class="n">β</span><span class="o">=</span><span class="mf">0.95</span><span class="p">,</span>         <span class="c1"># Discount factor</span>
+                            <span class="n">α</span><span class="o">=</span><span class="mf">0.90</span><span class="p">,</span>         <span class="c1"># Correlation coefficient</span>
+                            <span class="n">σ</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>          <span class="c1"># Volatility coefficient</span>
+                            <span class="n">grid_size</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span>
+                            <span class="n">draw_size</span><span class="o">=</span><span class="mi">1_000</span><span class="p">,</span>
+                            <span class="n">seed</span><span class="o">=</span><span class="mi">11</span><span class="p">):</span>
+        <span class="c1"># Set the grid interval to contain most of the mass of the</span>
+        <span class="c1"># stationary distribution of the consumption endowment</span>
+        <span class="n">ssd</span> <span class="o">=</span> <span class="n">σ</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">α</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">grid_min</span><span class="p">,</span> <span class="n">grid_max</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mi">4</span> <span class="o">*</span> <span class="n">ssd</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mi">4</span> <span class="o">*</span> <span class="n">ssd</span><span class="p">)</span>
+        <span class="n">grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">grid_min</span><span class="p">,</span> <span class="n">grid_max</span><span class="p">,</span> <span class="n">grid_size</span><span class="p">)</span>
+        <span class="c1"># Set up distribution for shocks</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
+        <span class="n">ϕ</span> <span class="o">=</span> <span class="n">lognorm</span><span class="p">(</span><span class="n">σ</span><span class="p">)</span>
+        <span class="n">draws</span> <span class="o">=</span> <span class="n">ϕ</span><span class="o">.</span><span class="n">rvs</span><span class="p">(</span><span class="mi">500</span><span class="p">)</span>
+        <span class="c1"># And the vector h</span>
+        <span class="n">h</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">grid_size</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">grid</span><span class="p">):</span>
+            <span class="n">h</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">β</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">((</span><span class="n">y</span><span class="o">**</span><span class="n">α</span> <span class="o">*</span> <span class="n">draws</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">γ</span><span class="p">))</span>
+        <span class="c1"># Pack and return</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="n">γ</span><span class="p">,</span> <span class="n">β</span><span class="p">,</span> <span class="n">α</span><span class="p">,</span> <span class="n">σ</span>
+        <span class="n">arrays</span> <span class="o">=</span> <span class="n">grid</span><span class="p">,</span> <span class="n">draws</span><span class="p">,</span> <span class="n">h</span>
+        <span class="k">return</span> <span class="n">params</span><span class="p">,</span> <span class="n">arrays</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Here’s a Numba-jitted version of the Lucas operator</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@numba</span><span class="o">.</span><span class="n">jit</span>
+<span class="k">def</span> <span class="nf">T</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">arrays</span><span class="p">,</span> <span class="n">f</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The Lucas pricing operator.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Unpack</span>
+    <span class="n">γ</span><span class="p">,</span> <span class="n">β</span><span class="p">,</span> <span class="n">α</span><span class="p">,</span> <span class="n">σ</span> <span class="o">=</span> <span class="n">params</span>
+    <span class="n">grid</span><span class="p">,</span> <span class="n">draws</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="n">arrays</span>
+    <span class="c1"># Turn f into a function</span>
+    <span class="n">Af</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">grid</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
+    <span class="c1"># Compute Tf and return</span>
+    <span class="n">Tf</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty_like</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+    <span class="c1"># Apply the T operator to f using Monte Carlo integration</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">grid</span><span class="p">)):</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">grid</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="n">Tf</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">h</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">β</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">Af</span><span class="p">(</span><span class="n">y</span><span class="o">**</span><span class="n">α</span> <span class="o">*</span> <span class="n">draws</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">Tf</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>To solve the model, we write a function that iterates using the Lucas operator
+to find the fixed point.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">solve_model</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">arrays</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">500</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute the equilibrium price function.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Unpack</span>
+    <span class="n">γ</span><span class="p">,</span> <span class="n">β</span><span class="p">,</span> <span class="n">α</span><span class="p">,</span> <span class="n">σ</span> <span class="o">=</span> <span class="n">params</span>
+    <span class="n">grid</span><span class="p">,</span> <span class="n">draws</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="n">arrays</span>
+    <span class="c1"># Set up and loop</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">f</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">grid</span><span class="p">)</span>  <span class="c1"># Initial guess of f</span>
+    <span class="n">error</span> <span class="o">=</span> <span class="n">tol</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="k">while</span> <span class="n">error</span> <span class="o">&gt;</span> <span class="n">tol</span> <span class="ow">and</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">max_iter</span><span class="p">:</span>
+        <span class="n">Tf</span> <span class="o">=</span> <span class="n">T</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">arrays</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
+        <span class="n">error</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">Tf</span> <span class="o">-</span> <span class="n">f</span><span class="p">))</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="n">Tf</span>
+        <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="n">price</span> <span class="o">=</span> <span class="n">f</span> <span class="o">*</span> <span class="n">grid</span><span class="o">**</span><span class="n">γ</span>  <span class="c1"># Back out price vector</span>
+    <span class="k">return</span> <span class="n">price</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s solve the model and plot the resulting price function</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">params</span><span class="p">,</span> <span class="n">arrays</span> <span class="o">=</span> <span class="n">create_lucas_tree_model</span><span class="p">()</span>
+<span class="n">γ</span><span class="p">,</span> <span class="n">β</span><span class="p">,</span> <span class="n">α</span><span class="p">,</span> <span class="n">σ</span> <span class="o">=</span> <span class="n">params</span>
+<span class="n">grid</span><span class="p">,</span> <span class="n">draws</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="n">arrays</span>
+
+<span class="c1"># Solve once to compile</span>
+<span class="n">price_vals</span> <span class="o">=</span> <span class="n">solve_model</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">arrays</span><span class="p">)</span>
+
+<span class="c1"># Now time execution without compile time</span>
+<span class="n">in_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="n">price_vals</span> <span class="o">=</span> <span class="n">solve_model</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">arrays</span><span class="p">)</span>
+<span class="n">out_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="n">numba_elapsed</span> <span class="o">=</span> <span class="n">out_time</span> <span class="o">-</span> <span class="n">in_time</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Numba execution time = &quot;</span><span class="p">,</span> <span class="n">numba_elapsed</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Numba execution time =  4.221822261810303
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">price_vals</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;$p*(y)$&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;$y$&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;price&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<a class="reference internal image-reference" href="_images/0062427d0a1459fb49157dbf5ae9fc9b89321a15f5d178717c3bd04a4fe95799.png"><img alt="_images/0062427d0a1459fb49157dbf5ae9fc9b89321a15f5d178717c3bd04a4fe95799.png" src="_images/0062427d0a1459fb49157dbf5ae9fc9b89321a15f5d178717c3bd04a4fe95799.png" style="width: 80%;" /></a>
+</div>
+</div>
+<p>We see that the price is increasing, even if we remove all serial correlation
+from the endowment process.</p>
+<p>The reason is that a larger current endowment reduces current marginal utility.</p>
+<p>The price must therefore rise to induce the household to consume the entire endowment (and hence satisfy the resource constraint).</p>
+</section>
+<section id="jax-code">
+<h3><span class="section-number">7.3.2. </span>JAX Code<a class="headerlink" href="#jax-code" title="Permalink to this heading">#</a></h3>
+<p>Here’s a JAX version of the same problem.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">create_lucas_tree_model</span><span class="p">(</span><span class="n">γ</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>            <span class="c1"># CRRA utility parameter</span>
+                            <span class="n">β</span><span class="o">=</span><span class="mf">0.95</span><span class="p">,</span>         <span class="c1"># Discount factor</span>
+                            <span class="n">α</span><span class="o">=</span><span class="mf">0.90</span><span class="p">,</span>         <span class="c1"># Correlation coefficient</span>
+                            <span class="n">σ</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>          <span class="c1"># Volatility coefficient</span>
+                            <span class="n">grid_size</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span>
+                            <span class="n">draw_size</span><span class="o">=</span><span class="mi">1_000</span><span class="p">,</span>
+                            <span class="n">seed</span><span class="o">=</span><span class="mi">11</span><span class="p">):</span>
+        <span class="c1"># Set the grid interval to contain most of the mass of the</span>
+        <span class="c1"># stationary distribution of the consumption endowment</span>
+        <span class="n">ssd</span> <span class="o">=</span> <span class="n">σ</span> <span class="o">/</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">α</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">grid_min</span><span class="p">,</span> <span class="n">grid_max</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mi">4</span> <span class="o">*</span> <span class="n">ssd</span><span class="p">),</span> <span class="n">jnp</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mi">4</span> <span class="o">*</span> <span class="n">ssd</span><span class="p">)</span>
+        <span class="n">grid</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">grid_min</span><span class="p">,</span> <span class="n">grid_max</span><span class="p">,</span> <span class="n">grid_size</span><span class="p">)</span>
+
+        <span class="c1"># Set up distribution for shocks</span>
+        <span class="n">key</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">key</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
+        <span class="n">draws</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">lognormal</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">σ</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">draw_size</span><span class="p">,))</span>
+        <span class="n">grid_reshaped</span> <span class="o">=</span> <span class="n">grid</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="n">grid_size</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+        <span class="n">draws_reshaped</span> <span class="o">=</span> <span class="n">draws</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">draw_size</span><span class="p">))</span>
+        <span class="n">h</span> <span class="o">=</span> <span class="n">β</span> <span class="o">*</span> <span class="n">jnp</span><span class="o">.</span><span class="n">mean</span><span class="p">((</span><span class="n">grid_reshaped</span><span class="o">**</span><span class="n">α</span> <span class="o">*</span> <span class="n">draws_reshaped</span><span class="p">)</span> <span class="o">**</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">γ</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="n">γ</span><span class="p">,</span> <span class="n">β</span><span class="p">,</span> <span class="n">α</span><span class="p">,</span> <span class="n">σ</span>
+        <span class="n">arrays</span> <span class="o">=</span> <span class="n">grid</span><span class="p">,</span> <span class="n">draws</span><span class="p">,</span> <span class="n">h</span>
+        <span class="k">return</span> <span class="n">params</span><span class="p">,</span> <span class="n">arrays</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We’ll use the following function to simultaneously compute the expectation</p>
+<div class="math notranslate nohighlight">
+\[
+    \int f[G(y, z)] \phi(dz)
+\]</div>
+<p>over all <span class="math notranslate nohighlight">\(y\)</span> in the grid, under the current specifications.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jax</span><span class="o">.</span><span class="n">jit</span> 
+<span class="k">def</span> <span class="nf">compute_expectation</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">α</span><span class="p">,</span> <span class="n">draws</span><span class="p">,</span> <span class="n">grid</span><span class="p">,</span> <span class="n">f</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">jnp</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">y</span><span class="o">**</span><span class="n">α</span> <span class="o">*</span> <span class="n">draws</span><span class="p">,</span> <span class="n">grid</span><span class="p">,</span> <span class="n">f</span><span class="p">))</span>
+
+<span class="c1"># Vectorize over y</span>
+<span class="n">compute_expectation</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">vmap</span><span class="p">(</span><span class="n">compute_expectation</span><span class="p">,</span>
+                               <span class="n">in_axes</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Here’s the Lucas operator</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jax</span><span class="o">.</span><span class="n">jit</span>
+<span class="k">def</span> <span class="nf">T</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">arrays</span><span class="p">,</span> <span class="n">f</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The Lucas operator</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">grid</span><span class="p">,</span> <span class="n">draws</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="n">arrays</span>
+    <span class="n">γ</span><span class="p">,</span> <span class="n">β</span><span class="p">,</span> <span class="n">α</span><span class="p">,</span> <span class="n">σ</span> <span class="o">=</span> <span class="n">params</span>
+    <span class="n">mci</span> <span class="o">=</span> <span class="n">compute_expectation</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">α</span><span class="p">,</span> <span class="n">draws</span><span class="p">,</span> <span class="n">grid</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">h</span> <span class="o">+</span> <span class="n">β</span> <span class="o">*</span> <span class="n">mci</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We’ll use successive approximation to compute the fixed point.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">successive_approx_jax</span><span class="p">(</span><span class="n">T</span><span class="p">,</span>                     <span class="c1"># Operator (callable)</span>
+                          <span class="n">x_0</span><span class="p">,</span>                   <span class="c1"># Initial condition                </span>
+                          <span class="n">tol</span><span class="o">=</span><span class="mf">1e-6</span>      <span class="p">,</span>        <span class="c1"># Error tolerance</span>
+                          <span class="n">max_iter</span><span class="o">=</span><span class="mi">10_000</span><span class="p">):</span>      <span class="c1"># Max iteration bound</span>
+    <span class="k">def</span> <span class="nf">body_fun</span><span class="p">(</span><span class="n">k_x_err</span><span class="p">):</span>
+        <span class="n">k</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">error</span> <span class="o">=</span> <span class="n">k_x_err</span>
+        <span class="n">x_new</span> <span class="o">=</span> <span class="n">T</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">error</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">x_new</span> <span class="o">-</span> <span class="n">x</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">x_new</span><span class="p">,</span> <span class="n">error</span>
+
+    <span class="k">def</span> <span class="nf">cond_fun</span><span class="p">(</span><span class="n">k_x_err</span><span class="p">):</span>
+        <span class="n">k</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">error</span> <span class="o">=</span> <span class="n">k_x_err</span>
+        <span class="k">return</span> <span class="n">jnp</span><span class="o">.</span><span class="n">logical_and</span><span class="p">(</span><span class="n">error</span> <span class="o">&gt;</span> <span class="n">tol</span><span class="p">,</span> <span class="n">k</span> <span class="o">&lt;</span> <span class="n">max_iter</span><span class="p">)</span>
+
+    <span class="n">k</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">error</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">lax</span><span class="o">.</span><span class="n">while_loop</span><span class="p">(</span><span class="n">cond_fun</span><span class="p">,</span> <span class="n">body_fun</span><span class="p">,</span> 
+                                    <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">x_0</span><span class="p">,</span> <span class="n">tol</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">x</span>
+
+<span class="n">successive_approx_jax</span> <span class="o">=</span> \
+    <span class="n">jax</span><span class="o">.</span><span class="n">jit</span><span class="p">(</span><span class="n">successive_approx_jax</span><span class="p">,</span> <span class="n">static_argnums</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Here’s a function that solves the model</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">solve_model</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">arrays</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">500</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute the equilibrium price function.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Simplify notation</span>
+    <span class="n">grid</span><span class="p">,</span> <span class="n">draws</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="n">arrays</span>
+    <span class="n">γ</span><span class="p">,</span> <span class="n">β</span><span class="p">,</span> <span class="n">α</span><span class="p">,</span> <span class="n">σ</span> <span class="o">=</span> <span class="n">params</span>
+    <span class="n">_T</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">f</span><span class="p">:</span> <span class="n">T</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">arrays</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
+    <span class="n">f</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">grid</span><span class="p">)</span>  <span class="c1"># Initial guess of f</span>
+
+    <span class="n">f</span> <span class="o">=</span> <span class="n">successive_approx_jax</span><span class="p">(</span><span class="n">_T</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="n">tol</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="n">max_iter</span><span class="p">)</span>
+
+    <span class="n">price</span> <span class="o">=</span> <span class="n">f</span> <span class="o">*</span> <span class="n">grid</span><span class="o">**</span><span class="n">γ</span>  <span class="c1"># Back out price vector</span>
+
+    <span class="k">return</span> <span class="n">price</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now let’s solve the model again and compare timing</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">params</span><span class="p">,</span> <span class="n">arrays</span> <span class="o">=</span> <span class="n">create_lucas_tree_model</span><span class="p">()</span>
+<span class="n">grid</span><span class="p">,</span> <span class="n">draws</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="n">arrays</span>
+<span class="n">γ</span><span class="p">,</span> <span class="n">β</span><span class="p">,</span> <span class="n">α</span><span class="p">,</span> <span class="n">σ</span> <span class="o">=</span> <span class="n">params</span>
+
+<span class="c1"># Solve once to compile</span>
+<span class="n">price_vals</span> <span class="o">=</span> <span class="n">solve_model</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">arrays</span><span class="p">)</span>
+
+<span class="c1"># Now time execution without compile time</span>
+<span class="n">in_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="n">price_vals</span> <span class="o">=</span> <span class="n">solve_model</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">arrays</span><span class="p">)</span>
+<span class="n">out_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="n">jax_elapsed</span> <span class="o">=</span> <span class="n">out_time</span> <span class="o">-</span> <span class="n">in_time</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;JAX execution time = &quot;</span><span class="p">,</span> <span class="n">jax_elapsed</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Speedup factor = &quot;</span><span class="p">,</span> <span class="n">numba_elapsed</span> <span class="o">/</span> <span class="n">jax_elapsed</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>JAX execution time =  0.41605138778686523
+Speedup factor =  10.147357720083024
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s check the solutions are similar</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">price_vals</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;$p*(y)$&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;$y$&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;price&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<a class="reference internal image-reference" href="_images/1e53d0fd6035e1f51aa1b931abbf9cba70962551bb8fdd5974359bf564e4fae8.png"><img alt="_images/1e53d0fd6035e1f51aa1b931abbf9cba70962551bb8fdd5974359bf564e4fae8.png" src="_images/1e53d0fd6035e1f51aa1b931abbf9cba70962551bb8fdd5974359bf564e4fae8.png" style="width: 80%;" /></a>
+</div>
+</div>
+</section>
+</section>
+<section id="exercises">
+<h2><a class="toc-backref" href="#id6"><span class="section-number">7.4. </span>Exercises</a><a class="headerlink" href="#exercises" title="Permalink to this heading">#</a></h2>
+<div class="exercise admonition" id="lucas_ex1">
+<span id="lucas-asset-ex1"></span>
+<p class="admonition-title"><span class="caption-number">Exercise 7.1 </span></p>
+<section id="exercise-content">
+<p>When consumers are more patient the asset becomes more valuable, and the price of the Lucas tree shifts up.</p>
+<p>Show this by plotting the price function for the Lucas tree when <span class="math notranslate nohighlight">\(\beta = 0.95\)</span> and <span class="math notranslate nohighlight">\(0.98\)</span>.</p>
+</section>
+</div>
+<div class="solution dropdown admonition" id="lucas_model-solution-1">
+
+<p class="admonition-title">Solution to<a class="reference internal" href="#lucas_ex1"> Exercise 7.1</a></p>
+<section id="solution-content">
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+
+<span class="k">for</span> <span class="n">β</span> <span class="ow">in</span> <span class="p">(</span><span class="mf">.95</span><span class="p">,</span> <span class="mf">0.98</span><span class="p">):</span>
+    <span class="n">params</span><span class="p">,</span> <span class="n">arrays</span> <span class="o">=</span> <span class="n">create_lucas_tree_model</span><span class="p">(</span><span class="n">β</span><span class="o">=</span><span class="n">β</span><span class="p">)</span>
+    <span class="n">grid</span><span class="p">,</span> <span class="n">draws</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="n">arrays</span>
+    <span class="n">γ</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">α</span><span class="p">,</span> <span class="n">σ</span> <span class="o">=</span> <span class="n">params</span>
+    <span class="n">price_vals</span> <span class="o">=</span> <span class="n">solve_model</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">arrays</span><span class="p">)</span>
+    <span class="n">label</span> <span class="o">=</span> <span class="sa">rf</span><span class="s1">&#39;$\beta = </span><span class="si">{</span><span class="n">beta</span><span class="si">}</span><span class="s1">$&#39;</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">price_vals</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper left&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="s1">&#39;$y$&#39;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s1">&#39;price&#39;</span><span class="p">,</span> <span class="n">xlim</span><span class="o">=</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">grid</span><span class="p">),</span> <span class="nb">max</span><span class="p">(</span><span class="n">grid</span><span class="p">)))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<a class="reference internal image-reference" href="_images/09344d8d0349a04edf8e79ae0c0232f791d795b42d8f2ba23f5ba769a9af533b.png"><img alt="_images/09344d8d0349a04edf8e79ae0c0232f791d795b42d8f2ba23f5ba769a9af533b.png" src="_images/09344d8d0349a04edf8e79ae0c0232f791d795b42d8f2ba23f5ba769a9af533b.png" style="width: 80%;" /></a>
+</div>
+</div>
+</section>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                    </div>
+                    
+                </main> <!-- .page__content -->
+                
+
+
+                <footer class="qe-page__footer">
+
+                    <p><a href="https://creativecommons.org/licenses/by-sa/4.0/"><img src="https://licensebuttons.net/l/by-sa/4.0/80x15.png"></a></p>
+
+                    <p>Creative Commons License &ndash; This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International.</p>
+
+                </footer> <!-- .page__footer -->
+
+            </div> <!-- .page -->
+
+            
+
+            
+            <div class="qe-sidebar bd-sidebar inactive" id="site-navigation">
+
+                <div class="qe-sidebar__header">
+
+
+                    Contents
+
+                </div>
+
+                <nav class="qe-sidebar__nav" id="qe-sidebar-nav" aria-label="Main navigation">
+                    <p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Introduction
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="about.html">
+   1. About
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="jax_intro.html">
+   2. An Introduction to JAX
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="newtons_method.html">
+   3. Newton’s Method via JAX
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Simulation
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="inventory_dynamics.html">
+   4. Inventory Dynamics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="kesten_processes.html">
+   5. Kesten Processes and Firm Dynamics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="wealth_dynamics.html">
+   6. Wealth Distribution Dynamics
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Asset Pricing
+ </span>
+</p>
+<ul class="current nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1 current active active">
+  <a class="current reference internal" href="#">
+   7. Asset Pricing: The Lucas Asset Pricing Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="markov_asset.html">
+   8. An Asset Pricing Problem
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Dynamic Programming
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="opt_savings_1.html">
+   9. Optimal Savings I: Value Function Iteration
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="opt_savings_2.html">
+   10. Optimal Savings II: Alternative Algorithms
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="short_path.html">
+   11. Shortest Paths
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="opt_invest.html">
+   12. Optimal Investment
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="inventory_ssd.html">
+   13. Inventory Management Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ifp_egm.html">
+   14. Endogenous Grid Method
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="arellano.html">
+   15. Default Risk and Income Fluctuations
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="aiyagari_jax.html">
+   16. The Aiyagari Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="cake_eating_numerical.html">
+   17. Cake Eating: Numerical Methods
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Data and Empirics
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="mle.html">
+   18. Maximum Likelihood Estimation
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Other
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="troubleshooting.html">
+   19. Troubleshooting
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="zreferences.html">
+   20. References
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="status.html">
+   21. Execution Statistics
+  </a>
+ </li>
+</ul>
+
+                </nav>
+
+                <div class="qe-sidebar__footer">
+
+                </div>
+
+            </div> <!-- .sidebar -->
+            
+        </div> <!-- .main -->
+
+        <div class="qe-toolbar">
+
+            <div class="qe-toolbar__inner">
+
+                <ul class="qe-toolbar__main">
+                    <li data-tippy-content="Table of Contents" class="btn__sidebar"><i data-feather="menu"></i></li>
+                    <li data-tippy-content="Home"><a href="intro.html"><i data-feather="home"></i></a></li>
+                    <li class="btn__qelogo"><a href="https://quantecon.org" title=""><span class="show-for-sr">QuantEcon</span></a></li>
+                </ul>
+
+                <ul class="qe-toolbar__links">
+                    <li class="btn__search">
+                        <form action="search.html" method="get">
+                            <input type="search" class="form-control" name="q" id="search-input" placeholder="Search..." aria-label="Search..." autocomplete="off" accesskey="k">
+                            <i data-feather="search" id="search-icon"></i>
+                        </form>
+                    </li>
+                    <li data-tippy-content="Fullscreen" class="btn__fullscreen"><i data-feather="maximize"></i></li>
+                    <li data-tippy-content="Increase font size" class="btn__plus"><i data-feather="plus-circle"></i></li>
+                    <li data-tippy-content="Decrease font size" class="btn__minus"><i data-feather="minus-circle"></i></li>
+                    <li data-tippy-content="Change contrast" class="btn__contrast"><i data-feather="sunset"></i></li>
+                    <li data-tippy-content="Download Notebook"><a href="/_notebooks/lucas_model.ipynb" download><i data-feather="download-cloud"></i></a></li>
+                    <li class="settings-button" id="settingsButton"><div data-tippy-content="Launch Notebook"><i data-feather="play-circle"></i></div></li>
+                        <li class="download-pdf" id="downloadButton"><i data-feather="file"></i></li>
+                    <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-jax/blob/main/lectures/lucas_model.md" download><i data-feather="github"></i></a></li>
+                </ul>
+
+            </div>
+
+        </div> <!-- .toolbar -->
+        <div id="downloadPDFModal" style="display: none;">
+            <ul class="pdf-options" style="display: block;">
+                <li class="download-pdf-book" onClick="window.print()">
+                    <p>Lecture (PDF)</p>
+                </li>
+                <li class="download-pdf-file">
+                    <a href="/_pdf/quantecon-jax.pdf" download><p>Book (PDF)</p></a>
+                </li>
+            </ul>
+        </div>
+        <div id="settingsModal" style="display: none;">
+            <p class="modal-title"> Notebook Launcher </p>
+            <div class="modal-desc">
+            <p>
+                Choose public or private cloud service for "Launch" button.
+            </p>
+            </div>
+            <p class="modal-subtitle">Select a server</p>
+            <ul class="modal-servers">
+            <li class="active launcher-public">
+                <span class="label">Public</span>
+                <select id="launcher-public-input">
+                
+                    <option value="https://colab.research.google.com/github/QuantEcon/lecture-jax.notebooks/blob/master/lucas_model.ipynb">Colab</option>
+                
+                </select>
+                <i class="fas fa-check-circle"></i>
+            </li>
+            <li class="launcher-private">
+                <span class="label">Private</span>
+                <input type="text" id="launcher-private-input" data-repourl="https://github.com/QuantEcon/lecture-jax.notebooks" data-urlpath="tree/lecture-jax.notebooks/lucas_model.ipynb" data-branch=master>
+                <i class="fas fa-check-circle"></i>
+            </li>
+            </ul>
+            <p class="launch"><a href="https://colab.research.google.com/github/QuantEcon/lecture-jax.notebooks/blob/master/lucas_model.ipynb" id="advancedLaunchButton" target="_blank">Launch Notebook</a></p>
+            <script>
+                // QuantEcon Notebook Launcher
+                const launcherTypeElements = document.querySelectorAll('#settingsModal .modal-servers li');
+                // Highlight the server type if previous selection exists
+                if (typeof localStorage.launcherType !== 'undefined') {
+                  for (var i = 0; i < launcherTypeElements.length; i++) {
+                    launcherTypeElements[i].classList.remove('active');
+                    if ( launcherTypeElements[i].classList.contains(localStorage.launcherType) ) {
+                      launcherTypeElements[i].classList.add('active');
+                    }
+                  }
+                }
+                // Highlight server type on click and set local storage value
+                for (var i = 0; i < launcherTypeElements.length; i++) {
+                  launcherTypeElements[i].addEventListener('click', function() {
+                    for (var j = 0; j < launcherTypeElements.length; j++) {
+                      launcherTypeElements[j].classList.remove('active');
+                    }
+                    this.classList.add('active');
+                    if ( this.classList.contains('launcher-private') ) {
+                      localStorage.launcherType = 'launcher-private';
+                    } else if ( this.classList.contains('launcher-public') ) {
+                      localStorage.launcherType = 'launcher-public';
+                    }
+                    setLaunchServer();
+                  })
+                }
+                const launcherPublic = document.getElementById('launcher-public-input');
+                const launcherPrivate = document.getElementById('launcher-private-input');
+                const pageName = "lucas_model";
+                const repoURL = "https://github.com/QuantEcon/lecture-jax.notebooks";
+                const urlPath = "tree/lecture-jax.notebooks/lucas_model.ipynb";
+                const branch = "master"
+                const launchNotebookLink = document.getElementById('advancedLaunchButton');
+
+                // Highlight public server option if previous selection exists
+                if (typeof localStorage.launcherPublic !== 'undefined') {
+                  launcherPublic.value = localStorage.launcherPublic;
+                }
+                // Update local storage upon public server selection
+                launcherPublic.addEventListener('change', (event) => {
+                  setLaunchServer();
+                });
+                // Populate private server input if previous entry exists
+                if (typeof localStorage.launcherPrivate !== 'undefined') {
+                  launcherPrivate.value = localStorage.launcherPrivate;
+                }
+                // Update local storage when a private server is entered
+                launcherPrivate.addEventListener('input', (event) => {
+                  setLaunchServer();
+                });
+
+                // Function to update the "Launch Notebook" link href
+                function setLaunchServer() {
+                  launchNotebookLink.removeAttribute("style")
+                  if ( localStorage.launcherType == 'launcher-private' ) {
+                    let repoPrefix = "/jupyter/hub/user-redirect/git-pull?repo=" + repoURL + "&branch=" + branch + "&urlpath=" + urlPath;
+                    launcherPrivateValue = launcherPrivate.value
+                    if (!launcherPrivateValue) {
+                        launchNotebookLink.removeAttribute("href")
+                        launchNotebookLink.style.background = "grey"
+                        return
+                    }
+                    localStorage.launcherPrivate = launcherPrivateValue;
+                    privateServer = localStorage.launcherPrivate.replace(/\/$/, "")
+                    if (!privateServer.includes("http")) {
+                        privateServer = "http://" + privateServer
+                    }
+                    launchNotebookLinkURL = privateServer + repoPrefix;
+                  } else if ( localStorage.launcherType == 'launcher-public' ) {
+                    launcherPublicValue = launcherPublic.options[launcherPublic.selectedIndex].value;
+                    localStorage.launcherPublic = launcherPublicValue;
+                    launchNotebookLinkURL = localStorage.launcherPublic;
+                  }
+                  if (launchNotebookLinkURL) launchNotebookLink.href = launchNotebookLinkURL;
+                }
+                // Check if user has previously selected a server
+                if ( (typeof localStorage.launcherPrivate !== 'undefined') || (typeof localStorage.launcherPublic !== 'undefined') ) {
+                  setLaunchServer();
+                }
+                </script>
+
+        </div>
+
+    </div> <!-- .wrapper-->
+  </body>
+</html>
