@@ -46,8 +46,7 @@ question in an equilibrium setting with risk-averse agents.
 Lucas' model provides a beautiful illustration of model building in general and
 equilibrium pricing in competitive models in particular.
 
-
-In this lecture work through the Lucas model and show where the fundamental
+In this lecture we work through the Lucas model and show where the fundamental
 asset pricing equation comes from.
 
 We'll write code in both Numba and JAX.
@@ -409,6 +408,16 @@ Let's try this when $\ln y_{t+1} = \alpha \ln y_t + \sigma \epsilon_{t+1}$ where
 
 Utility will take the isoelastic form $u(c) = c^{1-\gamma}/(1-\gamma)$, where $\gamma > 0$ is the coefficient of relative risk aversion.
 
+We'll use Monte Carlo to compute the integral
+
+$$
+    \int f[G(y, z)] \phi(dz)
+$$
+
+
+Monte Carlo is not always the fastest method for computing low-dimensional
+integrals, but it is extremely flexible (for example, it's straightforward to
+change the underlying state process).
 
 ### Numba Code
 
@@ -423,8 +432,8 @@ def create_lucas_tree_model(γ=2,            # CRRA utility parameter
                             β=0.95,         # Discount factor
                             α=0.90,         # Correlation coefficient
                             σ=0.1,          # Volatility coefficient
-                            grid_size=250,
-                            draw_size=500,
+                            grid_size=500,
+                            draw_size=1_000,
                             seed=11):
         # Set the grid interval to contain most of the mass of the
         # stationary distribution of the consumption endowment
@@ -539,8 +548,8 @@ def create_lucas_tree_model(γ=2,            # CRRA utility parameter
                             β=0.95,         # Discount factor
                             α=0.90,         # Correlation coefficient
                             σ=0.1,          # Volatility coefficient
-                            grid_size=250,
-                            draw_size=500,
+                            grid_size=500,
+                            draw_size=1_000,
                             seed=11):
         # Set the grid interval to contain most of the mass of the
         # stationary distribution of the consumption endowment
@@ -569,11 +578,12 @@ over all $y$ in the grid, under the current specifications.
 
 ```{code-cell} python3
 @jax.jit 
-def monte_carlo_integration(y, α, draws, grid, f):
+def compute_expectation(y, α, draws, grid, f):
     return jnp.mean(jnp.interp(y**α * draws, grid, f))
 
-monte_carlo_integration_vectorized = jax.vmap(monte_carlo_integration,
-                                              in_axes=(0, None, None, None, None))
+# Vectorize over y
+compute_expectation = jax.vmap(compute_expectation,
+                               in_axes=(0, None, None, None, None))
 ```
 
 Here's the Lucas operator
@@ -583,14 +593,41 @@ Here's the Lucas operator
 def T(params, arrays, f):
     """
     The Lucas operator
+
     """
     grid, draws, h = arrays
     γ, β, α, σ = params
-    mci = monte_carlo_integration_vectorized(grid, α, draws, grid, f)
+    mci = compute_expectation(grid, α, draws, grid, f)
     return h + β * mci
 ```
-    
-Here's the loop that solves the model
+
+We'll use successive approximation to compute the fixed point.
+
+```{code-cell} ipython3
+def successive_approx_jax(T,                     # Operator (callable)
+                          x_0,                   # Initial condition                
+                          tol=1e-6      ,        # Error tolerance
+                          max_iter=10_000):      # Max iteration bound
+    def body_fun(k_x_err):
+        k, x, error = k_x_err
+        x_new = T(x)
+        error = jnp.max(jnp.abs(x_new - x))
+        return k + 1, x_new, error
+
+    def cond_fun(k_x_err):
+        k, x, error = k_x_err
+        return jnp.logical_and(error > tol, k < max_iter)
+
+    k, x, error = jax.lax.while_loop(cond_fun, body_fun, 
+                                    (1, x_0, tol + 1))
+    return x
+
+successive_approx_jax = \
+    jax.jit(successive_approx_jax, static_argnums=(0,))
+```
+
+
+Here's a function that solves the model
 
 ```{code-cell} python3
 def solve_model(params, arrays, tol=1e-6, max_iter=500):
@@ -601,17 +638,10 @@ def solve_model(params, arrays, tol=1e-6, max_iter=500):
     # Simplify notation
     grid, draws, h = arrays
     γ, β, α, σ = params
-    T_operator = lambda f: T(params, arrays, f)
-
-    i = 0
+    _T = lambda f: T(params, arrays, f)
     f = jnp.ones_like(grid)  # Initial guess of f
 
-    error = tol + 1
-    while error > tol and i < max_iter:
-        Tf = T_operator(f)
-        error = jnp.max(jnp.abs(Tf - f))
-        f = Tf
-        i += 1
+    f = successive_approx_jax(_T, f, tol=tol, max_iter=max_iter)
 
     price = f * grid**γ  # Back out price vector
 

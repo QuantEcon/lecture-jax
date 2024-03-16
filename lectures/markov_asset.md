@@ -21,7 +21,8 @@ kernelspec:
 In this lecture we consider some asset pricing problems and use them to
 illustrate some foundations of JAX programming.
 
-The main difference from the lecture {doc}`lucas_model` is that the the state
+The main difference from the lecture {doc}`lucas_model`, which also considers
+asset prices, is that the the state
 spaces will be discrete and multi-dimensional.
 
 Most of the heavy lifting is done through routines from linear algebra.
