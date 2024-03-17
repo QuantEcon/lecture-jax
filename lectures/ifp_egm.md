@@ -27,7 +27,7 @@ QuantEcon lecture](https://python.quantecon.org/egm_policy_iter.html).
 
 Here we focus on providing an efficient JAX implementation.
 
-We will use the following libraries and imports.
+In addition to JAX and Anaconda, this lecture will need the following libraries:
 
 ```{code-cell}
 :tags: [hide-output]
