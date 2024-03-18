@@ -20,7 +20,7 @@ This lecture is the extended JAX implementation of [this lecture](https://python
 
 Please refer that lecture for all background and notation.
 
-In addition to what's in Anaconda, this lecture will need the following libraries:
+In addition to JAX and Anaconda, this lecture will need the following libraries:
 
 ```{code-cell} ipython3
 :tags: [hide-output]

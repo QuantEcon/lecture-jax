@@ -19,7 +19,7 @@ kernelspec:
 
 This lecture provides a JAX implementation of a model in [Dynamic Programming](https://dp.quantecon.org/).
 
-We require the following library to be installed.
+In addition to JAX and Anaconda, this lecture will need the following libraries:
 
 ```{code-cell} ipython3
 :tags: [hide-output]

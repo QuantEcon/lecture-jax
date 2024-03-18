@@ -249,7 +249,7 @@ const thebe_selector_output = ".output, .cell_output"
 <h1><span class="section-number">4. </span>Inventory Dynamics<a class="headerlink" href="#inventory-dynamics" title="Permalink to this heading">#</a></h1>
 <div class="warning admonition">
 <p class="admonition-title">GPU</p>
-<p>This lecture was built using <a class="reference internal" href="status.html#status-machine-details"><span class="std std-ref">hardware</span></a> that has access to a GPU.</p>
+<p>This lecture was built using a machine with JAX installed and access to a GPU.</p>
 <p>To run this lecture on <a class="reference external" href="https://colab.research.google.com/">Google Colab</a>, click on the “play” icon top right, select Colab, and set the runtime environment to include a GPU.</p>
 <p>To run this lecture on your own machine, you need to install <a class="reference external" href="https://github.com/google/jax">Google JAX</a>.</p>
 </div>
@@ -296,7 +296,7 @@ lecture</a>, using Numba.</p>
   pid, fd = os.forkpty()
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Sat Mar 16 19:54:04 2024       
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Sun Mar 17 23:03:51 2024       
 +-----------------------------------------------------------------------------+
 | NVIDIA-SMI 470.182.03   Driver Version: 470.182.03   CUDA Version: 12.3     |
 |-------------------------------+----------------------+----------------------+
@@ -307,7 +307,7 @@ lecture</a>, using Numba.</p>
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>|   0  Tesla V100-SXM2...  Off  | 00000000:00:1E.0 Off |                    0 |
-| N/A   27C    P0    37W / 300W |      0MiB / 16160MiB |      2%      Default |
+| N/A   42C    P0    44W / 300W |      0MiB / 16160MiB |      2%      Default |
 |                               |                      |                  N/A |
 +-------------------------------+----------------------+----------------------+
                                                                                
@@ -445,8 +445,8 @@ initial inventory <code class="docutils literal notranslate"><span class="pre">x
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1.39 s, sys: 411 ms, total: 1.8 s
-Wall time: 970 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1.25 s, sys: 415 ms, total: 1.66 s
+Wall time: 889 ms
 </pre></div>
 </div>
 </div>
@@ -459,8 +459,8 @@ Wall time: 970 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1.14 s, sys: 327 ms, total: 1.47 s
-Wall time: 603 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1.07 s, sys: 355 ms, total: 1.42 s
+Wall time: 545 ms
 </pre></div>
 </div>
 </div>
@@ -534,8 +534,8 @@ through the time dimension.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 294 ms, sys: 0 ns, total: 294 ms
-Wall time: 204 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 293 ms, sys: 0 ns, total: 293 ms
+Wall time: 205 ms
 </pre></div>
 </div>
 </div>
@@ -549,8 +549,8 @@ Wall time: 204 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 15.8 ms, sys: 0 ns, total: 15.8 ms
-Wall time: 14 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 17.1 ms, sys: 0 ns, total: 17.1 ms
+Wall time: 14.9 ms
 </pre></div>
 </div>
 </div>
@@ -599,8 +599,8 @@ all random variables at once.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 233 ms, sys: 0 ns, total: 233 ms
-Wall time: 213 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 225 ms, sys: 0 ns, total: 225 ms
+Wall time: 212 ms
 </pre></div>
 </div>
 </div>
@@ -614,8 +614,8 @@ Wall time: 213 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 5.17 ms, sys: 0 ns, total: 5.17 ms
-Wall time: 4.69 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 6.01 ms, sys: 0 ns, total: 6.01 ms
+Wall time: 5.15 ms
 </pre></div>
 </div>
 </div>
@@ -672,8 +672,8 @@ recording the cross-section at the dates in <code class="docutils literal notran
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 2.14 s, sys: 0 ns, total: 2.14 s
-Wall time: 1.02 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 2.17 s, sys: 0 ns, total: 2.17 s
+Wall time: 1.05 s
 </pre></div>
 </div>
 </div>
@@ -768,8 +768,8 @@ is large.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 608 ms, sys: 0 ns, total: 608 ms
-Wall time: 599 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 631 ms, sys: 0 ns, total: 631 ms
+Wall time: 616 ms
 Frequency of at least two stock outs = 0.4472379982471466
 </pre></div>
 </div>
@@ -839,10 +839,10 @@ speed while generating a similar answer.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 340 ms, sys: 0 ns, total: 340 ms
-Wall time: 289 ms
-CPU times: user 2.41 ms, sys: 0 ns, total: 2.41 ms
-Wall time: 4.82 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 332 ms, sys: 0 ns, total: 332 ms
+Wall time: 280 ms
+CPU times: user 2.35 ms, sys: 0 ns, total: 2.35 ms
+Wall time: 4.89 ms
 Frequency of at least two stock outs = 0.44674399495124817
 </pre></div>
 </div>

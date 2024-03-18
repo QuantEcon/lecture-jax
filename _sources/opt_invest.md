@@ -16,7 +16,7 @@ kernelspec:
 ```{include} _admonition/gpu.md
 ```
 
-We require the following library to be installed.
+In addition to JAX and Anaconda, this lecture will need the following libraries:
 
 ```{code-cell} ipython3
 :tags: [hide-output]
