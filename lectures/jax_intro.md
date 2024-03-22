@@ -375,7 +375,11 @@ f_jit(x)
 And now let's time it.
 
 ```{code-cell} ipython3
-%time f_jit(x).block_until_ready()
+%time x_jax = jax.device_put(x)
+```
+
+```{code-cell} ipython3
+%timeit f_jit(x_jax).block_until_ready()
 ```
 
 Note the speed gain.
