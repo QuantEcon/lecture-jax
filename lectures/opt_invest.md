@@ -346,7 +346,6 @@ def value_function_iteration(model, tol=1e-5):
 
 For OPI we will use a compiled JAX `lax.while_loop` operation to speed execution.
 
-
 ```{code-cell} ipython3
 def opi_loop(params, sizes, arrays, m, tol, max_iter):
     """
@@ -389,7 +388,6 @@ def optimistic_policy_iteration(model, m=10, tol=1e-5, max_iter=10_000):
 
 Here's HPI
 
-
 ```{code-cell} ipython3
 def howard_policy_iteration(model, maxiter=250):
     """
@@ -408,44 +406,9 @@ def howard_policy_iteration(model, maxiter=250):
     return σ
 ```
 
-
 ```{code-cell} ipython3
 :tags: [hide-output]
 
-model = create_investment_model()
-print("Starting HPI.")
-qe.tic()
-out = howard_policy_iteration(model)
-elapsed = qe.toc()
-print(out)
-print(f"HPI completed in {elapsed} seconds.")
-```
-
-```{code-cell} ipython3
-:tags: [hide-output]
-
-print("Starting VFI.")
-qe.tic()
-out = value_function_iteration(model)
-elapsed = qe.toc()
-print(out)
-print(f"VFI completed in {elapsed} seconds.")
-```
-
-```{code-cell} ipython3
-:tags: [hide-output]
-
-print("Starting OPI.")
-qe.tic()
-out = optimistic_policy_iteration(model, m=100)
-elapsed = qe.toc()
-print(out)
-print(f"OPI completed in {elapsed} seconds.")
-```
-
-Here's the plot of the Howard policy, as a function of $y$ at the highest and lowest values of $z$.
-
-```{code-cell} ipython3
 model = create_investment_model()
 constants, sizes, arrays = model
 β, a_0, a_1, γ, c = constants
@@ -454,15 +417,73 @@ y_grid, z_grid, Q = arrays
 ```
 
 ```{code-cell} ipython3
-σ_star = howard_policy_iteration(model)
+:tags: [hide-output]
 
+print("Starting HPI.")
+qe.tic()
+σ_star_hpi = howard_policy_iteration(model)
+elapsed = qe.toc()
+print(σ_star_hpi)
+print(f"HPI completed in {elapsed} seconds.")
+```
+
+Here's the plot of the Howard policy, as a function of $y$ at the highest and lowest values of $z$.
+
+```{code-cell} ipython3
 fig, ax = plt.subplots(figsize=(9, 5))
 ax.plot(y_grid, y_grid, "k--", label="45")
-ax.plot(y_grid, y_grid[σ_star[:, 1]], label="$\\sigma^*(\cdot, z_1)$")
-ax.plot(y_grid, y_grid[σ_star[:, -1]], label="$\\sigma^*(\cdot, z_N)$")
+ax.plot(y_grid, y_grid[σ_star_hpi[:, 1]], label="$\\sigma^{*}_{HPI}(\cdot, z_1)$")
+ax.plot(y_grid, y_grid[σ_star_hpi[:, -1]], label="$\\sigma^{*}_{HPI}(\cdot, z_N)$")
 ax.legend(fontsize=12)
 plt.show()
 ```
+
+```{code-cell} ipython3
+:tags: [hide-output]
+
+print("Starting VFI.")
+qe.tic()
+σ_star_vfi = value_function_iteration(model)
+elapsed = qe.toc()
+print(σ_star_vfi)
+print(f"VFI completed in {elapsed} seconds.")
+```
+
+Here's the plot of the VFI, as a function of $y$ at the highest and lowest values of $z$.
+
+```{code-cell} ipython3
+fig, ax = plt.subplots(figsize=(9, 5))
+ax.plot(y_grid, y_grid, "k--", label="45")
+ax.plot(y_grid, y_grid[σ_star_vfi[:, 1]], label="$\\sigma^{*}_{VFI}(\cdot, z_1)$")
+ax.plot(y_grid, y_grid[σ_star_vfi[:, -1]], label="$\\sigma^{*}_{VFI}(\cdot, z_N)$")
+ax.legend(fontsize=12)
+plt.show()
+```
+
+```{code-cell} ipython3
+:tags: [hide-output]
+
+print("Starting OPI.")
+qe.tic()
+σ_star_opi = optimistic_policy_iteration(model, m=100)
+elapsed = qe.toc()
+print(σ_star_opi)
+print(f"OPI completed in {elapsed} seconds.")
+```
+
+Here's the plot of the optimal policy, as a function of $y$ at the highest and lowest values of $z$.
+
+```{code-cell} ipython3
+fig, ax = plt.subplots(figsize=(9, 5))
+ax.plot(y_grid, y_grid, "k--", label="45")
+ax.plot(y_grid, y_grid[σ_star_opi[:, 1]], label="$\\sigma^{*}_{OPI}(\cdot, z_1)$")
+ax.plot(y_grid, y_grid[σ_star_opi[:, -1]], label="$\\sigma^{*}_{OPI}(\cdot, z_N)$")
+ax.legend(fontsize=12)
+plt.show()
+```
+
+We observe that all the solvers produce the same output from the above three plots.
+
 
 Let's plot the time taken by each of the solvers and compare them.
 
@@ -471,7 +492,6 @@ m_vals = range(5, 600, 40)
 ```
 
 ```{code-cell} ipython3
-model = create_investment_model()
 print("Running Howard policy iteration.")
 qe.tic()
 σ_pi = howard_policy_iteration(model)
