@@ -30,7 +30,17 @@ using the techniques described below.
 
 One of our interests will be how different aspects of wealth dynamics -- such
 as labor income and the rate of return on investments -- feed into measures of
-inequality, such as the Gini coefficent.
+inequality, such as the Gini coefficient.
+
+In addition to JAX and Anaconda, this lecture will need the following libraries:
+
+```{code-cell} ipython3
+:tags: [hide-output]
+
+!pip install quantecon
+```
+
+We will use the following imports:
 
 ```{code-cell} ipython3
 import numba
@@ -74,7 +84,7 @@ $$
 
 that affects the interest rate and labor income.
 
-In particular, the gross interest rates obeys
+In particular, the gross interest rates obey
 
 $$
     R_t := 1 + r_t = c_r \exp(z_t) + \exp(\mu_r + \sigma_r \xi_t)
@@ -183,7 +193,7 @@ def update_wealth(household_params, w, z):
     return wp
 ```
 
-Here's function to simulate the time series of wealth for an individual household
+Here's a function to simulate the time series of wealth for an individual household
 
 ```{code-cell} ipython3
 @numba.jit
@@ -228,7 +238,7 @@ Notice the large spikes in wealth over time.
 Such spikes are related to heavy tails in the wealth distribution, which we
 discuss below.
 
-Here's function to simulate a cross section of households forward in time.
+Here's a function to simulate a cross section of households forward in time.
 
 Note the use of parallelization to speed up computation.
 
@@ -236,7 +246,7 @@ Note the use of parallelization to speed up computation.
 @numba.jit(parallel=True)
 def update_cross_section(model, w_distribution, z_sequence):
     """
-    Shifts a cross-section of household forward in time
+    Shifts a cross-section of households forward in time
 
     Takes 
 
@@ -293,7 +303,7 @@ speed compares
 ```{code-cell} ipython3
 def update_cross_section_jax(model, w_distribution, z_sequence, key):
     """
-    Shifts a cross-section of household forward in time
+    Shifts a cross-section of households forward in time
 
     Takes 
 
@@ -362,7 +372,7 @@ def update_cross_section_jax_compiled(model,
                                       z_sequence, 
                                       key):
     """
-    Shifts a cross-section of household forward in time
+    Shifts a cross-section of households forward in time
 
     Takes 
 
@@ -456,12 +466,12 @@ ax.set_ylabel("log size")
 plt.show()
 ```
 
-### Lorenz curves and Gini coefficents
+### Lorenz curves and Gini coefficients
 
 To study the impact of parameters on inequality, we examine Lorenz curves
 and the Gini coefficients at different parameters.
 
-QuantEcon provides functions to compute Lorenz curves and gini coefficients that are accelerated using Numba.
+QuantEcon provides functions to compute Lorenz curves and Gini coefficients that are accelerated using Numba.
 
 Here we provide JAX-based functions that do the same job and are faster for large data sets on parallel hardware.
 
@@ -471,14 +481,14 @@ Here we provide JAX-based functions that do the same job and are faster for larg
 Recall that, for sorted data $w_1, \ldots, w_n$, the Lorenz curve 
 generates data points $(x_i, y_i)_{i=0}^n$  according to
 
-\begin{equation*}
+$$
     x_0 = y_0 = 0
     \qquad \text{and, for $i \geq 1$,} \quad
     x_i = \frac{i}{n},
     \qquad
     y_i =
        \frac{\sum_{j \leq i} w_j}{\sum_{j \leq n} w_j}  
-\end{equation*}
+$$
 
 ```{code-cell} ipython3
 def _lorenz_curve_jax(w, w_size):
@@ -530,14 +540,13 @@ plt.show()
 
 Recall that, for sorted data $w_1, \ldots, w_n$, the Gini coefficient takes the form
 
-\begin{equation}
-    \label{eq:gini}
-    G :=
-    \frac
-        {\sum_{i=1}^n \sum_{j = 1}^n |w_j - w_i|}
-        {2n\sum_{i=1}^n w_i}.
-\end{equation}
 
+$$
+G :=
+\frac
+    {\sum_{i=1}^n \sum_{j = 1}^n |w_j - w_i|}
+    {2n\sum_{i=1}^n w_i}.
+$$ (eq:gini)
 
 Here's a function that computes the Gini coefficient using vectorization.
 
@@ -673,7 +682,7 @@ Now let's check the Gini coefficient
 
 ```{code-cell} ipython3
 fig, ax = plt.subplots()
-ax.plot(μ_r_vals, gini_vals, label='gini coefficient')
+ax.plot(μ_r_vals, gini_vals, label='Gini coefficient')
 ax.set_xlabel("$\mu_r$")
 ax.legend()
 plt.show()
@@ -698,7 +707,7 @@ Use the same initial condition as before and the sequence
 
 To isolate the role of volatility, set $\mu_r = - \sigma_r^2 / 2$ at each $\sigma_r$.
 
-(This holds the variance of the ideosyncratic term $\exp(\mu_r + \sigma_r \zeta)$ constant.)
+(This holds the variance of the idiosyncratic term $\exp(\mu_r + \sigma_r \zeta)$ constant.)
 
 ```{exercise-end}
 ```
@@ -730,7 +739,7 @@ plt.show()
 
 ```{code-cell} ipython3
 fig, ax = plt.subplots()
-ax.plot(σ_r_vals, gini_vals, label='gini coefficient')
+ax.plot(σ_r_vals, gini_vals, label='Gini coefficient')
 ax.set_xlabel("$\sigma_r$")
 ax.legend()
 plt.show()
@@ -763,7 +772,7 @@ Plot both on the same figure and examine the result.
 
 Here's one solution.
 
-It shows that increasing volatility in financial income has the greater effect
+It shows that increasing volatility in financial income has a greater effect
 
 ```{code-cell} ipython3
 model = create_wealth_model()
