@@ -342,7 +342,7 @@ def create_model(β=0.95,             # discount factor
     assert m_a + σ_a**2 / (2 * (1 - θ)) < 0, "Stability condition fails"
     # Build grids and initialize random number generator
     φ_grid = jnp.linspace(0, φ_grid_max, φ_grid_size)
-    key, subkey = random.split(random.PRNGKey(seed))
+    key, subkey = jax.random.split(jax.random.PRNGKey(seed))
     # Generate a sample of draws of A for Monte Carlo integration
     A_draws = jnp.exp(m_a + σ_a * jax.random.normal(key, (A_draw_size,)))
     # Generate a sample of draws from γ for Monte Carlo
@@ -387,7 +387,7 @@ def update_cross_section(φ_bar, φ_vec, key, parameters, num_firms):
     # Unpack
     β, θ, c, c_e, w, m_a, σ_a, m_e, σ_e = parameters
     # Update
-    Z = random.normal(key, (2, num_firms))  # long rows for row-major arrays
+    Z = jax.random.normal(key, (2, num_firms))  # long rows for row-major arrays
     incumbent_draws = φ_vec * jnp.exp(m_a + σ_a * Z[0, :])
     new_firm_draws = jnp.exp(m_e + σ_e * Z[1, :])
     return jnp.where(φ_vec >= φ_bar, incumbent_draws, new_firm_draws)
@@ -408,10 +408,10 @@ def simulate_firms(φ_bar, parameters, grids,
     """
     # Set initial conditions to the threshold value
     φ_vec = jnp.ones((num_firms,)) * φ_bar 
-    key = random.PRNGKey(seed)
+    key = jax.random.PRNGKey(seed)
     # Iterate forward in time
     for t in range(sim_length):
-        key, subkey = random.split(key)
+        key, subkey = jax.random.split(key)
         φ_vec = update_cross_section(φ_bar, φ_vec, subkey, parameters, num_firms)
     return φ_vec
 ```
