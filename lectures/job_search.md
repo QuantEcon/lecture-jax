@@ -65,7 +65,7 @@ We discretize this using Tauchen's method to produce a stochastic matrix $P$
 Since jobs are permanent, the return to accepting wage offer $w$ today is
 
 $$
-    w + \beta w + \beta^2 w + \frac{w}{1-\beta}
+    w + \beta w + \beta^2 w + \cdots = \frac{w}{1-\beta}
 $$
 
 The Bellman equation is
@@ -80,7 +80,7 @@ $$
 We solve this model using value function iteration.
 
 
-Let's set up a namedtuple to store information needed to solve the model.
+Let's set up a `namedtuple` to store information needed to solve the model.
 
 ```{code-cell} ipython3
 Model = namedtuple('Model', ('n', 'w_vals', 'P', 'β', 'c', 'θ'))
@@ -325,6 +325,11 @@ ax.legend(frameon=False, fontsize=12, loc="lower right")
 ax.set_xlabel("$w$", fontsize=12)
 plt.show()
 ```
+
+The figure shows that the reservation wage under risk sensitive preferences (RS $\bar w$) shifts down.
+
+This makes sense -- the agent does not like risk and hence is more inclined to
+accept the current offer, even when it's lower.
 
 ```{solution-end}
 ```
