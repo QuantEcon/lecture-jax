@@ -27,8 +27,6 @@ We are going to study an extension of the basic model that has unbounded product
 
 Among other things, this allows us to match the heavy tail observed in the firm size distribution data.
 
-The code for computing the equilibrium will be written in Python/JAX.
-
 In addition to what’s in Anaconda, this lecture will need the following libraries:
 
 ```{code-cell} ipython3
@@ -788,7 +786,12 @@ ax.set_ylabel("counter CDF")
 plt.show()
 ```
 
-**Exercise**
+## Exercise
+
+
+```{exercise-start}
+:label: hopen_ex1
+```
 
 Plot the same output distribution, but this time using a rank-size plot.
 
@@ -809,8 +812,12 @@ plt.show()
 This plot is not linear --- as expected, since we are using a folded normal distribution.
 
 
+```{exercise-end}
+```
 
-**Solution**
+```{solution-start} hopen_ex1
+:class: dropdown
+```
 
 ```{code-cell} ipython3
 rank_data, size_data = qe.rank_size(output_dist, c=0.1)
@@ -825,12 +832,12 @@ This looks very linear --- the model generates Pareto tails.
 
 (In fact it's possible to prove this.)
 
+```{solution-end}
+```
 
-
-## Exercise
 
 ```{exercise-start}
-:label: hopen_ex1
+:label: hopen_ex2
 ```
 
 As an exercise, let's look at the fixed cost paid by incumbents each period and how it relates to the equilibrium price.
@@ -846,7 +853,7 @@ c_values = jnp.linspace(2.5, 5.0, 10)
 ```{exercise-end}
 ```
 
-```{solution-start} hopen_ex1
+```{solution-start} hopen_ex2
 :class: dropdown
 ```
 
