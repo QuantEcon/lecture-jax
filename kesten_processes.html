@@ -264,15 +264,15 @@ const thebe_selector_output = ".output, .cell_output"
 </summary>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /opt/conda/envs/quantecon/lib/python3.11/site-packages (0.7.2)
-Requirement already satisfied: numba&gt;=0.49.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (0.59.0)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: numba&gt;=0.49.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (0.59.0)
 Requirement already satisfied: numpy&gt;=1.17.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (1.26.4)
 Requirement already satisfied: requests in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (2.31.0)
 Requirement already satisfied: scipy&gt;=1.5.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (1.11.4)
 Requirement already satisfied: sympy in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (1.12)
 Requirement already satisfied: llvmlite&lt;0.43,&gt;=0.42.0dev0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from numba&gt;=0.49.0-&gt;quantecon) (0.42.0)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: charset-normalizer&lt;4,&gt;=2 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests-&gt;quantecon) (2.0.4)
+Requirement already satisfied: charset-normalizer&lt;4,&gt;=2 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests-&gt;quantecon) (2.0.4)
 Requirement already satisfied: idna&lt;4,&gt;=2.5 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests-&gt;quantecon) (3.4)
 Requirement already satisfied: urllib3&lt;3,&gt;=1.21.1 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests-&gt;quantecon) (2.0.7)
 Requirement already satisfied: certifi&gt;=2017.4.17 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests-&gt;quantecon) (2024.2.2)
@@ -320,7 +320,7 @@ to accelerate the computations.</p>
   pid, fd = os.forkpty()
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Sun Mar 17 23:30:38 2024       
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Wed Apr  3 03:09:22 2024       
 +-----------------------------------------------------------------------------+
 | NVIDIA-SMI 470.182.03   Driver Version: 470.182.03   CUDA Version: 12.3     |
 |-------------------------------+----------------------+----------------------+
@@ -331,7 +331,7 @@ to accelerate the computations.</p>
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>|   0  Tesla V100-SXM2...  Off  | 00000000:00:1E.0 Off |                    0 |
-| N/A   43C    P0    44W / 300W |      0MiB / 16160MiB |      2%      Default |
+| N/A   38C    P0    40W / 300W |      0MiB / 16160MiB |      2%      Default |
 |                               |                      |                  N/A |
 +-------------------------------+----------------------+----------------------+
                                                                                
@@ -476,8 +476,8 @@ time <code class="docutils literal notranslate"><span class="pre">T</span></code
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 4.33 s, sys: 2 s, total: 6.32 s
-Wall time: 3.76 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 4.17 s, sys: 2.14 s, total: 6.31 s
+Wall time: 3.79 s
 </pre></div>
 </div>
 </div>
@@ -490,8 +490,8 @@ Wall time: 3.76 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 3.67 s, sys: 855 ms, total: 4.53 s
-Wall time: 1.94 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 4.03 s, sys: 788 ms, total: 4.81 s
+Wall time: 2.1 s
 </pre></div>
 </div>
 </div>
@@ -577,8 +577,8 @@ store large matrices of random draws</p></li>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 402 ms, sys: 0 ns, total: 402 ms
-Wall time: 398 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 413 ms, sys: 0 ns, total: 413 ms
+Wall time: 414 ms
 </pre></div>
 </div>
 </div>
@@ -592,8 +592,8 @@ we see some speed gain over the for loop implementation:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 3.44 ms, sys: 0 ns, total: 3.44 ms
-Wall time: 34.7 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 3.29 ms, sys: 0 ns, total: 3.29 ms
+Wall time: 34.6 ms
 </pre></div>
 </div>
 </div>
@@ -624,8 +624,8 @@ Wall time: 34.7 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 4.3 s, sys: 626 ms, total: 4.92 s
-Wall time: 2.23 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 4.49 s, sys: 599 ms, total: 5.09 s
+Wall time: 2.37 s
 </pre></div>
 </div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Array([2.389801 , 2.2558599, 3.3113828, ..., 2.7102313, 2.5520844,
@@ -758,48 +758,65 @@ when memory is not an issue.</p>
 </p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
+  <a class="reference internal" href="job_search.html">
+   9. Job Search
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="opt_savings_1.html">
-   9. Optimal Savings I: Value Function Iteration
+   10. Optimal Savings I: Value Function Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="opt_savings_2.html">
-   10. Optimal Savings II: Alternative Algorithms
+   11. Optimal Savings II: Alternative Algorithms
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="short_path.html">
-   11. Shortest Paths
+   12. Shortest Paths
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="opt_invest.html">
-   12. Optimal Investment
+   13. Optimal Investment
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="inventory_ssd.html">
-   13. Inventory Management Model
+   14. Inventory Management Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_egm.html">
-   14. Endogenous Grid Method
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="arellano.html">
-   15. Default Risk and Income Fluctuations
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="aiyagari_jax.html">
-   16. The Aiyagari Model
+   15. Endogenous Grid Method
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_numerical.html">
-   17. Cake Eating: Numerical Methods
+   16. Cake Eating: Numerical Methods
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Macroeconomic Models
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="arellano.html">
+   17. Default Risk and Income Fluctuations
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="aiyagari_jax.html">
+   18. The Aiyagari Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="hopenhayn.html">
+   19. The Hopenhayn Entry-Exit Model
   </a>
  </li>
 </ul>
@@ -811,7 +828,7 @@ when memory is not an issue.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="mle.html">
-   18. Maximum Likelihood Estimation
+   20. Maximum Likelihood Estimation
   </a>
  </li>
 </ul>
@@ -823,17 +840,17 @@ when memory is not an issue.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   19. Troubleshooting
+   21. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   20. References
+   22. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   21. Execution Statistics
+   23. Execution Statistics
   </a>
  </li>
 </ul>

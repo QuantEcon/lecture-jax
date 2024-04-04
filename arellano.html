@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>15. Default Risk and Income Fluctuations &#8212; Quantitative Economics with Python using JAX</title>
+    <title>17. Default Risk and Income Fluctuations &#8212; Quantitative Economics with Python using JAX</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
@@ -121,8 +121,8 @@ const thebe_selector_output = ".output, .cell_output"
     <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="16. The Aiyagari Model" href="aiyagari_jax.html" />
-    <link rel="prev" title="14. Endogenous Grid Method" href="ifp_egm.html" />
+    <link rel="next" title="18. The Aiyagari Model" href="aiyagari_jax.html" />
+    <link rel="prev" title="16. Cake Eating: Numerical Methods" href="cake_eating_numerical.html" />
 
 <!-- Normal Meta Tags -->
 <meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
@@ -170,22 +170,22 @@ const thebe_selector_output = ".output, .cell_output"
 
                         <nav id="bd-toc-nav" class="qe-page__toc-nav">
                             <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">15.1. Overview</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#structure">15.2. Structure</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#output-consumption-and-debt">15.2.1. Output, Consumption and Debt</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#asset-markets">15.2.2. Asset Markets</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#financial-markets">15.2.3. Financial Markets</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#governments-decisions">15.2.4. Government’s Decisions</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reentering-international-credit-market">15.2.5. Reentering International Credit Market</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">17.1. Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#structure">17.2. Structure</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#output-consumption-and-debt">17.2.1. Output, Consumption and Debt</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#asset-markets">17.2.2. Asset Markets</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#financial-markets">17.2.3. Financial Markets</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#governments-decisions">17.2.4. Government’s Decisions</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reentering-international-credit-market">17.2.5. Reentering International Credit Market</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#equilibrium">15.3. Equilibrium</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#definition-of-equilibrium">15.3.1. Definition of Equilibrium</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#equilibrium">17.3. Equilibrium</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#definition-of-equilibrium">17.3.1. Definition of Equilibrium</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#computation">15.4. Computation</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#results">15.5. Results</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">15.6. Exercises</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#computation">17.4. Computation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#results">17.5. Results</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">17.6. Exercises</a></li>
 </ul>
                             <p class="logo">
                                 
@@ -245,7 +245,7 @@ const thebe_selector_output = ".output, .cell_output"
                     <div>
                         
   <section class="tex2jax_ignore mathjax_ignore" id="default-risk-and-income-fluctuations">
-<h1><span class="section-number">15. </span>Default Risk and Income Fluctuations<a class="headerlink" href="#default-risk-and-income-fluctuations" title="Permalink to this heading">#</a></h1>
+<h1><span class="section-number">17. </span>Default Risk and Income Fluctuations<a class="headerlink" href="#default-risk-and-income-fluctuations" title="Permalink to this heading">#</a></h1>
 <div class="warning admonition">
 <p class="admonition-title">GPU</p>
 <p>This lecture was built using a machine with JAX installed and access to a GPU.</p>
@@ -274,10 +274,10 @@ Requirement already satisfied: numpy&gt;=1.17.0 in /opt/conda/envs/quantecon/lib
 Requirement already satisfied: requests in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (2.31.0)
 Requirement already satisfied: scipy&gt;=1.5.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (1.11.4)
 Requirement already satisfied: sympy in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (1.12)
+Requirement already satisfied: llvmlite&lt;0.43,&gt;=0.42.0dev0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from numba&gt;=0.49.0-&gt;quantecon) (0.42.0)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: llvmlite&lt;0.43,&gt;=0.42.0dev0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from numba&gt;=0.49.0-&gt;quantecon) (0.42.0)
-Requirement already satisfied: charset-normalizer&lt;4,&gt;=2 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests-&gt;quantecon) (2.0.4)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: charset-normalizer&lt;4,&gt;=2 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests-&gt;quantecon) (2.0.4)
 Requirement already satisfied: idna&lt;4,&gt;=2.5 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests-&gt;quantecon) (3.4)
 Requirement already satisfied: urllib3&lt;3,&gt;=1.21.1 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests-&gt;quantecon) (2.0.7)
 Requirement already satisfied: certifi&gt;=2017.4.17 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests-&gt;quantecon) (2024.2.2)
@@ -288,8 +288,8 @@ Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/envs/quantecon/lib/
 ?25l   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">0.0/215.4 kB</span> <span class=" -Color -Color-Red">?</span> eta <span class=" -Color -Color-Cyan">-:--:--</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">215.0/215.4 kB</span> <span class=" -Color -Color-Red">7.4 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
-   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">215.4/215.4 kB</span> <span class=" -Color -Color-Red">5.6 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸ <span class=" -Color -Color-Green">215.0/215.4 kB</span> <span class=" -Color -Color-Red">6.5 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:01</span>
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">215.4/215.4 kB</span> <span class=" -Color -Color-Red">5.2 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
 ?25h
 </pre></div>
 </div>
@@ -305,7 +305,7 @@ Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/envs/quantecon/lib/
 </details>
 </div>
 <section id="overview">
-<h2><span class="section-number">15.1. </span>Overview<a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">17.1. </span>Overview<a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
 <p>This lecture computes versions of Arellano’s <span id="id1">[<a class="reference internal" href="zreferences.html#id255" title="Cristina Arellano. Default risk and income fluctuations in emerging economies. The American Economic Review, pages 690–712, 2008.">Are08</a>]</span> model of sovereign default.</p>
 <p>The model describes interactions among default risk, output, and an
 equilibrium interest rate that includes a premium for endogenous default risk.</p>
@@ -361,7 +361,7 @@ the government’s incentive to default.</p>
   pid, fd = os.forkpty()
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Sun Mar 17 23:00:12 2024       
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Wed Apr  3 02:38:34 2024       
 +-----------------------------------------------------------------------------+
 | NVIDIA-SMI 470.182.03   Driver Version: 470.182.03   CUDA Version: 12.3     |
 |-------------------------------+----------------------+----------------------+
@@ -372,7 +372,7 @@ the government’s incentive to default.</p>
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>|   0  Tesla V100-SXM2...  Off  | 00000000:00:1E.0 Off |                    0 |
-| N/A   42C    P0    44W / 300W |      0MiB / 16160MiB |      2%      Default |
+| N/A   33C    P0    38W / 300W |      0MiB / 16160MiB |      2%      Default |
 |                               |                      |                  N/A |
 +-------------------------------+----------------------+----------------------+
                                                                                
@@ -397,10 +397,10 @@ the government’s incentive to default.</p>
 </div>
 </section>
 <section id="structure">
-<h2><span class="section-number">15.2. </span>Structure<a class="headerlink" href="#structure" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">17.2. </span>Structure<a class="headerlink" href="#structure" title="Permalink to this heading">#</a></h2>
 <p>In this section we describe the main features of the model.</p>
 <section id="output-consumption-and-debt">
-<h3><span class="section-number">15.2.1. </span>Output, Consumption and Debt<a class="headerlink" href="#output-consumption-and-debt" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">17.2.1. </span>Output, Consumption and Debt<a class="headerlink" href="#output-consumption-and-debt" title="Permalink to this heading">#</a></h3>
 <p>A small open economy is endowed with an exogenous stochastically fluctuating
 potential output stream <span class="math notranslate nohighlight">\( \{y_t\} \)</span>.</p>
 <p>Potential output is realized only in periods in which the government honors its sovereign debt.</p>
@@ -409,7 +409,7 @@ potential output stream <span class="math notranslate nohighlight">\( \{y_t\} \)
 <span class="math notranslate nohighlight">\( p(y, y') \)</span>.</p>
 <p>Households within the country are identical and rank stochastic consumption streams according to</p>
 <div class="math notranslate nohighlight" id="equation-equation13-1">
-<span class="eqno">(15.1)<a class="headerlink" href="#equation-equation13-1" title="Permalink to this equation">#</a></span>\[
+<span class="eqno">(17.1)<a class="headerlink" href="#equation-equation13-1" title="Permalink to this equation">#</a></span>\[
  \mathbb E \sum_{t=0}^{\infty} \beta^t u(c_t)
  \]</div>
 <p>Here</p>
@@ -419,13 +419,13 @@ potential output stream <span class="math notranslate nohighlight">\( \{y_t\} \)
 </ul>
 <p>Consumption sequences enjoyed by households are affected by the government’s
 decision to borrow or lend internationally.</p>
-<p>The government is benevolent in the sense that its aim is to maximize <a class="reference internal" href="#equation-equation13-1">(15.1)</a>.</p>
+<p>The government is benevolent in the sense that its aim is to maximize <a class="reference internal" href="#equation-equation13-1">(17.1)</a>.</p>
 <p>The government is the only domestic actor with access to foreign credit.</p>
 <p>Because households are averse to consumption fluctuations, the government will
 try to smooth consumption by borrowing from (and lending to) foreign creditors.</p>
 </section>
 <section id="asset-markets">
-<h3><span class="section-number">15.2.2. </span>Asset Markets<a class="headerlink" href="#asset-markets" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">17.2.2. </span>Asset Markets<a class="headerlink" href="#asset-markets" title="Permalink to this heading">#</a></h3>
 <p>The only credit instrument available to the government is a one-period bond
 traded in international credit markets.</p>
 <p>The bond market has the following features</p>
@@ -449,7 +449,7 @@ lump sum to households.</p>
 <p>When the government is not excluded from financial markets, the one-period
 national budget constraint is</p>
 <div class="math notranslate nohighlight" id="equation-equation13-2">
-<span class="eqno">(15.2)<a class="headerlink" href="#equation-equation13-2" title="Permalink to this equation">#</a></span>\[
+<span class="eqno">(17.2)<a class="headerlink" href="#equation-equation13-2" title="Permalink to this equation">#</a></span>\[
 c = y + B - q(B', y) B'
 \]</div>
 <p>Here and below, a prime denotes a next period value or a claim maturing next period.</p>
@@ -459,7 +459,7 @@ c = y + B - q(B', y) B'
 </ul>
 </section>
 <section id="financial-markets">
-<h3><span class="section-number">15.2.3. </span>Financial Markets<a class="headerlink" href="#financial-markets" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">17.2.3. </span>Financial Markets<a class="headerlink" href="#financial-markets" title="Permalink to this heading">#</a></h3>
 <p>Foreign creditors</p>
 <ul class="simple">
 <li><p>are risk neutral</p></li>
@@ -474,13 +474,13 @@ at a constant international interest rate <span class="math notranslate nohighli
 value of a promise to pay one unit of consumption next period is <span class="math notranslate nohighlight">\( 1 - \delta \)</span>.</p>
 <p>Therefore, the discounted expected value of a promise to pay <span class="math notranslate nohighlight">\( B \)</span> next period is</p>
 <div class="math notranslate nohighlight" id="equation-equation13-3">
-<span class="eqno">(15.3)<a class="headerlink" href="#equation-equation13-3" title="Permalink to this equation">#</a></span>\[
+<span class="eqno">(17.3)<a class="headerlink" href="#equation-equation13-3" title="Permalink to this equation">#</a></span>\[
 q = \frac{1 - \delta}{1 + r}
 \]</div>
 <p>Next we turn to how the government in effect chooses the default probability <span class="math notranslate nohighlight">\( \delta \)</span>.</p>
 </section>
 <section id="governments-decisions">
-<h3><span class="section-number">15.2.4. </span>Government’s Decisions<a class="headerlink" href="#governments-decisions" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">17.2.4. </span>Government’s Decisions<a class="headerlink" href="#governments-decisions" title="Permalink to this heading">#</a></h3>
 <p>At each point in time <span class="math notranslate nohighlight">\( t \)</span>, the government chooses between</p>
 <ol class="arabic simple">
 <li><p>defaulting</p></li>
@@ -502,13 +502,13 @@ markets.</p></li>
 </ol>
 </section>
 <section id="reentering-international-credit-market">
-<h3><span class="section-number">15.2.5. </span>Reentering International Credit Market<a class="headerlink" href="#reentering-international-credit-market" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">17.2.5. </span>Reentering International Credit Market<a class="headerlink" href="#reentering-international-credit-market" title="Permalink to this heading">#</a></h3>
 <p>While in a state of default, the economy regains access to foreign credit
 in each subsequent period with probability <span class="math notranslate nohighlight">\( \theta \)</span>.</p>
 </section>
 </section>
 <section id="equilibrium">
-<h2><span class="section-number">15.3. </span>Equilibrium<a class="headerlink" href="#equilibrium" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">17.3. </span>Equilibrium<a class="headerlink" href="#equilibrium" title="Permalink to this heading">#</a></h2>
 <p>Informally, an equilibrium is a sequence of interest rates on its sovereign debt, a stochastic
 sequence of government default decisions and an implied flow of household consumption such that</p>
 <ol class="arabic simple">
@@ -574,17 +574,17 @@ v_c(B, y) &lt; v_d(y)
 \]</div>
 <p>and hence given <span class="math notranslate nohighlight">\( B' \)</span> the probability of default next period is</p>
 <div class="math notranslate nohighlight" id="equation-equation13-4">
-<span class="eqno">(15.4)<a class="headerlink" href="#equation-equation13-4" title="Permalink to this equation">#</a></span>\[
+<span class="eqno">(17.4)<a class="headerlink" href="#equation-equation13-4" title="Permalink to this equation">#</a></span>\[
 \delta(B', y) := \int \mathbb 1\{v_c(B', y') &lt; v_d(y') \} p(y, y') dy'
 \]</div>
 <p>Given zero profits for foreign creditors in equilibrium, we can combine
-<a class="reference internal" href="#equation-equation13-3">(15.3)</a> and <a class="reference internal" href="#equation-equation13-4">(15.4)</a> to pin down the bond price function:</p>
+<a class="reference internal" href="#equation-equation13-3">(17.3)</a> and <a class="reference internal" href="#equation-equation13-4">(17.4)</a> to pin down the bond price function:</p>
 <div class="math notranslate nohighlight" id="equation-equation13-5">
-<span class="eqno">(15.5)<a class="headerlink" href="#equation-equation13-5" title="Permalink to this equation">#</a></span>\[
+<span class="eqno">(17.5)<a class="headerlink" href="#equation-equation13-5" title="Permalink to this equation">#</a></span>\[
 q(B', y) = \frac{1 - \delta(B', y)}{1 + r}
 \]</div>
 <section id="definition-of-equilibrium">
-<h3><span class="section-number">15.3.1. </span>Definition of Equilibrium<a class="headerlink" href="#definition-of-equilibrium" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">17.3.1. </span>Definition of Equilibrium<a class="headerlink" href="#definition-of-equilibrium" title="Permalink to this heading">#</a></h3>
 <p>An <em>equilibrium</em> is</p>
 <ul class="simple">
 <li><p>a pricing function <span class="math notranslate nohighlight">\( q(B',y) \)</span>,</p></li>
@@ -599,12 +599,12 @@ maps <span class="math notranslate nohighlight">\( (B,y) \)</span> into <span cl
 <li><p>The three Bellman equations for <span class="math notranslate nohighlight">\( (v_c(B, y), v_d(y), v(B,y)) \)</span> are satisfied</p></li>
 <li><p>Given the price function <span class="math notranslate nohighlight">\( q(B',y) \)</span>, the default decision rule and the asset
 accumulation decision rule attain the optimal value function  <span class="math notranslate nohighlight">\( v(B,y) \)</span>, and</p></li>
-<li><p>The price function <span class="math notranslate nohighlight">\( q(B',y) \)</span> satisfies equation <a class="reference internal" href="#equation-equation13-5">(15.5)</a></p></li>
+<li><p>The price function <span class="math notranslate nohighlight">\( q(B',y) \)</span> satisfies equation <a class="reference internal" href="#equation-equation13-5">(17.5)</a></p></li>
 </ul>
 </section>
 </section>
 <section id="computation">
-<h2><span class="section-number">15.4. </span>Computation<a class="headerlink" href="#computation" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">17.4. </span>Computation<a class="headerlink" href="#computation" title="Permalink to this heading">#</a></h2>
 <p>Let’s now compute an equilibrium of Arellano’s model.</p>
 <p>The equilibrium objects are the value function <span class="math notranslate nohighlight">\( v(B, y) \)</span>, the associated
 default decision rule, and the pricing function <span class="math notranslate nohighlight">\( q(B', y) \)</span>.</p>
@@ -931,8 +931,8 @@ Entering iteration 300 with error 1.151467966309383e-06.
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Terminating at iteration 399.
-CPU times: user 1.33 s, sys: 387 ms, total: 1.72 s
-Wall time: 627 ms
+CPU times: user 1.46 s, sys: 364 ms, total: 1.82 s
+Wall time: 673 ms
 </pre></div>
 </div>
 </div>
@@ -1010,7 +1010,7 @@ we have the policy functions</p>
 </div>
 </section>
 <section id="results">
-<h2><span class="section-number">15.5. </span>Results<a class="headerlink" href="#results" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">17.5. </span>Results<a class="headerlink" href="#results" title="Permalink to this heading">#</a></h2>
 <p>Let’s start by trying to replicate the results obtained in <span id="id3">[<a class="reference internal" href="zreferences.html#id255" title="Cristina Arellano. Default risk and income fluctuations in emerging economies. The American Economic Review, pages 690–712, 2008.">Are08</a>]</span>.</p>
 <p>In what follows, all results are computed using parameter values of <code class="docutils literal notranslate"><span class="pre">ArellanoEconomy</span></code> created by <code class="docutils literal notranslate"><span class="pre">create_arellano</span></code>.</p>
 <p>For example, <code class="docutils literal notranslate"><span class="pre">r=0.017</span></code> matches the average quarterly rate on a 5 year US treasury over the period 1983–2001.</p>
@@ -1040,7 +1040,7 @@ of default.</p></li>
 <img alt="_images/arellano_value_funcs.png" src="_images/arellano_value_funcs.png" />
 </figure>
 <p>We can use the results of the computation to study the default probability <span class="math notranslate nohighlight">\( \delta(B', y) \)</span>
-defined in <a class="reference internal" href="#equation-equation13-4">(15.4)</a>.</p>
+defined in <a class="reference internal" href="#equation-equation13-4">(17.4)</a>.</p>
 <p>The next plot shows these default probabilities over <span class="math notranslate nohighlight">\( (B', y) \)</span> as a heat map.</p>
 <figure class="align-default">
 <img alt="_images/arellano_default_probs.png" src="_images/arellano_default_probs.png" />
@@ -1056,10 +1056,10 @@ increases with indebtedness and falls with income.</p>
 <p>Periods of relative stability are followed by sharp spikes in the discount rate on government debt.</p>
 </section>
 <section id="exercises">
-<h2><span class="section-number">15.6. </span>Exercises<a class="headerlink" href="#exercises" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">17.6. </span>Exercises<a class="headerlink" href="#exercises" title="Permalink to this heading">#</a></h2>
 <div class="exercise admonition" id="arellano_ex1">
 
-<p class="admonition-title"><span class="caption-number">Exercise 15.1 </span></p>
+<p class="admonition-title"><span class="caption-number">Exercise 17.1 </span></p>
 <section id="exercise-content">
 <p>To the extent that you can, replicate the figures shown above</p>
 <ul class="simple">
@@ -1070,7 +1070,7 @@ increases with indebtedness and falls with income.</p>
 </div>
 <div class="solution dropdown admonition" id="arellano-solution-1">
 
-<p class="admonition-title">Solution to<a class="reference internal" href="#arellano_ex1"> Exercise 15.1</a></p>
+<p class="admonition-title">Solution to<a class="reference internal" href="#arellano_ex1"> Exercise 17.1</a></p>
 <section id="solution-content">
 <p>Compute the value function, policy and equilibrium prices</p>
 <div class="cell docutils container">
@@ -1082,11 +1082,15 @@ increases with indebtedness and falls with income.</p>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Entering iteration 0 with error 1.00000001.
-Entering iteration 100 with error 0.017499341639204857.
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Entering iteration 100 with error 0.017499341639204857.
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Entering iteration 200 with error 0.00014189363558969603.
-Entering iteration 300 with error 1.151467966309383e-06.
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Entering iteration 300 with error 1.151467966309383e-06.
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Terminating at iteration 399.
@@ -1233,7 +1237,7 @@ Entering iteration 300 with error 1.151467966309383e-06.
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/0a0eac57c1cd65562016159f7dfa6d739e8bde4211ecb3f4783ab9da74fdf8a5.png"><img alt="_images/0a0eac57c1cd65562016159f7dfa6d739e8bde4211ecb3f4783ab9da74fdf8a5.png" src="_images/0a0eac57c1cd65562016159f7dfa6d739e8bde4211ecb3f4783ab9da74fdf8a5.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/a6b63e240228125167a0b212fdae77c64652cb1d21d401ad9810f0ef4ee36676.png"><img alt="_images/a6b63e240228125167a0b212fdae77c64652cb1d21d401ad9810f0ef4ee36676.png" src="_images/a6b63e240228125167a0b212fdae77c64652cb1d21d401ad9810f0ef4ee36676.png" style="width: 80%;" /></a>
 </div>
 </div>
 </section>
@@ -1356,50 +1360,67 @@ Entering iteration 300 with error 1.151467966309383e-06.
   Dynamic Programming
  </span>
 </p>
-<ul class="current nav bd-sidenav nav sidenav_l1">
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="job_search.html">
+   9. Job Search
+  </a>
+ </li>
  <li class="toctree-l1">
   <a class="reference internal" href="opt_savings_1.html">
-   9. Optimal Savings I: Value Function Iteration
+   10. Optimal Savings I: Value Function Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="opt_savings_2.html">
-   10. Optimal Savings II: Alternative Algorithms
+   11. Optimal Savings II: Alternative Algorithms
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="short_path.html">
-   11. Shortest Paths
+   12. Shortest Paths
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="opt_invest.html">
-   12. Optimal Investment
+   13. Optimal Investment
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="inventory_ssd.html">
-   13. Inventory Management Model
+   14. Inventory Management Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_egm.html">
-   14. Endogenous Grid Method
-  </a>
- </li>
- <li class="toctree-l1 current active active">
-  <a class="current reference internal" href="#">
-   15. Default Risk and Income Fluctuations
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="aiyagari_jax.html">
-   16. The Aiyagari Model
+   15. Endogenous Grid Method
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="cake_eating_numerical.html">
-   17. Cake Eating: Numerical Methods
+   16. Cake Eating: Numerical Methods
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Macroeconomic Models
+ </span>
+</p>
+<ul class="current nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1 current active active">
+  <a class="current reference internal" href="#">
+   17. Default Risk and Income Fluctuations
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="aiyagari_jax.html">
+   18. The Aiyagari Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="hopenhayn.html">
+   19. The Hopenhayn Entry-Exit Model
   </a>
  </li>
 </ul>
@@ -1411,7 +1432,7 @@ Entering iteration 300 with error 1.151467966309383e-06.
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="mle.html">
-   18. Maximum Likelihood Estimation
+   20. Maximum Likelihood Estimation
   </a>
  </li>
 </ul>
@@ -1423,17 +1444,17 @@ Entering iteration 300 with error 1.151467966309383e-06.
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   19. Troubleshooting
+   21. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   20. References
+   22. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   21. Execution Statistics
+   23. Execution Statistics
   </a>
  </li>
 </ul>
