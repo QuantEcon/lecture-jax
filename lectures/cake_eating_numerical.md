@@ -335,7 +335,8 @@ for the purpose of comparing the results of JAX implementation.
 
 ```{code-cell} ipython3
 import numpy as np
-from numba import prange, njit
+import numba
+from numba import prange
 from quantecon.optimize import brent_max
 ```
 
@@ -356,13 +357,13 @@ def create_cake_eating_model_numba(β=0.96,           # discount factor
 
 ```{code-cell} ipython3
 # Utility function
-@njit
+@numba.njit
 def u_numba(c, cem):
     return (c ** (1 - cem.γ)) / (1 - cem.γ)
 ```
 
 ```{code-cell} ipython3
-@njit
+@numba.njit
 def state_action_value_numba(c, x, v_array, cem):
     """
     Right hand side of the Bellman equation given x and c.
@@ -375,7 +376,7 @@ def state_action_value_numba(c, x, v_array, cem):
 ```
 
 ```{code-cell} ipython3
-@njit
+@numba.njit
 def T_numba(v, ce):
     """
     The Bellman operator.  Updates the guess of the value function.
