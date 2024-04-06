@@ -107,7 +107,6 @@ rough comparison with MATLAB.)
 The following function contains default parameters and returns tuples that
 contain the key computational components of the model.
 
-
 ```{code-cell} ipython3
 def create_consumption_model(R=1.01,                    # Gross interest rate
                              β=0.98,                    # Discount factor
@@ -187,7 +186,6 @@ def get_greedy(v, params, sizes, arrays):
     return np.argmax(B(v, params, sizes, arrays), axis=2)
 ```
 
-
 ### Value function iteration
 
 Here's a routine that performs value function iteration.
@@ -215,8 +213,12 @@ params, sizes, arrays = model
 β, R, γ = params
 w_size, y_size = sizes
 w_grid, y_grid, Q = arrays
+```
 
+```{code-cell} ipython3
 print("Starting VFI.")
+v_star, σ_star = value_function_iteration(model)
+
 start_time = time.time()
 v_star, σ_star = value_function_iteration(model)
 numpy_elapsed = time.time() - start_time
@@ -239,8 +241,6 @@ ax.plot(w_grid, w_grid[σ_star[:, -1]], label="$\\sigma^*(\cdot, y_N)$")
 ax.legend()
 plt.show()
 ```
-
-
 
 ## Switching to JAX
 
@@ -272,7 +272,6 @@ def create_consumption_model(R=1.01,                    # Gross interest rate
     sizes = w_size, y_size
     return (β, R, γ), sizes, (w_grid, y_grid, Q)
 ```
-
 
 The right hand side of the Bellman equation is the same as the NumPy version
 after switching `np` to `jnp`.
@@ -306,8 +305,6 @@ def B(v, params, sizes, arrays):
 
     # Compute the right-hand side of the Bellman equation
     return jnp.where(c > 0, c**(1-γ)/(1-γ) + β * EV, -jnp.inf)
-
-
 ```
 
 Some readers might be concerned that we are creating high dimensional arrays,
@@ -325,7 +322,7 @@ B = jax.jit(B, static_argnums=(2,))
 In the call above, we indicate to the compiler that `sizes` is static, so the
 compiler can parallelize optimally while taking array sizes as fixed.
 
-The Bellman operator $T$ can be implemented by 
+The Bellman operator $T$ can be implemented by
 
 ```{code-cell} ipython3
 def T(v, params, sizes, arrays):
@@ -397,7 +394,7 @@ def value_function_iteration(model, tol=1e-5):
 
 ### Timing
 
-Let's create an instance and unpack it. 
+Let's create an instance and unpack it.
 
 ```{code-cell} ipython3
 model = create_consumption_model()
@@ -412,6 +409,8 @@ Let's see how long it takes to solve this model.
 
 ```{code-cell} ipython3
 print("Starting VFI using vectorization.")
+v_star_jax, σ_star_jax = value_function_iteration(model)
+
 start_time = time.time()
 v_star_jax, σ_star_jax = value_function_iteration(model)
 jax_elapsed = time.time() - start_time
@@ -423,7 +422,6 @@ The relative speed gain is
 ```{code-cell} ipython3
 print(f"Relative speed gain = {numpy_elapsed / jax_elapsed}")
 ```
-
 
 This is an impressive speed up and in fact we can do better still by switching
 to alternative algorithms that are better suited to parallelization.
@@ -517,6 +515,8 @@ Let's see how long it takes to solve the model using the `vmap` method.
 
 ```{code-cell} ipython3
 print("Starting VFI using vmap.")
+v_star_vmap, σ_star_vmap = value_iteration_vmap(model)
+
 start_time = time.time()
 v_star_vmap, σ_star_vmap = value_iteration_vmap(model)
 jax_vmap_elapsed = time.time() - start_time

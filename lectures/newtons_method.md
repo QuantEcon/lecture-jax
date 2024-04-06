@@ -4,13 +4,12 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.14.5
+    jupytext_version: 1.16.1
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
   name: python3
 ---
-
 
 # Newton’s Method via JAX
 
@@ -47,9 +46,7 @@ Let's check the GPU we are running
 
 ```{code-cell} ipython3
 !nvidia-smi
-
 ```
-
 
 ## Newton in one dimension
 
@@ -69,7 +66,6 @@ $$
 
 Here is a function called `newton` that takes a function $f$ plus a scalar value $x_0$,
 iterates with $q$ starting from $x_0$, and returns an approximate fixed point.
-
 
 ```{code-cell} ipython3
 def newton(f, x_0, tol=1e-5):
@@ -164,8 +160,6 @@ def e(p, A, b, c):
     return jnp.exp(- A @ p) + c - b * jnp.sqrt(p)
 ```
 
-
-
 ## Computation
 
 In this section we describe and then implement the solution method.
@@ -213,7 +207,6 @@ def newton(f, x_0, tol=1e-5, max_iter=15):
     return x
 ```
 
-
 ### Application
 
 Let's now apply the method just described to investigate a large market with 5,000 goods.
@@ -235,7 +228,6 @@ b = jnp.ones(dim)
 c = jnp.ones(dim)
 ```
 
-
 Here's our initial condition $p_0$
 
 ```{code-cell} ipython3
@@ -248,7 +240,13 @@ this high-dimensional problem in just a few seconds:
 
 ```{code-cell} ipython3
 %%time
+p = newton(lambda p: e(p, A, b, c), init_p).block_until_ready()
+```
 
+We run it again to eliminate the compilation time.
+
+```{code-cell} ipython3
+%%time
 p = newton(lambda p: e(p, A, b, c), init_p).block_until_ready()
 ```
 
@@ -263,7 +261,15 @@ even with the Jacobian supplied.
 
 ```{code-cell} ipython3
 %%time
+solution = root(lambda p: e(p, A, b, c),
+                init_p,
+                jac=lambda p: jax.jacobian(e)(p, A, b, c),
+                method='hybr',
+                tol=1e-5)
+```
 
+```{code-cell} ipython3
+%%time
 solution = root(lambda p: e(p, A, b, c),
                 init_p,
                 jac=lambda p: jax.jacobian(e)(p, A, b, c),
@@ -277,10 +283,6 @@ The result is also slightly less accurate:
 p = solution.x
 jnp.max(jnp.abs(e(p, A, b, c)))
 ```
-
-
-
-
 
 ## Exercises
 
@@ -360,14 +362,12 @@ initLs = [jnp.ones(3),
           jnp.repeat(50.0, 3)]
 ```
 
-
 Then we define the multivariate version of the formula for the [law of motion of capital](https://python.quantecon.org/newton_method.html#solow)
 
 ```{code-cell} ipython3
 def multivariate_solow(k, A=A, s=s, α=α, δ=δ):
     return s * jnp.dot(A, k**α) + (1 - δ) * k
 ```
-
 
 Let's run through each starting value and see the output
 
@@ -380,7 +380,6 @@ for init in initLs:
     print('-'*64)
     attempt += 1
 ```
-
 
 We find that the results are invariant to the starting values.
 
@@ -408,6 +407,11 @@ init = jnp.repeat(1.0, 3)
                  init).block_until_ready()
 ```
 
+```{code-cell} ipython3
+%time k = newton(lambda k: multivariate_solow(k, A=A, s=s, α=α, δ=δ) - k, \
+                 init).block_until_ready()
+```
+
 The result is very close to the true solution but still slightly different.
 
 We can increase the precision of the floating point numbers and restrict the tolerance to obtain a more accurate approximation (see detailed discussion in the [lecture on JAX](https://python-programming.quantecon.org/jax_intro.html#differences))
@@ -418,10 +422,13 @@ jax.config.update("jax_enable_x64", True)
 init = init.astype('float64')
 
 %time k = newton(lambda k: multivariate_solow(k, A=A, s=s, α=α, δ=δ) - k,\
-                 init,\
-                 tol=1e-7).block_until_ready()
+                 init, tol=1e-7).block_until_ready()
 ```
 
+```{code-cell} ipython3
+%time k = newton(lambda k: multivariate_solow(k, A=A, s=s, α=α, δ=δ) - k,\
+                 init, tol=1e-7).block_until_ready()
+```
 
 We can see it steps towards a more accurate solution.
 
@@ -498,7 +505,6 @@ initLs = [jnp.repeat(5.0, 3),
           jnp.array([4.5, 0.1, 4.0])]
 ```
 
-
 Let’s run through each initial guess and check the output
 
 ```{code-cell} ipython3
@@ -512,7 +518,6 @@ for init in initLs:
     print('-'*64)
     attempt +=1
 ```
-
 
 We can find that Newton's method may fail for some starting values.
 

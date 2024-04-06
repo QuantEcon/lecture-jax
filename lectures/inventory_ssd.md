@@ -4,7 +4,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.14.5
+    jupytext_version: 1.16.1
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -338,9 +338,21 @@ v_init = jnp.zeros((K + 1, n_z), dtype=float)
 ```
 
 ```{code-cell} ipython3
+in_time0 = time.time()
+v_star, σ_star = solve_inventory_model(v_init, model)
+jax_time0 = time.time() - in_time0
+```
+
+Let's run again to get rid of the compilation time.
+
+```{code-cell} ipython3
 in_time = time.time()
 v_star, σ_star = solve_inventory_model(v_init, model)
 jax_time = time.time() - in_time
+```
+
+```{code-cell} ipython3
+jax_time / jax_time0
 ```
 
 ```{code-cell} ipython3
@@ -458,9 +470,21 @@ v_init = np.zeros((K + 1, n_z), dtype=float)
 ```
 
 ```{code-cell} ipython3
+in_time0 = time.time()
+v_star_numba, σ_star_numba = solve_inventory_model_numba(v_init, model)
+nb_time0 = time.time() - in_time0
+```
+
+Let's run again to eliminate the compilation time.
+
+```{code-cell} ipython3
 in_time = time.time()
 v_star_numba, σ_star_numba = solve_inventory_model_numba(v_init, model)
 nb_time = time.time() - in_time
+```
+
+```{code-cell} ipython3
+nb_time / nb_time0
 ```
 
 Let's verify that the Numba and JAX implementations converge to the same solution.

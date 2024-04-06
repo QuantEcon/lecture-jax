@@ -4,7 +4,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.14.5
+    jupytext_version: 1.16.1
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -222,9 +222,21 @@ def compute_value_function(ce,
 ```
 
 ```{code-cell} ipython3
+in_time0 = time.time()
+v_jax = compute_value_function(ce)
+jax_time0 = time.time() - in_time0
+```
+
+We run the code again to eliminate the compilation time.
+
+```{code-cell} ipython3
 in_time = time.time()
 v_jax = compute_value_function(ce)
 jax_time = time.time() - in_time
+```
+
+```{code-cell} ipython3
+jax_time / jax_time0
 ```
 
 ```{code-cell} ipython3
@@ -417,9 +429,21 @@ cen = create_cake_eating_model_numba()
 ```
 
 ```{code-cell} ipython3
+in_time0 = time.time()
+v_np = compute_value_function_numba(cen)
+numba_time0 = time.time() - in_time0
+```
+
+Also we run the code again to get rid of the compilation time.
+
+```{code-cell} ipython3
 in_time = time.time()
 v_np = compute_value_function_numba(cen)
 numba_time = time.time() - in_time
+```
+
+```{code-cell} ipython3
+numba_time / numba_time0
 ```
 
 ```{code-cell} ipython3
@@ -427,4 +451,8 @@ ratio = numba_time/jax_time
 print(f"JAX implementation is {ratio} times faster than NumPy.")
 print(f"JAX time: {jax_time}")
 print(f"Numba time: {numba_time}")
+```
+
+```{code-cell} ipython3
+
 ```

@@ -462,6 +462,10 @@ w_grid, y_grid, Q = arrays
 
 ```{code-cell} ipython3
 print("Starting HPI.")
+σ_star_hpi = howard_policy_iteration(model)
+```
+
+```{code-cell} ipython3
 start_time = time.time()
 σ_star_hpi = howard_policy_iteration(model)
 elapsed = time.time() - start_time
@@ -475,7 +479,6 @@ mystnb:
     caption: Optimal policy function (HPI)
     name: optimal-policy-function-hpi
 ---
-
 fig, ax = plt.subplots()
 ax.plot(w_grid, w_grid, "k--", label="45")
 ax.plot(w_grid, w_grid[σ_star_hpi[:, 1]], label="$\\sigma^{*}_{HPI}(\cdot, y_1)$")
@@ -486,6 +489,8 @@ plt.show()
 
 ```{code-cell} ipython3
 print("Starting VFI.")
+σ_star_vfi = value_function_iteration(model)
+
 start_time = time.time()
 σ_star_vfi = value_function_iteration(model)
 elapsed = time.time() - start_time
@@ -499,7 +504,6 @@ mystnb:
     caption: Optimal policy function (VFI)
     name: optimal-policy-function-vfi
 ---
-
 fig, ax = plt.subplots()
 ax.plot(w_grid, w_grid, "k--", label="45")
 ax.plot(w_grid, w_grid[σ_star_vfi[:, 1]], label="$\\sigma^{*}_{VFI}(\cdot, y_1)$")
@@ -510,6 +514,8 @@ plt.show()
 
 ```{code-cell} ipython3
 print("Starting OPI.")
+σ_star_opi = optimistic_policy_iteration(model, m=100)
+
 start_time = time.time()
 σ_star_opi = optimistic_policy_iteration(model, m=100)
 elapsed = time.time() - start_time
@@ -523,7 +529,6 @@ mystnb:
     caption: Optimal policy function (OPI)
     name: optimal-policy-function-opi
 ---
-
 fig, ax = plt.subplots()
 ax.plot(w_grid, w_grid, "k--", label="45")
 ax.plot(w_grid, w_grid[σ_star_opi[:, 1]], label="$\\sigma^{*}_{OPI}(\cdot, y_1)$")
@@ -538,6 +543,8 @@ Now, let's create a plot to visualize the time differences among these algorithm
 
 ```{code-cell} ipython3
 def run_algorithm(algorithm, model, **kwargs):
+    result = algorithm(model, **kwargs)
+    
     start_time = time.time()
     result = algorithm(model, **kwargs)
     end_time = time.time()

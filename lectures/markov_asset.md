@@ -54,6 +54,7 @@ Below we use the following imports
 ```{code-cell} ipython3
 import scipy
 import quantecon as qe
+import time
 import matplotlib.pyplot as plt
 import numpy as np
 import jax
@@ -791,10 +792,18 @@ sv_model = create_sv_model()
 P, hc_grid, Q, hd_grid, R, z_grid, β, γ, bar_σ, μ_c, μ_d = sv_model
 ```
 
+Let's run it to compile.
+
 ```{code-cell} ipython3
-qe.tic()
 v = sv_pd_ratio(sv_model)
-np_time = qe.toc()
+```
+
+Let's run it again to remove the compilation.
+
+```{code-cell} ipython3
+start = time.time()
+v = sv_pd_ratio(sv_model)
+np_time = time.time() - start
 ```
 
 Here are some plots of the solution $v$ along the three dimensions.
@@ -930,17 +939,17 @@ shapes = len(hc_grid), len(hd_grid), len(z_grid)
 Let's see how long it takes to run with compile time included.
 
 ```{code-cell} ipython3
-qe.tic()
+start0 = time.time()
 v_jax = sv_pd_ratio_jax(sv_model_jax, shapes).block_until_ready()
-jnp_time_0 = qe.toc()
+jnp_time_0 = time.time() - start0
 ```
 
 And now let's see without compile time.
 
 ```{code-cell} ipython3
-qe.tic()
+start = time.time()
 v_jax = sv_pd_ratio_jax(sv_model_jax, shapes).block_until_ready()
-jnp_time = qe.toc()
+jnp_time = time.time() - start
 ```
 
 Here's the ratio of times:
@@ -1016,17 +1025,17 @@ sv_pd_ratio_linop = jax.jit(sv_pd_ratio_linop, static_argnums=(1,))
 Let's time the solution with compile time included.
 
 ```{code-cell} ipython3
-qe.tic()
+start0 = time.time()
 v_jax_linop = sv_pd_ratio_linop(sv_model, shapes).block_until_ready()
-jnp_time_linop_0 = qe.toc()
+jnp_time_linop_0 = time.time() - start0
 ```
 
 And now let’s see without compile time.
 
 ```{code-cell} ipython3
-qe.tic()
+start = time.time()
 v_jax_linop = sv_pd_ratio_linop(sv_model, shapes).block_until_ready()
-jnp_linop_time = qe.toc()
+jnp_linop_time = time.time() - start
 ```
 
 Let's verify the solution again:
@@ -1051,9 +1060,8 @@ sv_model_jax = create_sv_model_jax(sv_model)
 P, hc_grid, Q, hd_grid, R, z_grid, β, γ, bar_σ, μ_c, μ_d = sv_model_jax
 shapes = len(hc_grid), len(hd_grid), len(z_grid)
 
-qe.tic()
-_ = sv_pd_ratio_linop(sv_model, shapes).block_until_ready()
-qe.toc()
+%time _ = sv_pd_ratio_linop(sv_model, shapes).block_until_ready()
+%time _ = sv_pd_ratio_linop(sv_model, shapes).block_until_ready()
 ```
 
 The solution is computed relatively quickly and without memory issues.

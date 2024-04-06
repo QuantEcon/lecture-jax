@@ -58,6 +58,7 @@ Let's begin with the following imports
 
 ```{code-cell} ipython3
 import quantecon as qe
+import time
 import jax
 import jax.numpy as jnp
 import matplotlib.pyplot as plt
@@ -420,9 +421,13 @@ y_grid, z_grid, Q = arrays
 :tags: [hide-output]
 
 print("Starting HPI.")
-qe.tic()
 σ_star_hpi = howard_policy_iteration(model)
-elapsed = qe.toc()
+```
+
+```{code-cell} ipython3
+start = time.time()
+σ_star_hpi = howard_policy_iteration(model)
+elapsed = time.time() - start
 print(σ_star_hpi)
 print(f"HPI completed in {elapsed} seconds.")
 ```
@@ -442,9 +447,10 @@ plt.show()
 :tags: [hide-output]
 
 print("Starting VFI.")
-qe.tic()
 σ_star_vfi = value_function_iteration(model)
-elapsed = qe.toc()
+start = time.time()
+σ_star_vfi = value_function_iteration(model)
+elapsed = time.time() - start
 print(σ_star_vfi)
 print(f"VFI completed in {elapsed} seconds.")
 ```
@@ -464,9 +470,10 @@ plt.show()
 :tags: [hide-output]
 
 print("Starting OPI.")
-qe.tic()
 σ_star_opi = optimistic_policy_iteration(model, m=100)
-elapsed = qe.toc()
+start = time.time()
+σ_star_opi = optimistic_policy_iteration(model, m=100)
+elapsed = time.time() - start
 print(σ_star_opi)
 print(f"OPI completed in {elapsed} seconds.")
 ```
@@ -493,17 +500,22 @@ m_vals = range(5, 600, 40)
 
 ```{code-cell} ipython3
 print("Running Howard policy iteration.")
-qe.tic()
 σ_pi = howard_policy_iteration(model)
-pi_time = qe.toc()
 ```
 
 ```{code-cell} ipython3
+start = time.time()
+σ_pi = howard_policy_iteration(model)
+pi_time = time.time() - start
 print(f"PI completed in {pi_time} seconds.")
+```
+
+```{code-cell} ipython3
 print("Running value function iteration.")
-qe.tic()
 σ_vfi = value_function_iteration(model, tol=1e-5)
-vfi_time = qe.toc()
+start = time.time()
+σ_vfi = value_function_iteration(model, tol=1e-5)
+vfi_time = time.time() - start
 print(f"VFI completed in {vfi_time} seconds.")
 ```
 
@@ -513,9 +525,11 @@ print(f"VFI completed in {vfi_time} seconds.")
 opi_times = []
 for m in m_vals:
     print(f"Running optimistic policy iteration with m={m}.")
-    qe.tic()
     σ_opi = optimistic_policy_iteration(model, m=m, tol=1e-5)
-    opi_time = qe.toc()
+    
+    start = time.time()
+    σ_opi = optimistic_policy_iteration(model, m=m, tol=1e-5)
+    opi_time = time.time() - start
     print(f"OPI with m={m} completed in {opi_time} seconds.")
     opi_times.append(opi_time)
 ```

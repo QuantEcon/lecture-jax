@@ -4,7 +4,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.15.2
+    jupytext_version: 1.16.1
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -72,13 +72,11 @@ We can compute and plot the Lorenz curve as follows:
 
 ```{code-cell} ipython3
 %%time
-
 f_vals, l_vals = lorenz_curve_jax(w)
 ```
 
 ```{code-cell} ipython3
 %%time
-
 # This will be much faster as it will use the jitted function
 f_vals, l_vals = lorenz_curve_jax(w)
 ```
@@ -308,9 +306,14 @@ size = (1,)
 
 ```{code-cell} ipython3
 %%time
-
 w_jax_result = wealth_time_series_for_loop_jax(wdy.y_mean,
-                                               ts_length, wdy, size).block_until_ready()
+                    ts_length, wdy, size).block_until_ready()
+```
+
+```{code-cell} ipython3
+%%time
+w_jax_result = wealth_time_series_for_loop_jax(wdy.y_mean,
+                    ts_length, wdy, size).block_until_ready()
 ```
 
 ```{code-cell} ipython3
@@ -370,17 +373,17 @@ size = (1,)
 
 ```{code-cell} ipython3
 %%time
-
-w_jax_result = wealth_time_series_jax(wdy.y_mean, ts_length, wdy, size).block_until_ready()
+w_jax_result = wealth_time_series_jax(wdy.y_mean, 
+                    ts_length, wdy, size).block_until_ready()
 ```
 
 Running the above function again will be even faster because of JAX's JIT.
 
 ```{code-cell} ipython3
 %%time
-
 # 2nd time is expected to be very fast because of JIT
-w_jax_result = wealth_time_series_jax(wdy.y_mean, ts_length, wdy, size).block_until_ready()
+w_jax_result = wealth_time_series_jax(wdy.y_mean, 
+                    ts_length, wdy, size).block_until_ready()
 ```
 
 ```{code-cell} ipython3
