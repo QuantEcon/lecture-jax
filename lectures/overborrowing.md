@@ -16,7 +16,7 @@ kernelspec:
 ```{include} _admonition/gpu.md
 ```
 
-This lecture provides a JAX implementation of "Overborrowing and Systemic Externalities" (AER 2011) {cite:p}`Bianchi2011` by [Javier Bianchi](http://www.javierbianchi.com/).
+This lecture provides a JAX implementation of "Overborrowing and Systemic Externalities" {cite:p}`Bianchi2011` by [Javier Bianchi](http://www.javierbianchi.com/).
 
 In addition to what’s in Anaconda, this lecture will need the following libraries:
 
@@ -221,10 +221,10 @@ $$
    \quad \text{(prime indicates next period value)}
 $$
 
-where 
+where
 
 * $y = (y_t, y_n) = $ (tradables, nontradables)
-* $A$ is $2 x 2$
+* $A$ is $2 \times 2$
 * $u' \sim N(0, \Omega)$
 * the log function is applied pointwise
 
