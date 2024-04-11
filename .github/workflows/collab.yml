@@ -52,7 +52,7 @@ jobs:
       - name: Install Build Software
         shell: bash -l {0}
         run: |
-          pip install jupyter-book quantecon-book-theme sphinx-tojupyter sphinxext-rediraffe sphinx-exercise docutils==0.17.1
+          pip install jupyter-book docutils==0.17.1 quantecon-book-theme sphinx-tojupyter sphinxext-rediraffe sphinx-exercise sphinxcontrib-youtube sphinx-togglebutton arviz
       # Build of HTML (Execution Testing)
       - name: Build HTML
         shell: bash -l {0}
