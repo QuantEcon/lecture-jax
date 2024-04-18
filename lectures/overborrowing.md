@@ -644,7 +644,7 @@ def compute_equilibrium(parameters, sizes, arrays,
         i += 1
     if i == max_iter:
         msgs.append("Warning: Equilibrium search iteration hit upper bound.")
-    print(msgs.join("\n"))
+    print("\n".join(msgs))
     return H
 ```
 
