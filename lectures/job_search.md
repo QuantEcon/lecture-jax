@@ -83,7 +83,7 @@ We solve this model using value function iteration.
 Let's set up a `namedtuple` to store information needed to solve the model.
 
 ```{code-cell} ipython3
-Model = namedtuple('Model', ('n', 'w_vals', 'P', 'β', 'c', 'θ'))
+Model = namedtuple('Model', ('n', 'w_vals', 'P', 'β', 'c'))
 ```
 
 The function below holds default values and populates the namedtuple.
@@ -100,7 +100,7 @@ def create_js_model(
     mc = qe.tauchen(n, ρ, ν)
     w_vals, P = jnp.exp(mc.state_values), mc.P
     P = jnp.array(P)
-    return Model(n, w_vals, P, β, c, θ)
+    return Model(n, w_vals, P, β, c)
 ```
 
 Here's the Bellman operator.
@@ -114,7 +114,7 @@ def T(v, model):
         e(w) = w / (1-β) and (Ev)(w) = E_w[ v(W')]
 
     """
-    n, w_vals, P, β, c, θ = model
+    n, w_vals, P, β, c = model
     h = c + β * P @ v
     e = w_vals / (1 - β)
 
@@ -142,7 +142,7 @@ is higher than the value of continuing.
 @jax.jit
 def get_greedy(v, model):
     """Get a v-greedy policy."""
-    n, w_vals, P, β, c, θ = model
+    n, w_vals, P, β, c = model
     e = w_vals / (1 - β)
     h = c + β * P @ v
     σ = jnp.where(e >= h, 1, 0)
@@ -177,7 +177,7 @@ Let's set up and solve the model.
 
 ```{code-cell} ipython3
 model = create_js_model()
-n, w_vals, P, β, c, θ = model
+n, w_vals, P, β, c = model
 
 qe.tic()
 v_star, σ_star = vfi(model)
@@ -239,6 +239,8 @@ Try to interpret your result.
 ```
 
 ```{code-cell} ipython3
+RiskModel = namedtuple('Model', ('n', 'w_vals', 'P', 'β', 'c', 'θ'))
+
 def create_risk_sensitive_js_model(
         n=500,       # wage grid size
         ρ=0.9,       # wage persistence
@@ -251,7 +253,7 @@ def create_risk_sensitive_js_model(
     mc = qe.tauchen(n, ρ, ν)
     w_vals, P = jnp.exp(mc.state_values), mc.P
     P = jnp.array(P)
-    return Model(n, w_vals, P, β, c, θ)
+    return RiskModel(n, w_vals, P, β, c, θ)
 
 
 @jax.jit
