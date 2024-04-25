@@ -94,8 +94,7 @@ def create_js_model(
         ρ=0.9,       # wage persistence
         ν=0.2,       # wage volatility
         β=0.99,      # discount factor
-        c=1.0,       # unemployment compensation
-        θ=-0.1       # risk parameter
+        c=1.0        # unemployment compensation
     ):
     "Creates an instance of the job search model with Markov wages."
     mc = qe.tauchen(n, ρ, ν)
