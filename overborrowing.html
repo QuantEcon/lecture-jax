@@ -251,7 +251,7 @@ const thebe_selector_output = ".output, .cell_output"
 <p>To run this lecture on <a class="reference external" href="https://colab.research.google.com/">Google Colab</a>, click on the “play” icon top right, select Colab, and set the runtime environment to include a GPU.</p>
 <p>To run this lecture on your own machine, you need to install <a class="reference external" href="https://github.com/google/jax">Google JAX</a>.</p>
 </div>
-<p>This lecture provides a JAX implementation of “Overborrowing and Systemic Externalities” <span id="id1">[<a class="reference internal" href="zreferences.html#id256" title="Javier Bianchi. Overborrowing and systemic externalities in the business cycle. American Economic Review, 101(7):3400-3426, December 2011. URL: https://www.aeaweb.org/articles?id=10.1257/aer.101.7.3400, doi:10.1257/aer.101.7.3400.">Bia11</a>]</span> by <a class="reference external" href="http://www.javierbianchi.com/">Javier Bianchi</a>.</p>
+<p>This lecture provides a JAX implementation of “Overborrowing and Systemic Externalities” <span id="id1">[<a class="reference internal" href="zreferences.html#id256" title="Javier Bianchi. Overborrowing and systemic externalities in the business cycle. American Economic Review, 101(7):3400-3426, December 2011. URL: https://www.aeaweb.org/articles?id=10.1257/aer.101.7.3400, doi:10.1257/aer.101.7.3400.">Bianchi, 2011</a>]</span> by <a class="reference external" href="http://www.javierbianchi.com/">Javier Bianchi</a>.</p>
 <p>In addition to what’s in Anaconda, this lecture will need the following libraries:</p>
 <div class="cell tag_hide-output docutils container">
 <div class="cell_input above-output-prompt docutils container">
@@ -606,11 +606,11 @@ testing.</p>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Statistics for original process.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Std dev of y_t is 0.08806831506882354
-Std dev of y_n is 0.10585289181183148
-corr(y_t, y_n) is 0.5410746487051762
-auto_corr(y_t) is 0.456744544633688
-auto_corr(y_n) is 0.6668094446426094
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Std dev of y_t is 0.08792023320305366
+Std dev of y_n is 0.10591740180881054
+corr(y_t, y_n) is 0.5406067234281369
+auto_corr(y_t) is 0.4557022367907824
+auto_corr(y_n) is 0.6663854759385045
 </pre></div>
 </div>
 </div>
@@ -626,11 +626,11 @@ auto_corr(y_n) is 0.6668094446426094
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Statistics for discretized process.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Std dev of y_t is 0.0874570211221572
-Std dev of y_n is 0.10527905260926995
-corr(y_t, y_n) is 0.4753219563114405
-auto_corr(y_t) is 0.39884152035112735
-auto_corr(y_n) is 0.5886879500609782
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Std dev of y_t is 0.08751160850922726
+Std dev of y_n is 0.10548847773923896
+corr(y_t, y_n) is 0.477029911830029
+auto_corr(y_t) is 0.4020239759921668
+auto_corr(y_n) is 0.589923590264531
 </pre></div>
 </div>
 </div>
@@ -1197,7 +1197,7 @@ Updated H at iteration 21 with error 0.006165444850921631.
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>VFI terminated after 128 iterations.
 Updated H at iteration 22 with error 0.0041103363037109375.
-Computed decentralized equilibrium in 16.44922637939453 seconds
+Computed decentralized equilibrium in 16.474924564361572 seconds
 </pre></div>
 </div>
 </div>
@@ -1217,7 +1217,7 @@ Computed decentralized equilibrium in 16.44922637939453 seconds
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computing planner&#39;s solution.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed decentralized equilibrium in 1.1328227519989014 seconds
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed decentralized equilibrium in 1.1924936771392822 seconds
 </pre></div>
 </div>
 </div>
@@ -1225,7 +1225,7 @@ Computed decentralized equilibrium in 16.44922637939453 seconds
 </section>
 <section id="policy-plots">
 <h3><span class="section-number">20.5.2. </span>Policy plots<a class="headerlink" href="#policy-plots" title="Permalink to this heading">#</a></h3>
-<p>We produce a policy plot that is similar to Figure 1 in <span id="id2">[<a class="reference internal" href="zreferences.html#id256" title="Javier Bianchi. Overborrowing and systemic externalities in the business cycle. American Economic Review, 101(7):3400-3426, December 2011. URL: https://www.aeaweb.org/articles?id=10.1257/aer.101.7.3400, doi:10.1257/aer.101.7.3400.">Bia11</a>]</span>.</p>
+<p>We produce a policy plot that is similar to Figure 1 in <span id="id2">[<a class="reference internal" href="zreferences.html#id256" title="Javier Bianchi. Overborrowing and systemic externalities in the business cycle. American Economic Review, 101(7):3400-3426, December 2011. URL: https://www.aeaweb.org/articles?id=10.1257/aer.101.7.3400, doi:10.1257/aer.101.7.3400.">Bianchi, 2011</a>]</span>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span>
@@ -1293,7 +1293,7 @@ planner equilibria.</p>
 <li><p>use the function <code class="docutils literal notranslate"><span class="pre">generate_borrowing_sequence</span></code> plus <code class="docutils literal notranslate"><span class="pre">H_eq</span></code> and <code class="docutils literal notranslate"><span class="pre">H_plan</span></code> to calculate bond holdings for the planner and the decentralized equilibrium</p></li>
 <li><p>produce a kernel density plot for each of these data sets</p></li>
 </ul>
-<p>If you are successful, your plot should look something like Fig 2 of <span id="id3">[<a class="reference internal" href="zreferences.html#id256" title="Javier Bianchi. Overborrowing and systemic externalities in the business cycle. American Economic Review, 101(7):3400-3426, December 2011. URL: https://www.aeaweb.org/articles?id=10.1257/aer.101.7.3400, doi:10.1257/aer.101.7.3400.">Bia11</a>]</span> — although not exactly the same, due to the alternative specification of the Markov process.</p>
+<p>If you are successful, your plot should look something like Fig 2 of <span id="id3">[<a class="reference internal" href="zreferences.html#id256" title="Javier Bianchi. Overborrowing and systemic externalities in the business cycle. American Economic Review, 101(7):3400-3426, December 2011. URL: https://www.aeaweb.org/articles?id=10.1257/aer.101.7.3400, doi:10.1257/aer.101.7.3400.">Bianchi, 2011</a>]</span> — although not exactly the same, due to the alternative specification of the Markov process.</p>
 <p>To generate a kernel density plot, we recommend that you use <code class="docutils literal notranslate"><span class="pre">kdeplot</span></code> from the package <code class="docutils literal notranslate"><span class="pre">seaborn</span></code>, which is included in Anaconda.</p>
 </section>
 </div>
@@ -1354,10 +1354,10 @@ planner equilibria.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/e434de085b581838b938bc9f2cf5adb9e47dc982da3ab85eb9ebe80205348c0d.png"><img alt="_images/e434de085b581838b938bc9f2cf5adb9e47dc982da3ab85eb9ebe80205348c0d.png" src="_images/e434de085b581838b938bc9f2cf5adb9e47dc982da3ab85eb9ebe80205348c0d.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/4ac7040434e1a18d0ff59368b2f46855c84862f043f98fe13a22b903b66b9ace.png"><img alt="_images/4ac7040434e1a18d0ff59368b2f46855c84862f043f98fe13a22b903b66b9ace.png" src="_images/4ac7040434e1a18d0ff59368b2f46855c84862f043f98fe13a22b903b66b9ace.png" style="width: 80%;" /></a>
 </div>
 </div>
-<p>This corresponds to Figure 2 in <span id="id4">[<a class="reference internal" href="zreferences.html#id256" title="Javier Bianchi. Overborrowing and systemic externalities in the business cycle. American Economic Review, 101(7):3400-3426, December 2011. URL: https://www.aeaweb.org/articles?id=10.1257/aer.101.7.3400, doi:10.1257/aer.101.7.3400.">Bia11</a>]</span>.</p>
+<p>This corresponds to Figure 2 in <span id="id4">[<a class="reference internal" href="zreferences.html#id256" title="Javier Bianchi. Overborrowing and systemic externalities in the business cycle. American Economic Review, 101(7):3400-3426, December 2011. URL: https://www.aeaweb.org/articles?id=10.1257/aer.101.7.3400, doi:10.1257/aer.101.7.3400.">Bianchi, 2011</a>]</span>.</p>
 <p>Again, the match is not exact but it is qualitatively similar.</p>
 <p>Asset holding has a longer left hand tail under the decentralized equilibrium,
 leaving the economy more vulnerable to bad shocks.</p>
