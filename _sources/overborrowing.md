@@ -634,15 +634,17 @@ def compute_equilibrium(parameters, sizes, arrays,
     H = generate_initial_H(parameters, sizes, arrays)
     error = tol + 1
     i = 0
+    msgs = []
     while error > tol and i < max_iter:
         H_new, vfi_num_iter = update_H(parameters, sizes, arrays, H, α)
-        print(f"VFI terminated after {vfi_num_iter} iterations.")
+        msgs.append(f"VFI terminated after {vfi_num_iter} iterations.")
         error = jnp.max(jnp.abs(b_grid[H] - b_grid[H_new]))
-        print(f"Updated H at iteration {i} with error {error}.")
+        msgs.append(f"Updated H at iteration {i} with error {error}.")
         H = H_new
         i += 1
     if i == max_iter:
-        print("Warning: Equilibrium search iteration hit upper bound.")
+        msgs.append("Warning: Equilibrium search iteration hit upper bound.")
+    print("\n".join(msgs))
     return H
 ```
 

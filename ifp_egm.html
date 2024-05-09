@@ -126,14 +126,14 @@ const thebe_selector_output = ".output, .cell_output"
 
 <!-- Normal Meta Tags -->
 <meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
-<meta name="keywords" content="Python, QuantEcon, Quantitative Economics, Economics, Sloan, Alfred P. Sloan Foundation, Tom J. Sargent, John Stachurski" />
-<meta name="description" content=This website presents a set of lectures on quantitative economic modeling, designed and written by Thomas J. Sargent and John Stachurski. />
+<meta name="keywords" content="Python, JAX, QuantEcon, Quantitative Economics, Economics, Sloan, Alfred P. Sloan Foundation, Tom J. Sargent, John Stachurski" />
+<meta name="description" content=This website presents a set of lectures on quantitative economic modeling using JAX, designed and written by Thomas J. Sargent and John Stachurski. />
 
 <!-- Twitter tags -->
 <meta name="twitter:card" content="summary" />
 <meta name="twitter:site" content="@quantecon" />
 <meta name="twitter:title" content="Endogenous Grid Method"/>
-<meta name="twitter:description" content="This website presents a set of lectures on quantitative economic modeling, designed and written by Thomas J. Sargent and John Stachurski.">
+<meta name="twitter:description" content="This website presents a set of lectures on quantitative economic modeling using JAX, designed and written by Thomas J. Sargent and John Stachurski.">
 <meta name="twitter:creator" content="@quantecon">
 <meta name="twitter:image" content="https://assets.quantecon.org/img/qe-twitter-logo.png">
 
@@ -142,7 +142,7 @@ const thebe_selector_output = ".output, .cell_output"
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://jax.quantecon.org/ifp_egm.html" />
 <meta property="og:image" content="https://assets.quantecon.org/img/qe-og-logo.png" />
-<meta property="og:description" content="This website presents a set of lectures on quantitative economic modeling, designed and written by Thomas J. Sargent and John Stachurski." />
+<meta property="og:description" content="This website presents a set of lectures on quantitative economic modeling using JAX, designed and written by Thomas J. Sargent and John Stachurski." />
 <meta property="og:site_name" content="Quantitative Economics with Python using JAX" />
 <meta name="theme-color" content="#ffffff" />
 
@@ -318,7 +318,7 @@ Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/envs/quantecon/lib/
   pid, fd = os.forkpty()
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Thu May  2 01:56:31 2024       
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Tue May  7 06:59:38 2024       
 +-----------------------------------------------------------------------------+
 | NVIDIA-SMI 470.182.03   Driver Version: 470.182.03   CUDA Version: 12.3     |
 |-------------------------------+----------------------+----------------------+
@@ -326,8 +326,10 @@ Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/envs/quantecon/lib/
 | Fan  Temp  Perf  Pwr:Usage/Cap|         Memory-Usage | GPU-Util  Compute M. |
 |                               |                      |               MIG M. |
 |===============================+======================+======================|
-|   0  Tesla V100-SXM2...  Off  | 00000000:00:1E.0 Off |                    0 |
-| N/A   28C    P0    38W / 300W |      0MiB / 16160MiB |      2%      Default |
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>|   0  Tesla V100-SXM2...  Off  | 00000000:00:1E.0 Off |                    0 |
+| N/A   38C    P0    39W / 300W |      0MiB / 16160MiB |      2%      Default |
 |                               |                      |                  N/A |
 +-------------------------------+----------------------+----------------------+
                                                                                
@@ -336,9 +338,7 @@ Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/envs/quantecon/lib/
 |  GPU   GI   CI        PID   Type   Process name                  GPU Memory |
 |        ID   ID                                                   Usage      |
 |=============================================================================|
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>|  No running processes found                                                 |
+|  No running processes found                                                 |
 +-----------------------------------------------------------------------------+
 </pre></div>
 </div>
@@ -910,10 +910,10 @@ Converged in 2192 iterations.
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Converged in 2192 iterations.
-TOC: Elapsed: 0:01:21.14
+TOC: Elapsed: 0:01:20.84
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>81.14271950721741
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>80.84676599502563
 </pre></div>
 </div>
 </div>
@@ -969,7 +969,7 @@ TOC: Elapsed: 0:01:21.14
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Converged in 2192 iterations.
-TOC: Elapsed: 0:00:3.61
+TOC: Elapsed: 0:00:3.34
 </pre></div>
 </div>
 </div>
@@ -991,7 +991,7 @@ TOC: Elapsed: 0:00:3.61
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Converged in 2192 iterations.
-TOC: Elapsed: 0:01:18.11
+TOC: Elapsed: 0:01:18.05
 </pre></div>
 </div>
 </div>
@@ -1003,7 +1003,7 @@ TOC: Elapsed: 0:01:18.11
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.04631337127101406
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.042858011017738146
 </pre></div>
 </div>
 </div>

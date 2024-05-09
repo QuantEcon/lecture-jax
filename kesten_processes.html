@@ -126,14 +126,14 @@ const thebe_selector_output = ".output, .cell_output"
 
 <!-- Normal Meta Tags -->
 <meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
-<meta name="keywords" content="Python, QuantEcon, Quantitative Economics, Economics, Sloan, Alfred P. Sloan Foundation, Tom J. Sargent, John Stachurski" />
-<meta name="description" content=This website presents a set of lectures on quantitative economic modeling, designed and written by Thomas J. Sargent and John Stachurski. />
+<meta name="keywords" content="Python, JAX, QuantEcon, Quantitative Economics, Economics, Sloan, Alfred P. Sloan Foundation, Tom J. Sargent, John Stachurski" />
+<meta name="description" content=This website presents a set of lectures on quantitative economic modeling using JAX, designed and written by Thomas J. Sargent and John Stachurski. />
 
 <!-- Twitter tags -->
 <meta name="twitter:card" content="summary" />
 <meta name="twitter:site" content="@quantecon" />
 <meta name="twitter:title" content="Kesten Processes and Firm Dynamics"/>
-<meta name="twitter:description" content="This website presents a set of lectures on quantitative economic modeling, designed and written by Thomas J. Sargent and John Stachurski.">
+<meta name="twitter:description" content="This website presents a set of lectures on quantitative economic modeling using JAX, designed and written by Thomas J. Sargent and John Stachurski.">
 <meta name="twitter:creator" content="@quantecon">
 <meta name="twitter:image" content="https://assets.quantecon.org/img/qe-twitter-logo.png">
 
@@ -142,7 +142,7 @@ const thebe_selector_output = ".output, .cell_output"
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://jax.quantecon.org/kesten_processes.html" />
 <meta property="og:image" content="https://assets.quantecon.org/img/qe-og-logo.png" />
-<meta property="og:description" content="This website presents a set of lectures on quantitative economic modeling, designed and written by Thomas J. Sargent and John Stachurski." />
+<meta property="og:description" content="This website presents a set of lectures on quantitative economic modeling using JAX, designed and written by Thomas J. Sargent and John Stachurski." />
 <meta property="og:site_name" content="Quantitative Economics with Python using JAX" />
 <meta name="theme-color" content="#ffffff" />
 
@@ -320,7 +320,7 @@ to accelerate the computations.</p>
   pid, fd = os.forkpty()
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Thu May  2 02:26:41 2024       
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Tue May  7 07:29:29 2024       
 +-----------------------------------------------------------------------------+
 | NVIDIA-SMI 470.182.03   Driver Version: 470.182.03   CUDA Version: 12.3     |
 |-------------------------------+----------------------+----------------------+
@@ -331,7 +331,7 @@ to accelerate the computations.</p>
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>|   0  Tesla V100-SXM2...  Off  | 00000000:00:1E.0 Off |                    0 |
-| N/A   27C    P0    38W / 300W |      0MiB / 16160MiB |      2%      Default |
+| N/A   31C    P0    37W / 300W |      0MiB / 16160MiB |      2%      Default |
 |                               |                      |                  N/A |
 +-------------------------------+----------------------+----------------------+
                                                                                
@@ -476,8 +476,8 @@ time <code class="docutils literal notranslate"><span class="pre">T</span></code
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 4.19 s, sys: 2.34 s, total: 6.53 s
-Wall time: 3.89 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 4.02 s, sys: 2.27 s, total: 6.29 s
+Wall time: 3.77 s
 </pre></div>
 </div>
 </div>
@@ -490,8 +490,8 @@ Wall time: 3.89 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 4.25 s, sys: 774 ms, total: 5.03 s
-Wall time: 2.25 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 3.84 s, sys: 807 ms, total: 4.65 s
+Wall time: 1.96 s
 </pre></div>
 </div>
 </div>
@@ -577,8 +577,8 @@ store large matrices of random draws</p></li>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 410 ms, sys: 0 ns, total: 410 ms
-Wall time: 408 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 400 ms, sys: 0 ns, total: 400 ms
+Wall time: 398 ms
 </pre></div>
 </div>
 </div>
@@ -592,8 +592,8 @@ we see some speed gain over the for loop implementation:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 4.01 ms, sys: 0 ns, total: 4.01 ms
-Wall time: 34.7 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 3.61 ms, sys: 0 ns, total: 3.61 ms
+Wall time: 34.8 ms
 </pre></div>
 </div>
 </div>
@@ -624,8 +624,8 @@ Wall time: 34.7 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 4.66 s, sys: 669 ms, total: 5.33 s
-Wall time: 2.53 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 4.39 s, sys: 561 ms, total: 4.96 s
+Wall time: 2.24 s
 </pre></div>
 </div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Array([2.389801 , 2.2558599, 3.3113828, ..., 2.7102313, 2.5520844,

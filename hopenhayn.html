@@ -126,14 +126,14 @@ const thebe_selector_output = ".output, .cell_output"
 
 <!-- Normal Meta Tags -->
 <meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
-<meta name="keywords" content="Python, QuantEcon, Quantitative Economics, Economics, Sloan, Alfred P. Sloan Foundation, Tom J. Sargent, John Stachurski" />
-<meta name="description" content=This website presents a set of lectures on quantitative economic modeling, designed and written by Thomas J. Sargent and John Stachurski. />
+<meta name="keywords" content="Python, JAX, QuantEcon, Quantitative Economics, Economics, Sloan, Alfred P. Sloan Foundation, Tom J. Sargent, John Stachurski" />
+<meta name="description" content=This website presents a set of lectures on quantitative economic modeling using JAX, designed and written by Thomas J. Sargent and John Stachurski. />
 
 <!-- Twitter tags -->
 <meta name="twitter:card" content="summary" />
 <meta name="twitter:site" content="@quantecon" />
 <meta name="twitter:title" content="The Hopenhayn Entry-Exit Model"/>
-<meta name="twitter:description" content="This website presents a set of lectures on quantitative economic modeling, designed and written by Thomas J. Sargent and John Stachurski.">
+<meta name="twitter:description" content="This website presents a set of lectures on quantitative economic modeling using JAX, designed and written by Thomas J. Sargent and John Stachurski.">
 <meta name="twitter:creator" content="@quantecon">
 <meta name="twitter:image" content="https://assets.quantecon.org/img/qe-twitter-logo.png">
 
@@ -142,7 +142,7 @@ const thebe_selector_output = ".output, .cell_output"
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://jax.quantecon.org/hopenhayn.html" />
 <meta property="og:image" content="https://assets.quantecon.org/img/qe-og-logo.png" />
-<meta property="og:description" content="This website presents a set of lectures on quantitative economic modeling, designed and written by Thomas J. Sargent and John Stachurski." />
+<meta property="og:description" content="This website presents a set of lectures on quantitative economic modeling using JAX, designed and written by Thomas J. Sargent and John Stachurski." />
 <meta property="og:site_name" content="Quantitative Economics with Python using JAX" />
 <meta name="theme-color" content="#ffffff" />
 
@@ -281,10 +281,10 @@ Requirement already satisfied: numpy&gt;=1.17.0 in /opt/conda/envs/quantecon/lib
 Requirement already satisfied: requests in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (2.31.0)
 Requirement already satisfied: scipy&gt;=1.5.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (1.11.4)
 Requirement already satisfied: sympy in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (1.12)
+Requirement already satisfied: llvmlite&lt;0.43,&gt;=0.42.0dev0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from numba&gt;=0.49.0-&gt;quantecon) (0.42.0)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: llvmlite&lt;0.43,&gt;=0.42.0dev0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from numba&gt;=0.49.0-&gt;quantecon) (0.42.0)
-Requirement already satisfied: charset-normalizer&lt;4,&gt;=2 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests-&gt;quantecon) (2.0.4)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: charset-normalizer&lt;4,&gt;=2 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests-&gt;quantecon) (2.0.4)
 Requirement already satisfied: idna&lt;4,&gt;=2.5 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests-&gt;quantecon) (3.4)
 Requirement already satisfied: urllib3&lt;3,&gt;=1.21.1 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests-&gt;quantecon) (2.0.7)
 Requirement already satisfied: certifi&gt;=2017.4.17 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests-&gt;quantecon) (2024.2.2)
@@ -371,15 +371,15 @@ distribution over <span class="math notranslate nohighlight">\(\mathbb R_+\)</sp
 </ol>
 <p>Scrap value is set to zero and the discount rate is <span class="math notranslate nohighlight">\(\beta \in (0, 1)\)</span>.</p>
 <p>The firm makes their stop-continue choice by first solving for the value function, which is the unique solution in a class of continuous functions <span class="math notranslate nohighlight">\(\mathscr C\)</span> (details omitted) to</p>
-<div class="amsmath math notranslate nohighlight" id="equation-498c7c8b-7bb0-42d3-a9e3-950201b015e5">
-<span class="eqno">(19.1)<a class="headerlink" href="#equation-498c7c8b-7bb0-42d3-a9e3-950201b015e5" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-a6191cc7-e7db-4ee0-880a-229970dcc806">
+<span class="eqno">(19.1)<a class="headerlink" href="#equation-a6191cc7-e7db-4ee0-880a-229970dcc806" title="Permalink to this equation">#</a></span>\[\begin{equation}
     v(\varphi, p) = \pi(\varphi, p) + \beta 
         \max \left\{ 0, \int v(\varphi', p) \Gamma(\varphi, d \varphi') \right\}.
 \end{equation}\]</div>
 <p>Let <span class="math notranslate nohighlight">\(\bar v\)</span> be the unique solution to this functional equation.</p>
 <p>Given <span class="math notranslate nohighlight">\(\bar v\)</span>, we let <span class="math notranslate nohighlight">\(\bar \varphi\)</span> be the exit threshold function defined by</p>
-<div class="amsmath math notranslate nohighlight" id="equation-a9286217-35ae-4e78-8324-690e62ba26dc">
-<span class="eqno">(19.2)<a class="headerlink" href="#equation-a9286217-35ae-4e78-8324-690e62ba26dc" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-b1ed5998-cef6-4473-b15a-0ca7e0c66f63">
+<span class="eqno">(19.2)<a class="headerlink" href="#equation-b1ed5998-cef6-4473-b15a-0ca7e0c66f63" title="Permalink to this equation">#</a></span>\[\begin{equation}
     \bar \varphi(p) := 
     \min
     \left\{ 
@@ -414,13 +414,13 @@ section, a <strong>stationary recursive equilibrium</strong>  is a triple</p>
 \end{equation*}\]</div>
 <p>with <span class="math notranslate nohighlight">\(p\)</span> understood as price, <span class="math notranslate nohighlight">\(M\)</span> as mass of entrants, and <span class="math notranslate nohighlight">\(\mu\)</span> as a
 distribution of firms over productivity levels, such that the goods market clears, or</p>
-<div class="amsmath math notranslate nohighlight" id="equation-413a6b3a-9bbe-4e7a-a818-78958c130698">
-<span class="eqno">(19.3)<a class="headerlink" href="#equation-413a6b3a-9bbe-4e7a-a818-78958c130698" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-2a5046f9-a64d-4f03-afb2-1b7a210de02b">
+<span class="eqno">(19.3)<a class="headerlink" href="#equation-2a5046f9-a64d-4f03-afb2-1b7a210de02b" title="Permalink to this equation">#</a></span>\[\begin{equation}
     \int q( \varphi, p) \mu(d \varphi) = D(p),
 \end{equation}\]</div>
 <p>the <em>invariance condition</em> over the firm distribution</p>
-<div class="amsmath math notranslate nohighlight" id="equation-b9e8f187-11c6-4c23-9581-d542e54d48f8">
-<span class="eqno">(19.4)<a class="headerlink" href="#equation-b9e8f187-11c6-4c23-9581-d542e54d48f8" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-72992657-a1a9-4ef5-992a-791e925e7aa8">
+<span class="eqno">(19.4)<a class="headerlink" href="#equation-72992657-a1a9-4ef5-992a-791e925e7aa8" title="Permalink to this equation">#</a></span>\[\begin{equation}
     \mu (B) 
     = \int \Gamma(\varphi, B) \, \mathbf{1}  \{\varphi \geq \bar \varphi(p)\} \,
     \mu(d \varphi)
@@ -428,13 +428,13 @@ distribution of firms over productivity levels, such that the goods market clear
     \text{ for all } B \in \mathscr B,
 \end{equation}\]</div>
 <p>holds (see below for intuition), the <em>equilibrium entry condition</em></p>
-<div class="amsmath math notranslate nohighlight" id="equation-9d6d7212-604f-4616-9ee5-b5558be23222">
-<span class="eqno">(19.5)<a class="headerlink" href="#equation-9d6d7212-604f-4616-9ee5-b5558be23222" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-170c82fd-2daa-4c53-a0e3-b27e457fe7b0">
+<span class="eqno">(19.5)<a class="headerlink" href="#equation-170c82fd-2daa-4c53-a0e3-b27e457fe7b0" title="Permalink to this equation">#</a></span>\[\begin{equation}
     \int \bar v( \varphi, p) \, \gamma(d \varphi) = c_e
 \end{equation}\]</div>
 <p>holds, and the <em>balanced entry and exit condition</em></p>
-<div class="amsmath math notranslate nohighlight" id="equation-2a45347c-a037-409b-8225-ff220f184468">
-<span class="eqno">(19.6)<a class="headerlink" href="#equation-2a45347c-a037-409b-8225-ff220f184468" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-255a6b93-0f4c-4aa9-a1b6-ea45e6edc70b">
+<span class="eqno">(19.6)<a class="headerlink" href="#equation-255a6b93-0f4c-4aa9-a1b6-ea45e6edc70b" title="Permalink to this equation">#</a></span>\[\begin{equation}
     M = \mu \{ \varphi &lt; \bar \varphi(p) \}
 \end{equation}\]</div>
 <p>is verified.</p>
@@ -445,15 +445,15 @@ distribution of firms over productivity levels, such that the goods market clear
 <p>We compute the equilibrium as follows:</p>
 <p>For the purposes of this section, we insert balanced entry and
 exit into the time invariance condition, yielding</p>
-<div class="amsmath math notranslate nohighlight" id="equation-613af3b2-d9e8-4677-81d7-b91aa2aec29c">
-<span class="eqno">(19.7)<a class="headerlink" href="#equation-613af3b2-d9e8-4677-81d7-b91aa2aec29c" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-71a1e193-bca0-4dfb-8533-1bc022314407">
+<span class="eqno">(19.7)<a class="headerlink" href="#equation-71a1e193-bca0-4dfb-8533-1bc022314407" title="Permalink to this equation">#</a></span>\[\begin{equation}
     \mu (B) 
     = \int \Pi(\varphi, B) \mu (d \varphi)
     \quad \text{for all } B \in \mathscr B,
 \end{equation}\]</div>
 <p>where <span class="math notranslate nohighlight">\(\Pi\)</span> is the transition kernel on <span class="math notranslate nohighlight">\(\mathbb R_+\)</span> defined by</p>
-<div class="amsmath math notranslate nohighlight" id="equation-88ba6661-c1f3-4de3-9afa-aae47697eefa">
-<span class="eqno">(19.8)<a class="headerlink" href="#equation-88ba6661-c1f3-4de3-9afa-aae47697eefa" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-3a0ca155-2dfd-4dda-bca1-6e72faf539e8">
+<span class="eqno">(19.8)<a class="headerlink" href="#equation-3a0ca155-2dfd-4dda-bca1-6e72faf539e8" title="Permalink to this equation">#</a></span>\[\begin{equation}
     \Pi(\varphi, B) 
     = \Gamma(\varphi, B) \mathbf{1} \{\varphi \geq \bar \varphi(p) \} + 
     \mathbf{1} \{\varphi &lt; \bar \varphi(p)\} \gamma(B).
@@ -889,8 +889,8 @@ from a cold start.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 420 ms, sys: 23.5 ms, total: 443 ms
-Wall time: 465 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 397 ms, sys: 29.8 ms, total: 427 ms
+Wall time: 448 ms
 </pre></div>
 </div>
 </div>
@@ -902,8 +902,8 @@ Wall time: 465 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 18.2 ms, sys: 4.75 ms, total: 23 ms
-Wall time: 19.6 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 17.9 ms, sys: 4.65 ms, total: 22.6 ms
+Wall time: 19.3 ms
 </pre></div>
 </div>
 </div>
@@ -948,8 +948,8 @@ Wall time: 19.6 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 2.98 s, sys: 180 ms, total: 3.16 s
-Wall time: 2.21 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 2.92 s, sys: 150 ms, total: 3.07 s
+Wall time: 2.16 s
 </pre></div>
 </div>
 </div>

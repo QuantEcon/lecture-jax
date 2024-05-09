@@ -126,14 +126,14 @@ const thebe_selector_output = ".output, .cell_output"
 
 <!-- Normal Meta Tags -->
 <meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
-<meta name="keywords" content="Python, QuantEcon, Quantitative Economics, Economics, Sloan, Alfred P. Sloan Foundation, Tom J. Sargent, John Stachurski" />
-<meta name="description" content=This website presents a set of lectures on quantitative economic modeling, designed and written by Thomas J. Sargent and John Stachurski. />
+<meta name="keywords" content="Python, JAX, QuantEcon, Quantitative Economics, Economics, Sloan, Alfred P. Sloan Foundation, Tom J. Sargent, John Stachurski" />
+<meta name="description" content=This website presents a set of lectures on quantitative economic modeling using JAX, designed and written by Thomas J. Sargent and John Stachurski. />
 
 <!-- Twitter tags -->
 <meta name="twitter:card" content="summary" />
 <meta name="twitter:site" content="@quantecon" />
 <meta name="twitter:title" content="Bianchi Overborrowing Model"/>
-<meta name="twitter:description" content="This website presents a set of lectures on quantitative economic modeling, designed and written by Thomas J. Sargent and John Stachurski.">
+<meta name="twitter:description" content="This website presents a set of lectures on quantitative economic modeling using JAX, designed and written by Thomas J. Sargent and John Stachurski.">
 <meta name="twitter:creator" content="@quantecon">
 <meta name="twitter:image" content="https://assets.quantecon.org/img/qe-twitter-logo.png">
 
@@ -142,7 +142,7 @@ const thebe_selector_output = ".output, .cell_output"
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://jax.quantecon.org/overborrowing.html" />
 <meta property="og:image" content="https://assets.quantecon.org/img/qe-og-logo.png" />
-<meta property="og:description" content="This website presents a set of lectures on quantitative economic modeling, designed and written by Thomas J. Sargent and John Stachurski." />
+<meta property="og:description" content="This website presents a set of lectures on quantitative economic modeling using JAX, designed and written by Thomas J. Sargent and John Stachurski." />
 <meta property="og:site_name" content="Quantitative Economics with Python using JAX" />
 <meta name="theme-color" content="#ffffff" />
 
@@ -267,14 +267,14 @@ const thebe_selector_output = ".output, .cell_output"
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /opt/conda/envs/quantecon/lib/python3.11/site-packages (0.7.2)
 Requirement already satisfied: numba&gt;=0.49.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (0.59.0)
-Requirement already satisfied: numpy&gt;=1.17.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (1.26.4)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: numpy&gt;=1.17.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (1.26.4)
 Requirement already satisfied: requests in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (2.31.0)
 Requirement already satisfied: scipy&gt;=1.5.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (1.11.4)
 Requirement already satisfied: sympy in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (1.12)
 Requirement already satisfied: llvmlite&lt;0.43,&gt;=0.42.0dev0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from numba&gt;=0.49.0-&gt;quantecon) (0.42.0)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: charset-normalizer&lt;4,&gt;=2 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests-&gt;quantecon) (2.0.4)
+Requirement already satisfied: charset-normalizer&lt;4,&gt;=2 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests-&gt;quantecon) (2.0.4)
 Requirement already satisfied: idna&lt;4,&gt;=2.5 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests-&gt;quantecon) (3.4)
 Requirement already satisfied: urllib3&lt;3,&gt;=1.21.1 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests-&gt;quantecon) (2.0.7)
 Requirement already satisfied: certifi&gt;=2017.4.17 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests-&gt;quantecon) (2024.2.2)
@@ -606,11 +606,11 @@ testing.</p>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Statistics for original process.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Std dev of y_t is 0.08792023320305366
-Std dev of y_n is 0.10591740180881054
-corr(y_t, y_n) is 0.5406067234281369
-auto_corr(y_t) is 0.4557022367907824
-auto_corr(y_n) is 0.6663854759385045
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Std dev of y_t is 0.08792756192108306
+Std dev of y_n is 0.10605689176411837
+corr(y_t, y_n) is 0.5413058834315481
+auto_corr(y_t) is 0.456726505447261
+auto_corr(y_n) is 0.6672183414948942
 </pre></div>
 </div>
 </div>
@@ -626,11 +626,11 @@ auto_corr(y_n) is 0.6663854759385045
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Statistics for discretized process.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Std dev of y_t is 0.08751160850922726
-Std dev of y_n is 0.10548847773923896
-corr(y_t, y_n) is 0.477029911830029
-auto_corr(y_t) is 0.4020239759921668
-auto_corr(y_n) is 0.589923590264531
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Std dev of y_t is 0.08763531286580997
+Std dev of y_n is 0.10558559889074978
+corr(y_t, y_n) is 0.4767020328697186
+auto_corr(y_t) is 0.40044079562292095
+auto_corr(y_n) is 0.5898924171702546
 </pre></div>
 </div>
 </div>
@@ -940,15 +940,17 @@ and a damped fixed point iteration scheme.</p>
     <span class="n">H</span> <span class="o">=</span> <span class="n">generate_initial_H</span><span class="p">(</span><span class="n">parameters</span><span class="p">,</span> <span class="n">sizes</span><span class="p">,</span> <span class="n">arrays</span><span class="p">)</span>
     <span class="n">error</span> <span class="o">=</span> <span class="n">tol</span> <span class="o">+</span> <span class="mi">1</span>
     <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">msgs</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">while</span> <span class="n">error</span> <span class="o">&gt;</span> <span class="n">tol</span> <span class="ow">and</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">max_iter</span><span class="p">:</span>
         <span class="n">H_new</span><span class="p">,</span> <span class="n">vfi_num_iter</span> <span class="o">=</span> <span class="n">update_H</span><span class="p">(</span><span class="n">parameters</span><span class="p">,</span> <span class="n">sizes</span><span class="p">,</span> <span class="n">arrays</span><span class="p">,</span> <span class="n">H</span><span class="p">,</span> <span class="n">α</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;VFI terminated after </span><span class="si">{</span><span class="n">vfi_num_iter</span><span class="si">}</span><span class="s2"> iterations.&quot;</span><span class="p">)</span>
+        <span class="n">msgs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;VFI terminated after </span><span class="si">{</span><span class="n">vfi_num_iter</span><span class="si">}</span><span class="s2"> iterations.&quot;</span><span class="p">)</span>
         <span class="n">error</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">b_grid</span><span class="p">[</span><span class="n">H</span><span class="p">]</span> <span class="o">-</span> <span class="n">b_grid</span><span class="p">[</span><span class="n">H_new</span><span class="p">]))</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Updated H at iteration </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2"> with error </span><span class="si">{</span><span class="n">error</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+        <span class="n">msgs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Updated H at iteration </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2"> with error </span><span class="si">{</span><span class="n">error</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
         <span class="n">H</span> <span class="o">=</span> <span class="n">H_new</span>
         <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
     <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="n">max_iter</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Warning: Equilibrium search iteration hit upper bound.&quot;</span><span class="p">)</span>
+        <span class="n">msgs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;Warning: Equilibrium search iteration hit upper bound.&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">msgs</span><span class="p">))</span>
     <span class="k">return</span> <span class="n">H</span>
 </pre></div>
 </div>
@@ -1106,98 +1108,52 @@ and a damped fixed point iteration scheme.</p>
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>VFI terminated after 128 iterations.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Updated H at iteration 0 with error 0.15619052946567535.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>VFI terminated after 128 iterations.
+Updated H at iteration 0 with error 0.15619052946567535.
+VFI terminated after 128 iterations.
 Updated H at iteration 1 with error 0.08837097883224487.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>VFI terminated after 129 iterations.
+VFI terminated after 129 iterations.
 Updated H at iteration 2 with error 0.0780951976776123.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>VFI terminated after 128 iterations.
+VFI terminated after 128 iterations.
 Updated H at iteration 3 with error 0.06987470388412476.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>VFI terminated after 128 iterations.
+VFI terminated after 128 iterations.
 Updated H at iteration 4 with error 0.05959904193878174.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>VFI terminated after 128 iterations.
+VFI terminated after 128 iterations.
 Updated H at iteration 5 with error 0.05137842893600464.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>VFI terminated after 128 iterations.
+VFI terminated after 128 iterations.
 Updated H at iteration 6 with error 0.04315793514251709.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>VFI terminated after 128 iterations.
+VFI terminated after 128 iterations.
 Updated H at iteration 7 with error 0.03904759883880615.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>VFI terminated after 128 iterations.
+VFI terminated after 128 iterations.
 Updated H at iteration 8 with error 0.0328822135925293.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>VFI terminated after 129 iterations.
+VFI terminated after 129 iterations.
 Updated H at iteration 9 with error 0.02877199649810791.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>VFI terminated after 128 iterations.
+VFI terminated after 128 iterations.
 Updated H at iteration 10 with error 0.024661660194396973.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>VFI terminated after 128 iterations.
+VFI terminated after 128 iterations.
 Updated H at iteration 11 with error 0.020551443099975586.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>VFI terminated after 128 iterations.
+VFI terminated after 128 iterations.
 Updated H at iteration 12 with error 0.018496274948120117.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>VFI terminated after 128 iterations.
+VFI terminated after 128 iterations.
 Updated H at iteration 13 with error 0.01438605785369873.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>VFI terminated after 128 iterations.
+VFI terminated after 128 iterations.
 Updated H at iteration 14 with error 0.012330859899520874.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>VFI terminated after 129 iterations.
+VFI terminated after 129 iterations.
 Updated H at iteration 15 with error 0.010275721549987793.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>VFI terminated after 128 iterations.
+VFI terminated after 128 iterations.
 Updated H at iteration 16 with error 0.010275721549987793.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>VFI terminated after 128 iterations.
+VFI terminated after 128 iterations.
 Updated H at iteration 17 with error 0.0082206130027771.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>VFI terminated after 128 iterations.
+VFI terminated after 128 iterations.
 Updated H at iteration 18 with error 0.0082206130027771.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>VFI terminated after 128 iterations.
+VFI terminated after 128 iterations.
 Updated H at iteration 19 with error 0.0061654746532440186.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>VFI terminated after 128 iterations.
+VFI terminated after 128 iterations.
 Updated H at iteration 20 with error 0.006165444850921631.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>VFI terminated after 128 iterations.
+VFI terminated after 128 iterations.
 Updated H at iteration 21 with error 0.006165444850921631.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>VFI terminated after 128 iterations.
+VFI terminated after 128 iterations.
 Updated H at iteration 22 with error 0.0041103363037109375.
-Computed decentralized equilibrium in 16.474924564361572 seconds
+Computed decentralized equilibrium in 16.422647714614868 seconds
 </pre></div>
 </div>
 </div>
@@ -1217,7 +1173,7 @@ Computed decentralized equilibrium in 16.474924564361572 seconds
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computing planner&#39;s solution.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed decentralized equilibrium in 1.1924936771392822 seconds
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed decentralized equilibrium in 1.157634973526001 seconds
 </pre></div>
 </div>
 </div>
@@ -1354,7 +1310,7 @@ planner equilibria.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/4ac7040434e1a18d0ff59368b2f46855c84862f043f98fe13a22b903b66b9ace.png"><img alt="_images/4ac7040434e1a18d0ff59368b2f46855c84862f043f98fe13a22b903b66b9ace.png" src="_images/4ac7040434e1a18d0ff59368b2f46855c84862f043f98fe13a22b903b66b9ace.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/1ecfe157924379b5eca902297a579459f39c08cf36cf5debae59cd4b2782ecaa.png"><img alt="_images/1ecfe157924379b5eca902297a579459f39c08cf36cf5debae59cd4b2782ecaa.png" src="_images/1ecfe157924379b5eca902297a579459f39c08cf36cf5debae59cd4b2782ecaa.png" style="width: 80%;" /></a>
 </div>
 </div>
 <p>This corresponds to Figure 2 in <span id="id4">[<a class="reference internal" href="zreferences.html#id256" title="Javier Bianchi. Overborrowing and systemic externalities in the business cycle. American Economic Review, 101(7):3400-3426, December 2011. URL: https://www.aeaweb.org/articles?id=10.1257/aer.101.7.3400, doi:10.1257/aer.101.7.3400.">Bianchi, 2011</a>]</span>.</p>

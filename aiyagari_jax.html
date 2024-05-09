@@ -126,14 +126,14 @@ const thebe_selector_output = ".output, .cell_output"
 
 <!-- Normal Meta Tags -->
 <meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
-<meta name="keywords" content="Python, QuantEcon, Quantitative Economics, Economics, Sloan, Alfred P. Sloan Foundation, Tom J. Sargent, John Stachurski" />
-<meta name="description" content=This website presents a set of lectures on quantitative economic modeling, designed and written by Thomas J. Sargent and John Stachurski. />
+<meta name="keywords" content="Python, JAX, QuantEcon, Quantitative Economics, Economics, Sloan, Alfred P. Sloan Foundation, Tom J. Sargent, John Stachurski" />
+<meta name="description" content=This website presents a set of lectures on quantitative economic modeling using JAX, designed and written by Thomas J. Sargent and John Stachurski. />
 
 <!-- Twitter tags -->
 <meta name="twitter:card" content="summary" />
 <meta name="twitter:site" content="@quantecon" />
 <meta name="twitter:title" content="The Aiyagari Model"/>
-<meta name="twitter:description" content="This website presents a set of lectures on quantitative economic modeling, designed and written by Thomas J. Sargent and John Stachurski.">
+<meta name="twitter:description" content="This website presents a set of lectures on quantitative economic modeling using JAX, designed and written by Thomas J. Sargent and John Stachurski.">
 <meta name="twitter:creator" content="@quantecon">
 <meta name="twitter:image" content="https://assets.quantecon.org/img/qe-twitter-logo.png">
 
@@ -142,7 +142,7 @@ const thebe_selector_output = ".output, .cell_output"
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://jax.quantecon.org/aiyagari_jax.html" />
 <meta property="og:image" content="https://assets.quantecon.org/img/qe-og-logo.png" />
-<meta property="og:description" content="This website presents a set of lectures on quantitative economic modeling, designed and written by Thomas J. Sargent and John Stachurski." />
+<meta property="og:description" content="This website presents a set of lectures on quantitative economic modeling using JAX, designed and written by Thomas J. Sargent and John Stachurski." />
 <meta property="og:site_name" content="Quantitative Economics with Python using JAX" />
 <meta name="theme-color" content="#ffffff" />
 
@@ -306,7 +306,7 @@ const thebe_selector_output = ".output, .cell_output"
   pid, fd = os.forkpty()
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Thu May  2 01:50:35 2024       
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Tue May  7 06:53:46 2024       
 +-----------------------------------------------------------------------------+
 | NVIDIA-SMI 470.182.03   Driver Version: 470.182.03   CUDA Version: 12.3     |
 |-------------------------------+----------------------+----------------------+
@@ -317,7 +317,7 @@ const thebe_selector_output = ".output, .cell_output"
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>|   0  Tesla V100-SXM2...  Off  | 00000000:00:1E.0 Off |                    0 |
-| N/A   27C    P0    38W / 300W |      0MiB / 16160MiB |      2%      Default |
+| N/A   37C    P0    39W / 300W |      0MiB / 16160MiB |      2%      Default |
 |                               |                      |                  N/A |
 +-------------------------------+----------------------+----------------------+
                                                                                
@@ -702,8 +702,8 @@ Concluded loop 10 with error 0.002863165320343697.
 Concluded loop 11 with error 0.0016657175376657563.
 Concluded loop 12 with error 0.0004143776102245589.
 Concluded loop 13 with error 0.0.
-CPU times: user 595 ms, sys: 41.5 ms, total: 636 ms
-Wall time: 787 ms
+CPU times: user 603 ms, sys: 82.5 ms, total: 685 ms
+Wall time: 833 ms
 </pre></div>
 </div>
 </div>
@@ -881,8 +881,8 @@ bivariate Markov chain of the state <span class="math notranslate nohighlight">\
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 3.95 s, sys: 1.05 s, total: 4.99 s
-Wall time: 2.91 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 3.85 s, sys: 1.01 s, total: 4.86 s
+Wall time: 2.8 s
 </pre></div>
 </div>
 </div>
@@ -930,8 +930,8 @@ Wall time: 2.91 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 3.6 s, sys: 992 ms, total: 4.6 s
-Wall time: 2.45 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 3.52 s, sys: 1.04 s, total: 4.56 s
+Wall time: 2.44 s
 </pre></div>
 </div>
 </div>
@@ -1008,9 +1008,9 @@ in the next function.</p>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computing equilibrium capital stock
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.30374884605407715 seconds
-CPU times: user 443 ms, sys: 109 ms, total: 553 ms
-Wall time: 305 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.2988448143005371 seconds
+CPU times: user 414 ms, sys: 138 ms, total: 551 ms
+Wall time: 301 ms
 </pre></div>
 </div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>8.09375
@@ -1052,193 +1052,194 @@ showing the behaviour of equilibrium capital stock with the increase in <span cl
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computing equilibrium capital stock
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.6440865993499756 seconds
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.6212751865386963 seconds
 
 Computing equilibrium capital stock
-Computed equilibrium in 6 iterations and 0.1762845516204834 seconds
-
-Computing equilibrium capital stock
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.18233895301818848 seconds
-
-Computing equilibrium capital stock
-Computed equilibrium in 6 iterations and 0.1839618682861328 seconds
+Computed equilibrium in 6 iterations and 0.17051172256469727 seconds
 
 Computing equilibrium capital stock
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.18913006782531738 seconds
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.17902874946594238 seconds
 
 Computing equilibrium capital stock
-Computed equilibrium in 6 iterations and 0.1808149814605713 seconds
-
-Computing equilibrium capital stock
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.17767858505249023 seconds
-
-Computing equilibrium capital stock
-Computed equilibrium in 6 iterations and 0.19258689880371094 seconds
+Computed equilibrium in 6 iterations and 0.17597270011901855 seconds
 
 Computing equilibrium capital stock
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.19076752662658691 seconds
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.1805400848388672 seconds
 
 Computing equilibrium capital stock
-Computed equilibrium in 6 iterations and 0.19883275032043457 seconds
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computing equilibrium capital stock
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.22058820724487305 seconds
+Computed equilibrium in 6 iterations and 0.17543840408325195 seconds
 
 Computing equilibrium capital stock
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.20551848411560059 seconds
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.17850279808044434 seconds
+
+Computing equilibrium capital stock
+Computed equilibrium in 6 iterations and 0.19620943069458008 seconds
 
 Computing equilibrium capital stock
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.2043321132659912 seconds
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.1899094581604004 seconds
 
 Computing equilibrium capital stock
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.22719836235046387 seconds
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.2042677402496338 seconds
 
 Computing equilibrium capital stock
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.22914814949035645 seconds
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.20741677284240723 seconds
 
 Computing equilibrium capital stock
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.23547005653381348 seconds
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.20193696022033691 seconds
 
 Computing equilibrium capital stock
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.24303531646728516 seconds
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.20219755172729492 seconds
 
 Computing equilibrium capital stock
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.2442009449005127 seconds
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.21902704238891602 seconds
 
 Computing equilibrium capital stock
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.25627613067626953 seconds
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.22153496742248535 seconds
 
 Computing equilibrium capital stock
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.280437707901001 seconds
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.2448415756225586 seconds
 
 Computing equilibrium capital stock
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.2600374221801758 seconds
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.2482621669769287 seconds
 
 Computing equilibrium capital stock
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.28091001510620117 seconds
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.24978971481323242 seconds
 
 Computing equilibrium capital stock
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.26703929901123047 seconds
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.257953405380249 seconds
 
 Computing equilibrium capital stock
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.3008382320404053 seconds
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.26144933700561523 seconds
 
 Computing equilibrium capital stock
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.3082144260406494 seconds
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.24793052673339844 seconds
 
 Computing equilibrium capital stock
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.3183417320251465 seconds
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.26197171211242676 seconds
 
 Computing equilibrium capital stock
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.30644798278808594 seconds
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.26181721687316895 seconds
 
 Computing equilibrium capital stock
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 38.3795599937439 seconds
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.28644418716430664 seconds
 
 Computing equilibrium capital stock
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.3095548152923584 seconds
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.3054172992706299 seconds
 
 Computing equilibrium capital stock
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.31540918350219727 seconds
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.31743383407592773 seconds
 
 Computing equilibrium capital stock
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.30086827278137207 seconds
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.30207228660583496 seconds
 
 Computing equilibrium capital stock
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.3164796829223633 seconds
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 39.32514047622681 seconds
 
 Computing equilibrium capital stock
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.3096179962158203 seconds
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.3103799819946289 seconds
 
 Computing equilibrium capital stock
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.3447446823120117 seconds
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.30005860328674316 seconds
 
 Computing equilibrium capital stock
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.35950565338134766 seconds
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.2876732349395752 seconds
 
 Computing equilibrium capital stock
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.38883280754089355 seconds
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.3126051425933838 seconds
 
 Computing equilibrium capital stock
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.41268157958984375 seconds
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.31690454483032227 seconds
 
 Computing equilibrium capital stock
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.4145534038543701 seconds
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.3333311080932617 seconds
 
 Computing equilibrium capital stock
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.4279360771179199 seconds
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.34496498107910156 seconds
 
 Computing equilibrium capital stock
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.42888665199279785 seconds
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.3663480281829834 seconds
+
+Computing equilibrium capital stock
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.39144349098205566 seconds
+
+Computing equilibrium capital stock
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.40785884857177734 seconds
+
+Computing equilibrium capital stock
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.4115471839904785 seconds
+
+Computing equilibrium capital stock
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.42370009422302246 seconds
 </pre></div>
 </div>
 </div>
@@ -1358,9 +1359,9 @@ in the utility function.</p>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computing equilibrium capital stock
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.7010283470153809 seconds
-CPU times: user 948 ms, sys: 73.3 ms, total: 1.02 s
-Wall time: 703 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium in 6 iterations and 0.6810851097106934 seconds
+CPU times: user 857 ms, sys: 134 ms, total: 990 ms
+Wall time: 683 ms
 </pre></div>
 </div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>8.09375
