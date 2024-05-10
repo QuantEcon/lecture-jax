@@ -3,13 +3,23 @@ on: [pull_request]
 jobs:
   preview:
     runs-on: ubuntu-latest-gpu
-    container:
-      image: docker://mmcky/quantecon-lecture-python:cuda-12.3.1-anaconda-2024-02-py311
-      options: --gpus all
     steps:
       - uses: actions/checkout@v4
         with:
           ref: ${{ github.event.pull_request.head.sha }}
+      - name: Setup Anaconda
+        uses: conda-incubator/setup-miniconda@v3
+        with:
+          auto-update-conda: true
+          auto-activate-base: true
+          miniconda-version: 'latest'
+          python-version: "3.11"
+          environment-file: environment.yml
+          activate-environment: quantecon
+      - name: Install JAX[CUDA]
+        shell: bash -l {0}
+        run: |
+          pip install --upgrade "jax[cuda12_local]" -f https://storage.googleapis.com/jax-releases/jax_cuda_releases.html
       - name: Check nvidia drivers
         shell: bash -l {0}
         run: |
