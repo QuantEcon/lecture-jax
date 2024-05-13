@@ -19,7 +19,6 @@ jobs:
       - name: Install JAX[CUDA] and Numpyro[CUDA]
         shell: bash -l {0}
         run: |
-          pip install numpyro[cuda] -f https://storage.googleapis.com/jax-releases/jax_cuda_releases.html
           pip install --upgrade "jax[cuda12_local]" -f https://storage.googleapis.com/jax-releases/jax_cuda_releases.html
       - name: Check nvidia drivers
         shell: bash -l {0}
