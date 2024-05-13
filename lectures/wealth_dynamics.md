@@ -349,7 +349,7 @@ z_sequence = jnp.array(z_sequence)
 print("Generating cross-section using JAX")
 key = jax.random.PRNGKey(1234)
 start_time = time()
-ψ_star = update_cross_section_jax(model, ψ_0, z_sequence, key)
+ψ_star = update_cross_section_jax(model, ψ_0, z_sequence, key).block_until_ready()
 jax_time = time() - start_time
 print(f"Generated cross-section in {jax_time} seconds.\n")
 ```
@@ -358,7 +358,7 @@ print(f"Generated cross-section in {jax_time} seconds.\n")
 print("Repeating without compile time.")
 key = jax.random.PRNGKey(1234)
 start_time = time()
-ψ_star = update_cross_section_jax(model, ψ_0, z_sequence, key)
+ψ_star = update_cross_section_jax(model, ψ_0, z_sequence, key).block_until_ready()
 jax_time = time() - start_time
 print(f"Generated cross-section in {jax_time} seconds")
 ```
@@ -418,7 +418,7 @@ key = jax.random.PRNGKey(1234)
 start_time = time()
 ψ_star = update_cross_section_jax_compiled(
         model, ψ_0, num_households, z_sequence, key
-)
+).block_until_ready()
 jax_fori_time = time() - start_time
 print(f"Generated cross-section in {jax_fori_time} seconds.\n")
 ```
@@ -429,7 +429,7 @@ key = jax.random.PRNGKey(1234)
 start_time = time()
 ψ_star = update_cross_section_jax_compiled(
         model, ψ_0, num_households, z_sequence, key
-)
+).block_until_ready()
 jax_fori_time = time() - start_time
 print(f"Generated cross-section in {jax_fori_time} seconds")
 ```
