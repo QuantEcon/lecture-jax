@@ -462,8 +462,13 @@ w_grid, y_grid, Q = arrays
 
 ```{code-cell} ipython3
 print("Starting HPI.")
+start_time = time.time()
 σ_star_hpi = howard_policy_iteration(model)
+elapsed0 = time.time() - start_time
+print(f"HPI completed in {elapsed0} seconds.")
 ```
+
+We run it again to get rid of compilation time.
 
 ```{code-cell} ipython3
 start_time = time.time()
@@ -489,8 +494,15 @@ plt.show()
 
 ```{code-cell} ipython3
 print("Starting VFI.")
+start_time = time.time()
 σ_star_vfi = value_function_iteration(model)
+elapsed0 = time.time() - start_time
+print(f"VFI completed in {elapsed0} seconds.")
+```
 
+We run it again to eliminate compilation time.
+
+```{code-cell} ipython3
 start_time = time.time()
 σ_star_vfi = value_function_iteration(model)
 elapsed = time.time() - start_time
@@ -514,8 +526,15 @@ plt.show()
 
 ```{code-cell} ipython3
 print("Starting OPI.")
+start_time = time.time()
 σ_star_opi = optimistic_policy_iteration(model, m=100)
+elapsed0 = time.time() - start_time
+print(f"OPI completed in {elapsed0} seconds.")
+```
 
+Let's run it again to get rid of compilation time.
+
+```{code-cell} ipython3
 start_time = time.time()
 σ_star_opi = optimistic_policy_iteration(model, m=100)
 elapsed = time.time() - start_time
@@ -547,8 +566,7 @@ def run_algorithm(algorithm, model, **kwargs):
     
     start_time = time.time()
     result = algorithm(model, **kwargs)
-    end_time = time.time()
-    elapsed_time = end_time - start_time
+    elapsed_time = time.time() - start_time
     print(f"{algorithm.__name__} completed in {elapsed_time:.2f} seconds.")
     return result, elapsed_time
 ```
@@ -556,7 +574,9 @@ def run_algorithm(algorithm, model, **kwargs):
 ```{code-cell} ipython3
 σ_pi, pi_time = run_algorithm(howard_policy_iteration, model)
 σ_vfi, vfi_time = run_algorithm(value_function_iteration, model, tol=1e-5)
+```
 
+```{code-cell} ipython3
 m_vals = range(5, 600, 40)
 opi_times = []
 for m in m_vals:

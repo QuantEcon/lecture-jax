@@ -511,8 +511,13 @@ params, arrays = create_lucas_tree_model()
 grid, draws, h = arrays
 
 # Solve once to compile
+in_time = time.time()
 price_vals = solve_model(params, arrays)
+numba_elapsed0 = time.time() - in_time
+print("Numba compilation plus execution time = ", numba_elapsed0)
+```
 
+```{code-cell} ipython3
 # Now time execution without compile time
 in_time = time.time()
 price_vals = solve_model(params, arrays)
@@ -654,8 +659,13 @@ grid, draws, h = arrays
 γ, β, α, σ = params
 
 # Solve once to compile
+in_time = time.time()
 price_vals = solve_model(params, arrays)
+jax_elapsed0 = time.time() - in_time
+print("JAX compilation plus execution time = ", jax_elapsed0)
+```
 
+```{code-cell} ipython3
 # Now time execution without compile time
 in_time = time.time()
 price_vals = solve_model(params, arrays)

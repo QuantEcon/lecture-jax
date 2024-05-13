@@ -421,7 +421,7 @@ y_grid, z_grid, Q = arrays
 :tags: [hide-output]
 
 print("Starting HPI.")
-σ_star_hpi = howard_policy_iteration(model)
+%time σ_star_hpi = howard_policy_iteration(model)
 ```
 
 ```{code-cell} ipython3
@@ -447,7 +447,8 @@ plt.show()
 :tags: [hide-output]
 
 print("Starting VFI.")
-σ_star_vfi = value_function_iteration(model)
+%time σ_star_vfi = value_function_iteration(model)
+
 start = time.time()
 σ_star_vfi = value_function_iteration(model)
 elapsed = time.time() - start
@@ -470,7 +471,8 @@ plt.show()
 :tags: [hide-output]
 
 print("Starting OPI.")
-σ_star_opi = optimistic_policy_iteration(model, m=100)
+%time σ_star_opi = optimistic_policy_iteration(model, m=100)
+
 start = time.time()
 σ_star_opi = optimistic_policy_iteration(model, m=100)
 elapsed = time.time() - start
@@ -500,7 +502,7 @@ m_vals = range(5, 600, 40)
 
 ```{code-cell} ipython3
 print("Running Howard policy iteration.")
-σ_pi = howard_policy_iteration(model)
+%time σ_pi = howard_policy_iteration(model)
 ```
 
 ```{code-cell} ipython3
@@ -512,7 +514,8 @@ print(f"PI completed in {pi_time} seconds.")
 
 ```{code-cell} ipython3
 print("Running value function iteration.")
-σ_vfi = value_function_iteration(model, tol=1e-5)
+%time σ_vfi = value_function_iteration(model, tol=1e-5)
+
 start = time.time()
 σ_vfi = value_function_iteration(model, tol=1e-5)
 vfi_time = time.time() - start
@@ -545,4 +548,8 @@ ax.legend(fontsize=12, frameon=False)
 ax.set_xlabel("$m$", fontsize=12)
 ax.set_ylabel("time(s)", fontsize=12)
 plt.show()
+```
+
+```{code-cell} ipython3
+
 ```

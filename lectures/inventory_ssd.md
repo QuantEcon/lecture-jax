@@ -342,6 +342,7 @@ v_init = jnp.zeros((K + 1, n_z), dtype=float)
 in_time0 = time.time()
 v_star, σ_star = solve_inventory_model(v_init, model)
 jax_time0 = time.time() - in_time0
+print("Jax compilcation plus execution time = ", jax_time0)
 ```
 
 Let's run again to get rid of the compilation time.
@@ -350,6 +351,7 @@ Let's run again to get rid of the compilation time.
 in_time = time.time()
 v_star, σ_star = solve_inventory_model(v_init, model)
 jax_time = time.time() - in_time
+print("Jax execution time = ", jax_time)
 ```
 
 ```{code-cell} ipython3
@@ -474,6 +476,7 @@ v_init = np.zeros((K + 1, n_z), dtype=float)
 in_time0 = time.time()
 v_star_numba, σ_star_numba = solve_inventory_model_numba(v_init, model)
 nb_time0 = time.time() - in_time0
+print("Numba compilcation plus execution time = ", nb_time0)
 ```
 
 Let's run again to eliminate the compilation time.
@@ -482,6 +485,7 @@ Let's run again to eliminate the compilation time.
 in_time = time.time()
 v_star_numba, σ_star_numba = solve_inventory_model_numba(v_init, model)
 nb_time = time.time() - in_time
+print("Numba execution time = ", nb_time)
 ```
 
 ```{code-cell} ipython3

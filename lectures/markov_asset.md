@@ -795,7 +795,10 @@ P, hc_grid, Q, hd_grid, R, z_grid, β, γ, bar_σ, μ_c, μ_d = sv_model
 Let's run it to compile.
 
 ```{code-cell} ipython3
+start = time.time()
 v = sv_pd_ratio(sv_model)
+np_time0 = time.time() - start
+print("Numpy compilation plus execution time = ", np_time0)
 ```
 
 Let's run it again to remove the compilation.
@@ -804,6 +807,7 @@ Let's run it again to remove the compilation.
 start = time.time()
 v = sv_pd_ratio(sv_model)
 np_time = time.time() - start
+print("Numpy execution time = ", np_time)
 ```
 
 Here are some plots of the solution $v$ along the three dimensions.
@@ -942,6 +946,7 @@ Let's see how long it takes to run with compile time included.
 start0 = time.time()
 v_jax = sv_pd_ratio_jax(sv_model_jax, shapes).block_until_ready()
 jnp_time_0 = time.time() - start0
+print("JAX compilation plus execution time = ", jnp_time_0)
 ```
 
 And now let's see without compile time.
@@ -950,6 +955,7 @@ And now let's see without compile time.
 start = time.time()
 v_jax = sv_pd_ratio_jax(sv_model_jax, shapes).block_until_ready()
 jnp_time = time.time() - start
+print("JAX execution time = ", jnp_time)
 ```
 
 Here's the ratio of times:
@@ -1027,7 +1033,8 @@ Let's time the solution with compile time included.
 ```{code-cell} ipython3
 start0 = time.time()
 v_jax_linop = sv_pd_ratio_linop(sv_model, shapes).block_until_ready()
-jnp_time_linop_0 = time.time() - start0
+jnp_linop_time_0 = time.time() - start0
+print("JAX compilation plus execution time = ", jnp_linop_time_0)
 ```
 
 And now let’s see without compile time.
@@ -1036,6 +1043,7 @@ And now let’s see without compile time.
 start = time.time()
 v_jax_linop = sv_pd_ratio_linop(sv_model, shapes).block_until_ready()
 jnp_linop_time = time.time() - start
+print("JAX execution time = ", jnp_linop_time)
 ```
 
 Let's verify the solution again:

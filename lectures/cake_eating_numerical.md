@@ -225,6 +225,7 @@ def compute_value_function(ce,
 in_time0 = time.time()
 v_jax = compute_value_function(ce)
 jax_time0 = time.time() - in_time0
+print("Jax compilcation plus execution time = ", jax_time0)
 ```
 
 We run the code again to eliminate the compilation time.
@@ -233,6 +234,7 @@ We run the code again to eliminate the compilation time.
 in_time = time.time()
 v_jax = compute_value_function(ce)
 jax_time = time.time() - in_time
+print("Jax execution time = ", jax_time)
 ```
 
 ```{code-cell} ipython3
@@ -433,6 +435,7 @@ cen = create_cake_eating_model_numba()
 in_time0 = time.time()
 v_np = compute_value_function_numba(cen)
 numba_time0 = time.time() - in_time0
+print("Numba compilcation plus execution time = ", numba_time0)
 ```
 
 Also we run the code again to get rid of the compilation time.
@@ -441,6 +444,7 @@ Also we run the code again to get rid of the compilation time.
 in_time = time.time()
 v_np = compute_value_function_numba(cen)
 numba_time = time.time() - in_time
+print("Numba execution time = ", numba_time)
 ```
 
 ```{code-cell} ipython3
@@ -452,8 +456,4 @@ ratio = numba_time/jax_time
 print(f"JAX implementation is {ratio} times faster than NumPy.")
 print(f"JAX time: {jax_time}")
 print(f"Numba time: {numba_time}")
-```
-
-```{code-cell} ipython3
-
 ```

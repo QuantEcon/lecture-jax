@@ -769,18 +769,34 @@ b_grid, y_t_nodes, y_n_nodes, Q = arrays
 print("Computing decentralized solution.")
 in_time = time.time()
 H_eq = compute_equilibrium(parameters, sizes, arrays)
-out_time = time.time()
-diff = out_time - in_time
-print(f"Computed decentralized equilibrium in {diff} seconds")
+diff_d0 = time.time() - in_time
+print(f"Computed decentralized equilibrium in {diff_d0} seconds")
+```
+
+We run it again to get rid of compilation time.
+
+```{code-cell} ipython3
+in_time = time.time()
+H_eq = compute_equilibrium(parameters, sizes, arrays)
+diff_d = time.time() - in_time
+print(f"Computed decentralized equilibrium in {diff_d} seconds")
 ```
 
 ```{code-cell} ipython3
 print("Computing planner's solution.")
 in_time = time.time()
 planner_v, H_plan, vfi_num_iter = compute_planner_solution(model)
-out_time = time.time()
-diff = out_time - in_time
-print(f"Computed decentralized equilibrium in {diff} seconds")
+diff_p0 = time.time() - in_time
+print(f"Computed centralized equilibrium in {diff_p0} seconds")
+```
+
+We run it again to eliminate compilation time.
+
+```{code-cell} ipython3
+in_time = time.time()
+planner_v, H_plan, vfi_num_iter = compute_planner_solution(model)
+diff_p = time.time() - in_time
+print(f"Computed centralized equilibrium in {diff_p} seconds")
 ```
 
 ### Policy plots

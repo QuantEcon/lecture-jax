@@ -291,6 +291,15 @@ z_sequence = generate_aggregate_state_sequence(aggregate_params,
 print("Generating cross-section using Numba")
 start_time = time()
 ψ_star = update_cross_section(model, ψ_0, z_sequence)
+numba_time0 = time() - start_time
+print(f"Generated cross-section in {numba_time0} seconds.\n")
+```
+
+We run it again to eliminate the compilation time.
+
+```{code-cell} ipython3
+start_time = time()
+ψ_star = update_cross_section(model, ψ_0, z_sequence)
 numba_time = time() - start_time
 print(f"Generated cross-section in {numba_time} seconds.\n")
 ```
@@ -350,8 +359,8 @@ print("Generating cross-section using JAX")
 key = jax.random.PRNGKey(1234)
 start_time = time()
 ψ_star = update_cross_section_jax(model, ψ_0, z_sequence, key).block_until_ready()
-jax_time = time() - start_time
-print(f"Generated cross-section in {jax_time} seconds.\n")
+jax_time0 = time() - start_time
+print(f"Generated cross-section in {jax_time0} seconds.\n")
 ```
 
 ```{code-cell} ipython3
@@ -419,8 +428,8 @@ start_time = time()
 ψ_star = update_cross_section_jax_compiled(
         model, ψ_0, num_households, z_sequence, key
 ).block_until_ready()
-jax_fori_time = time() - start_time
-print(f"Generated cross-section in {jax_fori_time} seconds.\n")
+jax_fori_time0 = time() - start_time
+print(f"Generated cross-section in {jax_fori_time0} seconds.\n")
 ```
 
 ```{code-cell} ipython3
@@ -805,5 +814,6 @@ ax.plot(x_labor, y_labor, label=r'higher $\sigma_y$')
 ax.legend()
 plt.show()
 ```
+
 ```{solution-end}
 ```

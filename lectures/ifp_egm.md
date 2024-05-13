@@ -557,6 +557,7 @@ start_time = time.time()
 a_star_egm_jax, σ_star_egm_jax = successive_approx_jax(model,
                                          print_skip=1000)
 jax_time = time.time() - start_time
+print("Jax execution time = ", jax_time)
 ```
 
 ```{code-cell} ipython3
@@ -564,6 +565,7 @@ start_time = time.time()
 a_star_egm_nb, σ_star_egm_nb = successive_approx_numba(model,
                                          print_skip=1000)
 numba_time = time.time() - start_time
+print("Jax execution time = ", numba_time)
 ```
 
 ```{code-cell} ipython3
