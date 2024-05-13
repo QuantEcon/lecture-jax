@@ -424,7 +424,7 @@ numba_time = time.time() - in_time
 
 ```{code-cell} ipython3
 ratio = numba_time/jax_time
-print(f"JAX implementation is {ratio} times faster than NumPy.")
+print(f"JAX implementation is {ratio} times faster than Numba.")
 print(f"JAX time: {jax_time}")
 print(f"Numba time: {numba_time}")
 ```
