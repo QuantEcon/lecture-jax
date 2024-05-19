@@ -631,11 +631,13 @@ from a cold start.
 ```{code-cell} ipython3
 p = 2.0
 v_init = jnp.zeros_like(grids.φ_grid)            # Initial condition 
-%time v_bar = vfi(p, v_init, parameters, grids) 
+%time v_bar = vfi(p, v_init, parameters, grids).block_until_ready()
 ```
 
+Let's run the code again to eliminate the compilation time.
+
 ```{code-cell} ipython3
-%time v_bar = vfi(p, v_init, parameters, grids)  
+%time v_bar = vfi(p, v_init, parameters, grids).block_until_ready()
 ```
 
 Let's have a look at the net entry value as a function of price
@@ -670,6 +672,14 @@ From the figure it looks like $p^*$ will be close to 1.5.
 
 
 Now let's try computing the equilibrium
+
+```{code-cell} ipython3
+%%time
+p_star, v_bar, φ_star, φ_sample, s, m_star = \
+        compute_equilibrium_prices_and_quantities(model)
+```
+
+Let's run the code again to get rid of the compilation time.
 
 ```{code-cell} ipython3
 %%time

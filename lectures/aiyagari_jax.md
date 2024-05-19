@@ -51,11 +51,11 @@ A less sophisticated version of this lecture (without JAX) can be found
 We use the following imports
 
 ```{code-cell} ipython3
-import time
 import matplotlib.pyplot as plt
 import numpy as np
 import jax
 import jax.numpy as jnp
+from time import time
 from collections import namedtuple
 ```
 
@@ -416,16 +416,14 @@ household = create_household()
 
 ```{code-cell} ipython3
 %%time
-
-σ_star = policy_iteration(household, verbose=True)
+σ_star = policy_iteration(household, verbose=True).block_until_ready()
 ```
 
 We run it again to get rid of the compilation time.
 
 ```{code-cell} ipython3
 %%time
-
-σ_star = policy_iteration(household, verbose=True)
+σ_star = policy_iteration(household, verbose=True).block_until_ready()
 ```
 
 The next plot shows asset accumulation policies at different values of the exogenous state.
@@ -615,7 +613,6 @@ def excess_demand(K, firm, household):
 
 ```{code-cell} ipython3
 %%time
-
 num_points = 50
 k_vals = np.linspace(4, 12, num_points)
 out = [excess_demand(k, firm, household) for k in k_vals]
@@ -662,16 +659,15 @@ Now we call the bisection function on excess demand.
 ```{code-cell} ipython3
 def compute_equilibrium(firm, household):
     print("\nComputing equilibrium capital stock")
-    start = time.time()
+    start = time()
     solution, count = bisect(excess_demand, 6.0, 10.0, firm, household)
-    elapsed = time.time() - start
+    elapsed = time() - start
     print(f"Computed equilibrium in {count} iterations and {elapsed} seconds")
     return solution
 ```
 
 ```{code-cell} ipython3
 %%time
-
 household = create_household()
 firm = create_firm()
 compute_equilibrium(firm, household)
@@ -776,7 +772,6 @@ firm = create_firm()
 num_points = 50
 r_vals = np.linspace(0.005, 0.04, num_points)
 
-
 # Compute supply of capital
 k_vals = np.empty(num_points)
 for i, r in enumerate(r_vals):
@@ -801,7 +796,6 @@ Compute the equilibrium
 
 ```{code-cell} ipython3
 %%time
-
 household = create_household()
 firm = create_firm()
 compute_equilibrium(firm, household)

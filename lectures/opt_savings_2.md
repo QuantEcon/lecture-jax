@@ -65,7 +65,7 @@ import quantecon as qe
 import jax
 import jax.numpy as jnp
 import matplotlib.pyplot as plt
-import time
+from time import time
 ```
 
 Let's check the GPU we are running.
@@ -462,18 +462,18 @@ w_grid, y_grid, Q = arrays
 
 ```{code-cell} ipython3
 print("Starting HPI.")
-start_time = time.time()
-σ_star_hpi = howard_policy_iteration(model)
-elapsed0 = time.time() - start_time
+start_time = time()
+σ_star_hpi = howard_policy_iteration(model).block_until_ready()
+elapsed0 = time() - start_time
 print(f"HPI completed in {elapsed0} seconds.")
 ```
 
 We run it again to get rid of compilation time.
 
 ```{code-cell} ipython3
-start_time = time.time()
-σ_star_hpi = howard_policy_iteration(model)
-elapsed = time.time() - start_time
+start_time = time()
+σ_star_hpi = howard_policy_iteration(model).block_until_ready()
+elapsed = time() - start_time
 print(f"HPI completed in {elapsed} seconds.")
 ```
 
@@ -494,18 +494,18 @@ plt.show()
 
 ```{code-cell} ipython3
 print("Starting VFI.")
-start_time = time.time()
-σ_star_vfi = value_function_iteration(model)
-elapsed0 = time.time() - start_time
+start_time = time()
+σ_star_vfi = value_function_iteration(model).block_until_ready()
+elapsed0 = time() - start_time
 print(f"VFI completed in {elapsed0} seconds.")
 ```
 
 We run it again to eliminate compilation time.
 
 ```{code-cell} ipython3
-start_time = time.time()
-σ_star_vfi = value_function_iteration(model)
-elapsed = time.time() - start_time
+start_time = time()
+σ_star_vfi = value_function_iteration(model).block_until_ready()
+elapsed = time() - start_time
 print(f"VFI completed in {elapsed} seconds.")
 ```
 
@@ -526,18 +526,18 @@ plt.show()
 
 ```{code-cell} ipython3
 print("Starting OPI.")
-start_time = time.time()
-σ_star_opi = optimistic_policy_iteration(model, m=100)
-elapsed0 = time.time() - start_time
+start_time = time()
+σ_star_opi = optimistic_policy_iteration(model, m=100).block_until_ready()
+elapsed0 = time() - start_time
 print(f"OPI completed in {elapsed0} seconds.")
 ```
 
 Let's run it again to get rid of compilation time.
 
 ```{code-cell} ipython3
-start_time = time.time()
-σ_star_opi = optimistic_policy_iteration(model, m=100)
-elapsed = time.time() - start_time
+start_time = time()
+σ_star_opi = optimistic_policy_iteration(model, m=100).block_until_ready()
+elapsed = time() - start_time
 print(f"OPI completed in {elapsed} seconds.")
 ```
 
@@ -563,10 +563,11 @@ Now, let's create a plot to visualize the time differences among these algorithm
 ```{code-cell} ipython3
 def run_algorithm(algorithm, model, **kwargs):
     result = algorithm(model, **kwargs)
-    
-    start_time = time.time()
-    result = algorithm(model, **kwargs)
-    elapsed_time = time.time() - start_time
+
+    # Now time it without compilation
+    start_time = time()
+    result = algorithm(model, **kwargs).block_until_ready()
+    elapsed_time = time() - start_time
     print(f"{algorithm.__name__} completed in {elapsed_time:.2f} seconds.")
     return result, elapsed_time
 ```

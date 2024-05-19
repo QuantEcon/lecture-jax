@@ -268,15 +268,6 @@ solution = root(lambda p: e(p, A, b, c),
                 tol=1e-5)
 ```
 
-```{code-cell} ipython3
-%%time
-solution = root(lambda p: e(p, A, b, c),
-                init_p,
-                jac=lambda p: jax.jacobian(e)(p, A, b, c),
-                method='hybr',
-                tol=1e-5)
-```
-
 The result is also slightly less accurate:
 
 ```{code-cell} ipython3
@@ -408,6 +399,7 @@ init = jnp.repeat(1.0, 3)
 ```
 
 ```{code-cell} ipython3
+# Now we time it without compilation
 %time k = newton(lambda k: multivariate_solow(k, A=A, s=s, α=α, δ=δ) - k, \
                  init).block_until_ready()
 ```
@@ -426,6 +418,7 @@ init = init.astype('float64')
 ```
 
 ```{code-cell} ipython3
+# Now we time it without compilation
 %time k = newton(lambda k: multivariate_solow(k, A=A, s=s, α=α, δ=δ) - k,\
                  init, tol=1e-7).block_until_ready()
 ```

@@ -54,12 +54,12 @@ Below we use the following imports
 ```{code-cell} ipython3
 import scipy
 import quantecon as qe
-import time
 import matplotlib.pyplot as plt
 import numpy as np
 import jax
 import jax.numpy as jnp
 from collections import namedtuple
+from time import time
 ```
 
 We will use 64 bit floats with JAX in order to increase precision.
@@ -795,18 +795,18 @@ P, hc_grid, Q, hd_grid, R, z_grid, β, γ, bar_σ, μ_c, μ_d = sv_model
 Let's run it to compile.
 
 ```{code-cell} ipython3
-start = time.time()
+start = time()
 v = sv_pd_ratio(sv_model)
-np_time0 = time.time() - start
+np_time0 = time() - start
 print("Numpy compilation plus execution time = ", np_time0)
 ```
 
 Let's run it again to remove the compilation.
 
 ```{code-cell} ipython3
-start = time.time()
+start = time()
 v = sv_pd_ratio(sv_model)
-np_time = time.time() - start
+np_time = time() - start
 print("Numpy execution time = ", np_time)
 ```
 
@@ -943,18 +943,18 @@ shapes = len(hc_grid), len(hd_grid), len(z_grid)
 Let's see how long it takes to run with compile time included.
 
 ```{code-cell} ipython3
-start0 = time.time()
+start0 = time()
 v_jax = sv_pd_ratio_jax(sv_model_jax, shapes).block_until_ready()
-jnp_time_0 = time.time() - start0
+jnp_time_0 = time() - start0
 print("JAX compilation plus execution time = ", jnp_time_0)
 ```
 
 And now let's see without compile time.
 
 ```{code-cell} ipython3
-start = time.time()
+start = time()
 v_jax = sv_pd_ratio_jax(sv_model_jax, shapes).block_until_ready()
-jnp_time = time.time() - start
+jnp_time = time() - start
 print("JAX execution time = ", jnp_time)
 ```
 
@@ -1031,18 +1031,18 @@ sv_pd_ratio_linop = jax.jit(sv_pd_ratio_linop, static_argnums=(1,))
 Let's time the solution with compile time included.
 
 ```{code-cell} ipython3
-start0 = time.time()
+start0 = time()
 v_jax_linop = sv_pd_ratio_linop(sv_model, shapes).block_until_ready()
-jnp_linop_time_0 = time.time() - start0
+jnp_linop_time_0 = time() - start0
 print("JAX compilation plus execution time = ", jnp_linop_time_0)
 ```
 
 And now let’s see without compile time.
 
 ```{code-cell} ipython3
-start = time.time()
+start = time()
 v_jax_linop = sv_pd_ratio_linop(sv_model, shapes).block_until_ready()
-jnp_linop_time = time.time() - start
+jnp_linop_time = time() - start
 print("JAX execution time = ", jnp_linop_time)
 ```
 
@@ -1068,8 +1068,8 @@ sv_model_jax = create_sv_model_jax(sv_model)
 P, hc_grid, Q, hd_grid, R, z_grid, β, γ, bar_σ, μ_c, μ_d = sv_model_jax
 shapes = len(hc_grid), len(hd_grid), len(z_grid)
 
-%time _ = sv_pd_ratio_linop(sv_model, shapes).block_until_ready()
-%time _ = sv_pd_ratio_linop(sv_model, shapes).block_until_ready()
+%time _ = sv_pd_ratio_linop(sv_model_jax, shapes).block_until_ready()
+%time _ = sv_pd_ratio_linop(sv_model_jax, shapes).block_until_ready()
 ```
 
 The solution is computed relatively quickly and without memory issues.

@@ -534,6 +534,7 @@ key = jax.random.PRNGKey(1234)
 ```
 
 ```{code-cell} ipython3
+# Now time it without compilation
 %time x, y = lorenz_curve_jax(ψ_star, num_households)
 ```
 
@@ -574,7 +575,11 @@ gini_jax = jax.jit(_gini_jax, static_argnums=(1,))
 ```
 
 ```{code-cell} ipython3
+# Now time it without compilation
 %time gini = gini_jax(ψ_star, num_households).block_until_ready()
+```
+
+```{code-cell} ipython3
 gini
 ```
 
@@ -609,11 +614,14 @@ def gini_jax_vmap(w):
 
 ```{code-cell} ipython3
 %time gini = gini_jax_vmap(ψ_star).block_until_ready()
-gini
 ```
 
 ```{code-cell} ipython3
+# Now time it without compilation
 %time gini = gini_jax_vmap(ψ_star).block_until_ready()
+```
+
+```{code-cell} ipython3
 gini
 ```
 

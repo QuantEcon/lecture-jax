@@ -179,7 +179,6 @@ Let's set up and solve the model.
 model = create_js_model()
 n, w_vals, P, β, c = model
 
-
 %time v_star, σ_star = vfi(model)
 ```
 
@@ -311,7 +310,6 @@ def vfi(model, max_iter=10_000, tol=1e-4):
 model_rs = create_risk_sensitive_js_model()
 
 n, w_vals, P, β, c, θ = model_rs
-
 
 %time v_star_rs, σ_star_rs = vfi(model_rs)
 ```

@@ -31,9 +31,9 @@ import quantecon as qe
 import numpy as np
 import jax
 import jax.numpy as jnp
-from collections import namedtuple
 import matplotlib.pyplot as plt
-import time
+from collections import namedtuple
+from time import time
 ```
 
 Let's check the GPU we are running
@@ -217,18 +217,18 @@ w_grid, y_grid, Q = arrays
 
 ```{code-cell} ipython3
 print("Starting VFI.")
-start_time = time.time()
+start_time = time()
 v_star, σ_star = value_function_iteration(model)
-numpy_elapsed0 = time.time() - start_time
+numpy_elapsed0 = time() - start_time
 print(f"VFI completed in {numpy_elapsed0} seconds.")
 ```
 
 Let's run it again to eliminate compilation time.
 
 ```{code-cell} ipython3
-start_time = time.time()
+start_time = time()
 v_star, σ_star = value_function_iteration(model)
-numpy_elapsed = time.time() - start_time
+numpy_elapsed = time() - start_time
 print(f"VFI completed in {numpy_elapsed} seconds.")
 ```
 
@@ -416,18 +416,18 @@ Let's see how long it takes to solve this model.
 
 ```{code-cell} ipython3
 print("Starting VFI using vectorization.")
-start_time = time.time()
+start_time = time()
 v_star_jax, σ_star_jax = value_function_iteration(model)
-jax_elapsed0 = time.time() - start_time
+jax_elapsed0 = time() - start_time
 print(f"VFI completed in {jax_elapsed0} seconds.")
 ```
 
 Let's run it again to eliminate compilation time.
 
 ```{code-cell} ipython3
-start_time = time.time()
+start_time = time()
 v_star_jax, σ_star_jax = value_function_iteration(model)
-jax_elapsed = time.time() - start_time
+jax_elapsed = time() - start_time
 print(f"VFI completed in {jax_elapsed} seconds.")
 ```
 
@@ -529,18 +529,18 @@ Let's see how long it takes to solve the model using the `vmap` method.
 
 ```{code-cell} ipython3
 print("Starting VFI using vmap.")
-start_time = time.time()
+start_time = time()
 v_star_vmap, σ_star_vmap = value_iteration_vmap(model)
-jax_vmap_elapsed0 = time.time() - start_time
+jax_vmap_elapsed0 = time() - start_time
 print(f"VFI completed in {jax_vmap_elapsed0} seconds.")
 ```
 
 Let's run it again to get rid of compilation time.
 
 ```{code-cell} ipython3
-start_time = time.time()
+start_time = time()
 v_star_vmap, σ_star_vmap = value_iteration_vmap(model)
-jax_vmap_elapsed = time.time() - start_time
+jax_vmap_elapsed = time() - start_time
 print(f"VFI completed in {jax_vmap_elapsed} seconds.")
 ```
 

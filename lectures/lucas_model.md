@@ -63,11 +63,11 @@ Let's start with some imports:
 ```{code-cell} ipython3
 import jax.numpy as jnp
 import jax
-import time
 import numpy as np
 import numba
 from scipy.stats import lognorm
 import matplotlib.pyplot as plt
+from time import time
 ```
 
 ## The Lucas Model
@@ -511,17 +511,17 @@ params, arrays = create_lucas_tree_model()
 grid, draws, h = arrays
 
 # Solve once to compile
-in_time = time.time()
+in_time = time()
 price_vals = solve_model(params, arrays)
-numba_elapsed0 = time.time() - in_time
+numba_elapsed0 = time() - in_time
 print("Numba compilation plus execution time = ", numba_elapsed0)
 ```
 
 ```{code-cell} ipython3
 # Now time execution without compile time
-in_time = time.time()
+in_time = time()
 price_vals = solve_model(params, arrays)
-numba_elapsed = time.time() - in_time
+numba_elapsed = time() - in_time
 print("Numba execution time = ", numba_elapsed)
 ```
 
@@ -659,17 +659,17 @@ grid, draws, h = arrays
 γ, β, α, σ = params
 
 # Solve once to compile
-in_time = time.time()
-price_vals = solve_model(params, arrays)
-jax_elapsed0 = time.time() - in_time
+in_time = time()
+price_vals = solve_model(params, arrays).block_until_ready()
+jax_elapsed0 = time() - in_time
 print("JAX compilation plus execution time = ", jax_elapsed0)
 ```
 
 ```{code-cell} ipython3
 # Now time execution without compile time
-in_time = time.time()
-price_vals = solve_model(params, arrays)
-jax_elapsed = time.time() - in_time
+in_time = time()
+price_vals = solve_model(params, arrays).block_until_ready()
+jax_elapsed = time() - in_time
 print("JAX execution time = ", jax_elapsed)
 print("Speedup factor = ", numba_elapsed / jax_elapsed)
 ```

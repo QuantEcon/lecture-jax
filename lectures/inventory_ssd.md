@@ -173,9 +173,9 @@ import jax.numpy as jnp
 import numpy as np
 import matplotlib.pyplot as plt
 from collections import namedtuple
-import time
 import numba
 from numba import prange
+from time import time
 ```
 
 Let's check the GPU we are running
@@ -339,18 +339,18 @@ v_init = jnp.zeros((K + 1, n_z), dtype=float)
 ```
 
 ```{code-cell} ipython3
-in_time0 = time.time()
+in_time0 = time()
 v_star, σ_star = solve_inventory_model(v_init, model)
-jax_time0 = time.time() - in_time0
-print("Jax compilcation plus execution time = ", jax_time0)
+jax_time0 = time() - in_time0
+print("Jax compilation plus execution time = ", jax_time0)
 ```
 
 Let's run again to get rid of the compilation time.
 
 ```{code-cell} ipython3
-in_time = time.time()
+in_time = time()
 v_star, σ_star = solve_inventory_model(v_init, model)
-jax_time = time.time() - in_time
+jax_time = time() - in_time
 print("Jax execution time = ", jax_time)
 ```
 
@@ -473,18 +473,18 @@ v_init = np.zeros((K + 1, n_z), dtype=float)
 ```
 
 ```{code-cell} ipython3
-in_time0 = time.time()
+in_time0 = time()
 v_star_numba, σ_star_numba = solve_inventory_model_numba(v_init, model)
-nb_time0 = time.time() - in_time0
-print("Numba compilcation plus execution time = ", nb_time0)
+nb_time0 = time() - in_time0
+print("Numba compilation plus execution time = ", nb_time0)
 ```
 
 Let's run again to eliminate the compilation time.
 
 ```{code-cell} ipython3
-in_time = time.time()
+in_time = time()
 v_star_numba, σ_star_numba = solve_inventory_model_numba(v_init, model)
-nb_time = time.time() - in_time
+nb_time = time() - in_time
 print("Numba execution time = ", nb_time)
 ```
 

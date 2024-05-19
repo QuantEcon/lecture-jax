@@ -35,7 +35,7 @@ import jax
 import jax.numpy as jnp
 import matplotlib.pyplot as plt
 from collections import namedtuple
-import time
+from time import time
 ```
 
 Let's check the GPU we are running
@@ -222,18 +222,18 @@ def compute_value_function(ce,
 ```
 
 ```{code-cell} ipython3
-in_time0 = time.time()
+in_time0 = time()
 v_jax = compute_value_function(ce)
-jax_time0 = time.time() - in_time0
-print("Jax compilcation plus execution time = ", jax_time0)
+jax_time0 = time() - in_time0
+print("Jax compilation plus execution time = ", jax_time0)
 ```
 
 We run the code again to eliminate the compilation time.
 
 ```{code-cell} ipython3
-in_time = time.time()
+in_time = time()
 v_jax = compute_value_function(ce)
-jax_time = time.time() - in_time
+jax_time = time() - in_time
 print("Jax execution time = ", jax_time)
 ```
 
@@ -432,18 +432,18 @@ cen = create_cake_eating_model_numba()
 ```
 
 ```{code-cell} ipython3
-in_time0 = time.time()
+in_time0 = time()
 v_np = compute_value_function_numba(cen)
-numba_time0 = time.time() - in_time0
-print("Numba compilcation plus execution time = ", numba_time0)
+numba_time0 = time() - in_time0
+print("Numba compilation plus execution time = ", numba_time0)
 ```
 
 Also we run the code again to get rid of the compilation time.
 
 ```{code-cell} ipython3
-in_time = time.time()
+in_time = time()
 v_np = compute_value_function_numba(cen)
-numba_time = time.time() - in_time
+numba_time = time() - in_time
 print("Numba execution time = ", numba_time)
 ```
 
@@ -453,7 +453,7 @@ numba_time / numba_time0
 
 ```{code-cell} ipython3
 ratio = numba_time/jax_time
-print(f"JAX implementation is {ratio} times faster than NumPy.")
+print(f"JAX implementation is {ratio} times faster than Numba.")
 print(f"JAX time: {jax_time}")
 print(f"Numba time: {numba_time}")
 ```

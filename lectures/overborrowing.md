@@ -29,7 +29,6 @@ In addition to what’s in Anaconda, this lecture will need the following librar
 We use the following imports.
 
 ```{code-cell} ipython3
-import time
 import jax
 import numba
 import jax.numpy as jnp
@@ -39,6 +38,7 @@ import quantecon as qe
 import scipy as sp
 import matplotlib.pyplot as plt
 import seaborn
+from time import time
 ```
 
 ## Description of the model
@@ -767,36 +767,36 @@ b_grid, y_t_nodes, y_n_nodes, Q = arrays
 
 ```{code-cell} ipython3
 print("Computing decentralized solution.")
-in_time = time.time()
-H_eq = compute_equilibrium(parameters, sizes, arrays)
-diff_d0 = time.time() - in_time
+in_time = time()
+H_eq = compute_equilibrium(parameters, sizes, arrays).block_until_ready()
+diff_d0 = time() - in_time
 print(f"Computed decentralized equilibrium in {diff_d0} seconds")
 ```
 
 We run it again to get rid of compilation time.
 
 ```{code-cell} ipython3
-in_time = time.time()
-H_eq = compute_equilibrium(parameters, sizes, arrays)
-diff_d = time.time() - in_time
+in_time = time()
+H_eq = compute_equilibrium(parameters, sizes, arrays).block_until_ready()
+diff_d = time() - in_time
 print(f"Computed decentralized equilibrium in {diff_d} seconds")
 ```
 
 ```{code-cell} ipython3
 print("Computing planner's solution.")
-in_time = time.time()
-planner_v, H_plan, vfi_num_iter = compute_planner_solution(model)
-diff_p0 = time.time() - in_time
-print(f"Computed centralized equilibrium in {diff_p0} seconds")
+in_time = time()
+planner_v, H_plan, vfi_num_iter = compute_planner_solution(model).block_until_ready()
+diff_p0 = time() - in_time
+print(f"Computed planner's equilibrium in {diff_p0} seconds")
 ```
 
 We run it again to eliminate compilation time.
 
 ```{code-cell} ipython3
-in_time = time.time()
-planner_v, H_plan, vfi_num_iter = compute_planner_solution(model)
-diff_p = time.time() - in_time
-print(f"Computed centralized equilibrium in {diff_p} seconds")
+in_time = time()
+planner_v, H_plan, vfi_num_iter = compute_planner_solution(model).block_until_ready()
+diff_p = time() - in_time
+print(f"Computed planner's equilibrium in {diff_p} seconds")
 ```
 
 ### Policy plots

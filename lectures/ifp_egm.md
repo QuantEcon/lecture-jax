@@ -37,12 +37,12 @@ In addition to JAX and Anaconda, this lecture will need the following libraries:
 
 ```{code-cell} ipython3
 import quantecon as qe
-import time
 import matplotlib.pyplot as plt
 import numpy as np
 import jax
 import jax.numpy as jnp
 import numba
+from time import time
 ```
 
 Let's check the GPU we are running
@@ -553,19 +553,19 @@ plt.show()
 Now let's compare execution time of the two methods.
 
 ```{code-cell} ipython3
-start_time = time.time()
+start_time = time()
 a_star_egm_jax, σ_star_egm_jax = successive_approx_jax(model,
                                          print_skip=1000)
-jax_time = time.time() - start_time
+jax_time = time() - start_time
 print("Jax execution time = ", jax_time)
 ```
 
 ```{code-cell} ipython3
-start_time = time.time()
+start_time = time()
 a_star_egm_nb, σ_star_egm_nb = successive_approx_numba(model,
                                          print_skip=1000)
-numba_time = time.time() - start_time
-print("Jax execution time = ", numba_time)
+numba_time = time() - start_time
+print("Numba execution time = ", numba_time)
 ```
 
 ```{code-cell} ipython3

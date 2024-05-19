@@ -58,10 +58,10 @@ Let's begin with the following imports
 
 ```{code-cell} ipython3
 import quantecon as qe
-import time
 import jax
 import jax.numpy as jnp
 import matplotlib.pyplot as plt
+from time import time
 ```
 
 Let's check the GPU we are running
@@ -421,13 +421,14 @@ y_grid, z_grid, Q = arrays
 :tags: [hide-output]
 
 print("Starting HPI.")
-%time σ_star_hpi = howard_policy_iteration(model)
+%time σ_star_hpi = howard_policy_iteration(model).block_until_ready()
 ```
 
 ```{code-cell} ipython3
-start = time.time()
-σ_star_hpi = howard_policy_iteration(model)
-elapsed = time.time() - start
+# Now time it without compilation time
+start = time()
+σ_star_hpi = howard_policy_iteration(model).block_until_ready()
+elapsed = time() - start
 print(σ_star_hpi)
 print(f"HPI completed in {elapsed} seconds.")
 ```
@@ -447,11 +448,14 @@ plt.show()
 :tags: [hide-output]
 
 print("Starting VFI.")
-%time σ_star_vfi = value_function_iteration(model)
+%time σ_star_vfi = value_function_iteration(model).block_until_ready()
+```
 
-start = time.time()
-σ_star_vfi = value_function_iteration(model)
-elapsed = time.time() - start
+```{code-cell} ipython3
+# Now time it without compilation time
+start = time()
+σ_star_vfi = value_function_iteration(model).block_until_ready()
+elapsed = time() - start
 print(σ_star_vfi)
 print(f"VFI completed in {elapsed} seconds.")
 ```
@@ -471,11 +475,14 @@ plt.show()
 :tags: [hide-output]
 
 print("Starting OPI.")
-%time σ_star_opi = optimistic_policy_iteration(model, m=100)
+%time σ_star_opi = optimistic_policy_iteration(model, m=100).block_until_ready()
+```
 
-start = time.time()
-σ_star_opi = optimistic_policy_iteration(model, m=100)
-elapsed = time.time() - start
+```{code-cell} ipython3
+# Now time it without compilation time
+start = time()
+σ_star_opi = optimistic_policy_iteration(model, m=100).block_until_ready()
+elapsed = time() - start
 print(σ_star_opi)
 print(f"OPI completed in {elapsed} seconds.")
 ```
@@ -502,23 +509,27 @@ m_vals = range(5, 600, 40)
 
 ```{code-cell} ipython3
 print("Running Howard policy iteration.")
-%time σ_pi = howard_policy_iteration(model)
+%time σ_pi = howard_policy_iteration(model).block_until_ready()
 ```
 
 ```{code-cell} ipython3
-start = time.time()
-σ_pi = howard_policy_iteration(model)
-pi_time = time.time() - start
+# Now time it without compilation time
+start = time()
+σ_pi = howard_policy_iteration(model).block_until_ready()
+pi_time = time() - start
 print(f"PI completed in {pi_time} seconds.")
 ```
 
 ```{code-cell} ipython3
 print("Running value function iteration.")
-%time σ_vfi = value_function_iteration(model, tol=1e-5)
+%time σ_vfi = value_function_iteration(model, tol=1e-5).block_until_ready()
+```
 
-start = time.time()
-σ_vfi = value_function_iteration(model, tol=1e-5)
-vfi_time = time.time() - start
+```{code-cell} ipython3
+# Now time it without compilation time
+start = time()
+σ_vfi = value_function_iteration(model, tol=1e-5).block_until_ready()
+vfi_time = time() - start
 print(f"VFI completed in {vfi_time} seconds.")
 ```
 
@@ -528,11 +539,12 @@ print(f"VFI completed in {vfi_time} seconds.")
 opi_times = []
 for m in m_vals:
     print(f"Running optimistic policy iteration with m={m}.")
-    σ_opi = optimistic_policy_iteration(model, m=m, tol=1e-5)
-    
-    start = time.time()
-    σ_opi = optimistic_policy_iteration(model, m=m, tol=1e-5)
-    opi_time = time.time() - start
+    σ_opi = optimistic_policy_iteration(model, m=m, tol=1e-5).block_until_ready()
+
+    # Now time it without compilation time
+    start = time()
+    σ_opi = optimistic_policy_iteration(model, m=m, tol=1e-5).block_until_ready()
+    opi_time = time() - start
     print(f"OPI with m={m} completed in {opi_time} seconds.")
     opi_times.append(opi_time)
 ```
