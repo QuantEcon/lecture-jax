@@ -174,7 +174,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from collections import namedtuple
 import time
-from numba import njit, prange
+from numba import jit, prange
 ```
 
 Let's check the GPU we are running
@@ -395,11 +395,11 @@ plot_ts()
 Let's try the same operations in Numba in order to compare the speed.
 
 ```{code-cell} ipython3
-@njit
+@jit
 def demand_pdf_numba(p, d):
     return (1 - p)**d * p
 
-@njit
+@jit
 def B_numba(x, i_z, a, v, model):
     """
     The function B(x, z, a, v) = r(x, a) + β(z) Σ_x′ v(x′) P(x, a, x′).
@@ -415,7 +415,7 @@ def B_numba(x, i_z, a, v, model):
     return profit + z * cv
 
 
-@njit(parallel=True)
+@jit(parallel=True)
 def T_numba(v, model):
     """The Bellman operator."""
     c, κ, p, z_vals, Q = model
@@ -428,7 +428,7 @@ def T_numba(v, model):
     return new_v
 
 
-@njit(parallel=True)
+@jit(parallel=True)
 def get_greedy_numba(v, model):
     """Get a v-greedy policy.  Returns a zero-based array."""
     c, κ, p, z_vals, Q = model
