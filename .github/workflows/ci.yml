@@ -19,15 +19,11 @@ jobs:
           python-version: "3.11"
           environment-file: environment.yml
           activate-environment: quantecon   
-      - name: Install CUDA Toolkit
-        id: cuda-toolkit
-        uses: Jimver/cuda-toolkit@v0.2.15
-        with:
-          cuda: '12.4.1'
-      # - name: Install CUDA
-      #   shell: bash -l {0}
-      #   run: |
-      #     conda install cudatoolkit cuda-nvcc -c nvidia -c anaconda -y
+      - name: Install CUDA
+        shell: bash -l {0}
+        run: |
+          chmod +x setup_cuda.sh
+          ./setup_cuda.sh
       - name: Install JAX[CUDA] and Numpyro[CUDA]
         shell: bash -l {0}
         run: |
