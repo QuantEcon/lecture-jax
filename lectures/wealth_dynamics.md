@@ -289,19 +289,19 @@ num_households = 10_000_000
 z_sequence = generate_aggregate_state_sequence(aggregate_params,
                                                length=sim_length)
 print("Generating cross-section using Numba")
-start_time = time()
+start = time()
 ψ_star = update_cross_section(model, ψ_0, z_sequence)
-numba_time0 = time() - start_time
-print(f"Generated cross-section in {numba_time0} seconds.\n")
+numba_with_compile = time() - start
+print(f"Generated cross-section in {numba_with_compile} seconds.\n")
 ```
 
-We run it again to eliminate the compilation time.
+We run it again to eliminate compile time.
 
 ```{code-cell} ipython3
-start_time = time()
+start = time()
 ψ_star = update_cross_section(model, ψ_0, z_sequence)
-numba_time = time() - start_time
-print(f"Generated cross-section in {numba_time} seconds.\n")
+numba_without_compile = time() - start
+print(f"Generated cross-section in {numba_without_compile} seconds.\n")
 ```
 
 ### JAX implementation
@@ -357,19 +357,19 @@ z_sequence = jnp.array(z_sequence)
 ```{code-cell} ipython3
 print("Generating cross-section using JAX")
 key = jax.random.PRNGKey(1234)
-start_time = time()
+start = time()
 ψ_star = update_cross_section_jax(model, ψ_0, z_sequence, key).block_until_ready()
-jax_time0 = time() - start_time
-print(f"Generated cross-section in {jax_time0} seconds.\n")
+jax_with_compile = time() - start
+print(f"Generated cross-section in {jax_with_compile} seconds.\n")
 ```
 
 ```{code-cell} ipython3
 print("Repeating without compile time.")
 key = jax.random.PRNGKey(1234)
-start_time = time()
+start = time()
 ψ_star = update_cross_section_jax(model, ψ_0, z_sequence, key).block_until_ready()
-jax_time = time() - start_time
-print(f"Generated cross-section in {jax_time} seconds")
+jax_without_compile = time() - start
+print(f"Generated cross-section in {jax_without_compile} seconds")
 ```
 
 And let's see how long it takes if we compile the loop.
@@ -424,27 +424,27 @@ update_cross_section_jax_compiled = jax.jit(
 ```{code-cell} ipython3
 print("Generating cross-section using JAX with compiled loop")
 key = jax.random.PRNGKey(1234)
-start_time = time()
+start = time()
 ψ_star = update_cross_section_jax_compiled(
         model, ψ_0, num_households, z_sequence, key
 ).block_until_ready()
-jax_fori_time0 = time() - start_time
-print(f"Generated cross-section in {jax_fori_time0} seconds.\n")
+jax_fori_with_compile = time() - start
+print(f"Generated cross-section in {jax_fori_with_compile} seconds.\n")
 ```
 
 ```{code-cell} ipython3
 print("Repeating without compile time")
 key = jax.random.PRNGKey(1234)
-start_time = time()
+start = time()
 ψ_star = update_cross_section_jax_compiled(
         model, ψ_0, num_households, z_sequence, key
 ).block_until_ready()
-jax_fori_time = time() - start_time
-print(f"Generated cross-section in {jax_fori_time} seconds")
+jax_fori_without_compile = time() - start
+print(f"Generated cross-section in {jax_fori_without_compile} seconds")
 ```
 
 ```{code-cell} ipython3
-print(f"JAX is {numba_time / jax_fori_time:.4f} times faster.\n")
+print(f"JAX is {numba_without_compile/jax_fori_without_compile:.4f} times faster.\n")
 ```
 
 ### Pareto tails
@@ -534,7 +534,7 @@ key = jax.random.PRNGKey(1234)
 ```
 
 ```{code-cell} ipython3
-# Now time it without compilation
+# Now time it without compile time
 %time x, y = lorenz_curve_jax(ψ_star, num_households)
 ```
 
@@ -617,7 +617,7 @@ def gini_jax_vmap(w):
 ```
 
 ```{code-cell} ipython3
-# Now time it without compilation
+# Now time it without compile time
 %time gini = gini_jax_vmap(ψ_star).block_until_ready()
 ```
 

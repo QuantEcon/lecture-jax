@@ -182,7 +182,7 @@ n, w_vals, P, β, c = model
 %time v_star, σ_star = vfi(model)
 ```
 
-We run it again to eliminate the compilation time.
+We run it again to eliminate compile time.
 
 ```{code-cell} ipython3
 %time v_star, σ_star = vfi(model)

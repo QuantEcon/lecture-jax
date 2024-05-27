@@ -222,23 +222,19 @@ def compute_value_function(ce,
 ```
 
 ```{code-cell} ipython3
-in_time0 = time()
+start = time()
 v_jax = compute_value_function(ce)
-jax_time0 = time() - in_time0
-print("Jax compilation plus execution time = ", jax_time0)
+jax_time_with_compile = time() - start
+print("Jax compile plus execution time = ", jax_time_with_compile)
 ```
 
-We run the code again to eliminate the compilation time.
+We run the code again to eliminate the compile time.
 
 ```{code-cell} ipython3
-in_time = time()
+start = time()
 v_jax = compute_value_function(ce)
-jax_time = time() - in_time
-print("Jax execution time = ", jax_time)
-```
-
-```{code-cell} ipython3
-jax_time / jax_time0
+jax_time_without_compile = time() - start
+print("Jax execution time = ", jax_time_without_compile)
 ```
 
 ```{code-cell} ipython3
@@ -432,29 +428,24 @@ cen = create_cake_eating_model_numba()
 ```
 
 ```{code-cell} ipython3
-in_time0 = time()
+start = time()
 v_np = compute_value_function_numba(cen)
-numba_time0 = time() - in_time0
-print("Numba compilation plus execution time = ", numba_time0)
+numba_time_with_compile = time() - start
+print("Numba compile plus execution time = ", numba_time_with_compile)
 ```
 
-Also we run the code again to get rid of the compilation time.
+Also we run the code again to get rid of the compile time.
 
 ```{code-cell} ipython3
-in_time = time()
+start = time()
 v_np = compute_value_function_numba(cen)
-numba_time = time() - in_time
-print("Numba execution time = ", numba_time)
+numba_time_without_compile = time() - start
+print("Numba execution time = ", numba_time_without_compile)
 ```
 
 ```{code-cell} ipython3
-numba_time / numba_time0
-```
-
-```{code-cell} ipython3
-ratio = numba_time/jax_time
+ratio = numba_time_without_compile/jax_time_without_compile
 print(f"JAX implementation is {ratio} times faster than Numba.")
-print(f"JAX implementation is {ratio} times faster than Numba.")
-print(f"JAX time: {jax_time}")
-print(f"Numba time: {numba_time}")
+print(f"JAX time: {jax_time_without_compile}")
+print(f"Numba time: {numba_time_without_compile}")
 ```

@@ -511,18 +511,18 @@ params, arrays = create_lucas_tree_model()
 grid, draws, h = arrays
 
 # Solve once to compile
-in_time = time()
+start = time()
 price_vals = solve_model(params, arrays)
-numba_elapsed0 = time() - in_time
-print("Numba compilation plus execution time = ", numba_elapsed0)
+numba_with_compile_time = time() - start
+print("Numba compile plus execution time = ", numba_with_compile_time)
 ```
 
 ```{code-cell} ipython3
 # Now time execution without compile time
-in_time = time()
+start = time()
 price_vals = solve_model(params, arrays)
-numba_elapsed = time() - in_time
-print("Numba execution time = ", numba_elapsed)
+numba_without_compile_time = time() - start
+print("Numba execution time = ", numba_without_compile_time)
 ```
 
 ```{code-cell} ipython3
@@ -659,19 +659,19 @@ grid, draws, h = arrays
 γ, β, α, σ = params
 
 # Solve once to compile
-in_time = time()
+start = time()
 price_vals = solve_model(params, arrays).block_until_ready()
-jax_elapsed0 = time() - in_time
-print("JAX compilation plus execution time = ", jax_elapsed0)
+jax_with_compile_time = time() - start
+print("JAX compile plus execution time = ", jax_with_compile_time)
 ```
 
 ```{code-cell} ipython3
 # Now time execution without compile time
-in_time = time()
+start = time()
 price_vals = solve_model(params, arrays).block_until_ready()
-jax_elapsed = time() - in_time
-print("JAX execution time = ", jax_elapsed)
-print("Speedup factor = ", numba_elapsed / jax_elapsed)
+jax_without_compile_time = time() - start
+print("JAX execution time = ", jax_without_compile_time)
+print("Speedup factor = ", numba_without_compile_time/jax_without_compile_time)
 ```
 
 Let's check the solutions are similar

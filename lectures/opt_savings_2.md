@@ -462,19 +462,19 @@ w_grid, y_grid, Q = arrays
 
 ```{code-cell} ipython3
 print("Starting HPI.")
-start_time = time()
+start = time()
 σ_star_hpi = howard_policy_iteration(model).block_until_ready()
-elapsed0 = time() - start_time
-print(f"HPI completed in {elapsed0} seconds.")
+hpi_with_compile = time() - start
+print(f"HPI completed in {hpi_with_compile} seconds.")
 ```
 
-We run it again to get rid of compilation time.
+We run it again to get rid of compile time.
 
 ```{code-cell} ipython3
-start_time = time()
+start = time()
 σ_star_hpi = howard_policy_iteration(model).block_until_ready()
-elapsed = time() - start_time
-print(f"HPI completed in {elapsed} seconds.")
+hpi_without_compile = time() - start
+print(f"HPI completed in {hpi_without_compile} seconds.")
 ```
 
 ```{code-cell} ipython3
@@ -494,19 +494,19 @@ plt.show()
 
 ```{code-cell} ipython3
 print("Starting VFI.")
-start_time = time()
+start = time()
 σ_star_vfi = value_function_iteration(model).block_until_ready()
-elapsed0 = time() - start_time
-print(f"VFI completed in {elapsed0} seconds.")
+vfi_with_compile = time() - start
+print(f"VFI completed in {vfi_with_compile} seconds.")
 ```
 
-We run it again to eliminate compilation time.
+We run it again to eliminate compile time.
 
 ```{code-cell} ipython3
-start_time = time()
+start = time()
 σ_star_vfi = value_function_iteration(model).block_until_ready()
-elapsed = time() - start_time
-print(f"VFI completed in {elapsed} seconds.")
+vfi_without_compile = time() - start
+print(f"VFI completed in {vfi_without_compile} seconds.")
 ```
 
 ```{code-cell} ipython3
@@ -526,19 +526,19 @@ plt.show()
 
 ```{code-cell} ipython3
 print("Starting OPI.")
-start_time = time()
+start = time()
 σ_star_opi = optimistic_policy_iteration(model, m=100).block_until_ready()
-elapsed0 = time() - start_time
-print(f"OPI completed in {elapsed0} seconds.")
+opi_with_compile = time() - start
+print(f"OPI completed in {opi_with_compile} seconds.")
 ```
 
-Let's run it again to get rid of compilation time.
+Let's run it again to get rid of compile time.
 
 ```{code-cell} ipython3
-start_time = time()
+start = time()
 σ_star_opi = optimistic_policy_iteration(model, m=100).block_until_ready()
-elapsed = time() - start_time
-print(f"OPI completed in {elapsed} seconds.")
+opi_without_compile = time() - start
+print(f"OPI completed in {opi_without_compile} seconds.")
 ```
 
 ```{code-cell} ipython3
@@ -564,12 +564,12 @@ Now, let's create a plot to visualize the time differences among these algorithm
 def run_algorithm(algorithm, model, **kwargs):
     result = algorithm(model, **kwargs)
 
-    # Now time it without compilation
-    start_time = time()
+    # Now time it without compile time
+    start = time()
     result = algorithm(model, **kwargs).block_until_ready()
-    elapsed_time = time() - start_time
-    print(f"{algorithm.__name__} completed in {elapsed_time:.2f} seconds.")
-    return result, elapsed_time
+    algorithm_without_compile = time() - start
+    print(f"{algorithm.__name__} completed in {algorithm_without_compile:.2f} seconds.")
+    return result, algorithm_without_compile
 ```
 
 ```{code-cell} ipython3
@@ -595,10 +595,10 @@ mystnb:
 ---
 fig, ax = plt.subplots()
 ax.plot(m_vals, 
-        jnp.full(len(m_vals), pi_time), 
+        jnp.full(len(m_vals), hpi_without_compile), 
         lw=2, label="Howard policy iteration")
 ax.plot(m_vals, 
-        jnp.full(len(m_vals), vfi_time), 
+        jnp.full(len(m_vals), vfi_without_compile), 
         lw=2, label="value function iteration")
 ax.plot(m_vals, opi_times, 
         lw=2, label="optimistic policy iteration")

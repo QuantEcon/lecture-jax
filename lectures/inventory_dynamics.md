@@ -189,7 +189,7 @@ Let's look at the timing.
         x_init, T, key).block_until_ready()
 ```
 
-Let's run again to eliminate compilation time.
+Let's run again to eliminate compile time.
 
 ```{code-cell} ipython3
 %time X_vec = compute_cross_section(params, \
@@ -369,7 +369,7 @@ key = random.PRNGKey(10)
                     sample_dates, key).block_until_ready()
 ```
 
-We run the code again to eliminate the compilation time.
+We run the code again to eliminate compile time.
 
 ```{code-cell} ipython3
 %time X = shift_forward_and_sample(x_init, params, \
@@ -467,7 +467,7 @@ key = random.PRNGKey(27)
 %time freq = compute_freq(params, key).block_until_ready()
 ```
 
-We run the code again to get rid of the compilation time.
+We run the code again to get rid of compile time.
 
 ```{code-cell} ipython3
 %time freq = compute_freq(params, key).block_until_ready()
@@ -536,7 +536,7 @@ Note the time the routine takes to run, as well as the output
 %time freq = compute_freq(params, key).block_until_ready()
 ```
 
-We run the code again to eliminate the compilation time.
+We run the code again to eliminate the compile time.
 
 ```{code-cell} ipython3
 %time freq = compute_freq(params, key).block_until_ready()

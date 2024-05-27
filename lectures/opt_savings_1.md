@@ -217,19 +217,19 @@ w_grid, y_grid, Q = arrays
 
 ```{code-cell} ipython3
 print("Starting VFI.")
-start_time = time()
+start = time()
 v_star, σ_star = value_function_iteration(model)
-numpy_elapsed0 = time() - start_time
-print(f"VFI completed in {numpy_elapsed0} seconds.")
+numpy_with_compile = time() - start
+print(f"VFI completed in {numpy_with_compile} seconds.")
 ```
 
-Let's run it again to eliminate compilation time.
+Let's run it again to eliminate compile time.
 
 ```{code-cell} ipython3
-start_time = time()
+start = time()
 v_star, σ_star = value_function_iteration(model)
-numpy_elapsed = time() - start_time
-print(f"VFI completed in {numpy_elapsed} seconds.")
+numpy_without_compile = time() - start
+print(f"VFI completed in {numpy_without_compile} seconds.")
 ```
 
 Here's a plot of the policy function.
@@ -416,25 +416,25 @@ Let's see how long it takes to solve this model.
 
 ```{code-cell} ipython3
 print("Starting VFI using vectorization.")
-start_time = time()
+start = time()
 v_star_jax, σ_star_jax = value_function_iteration(model)
-jax_elapsed0 = time() - start_time
-print(f"VFI completed in {jax_elapsed0} seconds.")
+jax_with_compile = time() - start
+print(f"VFI completed in {jax_with_compile} seconds.")
 ```
 
-Let's run it again to eliminate compilation time.
+Let's run it again to eliminate compile time.
 
 ```{code-cell} ipython3
-start_time = time()
+start = time()
 v_star_jax, σ_star_jax = value_function_iteration(model)
-jax_elapsed = time() - start_time
-print(f"VFI completed in {jax_elapsed} seconds.")
+jax_without_compile = time() - start
+print(f"VFI completed in {jax_without_compile} seconds.")
 ```
 
 The relative speed gain is
 
 ```{code-cell} ipython3
-print(f"Relative speed gain = {numpy_elapsed / jax_elapsed}")
+print(f"Relative speed gain = {numpy_without_compile / jax_without_compile}")
 ```
 
 This is an impressive speed up and in fact we can do better still by switching
@@ -529,19 +529,19 @@ Let's see how long it takes to solve the model using the `vmap` method.
 
 ```{code-cell} ipython3
 print("Starting VFI using vmap.")
-start_time = time()
+start = time()
 v_star_vmap, σ_star_vmap = value_iteration_vmap(model)
-jax_vmap_elapsed0 = time() - start_time
-print(f"VFI completed in {jax_vmap_elapsed0} seconds.")
+jax_vmap_with_compile = time() - start
+print(f"VFI completed in {jax_vmap_with_compile} seconds.")
 ```
 
-Let's run it again to get rid of compilation time.
+Let's run it again to get rid of compile time.
 
 ```{code-cell} ipython3
-start_time = time()
+start = time()
 v_star_vmap, σ_star_vmap = value_iteration_vmap(model)
-jax_vmap_elapsed = time() - start_time
-print(f"VFI completed in {jax_vmap_elapsed} seconds.")
+jax_vmap_without_compile = time() - start
+print(f"VFI completed in {jax_vmap_without_compile} seconds.")
 ```
 
 We need to make sure that we got the same result.
@@ -554,13 +554,13 @@ print(jnp.allclose(σ_star_vmap, σ_star_jax))
 Here's the speed gain associated with switching from the NumPy version to JAX with `vmap`:
 
 ```{code-cell} ipython3
-print(f"Relative speed = {numpy_elapsed / jax_vmap_elapsed}")
+print(f"Relative speed = {numpy_vmap_without_compile/jax_vmap_without_compile}")
 ```
 
 And here's the comparison with the first JAX implementation (which used direct vectorization).
 
 ```{code-cell} ipython3
-print(f"Relative speed = {jax_elapsed / jax_vmap_elapsed}")
+print(f"Relative speed = {jax_without_compile / jax_vmap_without_compile}")
 ```
 
 The execution times for the two JAX versions are relatively similar.

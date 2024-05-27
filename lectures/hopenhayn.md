@@ -634,7 +634,7 @@ v_init = jnp.zeros_like(grids.φ_grid)            # Initial condition
 %time v_bar = vfi(p, v_init, parameters, grids).block_until_ready()
 ```
 
-Let's run the code again to eliminate the compilation time.
+Let's run the code again to eliminate compile time.
 
 ```{code-cell} ipython3
 %time v_bar = vfi(p, v_init, parameters, grids).block_until_ready()
@@ -679,7 +679,7 @@ p_star, v_bar, φ_star, φ_sample, s, m_star = \
         compute_equilibrium_prices_and_quantities(model)
 ```
 
-Let's run the code again to get rid of the compilation time.
+Let's run the code again to get rid of compile time.
 
 ```{code-cell} ipython3
 %%time

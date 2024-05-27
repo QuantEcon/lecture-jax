@@ -767,36 +767,36 @@ b_grid, y_t_nodes, y_n_nodes, Q = arrays
 
 ```{code-cell} ipython3
 print("Computing decentralized solution.")
-in_time = time()
+start = time()
 H_eq = compute_equilibrium(parameters, sizes, arrays)
-diff_d0 = time() - in_time
-print(f"Computed decentralized equilibrium in {diff_d0} seconds")
+diff_d_with_compile = time() - start
+print(f"Computed decentralized equilibrium in {diff_d_with_compile} seconds")
 ```
 
-We run it again to get rid of compilation time.
+We run it again to get rid of compile time.
 
 ```{code-cell} ipython3
-in_time = time()
+start = time()
 H_eq = compute_equilibrium(parameters, sizes, arrays)
-diff_d = time() - in_time
-print(f"Computed decentralized equilibrium in {diff_d} seconds")
+diff_d_without_compile  = time() - start
+print(f"Computed decentralized equilibrium in {diff_d_without_compile} seconds")
 ```
 
 ```{code-cell} ipython3
 print("Computing planner's solution.")
-in_time = time()
+start = time()
 planner_v, H_plan, vfi_num_iter = compute_planner_solution(model)
-diff_p0 = time() - in_time
-print(f"Computed planner's equilibrium in {diff_p0} seconds")
+diff_p_with_compile = time() - start
+print(f"Computed planner's equilibrium in {diff_p_with_compile} seconds")
 ```
 
-We run it again to eliminate compilation time.
+We run it again to eliminate compile time.
 
 ```{code-cell} ipython3
-in_time = time()
+start = time()
 planner_v, H_plan, vfi_num_iter = compute_planner_solution(model)
-diff_p = time() - in_time
-print(f"Computed planner's equilibrium in {diff_p} seconds")
+diff_p_without_compile = time() - start
+print(f"Computed planner's equilibrium in {diff_p_without_compile} seconds")
 ```
 
 ### Policy plots

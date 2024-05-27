@@ -344,7 +344,7 @@ Let's rerun the `for` loop version on smaller `M` to compare the speed
 %time generate_draws(M=500_000).block_until_ready()
 ```
 
-Let's run it again to get rid of the compilation time.
+Let's run it again to get rid of the compile time.
 
 ```{code-cell} ipython3
 %time generate_draws(M=500_000).block_until_ready()

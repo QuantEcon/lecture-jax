@@ -566,7 +566,7 @@ Now we get what we want and the execution time is very fast.
 z_mesh = f(x_mesh, y_mesh).block_until_ready()
 ```
 
-Let's run again to eliminate the compilation time.
+Let's run again to eliminate compile time.
 
 ```{code-cell} ipython3
 %%time
@@ -593,7 +593,7 @@ x_mesh, y_mesh = jnp.meshgrid(x, y)
 z_mesh = f(x_mesh, y_mesh).block_until_ready()
 ```
 
-Let's run again to get rid of the compilation time.
+Let's run again to get rid of compile time.
 
 ```{code-cell} ipython3
 %%time
@@ -639,7 +639,7 @@ With this construction, we can now call the function $f$ on flat (low memory) ar
 z_vmap = f_vec(x, y).block_until_ready()
 ```
 
-We run it again to eliminate the compilation time.
+We run it again to eliminate compile time.
 
 ```{code-cell} ipython3
 %%time

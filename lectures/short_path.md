@@ -368,7 +368,7 @@ Let's see the timings for jitting the function and runtime results.
 J = compute_cost_to_go(Q).block_until_ready()
 ```
 
-Let's run again to eliminate compilation time.
+Let's run again to eliminate compile time.
 
 ```{code-cell} ipython3
 %%time

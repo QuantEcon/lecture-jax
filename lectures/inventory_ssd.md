@@ -339,23 +339,19 @@ v_init = jnp.zeros((K + 1, n_z), dtype=float)
 ```
 
 ```{code-cell} ipython3
-in_time0 = time()
+start = time()
 v_star, σ_star = solve_inventory_model(v_init, model)
-jax_time0 = time() - in_time0
-print("Jax compilation plus execution time = ", jax_time0)
+jax_time_with_compile = time() - start
+print("Jax compile plus execution time = ", jax_time_with_compile)
 ```
 
-Let's run again to get rid of the compilation time.
+Let's run again to get rid of the compile time.
 
 ```{code-cell} ipython3
-in_time = time()
+start = time()
 v_star, σ_star = solve_inventory_model(v_init, model)
-jax_time = time() - in_time
-print("Jax execution time = ", jax_time)
-```
-
-```{code-cell} ipython3
-jax_time / jax_time0
+jax_time_without_compile = time() - start
+print("Jax execution time = ", jax_time_without_compile)
 ```
 
 ```{code-cell} ipython3
@@ -473,23 +469,19 @@ v_init = np.zeros((K + 1, n_z), dtype=float)
 ```
 
 ```{code-cell} ipython3
-in_time0 = time()
+start = time()
 v_star_numba, σ_star_numba = solve_inventory_model_numba(v_init, model)
-nb_time0 = time() - in_time0
-print("Numba compilation plus execution time = ", nb_time0)
+numba_time_with_compile = time() - start
+print("Numba compile plus execution time = ", numba_time_with_compile)
 ```
 
-Let's run again to eliminate the compilation time.
+Let's run again to eliminate the compile time.
 
 ```{code-cell} ipython3
-in_time = time()
+start = time()
 v_star_numba, σ_star_numba = solve_inventory_model_numba(v_init, model)
-nb_time = time() - in_time
-print("Numba execution time = ", nb_time)
-```
-
-```{code-cell} ipython3
-nb_time / nb_time0
+numba_time_without_compile = time() - start
+print("Numba execution time = ", numba_time_without_compile)
 ```
 
 Let's verify that the Numba and JAX implementations converge to the same solution.
@@ -501,6 +493,7 @@ np.allclose(v_star_numba, v_star)
 Here's the speed comparison.
 
 ```{code-cell} ipython3
-print(f"JAX vectorized implementation is {nb_time/jax_time} faster "
+print(f"JAX vectorized implementation is \ 
+       {numba_time_without_compile/jax_time_without_compile} faster "
        "than Numba's parallel implementation")
 ```

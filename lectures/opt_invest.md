@@ -425,12 +425,12 @@ print("Starting HPI.")
 ```
 
 ```{code-cell} ipython3
-# Now time it without compilation time
+# Now time it without compile time
 start = time()
 σ_star_hpi = howard_policy_iteration(model).block_until_ready()
-elapsed = time() - start
+hpi_without_compile = time() - start
 print(σ_star_hpi)
-print(f"HPI completed in {elapsed} seconds.")
+print(f"HPI completed in {hpi_without_compile} seconds.")
 ```
 
 Here's the plot of the Howard policy, as a function of $y$ at the highest and lowest values of $z$.
@@ -452,12 +452,12 @@ print("Starting VFI.")
 ```
 
 ```{code-cell} ipython3
-# Now time it without compilation time
+# Now time it without compile time
 start = time()
 σ_star_vfi = value_function_iteration(model).block_until_ready()
-elapsed = time() - start
+vfi_without_compile = time() - start
 print(σ_star_vfi)
-print(f"VFI completed in {elapsed} seconds.")
+print(f"VFI completed in {vfi_without_compile} seconds.")
 ```
 
 Here's the plot of the VFI, as a function of $y$ at the highest and lowest values of $z$.
@@ -479,12 +479,12 @@ print("Starting OPI.")
 ```
 
 ```{code-cell} ipython3
-# Now time it without compilation time
+# Now time it without compile time
 start = time()
 σ_star_opi = optimistic_policy_iteration(model, m=100).block_until_ready()
-elapsed = time() - start
+opi_without_compile = time() - start
 print(σ_star_opi)
-print(f"OPI completed in {elapsed} seconds.")
+print(f"OPI completed in {opi_without_compile} seconds.")
 ```
 
 Here's the plot of the optimal policy, as a function of $y$ at the highest and lowest values of $z$.
@@ -509,15 +509,15 @@ m_vals = range(5, 600, 40)
 
 ```{code-cell} ipython3
 print("Running Howard policy iteration.")
-%time σ_pi = howard_policy_iteration(model).block_until_ready()
+%time σ_hpi = howard_policy_iteration(model).block_until_ready()
 ```
 
 ```{code-cell} ipython3
-# Now time it without compilation time
+# Now time it without compile time
 start = time()
-σ_pi = howard_policy_iteration(model).block_until_ready()
-pi_time = time() - start
-print(f"PI completed in {pi_time} seconds.")
+σ_hpi = howard_policy_iteration(model).block_until_ready()
+hpi_without_compile = time() - start
+print(f"HPI completed in {hpi_without_compile} seconds.")
 ```
 
 ```{code-cell} ipython3
@@ -526,11 +526,11 @@ print("Running value function iteration.")
 ```
 
 ```{code-cell} ipython3
-# Now time it without compilation time
+# Now time it without compile time
 start = time()
 σ_vfi = value_function_iteration(model, tol=1e-5).block_until_ready()
-vfi_time = time() - start
-print(f"VFI completed in {vfi_time} seconds.")
+vfi_without_compile = time() - start
+print(f"VFI completed in {vfi_without_compile} seconds.")
 ```
 
 ```{code-cell} ipython3
@@ -541,27 +541,23 @@ for m in m_vals:
     print(f"Running optimistic policy iteration with m={m}.")
     σ_opi = optimistic_policy_iteration(model, m=m, tol=1e-5).block_until_ready()
 
-    # Now time it without compilation time
+    # Now time it without compile time
     start = time()
     σ_opi = optimistic_policy_iteration(model, m=m, tol=1e-5).block_until_ready()
-    opi_time = time() - start
-    print(f"OPI with m={m} completed in {opi_time} seconds.")
-    opi_times.append(opi_time)
+    opi_without_compile = time() - start
+    print(f"OPI with m={m} completed in {opi_without_compile} seconds.")
+    opi_times.append(opi_without_compile)
 ```
 
 ```{code-cell} ipython3
 fig, ax = plt.subplots(figsize=(9, 5))
-ax.plot(m_vals, jnp.full(len(m_vals), pi_time),
+ax.plot(m_vals, jnp.full(len(m_vals), hpi_without_compile),
         lw=2, label="Howard policy iteration")
-ax.plot(m_vals, jnp.full(len(m_vals), vfi_time),
+ax.plot(m_vals, jnp.full(len(m_vals), vfi_without_compile),
         lw=2, label="value function iteration")
 ax.plot(m_vals, opi_times, lw=2, label="optimistic policy iteration")
 ax.legend(fontsize=12, frameon=False)
 ax.set_xlabel("$m$", fontsize=12)
 ax.set_ylabel("time(s)", fontsize=12)
 plt.show()
-```
-
-```{code-cell} ipython3
-
 ```

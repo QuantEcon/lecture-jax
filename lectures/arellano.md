@@ -624,7 +624,7 @@ ae = create_arellano()
 v_c, v_d, q, B_star = solve(ae)
 ```
 
-We run it again to get rid of the compilation time.
+We run it again to get rid of compile time.
 
 ```{code-cell} ipython3
 :hide-output: false

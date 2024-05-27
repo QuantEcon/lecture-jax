@@ -419,7 +419,7 @@ household = create_household()
 σ_star = policy_iteration(household, verbose=True).block_until_ready()
 ```
 
-We run it again to get rid of the compilation time.
+We run it again to get rid of compile time.
 
 ```{code-cell} ipython3
 %%time
@@ -659,10 +659,12 @@ Now we call the bisection function on excess demand.
 ```{code-cell} ipython3
 def compute_equilibrium(firm, household):
     print("\nComputing equilibrium capital stock")
+    solution, count = bisect(excess_demand, 6.0, 10.0, firm, household)
+
     start = time()
     solution, count = bisect(excess_demand, 6.0, 10.0, firm, household)
-    elapsed = time() - start
-    print(f"Computed equilibrium in {count} iterations and {elapsed} seconds")
+    bisect_without_compile = time() - start
+    print(f"Computed equilibrium in {count} iterations and {bisect_without_compile} seconds")
     return solution
 ```
 
