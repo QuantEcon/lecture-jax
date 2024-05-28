@@ -493,7 +493,7 @@ np.allclose(v_star_numba, v_star)
 Here's the speed comparison.
 
 ```{code-cell} ipython3
-print(f"JAX vectorized implementation is \ 
-       {numba_time_without_compile/jax_time_without_compile} faster "
+print("JAX vectorized implementation is "
+      f"{numba_time_without_compile/jax_time_without_compile} faster "
        "than Numba's parallel implementation")
 ```

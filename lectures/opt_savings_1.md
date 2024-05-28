@@ -554,7 +554,7 @@ print(jnp.allclose(σ_star_vmap, σ_star_jax))
 Here's the speed gain associated with switching from the NumPy version to JAX with `vmap`:
 
 ```{code-cell} ipython3
-print(f"Relative speed = {numpy_vmap_without_compile/jax_vmap_without_compile}")
+print(f"Relative speed = {numpy_without_compile/jax_vmap_without_compile}")
 ```
 
 And here's the comparison with the first JAX implementation (which used direct vectorization).
