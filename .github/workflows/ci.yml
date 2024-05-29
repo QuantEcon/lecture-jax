@@ -26,9 +26,6 @@ jobs:
         if: steps.cache-docker-cuda.outputs.cache-hit == 'true'
         run: docker image load --input ./ci/cache/docker/cuda/cuda-12.tar
 
-      # - name: Start containers
-      #   run: docker compose up -d
-
       - name: Setup Anaconda
         uses: conda-incubator/setup-miniconda@v3
         with:
