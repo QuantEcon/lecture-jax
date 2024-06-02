@@ -3,44 +3,36 @@ on: [pull_request]
 jobs:
   preview:
     runs-on: ubuntu-latest-gpu
-    # container:
-    #   image: docker://nvidia/cuda:12.4.1-devel-ubuntu22.04
-    #   options: --gpus all
+    env:
+      DOCKER_IMG_NAME: mmcky/quantecon-lecture-python:cuda-12.3.1-anaconda-2024-02-py311
     steps:
       - uses: actions/checkout@v4
         with:
           ref: ${{ github.event.pull_request.head.sha }}
-      
-      - name: Restore Cuda Image Cache if it exists
-        id: cache-docker-cuda
+      - name: Restore Docker Image Cache if it exists
+        id: cache-docker-mmcky
         uses: actions/cache@v4
         with:
           path: ci/cache/docker/cuda
-          key: cache-docker-cuda-12
+          key: cache-docker-${{ env.DOCKER_IMG_NAME }}
 
-      - name: Update Cuda Image Cache if cache miss
-        if: steps.cache-docker-cuda.outputs.cache-hit != 'true'
-        run: docker pull nvidia/cuda:12.4.1-devel-ubuntu22.04 && mkdir -p ci/cache/docker/cuda && docker image save nvidia/cuda:12.4.1-devel-ubuntu22.04 --output ./ci/cache/docker/cuda/cuda-12.tar
+      - name: Update Docker Image Cache if cache miss
+        if: steps.cache-docker-mmcky.outputs.cache-hit != 'true'
+        run: |
+          docker pull $DOCKER_IMG_NAME
+          mkdir -p ci/cache/docker/cuda
+          docker image save $DOCKER_IMG_NAME --output ./ci/cache/docker/cuda/docker-img.tar
 
-      - name: Use Cuda Image Cache if cache hit
-        if: steps.cache-docker-cuda.outputs.cache-hit == 'true'
-        run: docker image load --input ./ci/cache/docker/cuda/cuda-12.tar
+      - name: Use Docker Image Cache if cache hit
+        if: steps.cache-docker-mmcky.outputs.cache-hit == 'true'
+        run: docker image load --input ./ci/cache/docker/cuda/docker-img.tar
 
-      - name: Setup Anaconda
-        uses: conda-incubator/setup-miniconda@v3
-        with:
-          auto-update-conda: true
-          auto-activate-base: true
-          miniconda-version: 'latest'
-          python-version: "3.11"
-          environment-file: environment.yml
-          activate-environment: quantecon   
-      
       - name: Install JAX[CUDA] and Numpyro[CUDA]
         shell: bash -l {0}
         run: |
           pip install --upgrade "jax[cuda]" -f https://storage.googleapis.com/jax-releases/jax_cuda_releases.html
           pip install --upgrade "numpyro[cuda]" -f https://storage.googleapis.com/jax-releases/jax_cuda_releases.html
+
       - name: Check nvidia drivers
         shell: bash -l {0}
         run: |
@@ -49,9 +41,9 @@ jobs:
         shell: bash -l {0}
         run: |
           python --version
-      - name: Display Conda Environment Versions
-        shell: bash -l {0}
-        run: conda list
+      # - name: Display Conda Environment Versions
+      #   shell: bash -l {0}
+      #   run: conda list
       - name: Display Pip Versions
         shell: bash -l {0}
         run: pip list
