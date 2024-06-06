@@ -4,7 +4,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.15.2
+    jupytext_version: 1.16.1
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -339,6 +339,12 @@ plt.show()
 ```
 
 Let's rerun the `for` loop version on smaller `M` to compare the speed
+
+```{code-cell} ipython3
+%time generate_draws(M=500_000).block_until_ready()
+```
+
+Let's run it again to get rid of the compile time.
 
 ```{code-cell} ipython3
 %time generate_draws(M=500_000).block_until_ready()

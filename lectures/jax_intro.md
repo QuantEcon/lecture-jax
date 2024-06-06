@@ -4,7 +4,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.14.7
+    jupytext_version: 1.16.1
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -21,12 +21,9 @@ This lecture provides a short introduction to [Google JAX](https://github.com/go
 
 As mentioned above, the lecture was built using a GPU:
 
-
 ```{code-cell} ipython3
 !nvidia-smi
 ```
-
-
 
 ## JAX as a NumPy Replacement
 
@@ -268,8 +265,6 @@ One point to remember is that JAX expects tuples to describe array shapes, even 
 random.normal(key, (5, ))
 ```
 
-
-
 ## JIT compilation
 
 The JAX just-in-time (JIT) compiler accelerates logic within functions by fusing linear
@@ -356,8 +351,6 @@ too, and the following call is dispatched to the correct compiled code.
 %time f(x).block_until_ready()
 ```
 
-
-
 ### Compiling the outer function
 
 We can do even better if we manually JIT-compile the outer function.
@@ -384,7 +377,7 @@ This is because the array operations are fused and no intermediate arrays are cr
 
 
 Incidentally, a more common syntax when targetting a function for the JIT
-compiler is 
+compiler is
 
 ```{code-cell} ipython3
 @jax.jit
@@ -392,7 +385,6 @@ def f(x):
     a = 3*x + jnp.sin(x) + jnp.cos(x**2) - jnp.cos(2*x) - x**2 * 0.4 * x**1.5
     return jnp.sum(a)
 ```
-
 
 ## Functional Programming
 
@@ -571,12 +563,14 @@ Now we get what we want and the execution time is very fast.
 
 ```{code-cell} ipython3
 %%time
-z_mesh = f(x_mesh, y_mesh) 
+z_mesh = f(x_mesh, y_mesh).block_until_ready()
 ```
+
+Let's run again to eliminate compile time.
 
 ```{code-cell} ipython3
 %%time
-z_mesh = f(x_mesh, y_mesh) 
+z_mesh = f(x_mesh, y_mesh).block_until_ready()
 ```
 
 Let's confirm that we got the right answer.
@@ -596,12 +590,14 @@ x_mesh, y_mesh = jnp.meshgrid(x, y)
 
 ```{code-cell} ipython3
 %%time
-z_mesh = f(x_mesh, y_mesh) 
+z_mesh = f(x_mesh, y_mesh).block_until_ready()
 ```
+
+Let's run again to get rid of compile time.
 
 ```{code-cell} ipython3
 %%time
-z_mesh = f(x_mesh, y_mesh) 
+z_mesh = f(x_mesh, y_mesh).block_until_ready()
 ```
 
 But there is one problem here: the mesh grids use a lot of memory.
@@ -618,7 +614,7 @@ x.nbytes  # and y is just a pointer to x
 
 This extra memory usage can be a big problem in actual research calculations.
 
-So let's try a different approach using [jax.vmap](https://jax.readthedocs.io/en/latest/_autosummary/jax.vmap.html) 
+So let's try a different approach using [jax.vmap](https://jax.readthedocs.io/en/latest/_autosummary/jax.vmap.html)
 
 +++
 
@@ -640,12 +636,14 @@ With this construction, we can now call the function $f$ on flat (low memory) ar
 
 ```{code-cell} ipython3
 %%time
-z_vmap = f_vec(x, y)
+z_vmap = f_vec(x, y).block_until_ready()
 ```
+
+We run it again to eliminate compile time.
 
 ```{code-cell} ipython3
 %%time
-z_vmap = f_vec(x, y)
+z_vmap = f_vec(x, y).block_until_ready()
 ```
 
 The execution time is essentially the same as the mesh operation but we are using much less memory.
@@ -655,8 +653,6 @@ And we produce the correct answer:
 ```{code-cell} ipython3
 jnp.allclose(z_vmap, z_mesh)
 ```
-
-
 
 ## Exercises
 
@@ -718,7 +714,8 @@ def compute_call_price_jax(β=β,
 Let's run it once to compile it:
 
 ```{code-cell} ipython3
-compute_call_price_jax()
+%%time 
+compute_call_price_jax().block_until_ready()
 ```
 
 And now let's time it:

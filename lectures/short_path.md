@@ -4,14 +4,12 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.14.5
+    jupytext_version: 1.16.1
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
   name: python3
 ---
-
-
 
 # Shortest Paths
 
@@ -80,8 +78,6 @@ Q = jnp.array([[inf, 1,   5,   3,   inf, inf, inf],
               [inf, inf, inf, inf, inf, inf, 0]])
 ```
 
-
-
 Notice that the cost of staying still (on the principle diagonal) is set to
 
 * `jnp.inf` for non-destination nodes --- moving on is required.
@@ -108,8 +104,6 @@ while i < max_iter:
 
 print("The cost-to-go function is", J)
 ```
-
-
 
 We can further optimize the above code by using [jax.lax.while_loop](https://jax.readthedocs.io/en/latest/_autosummary/jax.lax.while_loop.html). The extra acceleration is due to the fact that the entire operation can be optimized by the JAX compiler and launched as a single kernel on the GPU.
 
@@ -138,27 +132,19 @@ def cond_fun(values):
     return ~break_condition & (i < max_iter)
 ```
 
-
-
 Let's see the timing for JIT compilation of the functions and runtime results.
 
 ```{code-cell} ipython3
 %%time
-
-jax.lax.while_loop(cond_fun, body_fun, init_val=(0, J, False))[1]
+jax.lax.while_loop(cond_fun, body_fun, init_val=(0, J, False))[1].block_until_ready()
 ```
-
-
 
 Now, this runs faster once we have the JIT compiled JAX version of the functions.
 
 ```{code-cell} ipython3
 %%time
-
-jax.lax.while_loop(cond_fun, body_fun, init_val=(0, J, False))[1]
+jax.lax.while_loop(cond_fun, body_fun, init_val=(0, J, False))[1].block_until_ready()
 ```
-
-
 
 ```{note}
 Large speed gains while using `jax.lax.while_loop` won't be realized unless the shortest path problem is relatively large.
@@ -323,8 +309,6 @@ def map_graph_to_distance_matrix(in_file):
     return jnp.array(Q)
 ```
 
-
-
 Let's write a function `compute_cost_to_go` that returns $J$ given any valid $Q$.
 
 ```{code-cell} ipython3
@@ -354,8 +338,6 @@ def compute_cost_to_go(Q):
                               init_val=(0, J, False))[1]
 ```
 
-
-
 Finally, here's a function that uses the `cost-to-go` function to obtain the
 optimal path (and its cost).
 
@@ -373,23 +355,20 @@ def print_best_path(J, Q):
     print('Cost: ', sum_costs)
 ```
 
-
-
 Okay, now we have the necessary functions, let's call them to do the job we were assigned.
 
 ```{code-cell} ipython3
 Q = map_graph_to_distance_matrix('graph.txt')
 ```
 
-
-
 Let's see the timings for jitting the function and runtime results.
 
 ```{code-cell} ipython3
 %%time
-
 J = compute_cost_to_go(Q).block_until_ready()
 ```
+
+Let's run again to eliminate compile time.
 
 ```{code-cell} ipython3
 %%time
@@ -399,8 +378,6 @@ J = compute_cost_to_go(Q).block_until_ready()
 ```{code-cell} ipython3
 print_best_path(J, Q)
 ```
-
-
 
 The total cost of the path should agree with $J[0]$ so let's check this.
 

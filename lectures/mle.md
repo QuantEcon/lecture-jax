@@ -4,7 +4,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.14.5
+    jupytext_version: 1.16.1
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -191,7 +191,6 @@ def _factorial(n):
 
 jax_factorial = jax.vmap(_factorial)
 ```
-
 
 Now we can define the log likelihood function in Python
 
@@ -395,7 +394,6 @@ y = jax.random.poisson(key, λ, shape)
 
 Now let's try to recover the true parameter values using the Newton-Raphson
 method described above.
-
 
 ```{code-cell} ipython3
 X = jnp.hstack((jnp.ones(shape), x, x**2))

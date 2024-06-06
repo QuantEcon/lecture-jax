@@ -4,7 +4,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.15.2
+    jupytext_version: 1.16.1
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -620,10 +620,11 @@ ae = create_arellano()
 ```
 
 ```{code-cell} ipython3
-:hide-output: false
-
+%%time
 v_c, v_d, q, B_star = solve(ae)
 ```
+
+We run it again to get rid of compile time.
 
 ```{code-cell} ipython3
 :hide-output: false

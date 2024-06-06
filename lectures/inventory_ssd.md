@@ -4,7 +4,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.14.5
+    jupytext_version: 1.16.1
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -173,8 +173,9 @@ import jax.numpy as jnp
 import numpy as np
 import matplotlib.pyplot as plt
 from collections import namedtuple
-import time
-from numba import jit, prange
+import numba
+from numba import prange
+from time import time
 ```
 
 Let's check the GPU we are running
@@ -338,9 +339,19 @@ v_init = jnp.zeros((K + 1, n_z), dtype=float)
 ```
 
 ```{code-cell} ipython3
-in_time = time.time()
+start = time()
 v_star, σ_star = solve_inventory_model(v_init, model)
-jax_time = time.time() - in_time
+jax_time_with_compile = time() - start
+print("Jax compile plus execution time = ", jax_time_with_compile)
+```
+
+Let's run again to get rid of the compile time.
+
+```{code-cell} ipython3
+start = time()
+v_star, σ_star = solve_inventory_model(v_init, model)
+jax_time_without_compile = time() - start
+print("Jax execution time = ", jax_time_without_compile)
 ```
 
 ```{code-cell} ipython3
@@ -395,11 +406,11 @@ plot_ts()
 Let's try the same operations in Numba in order to compare the speed.
 
 ```{code-cell} ipython3
-@jit
+@numba.njit
 def demand_pdf_numba(p, d):
     return (1 - p)**d * p
 
-@jit
+@numba.njit
 def B_numba(x, i_z, a, v, model):
     """
     The function B(x, z, a, v) = r(x, a) + β(z) Σ_x′ v(x′) P(x, a, x′).
@@ -415,7 +426,7 @@ def B_numba(x, i_z, a, v, model):
     return profit + z * cv
 
 
-@jit(parallel=True)
+@numba.njit(parallel=True)
 def T_numba(v, model):
     """The Bellman operator."""
     c, κ, p, z_vals, Q = model
@@ -428,7 +439,7 @@ def T_numba(v, model):
     return new_v
 
 
-@jit(parallel=True)
+@numba.njit(parallel=True)
 def get_greedy_numba(v, model):
     """Get a v-greedy policy.  Returns a zero-based array."""
     c, κ, p, z_vals, Q = model
@@ -458,9 +469,19 @@ v_init = np.zeros((K + 1, n_z), dtype=float)
 ```
 
 ```{code-cell} ipython3
-in_time = time.time()
+start = time()
 v_star_numba, σ_star_numba = solve_inventory_model_numba(v_init, model)
-nb_time = time.time() - in_time
+numba_time_with_compile = time() - start
+print("Numba compile plus execution time = ", numba_time_with_compile)
+```
+
+Let's run again to eliminate the compile time.
+
+```{code-cell} ipython3
+start = time()
+v_star_numba, σ_star_numba = solve_inventory_model_numba(v_init, model)
+numba_time_without_compile = time() - start
+print("Numba execution time = ", numba_time_without_compile)
 ```
 
 Let's verify that the Numba and JAX implementations converge to the same solution.
@@ -472,6 +493,7 @@ np.allclose(v_star_numba, v_star)
 Here's the speed comparison.
 
 ```{code-cell} ipython3
-print(f"JAX vectorized implementation is {nb_time/jax_time} faster "
+print("JAX vectorized implementation is "
+      f"{numba_time_without_compile/jax_time_without_compile} faster "
        "than Numba's parallel implementation")
 ```

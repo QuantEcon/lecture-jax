@@ -65,7 +65,7 @@ import quantecon as qe
 import jax
 import jax.numpy as jnp
 import matplotlib.pyplot as plt
-import time
+from time import time
 ```
 
 Let's check the GPU we are running.
@@ -462,10 +462,19 @@ w_grid, y_grid, Q = arrays
 
 ```{code-cell} ipython3
 print("Starting HPI.")
-start_time = time.time()
-σ_star_hpi = howard_policy_iteration(model)
-elapsed = time.time() - start_time
-print(f"HPI completed in {elapsed} seconds.")
+start = time()
+σ_star_hpi = howard_policy_iteration(model).block_until_ready()
+hpi_with_compile = time() - start
+print(f"HPI completed in {hpi_with_compile} seconds.")
+```
+
+We run it again to get rid of compile time.
+
+```{code-cell} ipython3
+start = time()
+σ_star_hpi = howard_policy_iteration(model).block_until_ready()
+hpi_without_compile = time() - start
+print(f"HPI completed in {hpi_without_compile} seconds.")
 ```
 
 ```{code-cell} ipython3
@@ -475,7 +484,6 @@ mystnb:
     caption: Optimal policy function (HPI)
     name: optimal-policy-function-hpi
 ---
-
 fig, ax = plt.subplots()
 ax.plot(w_grid, w_grid, "k--", label="45")
 ax.plot(w_grid, w_grid[σ_star_hpi[:, 1]], label="$\\sigma^{*}_{HPI}(\cdot, y_1)$")
@@ -486,10 +494,19 @@ plt.show()
 
 ```{code-cell} ipython3
 print("Starting VFI.")
-start_time = time.time()
-σ_star_vfi = value_function_iteration(model)
-elapsed = time.time() - start_time
-print(f"VFI completed in {elapsed} seconds.")
+start = time()
+σ_star_vfi = value_function_iteration(model).block_until_ready()
+vfi_with_compile = time() - start
+print(f"VFI completed in {vfi_with_compile} seconds.")
+```
+
+We run it again to eliminate compile time.
+
+```{code-cell} ipython3
+start = time()
+σ_star_vfi = value_function_iteration(model).block_until_ready()
+vfi_without_compile = time() - start
+print(f"VFI completed in {vfi_without_compile} seconds.")
 ```
 
 ```{code-cell} ipython3
@@ -499,7 +516,6 @@ mystnb:
     caption: Optimal policy function (VFI)
     name: optimal-policy-function-vfi
 ---
-
 fig, ax = plt.subplots()
 ax.plot(w_grid, w_grid, "k--", label="45")
 ax.plot(w_grid, w_grid[σ_star_vfi[:, 1]], label="$\\sigma^{*}_{VFI}(\cdot, y_1)$")
@@ -510,10 +526,19 @@ plt.show()
 
 ```{code-cell} ipython3
 print("Starting OPI.")
-start_time = time.time()
-σ_star_opi = optimistic_policy_iteration(model, m=100)
-elapsed = time.time() - start_time
-print(f"OPI completed in {elapsed} seconds.")
+start = time()
+σ_star_opi = optimistic_policy_iteration(model, m=100).block_until_ready()
+opi_with_compile = time() - start
+print(f"OPI completed in {opi_with_compile} seconds.")
+```
+
+Let's run it again to get rid of compile time.
+
+```{code-cell} ipython3
+start = time()
+σ_star_opi = optimistic_policy_iteration(model, m=100).block_until_ready()
+opi_without_compile = time() - start
+print(f"OPI completed in {opi_without_compile} seconds.")
 ```
 
 ```{code-cell} ipython3
@@ -523,7 +548,6 @@ mystnb:
     caption: Optimal policy function (OPI)
     name: optimal-policy-function-opi
 ---
-
 fig, ax = plt.subplots()
 ax.plot(w_grid, w_grid, "k--", label="45")
 ax.plot(w_grid, w_grid[σ_star_opi[:, 1]], label="$\\sigma^{*}_{OPI}(\cdot, y_1)$")
@@ -538,18 +562,22 @@ Now, let's create a plot to visualize the time differences among these algorithm
 
 ```{code-cell} ipython3
 def run_algorithm(algorithm, model, **kwargs):
-    start_time = time.time()
     result = algorithm(model, **kwargs)
-    end_time = time.time()
-    elapsed_time = end_time - start_time
-    print(f"{algorithm.__name__} completed in {elapsed_time:.2f} seconds.")
-    return result, elapsed_time
+
+    # Now time it without compile time
+    start = time()
+    result = algorithm(model, **kwargs).block_until_ready()
+    algorithm_without_compile = time() - start
+    print(f"{algorithm.__name__} completed in {algorithm_without_compile:.2f} seconds.")
+    return result, algorithm_without_compile
 ```
 
 ```{code-cell} ipython3
 σ_pi, pi_time = run_algorithm(howard_policy_iteration, model)
 σ_vfi, vfi_time = run_algorithm(value_function_iteration, model, tol=1e-5)
+```
 
+```{code-cell} ipython3
 m_vals = range(5, 600, 40)
 opi_times = []
 for m in m_vals:
@@ -567,10 +595,10 @@ mystnb:
 ---
 fig, ax = plt.subplots()
 ax.plot(m_vals, 
-        jnp.full(len(m_vals), pi_time), 
+        jnp.full(len(m_vals), hpi_without_compile), 
         lw=2, label="Howard policy iteration")
 ax.plot(m_vals, 
-        jnp.full(len(m_vals), vfi_time), 
+        jnp.full(len(m_vals), vfi_without_compile), 
         lw=2, label="value function iteration")
 ax.plot(m_vals, opi_times, 
         lw=2, label="optimistic policy iteration")

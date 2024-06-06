@@ -31,9 +31,9 @@ import quantecon as qe
 import numpy as np
 import jax
 import jax.numpy as jnp
-from collections import namedtuple
 import matplotlib.pyplot as plt
-import time
+from collections import namedtuple
+from time import time
 ```
 
 Let's check the GPU we are running
@@ -106,7 +106,6 @@ rough comparison with MATLAB.)
 
 The following function contains default parameters and returns tuples that
 contain the key computational components of the model.
-
 
 ```{code-cell} ipython3
 def create_consumption_model(R=1.01,                    # Gross interest rate
@@ -187,7 +186,6 @@ def get_greedy(v, params, sizes, arrays):
     return np.argmax(B(v, params, sizes, arrays), axis=2)
 ```
 
-
 ### Value function iteration
 
 Here's a routine that performs value function iteration.
@@ -215,12 +213,23 @@ params, sizes, arrays = model
 β, R, γ = params
 w_size, y_size = sizes
 w_grid, y_grid, Q = arrays
+```
 
+```{code-cell} ipython3
 print("Starting VFI.")
-start_time = time.time()
+start = time()
 v_star, σ_star = value_function_iteration(model)
-numpy_elapsed = time.time() - start_time
-print(f"VFI completed in {numpy_elapsed} seconds.")
+numpy_with_compile = time() - start
+print(f"VFI completed in {numpy_with_compile} seconds.")
+```
+
+Let's run it again to eliminate compile time.
+
+```{code-cell} ipython3
+start = time()
+v_star, σ_star = value_function_iteration(model)
+numpy_without_compile = time() - start
+print(f"VFI completed in {numpy_without_compile} seconds.")
 ```
 
 Here's a plot of the policy function.
@@ -239,8 +248,6 @@ ax.plot(w_grid, w_grid[σ_star[:, -1]], label="$\\sigma^*(\cdot, y_N)$")
 ax.legend()
 plt.show()
 ```
-
-
 
 ## Switching to JAX
 
@@ -272,7 +279,6 @@ def create_consumption_model(R=1.01,                    # Gross interest rate
     sizes = w_size, y_size
     return (β, R, γ), sizes, (w_grid, y_grid, Q)
 ```
-
 
 The right hand side of the Bellman equation is the same as the NumPy version
 after switching `np` to `jnp`.
@@ -306,8 +312,6 @@ def B(v, params, sizes, arrays):
 
     # Compute the right-hand side of the Bellman equation
     return jnp.where(c > 0, c**(1-γ)/(1-γ) + β * EV, -jnp.inf)
-
-
 ```
 
 Some readers might be concerned that we are creating high dimensional arrays,
@@ -325,7 +329,7 @@ B = jax.jit(B, static_argnums=(2,))
 In the call above, we indicate to the compiler that `sizes` is static, so the
 compiler can parallelize optimally while taking array sizes as fixed.
 
-The Bellman operator $T$ can be implemented by 
+The Bellman operator $T$ can be implemented by
 
 ```{code-cell} ipython3
 def T(v, params, sizes, arrays):
@@ -397,7 +401,7 @@ def value_function_iteration(model, tol=1e-5):
 
 ### Timing
 
-Let's create an instance and unpack it. 
+Let's create an instance and unpack it.
 
 ```{code-cell} ipython3
 model = create_consumption_model()
@@ -412,18 +416,26 @@ Let's see how long it takes to solve this model.
 
 ```{code-cell} ipython3
 print("Starting VFI using vectorization.")
-start_time = time.time()
+start = time()
 v_star_jax, σ_star_jax = value_function_iteration(model)
-jax_elapsed = time.time() - start_time
-print(f"VFI completed in {jax_elapsed} seconds.")
+jax_with_compile = time() - start
+print(f"VFI completed in {jax_with_compile} seconds.")
+```
+
+Let's run it again to eliminate compile time.
+
+```{code-cell} ipython3
+start = time()
+v_star_jax, σ_star_jax = value_function_iteration(model)
+jax_without_compile = time() - start
+print(f"VFI completed in {jax_without_compile} seconds.")
 ```
 
 The relative speed gain is
 
 ```{code-cell} ipython3
-print(f"Relative speed gain = {numpy_elapsed / jax_elapsed}")
+print(f"Relative speed gain = {numpy_without_compile / jax_without_compile}")
 ```
-
 
 This is an impressive speed up and in fact we can do better still by switching
 to alternative algorithms that are better suited to parallelization.
@@ -517,10 +529,19 @@ Let's see how long it takes to solve the model using the `vmap` method.
 
 ```{code-cell} ipython3
 print("Starting VFI using vmap.")
-start_time = time.time()
+start = time()
 v_star_vmap, σ_star_vmap = value_iteration_vmap(model)
-jax_vmap_elapsed = time.time() - start_time
-print(f"VFI completed in {jax_vmap_elapsed} seconds.")
+jax_vmap_with_compile = time() - start
+print(f"VFI completed in {jax_vmap_with_compile} seconds.")
+```
+
+Let's run it again to get rid of compile time.
+
+```{code-cell} ipython3
+start = time()
+v_star_vmap, σ_star_vmap = value_iteration_vmap(model)
+jax_vmap_without_compile = time() - start
+print(f"VFI completed in {jax_vmap_without_compile} seconds.")
 ```
 
 We need to make sure that we got the same result.
@@ -533,13 +554,13 @@ print(jnp.allclose(σ_star_vmap, σ_star_jax))
 Here's the speed gain associated with switching from the NumPy version to JAX with `vmap`:
 
 ```{code-cell} ipython3
-print(f"Relative speed = {numpy_elapsed / jax_vmap_elapsed}")
+print(f"Relative speed = {numpy_without_compile/jax_vmap_without_compile}")
 ```
 
 And here's the comparison with the first JAX implementation (which used direct vectorization).
 
 ```{code-cell} ipython3
-print(f"Relative speed = {jax_elapsed / jax_vmap_elapsed}")
+print(f"Relative speed = {jax_without_compile / jax_vmap_without_compile}")
 ```
 
 The execution times for the two JAX versions are relatively similar.
