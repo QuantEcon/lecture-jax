@@ -12,7 +12,7 @@ jobs:
           ref: ${{ github.event.pull_request.head.sha }}
       - name: Upgrade Nvidia Driver
         shell: bash -l {0}
-        run: sudo apt-get install -y cuda-drivers
+        run: sudo apt-get update && sudo apt-get install -y cuda-drivers
       - name: Check nvidia drivers
         shell: bash -l {0}
         run: |
