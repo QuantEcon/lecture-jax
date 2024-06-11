@@ -4,15 +4,12 @@ jobs:
   preview:
     runs-on: ubuntu-latest-gpu
     container:
-      image: ghcr.io/quantecon/lecture-python-container:cuda-12.3.1-anaconda-2024-02-py311
+      image: ghcr.io/quantecon/lecture-python-container:cuda-12.5.0-anaconda-2024-02-py311
       options: --gpus all
     steps:
       - uses: actions/checkout@v4
         with:
           ref: ${{ github.event.pull_request.head.sha }}
-      - name: Upgrade Nvidia Driver
-        shell: bash -l {0}
-        run: sudo apt-get update && sudo apt-get install -y cuda-drivers
       - name: Check nvidia drivers
         shell: bash -l {0}
         run: |
