@@ -29,13 +29,6 @@ kernelspec:
 ```{index} single: Models; Lucas Asset Pricing
 ```
 
-```{contents} Contents
-:depth: 2
-```
-
-
-
-
 ## Overview
 
 An asset is a claim on a stream of prospective payments.
