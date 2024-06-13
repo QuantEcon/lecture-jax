@@ -29,7 +29,6 @@ In addition to what’s in Anaconda, this lecture will need the following librar
 We use the following imports.
 
 ```{code-cell} ipython3
-import time
 import jax
 import numba
 import jax.numpy as jnp
@@ -39,6 +38,7 @@ import quantecon as qe
 import scipy as sp
 import matplotlib.pyplot as plt
 import seaborn
+from time import time
 ```
 
 ## Description of the model
@@ -767,20 +767,36 @@ b_grid, y_t_nodes, y_n_nodes, Q = arrays
 
 ```{code-cell} ipython3
 print("Computing decentralized solution.")
-in_time = time.time()
+start = time()
 H_eq = compute_equilibrium(parameters, sizes, arrays)
-out_time = time.time()
-diff = out_time - in_time
-print(f"Computed decentralized equilibrium in {diff} seconds")
+diff_d_with_compile = time() - start
+print(f"Computed decentralized equilibrium in {diff_d_with_compile} seconds")
+```
+
+We run it again to get rid of compile time.
+
+```{code-cell} ipython3
+start = time()
+H_eq = compute_equilibrium(parameters, sizes, arrays)
+diff_d_without_compile  = time() - start
+print(f"Computed decentralized equilibrium in {diff_d_without_compile} seconds")
 ```
 
 ```{code-cell} ipython3
 print("Computing planner's solution.")
-in_time = time.time()
+start = time()
 planner_v, H_plan, vfi_num_iter = compute_planner_solution(model)
-out_time = time.time()
-diff = out_time - in_time
-print(f"Computed decentralized equilibrium in {diff} seconds")
+diff_p_with_compile = time() - start
+print(f"Computed planner's equilibrium in {diff_p_with_compile} seconds")
+```
+
+We run it again to eliminate compile time.
+
+```{code-cell} ipython3
+start = time()
+planner_v, H_plan, vfi_num_iter = compute_planner_solution(model)
+diff_p_without_compile = time() - start
+print(f"Computed planner's equilibrium in {diff_p_without_compile} seconds")
 ```
 
 ### Policy plots

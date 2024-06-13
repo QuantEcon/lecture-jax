@@ -56,19 +56,19 @@
   
   <script data-cfasync="false">
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
-    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
-<link href="_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
-<link href="_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link href="_static/styles/theme.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
 
   
-  <link href="_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=b09b2da44b9015b4fa76ea072fa2d8f7faee5492" type="text/css" />
@@ -80,9 +80,9 @@
     <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
-<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
-  <script src="_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=3ee479438cf8b5e0d341" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=3ee479438cf8b5e0d341" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=3ee479438cf8b5e0d341"></script>
 
 
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
@@ -121,7 +121,7 @@ const thebe_selector_output = ".output, .cell_output"
     <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="16. Cake Eating: Numerical Methods" href="cake_eating_numerical.html" />
+    <link rel="next" title="16. Default Risk and Income Fluctuations" href="arellano.html" />
     <link rel="prev" title="14. Inventory Management Model" href="inventory_ssd.html" />
 
 <!-- Normal Meta Tags -->
@@ -302,6 +302,7 @@ Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/envs/quantecon/lib/
 <span class="kn">import</span> <span class="nn">jax</span>
 <span class="kn">import</span> <span class="nn">jax.numpy</span> <span class="k">as</span> <span class="nn">jnp</span>
 <span class="kn">import</span> <span class="nn">numba</span>
+<span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">time</span>
 </pre></div>
 </div>
 </div>
@@ -314,32 +315,26 @@ Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/envs/quantecon/lib/
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/opt/conda/envs/quantecon/lib/python3.11/pty.py:89: RuntimeWarning: os.fork() was called. os.fork() is incompatible with multithreaded code, and JAX is multithreaded, so this will likely lead to a deadlock.
-  pid, fd = os.forkpty()
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Tue May  7 06:59:38 2024       
-+-----------------------------------------------------------------------------+
-| NVIDIA-SMI 470.182.03   Driver Version: 470.182.03   CUDA Version: 12.3     |
-|-------------------------------+----------------------+----------------------+
-| GPU  Name        Persistence-M| Bus-Id        Disp.A | Volatile Uncorr. ECC |
-| Fan  Temp  Perf  Pwr:Usage/Cap|         Memory-Usage | GPU-Util  Compute M. |
-|                               |                      |               MIG M. |
-|===============================+======================+======================|
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>|   0  Tesla V100-SXM2...  Off  | 00000000:00:1E.0 Off |                    0 |
-| N/A   38C    P0    39W / 300W |      0MiB / 16160MiB |      2%      Default |
-|                               |                      |                  N/A |
-+-------------------------------+----------------------+----------------------+
-                                                                               
-+-----------------------------------------------------------------------------+
-| Processes:                                                                  |
-|  GPU   GI   CI        PID   Type   Process name                  GPU Memory |
-|        ID   ID                                                   Usage      |
-|=============================================================================|
-|  No running processes found                                                 |
-+-----------------------------------------------------------------------------+
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Thu Jun 13 03:49:58 2024       
++---------------------------------------------------------------------------------------+
+| NVIDIA-SMI 535.54.03              Driver Version: 535.54.03    CUDA Version: 12.5     |
+|-----------------------------------------+----------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id        Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |         Memory-Usage | GPU-Util  Compute M. |
+|                                         |                      |               MIG M. |
+|=========================================+======================+======================|
+|   0  Tesla T4                       On  | 00000001:00:00.0 Off |                  Off |
+| N/A   46C    P8               9W /  70W |      2MiB / 16384MiB |      0%      Default |
+|                                         |                      |                  N/A |
++-----------------------------------------+----------------------+----------------------+
+                                                                                         
++---------------------------------------------------------------------------------------+
+| Processes:                                                                            |
+|  GPU   GI   CI        PID   Type   Process name                            GPU Memory |
+|        ID   ID                                                             Usage      |
+|=======================================================================================|
+|  No running processes found                                                           |
++---------------------------------------------------------------------------------------+
 </pre></div>
 </div>
 </div>
@@ -782,55 +777,21 @@ model and run the cross-check.</p>
 <p>Here’s a first run of the JAX code.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">a_star_egm_jax</span><span class="p">,</span> <span class="n">σ_star_egm_jax</span> <span class="o">=</span> <span class="n">successive_approx_jax</span><span class="p">(</span><span class="n">model</span><span class="p">,</span>
-                                                       <span class="n">print_skip</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%time</span>
+<span class="n">a_star_egm_jax</span><span class="p">,</span> <span class="n">σ_star_egm_jax</span> <span class="o">=</span> <span class="n">successive_approx_jax</span><span class="p">(</span><span class="n">model</span><span class="p">,</span>
+                                        <span class="n">print_skip</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 100 is 0.003274240577000098.
-Error at iteration 200 is 0.0013133107388259013.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 1000 is 6.472028596182788e-05.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 300 is 0.0006550972250753961.
-Error at iteration 400 is 0.00038003859326907197.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 500 is 0.00024736616926013255.
-Error at iteration 600 is 0.00017446354504913053.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 700 is 0.000129892015863442.
-Error at iteration 800 is 0.00010058769447773841.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 900 is 7.993256952376626e-05.
-Error at iteration 1000 is 6.472028596182788e-05.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 1100 is 5.316228631624398e-05.
-Error at iteration 1200 is 4.425450893941196e-05.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 1300 is 3.7260418253914906e-05.
-Error at iteration 1400 is 3.1614060126861077e-05.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 1500 is 2.6984975752375462e-05.
-Error at iteration 1600 is 2.3148392509719784e-05.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 1700 is 1.9940474091262317e-05.
-Error at iteration 1800 is 1.723818132703947e-05.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 1900 is 1.4947303633494613e-05.
-Error at iteration 2000 is 1.2994575430580468e-05.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 2100 is 1.132223596411741e-05.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 2000 is 1.2994575430580468e-05.
 
 Converged in 2192 iterations.
+CPU times: user 2.36 s, sys: 727 ms, total: 3.09 s
+Wall time: 2.34 s
 </pre></div>
 </div>
 </div>
@@ -838,82 +799,22 @@ Converged in 2192 iterations.
 <p>Next let’s solve the same IFP with Numba.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">qe</span><span class="o">.</span><span class="n">tic</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%time</span>
 <span class="n">a_star_egm_nb</span><span class="p">,</span> <span class="n">σ_star_egm_nb</span> <span class="o">=</span> <span class="n">successive_approx_numba</span><span class="p">(</span><span class="n">model</span><span class="p">,</span>
-                                                        <span class="n">print_skip</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
-<span class="n">qe</span><span class="o">.</span><span class="n">toc</span><span class="p">()</span>
+                                    <span class="n">print_skip</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 100 is 0.0032742405770003202.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 200 is 0.0013133107388259013.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 300 is 0.0006550972250753961.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 400 is 0.0003800385932688499.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 500 is 0.00024736616926013255.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 600 is 0.00017446354504935258.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 700 is 0.000129892015863442.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 800 is 0.00010058769447773841.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 900 is 7.993256952354422e-05.
-</pre></div>
-</div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 1000 is 6.472028596182788e-05.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 1100 is 5.316228631624398e-05.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 1200 is 4.425450893941196e-05.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 1300 is 3.7260418253914906e-05.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 1400 is 3.1614060126861077e-05.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 1500 is 2.6984975752597506e-05.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 1600 is 2.3148392509719784e-05.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 1700 is 1.9940474091262317e-05.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 1800 is 1.7238181326817426e-05.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 1900 is 1.4947303633494613e-05.
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 2000 is 1.2994575430802513e-05.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 2100 is 1.132223596411741e-05.
-</pre></div>
-</div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Converged in 2192 iterations.
-TOC: Elapsed: 0:01:20.84
-</pre></div>
-</div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>80.84676599502563
+CPU times: user 54.1 s, sys: 32.3 ms, total: 54.2 s
+Wall time: 54.2 s
 </pre></div>
 </div>
 </div>
@@ -951,13 +852,14 @@ TOC: Elapsed: 0:01:20.84
 </section>
 <section id="timing">
 <h3><span class="section-number">15.4.2. </span>Timing<a class="headerlink" href="#timing" title="Permalink to this heading">#</a></h3>
-<p>Now let’s compare execution time of the two methods</p>
+<p>Now let’s compare execution time of the two methods.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">qe</span><span class="o">.</span><span class="n">tic</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
 <span class="n">a_star_egm_jax</span><span class="p">,</span> <span class="n">σ_star_egm_jax</span> <span class="o">=</span> <span class="n">successive_approx_jax</span><span class="p">(</span><span class="n">model</span><span class="p">,</span>
                                          <span class="n">print_skip</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
-<span class="n">jax_time</span> <span class="o">=</span> <span class="n">qe</span><span class="o">.</span><span class="n">toc</span><span class="p">()</span>
+<span class="n">jax_time_without_compile</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Jax execution time = &quot;</span><span class="p">,</span> <span class="n">jax_time_without_compile</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -966,20 +868,20 @@ TOC: Elapsed: 0:01:20.84
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 2000 is 1.2994575430580468e-05.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Converged in 2192 iterations.
-TOC: Elapsed: 0:00:3.34
+
+Converged in 2192 iterations.
+Jax execution time =  1.7681024074554443
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">qe</span><span class="o">.</span><span class="n">tic</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
 <span class="n">a_star_egm_nb</span><span class="p">,</span> <span class="n">σ_star_egm_nb</span> <span class="o">=</span> <span class="n">successive_approx_numba</span><span class="p">(</span><span class="n">model</span><span class="p">,</span>
                                          <span class="n">print_skip</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
-<span class="n">numba_time</span> <span class="o">=</span> <span class="n">qe</span><span class="o">.</span><span class="n">toc</span><span class="p">()</span>
+<span class="n">numba_time_without_compile</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Numba execution time = &quot;</span><span class="p">,</span> <span class="n">numba_time_without_compile</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -991,19 +893,19 @@ TOC: Elapsed: 0:00:3.34
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Converged in 2192 iterations.
-TOC: Elapsed: 0:01:18.05
+Numba execution time =  53.108508825302124
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">jax_time</span> <span class="o">/</span> <span class="n">numba_time</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">jax_time_without_compile</span> <span class="o">/</span> <span class="n">numba_time_without_compile</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.042858011017738146
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.03329226232413213
 </pre></div>
 </div>
 </div>
@@ -1166,11 +1068,6 @@ to the model.</p>
    15. Endogenous Grid Method
   </a>
  </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="cake_eating_numerical.html">
-   16. Cake Eating: Numerical Methods
-  </a>
- </li>
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
@@ -1180,22 +1077,22 @@ to the model.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="arellano.html">
-   17. Default Risk and Income Fluctuations
+   16. Default Risk and Income Fluctuations
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="aiyagari_jax.html">
-   18. The Aiyagari Model
+   17. The Aiyagari Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="hopenhayn.html">
-   19. The Hopenhayn Entry-Exit Model
+   18. The Hopenhayn Entry-Exit Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="overborrowing.html">
-   20. Bianchi Overborrowing Model
+   19. Bianchi Overborrowing Model
   </a>
  </li>
 </ul>
@@ -1207,7 +1104,7 @@ to the model.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="mle.html">
-   21. Maximum Likelihood Estimation
+   20. Maximum Likelihood Estimation
   </a>
  </li>
 </ul>
@@ -1219,17 +1116,17 @@ to the model.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   22. Troubleshooting
+   21. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   23. References
+   22. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   24. Execution Statistics
+   23. Execution Statistics
   </a>
  </li>
 </ul>

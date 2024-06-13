@@ -56,19 +56,19 @@
   
   <script data-cfasync="false">
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
-    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
-<link href="_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
-<link href="_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link href="_static/styles/theme.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
 
   
-  <link href="_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=b09b2da44b9015b4fa76ea072fa2d8f7faee5492" type="text/css" />
@@ -80,9 +80,9 @@
     <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
-<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
-  <script src="_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=3ee479438cf8b5e0d341" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=3ee479438cf8b5e0d341" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=3ee479438cf8b5e0d341"></script>
 
 
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
@@ -276,32 +276,26 @@ in high dimensions.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/opt/conda/envs/quantecon/lib/python3.11/pty.py:89: RuntimeWarning: os.fork() was called. os.fork() is incompatible with multithreaded code, and JAX is multithreaded, so this will likely lead to a deadlock.
-  pid, fd = os.forkpty()
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Tue May  7 07:30:37 2024       
-+-----------------------------------------------------------------------------+
-| NVIDIA-SMI 470.182.03   Driver Version: 470.182.03   CUDA Version: 12.3     |
-|-------------------------------+----------------------+----------------------+
-| GPU  Name        Persistence-M| Bus-Id        Disp.A | Volatile Uncorr. ECC |
-| Fan  Temp  Perf  Pwr:Usage/Cap|         Memory-Usage | GPU-Util  Compute M. |
-|                               |                      |               MIG M. |
-|===============================+======================+======================|
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>|   0  Tesla V100-SXM2...  Off  | 00000000:00:1E.0 Off |                    0 |
-| N/A   26C    P0    36W / 300W |      0MiB / 16160MiB |      2%      Default |
-|                               |                      |                  N/A |
-+-------------------------------+----------------------+----------------------+
-                                                                               
-+-----------------------------------------------------------------------------+
-| Processes:                                                                  |
-|  GPU   GI   CI        PID   Type   Process name                  GPU Memory |
-|        ID   ID                                                   Usage      |
-|=============================================================================|
-|  No running processes found                                                 |
-+-----------------------------------------------------------------------------+
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Thu Jun 13 04:26:01 2024       
++---------------------------------------------------------------------------------------+
+| NVIDIA-SMI 535.54.03              Driver Version: 535.54.03    CUDA Version: 12.5     |
+|-----------------------------------------+----------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id        Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |         Memory-Usage | GPU-Util  Compute M. |
+|                                         |                      |               MIG M. |
+|=========================================+======================+======================|
+|   0  Tesla T4                       On  | 00000001:00:00.0 Off |                  Off |
+| N/A   46C    P0              33W /  70W |      2MiB / 16384MiB |      0%      Default |
+|                                         |                      |                  N/A |
++-----------------------------------------+----------------------+----------------------+
+                                                                                         
++---------------------------------------------------------------------------------------+
+| Processes:                                                                            |
+|  GPU   GI   CI        PID   Type   Process name                            GPU Memory |
+|        ID   ID                                                             Usage      |
+|=======================================================================================|
+|  No running processes found                                                           |
++---------------------------------------------------------------------------------------+
 </pre></div>
 </div>
 </div>
@@ -494,7 +488,6 @@ this high-dimensional problem in just a few seconds:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%time</span>
-
 <span class="n">p</span> <span class="o">=</span> <span class="n">newton</span><span class="p">(</span><span class="k">lambda</span> <span class="n">p</span><span class="p">:</span> <span class="n">e</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">),</span> <span class="n">init_p</span><span class="p">)</span><span class="o">.</span><span class="n">block_until_ready</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -502,14 +495,37 @@ this high-dimensional problem in just a few seconds:</p>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>iteration 1, error = 29.97745704650879
 iteration 2, error = 5.092828750610352
-iteration 3, error = 0.10971635580062866
-iteration 4, error = 5.19721070304513e-05
-iteration 5, error = 1.2384003639454022e-05
+iteration 3, error = 0.10971633344888687
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>iteration 6, error = 4.883217570750276e-06
-CPU times: user 4.15 s, sys: 1.05 s, total: 5.2 s
-Wall time: 3.61 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>iteration 4, error = 5.172625606064685e-05
+iteration 5, error = 1.1878533769049682e-05
+iteration 6, error = 4.457215709408047e-06
+CPU times: user 4.8 s, sys: 221 ms, total: 5.02 s
+Wall time: 4.88 s
+</pre></div>
+</div>
+</div>
+</div>
+<p>We run it again to eliminate compile time.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%time</span>
+<span class="n">p</span> <span class="o">=</span> <span class="n">newton</span><span class="p">(</span><span class="k">lambda</span> <span class="n">p</span><span class="p">:</span> <span class="n">e</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">),</span> <span class="n">init_p</span><span class="p">)</span><span class="o">.</span><span class="n">block_until_ready</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>iteration 1, error = 29.97745704650879
+iteration 2, error = 5.092828750610352
+iteration 3, error = 0.10971633344888687
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>iteration 4, error = 5.172625606064685e-05
+iteration 5, error = 1.1878533769049682e-05
+iteration 6, error = 4.457215709408047e-06
+CPU times: user 1.35 s, sys: 170 ms, total: 1.52 s
+Wall time: 1.4 s
 </pre></div>
 </div>
 </div>
@@ -532,7 +548,6 @@ even with the Jacobian supplied.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%time</span>
-
 <span class="n">solution</span> <span class="o">=</span> <span class="n">root</span><span class="p">(</span><span class="k">lambda</span> <span class="n">p</span><span class="p">:</span> <span class="n">e</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">),</span>
                 <span class="n">init_p</span><span class="p">,</span>
                 <span class="n">jac</span><span class="o">=</span><span class="k">lambda</span> <span class="n">p</span><span class="p">:</span> <span class="n">jax</span><span class="o">.</span><span class="n">jacobian</span><span class="p">(</span><span class="n">e</span><span class="p">)(</span><span class="n">p</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">),</span>
@@ -542,8 +557,8 @@ even with the Jacobian supplied.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 2min 26s, sys: 356 ms, total: 2min 26s
-Wall time: 2min 25s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1min 51s, sys: 144 ms, total: 1min 52s
+Wall time: 1min 52s
 </pre></div>
 </div>
 </div>
@@ -557,7 +572,7 @@ Wall time: 2min 25s
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Array(7.1525574e-07, dtype=float32)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Array(8.34465e-07, dtype=float32)
 </pre></div>
 </div>
 </div>
@@ -667,18 +682,17 @@ iteration 3, error = 4.294127464294434
 iteration 4, error = 0.3854290544986725
 iteration 5, error = 0.0054382034577429295
 iteration 6, error = 8.92080606718082e-07
-CPU times: user 178 ms, sys: 24.7 ms, total: 203 ms
-Wall time: 238 ms
+CPU times: user 126 ms, sys: 87 µs, total: 126 ms
+Wall time: 163 ms
 ----------------------------------------------------------------
 Attempt 2: Starting value is [3. 5. 5.] 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>iteration 1, error = 2.0701100826263428
+
+iteration 1, error = 2.0701100826263428
 iteration 2, error = 0.12642373144626617
 iteration 3, error = 0.0006017307168804109
 iteration 4, error = 3.3717478231665154e-07
-CPU times: user 95.8 ms, sys: 8.21 ms, total: 104 ms
-Wall time: 90.7 ms
+CPU times: user 69.8 ms, sys: 84 µs, total: 69.9 ms
+Wall time: 65.5 ms
 ----------------------------------------------------------------
 Attempt 3: Starting value is [50. 50. 50.] 
 </pre></div>
@@ -691,8 +705,8 @@ iteration 3, error = 0.6806989312171936
 iteration 4, error = 0.016202213242650032
 iteration 5, error = 1.0600916539260652e-05
 iteration 6, error = 9.830249609876773e-07
-CPU times: user 223 ms, sys: 12.4 ms, total: 235 ms
-Wall time: 212 ms
+CPU times: user 156 ms, sys: 12.1 ms, total: 168 ms
+Wall time: 158 ms
 ----------------------------------------------------------------
 </pre></div>
 </div>
@@ -731,11 +745,34 @@ Wall time: 212 ms
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>iteration 1, error = 1.5745922327041626
-iteration 2, error = 0.21344946324825287
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>iteration 2, error = 0.21344946324825287
 iteration 3, error = 0.002045975998044014
 iteration 4, error = 8.259061701210157e-07
-CPU times: user 209 ms, sys: 4.51 ms, total: 213 ms
-Wall time: 216 ms
+CPU times: user 137 ms, sys: 7.99 ms, total: 145 ms
+Wall time: 161 ms
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Now we time it without compile</span>
+<span class="o">%</span><span class="k">time</span> k = newton(lambda k: multivariate_solow(k, A=A, s=s, α=α, δ=δ) - k, \
+                 <span class="n">init</span><span class="p">)</span><span class="o">.</span><span class="n">block_until_ready</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>iteration 1, error = 1.5745922327041626
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>iteration 2, error = 0.21344946324825287
+iteration 3, error = 0.002045975998044014
+iteration 4, error = 8.259061701210157e-07
+CPU times: user 143 ms, sys: 327 µs, total: 144 ms
+Wall time: 134 ms
 </pre></div>
 </div>
 </div>
@@ -749,8 +786,7 @@ Wall time: 216 ms
 <span class="n">init</span> <span class="o">=</span> <span class="n">init</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;float64&#39;</span><span class="p">)</span>
 
 <span class="o">%</span><span class="k">time</span> k = newton(lambda k: multivariate_solow(k, A=A, s=s, α=α, δ=δ) - k,\
-                 <span class="n">init</span><span class="p">,</span>\
-                 <span class="n">tol</span><span class="o">=</span><span class="mf">1e-7</span><span class="p">)</span><span class="o">.</span><span class="n">block_until_ready</span><span class="p">()</span>
+                 <span class="n">init</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-7</span><span class="p">)</span><span class="o">.</span><span class="n">block_until_ready</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -760,8 +796,28 @@ iteration 2, error = 0.21344933091258958
 iteration 3, error = 0.0020465547718452695
 iteration 4, error = 2.0309190076799282e-07
 iteration 5, error = 1.538370149106851e-15
-CPU times: user 189 ms, sys: 16.4 ms, total: 205 ms
-Wall time: 259 ms
+CPU times: user 144 ms, sys: 11.9 ms, total: 156 ms
+Wall time: 204 ms
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Now we time it without compile</span>
+<span class="o">%</span><span class="k">time</span> k = newton(lambda k: multivariate_solow(k, A=A, s=s, α=α, δ=δ) - k,\
+                 <span class="n">init</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-7</span><span class="p">)</span><span class="o">.</span><span class="n">block_until_ready</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>iteration 1, error = 1.5745916432444333
+iteration 2, error = 0.21344933091258958
+iteration 3, error = 0.0020465547718452695
+iteration 4, error = 2.0309190076799282e-07
+iteration 5, error = 1.538370149106851e-15
+CPU times: user 69.2 ms, sys: 3.98 ms, total: 73.2 ms
+Wall time: 91.4 ms
 </pre></div>
 </div>
 </div>
@@ -851,13 +907,12 @@ c = \begin{pmatrix}
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>iteration 1, error = 9.243805733085065
 iteration 2, error = nan
-CPU times: user 104 ms, sys: 4.02 ms, total: 108 ms
-Wall time: 128 ms
+CPU times: user 87 ms, sys: 0 ns, total: 87 ms
+Wall time: 107 ms
 ----------------------------------------------------------------
 Attempt 2: Starting value is [4.5 0.1 4. ] 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>iteration 1, error = 4.892018895185869
+
+iteration 1, error = 4.892018895185869
 iteration 2, error = 1.2120550201694784
 iteration 3, error = 0.6942087122866175
 iteration 4, error = 0.168951089180319
@@ -865,8 +920,8 @@ iteration 5, error = 0.005209730313222213
 iteration 6, error = 4.3632751705775364e-06
 iteration 7, error = 3.0460818773540415e-12
 iteration 8, error = 0.0
-CPU times: user 90.4 ms, sys: 8.33 ms, total: 98.7 ms
-Wall time: 81.4 ms
+CPU times: user 61.5 ms, sys: 48 µs, total: 61.5 ms
+Wall time: 56.8 ms
 ----------------------------------------------------------------
 </pre></div>
 </div>
@@ -1044,11 +1099,6 @@ Wall time: 81.4 ms
    15. Endogenous Grid Method
   </a>
  </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="cake_eating_numerical.html">
-   16. Cake Eating: Numerical Methods
-  </a>
- </li>
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
@@ -1058,22 +1108,22 @@ Wall time: 81.4 ms
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="arellano.html">
-   17. Default Risk and Income Fluctuations
+   16. Default Risk and Income Fluctuations
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="aiyagari_jax.html">
-   18. The Aiyagari Model
+   17. The Aiyagari Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="hopenhayn.html">
-   19. The Hopenhayn Entry-Exit Model
+   18. The Hopenhayn Entry-Exit Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="overborrowing.html">
-   20. Bianchi Overborrowing Model
+   19. Bianchi Overborrowing Model
   </a>
  </li>
 </ul>
@@ -1085,7 +1135,7 @@ Wall time: 81.4 ms
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="mle.html">
-   21. Maximum Likelihood Estimation
+   20. Maximum Likelihood Estimation
   </a>
  </li>
 </ul>
@@ -1097,17 +1147,17 @@ Wall time: 81.4 ms
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   22. Troubleshooting
+   21. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   23. References
+   22. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   24. Execution Statistics
+   23. Execution Statistics
   </a>
  </li>
 </ul>

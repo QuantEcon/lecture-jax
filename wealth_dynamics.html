@@ -56,19 +56,19 @@
   
   <script data-cfasync="false">
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
-    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
-<link href="_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
-<link href="_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link href="_static/styles/theme.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
 
   
-  <link href="_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=b09b2da44b9015b4fa76ea072fa2d8f7faee5492" type="text/css" />
@@ -80,9 +80,9 @@
     <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
-<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
-  <script src="_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=3ee479438cf8b5e0d341" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=3ee479438cf8b5e0d341" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=3ee479438cf8b5e0d341"></script>
 
 
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
@@ -276,11 +276,11 @@ inequality, such as the Gini coefficient.</p>
 </summary>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /opt/conda/envs/quantecon/lib/python3.11/site-packages (0.7.2)
-Requirement already satisfied: numba&gt;=0.49.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (0.59.0)
-Requirement already satisfied: numpy&gt;=1.17.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (1.26.4)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: requests in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (2.31.0)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: numba&gt;=0.49.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (0.59.0)
+Requirement already satisfied: numpy&gt;=1.17.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (1.26.4)
+Requirement already satisfied: requests in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (2.31.0)
 Requirement already satisfied: scipy&gt;=1.5.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (1.11.4)
 Requirement already satisfied: sympy in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (1.12)
 Requirement already satisfied: llvmlite&lt;0.43,&gt;=0.42.0dev0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from numba&gt;=0.49.0-&gt;quantecon) (0.42.0)
@@ -321,32 +321,26 @@ Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/envs/quantecon/lib/
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/opt/conda/envs/quantecon/lib/python3.11/pty.py:89: RuntimeWarning: os.fork() was called. os.fork() is incompatible with multithreaded code, and JAX is multithreaded, so this will likely lead to a deadlock.
-  pid, fd = os.forkpty()
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Tue May  7 07:35:25 2024       
-+-----------------------------------------------------------------------------+
-| NVIDIA-SMI 470.182.03   Driver Version: 470.182.03   CUDA Version: 12.3     |
-|-------------------------------+----------------------+----------------------+
-| GPU  Name        Persistence-M| Bus-Id        Disp.A | Volatile Uncorr. ECC |
-| Fan  Temp  Perf  Pwr:Usage/Cap|         Memory-Usage | GPU-Util  Compute M. |
-|                               |                      |               MIG M. |
-|===============================+======================+======================|
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>|   0  Tesla V100-SXM2...  Off  | 00000000:00:1E.0 Off |                    0 |
-| N/A   25C    P0    36W / 300W |      0MiB / 16160MiB |      2%      Default |
-|                               |                      |                  N/A |
-+-------------------------------+----------------------+----------------------+
-                                                                               
-+-----------------------------------------------------------------------------+
-| Processes:                                                                  |
-|  GPU   GI   CI        PID   Type   Process name                  GPU Memory |
-|        ID   ID                                                   Usage      |
-|=============================================================================|
-|  No running processes found                                                 |
-+-----------------------------------------------------------------------------+
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Thu Jun 13 04:31:18 2024       
++---------------------------------------------------------------------------------------+
+| NVIDIA-SMI 535.54.03              Driver Version: 535.54.03    CUDA Version: 12.5     |
+|-----------------------------------------+----------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id        Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |         Memory-Usage | GPU-Util  Compute M. |
+|                                         |                      |               MIG M. |
+|=========================================+======================+======================|
+|   0  Tesla T4                       On  | 00000001:00:00.0 Off |                  Off |
+| N/A   58C    P8              10W /  70W |      2MiB / 16384MiB |      0%      Default |
+|                                         |                      |                  N/A |
++-----------------------------------------+----------------------+----------------------+
+                                                                                         
++---------------------------------------------------------------------------------------+
+| Processes:                                                                            |
+|  GPU   GI   CI        PID   Type   Process name                            GPU Memory |
+|        ID   ID                                                             Usage      |
+|=======================================================================================|
+|  No running processes found                                                           |
++---------------------------------------------------------------------------------------+
 </pre></div>
 </div>
 </div>
@@ -522,7 +516,7 @@ current value of the aggregate shock</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/f8288a0358b7502119667e6405d94e4f40832c834f8b6601dab0c088bcbeaa9a.png"><img alt="_images/f8288a0358b7502119667e6405d94e4f40832c834f8b6601dab0c088bcbeaa9a.png" src="_images/f8288a0358b7502119667e6405d94e4f40832c834f8b6601dab0c088bcbeaa9a.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/5cf3b3546d0c1737c035e29cf742237c97aa030800c60afe32bbc71f0d6fc9ef.png"><img alt="_images/5cf3b3546d0c1737c035e29cf742237c97aa030800c60afe32bbc71f0d6fc9ef.png" src="_images/5cf3b3546d0c1737c035e29cf742237c97aa030800c60afe32bbc71f0d6fc9ef.png" style="width: 80%;" /></a>
 </div>
 </div>
 <p>Notice the large spikes in wealth over time.</p>
@@ -579,10 +573,10 @@ is known.</p>
 <span class="n">z_sequence</span> <span class="o">=</span> <span class="n">generate_aggregate_state_sequence</span><span class="p">(</span><span class="n">aggregate_params</span><span class="p">,</span>
                                                <span class="n">length</span><span class="o">=</span><span class="n">sim_length</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Generating cross-section using Numba&quot;</span><span class="p">)</span>
-<span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
+<span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
 <span class="n">ψ_star</span> <span class="o">=</span> <span class="n">update_cross_section</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">ψ_0</span><span class="p">,</span> <span class="n">z_sequence</span><span class="p">)</span>
-<span class="n">numba_time</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Generated cross-section in </span><span class="si">{</span><span class="n">numba_time</span><span class="si">}</span><span class="s2"> seconds.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">numba_with_compile</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Generated cross-section in </span><span class="si">{</span><span class="n">numba_with_compile</span><span class="si">}</span><span class="s2"> seconds.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -590,7 +584,23 @@ is known.</p>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Generating cross-section using Numba
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Generated cross-section in 50.00612998008728 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Generated cross-section in 56.959468126297 seconds.
+</pre></div>
+</div>
+</div>
+</div>
+<p>We run it again to eliminate compile time.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
+<span class="n">ψ_star</span> <span class="o">=</span> <span class="n">update_cross_section</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">ψ_0</span><span class="p">,</span> <span class="n">z_sequence</span><span class="p">)</span>
+<span class="n">numba_without_compile</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Generated cross-section in </span><span class="si">{</span><span class="n">numba_without_compile</span><span class="si">}</span><span class="s2"> seconds.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Generated cross-section in 56.71404027938843 seconds.
 </pre></div>
 </div>
 </div>
@@ -654,10 +664,10 @@ using JAX</p>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Generating cross-section using JAX&quot;</span><span class="p">)</span>
 <span class="n">key</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">PRNGKey</span><span class="p">(</span><span class="mi">1234</span><span class="p">)</span>
-<span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
-<span class="n">ψ_star</span> <span class="o">=</span> <span class="n">update_cross_section_jax</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">ψ_0</span><span class="p">,</span> <span class="n">z_sequence</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
-<span class="n">jax_time</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Generated cross-section in </span><span class="si">{</span><span class="n">jax_time</span><span class="si">}</span><span class="s2"> seconds.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
+<span class="n">ψ_star</span> <span class="o">=</span> <span class="n">update_cross_section_jax</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">ψ_0</span><span class="p">,</span> <span class="n">z_sequence</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span><span class="o">.</span><span class="n">block_until_ready</span><span class="p">()</span>
+<span class="n">jax_with_compile</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Generated cross-section in </span><span class="si">{</span><span class="n">jax_with_compile</span><span class="si">}</span><span class="s2"> seconds.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -665,7 +675,7 @@ using JAX</p>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Generating cross-section using JAX
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Generated cross-section in 1.8127212524414062 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Generated cross-section in 2.2762949466705322 seconds.
 </pre></div>
 </div>
 </div>
@@ -674,10 +684,10 @@ using JAX</p>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Repeating without compile time.&quot;</span><span class="p">)</span>
 <span class="n">key</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">PRNGKey</span><span class="p">(</span><span class="mi">1234</span><span class="p">)</span>
-<span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
-<span class="n">ψ_star</span> <span class="o">=</span> <span class="n">update_cross_section_jax</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">ψ_0</span><span class="p">,</span> <span class="n">z_sequence</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
-<span class="n">jax_time</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Generated cross-section in </span><span class="si">{</span><span class="n">jax_time</span><span class="si">}</span><span class="s2"> seconds&quot;</span><span class="p">)</span>
+<span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
+<span class="n">ψ_star</span> <span class="o">=</span> <span class="n">update_cross_section_jax</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">ψ_0</span><span class="p">,</span> <span class="n">z_sequence</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span><span class="o">.</span><span class="n">block_until_ready</span><span class="p">()</span>
+<span class="n">jax_without_compile</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Generated cross-section in </span><span class="si">{</span><span class="n">jax_without_compile</span><span class="si">}</span><span class="s2"> seconds&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -685,7 +695,7 @@ using JAX</p>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Repeating without compile time.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Generated cross-section in 0.777886152267456 seconds
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Generated cross-section in 1.2332696914672852 seconds
 </pre></div>
 </div>
 </div>
@@ -748,12 +758,12 @@ using JAX</p>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Generating cross-section using JAX with compiled loop&quot;</span><span class="p">)</span>
 <span class="n">key</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">PRNGKey</span><span class="p">(</span><span class="mi">1234</span><span class="p">)</span>
-<span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
+<span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
 <span class="n">ψ_star</span> <span class="o">=</span> <span class="n">update_cross_section_jax_compiled</span><span class="p">(</span>
         <span class="n">model</span><span class="p">,</span> <span class="n">ψ_0</span><span class="p">,</span> <span class="n">num_households</span><span class="p">,</span> <span class="n">z_sequence</span><span class="p">,</span> <span class="n">key</span>
-<span class="p">)</span>
-<span class="n">jax_fori_time</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Generated cross-section in </span><span class="si">{</span><span class="n">jax_fori_time</span><span class="si">}</span><span class="s2"> seconds.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="p">)</span><span class="o">.</span><span class="n">block_until_ready</span><span class="p">()</span>
+<span class="n">jax_fori_with_compile</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Generated cross-section in </span><span class="si">{</span><span class="n">jax_fori_with_compile</span><span class="si">}</span><span class="s2"> seconds.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -761,7 +771,7 @@ using JAX</p>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Generating cross-section using JAX with compiled loop
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Generated cross-section in 0.324845552444458 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Generated cross-section in 0.5849342346191406 seconds.
 </pre></div>
 </div>
 </div>
@@ -770,30 +780,30 @@ using JAX</p>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Repeating without compile time&quot;</span><span class="p">)</span>
 <span class="n">key</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">PRNGKey</span><span class="p">(</span><span class="mi">1234</span><span class="p">)</span>
-<span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
+<span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
 <span class="n">ψ_star</span> <span class="o">=</span> <span class="n">update_cross_section_jax_compiled</span><span class="p">(</span>
         <span class="n">model</span><span class="p">,</span> <span class="n">ψ_0</span><span class="p">,</span> <span class="n">num_households</span><span class="p">,</span> <span class="n">z_sequence</span><span class="p">,</span> <span class="n">key</span>
-<span class="p">)</span>
-<span class="n">jax_fori_time</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Generated cross-section in </span><span class="si">{</span><span class="n">jax_fori_time</span><span class="si">}</span><span class="s2"> seconds&quot;</span><span class="p">)</span>
+<span class="p">)</span><span class="o">.</span><span class="n">block_until_ready</span><span class="p">()</span>
+<span class="n">jax_fori_without_compile</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Generated cross-section in </span><span class="si">{</span><span class="n">jax_fori_without_compile</span><span class="si">}</span><span class="s2"> seconds&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Repeating without compile time
-Generated cross-section in 0.17185378074645996 seconds
+Generated cross-section in 0.17472052574157715 seconds
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;JAX is </span><span class="si">{</span><span class="n">numba_time</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">jax_fori_time</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> times faster.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;JAX is </span><span class="si">{</span><span class="n">numba_without_compile</span><span class="o">/</span><span class="n">jax_fori_without_compile</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> times faster.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>JAX is 290.9807 times faster.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>JAX is 324.5986 times faster.
 </pre></div>
 </div>
 </div>
@@ -826,7 +836,7 @@ that generates a cross-section of wealth and generating a suitable rank-size plo
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/3c1ea6a3e807d846087db26c6fd7cdb057efdce31f14ce52fac4cbbcfd75b5c4.png"><img alt="_images/3c1ea6a3e807d846087db26c6fd7cdb057efdce31f14ce52fac4cbbcfd75b5c4.png" src="_images/3c1ea6a3e807d846087db26c6fd7cdb057efdce31f14ce52fac4cbbcfd75b5c4.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/06e2ba95aa9d82f2aa3c395c28b652c57144e9a6ef2c12cbb5dffe2d8ddecd57.png"><img alt="_images/06e2ba95aa9d82f2aa3c395c28b652c57144e9a6ef2c12cbb5dffe2d8ddecd57.png" src="_images/06e2ba95aa9d82f2aa3c395c28b652c57144e9a6ef2c12cbb5dffe2d8ddecd57.png" style="width: 80%;" /></a>
 </div>
 </div>
 </section>
@@ -894,21 +904,22 @@ generates data points <span class="math notranslate nohighlight">\((x_i, y_i)_{i
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1.37 s, sys: 8.37 ms, total: 1.38 s
-Wall time: 1.94 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 874 ms, sys: 4.02 ms, total: 878 ms
+Wall time: 1.35 s
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">time</span> x, y = lorenz_curve_jax(ψ_star, num_households)
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Now time it without compile time</span>
+<span class="o">%</span><span class="k">time</span> x, y = lorenz_curve_jax(ψ_star, num_households)
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 699 µs, sys: 4 µs, total: 703 µs
-Wall time: 317 µs
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 345 µs, sys: 0 ns, total: 345 µs
+Wall time: 182 µs
 </pre></div>
 </div>
 </div>
@@ -924,7 +935,7 @@ Wall time: 317 µs
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/835f8daf06e2c9bed4374c3b9006239417cdbff4252f97f6b894612f030b7e87.png"><img alt="_images/835f8daf06e2c9bed4374c3b9006239417cdbff4252f97f6b894612f030b7e87.png" src="_images/835f8daf06e2c9bed4374c3b9006239417cdbff4252f97f6b894612f030b7e87.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/11447ddec383980fab08ad41b1c206dd77effc19eea8ec9a1511ab7f8f2ff175.png"><img alt="_images/11447ddec383980fab08ad41b1c206dd77effc19eea8ec9a1511ab7f8f2ff175.png" src="_images/11447ddec383980fab08ad41b1c206dd77effc19eea8ec9a1511ab7f8f2ff175.png" style="width: 80%;" /></a>
 </div>
 </div>
 </section>
@@ -959,25 +970,34 @@ G :=
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 104 ms, sys: 21 µs, total: 104 ms
-Wall time: 3.06 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 71.8 ms, sys: 4.01 ms, total: 75.8 ms
+Wall time: 8.49 s
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">time</span> gini = gini_jax(ψ_star, num_households).block_until_ready()
-<span class="n">gini</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Now time it without compilation</span>
+<span class="o">%</span><span class="k">time</span> gini = gini_jax(ψ_star, num_households).block_until_ready()
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 2.76 ms, sys: 9 µs, total: 2.77 ms
-Wall time: 2.86 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 2.14 ms, sys: 5 µs, total: 2.14 ms
+Wall time: 8.29 s
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Array(0.7485647, dtype=float32)
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gini</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Array(0.75700235, dtype=float32)
 </pre></div>
 </div>
 </div>
@@ -1019,33 +1039,38 @@ Wall time: 2.86 s
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">time</span> gini = gini_jax_vmap(ψ_star).block_until_ready()
-<span class="n">gini</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 107 ms, sys: 40 µs, total: 107 ms
-Wall time: 2.96 s
-</pre></div>
-</div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Array(0.7485647, dtype=float32)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 76.1 ms, sys: 1e+03 ns, total: 76.1 ms
+Wall time: 8.41 s
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">time</span> gini = gini_jax_vmap(ψ_star).block_until_ready()
-<span class="n">gini</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Now time it without compile time</span>
+<span class="o">%</span><span class="k">time</span> gini = gini_jax_vmap(ψ_star).block_until_ready()
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 3.98 ms, sys: 23 µs, total: 4 ms
-Wall time: 2.86 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 2.32 ms, sys: 7 µs, total: 2.33 ms
+Wall time: 8.38 s
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Array(0.7485647, dtype=float32)
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gini</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Array(0.75700235, dtype=float32)
 </pre></div>
 </div>
 </div>
@@ -1115,7 +1140,7 @@ Wall time: 2.86 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/acd31182888d7c1680ce1871ddcb72164204216abdc506a4b0c71976f13eaf22.png"><img alt="_images/acd31182888d7c1680ce1871ddcb72164204216abdc506a4b0c71976f13eaf22.png" src="_images/acd31182888d7c1680ce1871ddcb72164204216abdc506a4b0c71976f13eaf22.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/c1a7d29e7f4990a27f98fc140968fadbb9239c2ab1153c474246ea8de560700a.png"><img alt="_images/c1a7d29e7f4990a27f98fc140968fadbb9239c2ab1153c474246ea8de560700a.png" src="_images/c1a7d29e7f4990a27f98fc140968fadbb9239c2ab1153c474246ea8de560700a.png" style="width: 80%;" /></a>
 </div>
 </div>
 <p>The Lorenz curve shifts downwards as returns on financial income rise, indicating a rise in inequality.</p>
@@ -1131,7 +1156,7 @@ Wall time: 2.86 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/708184165238bf77be094558ec94eb4f06647769d358a8dba8b8dc24dacba468.png"><img alt="_images/708184165238bf77be094558ec94eb4f06647769d358a8dba8b8dc24dacba468.png" src="_images/708184165238bf77be094558ec94eb4f06647769d358a8dba8b8dc24dacba468.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/dda75cc5347accfbaea10446e18e764734ec972776bb8be0375ee45c8c87c02d.png"><img alt="_images/dda75cc5347accfbaea10446e18e764734ec972776bb8be0375ee45c8c87c02d.png" src="_images/dda75cc5347accfbaea10446e18e764734ec972776bb8be0375ee45c8c87c02d.png" style="width: 80%;" /></a>
 </div>
 </div>
 <p>As expected, inequality increases as returns on financial income rise.</p>
@@ -1181,7 +1206,7 @@ Wall time: 2.86 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/16b8c980d7d0bd19f4bd8fdf5221f4ce325ce476ee689eaff177041fcb00f411.png"><img alt="_images/16b8c980d7d0bd19f4bd8fdf5221f4ce325ce476ee689eaff177041fcb00f411.png" src="_images/16b8c980d7d0bd19f4bd8fdf5221f4ce325ce476ee689eaff177041fcb00f411.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/4d7af8079b6a0d4fa1da338925eadba886083d9fdb95741a00ac3242e80baec5.png"><img alt="_images/4d7af8079b6a0d4fa1da338925eadba886083d9fdb95741a00ac3242e80baec5.png" src="_images/4d7af8079b6a0d4fa1da338925eadba886083d9fdb95741a00ac3242e80baec5.png" style="width: 80%;" /></a>
 </div>
 </div>
 <div class="cell docutils container">
@@ -1195,7 +1220,7 @@ Wall time: 2.86 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/fcaf188ef1d80711b04be0381c7f0cfd01df9c39d68a3c890c1fe17bb7f4682b.png"><img alt="_images/fcaf188ef1d80711b04be0381c7f0cfd01df9c39d68a3c890c1fe17bb7f4682b.png" src="_images/fcaf188ef1d80711b04be0381c7f0cfd01df9c39d68a3c890c1fe17bb7f4682b.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/f9d2b4c30540c6040e17308f2b0d237f1c160ed15386a94991b3f36146370a3a.png"><img alt="_images/f9d2b4c30540c6040e17308f2b0d237f1c160ed15386a94991b3f36146370a3a.png" src="_images/f9d2b4c30540c6040e17308f2b0d237f1c160ed15386a94991b3f36146370a3a.png" style="width: 80%;" /></a>
 </div>
 </div>
 </section>
@@ -1258,7 +1283,7 @@ Wall time: 2.86 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/8805d21d165e733a9fa1985600bf2bd29dbc025aaae95d45a1bf1c30ddd2e0f9.png"><img alt="_images/8805d21d165e733a9fa1985600bf2bd29dbc025aaae95d45a1bf1c30ddd2e0f9.png" src="_images/8805d21d165e733a9fa1985600bf2bd29dbc025aaae95d45a1bf1c30ddd2e0f9.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/7783c56b5ef40971d685193e14bb51554a7af19ce3bfc477144a68b0e4345d08.png"><img alt="_images/7783c56b5ef40971d685193e14bb51554a7af19ce3bfc477144a68b0e4345d08.png" src="_images/7783c56b5ef40971d685193e14bb51554a7af19ce3bfc477144a68b0e4345d08.png" style="width: 80%;" /></a>
 </div>
 </div>
 </section>
@@ -1417,11 +1442,6 @@ Wall time: 2.86 s
    15. Endogenous Grid Method
   </a>
  </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="cake_eating_numerical.html">
-   16. Cake Eating: Numerical Methods
-  </a>
- </li>
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
@@ -1431,22 +1451,22 @@ Wall time: 2.86 s
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="arellano.html">
-   17. Default Risk and Income Fluctuations
+   16. Default Risk and Income Fluctuations
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="aiyagari_jax.html">
-   18. The Aiyagari Model
+   17. The Aiyagari Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="hopenhayn.html">
-   19. The Hopenhayn Entry-Exit Model
+   18. The Hopenhayn Entry-Exit Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="overborrowing.html">
-   20. Bianchi Overborrowing Model
+   19. Bianchi Overborrowing Model
   </a>
  </li>
 </ul>
@@ -1458,7 +1478,7 @@ Wall time: 2.86 s
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="mle.html">
-   21. Maximum Likelihood Estimation
+   20. Maximum Likelihood Estimation
   </a>
  </li>
 </ul>
@@ -1470,17 +1490,17 @@ Wall time: 2.86 s
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   22. Troubleshooting
+   21. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   23. References
+   22. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   24. Execution Statistics
+   23. Execution Statistics
   </a>
  </li>
 </ul>

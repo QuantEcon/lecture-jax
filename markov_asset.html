@@ -56,19 +56,19 @@
   
   <script data-cfasync="false">
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
-    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
-<link href="_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
-<link href="_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link href="_static/styles/theme.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
 
   
-  <link href="_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=b09b2da44b9015b4fa76ea072fa2d8f7faee5492" type="text/css" />
@@ -80,9 +80,9 @@
     <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
-<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
-  <script src="_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=3ee479438cf8b5e0d341" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=3ee479438cf8b5e0d341" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=3ee479438cf8b5e0d341"></script>
 
 
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
@@ -266,28 +266,26 @@ you can jump to <a class="reference internal" href="#equation-eq-ntecx2">(8.13)<
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Tue May  7 07:30:04 2024       
-+-----------------------------------------------------------------------------+
-| NVIDIA-SMI 470.182.03   Driver Version: 470.182.03   CUDA Version: 12.3     |
-|-------------------------------+----------------------+----------------------+
-| GPU  Name        Persistence-M| Bus-Id        Disp.A | Volatile Uncorr. ECC |
-| Fan  Temp  Perf  Pwr:Usage/Cap|         Memory-Usage | GPU-Util  Compute M. |
-|                               |                      |               MIG M. |
-|===============================+======================+======================|
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>|   0  Tesla V100-SXM2...  Off  | 00000000:00:1E.0 Off |                    0 |
-| N/A   28C    P0    36W / 300W |      0MiB / 16160MiB |      2%      Default |
-|                               |                      |                  N/A |
-+-------------------------------+----------------------+----------------------+
-                                                                               
-+-----------------------------------------------------------------------------+
-| Processes:                                                                  |
-|  GPU   GI   CI        PID   Type   Process name                  GPU Memory |
-|        ID   ID                                                   Usage      |
-|=============================================================================|
-|  No running processes found                                                 |
-+-----------------------------------------------------------------------------+
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Thu Jun 13 04:25:35 2024       
++---------------------------------------------------------------------------------------+
+| NVIDIA-SMI 535.54.03              Driver Version: 535.54.03    CUDA Version: 12.5     |
+|-----------------------------------------+----------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id        Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |         Memory-Usage | GPU-Util  Compute M. |
+|                                         |                      |               MIG M. |
+|=========================================+======================+======================|
+|   0  Tesla T4                       On  | 00000001:00:00.0 Off |                  Off |
+| N/A   45C    P0              33W /  70W |      2MiB / 16384MiB |      0%      Default |
+|                                         |                      |                  N/A |
++-----------------------------------------+----------------------+----------------------+
+                                                                                         
++---------------------------------------------------------------------------------------+
+| Processes:                                                                            |
+|  GPU   GI   CI        PID   Type   Process name                            GPU Memory |
+|        ID   ID                                                             Usage      |
+|=======================================================================================|
+|  No running processes found                                                           |
++---------------------------------------------------------------------------------------+
 </pre></div>
 </div>
 </div>
@@ -306,10 +304,10 @@ you can jump to <a class="reference internal" href="#equation-eq-ntecx2">(8.13)<
 </summary>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /opt/conda/envs/quantecon/lib/python3.11/site-packages (0.7.2)
-Requirement already satisfied: numba&gt;=0.49.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (0.59.0)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: numpy&gt;=1.17.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (1.26.4)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: numba&gt;=0.49.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (0.59.0)
+Requirement already satisfied: numpy&gt;=1.17.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (1.26.4)
 Requirement already satisfied: requests in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (2.31.0)
 Requirement already satisfied: scipy&gt;=1.5.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (1.11.4)
 Requirement already satisfied: sympy in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (1.12)
@@ -338,6 +336,7 @@ Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/envs/quantecon/lib/
 <span class="kn">import</span> <span class="nn">jax</span>
 <span class="kn">import</span> <span class="nn">jax.numpy</span> <span class="k">as</span> <span class="nn">jnp</span>
 <span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">namedtuple</span>
+<span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">time</span>
 </pre></div>
 </div>
 </div>
@@ -985,16 +984,34 @@ and <span class="math notranslate nohighlight">\(A\)</span> into an <span class=
 </div>
 </div>
 </div>
+<p>Let’s run it to compile.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">qe</span><span class="o">.</span><span class="n">tic</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
 <span class="n">v</span> <span class="o">=</span> <span class="n">sv_pd_ratio</span><span class="p">(</span><span class="n">sv_model</span><span class="p">)</span>
-<span class="n">np_time</span> <span class="o">=</span> <span class="n">qe</span><span class="o">.</span><span class="n">toc</span><span class="p">()</span>
+<span class="n">numpy_with_compile</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Numpy compile plus execution time = &quot;</span><span class="p">,</span> <span class="n">numpy_with_compile</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:0.93
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Numpy compile plus execution time =  0.7043766975402832
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s run it again to remove the compile.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
+<span class="n">v</span> <span class="o">=</span> <span class="n">sv_pd_ratio</span><span class="p">(</span><span class="n">sv_model</span><span class="p">)</span>
+<span class="n">numpy_without_compile</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Numpy execution time = &quot;</span><span class="p">,</span> <span class="n">numpy_without_compile</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Numpy execution time =  0.2306067943572998
 </pre></div>
 </div>
 </div>
@@ -1156,14 +1173,15 @@ and <span class="math notranslate nohighlight">\(A\)</span> into an <span class=
 <p>Let’s see how long it takes to run with compile time included.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">qe</span><span class="o">.</span><span class="n">tic</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
 <span class="n">v_jax</span> <span class="o">=</span> <span class="n">sv_pd_ratio_jax</span><span class="p">(</span><span class="n">sv_model_jax</span><span class="p">,</span> <span class="n">shapes</span><span class="p">)</span><span class="o">.</span><span class="n">block_until_ready</span><span class="p">()</span>
-<span class="n">jnp_time_0</span> <span class="o">=</span> <span class="n">qe</span><span class="o">.</span><span class="n">toc</span><span class="p">()</span>
+<span class="n">jnp_with_compile</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;JAX compile plus execution time = &quot;</span><span class="p">,</span> <span class="n">jnp_with_compile</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:0.29
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>JAX compile plus execution time =  0.40702128410339355
 </pre></div>
 </div>
 </div>
@@ -1171,14 +1189,15 @@ and <span class="math notranslate nohighlight">\(A\)</span> into an <span class=
 <p>And now let’s see without compile time.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">qe</span><span class="o">.</span><span class="n">tic</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
 <span class="n">v_jax</span> <span class="o">=</span> <span class="n">sv_pd_ratio_jax</span><span class="p">(</span><span class="n">sv_model_jax</span><span class="p">,</span> <span class="n">shapes</span><span class="p">)</span><span class="o">.</span><span class="n">block_until_ready</span><span class="p">()</span>
-<span class="n">jnp_time</span> <span class="o">=</span> <span class="n">qe</span><span class="o">.</span><span class="n">toc</span><span class="p">()</span>
+<span class="n">jnp_without_compile</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;JAX execution time = &quot;</span><span class="p">,</span> <span class="n">jnp_without_compile</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:0.01
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>JAX execution time =  0.1021885871887207
 </pre></div>
 </div>
 </div>
@@ -1186,12 +1205,12 @@ and <span class="math notranslate nohighlight">\(A\)</span> into an <span class=
 <p>Here’s the ratio of times:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">jnp_time</span> <span class="o">/</span> <span class="n">np_time</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">jnp_without_compile</span> <span class="o">/</span> <span class="n">numpy_without_compile</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.017894027541246842
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.4431291258070686
 </pre></div>
 </div>
 </div>
@@ -1274,14 +1293,15 @@ that acts directly on the linear operator <code class="docutils literal notransl
 <p>Let’s time the solution with compile time included.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">qe</span><span class="o">.</span><span class="n">tic</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
 <span class="n">v_jax_linop</span> <span class="o">=</span> <span class="n">sv_pd_ratio_linop</span><span class="p">(</span><span class="n">sv_model</span><span class="p">,</span> <span class="n">shapes</span><span class="p">)</span><span class="o">.</span><span class="n">block_until_ready</span><span class="p">()</span>
-<span class="n">jnp_time_linop_0</span> <span class="o">=</span> <span class="n">qe</span><span class="o">.</span><span class="n">toc</span><span class="p">()</span>
+<span class="n">jnp_linop_with_compile</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;JAX compile plus execution time = &quot;</span><span class="p">,</span> <span class="n">jnp_linop_with_compile</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:0.80
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>JAX compile plus execution time =  0.7309236526489258
 </pre></div>
 </div>
 </div>
@@ -1289,14 +1309,15 @@ that acts directly on the linear operator <code class="docutils literal notransl
 <p>And now let’s see without compile time.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">qe</span><span class="o">.</span><span class="n">tic</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
 <span class="n">v_jax_linop</span> <span class="o">=</span> <span class="n">sv_pd_ratio_linop</span><span class="p">(</span><span class="n">sv_model</span><span class="p">,</span> <span class="n">shapes</span><span class="p">)</span><span class="o">.</span><span class="n">block_until_ready</span><span class="p">()</span>
-<span class="n">jnp_linop_time</span> <span class="o">=</span> <span class="n">qe</span><span class="o">.</span><span class="n">toc</span><span class="p">()</span>
+<span class="n">jnp_linop_without_compile</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;JAX execution time = &quot;</span><span class="p">,</span> <span class="n">jnp_linop_without_compile</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:0.00
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>JAX execution time =  0.0057315826416015625
 </pre></div>
 </div>
 </div>
@@ -1317,12 +1338,12 @@ that acts directly on the linear operator <code class="docutils literal notransl
 <p>Here’s the ratio of times between memory-efficient and direct version:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">jnp_linop_time</span> <span class="o">/</span> <span class="n">jnp_time</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">jnp_linop_without_compile</span> <span class="o">/</span> <span class="n">jnp_without_compile</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.15317480756574242
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.05608828538764844
 </pre></div>
 </div>
 </div>
@@ -1336,17 +1357,16 @@ that acts directly on the linear operator <code class="docutils literal notransl
 <span class="n">P</span><span class="p">,</span> <span class="n">hc_grid</span><span class="p">,</span> <span class="n">Q</span><span class="p">,</span> <span class="n">hd_grid</span><span class="p">,</span> <span class="n">R</span><span class="p">,</span> <span class="n">z_grid</span><span class="p">,</span> <span class="n">β</span><span class="p">,</span> <span class="n">γ</span><span class="p">,</span> <span class="n">bar_σ</span><span class="p">,</span> <span class="n">μ_c</span><span class="p">,</span> <span class="n">μ_d</span> <span class="o">=</span> <span class="n">sv_model_jax</span>
 <span class="n">shapes</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">hc_grid</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">hd_grid</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">z_grid</span><span class="p">)</span>
 
-<span class="n">qe</span><span class="o">.</span><span class="n">tic</span><span class="p">()</span>
-<span class="n">_</span> <span class="o">=</span> <span class="n">sv_pd_ratio_linop</span><span class="p">(</span><span class="n">sv_model</span><span class="p">,</span> <span class="n">shapes</span><span class="p">)</span><span class="o">.</span><span class="n">block_until_ready</span><span class="p">()</span>
-<span class="n">qe</span><span class="o">.</span><span class="n">toc</span><span class="p">()</span>
+<span class="o">%</span><span class="k">time</span> _ = sv_pd_ratio_linop(sv_model_jax, shapes).block_until_ready()
+<span class="o">%</span><span class="k">time</span> _ = sv_pd_ratio_linop(sv_model_jax, shapes).block_until_ready()
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:0.84
-</pre></div>
-</div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.8488354682922363
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 493 ms, sys: 4.77 ms, total: 498 ms
+Wall time: 699 ms
+CPU times: user 185 ms, sys: 0 ns, total: 185 ms
+Wall time: 185 ms
 </pre></div>
 </div>
 </div>
@@ -1508,11 +1528,6 @@ from doing so here.</p>
    15. Endogenous Grid Method
   </a>
  </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="cake_eating_numerical.html">
-   16. Cake Eating: Numerical Methods
-  </a>
- </li>
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
@@ -1522,22 +1537,22 @@ from doing so here.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="arellano.html">
-   17. Default Risk and Income Fluctuations
+   16. Default Risk and Income Fluctuations
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="aiyagari_jax.html">
-   18. The Aiyagari Model
+   17. The Aiyagari Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="hopenhayn.html">
-   19. The Hopenhayn Entry-Exit Model
+   18. The Hopenhayn Entry-Exit Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="overborrowing.html">
-   20. Bianchi Overborrowing Model
+   19. Bianchi Overborrowing Model
   </a>
  </li>
 </ul>
@@ -1549,7 +1564,7 @@ from doing so here.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="mle.html">
-   21. Maximum Likelihood Estimation
+   20. Maximum Likelihood Estimation
   </a>
  </li>
 </ul>
@@ -1561,17 +1576,17 @@ from doing so here.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   22. Troubleshooting
+   21. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   23. References
+   22. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   24. Execution Statistics
+   23. Execution Statistics
   </a>
  </li>
 </ul>

@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>19. The Hopenhayn Entry-Exit Model &#8212; Quantitative Economics with Python using JAX</title>
+    <title>18. The Hopenhayn Entry-Exit Model &#8212; Quantitative Economics with Python using JAX</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
@@ -56,19 +56,19 @@
   
   <script data-cfasync="false">
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
-    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
-<link href="_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
-<link href="_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link href="_static/styles/theme.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
 
   
-  <link href="_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=b09b2da44b9015b4fa76ea072fa2d8f7faee5492" type="text/css" />
@@ -80,9 +80,9 @@
     <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
-<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
-  <script src="_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=3ee479438cf8b5e0d341" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=3ee479438cf8b5e0d341" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=3ee479438cf8b5e0d341"></script>
 
 
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
@@ -121,8 +121,8 @@ const thebe_selector_output = ".output, .cell_output"
     <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="20. Bianchi Overborrowing Model" href="overborrowing.html" />
-    <link rel="prev" title="18. The Aiyagari Model" href="aiyagari_jax.html" />
+    <link rel="next" title="19. Bianchi Overborrowing Model" href="overborrowing.html" />
+    <link rel="prev" title="17. The Aiyagari Model" href="aiyagari_jax.html" />
 
 <!-- Normal Meta Tags -->
 <meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
@@ -170,23 +170,23 @@ const thebe_selector_output = ".output, .cell_output"
 
                         <nav id="bd-toc-nav" class="qe-page__toc-nav">
                             <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#outline">19.1. Outline</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-model">19.2. The Model</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#environment">19.2.1. Environment</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#firm-decisions">19.2.2. Firm decisions</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#equilibrium">19.2.3. Equilibrium</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#computing-equilibrium">19.2.4. Computing equilibrium</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#specification-of-dynamics">19.2.5. Specification of dynamics</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#outline">18.1. Outline</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-model">18.2. The Model</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#environment">18.2.1. Environment</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#firm-decisions">18.2.2. Firm decisions</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#equilibrium">18.2.3. Equilibrium</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#computing-equilibrium">18.2.4. Computing equilibrium</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#specification-of-dynamics">18.2.5. Specification of dynamics</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#code">19.3. Code</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#solving-the-model">19.4. Solving the model</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#preliminary-calculations">19.4.1. Preliminary calculations</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#computing-the-equilibrium">19.4.2. Computing the equilibrium</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#code">18.3. Code</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#solving-the-model">18.4. Solving the model</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#preliminary-calculations">18.4.1. Preliminary calculations</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#computing-the-equilibrium">18.4.2. Computing the equilibrium</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pareto-tails">19.5. Pareto tails</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise">19.6. Exercise</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pareto-tails">18.5. Pareto tails</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise">18.6. Exercise</a></li>
 </ul>
                             <p class="logo">
                                 
@@ -246,7 +246,7 @@ const thebe_selector_output = ".output, .cell_output"
                     <div>
                         
   <section class="tex2jax_ignore mathjax_ignore" id="the-hopenhayn-entry-exit-model">
-<h1><span class="section-number">19. </span>The Hopenhayn Entry-Exit Model<a class="headerlink" href="#the-hopenhayn-entry-exit-model" title="Permalink to this heading">#</a></h1>
+<h1><span class="section-number">18. </span>The Hopenhayn Entry-Exit Model<a class="headerlink" href="#the-hopenhayn-entry-exit-model" title="Permalink to this heading">#</a></h1>
 <div class="warning admonition">
 <p class="admonition-title">GPU</p>
 <p>This lecture was built using a machine with JAX installed and access to a GPU.</p>
@@ -254,7 +254,7 @@ const thebe_selector_output = ".output, .cell_output"
 <p>To run this lecture on your own machine, you need to install <a class="reference external" href="https://github.com/google/jax">Google JAX</a>.</p>
 </div>
 <section id="outline">
-<h2><span class="section-number">19.1. </span>Outline<a class="headerlink" href="#outline" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">18.1. </span>Outline<a class="headerlink" href="#outline" title="Permalink to this heading">#</a></h2>
 <p>The Hopenhayn (1992, ECMA) entry-exit model is a highly influential (partial equilibrium) heterogeneous agent model where</p>
 <ul class="simple">
 <li><p>the agents receiving idiosyncratic shocks are firms, and</p></li>
@@ -282,9 +282,7 @@ Requirement already satisfied: requests in /opt/conda/envs/quantecon/lib/python3
 Requirement already satisfied: scipy&gt;=1.5.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (1.11.4)
 Requirement already satisfied: sympy in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (1.12)
 Requirement already satisfied: llvmlite&lt;0.43,&gt;=0.42.0dev0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from numba&gt;=0.49.0-&gt;quantecon) (0.42.0)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: charset-normalizer&lt;4,&gt;=2 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests-&gt;quantecon) (2.0.4)
+Requirement already satisfied: charset-normalizer&lt;4,&gt;=2 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests-&gt;quantecon) (2.0.4)
 Requirement already satisfied: idna&lt;4,&gt;=2.5 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests-&gt;quantecon) (3.4)
 Requirement already satisfied: urllib3&lt;3,&gt;=1.21.1 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests-&gt;quantecon) (2.0.7)
 Requirement already satisfied: certifi&gt;=2017.4.17 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests-&gt;quantecon) (2024.2.2)
@@ -312,9 +310,9 @@ Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/envs/quantecon/lib/
 </div>
 </section>
 <section id="the-model">
-<h2><span class="section-number">19.2. </span>The Model<a class="headerlink" href="#the-model" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">18.2. </span>The Model<a class="headerlink" href="#the-model" title="Permalink to this heading">#</a></h2>
 <section id="environment">
-<h3><span class="section-number">19.2.1. </span>Environment<a class="headerlink" href="#environment" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">18.2.1. </span>Environment<a class="headerlink" href="#environment" title="Permalink to this heading">#</a></h3>
 <p>There is a single good produced by a continuum of competitive firms.</p>
 <p>The productivity <span class="math notranslate nohighlight">\(\varphi_t = \varphi_t^i\)</span> of each firm evolves randomly on <span class="math notranslate nohighlight">\(\mathbb R_+\)</span>.</p>
 <ul class="simple">
@@ -362,7 +360,7 @@ distribution over <span class="math notranslate nohighlight">\(\mathbb R_+\)</sp
 \[D(p) = 1/p \]</div>
 </section>
 <section id="firm-decisions">
-<h3><span class="section-number">19.2.2. </span>Firm decisions<a class="headerlink" href="#firm-decisions" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">18.2.2. </span>Firm decisions<a class="headerlink" href="#firm-decisions" title="Permalink to this heading">#</a></h3>
 <p>The intertemporal firm decision problem is choosing when to exit.</p>
 <p>The timing is:</p>
 <ol class="arabic simple">
@@ -371,15 +369,15 @@ distribution over <span class="math notranslate nohighlight">\(\mathbb R_+\)</sp
 </ol>
 <p>Scrap value is set to zero and the discount rate is <span class="math notranslate nohighlight">\(\beta \in (0, 1)\)</span>.</p>
 <p>The firm makes their stop-continue choice by first solving for the value function, which is the unique solution in a class of continuous functions <span class="math notranslate nohighlight">\(\mathscr C\)</span> (details omitted) to</p>
-<div class="amsmath math notranslate nohighlight" id="equation-a6191cc7-e7db-4ee0-880a-229970dcc806">
-<span class="eqno">(19.1)<a class="headerlink" href="#equation-a6191cc7-e7db-4ee0-880a-229970dcc806" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-558689d9-1505-4923-aacf-f8c42ede235d">
+<span class="eqno">(18.1)<a class="headerlink" href="#equation-558689d9-1505-4923-aacf-f8c42ede235d" title="Permalink to this equation">#</a></span>\[\begin{equation}
     v(\varphi, p) = \pi(\varphi, p) + \beta 
         \max \left\{ 0, \int v(\varphi', p) \Gamma(\varphi, d \varphi') \right\}.
 \end{equation}\]</div>
 <p>Let <span class="math notranslate nohighlight">\(\bar v\)</span> be the unique solution to this functional equation.</p>
 <p>Given <span class="math notranslate nohighlight">\(\bar v\)</span>, we let <span class="math notranslate nohighlight">\(\bar \varphi\)</span> be the exit threshold function defined by</p>
-<div class="amsmath math notranslate nohighlight" id="equation-b1ed5998-cef6-4473-b15a-0ca7e0c66f63">
-<span class="eqno">(19.2)<a class="headerlink" href="#equation-b1ed5998-cef6-4473-b15a-0ca7e0c66f63" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-27b584da-ac5b-4e60-a4e1-479dad47c70f">
+<span class="eqno">(18.2)<a class="headerlink" href="#equation-27b584da-ac5b-4e60-a4e1-479dad47c70f" title="Permalink to this equation">#</a></span>\[\begin{equation}
     \bar \varphi(p) := 
     \min
     \left\{ 
@@ -393,7 +391,7 @@ remain rather than exit, an incumbent with productivity <span class="math notran
 if and only if <span class="math notranslate nohighlight">\(\varphi &lt; \bar \varphi (p)\)</span>.</p>
 </section>
 <section id="equilibrium">
-<h3><span class="section-number">19.2.3. </span>Equilibrium<a class="headerlink" href="#equilibrium" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">18.2.3. </span>Equilibrium<a class="headerlink" href="#equilibrium" title="Permalink to this heading">#</a></h3>
 <p>Now we describe a stationary recursive equilibrium in the model, where</p>
 <ul class="simple">
 <li><p>the goods market clears (supply equals demand)</p></li>
@@ -414,13 +412,13 @@ section, a <strong>stationary recursive equilibrium</strong>  is a triple</p>
 \end{equation*}\]</div>
 <p>with <span class="math notranslate nohighlight">\(p\)</span> understood as price, <span class="math notranslate nohighlight">\(M\)</span> as mass of entrants, and <span class="math notranslate nohighlight">\(\mu\)</span> as a
 distribution of firms over productivity levels, such that the goods market clears, or</p>
-<div class="amsmath math notranslate nohighlight" id="equation-2a5046f9-a64d-4f03-afb2-1b7a210de02b">
-<span class="eqno">(19.3)<a class="headerlink" href="#equation-2a5046f9-a64d-4f03-afb2-1b7a210de02b" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-d68c633f-71b0-4a32-a717-fc1cd558a11f">
+<span class="eqno">(18.3)<a class="headerlink" href="#equation-d68c633f-71b0-4a32-a717-fc1cd558a11f" title="Permalink to this equation">#</a></span>\[\begin{equation}
     \int q( \varphi, p) \mu(d \varphi) = D(p),
 \end{equation}\]</div>
 <p>the <em>invariance condition</em> over the firm distribution</p>
-<div class="amsmath math notranslate nohighlight" id="equation-72992657-a1a9-4ef5-992a-791e925e7aa8">
-<span class="eqno">(19.4)<a class="headerlink" href="#equation-72992657-a1a9-4ef5-992a-791e925e7aa8" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-a71b39c0-554a-4d42-8eb0-a74356333119">
+<span class="eqno">(18.4)<a class="headerlink" href="#equation-a71b39c0-554a-4d42-8eb0-a74356333119" title="Permalink to this equation">#</a></span>\[\begin{equation}
     \mu (B) 
     = \int \Gamma(\varphi, B) \, \mathbf{1}  \{\varphi \geq \bar \varphi(p)\} \,
     \mu(d \varphi)
@@ -428,32 +426,32 @@ distribution of firms over productivity levels, such that the goods market clear
     \text{ for all } B \in \mathscr B,
 \end{equation}\]</div>
 <p>holds (see below for intuition), the <em>equilibrium entry condition</em></p>
-<div class="amsmath math notranslate nohighlight" id="equation-170c82fd-2daa-4c53-a0e3-b27e457fe7b0">
-<span class="eqno">(19.5)<a class="headerlink" href="#equation-170c82fd-2daa-4c53-a0e3-b27e457fe7b0" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-90cb4dbd-a735-4618-ae1c-86ac24565eff">
+<span class="eqno">(18.5)<a class="headerlink" href="#equation-90cb4dbd-a735-4618-ae1c-86ac24565eff" title="Permalink to this equation">#</a></span>\[\begin{equation}
     \int \bar v( \varphi, p) \, \gamma(d \varphi) = c_e
 \end{equation}\]</div>
 <p>holds, and the <em>balanced entry and exit condition</em></p>
-<div class="amsmath math notranslate nohighlight" id="equation-255a6b93-0f4c-4aa9-a1b6-ea45e6edc70b">
-<span class="eqno">(19.6)<a class="headerlink" href="#equation-255a6b93-0f4c-4aa9-a1b6-ea45e6edc70b" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-bb5ecf14-74a7-492e-a578-57c39ff7e360">
+<span class="eqno">(18.6)<a class="headerlink" href="#equation-bb5ecf14-74a7-492e-a578-57c39ff7e360" title="Permalink to this equation">#</a></span>\[\begin{equation}
     M = \mu \{ \varphi &lt; \bar \varphi(p) \}
 \end{equation}\]</div>
 <p>is verified.</p>
 <p>The invariance condition says that, for any subset <span class="math notranslate nohighlight">\(B\)</span> of the state space, the mass of firms with productivity in set <span class="math notranslate nohighlight">\(B\)</span> today (the left-hand side) is equal to the mass of firms with productivity in set <span class="math notranslate nohighlight">\(B\)</span> tomorrow (the right-hand side).</p>
 </section>
 <section id="computing-equilibrium">
-<h3><span class="section-number">19.2.4. </span>Computing equilibrium<a class="headerlink" href="#computing-equilibrium" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">18.2.4. </span>Computing equilibrium<a class="headerlink" href="#computing-equilibrium" title="Permalink to this heading">#</a></h3>
 <p>We compute the equilibrium as follows:</p>
 <p>For the purposes of this section, we insert balanced entry and
 exit into the time invariance condition, yielding</p>
-<div class="amsmath math notranslate nohighlight" id="equation-71a1e193-bca0-4dfb-8533-1bc022314407">
-<span class="eqno">(19.7)<a class="headerlink" href="#equation-71a1e193-bca0-4dfb-8533-1bc022314407" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-f16166f2-ff3c-413f-a1d6-e6c240d945e0">
+<span class="eqno">(18.7)<a class="headerlink" href="#equation-f16166f2-ff3c-413f-a1d6-e6c240d945e0" title="Permalink to this equation">#</a></span>\[\begin{equation}
     \mu (B) 
     = \int \Pi(\varphi, B) \mu (d \varphi)
     \quad \text{for all } B \in \mathscr B,
 \end{equation}\]</div>
 <p>where <span class="math notranslate nohighlight">\(\Pi\)</span> is the transition kernel on <span class="math notranslate nohighlight">\(\mathbb R_+\)</span> defined by</p>
-<div class="amsmath math notranslate nohighlight" id="equation-3a0ca155-2dfd-4dda-bca1-6e72faf539e8">
-<span class="eqno">(19.8)<a class="headerlink" href="#equation-3a0ca155-2dfd-4dda-bca1-6e72faf539e8" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-2a2bc366-0e3a-425a-b4da-097ec9c52159">
+<span class="eqno">(18.8)<a class="headerlink" href="#equation-2a2bc366-0e3a-425a-b4da-097ec9c52159" title="Permalink to this equation">#</a></span>\[\begin{equation}
     \Pi(\varphi, B) 
     = \Gamma(\varphi, B) \mathbf{1} \{\varphi \geq \bar \varphi(p) \} + 
     \mathbf{1} \{\varphi &lt; \bar \varphi(p)\} \gamma(B).
@@ -483,7 +481,7 @@ is the stationary distribution of the Markov transition kernel <span class="math
 </ol>
 </section>
 <section id="specification-of-dynamics">
-<h3><span class="section-number">19.2.5. </span>Specification of dynamics<a class="headerlink" href="#specification-of-dynamics" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">18.2.5. </span>Specification of dynamics<a class="headerlink" href="#specification-of-dynamics" title="Permalink to this heading">#</a></h3>
 <p>Before solving the model we need to specify <span class="math notranslate nohighlight">\(\Gamma\)</span> and <span class="math notranslate nohighlight">\(\gamma\)</span>.</p>
 <p>We assume <span class="math notranslate nohighlight">\(\Gamma(\varphi, d \varphi')\)</span> is given by</p>
 <div class="math notranslate nohighlight">
@@ -496,7 +494,7 @@ is the stationary distribution of the Markov transition kernel <span class="math
 </section>
 </section>
 <section id="code">
-<h2><span class="section-number">19.3. </span>Code<a class="headerlink" href="#code" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">18.3. </span>Code<a class="headerlink" href="#code" title="Permalink to this heading">#</a></h2>
 <p>We use 64 bit floats for extra precision.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -866,9 +864,9 @@ is the stationary distribution of the Markov transition kernel <span class="math
 </div>
 </section>
 <section id="solving-the-model">
-<h2><span class="section-number">19.4. </span>Solving the model<a class="headerlink" href="#solving-the-model" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">18.4. </span>Solving the model<a class="headerlink" href="#solving-the-model" title="Permalink to this heading">#</a></h2>
 <section id="preliminary-calculations">
-<h3><span class="section-number">19.4.1. </span>Preliminary calculations<a class="headerlink" href="#preliminary-calculations" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">18.4.1. </span>Preliminary calculations<a class="headerlink" href="#preliminary-calculations" title="Permalink to this heading">#</a></h3>
 <p>Let’s create an instance of the model.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -884,26 +882,27 @@ from a cold start.</p>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">p</span> <span class="o">=</span> <span class="mf">2.0</span>
 <span class="n">v_init</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">grids</span><span class="o">.</span><span class="n">φ_grid</span><span class="p">)</span>            <span class="c1"># Initial condition </span>
-<span class="o">%</span><span class="k">time</span> v_bar = vfi(p, v_init, parameters, grids) 
+<span class="o">%</span><span class="k">time</span> v_bar = vfi(p, v_init, parameters, grids).block_until_ready()
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 397 ms, sys: 29.8 ms, total: 427 ms
-Wall time: 448 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 275 ms, sys: 24.7 ms, total: 300 ms
+Wall time: 346 ms
 </pre></div>
 </div>
 </div>
 </div>
+<p>Let’s run the code again to eliminate compile time.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">time</span> v_bar = vfi(p, v_init, parameters, grids)  
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">time</span> v_bar = vfi(p, v_init, parameters, grids).block_until_ready()
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 17.9 ms, sys: 4.65 ms, total: 22.6 ms
-Wall time: 19.3 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 27.9 ms, sys: 3.8 ms, total: 31.7 ms
+Wall time: 31.4 ms
 </pre></div>
 </div>
 </div>
@@ -937,7 +936,7 @@ Wall time: 19.3 ms
 <p>From the figure it looks like <span class="math notranslate nohighlight">\(p^*\)</span> will be close to 1.5.</p>
 </section>
 <section id="computing-the-equilibrium">
-<h3><span class="section-number">19.4.2. </span>Computing the equilibrium<a class="headerlink" href="#computing-the-equilibrium" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">18.4.2. </span>Computing the equilibrium<a class="headerlink" href="#computing-the-equilibrium" title="Permalink to this heading">#</a></h3>
 <p>Now let’s try computing the equilibrium</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -948,8 +947,24 @@ Wall time: 19.3 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 2.92 s, sys: 150 ms, total: 3.07 s
-Wall time: 2.16 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1.66 s, sys: 97.2 ms, total: 1.76 s
+Wall time: 2.14 s
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s run the code again to get rid of compile time.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%time</span>
+<span class="n">p_star</span><span class="p">,</span> <span class="n">v_bar</span><span class="p">,</span> <span class="n">φ_star</span><span class="p">,</span> <span class="n">φ_sample</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">m_star</span> <span class="o">=</span> \
+        <span class="n">compute_equilibrium_prices_and_quantities</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 262 ms, sys: 17.1 ms, total: 279 ms
+Wall time: 663 ms
 </pre></div>
 </div>
 </div>
@@ -1010,7 +1025,7 @@ Wall time: 2.16 s
 </section>
 </section>
 <section id="pareto-tails">
-<h2><span class="section-number">19.5. </span>Pareto tails<a class="headerlink" href="#pareto-tails" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">18.5. </span>Pareto tails<a class="headerlink" href="#pareto-tails" title="Permalink to this heading">#</a></h2>
 <p>The firm size distribution shown above appears to have a long right tail.</p>
 <p>This matches the observed firm size distribution.</p>
 <p>In fact the firm size distribution obeys a <strong>power law</strong>.</p>
@@ -1076,10 +1091,10 @@ Wall time: 2.16 s
 </div>
 </section>
 <section id="exercise">
-<h2><span class="section-number">19.6. </span>Exercise<a class="headerlink" href="#exercise" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">18.6. </span>Exercise<a class="headerlink" href="#exercise" title="Permalink to this heading">#</a></h2>
 <div class="exercise admonition" id="hopen_ex1">
 
-<p class="admonition-title"><span class="caption-number">Exercise 19.1 </span></p>
+<p class="admonition-title"><span class="caption-number">Exercise 18.1 </span></p>
 <section id="exercise-content">
 <p>Plot the same output distribution, but this time using a rank-size plot.</p>
 <p>If the rank-size plot is approximately linear, the data suggests a Pareto tail.</p>
@@ -1105,7 +1120,7 @@ Wall time: 2.16 s
 </div>
 <div class="solution dropdown admonition" id="hopenhayn-solution-1">
 
-<p class="admonition-title">Solution to<a class="reference internal" href="#hopen_ex1"> Exercise 19.1</a></p>
+<p class="admonition-title">Solution to<a class="reference internal" href="#hopen_ex1"> Exercise 18.1</a></p>
 <section id="solution-content">
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1128,7 +1143,7 @@ Wall time: 2.16 s
 </div>
 <div class="exercise admonition" id="hopen_ex2">
 
-<p class="admonition-title"><span class="caption-number">Exercise 19.2 </span></p>
+<p class="admonition-title"><span class="caption-number">Exercise 18.2 </span></p>
 <section id="exercise-content">
 <p>As an exercise, let’s look at the fixed cost paid by incumbents each period and how it relates to the equilibrium price.</p>
 <p>We expect that a higher fixed cost will reduce supply and hence increase the market price.</p>
@@ -1144,7 +1159,7 @@ Wall time: 2.16 s
 </div>
 <div class="solution dropdown admonition" id="hopenhayn-solution-3">
 
-<p class="admonition-title">Solution to<a class="reference internal" href="#hopen_ex2"> Exercise 19.2</a></p>
+<p class="admonition-title">Solution to<a class="reference internal" href="#hopen_ex2"> Exercise 18.2</a></p>
 <section id="solution-content">
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1355,11 +1370,6 @@ Wall time: 2.16 s
    15. Endogenous Grid Method
   </a>
  </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="cake_eating_numerical.html">
-   16. Cake Eating: Numerical Methods
-  </a>
- </li>
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
@@ -1369,22 +1379,22 @@ Wall time: 2.16 s
 <ul class="current nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="arellano.html">
-   17. Default Risk and Income Fluctuations
+   16. Default Risk and Income Fluctuations
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="aiyagari_jax.html">
-   18. The Aiyagari Model
+   17. The Aiyagari Model
   </a>
  </li>
  <li class="toctree-l1 current active active">
   <a class="current reference internal" href="#">
-   19. The Hopenhayn Entry-Exit Model
+   18. The Hopenhayn Entry-Exit Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="overborrowing.html">
-   20. Bianchi Overborrowing Model
+   19. Bianchi Overborrowing Model
   </a>
  </li>
 </ul>
@@ -1396,7 +1406,7 @@ Wall time: 2.16 s
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="mle.html">
-   21. Maximum Likelihood Estimation
+   20. Maximum Likelihood Estimation
   </a>
  </li>
 </ul>
@@ -1408,17 +1418,17 @@ Wall time: 2.16 s
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   22. Troubleshooting
+   21. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   23. References
+   22. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   24. Execution Statistics
+   23. Execution Statistics
   </a>
  </li>
 </ul>

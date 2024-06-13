@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>21. Maximum Likelihood Estimation &#8212; Quantitative Economics with Python using JAX</title>
+    <title>20. Maximum Likelihood Estimation &#8212; Quantitative Economics with Python using JAX</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
@@ -56,19 +56,19 @@
   
   <script data-cfasync="false">
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
-    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
-<link href="_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
-<link href="_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link href="_static/styles/theme.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
 
   
-  <link href="_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=b09b2da44b9015b4fa76ea072fa2d8f7faee5492" type="text/css" />
@@ -80,9 +80,9 @@
     <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
-<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
-  <script src="_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=3ee479438cf8b5e0d341" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=3ee479438cf8b5e0d341" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=3ee479438cf8b5e0d341"></script>
 
 
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
@@ -121,8 +121,8 @@ const thebe_selector_output = ".output, .cell_output"
     <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="22. Troubleshooting" href="troubleshooting.html" />
-    <link rel="prev" title="20. Bianchi Overborrowing Model" href="overborrowing.html" />
+    <link rel="next" title="21. Troubleshooting" href="troubleshooting.html" />
+    <link rel="prev" title="19. Bianchi Overborrowing Model" href="overborrowing.html" />
 
 <!-- Normal Meta Tags -->
 <meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
@@ -170,13 +170,13 @@ const thebe_selector_output = ".output, .cell_output"
 
                         <nav id="bd-toc-nav" class="qe-page__toc-nav">
                             <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">21.1. Overview</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mle-with-numerical-methods-jax">21.2. MLE with numerical methods (JAX)</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-toy-model">21.2.1. A toy model</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-poisson-model">21.2.2. A Poisson model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">20.1. Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mle-with-numerical-methods-jax">20.2. MLE with numerical methods (JAX)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-toy-model">20.2.1. A toy model</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-poisson-model">20.2.2. A Poisson model</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mle-with-statsmodels">21.3. MLE with <code class="docutils literal notranslate"><span class="pre">statsmodels</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mle-with-statsmodels">20.3. MLE with <code class="docutils literal notranslate"><span class="pre">statsmodels</span></code></a></li>
 </ul>
                             <p class="logo">
                                 
@@ -236,7 +236,7 @@ const thebe_selector_output = ".output, .cell_output"
                     <div>
                         
   <section class="tex2jax_ignore mathjax_ignore" id="maximum-likelihood-estimation">
-<h1><span class="section-number">21. </span>Maximum Likelihood Estimation<a class="headerlink" href="#maximum-likelihood-estimation" title="Permalink to this heading">#</a></h1>
+<h1><span class="section-number">20. </span>Maximum Likelihood Estimation<a class="headerlink" href="#maximum-likelihood-estimation" title="Permalink to this heading">#</a></h1>
 <div class="warning admonition">
 <p class="admonition-title">GPU</p>
 <p>This lecture was built using a machine with JAX installed and access to a GPU.</p>
@@ -244,7 +244,7 @@ const thebe_selector_output = ".output, .cell_output"
 <p>To run this lecture on your own machine, you need to install <a class="reference external" href="https://github.com/google/jax">Google JAX</a>.</p>
 </div>
 <section id="overview">
-<h2><span class="section-number">21.1. </span>Overview<a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">20.1. </span>Overview<a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
 <p>This lecture is the extended JAX implementation of <a class="reference external" href="https://python.quantecon.org/mle.html#mle-with-numerical-methods">this section</a> of <a class="reference external" href="https://python.quantecon.org/mle.html">this lecture</a>.</p>
 <p>Please refer that lecture for all background and notation.</p>
 <p>Here we will exploit the automatic differentiation capabilities of JAX rather than calculating derivatives by hand.</p>
@@ -268,32 +268,26 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/opt/conda/envs/quantecon/lib/python3.11/pty.py:89: RuntimeWarning: os.fork() was called. os.fork() is incompatible with multithreaded code, and JAX is multithreaded, so this will likely lead to a deadlock.
-  pid, fd = os.forkpty()
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Tue May  7 07:30:24 2024       
-+-----------------------------------------------------------------------------+
-| NVIDIA-SMI 470.182.03   Driver Version: 470.182.03   CUDA Version: 12.3     |
-|-------------------------------+----------------------+----------------------+
-| GPU  Name        Persistence-M| Bus-Id        Disp.A | Volatile Uncorr. ECC |
-| Fan  Temp  Perf  Pwr:Usage/Cap|         Memory-Usage | GPU-Util  Compute M. |
-|                               |                      |               MIG M. |
-|===============================+======================+======================|
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>|   0  Tesla V100-SXM2...  Off  | 00000000:00:1E.0 Off |                    0 |
-| N/A   27C    P0    36W / 300W |      0MiB / 16160MiB |      2%      Default |
-|                               |                      |                  N/A |
-+-------------------------------+----------------------+----------------------+
-                                                                               
-+-----------------------------------------------------------------------------+
-| Processes:                                                                  |
-|  GPU   GI   CI        PID   Type   Process name                  GPU Memory |
-|        ID   ID                                                   Usage      |
-|=============================================================================|
-|  No running processes found                                                 |
-+-----------------------------------------------------------------------------+
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Thu Jun 13 04:25:48 2024       
++---------------------------------------------------------------------------------------+
+| NVIDIA-SMI 535.54.03              Driver Version: 535.54.03    CUDA Version: 12.5     |
+|-----------------------------------------+----------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id        Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |         Memory-Usage | GPU-Util  Compute M. |
+|                                         |                      |               MIG M. |
+|=========================================+======================+======================|
+|   0  Tesla T4                       On  | 00000001:00:00.0 Off |                  Off |
+| N/A   45C    P0              25W /  70W |      2MiB / 16384MiB |      0%      Default |
+|                                         |                      |                  N/A |
++-----------------------------------------+----------------------+----------------------+
+                                                                                         
++---------------------------------------------------------------------------------------+
+| Processes:                                                                            |
+|  GPU   GI   CI        PID   Type   Process name                            GPU Memory |
+|        ID   ID                                                             Usage      |
+|=======================================================================================|
+|  No running processes found                                                           |
++---------------------------------------------------------------------------------------+
 </pre></div>
 </div>
 </div>
@@ -308,13 +302,13 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
 </section>
 <section id="mle-with-numerical-methods-jax">
-<h2><span class="section-number">21.2. </span>MLE with numerical methods (JAX)<a class="headerlink" href="#mle-with-numerical-methods-jax" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">20.2. </span>MLE with numerical methods (JAX)<a class="headerlink" href="#mle-with-numerical-methods-jax" title="Permalink to this heading">#</a></h2>
 <p>Many distributions do not have nice, analytical solutions and therefore require
 numerical methods to solve for parameter estimates.</p>
 <p>One such numerical method is the Newton-Raphson algorithm.</p>
 <p>Let’s start with a simple example to illustrate the algorithm.</p>
 <section id="a-toy-model">
-<h3><span class="section-number">21.2.1. </span>A toy model<a class="headerlink" href="#a-toy-model" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">20.2.1. </span>A toy model<a class="headerlink" href="#a-toy-model" title="Permalink to this heading">#</a></h3>
 <p>Our goal is to find the maximum likelihood estimate <span class="math notranslate nohighlight">\(\hat{\boldsymbol{\beta}}\)</span>.</p>
 <p>At <span class="math notranslate nohighlight">\(\hat{\boldsymbol{\beta}}\)</span>, the first derivative of the log-likelihood
 function will be equal to 0.</p>
@@ -387,7 +381,7 @@ guess).</p>
 <p>Please refer to <a class="reference external" href="https://python.quantecon.org/mle.html#mle-with-numerical-methods">this section</a> for the detailed algorithm.</p>
 </section>
 <section id="a-poisson-model">
-<h3><span class="section-number">21.2.2. </span>A Poisson model<a class="headerlink" href="#a-poisson-model" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">20.2.2. </span>A Poisson model<a class="headerlink" href="#a-poisson-model" title="Permalink to this heading">#</a></h3>
 <p>Let’s have a go at implementing the Newton-Raphson algorithm to calculate the maximum likelihood estimations of a Poisson  regression.</p>
 <p>The Poisson regression has a joint pmf:</p>
 <div class="math notranslate nohighlight">
@@ -564,9 +558,9 @@ convergence in only 7 iterations.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Array([[-2.56406008e-13],
-       [-6.50202114e-13],
-       [-5.05540054e-13]], dtype=float64)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Array([[-2.55892529e-13],
+       [-6.50313137e-13],
+       [-5.01695907e-13]], dtype=float64)
 </pre></div>
 </div>
 </div>
@@ -574,7 +568,7 @@ convergence in only 7 iterations.</p>
 </section>
 </section>
 <section id="mle-with-statsmodels">
-<h2><span class="section-number">21.3. </span>MLE with <code class="docutils literal notranslate"><span class="pre">statsmodels</span></code><a class="headerlink" href="#mle-with-statsmodels" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">20.3. </span>MLE with <code class="docutils literal notranslate"><span class="pre">statsmodels</span></code><a class="headerlink" href="#mle-with-statsmodels" title="Permalink to this heading">#</a></h2>
 <p>We’ll use the Poisson regression model in <code class="docutils literal notranslate"><span class="pre">statsmodels</span></code> to verify the results
 obtained using JAX.</p>
 <p><code class="docutils literal notranslate"><span class="pre">statsmodels</span></code> uses the same algorithm as above to find the maximum
@@ -605,8 +599,8 @@ of JAX arrays to convert it to NumPy arrays.</p>
 Dep. Variable:                      y   No. Observations:                    5
 Model:                        Poisson   Df Residuals:                        2
 Method:                           MLE   Df Model:                            2
-Date:                Tue, 07 May 2024   Pseudo R-squ.:                  0.2546
-Time:                        07:30:28   Log-Likelihood:                -3.3784
+Date:                Thu, 13 Jun 2024   Pseudo R-squ.:                  0.2546
+Time:                        04:25:50   Log-Likelihood:                -3.3784
 converged:                       True   LL-Null:                       -4.5325
 Covariance Type:            nonrobust   LLR p-value:                    0.3153
 ==============================================================================
@@ -627,7 +621,7 @@ x2             0.8433      0.798      1.057      0.291      -0.720       2.407
 </ul>
 <div class="exercise admonition" id="newton_mle1">
 
-<p class="admonition-title"><span class="caption-number">Exercise 21.1 </span></p>
+<p class="admonition-title"><span class="caption-number">Exercise 20.1 </span></p>
 <section id="exercise-content">
 <p>We define a quadratic model for a single explanatory variable by</p>
 <div class="math notranslate nohighlight">
@@ -636,8 +630,8 @@ x2             0.8433      0.798      1.057      0.291      -0.720       2.407
 \]</div>
 <p>We calculate the mean on the original scale instead of the log scale by exponentiating both sides of the above equation, which gives</p>
 <div class="math notranslate nohighlight" id="equation-lambda-mle">
-<span class="eqno">(21.1)<a class="headerlink" href="#equation-lambda-mle" title="Permalink to this equation">#</a></span>\[    \lambda_t = \exp(\beta_0 + \beta_1 x_t + \beta_2 x_{t}^2)\]</div>
-<p>Simulate the values of <span class="math notranslate nohighlight">\(x_t\)</span> by sampling from a normal distribution and <span class="math notranslate nohighlight">\(\lambda_t\)</span> by using <a class="reference internal" href="#equation-lambda-mle">(21.1)</a> and the following constants:</p>
+<span class="eqno">(20.1)<a class="headerlink" href="#equation-lambda-mle" title="Permalink to this equation">#</a></span>\[    \lambda_t = \exp(\beta_0 + \beta_1 x_t + \beta_2 x_{t}^2)\]</div>
+<p>Simulate the values of <span class="math notranslate nohighlight">\(x_t\)</span> by sampling from a normal distribution and <span class="math notranslate nohighlight">\(\lambda_t\)</span> by using <a class="reference internal" href="#equation-lambda-mle">(20.1)</a> and the following constants:</p>
 <div class="math notranslate nohighlight">
 \[
     \beta_0 = -2.5,
@@ -660,7 +654,7 @@ recover the true values of of these parameters.</p>
 </div>
 <div class="solution dropdown admonition" id="mle-solution-1">
 
-<p class="admonition-title">Solution to<a class="reference internal" href="#newton_mle1"> Exercise 21.1</a></p>
+<p class="admonition-title">Solution to<a class="reference internal" href="#newton_mle1"> Exercise 20.1</a></p>
 <section id="solution-content">
 <p>Let’s start by defining “true” parameter values.</p>
 <div class="cell docutils container">
@@ -683,7 +677,7 @@ recover the true values of of these parameters.</p>
 </div>
 </div>
 </div>
-<p>We compute <span class="math notranslate nohighlight">\(\lambda\)</span> using <a class="reference internal" href="#equation-lambda-mle">(21.1)</a></p>
+<p>We compute <span class="math notranslate nohighlight">\(\lambda\)</span> using <a class="reference internal" href="#equation-lambda-mle">(20.1)</a></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">λ</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">β_0</span> <span class="o">+</span> <span class="n">β_1</span> <span class="o">*</span> <span class="n">x</span> <span class="o">+</span> <span class="n">β_2</span> <span class="o">*</span> <span class="n">x</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
@@ -896,11 +890,6 @@ Number of iterations: 12
    15. Endogenous Grid Method
   </a>
  </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="cake_eating_numerical.html">
-   16. Cake Eating: Numerical Methods
-  </a>
- </li>
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
@@ -910,22 +899,22 @@ Number of iterations: 12
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="arellano.html">
-   17. Default Risk and Income Fluctuations
+   16. Default Risk and Income Fluctuations
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="aiyagari_jax.html">
-   18. The Aiyagari Model
+   17. The Aiyagari Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="hopenhayn.html">
-   19. The Hopenhayn Entry-Exit Model
+   18. The Hopenhayn Entry-Exit Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="overborrowing.html">
-   20. Bianchi Overborrowing Model
+   19. Bianchi Overborrowing Model
   </a>
  </li>
 </ul>
@@ -937,7 +926,7 @@ Number of iterations: 12
 <ul class="current nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1 current active active">
   <a class="current reference internal" href="#">
-   21. Maximum Likelihood Estimation
+   20. Maximum Likelihood Estimation
   </a>
  </li>
 </ul>
@@ -949,17 +938,17 @@ Number of iterations: 12
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   22. Troubleshooting
+   21. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   23. References
+   22. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   24. Execution Statistics
+   23. Execution Statistics
   </a>
  </li>
 </ul>

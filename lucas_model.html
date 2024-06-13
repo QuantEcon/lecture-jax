@@ -56,19 +56,19 @@
   
   <script data-cfasync="false">
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
-    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
-<link href="_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
-<link href="_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link href="_static/styles/theme.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
 
   
-  <link href="_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=b09b2da44b9015b4fa76ea072fa2d8f7faee5492" type="text/css" />
@@ -80,9 +80,9 @@
     <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
-<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
-  <script src="_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=3ee479438cf8b5e0d341" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=3ee479438cf8b5e0d341" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=3ee479438cf8b5e0d341"></script>
 
 
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
@@ -260,28 +260,15 @@ const thebe_selector_output = ".output, .cell_output"
                 <img style="width:250px;display:inline;" width="250px" src="https://assets.quantecon.org/img/qe-menubar-logo.svg" alt="QuantEcon">
         </a>
 </div><section class="tex2jax_ignore mathjax_ignore" id="asset-pricing-the-lucas-asset-pricing-model">
-<h1><a class="toc-backref" href="#id2"><span class="section-number">7. </span>Asset Pricing: The Lucas Asset Pricing Model</a><a class="headerlink" href="#asset-pricing-the-lucas-asset-pricing-model" title="Permalink to this heading">#</a></h1>
+<h1><span class="section-number">7. </span>Asset Pricing: The Lucas Asset Pricing Model<a class="headerlink" href="#asset-pricing-the-lucas-asset-pricing-model" title="Permalink to this heading">#</a></h1>
 <div class="warning admonition">
 <p class="admonition-title">GPU</p>
 <p>This lecture was built using a machine with JAX installed and access to a GPU.</p>
 <p>To run this lecture on <a class="reference external" href="https://colab.research.google.com/">Google Colab</a>, click on the “play” icon top right, select Colab, and set the runtime environment to include a GPU.</p>
 <p>To run this lecture on your own machine, you need to install <a class="reference external" href="https://github.com/google/jax">Google JAX</a>.</p>
 </div>
-<div class="contents topic" id="contents">
-<span id="index-0"></span><p class="topic-title">Contents</p>
-<ul class="simple">
-<li><p><a class="reference internal" href="#asset-pricing-the-lucas-asset-pricing-model" id="id2">Asset Pricing: The Lucas Asset Pricing Model</a></p>
-<ul>
-<li><p><a class="reference internal" href="#overview" id="id3">Overview</a></p></li>
-<li><p><a class="reference internal" href="#the-lucas-model" id="id4">The Lucas Model</a></p></li>
-<li><p><a class="reference internal" href="#computation" id="id5">Computation</a></p></li>
-<li><p><a class="reference internal" href="#exercises" id="id6">Exercises</a></p></li>
-</ul>
-</li>
-</ul>
-</div>
 <section id="overview">
-<h2><a class="toc-backref" href="#id3"><span class="section-number">7.1. </span>Overview</a><a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
+<span id="index-0"></span><h2><span class="section-number">7.1. </span>Overview<a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
 <p>An asset is a claim on a stream of prospective payments.</p>
 <p>What is the correct price to pay for such a claim?</p>
 <p>The asset pricing model of Lucas <span id="id1">[<a class="reference internal" href="zreferences.html#id184" title="Robert E Lucas, Jr. Asset prices in an exchange economy. Econometrica: Journal of the Econometric Society, 46(6):1429–1445, 1978.">Lucas, 1978</a>]</span> attempts to answer this
@@ -299,18 +286,18 @@ large as it is in some other lectures.</p>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">jax.numpy</span> <span class="k">as</span> <span class="nn">jnp</span>
 <span class="kn">import</span> <span class="nn">jax</span>
-<span class="kn">import</span> <span class="nn">time</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">numba</span>
 <span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="kn">import</span> <span class="n">lognorm</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">time</span>
 </pre></div>
 </div>
 </div>
 </div>
 </section>
 <section id="the-lucas-model">
-<h2><a class="toc-backref" href="#id4"><span class="section-number">7.2. </span>The Lucas Model</a><a class="headerlink" href="#the-lucas-model" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">7.2. </span>The Lucas Model<a class="headerlink" href="#the-lucas-model" title="Permalink to this heading">#</a></h2>
 <p id="index-1">Lucas studied a pure exchange economy with a representative consumer (or household), where</p>
 <ul class="simple">
 <li><p><em>Pure exchange</em> means that all endowments are exogenous.</p></li>
@@ -529,7 +516,7 @@ on the left-hand side gives <a class="reference internal" href="#equation-ltbc">
 </section>
 </section>
 <section id="computation">
-<span id="lt-comp-eg"></span><h2><a class="toc-backref" href="#id5"><span class="section-number">7.3. </span>Computation</a><a class="headerlink" href="#computation" title="Permalink to this heading">#</a></h2>
+<span id="lt-comp-eg"></span><h2><span class="section-number">7.3. </span>Computation<a class="headerlink" href="#computation" title="Permalink to this heading">#</a></h2>
 <p id="index-10">The preceding discussion tells that we can compute <span class="math notranslate nohighlight">\(f^*\)</span> by picking any arbitrary <span class="math notranslate nohighlight">\(f \in cb\mathbb{R}_+\)</span> and then iterating with <span class="math notranslate nohighlight">\(T\)</span>.</p>
 <p>The equilibrium price function <span class="math notranslate nohighlight">\(p^*\)</span> can then be recovered by <span class="math notranslate nohighlight">\(p^*(y) = f^*(y) / u'(y)\)</span>.</p>
 <p>Let’s try this when <span class="math notranslate nohighlight">\(\ln y_{t+1} = \alpha \ln y_t + \sigma \epsilon_{t+1}\)</span> where <span class="math notranslate nohighlight">\(\{\epsilon_t\}\)</span> is IID and standard normal.</p>
@@ -637,19 +624,31 @@ to find the fixed point.</p>
 <span class="n">grid</span><span class="p">,</span> <span class="n">draws</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="n">arrays</span>
 
 <span class="c1"># Solve once to compile</span>
+<span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
 <span class="n">price_vals</span> <span class="o">=</span> <span class="n">solve_model</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">arrays</span><span class="p">)</span>
-
-<span class="c1"># Now time execution without compile time</span>
-<span class="n">in_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
-<span class="n">price_vals</span> <span class="o">=</span> <span class="n">solve_model</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">arrays</span><span class="p">)</span>
-<span class="n">out_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
-<span class="n">numba_elapsed</span> <span class="o">=</span> <span class="n">out_time</span> <span class="o">-</span> <span class="n">in_time</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Numba execution time = &quot;</span><span class="p">,</span> <span class="n">numba_elapsed</span><span class="p">)</span>
+<span class="n">numba_with_compile_time</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Numba compile plus execution time = &quot;</span><span class="p">,</span> <span class="n">numba_with_compile_time</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Numba execution time =  4.214541673660278
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Numba compile plus execution time =  4.948593378067017
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Now time execution without compile time</span>
+<span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
+<span class="n">price_vals</span> <span class="o">=</span> <span class="n">solve_model</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">arrays</span><span class="p">)</span>
+<span class="n">numba_without_compile_time</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Numba execution time = &quot;</span><span class="p">,</span> <span class="n">numba_without_compile_time</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Numba execution time =  3.31889009475708
 </pre></div>
 </div>
 </div>
@@ -799,21 +798,33 @@ from the endowment process.</p>
 <span class="n">γ</span><span class="p">,</span> <span class="n">β</span><span class="p">,</span> <span class="n">α</span><span class="p">,</span> <span class="n">σ</span> <span class="o">=</span> <span class="n">params</span>
 
 <span class="c1"># Solve once to compile</span>
-<span class="n">price_vals</span> <span class="o">=</span> <span class="n">solve_model</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">arrays</span><span class="p">)</span>
-
-<span class="c1"># Now time execution without compile time</span>
-<span class="n">in_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
-<span class="n">price_vals</span> <span class="o">=</span> <span class="n">solve_model</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">arrays</span><span class="p">)</span>
-<span class="n">out_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
-<span class="n">jax_elapsed</span> <span class="o">=</span> <span class="n">out_time</span> <span class="o">-</span> <span class="n">in_time</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;JAX execution time = &quot;</span><span class="p">,</span> <span class="n">jax_elapsed</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Speedup factor = &quot;</span><span class="p">,</span> <span class="n">numba_elapsed</span> <span class="o">/</span> <span class="n">jax_elapsed</span><span class="p">)</span>
+<span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
+<span class="n">price_vals</span> <span class="o">=</span> <span class="n">solve_model</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">arrays</span><span class="p">)</span><span class="o">.</span><span class="n">block_until_ready</span><span class="p">()</span>
+<span class="n">jax_with_compile_time</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;JAX compile plus execution time = &quot;</span><span class="p">,</span> <span class="n">jax_with_compile_time</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>JAX execution time =  0.41176533699035645
-Speedup factor =  10.235299805624443
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>JAX compile plus execution time =  0.8007924556732178
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Now time execution without compile time</span>
+<span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
+<span class="n">price_vals</span> <span class="o">=</span> <span class="n">solve_model</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">arrays</span><span class="p">)</span><span class="o">.</span><span class="n">block_until_ready</span><span class="p">()</span>
+<span class="n">jax_without_compile_time</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;JAX execution time = &quot;</span><span class="p">,</span> <span class="n">jax_without_compile_time</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Speedup factor = &quot;</span><span class="p">,</span> <span class="n">numba_without_compile_time</span><span class="o">/</span><span class="n">jax_without_compile_time</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>JAX execution time =  0.4933960437774658
+Speedup factor =  6.726624861738826
 </pre></div>
 </div>
 </div>
@@ -837,7 +848,7 @@ Speedup factor =  10.235299805624443
 </section>
 </section>
 <section id="exercises">
-<h2><a class="toc-backref" href="#id6"><span class="section-number">7.4. </span>Exercises</a><a class="headerlink" href="#exercises" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">7.4. </span>Exercises<a class="headerlink" href="#exercises" title="Permalink to this heading">#</a></h2>
 <div class="exercise admonition" id="lucas_ex1">
 <span id="lucas-asset-ex1"></span>
 <p class="admonition-title"><span class="caption-number">Exercise 7.1 </span></p>
@@ -1028,11 +1039,6 @@ Speedup factor =  10.235299805624443
    15. Endogenous Grid Method
   </a>
  </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="cake_eating_numerical.html">
-   16. Cake Eating: Numerical Methods
-  </a>
- </li>
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
@@ -1042,22 +1048,22 @@ Speedup factor =  10.235299805624443
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="arellano.html">
-   17. Default Risk and Income Fluctuations
+   16. Default Risk and Income Fluctuations
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="aiyagari_jax.html">
-   18. The Aiyagari Model
+   17. The Aiyagari Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="hopenhayn.html">
-   19. The Hopenhayn Entry-Exit Model
+   18. The Hopenhayn Entry-Exit Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="overborrowing.html">
-   20. Bianchi Overborrowing Model
+   19. Bianchi Overborrowing Model
   </a>
  </li>
 </ul>
@@ -1069,7 +1075,7 @@ Speedup factor =  10.235299805624443
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="mle.html">
-   21. Maximum Likelihood Estimation
+   20. Maximum Likelihood Estimation
   </a>
  </li>
 </ul>
@@ -1081,17 +1087,17 @@ Speedup factor =  10.235299805624443
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   22. Troubleshooting
+   21. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   23. References
+   22. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   24. Execution Statistics
+   23. Execution Statistics
   </a>
  </li>
 </ul>

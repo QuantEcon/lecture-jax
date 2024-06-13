@@ -56,19 +56,19 @@
   
   <script data-cfasync="false">
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
-    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
-<link href="_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
-<link href="_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link href="_static/styles/theme.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
 
   
-  <link href="_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=b09b2da44b9015b4fa76ea072fa2d8f7faee5492" type="text/css" />
@@ -80,9 +80,9 @@
     <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
-<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
-  <script src="_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=3ee479438cf8b5e0d341" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=3ee479438cf8b5e0d341" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=3ee479438cf8b5e0d341"></script>
 
 
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
@@ -254,9 +254,7 @@ Requirement already satisfied: requests in /opt/conda/envs/quantecon/lib/python3
 Requirement already satisfied: scipy&gt;=1.5.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (1.11.4)
 Requirement already satisfied: sympy in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (1.12)
 Requirement already satisfied: llvmlite&lt;0.43,&gt;=0.42.0dev0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from numba&gt;=0.49.0-&gt;quantecon) (0.42.0)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: charset-normalizer&lt;4,&gt;=2 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests-&gt;quantecon) (2.0.4)
+Requirement already satisfied: charset-normalizer&lt;4,&gt;=2 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests-&gt;quantecon) (2.0.4)
 Requirement already satisfied: idna&lt;4,&gt;=2.5 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests-&gt;quantecon) (3.4)
 Requirement already satisfied: urllib3&lt;3,&gt;=1.21.1 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests-&gt;quantecon) (2.0.7)
 Requirement already satisfied: certifi&gt;=2017.4.17 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests-&gt;quantecon) (2024.2.2)
@@ -300,6 +298,7 @@ P_t = a_0 - a_1 Y_t + Z_t,
 <span class="kn">import</span> <span class="nn">jax</span>
 <span class="kn">import</span> <span class="nn">jax.numpy</span> <span class="k">as</span> <span class="nn">jnp</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">time</span>
 </pre></div>
 </div>
 </div>
@@ -312,32 +311,26 @@ P_t = a_0 - a_1 Y_t + Z_t,
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/opt/conda/envs/quantecon/lib/python3.11/pty.py:89: RuntimeWarning: os.fork() was called. os.fork() is incompatible with multithreaded code, and JAX is multithreaded, so this will likely lead to a deadlock.
-  pid, fd = os.forkpty()
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Tue May  7 07:33:23 2024       
-+-----------------------------------------------------------------------------+
-| NVIDIA-SMI 470.182.03   Driver Version: 470.182.03   CUDA Version: 12.3     |
-|-------------------------------+----------------------+----------------------+
-| GPU  Name        Persistence-M| Bus-Id        Disp.A | Volatile Uncorr. ECC |
-| Fan  Temp  Perf  Pwr:Usage/Cap|         Memory-Usage | GPU-Util  Compute M. |
-|                               |                      |               MIG M. |
-|===============================+======================+======================|
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>|   0  Tesla V100-SXM2...  Off  | 00000000:00:1E.0 Off |                    0 |
-| N/A   25C    P0    36W / 300W |      0MiB / 16160MiB |      2%      Default |
-|                               |                      |                  N/A |
-+-------------------------------+----------------------+----------------------+
-                                                                               
-+-----------------------------------------------------------------------------+
-| Processes:                                                                  |
-|  GPU   GI   CI        PID   Type   Process name                  GPU Memory |
-|        ID   ID                                                   Usage      |
-|=============================================================================|
-|  No running processes found                                                 |
-+-----------------------------------------------------------------------------+
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Thu Jun 13 04:28:09 2024       
++---------------------------------------------------------------------------------------+
+| NVIDIA-SMI 535.54.03              Driver Version: 535.54.03    CUDA Version: 12.5     |
+|-----------------------------------------+----------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id        Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |         Memory-Usage | GPU-Util  Compute M. |
+|                                         |                      |               MIG M. |
+|=========================================+======================+======================|
+|   0  Tesla T4                       On  | 00000001:00:00.0 Off |                  Off |
+| N/A   44C    P8              10W /  70W |      2MiB / 16384MiB |      0%      Default |
+|                                         |                      |                  N/A |
++-----------------------------------------+----------------------+----------------------+
+                                                                                         
++---------------------------------------------------------------------------------------+
+| Processes:                                                                            |
+|  GPU   GI   CI        PID   Type   Process name                            GPU Memory |
+|        ID   ID                                                             Usage      |
+|=======================================================================================|
+|  No running processes found                                                           |
++---------------------------------------------------------------------------------------+
 </pre></div>
 </div>
 </div>
@@ -716,11 +709,7 @@ step is to define the function <span class="math notranslate nohighlight">\(L_{\
 <div class="cell tag_hide-output docutils container">
 <div class="cell_input above-output-prompt docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Starting HPI.&quot;</span><span class="p">)</span>
-<span class="n">qe</span><span class="o">.</span><span class="n">tic</span><span class="p">()</span>
-<span class="n">σ_star_hpi</span> <span class="o">=</span> <span class="n">howard_policy_iteration</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
-<span class="n">elapsed</span> <span class="o">=</span> <span class="n">qe</span><span class="o">.</span><span class="n">toc</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">σ_star_hpi</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;HPI completed in </span><span class="si">{</span><span class="n">elapsed</span><span class="si">}</span><span class="s2"> seconds.&quot;</span><span class="p">)</span>
+<span class="o">%</span><span class="k">time</span> σ_star_hpi = howard_policy_iteration(model).block_until_ready()
 </pre></div>
 </div>
 </div>
@@ -745,7 +734,39 @@ Concluded loop 9 with error 1.
 Concluded loop 10 with error 1.
 Concluded loop 11 with error 1.
 Concluded loop 12 with error 0.
-TOC: Elapsed: 0:00:0.95
+CPU times: user 519 ms, sys: 65.7 ms, total: 584 ms
+Wall time: 764 ms
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Now time it without compile time</span>
+<span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
+<span class="n">σ_star_hpi</span> <span class="o">=</span> <span class="n">howard_policy_iteration</span><span class="p">(</span><span class="n">model</span><span class="p">)</span><span class="o">.</span><span class="n">block_until_ready</span><span class="p">()</span>
+<span class="n">hpi_without_compile</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">σ_star_hpi</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;HPI completed in </span><span class="si">{</span><span class="n">hpi_without_compile</span><span class="si">}</span><span class="s2"> seconds.&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Concluded loop 1 with error 50.
+Concluded loop 2 with error 26.
+Concluded loop 3 with error 17.
+Concluded loop 4 with error 10.
+Concluded loop 5 with error 7.
+Concluded loop 6 with error 4.
+Concluded loop 7 with error 3.
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Concluded loop 8 with error 1.
+Concluded loop 9 with error 1.
+Concluded loop 10 with error 1.
+Concluded loop 11 with error 1.
+Concluded loop 12 with error 0.
 [[ 2  2  2 ...  6  6  6]
  [ 3  3  3 ...  7  7  7]
  [ 4  4  4 ...  7  7  7]
@@ -753,11 +774,10 @@ TOC: Elapsed: 0:00:0.95
  [82 82 82 ... 86 86 86]
  [83 83 83 ... 86 86 86]
  [84 84 84 ... 87 87 87]]
-HPI completed in 0.9521265029907227 seconds.
+HPI completed in 0.1179356575012207 seconds.
 </pre></div>
 </div>
 </div>
-</details>
 </div>
 <p>Here’s the plot of the Howard policy, as a function of <span class="math notranslate nohighlight">\(y\)</span> at the highest and lowest values of <span class="math notranslate nohighlight">\(z\)</span>.</p>
 <div class="cell docutils container">
@@ -778,11 +798,7 @@ HPI completed in 0.9521265029907227 seconds.
 <div class="cell tag_hide-output docutils container">
 <div class="cell_input above-output-prompt docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Starting VFI.&quot;</span><span class="p">)</span>
-<span class="n">qe</span><span class="o">.</span><span class="n">tic</span><span class="p">()</span>
-<span class="n">σ_star_vfi</span> <span class="o">=</span> <span class="n">value_function_iteration</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
-<span class="n">elapsed</span> <span class="o">=</span> <span class="n">qe</span><span class="o">.</span><span class="n">toc</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">σ_star_vfi</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;VFI completed in </span><span class="si">{</span><span class="n">elapsed</span><span class="si">}</span><span class="s2"> seconds.&quot;</span><span class="p">)</span>
+<span class="o">%</span><span class="k">time</span> σ_star_vfi = value_function_iteration(model).block_until_ready()
 </pre></div>
 </div>
 </div>
@@ -795,19 +811,36 @@ HPI completed in 0.9521265029907227 seconds.
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Starting VFI.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:0.28
-[[ 2  2  2 ...  6  6  6]
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 451 ms, sys: 8.24 ms, total: 459 ms
+Wall time: 512 ms
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Now time it without compile time</span>
+<span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
+<span class="n">σ_star_vfi</span> <span class="o">=</span> <span class="n">value_function_iteration</span><span class="p">(</span><span class="n">model</span><span class="p">)</span><span class="o">.</span><span class="n">block_until_ready</span><span class="p">()</span>
+<span class="n">vfi_without_compile</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">σ_star_vfi</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;VFI completed in </span><span class="si">{</span><span class="n">vfi_without_compile</span><span class="si">}</span><span class="s2"> seconds.&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[ 2  2  2 ...  6  6  6]
  [ 3  3  3 ...  7  7  7]
  [ 4  4  4 ...  7  7  7]
  ...
  [82 82 82 ... 86 86 86]
  [83 83 83 ... 86 86 86]
  [84 84 84 ... 87 87 87]]
-VFI completed in 0.2838566303253174 seconds.
+VFI completed in 0.427443265914917 seconds.
 </pre></div>
 </div>
 </div>
-</details>
 </div>
 <p>Here’s the plot of the VFI, as a function of <span class="math notranslate nohighlight">\(y\)</span> at the highest and lowest values of <span class="math notranslate nohighlight">\(z\)</span>.</p>
 <div class="cell docutils container">
@@ -828,11 +861,7 @@ VFI completed in 0.2838566303253174 seconds.
 <div class="cell tag_hide-output docutils container">
 <div class="cell_input above-output-prompt docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Starting OPI.&quot;</span><span class="p">)</span>
-<span class="n">qe</span><span class="o">.</span><span class="n">tic</span><span class="p">()</span>
-<span class="n">σ_star_opi</span> <span class="o">=</span> <span class="n">optimistic_policy_iteration</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
-<span class="n">elapsed</span> <span class="o">=</span> <span class="n">qe</span><span class="o">.</span><span class="n">toc</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">σ_star_opi</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;OPI completed in </span><span class="si">{</span><span class="n">elapsed</span><span class="si">}</span><span class="s2"> seconds.&quot;</span><span class="p">)</span>
+<span class="o">%</span><span class="k">time</span> σ_star_opi = optimistic_policy_iteration(model, m=100).block_until_ready()
 </pre></div>
 </div>
 </div>
@@ -845,19 +874,36 @@ VFI completed in 0.2838566303253174 seconds.
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Starting OPI.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:0.41
-[[ 2  2  2 ...  6  6  6]
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 397 ms, sys: 12.5 ms, total: 409 ms
+Wall time: 466 ms
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Now time it without compile time</span>
+<span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
+<span class="n">σ_star_opi</span> <span class="o">=</span> <span class="n">optimistic_policy_iteration</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span><span class="o">.</span><span class="n">block_until_ready</span><span class="p">()</span>
+<span class="n">opi_without_compile</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">σ_star_opi</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;OPI completed in </span><span class="si">{</span><span class="n">opi_without_compile</span><span class="si">}</span><span class="s2"> seconds.&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[ 2  2  2 ...  6  6  6]
  [ 3  3  3 ...  7  7  7]
  [ 4  4  4 ...  7  7  7]
  ...
  [82 82 82 ... 86 86 86]
  [83 83 83 ... 86 86 86]
  [84 84 84 ... 87 87 87]]
-OPI completed in 0.4139411449432373 seconds.
+OPI completed in 0.2222156524658203 seconds.
 </pre></div>
 </div>
 </div>
-</details>
 </div>
 <p>Here’s the plot of the optimal policy, as a function of <span class="math notranslate nohighlight">\(y\)</span> at the highest and lowest values of <span class="math notranslate nohighlight">\(z\)</span>.</p>
 <div class="cell docutils container">
@@ -887,15 +933,44 @@ OPI completed in 0.4139411449432373 seconds.
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Running Howard policy iteration.&quot;</span><span class="p">)</span>
-<span class="n">qe</span><span class="o">.</span><span class="n">tic</span><span class="p">()</span>
-<span class="n">σ_pi</span> <span class="o">=</span> <span class="n">howard_policy_iteration</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
-<span class="n">pi_time</span> <span class="o">=</span> <span class="n">qe</span><span class="o">.</span><span class="n">toc</span><span class="p">()</span>
+<span class="o">%</span><span class="k">time</span> σ_hpi = howard_policy_iteration(model).block_until_ready()
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Running Howard policy iteration.
 Concluded loop 1 with error 50.
+Concluded loop 2 with error 26.
+Concluded loop 3 with error 17.
+Concluded loop 4 with error 10.
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Concluded loop 5 with error 7.
+Concluded loop 6 with error 4.
+Concluded loop 7 with error 3.
+Concluded loop 8 with error 1.
+Concluded loop 9 with error 1.
+Concluded loop 10 with error 1.
+Concluded loop 11 with error 1.
+Concluded loop 12 with error 0.
+CPU times: user 100 ms, sys: 1.16 ms, total: 101 ms
+Wall time: 94.2 ms
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Now time it without compile time</span>
+<span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
+<span class="n">σ_hpi</span> <span class="o">=</span> <span class="n">howard_policy_iteration</span><span class="p">(</span><span class="n">model</span><span class="p">)</span><span class="o">.</span><span class="n">block_until_ready</span><span class="p">()</span>
+<span class="n">hpi_without_compile</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;HPI completed in </span><span class="si">{</span><span class="n">hpi_without_compile</span><span class="si">}</span><span class="s2"> seconds.&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Concluded loop 1 with error 50.
 Concluded loop 2 with error 26.
 Concluded loop 3 with error 17.
 Concluded loop 4 with error 10.
@@ -907,29 +982,40 @@ Concluded loop 9 with error 1.
 Concluded loop 10 with error 1.
 Concluded loop 11 with error 1.
 Concluded loop 12 with error 0.
-TOC: Elapsed: 0:00:0.06
+HPI completed in 0.09497547149658203 seconds.
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;PI completed in </span><span class="si">{</span><span class="n">pi_time</span><span class="si">}</span><span class="s2"> seconds.&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Running value function iteration.&quot;</span><span class="p">)</span>
-<span class="n">qe</span><span class="o">.</span><span class="n">tic</span><span class="p">()</span>
-<span class="n">σ_vfi</span> <span class="o">=</span> <span class="n">value_function_iteration</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">)</span>
-<span class="n">vfi_time</span> <span class="o">=</span> <span class="n">qe</span><span class="o">.</span><span class="n">toc</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;VFI completed in </span><span class="si">{</span><span class="n">vfi_time</span><span class="si">}</span><span class="s2"> seconds.&quot;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Running value function iteration.&quot;</span><span class="p">)</span>
+<span class="o">%</span><span class="k">time</span> σ_vfi = value_function_iteration(model, tol=1e-5).block_until_ready()
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>PI completed in 0.0628969669342041 seconds.
-Running value function iteration.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Running value function iteration.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:0.18
-VFI completed in 0.18338799476623535 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 429 ms, sys: 7.95 ms, total: 437 ms
+Wall time: 432 ms
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Now time it without compile time</span>
+<span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
+<span class="n">σ_vfi</span> <span class="o">=</span> <span class="n">value_function_iteration</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">)</span><span class="o">.</span><span class="n">block_until_ready</span><span class="p">()</span>
+<span class="n">vfi_without_compile</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;VFI completed in </span><span class="si">{</span><span class="n">vfi_without_compile</span><span class="si">}</span><span class="s2"> seconds.&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>VFI completed in 0.4271097183227539 seconds.
 </pre></div>
 </div>
 </div>
@@ -939,11 +1025,14 @@ VFI completed in 0.18338799476623535 seconds.
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">opi_times</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">m_vals</span><span class="p">:</span>
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Running optimistic policy iteration with m=</span><span class="si">{</span><span class="n">m</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
-    <span class="n">qe</span><span class="o">.</span><span class="n">tic</span><span class="p">()</span>
-    <span class="n">σ_opi</span> <span class="o">=</span> <span class="n">optimistic_policy_iteration</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="n">m</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">)</span>
-    <span class="n">opi_time</span> <span class="o">=</span> <span class="n">qe</span><span class="o">.</span><span class="n">toc</span><span class="p">()</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;OPI with m=</span><span class="si">{</span><span class="n">m</span><span class="si">}</span><span class="s2"> completed in </span><span class="si">{</span><span class="n">opi_time</span><span class="si">}</span><span class="s2"> seconds.&quot;</span><span class="p">)</span>
-    <span class="n">opi_times</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">opi_time</span><span class="p">)</span>
+    <span class="n">σ_opi</span> <span class="o">=</span> <span class="n">optimistic_policy_iteration</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="n">m</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">)</span><span class="o">.</span><span class="n">block_until_ready</span><span class="p">()</span>
+
+    <span class="c1"># Now time it without compile time</span>
+    <span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
+    <span class="n">σ_opi</span> <span class="o">=</span> <span class="n">optimistic_policy_iteration</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="n">m</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">)</span><span class="o">.</span><span class="n">block_until_ready</span><span class="p">()</span>
+    <span class="n">opi_without_compile</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;OPI with m=</span><span class="si">{</span><span class="n">m</span><span class="si">}</span><span class="s2"> completed in </span><span class="si">{</span><span class="n">opi_without_compile</span><span class="si">}</span><span class="s2"> seconds.&quot;</span><span class="p">)</span>
+    <span class="n">opi_times</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">opi_without_compile</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -956,74 +1045,63 @@ VFI completed in 0.18338799476623535 seconds.
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Running optimistic policy iteration with m=5.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:0.08
-OPI with m=5 completed in 0.0831453800201416 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OPI with m=5 completed in 0.26140713691711426 seconds.
 Running optimistic policy iteration with m=45.
-TOC: Elapsed: 0:00:0.07
-OPI with m=45 completed in 0.07056212425231934 seconds.
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OPI with m=45 completed in 0.20659446716308594 seconds.
 Running optimistic policy iteration with m=85.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:0.07
-OPI with m=85 completed in 0.07503628730773926 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OPI with m=85 completed in 0.21666765213012695 seconds.
 Running optimistic policy iteration with m=125.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:0.07
-OPI with m=125 completed in 0.07529234886169434 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OPI with m=125 completed in 0.22327280044555664 seconds.
 Running optimistic policy iteration with m=165.
-TOC: Elapsed: 0:00:0.07
-OPI with m=165 completed in 0.07988739013671875 seconds.
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OPI with m=165 completed in 0.24134612083435059 seconds.
 Running optimistic policy iteration with m=205.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:0.09
-OPI with m=205 completed in 0.09105086326599121 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OPI with m=205 completed in 0.2775256633758545 seconds.
 Running optimistic policy iteration with m=245.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:0.10
-OPI with m=245 completed in 0.10010552406311035 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OPI with m=245 completed in 0.3053739070892334 seconds.
 Running optimistic policy iteration with m=285.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:0.10
-OPI with m=285 completed in 0.10402488708496094 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OPI with m=285 completed in 0.32517170906066895 seconds.
 Running optimistic policy iteration with m=325.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:0.12
-OPI with m=325 completed in 0.12121343612670898 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OPI with m=325 completed in 0.3702242374420166 seconds.
 Running optimistic policy iteration with m=365.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:0.13
-OPI with m=365 completed in 0.13300323486328125 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OPI with m=365 completed in 0.41534948348999023 seconds.
 Running optimistic policy iteration with m=405.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:0.14
-OPI with m=405 completed in 0.14407968521118164 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OPI with m=405 completed in 0.46053409576416016 seconds.
 Running optimistic policy iteration with m=445.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:0.16
-OPI with m=445 completed in 0.1621415615081787 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OPI with m=445 completed in 0.5054705142974854 seconds.
 Running optimistic policy iteration with m=485.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:0.17
-OPI with m=485 completed in 0.17595601081848145 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OPI with m=485 completed in 0.550750732421875 seconds.
 Running optimistic policy iteration with m=525.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:0.19
-OPI with m=525 completed in 0.19118499755859375 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OPI with m=525 completed in 0.596602201461792 seconds.
 Running optimistic policy iteration with m=565.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:0.20
-OPI with m=565 completed in 0.20634889602661133 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OPI with m=565 completed in 0.6410155296325684 seconds.
 </pre></div>
 </div>
 </div>
@@ -1032,9 +1110,9 @@ OPI with m=565 completed in 0.20634889602661133 seconds.
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">m_vals</span><span class="p">,</span> <span class="n">jnp</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">m_vals</span><span class="p">),</span> <span class="n">pi_time</span><span class="p">),</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">m_vals</span><span class="p">,</span> <span class="n">jnp</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">m_vals</span><span class="p">),</span> <span class="n">hpi_without_compile</span><span class="p">),</span>
         <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Howard policy iteration&quot;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">m_vals</span><span class="p">,</span> <span class="n">jnp</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">m_vals</span><span class="p">),</span> <span class="n">vfi_time</span><span class="p">),</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">m_vals</span><span class="p">,</span> <span class="n">jnp</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">m_vals</span><span class="p">),</span> <span class="n">vfi_without_compile</span><span class="p">),</span>
         <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;value function iteration&quot;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">m_vals</span><span class="p">,</span> <span class="n">opi_times</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;optimistic policy iteration&quot;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">frameon</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
@@ -1045,7 +1123,7 @@ OPI with m=565 completed in 0.20634889602661133 seconds.
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/7c6939e4a9ff14a1ae26242f3a2b5c58202f01be36c7824b6e43f44d5ab35edf.png"><img alt="_images/7c6939e4a9ff14a1ae26242f3a2b5c58202f01be36c7824b6e43f44d5ab35edf.png" src="_images/7c6939e4a9ff14a1ae26242f3a2b5c58202f01be36c7824b6e43f44d5ab35edf.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/7004e6ef7db57bf04b6485cf47c1a488ee3947d9244cdcdfba082a141193fd90.png"><img alt="_images/7004e6ef7db57bf04b6485cf47c1a488ee3947d9244cdcdfba082a141193fd90.png" src="_images/7004e6ef7db57bf04b6485cf47c1a488ee3947d9244cdcdfba082a141193fd90.png" style="width: 80%;" /></a>
 </div>
 </div>
 </section>
@@ -1201,11 +1279,6 @@ OPI with m=565 completed in 0.20634889602661133 seconds.
    15. Endogenous Grid Method
   </a>
  </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="cake_eating_numerical.html">
-   16. Cake Eating: Numerical Methods
-  </a>
- </li>
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
@@ -1215,22 +1288,22 @@ OPI with m=565 completed in 0.20634889602661133 seconds.
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="arellano.html">
-   17. Default Risk and Income Fluctuations
+   16. Default Risk and Income Fluctuations
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="aiyagari_jax.html">
-   18. The Aiyagari Model
+   17. The Aiyagari Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="hopenhayn.html">
-   19. The Hopenhayn Entry-Exit Model
+   18. The Hopenhayn Entry-Exit Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="overborrowing.html">
-   20. Bianchi Overborrowing Model
+   19. Bianchi Overborrowing Model
   </a>
  </li>
 </ul>
@@ -1242,7 +1315,7 @@ OPI with m=565 completed in 0.20634889602661133 seconds.
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="mle.html">
-   21. Maximum Likelihood Estimation
+   20. Maximum Likelihood Estimation
   </a>
  </li>
 </ul>
@@ -1254,17 +1327,17 @@ OPI with m=565 completed in 0.20634889602661133 seconds.
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   22. Troubleshooting
+   21. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   23. References
+   22. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   24. Execution Statistics
+   23. Execution Statistics
   </a>
  </li>
 </ul>

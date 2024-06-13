@@ -179,9 +179,13 @@ Let's set up and solve the model.
 model = create_js_model()
 n, w_vals, P, β, c = model
 
-qe.tic()
-v_star, σ_star = vfi(model)
-vfi_time = qe.toc()
+%time v_star, σ_star = vfi(model)
+```
+
+We run it again to eliminate compile time.
+
+```{code-cell} ipython3
+%time v_star, σ_star = vfi(model)
 ```
 
 We compute the reservation wage as the first $w$ such that $\sigma(w)=1$.
@@ -307,9 +311,13 @@ model_rs = create_risk_sensitive_js_model()
 
 n, w_vals, P, β, c, θ = model_rs
 
-qe.tic()
-v_star_rs, σ_star_rs = vfi(model_rs)
-vfi_time = qe.toc()
+%time v_star_rs, σ_star_rs = vfi(model_rs)
+```
+
+We run it again to eliminate the compilation time.
+
+```{code-cell} ipython3
+%time v_star_rs, σ_star_rs = vfi(model_rs)
 ```
 
 ```{code-cell} ipython3

@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>20. Bianchi Overborrowing Model &#8212; Quantitative Economics with Python using JAX</title>
+    <title>19. Bianchi Overborrowing Model &#8212; Quantitative Economics with Python using JAX</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
@@ -56,19 +56,19 @@
   
   <script data-cfasync="false">
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
-    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
-<link href="_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
-<link href="_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link href="_static/styles/theme.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
 
   
-  <link href="_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=b09b2da44b9015b4fa76ea072fa2d8f7faee5492" type="text/css" />
@@ -80,9 +80,9 @@
     <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
-<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
-  <script src="_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=3ee479438cf8b5e0d341" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=3ee479438cf8b5e0d341" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=3ee479438cf8b5e0d341"></script>
 
 
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
@@ -121,8 +121,8 @@ const thebe_selector_output = ".output, .cell_output"
     <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="21. Maximum Likelihood Estimation" href="mle.html" />
-    <link rel="prev" title="19. The Hopenhayn Entry-Exit Model" href="hopenhayn.html" />
+    <link rel="next" title="20. Maximum Likelihood Estimation" href="mle.html" />
+    <link rel="prev" title="18. The Hopenhayn Entry-Exit Model" href="hopenhayn.html" />
 
 <!-- Normal Meta Tags -->
 <meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
@@ -170,21 +170,21 @@ const thebe_selector_output = ".output, .cell_output"
 
                         <nav id="bd-toc-nav" class="qe-page__toc-nav">
                             <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#description-of-the-model">20.1. Description of the model</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#decentralized-equilibrium">20.1.1. Decentralized equilibrium</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#notation">20.1.2. Notation</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#constrained-planner">20.1.3. Constrained planner</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#description-of-the-model">19.1. Description of the model</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#decentralized-equilibrium">19.1.1. Decentralized equilibrium</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#notation">19.1.2. Notation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#constrained-planner">19.1.3. Constrained planner</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#markov-dynamics">20.2. Markov dynamics</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overborrowing-model">20.3. Overborrowing Model</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#planner-problem">20.4. Planner problem</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#numerical-solution">20.5. Numerical solution</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#generating-solutions">20.5.1. Generating solutions</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#policy-plots">20.5.2. Policy plots</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#markov-dynamics">19.2. Markov dynamics</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overborrowing-model">19.3. Overborrowing Model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#planner-problem">19.4. Planner problem</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#numerical-solution">19.5. Numerical solution</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#generating-solutions">19.5.1. Generating solutions</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#policy-plots">19.5.2. Policy plots</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise">20.6. Exercise</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise">19.6. Exercise</a></li>
 </ul>
                             <p class="logo">
                                 
@@ -244,7 +244,7 @@ const thebe_selector_output = ".output, .cell_output"
                     <div>
                         
   <section class="tex2jax_ignore mathjax_ignore" id="bianchi-overborrowing-model">
-<h1><span class="section-number">20. </span>Bianchi Overborrowing Model<a class="headerlink" href="#bianchi-overborrowing-model" title="Permalink to this heading">#</a></h1>
+<h1><span class="section-number">19. </span>Bianchi Overborrowing Model<a class="headerlink" href="#bianchi-overborrowing-model" title="Permalink to this heading">#</a></h1>
 <div class="warning admonition">
 <p class="admonition-title">GPU</p>
 <p>This lecture was built using a machine with JAX installed and access to a GPU.</p>
@@ -266,10 +266,10 @@ const thebe_selector_output = ".output, .cell_output"
 </summary>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /opt/conda/envs/quantecon/lib/python3.11/site-packages (0.7.2)
-Requirement already satisfied: numba&gt;=0.49.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (0.59.0)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: numpy&gt;=1.17.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (1.26.4)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: numba&gt;=0.49.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (0.59.0)
+Requirement already satisfied: numpy&gt;=1.17.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (1.26.4)
 Requirement already satisfied: requests in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (2.31.0)
 Requirement already satisfied: scipy&gt;=1.5.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (1.11.4)
 Requirement already satisfied: sympy in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (1.12)
@@ -291,8 +291,7 @@ Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/envs/quantecon/lib/
 <p>We use the following imports.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">time</span>
-<span class="kn">import</span> <span class="nn">jax</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">jax</span>
 <span class="kn">import</span> <span class="nn">numba</span>
 <span class="kn">import</span> <span class="nn">jax.numpy</span> <span class="k">as</span> <span class="nn">jnp</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
@@ -301,12 +300,13 @@ Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/envs/quantecon/lib/
 <span class="kn">import</span> <span class="nn">scipy</span> <span class="k">as</span> <span class="nn">sp</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">seaborn</span>
+<span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">time</span>
 </pre></div>
 </div>
 </div>
 </div>
 <section id="description-of-the-model">
-<h2><span class="section-number">20.1. </span>Description of the model<a class="headerlink" href="#description-of-the-model" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">19.1. </span>Description of the model<a class="headerlink" href="#description-of-the-model" title="Permalink to this heading">#</a></h2>
 <p>The model seeks to explain sudden stops in emerging market economies, where
 painful financial disruption follows a period of sustained heavy borrowing.</p>
 <p>A representative household chooses how much to borrow on international markets and how much to consume.</p>
@@ -328,7 +328,7 @@ effect of borrowing on the credit constraint.</p>
 <li><p>This fall in the exchange rate further tightens the borrowing constraint, amplifying the shock</p></li>
 </ol>
 <section id="decentralized-equilibrium">
-<h3><span class="section-number">20.1.1. </span>Decentralized equilibrium<a class="headerlink" href="#decentralized-equilibrium" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">19.1.1. </span>Decentralized equilibrium<a class="headerlink" href="#decentralized-equilibrium" title="Permalink to this heading">#</a></h3>
 <p>The model contains a representative household that seeks to maximize
 an expected sum of discounted utility where</p>
 <ul class="simple">
@@ -384,7 +384,7 @@ policy <span class="math notranslate nohighlight">\(b' = b'(b, B, y)\)</span> ve
 \]</div>
 </section>
 <section id="notation">
-<h3><span class="section-number">20.1.2. </span>Notation<a class="headerlink" href="#notation" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">19.1.2. </span>Notation<a class="headerlink" href="#notation" title="Permalink to this heading">#</a></h3>
 <p>Let</p>
 <div class="math notranslate nohighlight">
 \[
@@ -418,7 +418,7 @@ household problem as</p>
 \]</div>
 </section>
 <section id="constrained-planner">
-<h3><span class="section-number">20.1.3. </span>Constrained planner<a class="headerlink" href="#constrained-planner" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">19.1.3. </span>Constrained planner<a class="headerlink" href="#constrained-planner" title="Permalink to this heading">#</a></h3>
 <p>The constrained planner solves</p>
 <div class="math notranslate nohighlight">
 \[
@@ -446,7 +446,7 @@ the price of nontradables and hence the credit constraint.</p>
 </section>
 </section>
 <section id="markov-dynamics">
-<h2><span class="section-number">20.2. </span>Markov dynamics<a class="headerlink" href="#markov-dynamics" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">19.2. </span>Markov dynamics<a class="headerlink" href="#markov-dynamics" title="Permalink to this heading">#</a></h2>
 <p>We develop some functions for working with the VAR process</p>
 <div class="math notranslate nohighlight">
 \[
@@ -606,11 +606,11 @@ testing.</p>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Statistics for original process.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Std dev of y_t is 0.08792756192108306
-Std dev of y_n is 0.10605689176411837
-corr(y_t, y_n) is 0.5413058834315481
-auto_corr(y_t) is 0.456726505447261
-auto_corr(y_n) is 0.6672183414948942
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Std dev of y_t is 0.08787696379956297
+Std dev of y_n is 0.10579747263041211
+corr(y_t, y_n) is 0.5401136689120419
+auto_corr(y_t) is 0.4550267661562017
+auto_corr(y_n) is 0.6666493991666815
 </pre></div>
 </div>
 </div>
@@ -626,18 +626,18 @@ auto_corr(y_n) is 0.6672183414948942
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Statistics for discretized process.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Std dev of y_t is 0.08763531286580997
-Std dev of y_n is 0.10558559889074978
-corr(y_t, y_n) is 0.4767020328697186
-auto_corr(y_t) is 0.40044079562292095
-auto_corr(y_n) is 0.5898924171702546
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Std dev of y_t is 0.08762838890355906
+Std dev of y_n is 0.10539155426964575
+corr(y_t, y_n) is 0.4770200010325035
+auto_corr(y_t) is 0.4020942100287801
+auto_corr(y_n) is 0.5883879686359188
 </pre></div>
 </div>
 </div>
 </div>
 </section>
 <section id="overborrowing-model">
-<h2><span class="section-number">20.3. </span>Overborrowing Model<a class="headerlink" href="#overborrowing-model" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">19.3. </span>Overborrowing Model<a class="headerlink" href="#overborrowing-model" title="Permalink to this heading">#</a></h2>
 <p>In what follows</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">y</span></code> = <code class="docutils literal notranslate"><span class="pre">(y_t,</span> <span class="pre">y_n)</span></code> is the exogenous state process</p></li>
@@ -958,7 +958,7 @@ and a damped fixed point iteration scheme.</p>
 </div>
 </section>
 <section id="planner-problem">
-<h2><span class="section-number">20.4. </span>Planner problem<a class="headerlink" href="#planner-problem" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">19.4. </span>Planner problem<a class="headerlink" href="#planner-problem" title="Permalink to this heading">#</a></h2>
 <p>Now we switch to the planner problem.</p>
 <p>Our first function returns the (unmaximized) RHS of the Bellman equation.</p>
 <div class="cell docutils container">
@@ -1077,10 +1077,10 @@ and a damped fixed point iteration scheme.</p>
 </div>
 </section>
 <section id="numerical-solution">
-<h2><span class="section-number">20.5. </span>Numerical solution<a class="headerlink" href="#numerical-solution" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">19.5. </span>Numerical solution<a class="headerlink" href="#numerical-solution" title="Permalink to this heading">#</a></h2>
 <p>Let’s now solve the model and compare the decentralized and planner solutions</p>
 <section id="generating-solutions">
-<h3><span class="section-number">20.5.1. </span>Generating solutions<a class="headerlink" href="#generating-solutions" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">19.5.1. </span>Generating solutions<a class="headerlink" href="#generating-solutions" title="Permalink to this heading">#</a></h3>
 <p>Here we compute the two solutions.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1095,11 +1095,10 @@ and a damped fixed point iteration scheme.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Computing decentralized solution.&quot;</span><span class="p">)</span>
-<span class="n">in_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
 <span class="n">H_eq</span> <span class="o">=</span> <span class="n">compute_equilibrium</span><span class="p">(</span><span class="n">parameters</span><span class="p">,</span> <span class="n">sizes</span><span class="p">,</span> <span class="n">arrays</span><span class="p">)</span>
-<span class="n">out_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
-<span class="n">diff</span> <span class="o">=</span> <span class="n">out_time</span> <span class="o">-</span> <span class="n">in_time</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Computed decentralized equilibrium in </span><span class="si">{</span><span class="n">diff</span><span class="si">}</span><span class="s2"> seconds&quot;</span><span class="p">)</span>
+<span class="n">diff_d_with_compile</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Computed decentralized equilibrium in </span><span class="si">{</span><span class="n">diff_d_with_compile</span><span class="si">}</span><span class="s2"> seconds&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1153,7 +1152,69 @@ VFI terminated after 128 iterations.
 Updated H at iteration 21 with error 0.006165444850921631.
 VFI terminated after 128 iterations.
 Updated H at iteration 22 with error 0.0041103363037109375.
-Computed decentralized equilibrium in 16.422647714614868 seconds
+Computed decentralized equilibrium in 45.74346375465393 seconds
+</pre></div>
+</div>
+</div>
+</div>
+<p>We run it again to get rid of compile time.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
+<span class="n">H_eq</span> <span class="o">=</span> <span class="n">compute_equilibrium</span><span class="p">(</span><span class="n">parameters</span><span class="p">,</span> <span class="n">sizes</span><span class="p">,</span> <span class="n">arrays</span><span class="p">)</span>
+<span class="n">diff_d_without_compile</span>  <span class="o">=</span> <span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Computed decentralized equilibrium in </span><span class="si">{</span><span class="n">diff_d_without_compile</span><span class="si">}</span><span class="s2"> seconds&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>VFI terminated after 128 iterations.
+Updated H at iteration 0 with error 0.15619052946567535.
+VFI terminated after 128 iterations.
+Updated H at iteration 1 with error 0.08837097883224487.
+VFI terminated after 129 iterations.
+Updated H at iteration 2 with error 0.0780951976776123.
+VFI terminated after 128 iterations.
+Updated H at iteration 3 with error 0.06987470388412476.
+VFI terminated after 128 iterations.
+Updated H at iteration 4 with error 0.05959904193878174.
+VFI terminated after 128 iterations.
+Updated H at iteration 5 with error 0.05137842893600464.
+VFI terminated after 128 iterations.
+Updated H at iteration 6 with error 0.04315793514251709.
+VFI terminated after 128 iterations.
+Updated H at iteration 7 with error 0.03904759883880615.
+VFI terminated after 128 iterations.
+Updated H at iteration 8 with error 0.0328822135925293.
+VFI terminated after 129 iterations.
+Updated H at iteration 9 with error 0.02877199649810791.
+VFI terminated after 128 iterations.
+Updated H at iteration 10 with error 0.024661660194396973.
+VFI terminated after 128 iterations.
+Updated H at iteration 11 with error 0.020551443099975586.
+VFI terminated after 128 iterations.
+Updated H at iteration 12 with error 0.018496274948120117.
+VFI terminated after 128 iterations.
+Updated H at iteration 13 with error 0.01438605785369873.
+VFI terminated after 128 iterations.
+Updated H at iteration 14 with error 0.012330859899520874.
+VFI terminated after 129 iterations.
+Updated H at iteration 15 with error 0.010275721549987793.
+VFI terminated after 128 iterations.
+Updated H at iteration 16 with error 0.010275721549987793.
+VFI terminated after 128 iterations.
+Updated H at iteration 17 with error 0.0082206130027771.
+VFI terminated after 128 iterations.
+Updated H at iteration 18 with error 0.0082206130027771.
+VFI terminated after 128 iterations.
+Updated H at iteration 19 with error 0.0061654746532440186.
+VFI terminated after 128 iterations.
+Updated H at iteration 20 with error 0.006165444850921631.
+VFI terminated after 128 iterations.
+Updated H at iteration 21 with error 0.006165444850921631.
+VFI terminated after 128 iterations.
+Updated H at iteration 22 with error 0.0041103363037109375.
+Computed decentralized equilibrium in 45.17244863510132 seconds
 </pre></div>
 </div>
 </div>
@@ -1161,11 +1222,10 @@ Computed decentralized equilibrium in 16.422647714614868 seconds
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Computing planner&#39;s solution.&quot;</span><span class="p">)</span>
-<span class="n">in_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
 <span class="n">planner_v</span><span class="p">,</span> <span class="n">H_plan</span><span class="p">,</span> <span class="n">vfi_num_iter</span> <span class="o">=</span> <span class="n">compute_planner_solution</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
-<span class="n">out_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
-<span class="n">diff</span> <span class="o">=</span> <span class="n">out_time</span> <span class="o">-</span> <span class="n">in_time</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Computed decentralized equilibrium in </span><span class="si">{</span><span class="n">diff</span><span class="si">}</span><span class="s2"> seconds&quot;</span><span class="p">)</span>
+<span class="n">diff_p_with_compile</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Computed planner&#39;s equilibrium in </span><span class="si">{</span><span class="n">diff_p_with_compile</span><span class="si">}</span><span class="s2"> seconds&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1173,14 +1233,30 @@ Computed decentralized equilibrium in 16.422647714614868 seconds
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computing planner&#39;s solution.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed decentralized equilibrium in 1.157634973526001 seconds
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed planner&#39;s equilibrium in 0.8720040321350098 seconds
+</pre></div>
+</div>
+</div>
+</div>
+<p>We run it again to eliminate compile time.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
+<span class="n">planner_v</span><span class="p">,</span> <span class="n">H_plan</span><span class="p">,</span> <span class="n">vfi_num_iter</span> <span class="o">=</span> <span class="n">compute_planner_solution</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+<span class="n">diff_p_without_compile</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Computed planner&#39;s equilibrium in </span><span class="si">{</span><span class="n">diff_p_without_compile</span><span class="si">}</span><span class="s2"> seconds&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed planner&#39;s equilibrium in 0.2260909080505371 seconds
 </pre></div>
 </div>
 </div>
 </div>
 </section>
 <section id="policy-plots">
-<h3><span class="section-number">20.5.2. </span>Policy plots<a class="headerlink" href="#policy-plots" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">19.5.2. </span>Policy plots<a class="headerlink" href="#policy-plots" title="Permalink to this heading">#</a></h3>
 <p>We produce a policy plot that is similar to Figure 1 in <span id="id2">[<a class="reference internal" href="zreferences.html#id256" title="Javier Bianchi. Overborrowing and systemic externalities in the business cycle. American Economic Review, 101(7):3400-3426, December 2011. URL: https://www.aeaweb.org/articles?id=10.1257/aer.101.7.3400, doi:10.1257/aer.101.7.3400.">Bianchi, 2011</a>]</span>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1210,10 +1286,10 @@ dynamics for income.</p>
 </section>
 </section>
 <section id="exercise">
-<h2><span class="section-number">20.6. </span>Exercise<a class="headerlink" href="#exercise" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">19.6. </span>Exercise<a class="headerlink" href="#exercise" title="Permalink to this heading">#</a></h2>
 <div class="exercise admonition" id="overborrow_1">
 
-<p class="admonition-title"><span class="caption-number">Exercise 20.1 </span></p>
+<p class="admonition-title"><span class="caption-number">Exercise 19.1 </span></p>
 <section id="exercise-content">
 <p>Your task is to examine the ergodic distribution of borrowing in the decentralized and
 planner equilibria.</p>
@@ -1255,7 +1331,7 @@ planner equilibria.</p>
 </div>
 <div class="solution dropdown admonition" id="overborrowing-solution-1">
 
-<p class="admonition-title">Solution to<a class="reference internal" href="#overborrow_1"> Exercise 20.1</a></p>
+<p class="admonition-title">Solution to<a class="reference internal" href="#overborrow_1"> Exercise 19.1</a></p>
 <section id="solution-content">
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1310,7 +1386,7 @@ planner equilibria.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/1ecfe157924379b5eca902297a579459f39c08cf36cf5debae59cd4b2782ecaa.png"><img alt="_images/1ecfe157924379b5eca902297a579459f39c08cf36cf5debae59cd4b2782ecaa.png" src="_images/1ecfe157924379b5eca902297a579459f39c08cf36cf5debae59cd4b2782ecaa.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/1294d4fd4b86d82b4add238439dcec258785622622237f74cdd83d915c021e4e.png"><img alt="_images/1294d4fd4b86d82b4add238439dcec258785622622237f74cdd83d915c021e4e.png" src="_images/1294d4fd4b86d82b4add238439dcec258785622622237f74cdd83d915c021e4e.png" style="width: 80%;" /></a>
 </div>
 </div>
 <p>This corresponds to Figure 2 in <span id="id4">[<a class="reference internal" href="zreferences.html#id256" title="Javier Bianchi. Overborrowing and systemic externalities in the business cycle. American Economic Review, 101(7):3400-3426, December 2011. URL: https://www.aeaweb.org/articles?id=10.1257/aer.101.7.3400, doi:10.1257/aer.101.7.3400.">Bianchi, 2011</a>]</span>.</p>
@@ -1473,11 +1549,6 @@ leaving the economy more vulnerable to bad shocks.</p>
    15. Endogenous Grid Method
   </a>
  </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="cake_eating_numerical.html">
-   16. Cake Eating: Numerical Methods
-  </a>
- </li>
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
@@ -1487,22 +1558,22 @@ leaving the economy more vulnerable to bad shocks.</p>
 <ul class="current nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="arellano.html">
-   17. Default Risk and Income Fluctuations
+   16. Default Risk and Income Fluctuations
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="aiyagari_jax.html">
-   18. The Aiyagari Model
+   17. The Aiyagari Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="hopenhayn.html">
-   19. The Hopenhayn Entry-Exit Model
+   18. The Hopenhayn Entry-Exit Model
   </a>
  </li>
  <li class="toctree-l1 current active active">
   <a class="current reference internal" href="#">
-   20. Bianchi Overborrowing Model
+   19. Bianchi Overborrowing Model
   </a>
  </li>
 </ul>
@@ -1514,7 +1585,7 @@ leaving the economy more vulnerable to bad shocks.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="mle.html">
-   21. Maximum Likelihood Estimation
+   20. Maximum Likelihood Estimation
   </a>
  </li>
 </ul>
@@ -1526,17 +1597,17 @@ leaving the economy more vulnerable to bad shocks.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   22. Troubleshooting
+   21. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   23. References
+   22. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   24. Execution Statistics
+   23. Execution Statistics
   </a>
  </li>
 </ul>

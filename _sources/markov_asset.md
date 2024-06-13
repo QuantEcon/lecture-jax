@@ -59,6 +59,7 @@ import numpy as np
 import jax
 import jax.numpy as jnp
 from collections import namedtuple
+from time import time
 ```
 
 We will use 64 bit floats with JAX in order to increase precision.
@@ -791,10 +792,22 @@ sv_model = create_sv_model()
 P, hc_grid, Q, hd_grid, R, z_grid, β, γ, bar_σ, μ_c, μ_d = sv_model
 ```
 
+Let's run it to compile.
+
 ```{code-cell} ipython3
-qe.tic()
+start = time()
 v = sv_pd_ratio(sv_model)
-np_time = qe.toc()
+numpy_with_compile = time() - start
+print("Numpy compile plus execution time = ", numpy_with_compile)
+```
+
+Let's run it again to remove the compile.
+
+```{code-cell} ipython3
+start = time()
+v = sv_pd_ratio(sv_model)
+numpy_without_compile = time() - start
+print("Numpy execution time = ", numpy_without_compile)
 ```
 
 Here are some plots of the solution $v$ along the three dimensions.
@@ -930,23 +943,25 @@ shapes = len(hc_grid), len(hd_grid), len(z_grid)
 Let's see how long it takes to run with compile time included.
 
 ```{code-cell} ipython3
-qe.tic()
+start = time()
 v_jax = sv_pd_ratio_jax(sv_model_jax, shapes).block_until_ready()
-jnp_time_0 = qe.toc()
+jnp_with_compile = time() - start
+print("JAX compile plus execution time = ", jnp_with_compile)
 ```
 
 And now let's see without compile time.
 
 ```{code-cell} ipython3
-qe.tic()
+start = time()
 v_jax = sv_pd_ratio_jax(sv_model_jax, shapes).block_until_ready()
-jnp_time = qe.toc()
+jnp_without_compile = time() - start
+print("JAX execution time = ", jnp_without_compile)
 ```
 
 Here's the ratio of times:
 
 ```{code-cell} ipython3
-jnp_time / np_time
+jnp_without_compile / numpy_without_compile
 ```
 
 Let's check that the NumPy and JAX versions realize the same solution.
@@ -1016,17 +1031,19 @@ sv_pd_ratio_linop = jax.jit(sv_pd_ratio_linop, static_argnums=(1,))
 Let's time the solution with compile time included.
 
 ```{code-cell} ipython3
-qe.tic()
+start = time()
 v_jax_linop = sv_pd_ratio_linop(sv_model, shapes).block_until_ready()
-jnp_time_linop_0 = qe.toc()
+jnp_linop_with_compile = time() - start
+print("JAX compile plus execution time = ", jnp_linop_with_compile)
 ```
 
 And now let’s see without compile time.
 
 ```{code-cell} ipython3
-qe.tic()
+start = time()
 v_jax_linop = sv_pd_ratio_linop(sv_model, shapes).block_until_ready()
-jnp_linop_time = qe.toc()
+jnp_linop_without_compile = time() - start
+print("JAX execution time = ", jnp_linop_without_compile)
 ```
 
 Let's verify the solution again:
@@ -1038,7 +1055,7 @@ print(jnp.allclose(v, v_jax_linop))
 Here’s the ratio of times between memory-efficient and direct version:
 
 ```{code-cell} ipython3
-jnp_linop_time / jnp_time
+jnp_linop_without_compile / jnp_without_compile
 ```
 
 The speed is somewhat faster and, moreover, we can now work with much larger grids.
@@ -1051,9 +1068,8 @@ sv_model_jax = create_sv_model_jax(sv_model)
 P, hc_grid, Q, hd_grid, R, z_grid, β, γ, bar_σ, μ_c, μ_d = sv_model_jax
 shapes = len(hc_grid), len(hd_grid), len(z_grid)
 
-qe.tic()
-_ = sv_pd_ratio_linop(sv_model, shapes).block_until_ready()
-qe.toc()
+%time _ = sv_pd_ratio_linop(sv_model_jax, shapes).block_until_ready()
+%time _ = sv_pd_ratio_linop(sv_model_jax, shapes).block_until_ready()
 ```
 
 The solution is computed relatively quickly and without memory issues.
