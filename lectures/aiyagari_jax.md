@@ -488,8 +488,6 @@ def compute_asset_stationary(σ, household):
     ψ_a = jnp.sum(ψ, axis=1)
     return ψ_a
 
-compute_asset_stationary = jax.jit(compute_asset_stationary,
-                                   static_argnums=(2,))
 ```
 
 Let's give this a test run.
@@ -630,125 +628,94 @@ In the exercises below you will be asked to use bisection instead, which general
 +++
 
 ```{exercise-start}
-:label: aygr_ex1
 ```
-Using the default household and firm model, produce a graph
-showing the behaviour of equilibrium capital stock with the increase in $\beta$.
+
+Write a new version of `compute_equilibrium` that uses `bisect` from `scipy.optimize` instead of damped iteration.
+
+See if you can make it faster that the previous version.
+
+In `bisect`, 
+
+* you should set `xtol=1e-4` to have the same error tolerance as the previous version.
+* for the lower and upper bounds of the bisection routine try `a = 1.0` and `b = 20.0`.
 
 ```{exercise-end}
 ```
 
-```{solution-start} aygr_ex1
+
+```{solution-start} 
 :class: dropdown
 ```
 
 ```{code-cell} ipython3
-β_vals = np.linspace(0.9, 0.99, 40)
-eq_vals = np.empty_like(β_vals)
+from scipy.optimize import bisect
+```
 
-for i, β in enumerate(β_vals):
-    household = create_household(β=β)
-    firm = create_firm(β=β)
-    eq_vals[i] = compute_equilibrium(firm, household)
+We use bisection to find the zero of the function $h(k) = k - G(k)$.
+
+```{code-cell} ipython3
+def compute_equilibrium(firm, household, a=1.0, b=20.0):
+    K = bisect(lambda k: k - G(k, firm, household), a, b, xtol=1e-4)
+    return K
 ```
 
 ```{code-cell} ipython3
-fig, ax = plt.subplots()
-ax.plot(β_vals, eq_vals, ms=2)
-ax.set_xlabel(r'$\beta$')
-ax.set_ylabel('equilibrium')
-plt.show()
+firm = create_firm()
+household = create_household()
+print("\nComputing equilibrium capital stock")
+start = time.time()
+K_star = compute_equilibrium(firm, household)
+elapsed = time.time() - start
+print(f"Computed equilibrium capital stock {K_star:.5} in {elapsed} seconds")
 ```
+
+Bisection seems to be faster than the damped iteration scheme.
+
 
 ```{solution-end}
 ```
+
 
 
 ```{exercise-start}
-:label: aygr_ex2
 ```
 
-Switch to the CRRA utility function 
+Show how equilibrium capital stock changes with $\beta$.
 
-$$
-    u(c) =\frac{c^{1-\gamma}}{1-\gamma}
-$$
+Use the following values of $\beta$ and plot the relationship you find.
 
-and re-do the plot of demand for capital by firms against the
-supply of captial. 
-
-Also, recompute the equilibrium.
-
-Use the default parameters for households and firms. 
-
-Set $\gamma=2$.
+```{code-cell} ipython3
+β_vals = np.linspace(0.94, 0.98, 20)
+```
 
 ```{exercise-end}
 ```
 
-```{solution-start} aygr_ex2
+
+
+```{solution-start} 
 :class: dropdown
 ```
 
-Let's define the utility function
-
 ```{code-cell} ipython3
-def u(c, γ=2):
-    return c**(1 - γ) / (1 - γ)
-```
+K_vals = np.empty_like(β_vals)
+K = 6.0  # initial guess
 
-We need to re-compile all the jitted functions in order notice the change
-in the utility function.
-
-```{code-cell} ipython3
-B = jax.jit(B, static_argnums=(2,))
-get_greedy = jax.jit(get_greedy, static_argnums=(2,))
-compute_r_σ = jax.jit(compute_r_σ, static_argnums=(2,))
-R_σ = jax.jit(R_σ, static_argnums=(3,))
-get_value = jax.jit(get_value, static_argnums=(2,))
-compute_asset_stationary = jax.jit(compute_asset_stationary,
-                                   static_argnums=(2,))
-```
-
-Now, let's plot the the demand for capital by firms
-
-```{code-cell} ipython3
-# Create default instances
-household = create_household()
-firm = create_firm()
-
-# Create a grid of r values at which to compute demand and supply of capital
-num_points = 50
-r_vals = np.linspace(0.005, 0.04, num_points)
-
-# Compute supply of capital
-k_vals = np.empty(num_points)
-for i, r in enumerate(r_vals):
-    household = household._replace(r=r, w=r_to_w(r, firm))
-    k_vals[i] = capital_supply(household)
+for i, β in enumerate(β_vals):
+    household = create_household(β=β)
+    K = compute_equilibrium(firm, household, 0.5 * K, 1.5 * K)
+    print(f"Computed equilibrium {K:.4} at β = {β}")
+    K_vals[i] = K
 ```
 
 ```{code-cell} ipython3
-# Plot against demand for capital by firms
-
 fig, ax = plt.subplots()
-ax.plot(k_vals, r_vals, lw=2, alpha=0.6, label='supply of capital')
-ax.plot(k_vals, r_given_k(k_vals, firm), lw=2, alpha=0.6, label='demand for capital')
-ax.set_xlabel('capital')
-ax.set_ylabel('interest rate')
-ax.legend()
-
+ax.plot(β_vals, K_vals, ms=2)
+ax.set_xlabel(r'$\beta$')
+ax.set_ylabel('capital')
 plt.show()
-```
-
-Compute the equilibrium
-
-```{code-cell} ipython3
-%%time
-household = create_household()
-firm = create_firm()
-compute_equilibrium(firm, household)
 ```
 
 ```{solution-end}
 ```
+
