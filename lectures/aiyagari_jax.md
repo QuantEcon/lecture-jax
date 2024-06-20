@@ -586,7 +586,9 @@ Looking at the figure above, we see that a simple iteration scheme $K_{n+1} = G(
 
 As a result, we use a damped iteration scheme of the form 
 
-$$K_{n+1} = \alpha K_n + (1-\alpha) G(K_n)$$
+$$
+K_{n+1} = \alpha K_n + (1-\alpha) G(K_n)
+$$
 
 ```{code-cell} ipython3
 def compute_equilibrium(firm, household,
@@ -621,13 +623,11 @@ You can try varying $\alpha$, but usually this parameter is hard to set a priori
 
 In the exercises below you will be asked to use bisection instead, which generally performs better.
 
-+++
 
 ## Exercises
 
-+++
-
 ```{exercise-start}
+:label: aiyagari-ex1
 ```
 
 Write a new version of `compute_equilibrium` that uses `bisect` from `scipy.optimize` instead of damped iteration.
@@ -643,7 +643,7 @@ In `bisect`,
 ```
 
 
-```{solution-start} 
+```{solution-start} aiyagari-ex1
 :class: dropdown
 ```
 
@@ -678,6 +678,7 @@ Bisection seems to be faster than the damped iteration scheme.
 
 
 ```{exercise-start}
+:label: aiyagari-ex2
 ```
 
 Show how equilibrium capital stock changes with $\beta$.
@@ -693,7 +694,7 @@ Use the following values of $\beta$ and plot the relationship you find.
 
 
 
-```{solution-start} 
+```{solution-start} aiyagari-ex2
 :class: dropdown
 ```
 
