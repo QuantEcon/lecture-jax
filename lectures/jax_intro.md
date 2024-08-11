@@ -19,7 +19,7 @@ kernelspec:
 
 This lecture provides a short introduction to [Google JAX](https://github.com/google/jax).
 
-As mentioned above, the lecture was built using a GPU:
+Let's see if we have an active GPU:
 
 ```{code-cell} ipython3
 !nvidia-smi
@@ -487,6 +487,8 @@ ax.plot(x_grid, [f_prime(x) for x in x_grid], label="$f'$")
 ax.legend(loc='upper center')
 plt.show()
 ```
+
+We defer further exploration of automatic differentiation with JAX until {doc}`autodiff`.
 
 ## Writing vectorized code
 
