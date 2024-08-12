@@ -17,7 +17,7 @@ kernelspec:
 ```
 
 
-In this lecture we study a basic infinite-horizon job search with Markov wage
+In this lecture we study a basic infinite-horizon job search problem with Markov wage
 draws 
 
 The exercise at the end asks you to add recursive preferences and compare
@@ -49,13 +49,14 @@ We study an elementary model where
 
 * jobs are permanent 
 * unemployed workers receive current compensation $c$
-* the wage offer distribution $\{W_t\}$ is Markovian
 * the horizon is infinite
 * an unemployment agent discounts the future via discount factor $\beta \in (0,1)$
 
 ### Set up
 
-The wage offer process obeys
+At the start of each period, an unemployed worker receives wage offer $W_t$.
+
+To build a wage offer process we consider the dynamics
 
 $$
     W_{t+1} = \rho W_t + \nu Z_{t+1}
@@ -63,14 +64,17 @@ $$
 
 where $(Z_t)_{t \geq 0}$ is IID and standard normal.
 
-We discretize this wage process using Tauchen's method to produce a stochastic matrix $P$
+We then discretize this wage process using Tauchen's method to produce a stochastic matrix $P$.
+
+Successive wage offers are drawn from $P$.
 
 ### Rewards
 
 Since jobs are permanent, the return to accepting wage offer $w$ today is
 
 $$
-    w + \beta w + \beta^2 w + \frac{w}{1-\beta}
+    w + \beta w + \beta^2 w + 
+    \cdots = \frac{w}{1-\beta}
 $$
 
 The Bellman equation is
@@ -88,13 +92,13 @@ We solve this model using value function iteration.
 
 ## Code
 
-Let's set up a namedtuple to store information needed to solve the model.
+Let's set up a `namedtuple` to store information needed to solve the model.
 
 ```{code-cell} ipython3
 Model = namedtuple('Model', ('n', 'w_vals', 'P', 'β', 'c'))
 ```
 
-The function below holds default values and populates the namedtuple.
+The function below holds default values and populates the `namedtuple`.
 
 ```{code-cell} ipython3
 def create_js_model(
@@ -278,10 +282,9 @@ Try to interpret your result.
 You can start with the following code:
 
 ```{code-cell} ipython3
-Model = namedtuple('Model', ('n', 'w_vals', 'P', 'β', 'c', 'θ'))
-```
 
-```{code-cell} ipython3
+RiskModel = namedtuple('Model', ('n', 'w_vals', 'P', 'β', 'c', 'θ'))
+
 def create_risk_sensitive_js_model(
         n=500,       # wage grid size
         ρ=0.9,       # wage persistence
@@ -294,7 +297,8 @@ def create_risk_sensitive_js_model(
     mc = qe.tauchen(n, ρ, ν)
     w_vals, P = jnp.exp(mc.state_values), mc.P
     P = jnp.array(P)
-    return Model(n, w_vals, P, β, c, θ)
+    return RiskModel(n, w_vals, P, β, c, θ)
+
 ```
 
 Now you need to modify `T` and `get_greedy` and then run value function iteration again.
