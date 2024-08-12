@@ -13,6 +13,12 @@ kernelspec:
 
 # Adventures with Autodiff
 
+
+```{include} _admonition/gpu.md
+```
+
+## Overview
+
 This lecture gives a brief introduction to automatic differentiation using
 Google JAX.
 
@@ -25,13 +31,14 @@ powerful implementations available.
 One of the best of these is the automatic differentiation routines contained
 in JAX.
 
+While other software packages also offer this feature, the JAX version is
+particularly powerful because it integrates so well with other core
+components of JAX (e.g., JIT compilation and parallelization).
+
 As we will see in later lectures, automatic differentiation can be used not only
 for AI but also for many problems faced in mathematical modeling, such as
 multi-dimensional nonlinear optimization and root-finding problems.
 
-
-```{include} _admonition/gpu.md
-```
 
 We need the following imports
 

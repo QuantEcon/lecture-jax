@@ -20,18 +20,14 @@ kernelspec:
 
 One of the key features of JAX is automatic differentiation.
 
-While other software packages also offer this feature, the JAX version is
-particularly powerful because it integrates so closely with other core
-components of JAX, such as accelerated linear algebra, JIT compilation and
-parallelization.
+We introduced this feature in {doc}`autodiff`.
 
-The application of automatic differentiation we consider is computing economic equilibria via Newton's method.
+In this lecture we apply automatic differentiation to the problem of computing economic equilibria via Newton's method.
 
 Newton's method is a relatively simple root and fixed point solution algorithm, which we discussed 
 in [a more elementary QuantEcon lecture](https://python.quantecon.org/newton_method.html).
 
-JAX is almost ideally suited to implementing Newton's method efficiently, even
-in high dimensions.
+JAX is ideally suited to implementing Newton's method efficiently, even in high dimensions.
 
 We use the following imports in this lecture
 
