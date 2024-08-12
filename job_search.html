@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>9. Job Search &#8212; Quantitative Economics with Python using JAX</title>
+    <title>10. Job Search &#8212; Quantitative Economics with Python using JAX</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
@@ -60,12 +60,12 @@
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="_static/styles/theme.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
-<link href="_static/styles/bootstrap.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
-<link href="_static/styles/pydata-sphinx-theme.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
 
   
-  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
   <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
@@ -80,9 +80,9 @@
     <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=3ee479438cf8b5e0d341" />
-<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=3ee479438cf8b5e0d341" />
-  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=3ee479438cf8b5e0d341"></script>
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
 
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
@@ -121,8 +121,8 @@ const thebe_selector_output = ".output, .cell_output"
     <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="10. Optimal Savings I: Value Function Iteration" href="opt_savings_1.html" />
-    <link rel="prev" title="8. An Asset Pricing Problem" href="markov_asset.html" />
+    <link rel="next" title="11. Optimal Savings I: Value Function Iteration" href="opt_savings_1.html" />
+    <link rel="prev" title="9. An Asset Pricing Problem" href="markov_asset.html" />
 
 <!-- Normal Meta Tags -->
 <meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
@@ -170,11 +170,14 @@ const thebe_selector_output = ".output, .cell_output"
 
                         <nav id="bd-toc-nav" class="qe-page__toc-nav">
                             <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#model">9.1. Model</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#computing-the-solution">9.1.1. Computing the solution</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#model">10.1. Model</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#set-up">10.1.1. Set up</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rewards">10.1.2. Rewards</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise">9.2. Exercise</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#code">10.2. Code</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#computing-the-solution">10.3. Computing the solution</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise">10.4. Exercise</a></li>
 </ul>
                             <p class="logo">
                                 
@@ -234,17 +237,21 @@ const thebe_selector_output = ".output, .cell_output"
                     <div>
                         
   <section class="tex2jax_ignore mathjax_ignore" id="job-search">
-<h1><span class="section-number">9. </span>Job Search<a class="headerlink" href="#job-search" title="Permalink to this heading">#</a></h1>
+<h1><span class="section-number">10. </span>Job Search<a class="headerlink" href="#job-search" title="Permalink to this heading">#</a></h1>
 <div class="warning admonition">
 <p class="admonition-title">GPU</p>
 <p>This lecture was built using a machine with JAX installed and access to a GPU.</p>
 <p>To run this lecture on <a class="reference external" href="https://colab.research.google.com/">Google Colab</a>, click on the “play” icon top right, select Colab, and set the runtime environment to include a GPU.</p>
 <p>To run this lecture on your own machine, you need to install <a class="reference external" href="https://github.com/google/jax">Google JAX</a>.</p>
 </div>
-<p>In this lecture we study a basic infinite-horizon job search with Markov wage
+<p>In this lecture we study a basic infinite-horizon job search problem with Markov wage
 draws</p>
-<p>The exercise at the end asks you to add recursive preferences and compare
-the result.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>For background on infinite horizon job search see, e.g., <a class="reference external" href="https://dp.quantecon.org/">DP1</a>.</p>
+</div>
+<p>The exercise at the end asks you to add risk-sensitive preferences and see how
+the main results change.</p>
 <p>In addition to what’s in Anaconda, this lecture will need the following libraries:</p>
 <div class="cell tag_hide-output docutils container">
 <div class="cell_input above-output-prompt docutils container">
@@ -259,18 +266,18 @@ the result.</p>
 </summary>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /opt/conda/envs/quantecon/lib/python3.11/site-packages (0.7.2)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: numba&gt;=0.49.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (0.59.0)
+Requirement already satisfied: numba&gt;=0.49.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (0.59.1)
 Requirement already satisfied: numpy&gt;=1.17.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (1.26.4)
-Requirement already satisfied: requests in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (2.31.0)
-Requirement already satisfied: scipy&gt;=1.5.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (1.11.4)
+Requirement already satisfied: requests in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (2.32.2)
+Requirement already satisfied: scipy&gt;=1.5.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (1.13.1)
 Requirement already satisfied: sympy in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (1.12)
 Requirement already satisfied: llvmlite&lt;0.43,&gt;=0.42.0dev0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from numba&gt;=0.49.0-&gt;quantecon) (0.42.0)
-Requirement already satisfied: charset-normalizer&lt;4,&gt;=2 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests-&gt;quantecon) (2.0.4)
-Requirement already satisfied: idna&lt;4,&gt;=2.5 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests-&gt;quantecon) (3.4)
-Requirement already satisfied: urllib3&lt;3,&gt;=1.21.1 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests-&gt;quantecon) (2.0.7)
-Requirement already satisfied: certifi&gt;=2017.4.17 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests-&gt;quantecon) (2024.2.2)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: charset-normalizer&lt;4,&gt;=2 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests-&gt;quantecon) (2.0.4)
+Requirement already satisfied: idna&lt;4,&gt;=2.5 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests-&gt;quantecon) (3.7)
+Requirement already satisfied: urllib3&lt;3,&gt;=1.21.1 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests-&gt;quantecon) (2.2.2)
+Requirement already satisfied: certifi&gt;=2017.4.17 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests-&gt;quantecon) (2024.6.2)
 Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from sympy-&gt;quantecon) (1.3.0)
 </pre></div>
 </div>
@@ -296,26 +303,33 @@ Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/envs/quantecon/lib/
 </div>
 </div>
 <section id="model">
-<h2><span class="section-number">9.1. </span>Model<a class="headerlink" href="#model" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">10.1. </span>Model<a class="headerlink" href="#model" title="Permalink to this heading">#</a></h2>
 <p>We study an elementary model where</p>
 <ul class="simple">
 <li><p>jobs are permanent</p></li>
 <li><p>unemployed workers receive current compensation <span class="math notranslate nohighlight">\(c\)</span></p></li>
-<li><p>the wage offer distribution <span class="math notranslate nohighlight">\(\{W_t\}\)</span> is Markovian</p></li>
 <li><p>the horizon is infinite</p></li>
 <li><p>an unemployment agent discounts the future via discount factor <span class="math notranslate nohighlight">\(\beta \in (0,1)\)</span></p></li>
 </ul>
-<p>The wage process obeys</p>
+<section id="set-up">
+<h3><span class="section-number">10.1.1. </span>Set up<a class="headerlink" href="#set-up" title="Permalink to this heading">#</a></h3>
+<p>At the start of each period, an unemployed worker receives wage offer <span class="math notranslate nohighlight">\(W_t\)</span>.</p>
+<p>To build a wage offer process we consider the dynamics</p>
 <div class="math notranslate nohighlight">
 \[
-    W_{t+1} = \rho W_t + \nu Z_{t+1},
-    \qquad \{Z_t\} \text{ is IID and } N(0, 1)
+    W_{t+1} = \rho W_t + \nu Z_{t+1}
 \]</div>
-<p>We discretize this using Tauchen’s method to produce a stochastic matrix <span class="math notranslate nohighlight">\(P\)</span></p>
+<p>where <span class="math notranslate nohighlight">\((Z_t)_{t \geq 0}\)</span> is IID and standard normal.</p>
+<p>We then discretize this wage process using Tauchen’s method to produce a stochastic matrix <span class="math notranslate nohighlight">\(P\)</span>.</p>
+<p>Successive wage offers are drawn from <span class="math notranslate nohighlight">\(P\)</span>.</p>
+</section>
+<section id="rewards">
+<h3><span class="section-number">10.1.2. </span>Rewards<a class="headerlink" href="#rewards" title="Permalink to this heading">#</a></h3>
 <p>Since jobs are permanent, the return to accepting wage offer <span class="math notranslate nohighlight">\(w\)</span> today is</p>
 <div class="math notranslate nohighlight">
 \[
-    w + \beta w + \beta^2 w + \cdots = \frac{w}{1-\beta}
+    w + \beta w + \beta^2 w + 
+    \cdots = \frac{w}{1-\beta}
 \]</div>
 <p>The Bellman equation is</p>
 <div class="math notranslate nohighlight">
@@ -326,6 +340,10 @@ Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/envs/quantecon/lib/
     \right\}
 \]</div>
 <p>We solve this model using value function iteration.</p>
+</section>
+</section>
+<section id="code">
+<h2><span class="section-number">10.2. </span>Code<a class="headerlink" href="#code" title="Permalink to this heading">#</a></h2>
 <p>Let’s set up a <code class="docutils literal notranslate"><span class="pre">namedtuple</span></code> to store information needed to solve the model.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -334,7 +352,7 @@ Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/envs/quantecon/lib/
 </div>
 </div>
 </div>
-<p>The function below holds default values and populates the namedtuple.</p>
+<p>The function below holds default values and populates the <code class="docutils literal notranslate"><span class="pre">namedtuple</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">create_js_model</span><span class="p">(</span>
@@ -342,13 +360,61 @@ Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/envs/quantecon/lib/
         <span class="n">ρ</span><span class="o">=</span><span class="mf">0.9</span><span class="p">,</span>       <span class="c1"># wage persistence</span>
         <span class="n">ν</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span>       <span class="c1"># wage volatility</span>
         <span class="n">β</span><span class="o">=</span><span class="mf">0.99</span><span class="p">,</span>      <span class="c1"># discount factor</span>
-        <span class="n">c</span><span class="o">=</span><span class="mf">1.0</span>        <span class="c1"># unemployment compensation</span>
+        <span class="n">c</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>       <span class="c1"># unemployment compensation</span>
     <span class="p">):</span>
     <span class="s2">&quot;Creates an instance of the job search model with Markov wages.&quot;</span>
     <span class="n">mc</span> <span class="o">=</span> <span class="n">qe</span><span class="o">.</span><span class="n">tauchen</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">ρ</span><span class="p">,</span> <span class="n">ν</span><span class="p">)</span>
-    <span class="n">w_vals</span><span class="p">,</span> <span class="n">P</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">mc</span><span class="o">.</span><span class="n">state_values</span><span class="p">),</span> <span class="n">mc</span><span class="o">.</span><span class="n">P</span>
-    <span class="n">P</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">P</span><span class="p">)</span>
+    <span class="n">w_vals</span><span class="p">,</span> <span class="n">P</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">mc</span><span class="o">.</span><span class="n">state_values</span><span class="p">),</span> <span class="n">jnp</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">mc</span><span class="o">.</span><span class="n">P</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">Model</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">w_vals</span><span class="p">,</span> <span class="n">P</span><span class="p">,</span> <span class="n">β</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s test it:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">create_js_model</span><span class="p">(</span><span class="n">β</span><span class="o">=</span><span class="mf">0.98</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2024-08-12 03:59:23.172517: W external/xla/xla/service/gpu/nvptx_compiler.cc:836] The NVIDIA driver&#39;s CUDA version is 12.5 which is older than the PTX compiler version (12.6.20). Because the driver is older than the PTX compiler version, XLA is disabling parallel compilation, which may slow down compilation. You should update your NVIDIA driver or use the NVIDIA-provided CUDA forward compatibility packages.
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span><span class="o">.</span><span class="n">c</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1.0
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span><span class="o">.</span><span class="n">β</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.98
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span><span class="o">.</span><span class="n">w_vals</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>  
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Array(1.34861482, dtype=float64)
 </pre></div>
 </div>
 </div>
@@ -384,13 +450,15 @@ the value function.</p>
         \right\}
 \]</div>
 <p>Here <span class="math notranslate nohighlight">\(\mathbf 1\)</span> is an indicator function.</p>
-<p>The statement above means that the worker accepts (<span class="math notranslate nohighlight">\(\sigma(w) = 1\)</span>) when the value of stopping
-is higher than the value of continuing.</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\sigma(w) = 1\)</span> means stop</p></li>
+<li><p><span class="math notranslate nohighlight">\(\sigma(w) = 0\)</span> means continue.</p></li>
+</ul>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jax</span><span class="o">.</span><span class="n">jit</span>
 <span class="k">def</span> <span class="nf">get_greedy</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get a v-greedy policy.&quot;&quot;&quot;</span>
+    <span class="s2">&quot;Get a v-greedy policy.&quot;</span>
     <span class="n">n</span><span class="p">,</span> <span class="n">w_vals</span><span class="p">,</span> <span class="n">P</span><span class="p">,</span> <span class="n">β</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="n">model</span>
     <span class="n">e</span> <span class="o">=</span> <span class="n">w_vals</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">β</span><span class="p">)</span>
     <span class="n">h</span> <span class="o">=</span> <span class="n">c</span> <span class="o">+</span> <span class="n">β</span> <span class="o">*</span> <span class="n">P</span> <span class="o">@</span> <span class="n">v</span>
@@ -404,8 +472,7 @@ is higher than the value of continuing.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">vfi</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">10_000</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Solve the infinite-horizon Markov job search model by VFI.&quot;&quot;&quot;</span>
-
+    <span class="s2">&quot;Solve the infinite-horizon Markov job search model by VFI.&quot;</span>
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Starting VFI iteration.&quot;</span><span class="p">)</span>
     <span class="n">v</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">w_vals</span><span class="p">)</span>    <span class="c1"># Initial guess</span>
     <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
@@ -424,15 +491,16 @@ is higher than the value of continuing.</p>
 </div>
 </div>
 </div>
+</section>
 <section id="computing-the-solution">
-<h3><span class="section-number">9.1.1. </span>Computing the solution<a class="headerlink" href="#computing-the-solution" title="Permalink to this heading">#</a></h3>
+<h2><span class="section-number">10.3. </span>Computing the solution<a class="headerlink" href="#computing-the-solution" title="Permalink to this heading">#</a></h2>
 <p>Let’s set up and solve the model.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">create_js_model</span><span class="p">()</span>
 <span class="n">n</span><span class="p">,</span> <span class="n">w_vals</span><span class="p">,</span> <span class="n">P</span><span class="p">,</span> <span class="n">β</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="n">model</span>
 
-<span class="o">%</span><span class="k">time</span> v_star, σ_star = vfi(model)
+<span class="n">v_star</span><span class="p">,</span> <span class="n">σ_star</span> <span class="o">=</span> <span class="n">vfi</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -440,35 +508,60 @@ is higher than the value of continuing.</p>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Starting VFI iteration.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 307 ms, sys: 157 ms, total: 463 ms
-Wall time: 441 ms
-</pre></div>
 </div>
 </div>
-</div>
-<p>We run it again to eliminate compile time.</p>
+<p>Here’s the optimal policy:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">time</span> v_star, σ_star = vfi(model)
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">σ_star</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;wage values&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;optimal choice (stop=1)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Starting VFI iteration.
-CPU times: user 205 ms, sys: 76.9 ms, total: 282 ms
-Wall time: 167 ms
-</pre></div>
-</div>
+<a class="reference internal image-reference" href="_images/08a442f22d83810445a5a14b5401fba1df525f345a6bffb85aad72a72c54110f.png"><img alt="_images/08a442f22d83810445a5a14b5401fba1df525f345a6bffb85aad72a72c54110f.png" src="_images/08a442f22d83810445a5a14b5401fba1df525f345a6bffb85aad72a72c54110f.png" style="width: 80%;" /></a>
 </div>
 </div>
 <p>We compute the reservation wage as the first <span class="math notranslate nohighlight">\(w\)</span> such that <span class="math notranslate nohighlight">\(\sigma(w)=1\)</span>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">res_wage</span> <span class="o">=</span> <span class="n">w_vals</span><span class="p">[</span><span class="n">jnp</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span><span class="n">σ_star</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)]</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">stop_indices</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">σ_star</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">stop_indices</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(Array([385, 386, 387, 388, 389, 390, 391, 392, 393, 394, 395, 396, 397,
+        398, 399, 400, 401, 402, 403, 404, 405, 406, 407, 408, 409, 410,
+        411, 412, 413, 414, 415, 416, 417, 418, 419, 420, 421, 422, 423,
+        424, 425, 426, 427, 428, 429, 430, 431, 432, 433, 434, 435, 436,
+        437, 438, 439, 440, 441, 442, 443, 444, 445, 446, 447, 448, 449,
+        450, 451, 452, 453, 454, 455, 456, 457, 458, 459, 460, 461, 462,
+        463, 464, 465, 466, 467, 468, 469, 470, 471, 472, 473, 474, 475,
+        476, 477, 478, 479, 480, 481, 482, 483, 484, 485, 486, 487, 488,
+        489, 490, 491, 492, 493, 494, 495, 496, 497, 498, 499],      dtype=int64),)
 </pre></div>
 </div>
 </div>
 </div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">res_wage_index</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">stop_indices</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">res_wage</span> <span class="o">=</span> <span class="n">w_vals</span><span class="p">[</span><span class="n">res_wage_index</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Here’s a joint plot of the value function and the reservation wage.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
@@ -481,16 +574,15 @@ Wall time: 167 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/bac4b2980a2622d22ae6ed423be11268373fce9c3d038753d9a03dd847d44c39.png"><img alt="_images/bac4b2980a2622d22ae6ed423be11268373fce9c3d038753d9a03dd847d44c39.png" src="_images/bac4b2980a2622d22ae6ed423be11268373fce9c3d038753d9a03dd847d44c39.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/4e50dc5d0db853ce51d0a056bf0555e1e8ca75dfa89d08d5a50a1bb92efaad81.png"><img alt="_images/4e50dc5d0db853ce51d0a056bf0555e1e8ca75dfa89d08d5a50a1bb92efaad81.png" src="_images/4e50dc5d0db853ce51d0a056bf0555e1e8ca75dfa89d08d5a50a1bb92efaad81.png" style="width: 80%;" /></a>
 </div>
 </div>
-</section>
 </section>
 <section id="exercise">
-<h2><span class="section-number">9.2. </span>Exercise<a class="headerlink" href="#exercise" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">10.4. </span>Exercise<a class="headerlink" href="#exercise" title="Permalink to this heading">#</a></h2>
 <div class="exercise admonition" id="job_search_1">
 
-<p class="admonition-title"><span class="caption-number">Exercise 9.1 </span></p>
+<p class="admonition-title"><span class="caption-number">Exercise 10.1 </span></p>
 <section id="exercise-content">
 <p>In the setting above, the agent is risk-neutral vis-a-vis future utility risk.</p>
 <p>Now solve the same problem but this time assuming that the agent has risk-sensitive
@@ -507,15 +599,38 @@ preferences, which are a type of nonlinear recursive preferences.</p>
                 \right]
     \right\}
 \]</div>
-<p>When <span class="math notranslate nohighlight">\(\theta &lt; 0\)</span> the agent is risk sensitive.</p>
+<p>When <span class="math notranslate nohighlight">\(\theta &lt; 0\)</span> the agent is risk averse.</p>
 <p>Solve the model when <span class="math notranslate nohighlight">\(\theta = -0.1\)</span> and compare your result to the risk neutral
 case.</p>
 <p>Try to interpret your result.</p>
+<p>You can start with the following code:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">RiskModel</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s1">&#39;Model&#39;</span><span class="p">,</span> <span class="p">(</span><span class="s1">&#39;n&#39;</span><span class="p">,</span> <span class="s1">&#39;w_vals&#39;</span><span class="p">,</span> <span class="s1">&#39;P&#39;</span><span class="p">,</span> <span class="s1">&#39;β&#39;</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="s1">&#39;θ&#39;</span><span class="p">))</span>
+
+<span class="k">def</span> <span class="nf">create_risk_sensitive_js_model</span><span class="p">(</span>
+        <span class="n">n</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span>       <span class="c1"># wage grid size</span>
+        <span class="n">ρ</span><span class="o">=</span><span class="mf">0.9</span><span class="p">,</span>       <span class="c1"># wage persistence</span>
+        <span class="n">ν</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span>       <span class="c1"># wage volatility</span>
+        <span class="n">β</span><span class="o">=</span><span class="mf">0.99</span><span class="p">,</span>      <span class="c1"># discount factor</span>
+        <span class="n">c</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>       <span class="c1"># unemployment compensation</span>
+        <span class="n">θ</span><span class="o">=-</span><span class="mf">0.1</span>       <span class="c1"># risk parameter</span>
+    <span class="p">):</span>
+    <span class="s2">&quot;Creates an instance of the job search model with Markov wages.&quot;</span>
+    <span class="n">mc</span> <span class="o">=</span> <span class="n">qe</span><span class="o">.</span><span class="n">tauchen</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">ρ</span><span class="p">,</span> <span class="n">ν</span><span class="p">)</span>
+    <span class="n">w_vals</span><span class="p">,</span> <span class="n">P</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">mc</span><span class="o">.</span><span class="n">state_values</span><span class="p">),</span> <span class="n">mc</span><span class="o">.</span><span class="n">P</span>
+    <span class="n">P</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">P</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">RiskModel</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">w_vals</span><span class="p">,</span> <span class="n">P</span><span class="p">,</span> <span class="n">β</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">θ</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now you need to modify <code class="docutils literal notranslate"><span class="pre">T</span></code> and <code class="docutils literal notranslate"><span class="pre">get_greedy</span></code> and then run value function iteration again.</p>
 </section>
 </div>
 <div class="solution dropdown admonition" id="job_search-solution-1">
 
-<p class="admonition-title">Solution to<a class="reference internal" href="#job_search_1"> Exercise 9.1</a></p>
+<p class="admonition-title">Solution to<a class="reference internal" href="#job_search_1"> Exercise 10.1</a></p>
 <section id="solution-content">
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -587,7 +702,7 @@ case.</p>
 
 <span class="n">n</span><span class="p">,</span> <span class="n">w_vals</span><span class="p">,</span> <span class="n">P</span><span class="p">,</span> <span class="n">β</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">θ</span> <span class="o">=</span> <span class="n">model_rs</span>
 
-<span class="o">%</span><span class="k">time</span> v_star_rs, σ_star_rs = vfi(model_rs)
+<span class="n">v_star_rs</span><span class="p">,</span> <span class="n">σ_star_rs</span> <span class="o">=</span> <span class="n">vfi</span><span class="p">(</span><span class="n">model_rs</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -595,32 +710,14 @@ case.</p>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Starting VFI iteration.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 349 ms, sys: 141 ms, total: 490 ms
-Wall time: 386 ms
-</pre></div>
 </div>
 </div>
-</div>
-<p>We run it again to eliminate the compilation time.</p>
+<p>Let’s plot the results together with the original risk neutral case and see what we get.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">time</span> v_star_rs, σ_star_rs = vfi(model_rs)
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Starting VFI iteration.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 229 ms, sys: 191 ms, total: 420 ms
-Wall time: 255 ms
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">res_wage_rs</span> <span class="o">=</span> <span class="n">w_vals</span><span class="p">[</span><span class="n">jnp</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span><span class="n">σ_star_rs</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)]</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">stop_indices</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">σ_star_rs</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">res_wage_index</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">stop_indices</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">res_wage_rs</span> <span class="o">=</span> <span class="n">w_vals</span><span class="p">[</span><span class="n">res_wage_index</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
@@ -628,10 +725,12 @@ Wall time: 255 ms
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">w_vals</span><span class="p">,</span> <span class="n">v_star</span><span class="p">,</span>  <span class="n">alpha</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;RN $v$&quot;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">w_vals</span><span class="p">,</span> <span class="n">v_star_rs</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;RS $v$&quot;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">vlines</span><span class="p">((</span><span class="n">res_wage</span><span class="p">,),</span> <span class="mi">150</span><span class="p">,</span> <span class="mi">400</span><span class="p">,</span>  <span class="n">ls</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;darkblue&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;RV $\bar w$&quot;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">vlines</span><span class="p">((</span><span class="n">res_wage_rs</span><span class="p">,),</span> <span class="mi">150</span><span class="p">,</span> <span class="mi">400</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;orange&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;RS $\bar w$&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">w_vals</span><span class="p">,</span> <span class="n">v_star</span><span class="p">,</span>  <span class="n">alpha</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;risk neutral $v$&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">w_vals</span><span class="p">,</span> <span class="n">v_star_rs</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;risk sensitive $v$&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">vlines</span><span class="p">((</span><span class="n">res_wage</span><span class="p">,),</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">400</span><span class="p">,</span>  <span class="n">ls</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;darkblue&#39;</span><span class="p">,</span> 
+          <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;risk neutral $\bar w$&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">vlines</span><span class="p">((</span><span class="n">res_wage_rs</span><span class="p">,),</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">400</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;orange&#39;</span><span class="p">,</span> 
+          <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;risk sensitive $\bar w$&quot;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">frameon</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s2">&quot;lower right&quot;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;$w$&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
@@ -639,7 +738,7 @@ Wall time: 255 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/e68735c79cc82f2e719b87df4e10d2ea74a8fbe6983671afaf82cd6686a60aac.png"><img alt="_images/e68735c79cc82f2e719b87df4e10d2ea74a8fbe6983671afaf82cd6686a60aac.png" src="_images/e68735c79cc82f2e719b87df4e10d2ea74a8fbe6983671afaf82cd6686a60aac.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/1a6ccb1d171f67b7119f3a53f32dc0c372d4b55e29ed895bf9e1654d746b3355.png"><img alt="_images/1a6ccb1d171f67b7119f3a53f32dc0c372d4b55e29ed895bf9e1654d746b3355.png" src="_images/1a6ccb1d171f67b7119f3a53f32dc0c372d4b55e29ed895bf9e1654d746b3355.png" style="width: 80%;" /></a>
 </div>
 </div>
 <p>The figure shows that the reservation wage under risk sensitive preferences (RS <span class="math notranslate nohighlight">\(\bar w\)</span>) shifts down.</p>
@@ -716,8 +815,13 @@ accept the current offer, even when it’s lower.</p>
   </a>
  </li>
  <li class="toctree-l1">
+  <a class="reference internal" href="autodiff.html">
+   3. Adventures with Autodiff
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="newtons_method.html">
-   3. Newton’s Method via JAX
+   4. Newton’s Method via JAX
   </a>
  </li>
 </ul>
@@ -729,17 +833,17 @@ accept the current offer, even when it’s lower.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="inventory_dynamics.html">
-   4. Inventory Dynamics
+   5. Inventory Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kesten_processes.html">
-   5. Kesten Processes and Firm Dynamics
+   6. Kesten Processes and Firm Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wealth_dynamics.html">
-   6. Wealth Distribution Dynamics
+   7. Wealth Distribution Dynamics
   </a>
  </li>
 </ul>
@@ -751,12 +855,12 @@ accept the current offer, even when it’s lower.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lucas_model.html">
-   7. Asset Pricing: The Lucas Asset Pricing Model
+   8. Asset Pricing: The Lucas Asset Pricing Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="markov_asset.html">
-   8. An Asset Pricing Problem
+   9. An Asset Pricing Problem
   </a>
  </li>
 </ul>
@@ -768,37 +872,37 @@ accept the current offer, even when it’s lower.</p>
 <ul class="current nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1 current active active">
   <a class="current reference internal" href="#">
-   9. Job Search
+   10. Job Search
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="opt_savings_1.html">
-   10. Optimal Savings I: Value Function Iteration
+   11. Optimal Savings I: Value Function Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="opt_savings_2.html">
-   11. Optimal Savings II: Alternative Algorithms
+   12. Optimal Savings II: Alternative Algorithms
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="short_path.html">
-   12. Shortest Paths
+   13. Shortest Paths
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="opt_invest.html">
-   13. Optimal Investment
+   14. Optimal Investment
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="inventory_ssd.html">
-   14. Inventory Management Model
+   15. Inventory Management Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_egm.html">
-   15. Endogenous Grid Method
+   16. Endogenous Grid Method
   </a>
  </li>
 </ul>
@@ -810,22 +914,22 @@ accept the current offer, even when it’s lower.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="arellano.html">
-   16. Default Risk and Income Fluctuations
+   17. Default Risk and Income Fluctuations
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="aiyagari_jax.html">
-   17. The Aiyagari Model
+   18. The Aiyagari Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="hopenhayn.html">
-   18. The Hopenhayn Entry-Exit Model
+   19. The Hopenhayn Entry-Exit Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="overborrowing.html">
-   19. Bianchi Overborrowing Model
+   20. Bianchi Overborrowing Model
   </a>
  </li>
 </ul>
@@ -837,7 +941,7 @@ accept the current offer, even when it’s lower.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="mle.html">
-   20. Maximum Likelihood Estimation
+   21. Maximum Likelihood Estimation
   </a>
  </li>
 </ul>
@@ -849,17 +953,17 @@ accept the current offer, even when it’s lower.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   21. Troubleshooting
+   22. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   22. References
+   23. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   23. Execution Statistics
+   24. Execution Statistics
   </a>
  </li>
 </ul>

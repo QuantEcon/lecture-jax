@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>5. Kesten Processes and Firm Dynamics &#8212; Quantitative Economics with Python using JAX</title>
+    <title>6. Kesten Processes and Firm Dynamics &#8212; Quantitative Economics with Python using JAX</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
@@ -60,12 +60,12 @@
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="_static/styles/theme.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
-<link href="_static/styles/bootstrap.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
-<link href="_static/styles/pydata-sphinx-theme.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
 
   
-  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
   <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
@@ -80,9 +80,9 @@
     <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=3ee479438cf8b5e0d341" />
-<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=3ee479438cf8b5e0d341" />
-  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=3ee479438cf8b5e0d341"></script>
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
 
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
@@ -121,8 +121,8 @@ const thebe_selector_output = ".output, .cell_output"
     <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="6. Wealth Distribution Dynamics" href="wealth_dynamics.html" />
-    <link rel="prev" title="4. Inventory Dynamics" href="inventory_dynamics.html" />
+    <link rel="next" title="7. Wealth Distribution Dynamics" href="wealth_dynamics.html" />
+    <link rel="prev" title="5. Inventory Dynamics" href="inventory_dynamics.html" />
 
 <!-- Normal Meta Tags -->
 <meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
@@ -170,12 +170,12 @@ const thebe_selector_output = ".output, .cell_output"
 
                         <nav id="bd-toc-nav" class="qe-page__toc-nav">
                             <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">5.1. Overview</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#kesten-processes">5.2. Kesten processes</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#application-firm-dynamics">5.2.1. Application: firm dynamics</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#gibrats-law">5.2.1.1. Gibrat’s law</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#heavy-tails">5.2.1.2. Heavy tails</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#alternative-implementation-with-lax-fori-loop">5.2.1.3. Alternative implementation with <code class="docutils literal notranslate"><span class="pre">lax.fori_loop</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">6.1. Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#kesten-processes">6.2. Kesten processes</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#application-firm-dynamics">6.2.1. Application: firm dynamics</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#gibrats-law">6.2.1.1. Gibrat’s law</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#heavy-tails">6.2.1.2. Heavy tails</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#alternative-implementation-with-lax-fori-loop">6.2.1.3. Alternative implementation with <code class="docutils literal notranslate"><span class="pre">lax.fori_loop</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -243,7 +243,7 @@ const thebe_selector_output = ".output, .cell_output"
                 <img style="width:250px;display:inline;" width="250px" src="https://assets.quantecon.org/img/qe-menubar-logo.svg" alt="QuantEcon">
         </a>
 </div><section class="tex2jax_ignore mathjax_ignore" id="kesten-processes-and-firm-dynamics">
-<h1><span class="section-number">5. </span>Kesten Processes and Firm Dynamics<a class="headerlink" href="#kesten-processes-and-firm-dynamics" title="Permalink to this heading">#</a></h1>
+<h1><span class="section-number">6. </span>Kesten Processes and Firm Dynamics<a class="headerlink" href="#kesten-processes-and-firm-dynamics" title="Permalink to this heading">#</a></h1>
 <div class="warning admonition" id="index-0">
 <p class="admonition-title">GPU</p>
 <p>This lecture was built using a machine with JAX installed and access to a GPU.</p>
@@ -264,18 +264,18 @@ const thebe_selector_output = ".output, .cell_output"
 </summary>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /opt/conda/envs/quantecon/lib/python3.11/site-packages (0.7.2)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: numba&gt;=0.49.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (0.59.0)
+Requirement already satisfied: numba&gt;=0.49.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (0.59.1)
 Requirement already satisfied: numpy&gt;=1.17.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (1.26.4)
-Requirement already satisfied: requests in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (2.31.0)
-Requirement already satisfied: scipy&gt;=1.5.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (1.11.4)
+Requirement already satisfied: requests in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (2.32.2)
+Requirement already satisfied: scipy&gt;=1.5.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (1.13.1)
 Requirement already satisfied: sympy in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (1.12)
 Requirement already satisfied: llvmlite&lt;0.43,&gt;=0.42.0dev0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from numba&gt;=0.49.0-&gt;quantecon) (0.42.0)
-Requirement already satisfied: charset-normalizer&lt;4,&gt;=2 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests-&gt;quantecon) (2.0.4)
-Requirement already satisfied: idna&lt;4,&gt;=2.5 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests-&gt;quantecon) (3.4)
-Requirement already satisfied: urllib3&lt;3,&gt;=1.21.1 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests-&gt;quantecon) (2.0.7)
-Requirement already satisfied: certifi&gt;=2017.4.17 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests-&gt;quantecon) (2024.2.2)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: charset-normalizer&lt;4,&gt;=2 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests-&gt;quantecon) (2.0.4)
+Requirement already satisfied: idna&lt;4,&gt;=2.5 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests-&gt;quantecon) (3.7)
+Requirement already satisfied: urllib3&lt;3,&gt;=1.21.1 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests-&gt;quantecon) (2.2.2)
+Requirement already satisfied: certifi&gt;=2017.4.17 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests-&gt;quantecon) (2024.6.2)
 Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from sympy-&gt;quantecon) (1.3.0)
 </pre></div>
 </div>
@@ -287,7 +287,7 @@ Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/envs/quantecon/lib/
 </details>
 </div>
 <section id="overview">
-<h2><span class="section-number">5.1. </span>Overview<a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">6.1. </span>Overview<a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
 <p>This lecture describes Kesten processes, which are an important class of
 stochastic processes, and an application of firm dynamics.</p>
 <p>The lecture draws on <a class="reference external" href="https://python.quantecon.org/kesten_processes.html">an earlier QuantEcon
@@ -316,7 +316,7 @@ to accelerate the computations.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Thu Jun 13 04:25:10 2024       
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Mon Aug 12 03:59:32 2024       
 +---------------------------------------------------------------------------------------+
 | NVIDIA-SMI 535.54.03              Driver Version: 535.54.03    CUDA Version: 12.5     |
 |-----------------------------------------+----------------------+----------------------+
@@ -325,7 +325,7 @@ to accelerate the computations.</p>
 |                                         |                      |               MIG M. |
 |=========================================+======================+======================|
 |   0  Tesla T4                       On  | 00000001:00:00.0 Off |                  Off |
-| N/A   43C    P8               9W /  70W |      2MiB / 16384MiB |      0%      Default |
+| N/A   42C    P8               9W /  70W |      2MiB / 16384MiB |      0%      Default |
 |                                         |                      |                  N/A |
 +-----------------------------------------+----------------------+----------------------+
                                                                                          
@@ -342,10 +342,10 @@ to accelerate the computations.</p>
 </div>
 </section>
 <section id="kesten-processes">
-<h2><span class="section-number">5.2. </span>Kesten processes<a class="headerlink" href="#kesten-processes" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">6.2. </span>Kesten processes<a class="headerlink" href="#kesten-processes" title="Permalink to this heading">#</a></h2>
 <p id="index-1">A <strong>Kesten process</strong> is a stochastic process of the form</p>
 <div class="math notranslate nohighlight" id="equation-kesproc">
-<span class="eqno">(5.1)<a class="headerlink" href="#equation-kesproc" title="Permalink to this equation">#</a></span>\[X_{t+1} = a_{t+1} X_t + \eta_{t+1}\]</div>
+<span class="eqno">(6.1)<a class="headerlink" href="#equation-kesproc" title="Permalink to this equation">#</a></span>\[X_{t+1} = a_{t+1} X_t + \eta_{t+1}\]</div>
 <p>where <span class="math notranslate nohighlight">\(\{a_t\}_{t \geq 1}\)</span> and <span class="math notranslate nohighlight">\(\{\eta_t\}_{t \geq 1}\)</span> are IID
 sequences.</p>
 <p>We are interested in the dynamics of <span class="math notranslate nohighlight">\(\{X_t\}_{t \geq 0}\)</span> when <span class="math notranslate nohighlight">\(X_0\)</span> is given.</p>
@@ -357,10 +357,10 @@ sequences.</p>
 <li><p><span class="math notranslate nohighlight">\(\{\eta_t\}_{t \geq 1}\)</span> is another nonnegative IID stochastic process, independent of the first.</p></li>
 </ul>
 <section id="application-firm-dynamics">
-<h3><span class="section-number">5.2.1. </span>Application: firm dynamics<a class="headerlink" href="#application-firm-dynamics" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">6.2.1. </span>Application: firm dynamics<a class="headerlink" href="#application-firm-dynamics" title="Permalink to this heading">#</a></h3>
 <p>In this section we apply Kesten process theory to the study of firm dynamics.</p>
 <section id="gibrats-law">
-<h4><span class="section-number">5.2.1.1. </span>Gibrat’s law<a class="headerlink" href="#gibrats-law" title="Permalink to this heading">#</a></h4>
+<h4><span class="section-number">6.2.1.1. </span>Gibrat’s law<a class="headerlink" href="#gibrats-law" title="Permalink to this heading">#</a></h4>
 <p>It was postulated many years ago by Robert Gibrat that firm size evolves
 according to a simple rule whereby size next period is proportional to current
 size.</p>
@@ -368,35 +368,35 @@ size.</p>
 <p>We can express this idea by stating that a suitably defined measure
 <span class="math notranslate nohighlight">\(s_t\)</span> of firm size obeys</p>
 <div class="math notranslate nohighlight" id="equation-firm-dynam-gb">
-<span class="eqno">(5.2)<a class="headerlink" href="#equation-firm-dynam-gb" title="Permalink to this equation">#</a></span>\[\frac{s_{t+1}}{s_t} = a_{t+1}\]</div>
+<span class="eqno">(6.2)<a class="headerlink" href="#equation-firm-dynam-gb" title="Permalink to this equation">#</a></span>\[\frac{s_{t+1}}{s_t} = a_{t+1}\]</div>
 <p>for some positive IID sequence <span class="math notranslate nohighlight">\(\{a_t\}\)</span>.</p>
 <p>Subsequent empirical research has shown that this specification is not accurate,
 particularly for small firms.</p>
-<p>However, we can get close to the data by modifying <a class="reference internal" href="#equation-firm-dynam-gb">(5.2)</a> to</p>
+<p>However, we can get close to the data by modifying <a class="reference internal" href="#equation-firm-dynam-gb">(6.2)</a> to</p>
 <div class="math notranslate nohighlight" id="equation-firm-dynam">
-<span class="eqno">(5.3)<a class="headerlink" href="#equation-firm-dynam" title="Permalink to this equation">#</a></span>\[s_{t+1} = a_{t+1} s_t + b_{t+1}\]</div>
+<span class="eqno">(6.3)<a class="headerlink" href="#equation-firm-dynam" title="Permalink to this equation">#</a></span>\[s_{t+1} = a_{t+1} s_t + b_{t+1}\]</div>
 <p>where <span class="math notranslate nohighlight">\(\{a_t\}\)</span> and <span class="math notranslate nohighlight">\(\{b_t\}\)</span> are both IID and independent of each
 other.</p>
 <p>We now study the implications of this specification.</p>
 </section>
 <section id="heavy-tails">
-<h4><span class="section-number">5.2.1.2. </span>Heavy tails<a class="headerlink" href="#heavy-tails" title="Permalink to this heading">#</a></h4>
+<h4><span class="section-number">6.2.1.2. </span>Heavy tails<a class="headerlink" href="#heavy-tails" title="Permalink to this heading">#</a></h4>
 <p>If the conditions of the <a class="reference external" href="https://python.quantecon.org/kesten_processes.html#the-kestengoldie-theorem">Kesten–Goldie
 Theorem</a>
-are satisfied, then <a class="reference internal" href="#equation-firm-dynam">(5.3)</a> implies that the firm size distribution
+are satisfied, then <a class="reference internal" href="#equation-firm-dynam">(6.3)</a> implies that the firm size distribution
 will have Pareto tails.</p>
 <p>This matches empirical findings across many data sets.</p>
-<p>But there is another unrealistic aspect of the firm dynamics specified in <a class="reference internal" href="#equation-firm-dynam">(5.3)</a> that we need to address: it ignores entry and exit.</p>
+<p>But there is another unrealistic aspect of the firm dynamics specified in <a class="reference internal" href="#equation-firm-dynam">(6.3)</a> that we need to address: it ignores entry and exit.</p>
 <p>In any given period and in any given market, we observe significant numbers of
 firms entering and exiting the market.</p>
 <p>In this setting, firm dynamics can be expressed as</p>
 <div class="math notranslate nohighlight" id="equation-firm-dynam-ee">
-<span class="eqno">(5.4)<a class="headerlink" href="#equation-firm-dynam-ee" title="Permalink to this equation">#</a></span>\[    s_{t+1} = e_{t+1} \mathbb{1}\{s_t &lt; \bar s\} +
+<span class="eqno">(6.4)<a class="headerlink" href="#equation-firm-dynam-ee" title="Permalink to this equation">#</a></span>\[    s_{t+1} = e_{t+1} \mathbb{1}\{s_t &lt; \bar s\} +
     (a_{t+1} s_t + b_{t+1}) \mathbb{1}\{s_t \geq \bar s\}\]</div>
-<p>The motivation behind and interpretation of <a class="reference internal" href="#equation-firm-dynam-ee">(5.4)</a> can be found in
+<p>The motivation behind and interpretation of <a class="reference internal" href="#equation-firm-dynam-ee">(6.4)</a> can be found in
 <a class="reference external" href="https://python.quantecon.org/kesten_processes.html">our earlier Kesten process lecture</a>.</p>
 <p>What can we say about dynamics?</p>
-<p>Although <a class="reference internal" href="#equation-firm-dynam-ee">(5.4)</a> is not a Kesten process, it does update in the
+<p>Although <a class="reference internal" href="#equation-firm-dynam-ee">(6.4)</a> is not a Kesten process, it does update in the
 same way as a Kesten process when <span class="math notranslate nohighlight">\(s_t\)</span> is large.</p>
 <p>So perhaps its stationary distribution still has Pareto tails?</p>
 <p>We can investigate this question via simulation and rank-size plots.</p>
@@ -410,7 +410,7 @@ large and</p></li>
 when <span class="math notranslate nohighlight">\(T\)</span> is large.)</p>
 <p>In the simulation, we assume that each of <span class="math notranslate nohighlight">\(a_t, b_t\)</span> and <span class="math notranslate nohighlight">\(e_t\)</span> is lognormal.</p>
 <p>Here’s code to update a cross-section of firms according to the dynamics in
-<a class="reference internal" href="#equation-firm-dynam-ee">(5.4)</a>.</p>
+<a class="reference internal" href="#equation-firm-dynam-ee">(6.4)</a>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jax</span><span class="o">.</span><span class="n">jit</span>
@@ -470,8 +470,11 @@ time <code class="docutils literal notranslate"><span class="pre">T</span></code
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1.86 s, sys: 774 ms, total: 2.64 s
-Wall time: 2.13 s
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2024-08-12 03:59:33.278172: W external/xla/xla/service/gpu/nvptx_compiler.cc:836] The NVIDIA driver&#39;s CUDA version is 12.5 which is older than the PTX compiler version (12.6.20). Because the driver is older than the PTX compiler version, XLA is disabling parallel compilation, which may slow down compilation. You should update your NVIDIA driver or use the NVIDIA-provided CUDA forward compatibility packages.
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1.93 s, sys: 863 ms, total: 2.8 s
+Wall time: 2.29 s
 </pre></div>
 </div>
 </div>
@@ -484,8 +487,8 @@ Wall time: 2.13 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1.11 s, sys: 394 ms, total: 1.51 s
-Wall time: 965 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1.11 s, sys: 499 ms, total: 1.61 s
+Wall time: 1.03 s
 </pre></div>
 </div>
 </div>
@@ -511,13 +514,13 @@ time and</p></li>
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/983d57069e6fb306e037e6f5abd5114ffe3f2f3d384f9e3d87d7c762c5841c96.png"><img alt="_images/983d57069e6fb306e037e6f5abd5114ffe3f2f3d384f9e3d87d7c762c5841c96.png" src="_images/983d57069e6fb306e037e6f5abd5114ffe3f2f3d384f9e3d87d7c762c5841c96.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/eb6c2171da1f6b2870216efa866cdc7b6d9f2d833441d190a579ffc6bb44fa08.png"><img alt="_images/eb6c2171da1f6b2870216efa866cdc7b6d9f2d833441d190a579ffc6bb44fa08.png" src="_images/eb6c2171da1f6b2870216efa866cdc7b6d9f2d833441d190a579ffc6bb44fa08.png" style="width: 80%;" /></a>
 </div>
 </div>
 <p>The plot produces a straight line, consistent with a Pareto tail.</p>
 </section>
 <section id="alternative-implementation-with-lax-fori-loop">
-<h4><span class="section-number">5.2.1.3. </span>Alternative implementation with <code class="docutils literal notranslate"><span class="pre">lax.fori_loop</span></code><a class="headerlink" href="#alternative-implementation-with-lax-fori-loop" title="Permalink to this heading">#</a></h4>
+<h4><span class="section-number">6.2.1.3. </span>Alternative implementation with <code class="docutils literal notranslate"><span class="pre">lax.fori_loop</span></code><a class="headerlink" href="#alternative-implementation-with-lax-fori-loop" title="Permalink to this heading">#</a></h4>
 <p>If the time horizon is not too large, we can try to further accelerate our code
 by replacing the <code class="docutils literal notranslate"><span class="pre">for</span></code> loop with
 <a class="reference external" href="https://jax.readthedocs.io/en/latest/_autosummary/jax.lax.fori_loop.html"><code class="docutils literal notranslate"><span class="pre">lax.fori_loop</span></code></a>.</p>
@@ -571,8 +574,8 @@ store large matrices of random draws</p></li>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 575 ms, sys: 58.8 ms, total: 634 ms
-Wall time: 634 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 584 ms, sys: 37.8 ms, total: 621 ms
+Wall time: 629 ms
 </pre></div>
 </div>
 </div>
@@ -586,8 +589,8 @@ we see some speed gain over the for loop implementation:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 3.11 ms, sys: 0 ns, total: 3.11 ms
-Wall time: 60.2 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 3.31 ms, sys: 0 ns, total: 3.31 ms
+Wall time: 60.3 ms
 </pre></div>
 </div>
 </div>
@@ -607,7 +610,7 @@ Wall time: 60.2 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/1e7de32e53634e0050197d9ea1a340021f12391da008b2b26dd9593eedff01a4.png"><img alt="_images/1e7de32e53634e0050197d9ea1a340021f12391da008b2b26dd9593eedff01a4.png" src="_images/1e7de32e53634e0050197d9ea1a340021f12391da008b2b26dd9593eedff01a4.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/d2c49b20ac722f42b24aaa28973c38c9641d694d4d8fadd7cdbbd7bd35df5d83.png"><img alt="_images/d2c49b20ac722f42b24aaa28973c38c9641d694d4d8fadd7cdbbd7bd35df5d83.png" src="_images/d2c49b20ac722f42b24aaa28973c38c9641d694d4d8fadd7cdbbd7bd35df5d83.png" style="width: 80%;" /></a>
 </div>
 </div>
 <p>Let’s rerun the <code class="docutils literal notranslate"><span class="pre">for</span></code> loop version on smaller <code class="docutils literal notranslate"><span class="pre">M</span></code> to compare the speed</p>
@@ -618,8 +621,8 @@ Wall time: 60.2 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1.43 s, sys: 353 ms, total: 1.78 s
-Wall time: 1.28 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1.52 s, sys: 564 ms, total: 2.09 s
+Wall time: 1.53 s
 </pre></div>
 </div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Array([2.389801 , 2.2558599, 3.3113828, ..., 2.7102313, 2.5520844,
@@ -636,8 +639,8 @@ Wall time: 1.28 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1.03 s, sys: 409 ms, total: 1.44 s
-Wall time: 927 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1.19 s, sys: 363 ms, total: 1.56 s
+Wall time: 1e+03 ms
 </pre></div>
 </div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Array([2.389801 , 2.2558599, 3.3113828, ..., 2.7102313, 2.5520844,
@@ -719,8 +722,13 @@ when memory is not an issue.</p>
   </a>
  </li>
  <li class="toctree-l1">
+  <a class="reference internal" href="autodiff.html">
+   3. Adventures with Autodiff
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="newtons_method.html">
-   3. Newton’s Method via JAX
+   4. Newton’s Method via JAX
   </a>
  </li>
 </ul>
@@ -732,17 +740,17 @@ when memory is not an issue.</p>
 <ul class="current nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="inventory_dynamics.html">
-   4. Inventory Dynamics
+   5. Inventory Dynamics
   </a>
  </li>
  <li class="toctree-l1 current active active">
   <a class="current reference internal" href="#">
-   5. Kesten Processes and Firm Dynamics
+   6. Kesten Processes and Firm Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wealth_dynamics.html">
-   6. Wealth Distribution Dynamics
+   7. Wealth Distribution Dynamics
   </a>
  </li>
 </ul>
@@ -754,12 +762,12 @@ when memory is not an issue.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lucas_model.html">
-   7. Asset Pricing: The Lucas Asset Pricing Model
+   8. Asset Pricing: The Lucas Asset Pricing Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="markov_asset.html">
-   8. An Asset Pricing Problem
+   9. An Asset Pricing Problem
   </a>
  </li>
 </ul>
@@ -771,37 +779,37 @@ when memory is not an issue.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="job_search.html">
-   9. Job Search
+   10. Job Search
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="opt_savings_1.html">
-   10. Optimal Savings I: Value Function Iteration
+   11. Optimal Savings I: Value Function Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="opt_savings_2.html">
-   11. Optimal Savings II: Alternative Algorithms
+   12. Optimal Savings II: Alternative Algorithms
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="short_path.html">
-   12. Shortest Paths
+   13. Shortest Paths
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="opt_invest.html">
-   13. Optimal Investment
+   14. Optimal Investment
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="inventory_ssd.html">
-   14. Inventory Management Model
+   15. Inventory Management Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_egm.html">
-   15. Endogenous Grid Method
+   16. Endogenous Grid Method
   </a>
  </li>
 </ul>
@@ -813,22 +821,22 @@ when memory is not an issue.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="arellano.html">
-   16. Default Risk and Income Fluctuations
+   17. Default Risk and Income Fluctuations
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="aiyagari_jax.html">
-   17. The Aiyagari Model
+   18. The Aiyagari Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="hopenhayn.html">
-   18. The Hopenhayn Entry-Exit Model
+   19. The Hopenhayn Entry-Exit Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="overborrowing.html">
-   19. Bianchi Overborrowing Model
+   20. Bianchi Overborrowing Model
   </a>
  </li>
 </ul>
@@ -840,7 +848,7 @@ when memory is not an issue.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="mle.html">
-   20. Maximum Likelihood Estimation
+   21. Maximum Likelihood Estimation
   </a>
  </li>
 </ul>
@@ -852,17 +860,17 @@ when memory is not an issue.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   21. Troubleshooting
+   22. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   22. References
+   23. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   23. Execution Statistics
+   24. Execution Statistics
   </a>
  </li>
 </ul>

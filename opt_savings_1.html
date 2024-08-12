@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>10. Optimal Savings I: Value Function Iteration &#8212; Quantitative Economics with Python using JAX</title>
+    <title>11. Optimal Savings I: Value Function Iteration &#8212; Quantitative Economics with Python using JAX</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
@@ -60,12 +60,12 @@
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="_static/styles/theme.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
-<link href="_static/styles/bootstrap.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
-<link href="_static/styles/pydata-sphinx-theme.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
 
   
-  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
   <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
@@ -80,9 +80,9 @@
     <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=3ee479438cf8b5e0d341" />
-<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=3ee479438cf8b5e0d341" />
-  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=3ee479438cf8b5e0d341"></script>
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
 
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
@@ -121,8 +121,8 @@ const thebe_selector_output = ".output, .cell_output"
     <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="11. Optimal Savings II: Alternative Algorithms" href="opt_savings_2.html" />
-    <link rel="prev" title="9. Job Search" href="job_search.html" />
+    <link rel="next" title="12. Optimal Savings II: Alternative Algorithms" href="opt_savings_2.html" />
+    <link rel="prev" title="10. Job Search" href="job_search.html" />
 
 <!-- Normal Meta Tags -->
 <meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
@@ -170,19 +170,19 @@ const thebe_selector_output = ".output, .cell_output"
 
                         <nav id="bd-toc-nav" class="qe-page__toc-nav">
                             <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">10.1. Overview</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#starting-with-numpy">10.2. Starting with NumPy</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#functions-and-operators">10.2.1. Functions and operators</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#value-function-iteration">10.2.2. Value function iteration</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">11.1. Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#starting-with-numpy">11.2. Starting with NumPy</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#functions-and-operators">11.2.1. Functions and operators</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#value-function-iteration">11.2.2. Value function iteration</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#switching-to-jax">10.3. Switching to JAX</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">10.3.1. Functions and operators</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#successive-approximation">10.3.2. Successive approximation</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#timing">10.3.3. Timing</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#switching-to-jax">11.3. Switching to JAX</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">11.3.1. Functions and operators</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#successive-approximation">11.3.2. Successive approximation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#timing">11.3.3. Timing</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#switching-to-vmap">10.4. Switching to vmap</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#switching-to-vmap">11.4. Switching to vmap</a></li>
 </ul>
                             <p class="logo">
                                 
@@ -242,7 +242,7 @@ const thebe_selector_output = ".output, .cell_output"
                     <div>
                         
   <section class="tex2jax_ignore mathjax_ignore" id="optimal-savings-i-value-function-iteration">
-<h1><span class="section-number">10. </span>Optimal Savings I: Value Function Iteration<a class="headerlink" href="#optimal-savings-i-value-function-iteration" title="Permalink to this heading">#</a></h1>
+<h1><span class="section-number">11. </span>Optimal Savings I: Value Function Iteration<a class="headerlink" href="#optimal-savings-i-value-function-iteration" title="Permalink to this heading">#</a></h1>
 <div class="warning admonition">
 <p class="admonition-title">GPU</p>
 <p>This lecture was built using a machine with JAX installed and access to a GPU.</p>
@@ -263,18 +263,18 @@ const thebe_selector_output = ".output, .cell_output"
 </summary>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /opt/conda/envs/quantecon/lib/python3.11/site-packages (0.7.2)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: numba&gt;=0.49.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (0.59.0)
+Requirement already satisfied: numba&gt;=0.49.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (0.59.1)
 Requirement already satisfied: numpy&gt;=1.17.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (1.26.4)
-Requirement already satisfied: requests in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (2.31.0)
-Requirement already satisfied: scipy&gt;=1.5.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (1.11.4)
+Requirement already satisfied: requests in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (2.32.2)
+Requirement already satisfied: scipy&gt;=1.5.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (1.13.1)
 Requirement already satisfied: sympy in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (1.12)
 Requirement already satisfied: llvmlite&lt;0.43,&gt;=0.42.0dev0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from numba&gt;=0.49.0-&gt;quantecon) (0.42.0)
-Requirement already satisfied: charset-normalizer&lt;4,&gt;=2 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests-&gt;quantecon) (2.0.4)
-Requirement already satisfied: idna&lt;4,&gt;=2.5 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests-&gt;quantecon) (3.4)
-Requirement already satisfied: urllib3&lt;3,&gt;=1.21.1 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests-&gt;quantecon) (2.0.7)
-Requirement already satisfied: certifi&gt;=2017.4.17 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests-&gt;quantecon) (2024.2.2)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: charset-normalizer&lt;4,&gt;=2 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests-&gt;quantecon) (2.0.4)
+Requirement already satisfied: idna&lt;4,&gt;=2.5 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests-&gt;quantecon) (3.7)
+Requirement already satisfied: urllib3&lt;3,&gt;=1.21.1 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests-&gt;quantecon) (2.2.2)
+Requirement already satisfied: certifi&gt;=2017.4.17 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests-&gt;quantecon) (2024.6.2)
 Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from sympy-&gt;quantecon) (1.3.0)
 </pre></div>
 </div>
@@ -307,7 +307,7 @@ Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/envs/quantecon/lib/
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Thu Jun 13 04:28:32 2024       
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Mon Aug 12 04:02:56 2024       
 +---------------------------------------------------------------------------------------+
 | NVIDIA-SMI 535.54.03              Driver Version: 535.54.03    CUDA Version: 12.5     |
 |-----------------------------------------+----------------------+----------------------+
@@ -316,7 +316,7 @@ Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/envs/quantecon/lib/
 |                                         |                      |               MIG M. |
 |=========================================+======================+======================|
 |   0  Tesla T4                       On  | 00000001:00:00.0 Off |                  Off |
-| N/A   49C    P8               9W /  70W |      2MiB / 16384MiB |      0%      Default |
+| N/A   47C    P8              10W /  70W |      2MiB / 16384MiB |      0%      Default |
 |                                         |                      |                  N/A |
 +-----------------------------------------+----------------------+----------------------+
                                                                                          
@@ -340,7 +340,7 @@ Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/envs/quantecon/lib/
 </div>
 </div>
 <section id="overview">
-<h2><span class="section-number">10.1. </span>Overview<a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">11.1. </span>Overview<a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
 <p>We consider an optimal savings problem with CRRA utility and budget constraint</p>
 <div class="math notranslate nohighlight">
 \[ 
@@ -375,14 +375,14 @@ W_{t+1} + C_t \leq R W_t + Y_t
 <p>the encapsulate the right hand side of the Bellman equation.</p>
 </section>
 <section id="starting-with-numpy">
-<h2><span class="section-number">10.2. </span>Starting with NumPy<a class="headerlink" href="#starting-with-numpy" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">11.2. </span>Starting with NumPy<a class="headerlink" href="#starting-with-numpy" title="Permalink to this heading">#</a></h2>
 <p>Let’s start with a standard NumPy version running on the CPU.</p>
 <p>Starting with this traditional approach will allow us to record the speed gain
 associated with switching to JAX.</p>
 <p>(NumPy operations are similar to MATLAB operations, so this also serves as a
 rough comparison with MATLAB.)</p>
 <section id="functions-and-operators">
-<h3><span class="section-number">10.2.1. </span>Functions and operators<a class="headerlink" href="#functions-and-operators" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">11.2.1. </span>Functions and operators<a class="headerlink" href="#functions-and-operators" title="Permalink to this heading">#</a></h3>
 <p>The following function contains default parameters and returns tuples that
 contain the key computational components of the model.</p>
 <div class="cell docutils container">
@@ -469,7 +469,7 @@ maximizes the right-hand side of the Bellman equation.)</p>
 </div>
 </section>
 <section id="value-function-iteration">
-<h3><span class="section-number">10.2.2. </span>Value function iteration<a class="headerlink" href="#value-function-iteration" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">11.2.2. </span>Value function iteration<a class="headerlink" href="#value-function-iteration" title="Permalink to this heading">#</a></h3>
 <p>Here’s a routine that performs value function iteration.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -515,7 +515,7 @@ model.</p>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Starting VFI.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>VFI completed in 11.808090209960938 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>VFI completed in 11.466776371002197 seconds.
 </pre></div>
 </div>
 </div>
@@ -531,7 +531,7 @@ model.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>VFI completed in 11.82644271850586 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>VFI completed in 11.510318756103516 seconds.
 </pre></div>
 </div>
 </div>
@@ -550,9 +550,9 @@ model.</p>
 </div>
 <div class="cell_output docutils container">
 <figure class="align-default" id="policy-function">
-<a class="reference internal image-reference" href="_images/75cfbd4c96fe584c8f8987f37e22c7e34130b96b75afddceebea474b34c3884e.png"><img alt="_images/75cfbd4c96fe584c8f8987f37e22c7e34130b96b75afddceebea474b34c3884e.png" src="_images/75cfbd4c96fe584c8f8987f37e22c7e34130b96b75afddceebea474b34c3884e.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/3afb87b00ebd636e77f6918d59402035cec914a0b12cfb66daac59633a2087a7.png"><img alt="_images/3afb87b00ebd636e77f6918d59402035cec914a0b12cfb66daac59633a2087a7.png" src="_images/3afb87b00ebd636e77f6918d59402035cec914a0b12cfb66daac59633a2087a7.png" style="width: 80%;" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 10.1 </span><span class="caption-text">Policy function</span><a class="headerlink" href="#policy-function" title="Permalink to this image">#</a></p>
+<p><span class="caption-number">Fig. 11.1 </span><span class="caption-text">Policy function</span><a class="headerlink" href="#policy-function" title="Permalink to this image">#</a></p>
 </figcaption>
 </figure>
 </div>
@@ -560,11 +560,11 @@ model.</p>
 </section>
 </section>
 <section id="switching-to-jax">
-<h2><span class="section-number">10.3. </span>Switching to JAX<a class="headerlink" href="#switching-to-jax" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">11.3. </span>Switching to JAX<a class="headerlink" href="#switching-to-jax" title="Permalink to this heading">#</a></h2>
 <p>To switch over to JAX, we change <code class="docutils literal notranslate"><span class="pre">np</span></code> to <code class="docutils literal notranslate"><span class="pre">jnp</span></code> throughout and add some
 <code class="docutils literal notranslate"><span class="pre">jax.jit</span></code> requests.</p>
 <section id="id1">
-<h3><span class="section-number">10.3.1. </span>Functions and operators<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">11.3.1. </span>Functions and operators<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h3>
 <p>We redefine <code class="docutils literal notranslate"><span class="pre">create_consumption_model</span></code> to produce JAX arrays.</p>
 <div class="cell docutils container" id="prgm-create-consumption-model">
 <div class="cell_input docutils container">
@@ -665,7 +665,7 @@ maximizes the right-hand side of the Bellman equation.)</p>
 </div>
 </section>
 <section id="successive-approximation">
-<h3><span class="section-number">10.3.2. </span>Successive approximation<a class="headerlink" href="#successive-approximation" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">11.3.2. </span>Successive approximation<a class="headerlink" href="#successive-approximation" title="Permalink to this heading">#</a></h3>
 <p>Now we define a solver that implements VFI.</p>
 <p>We could use the one we built for NumPy above, after changing <code class="docutils literal notranslate"><span class="pre">np</span></code> to <code class="docutils literal notranslate"><span class="pre">jnp</span></code>.</p>
 <p>Alternatively, we can push a bit harder and write a compiled version using
@@ -715,7 +715,7 @@ in the Bellman operator.</p>
 </div>
 </section>
 <section id="timing">
-<h3><span class="section-number">10.3.3. </span>Timing<a class="headerlink" href="#timing" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">11.3.3. </span>Timing<a class="headerlink" href="#timing" title="Permalink to this heading">#</a></h3>
 <p>Let’s create an instance and unpack it.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -725,6 +725,11 @@ in the Bellman operator.</p>
 <span class="n">β</span><span class="p">,</span> <span class="n">R</span><span class="p">,</span> <span class="n">γ</span> <span class="o">=</span> <span class="n">params</span>
 <span class="n">w_size</span><span class="p">,</span> <span class="n">y_size</span> <span class="o">=</span> <span class="n">sizes</span>
 <span class="n">w_grid</span><span class="p">,</span> <span class="n">y_grid</span><span class="p">,</span> <span class="n">Q</span> <span class="o">=</span> <span class="n">arrays</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2024-08-12 04:03:20.795231: W external/xla/xla/service/gpu/nvptx_compiler.cc:836] The NVIDIA driver&#39;s CUDA version is 12.5 which is older than the PTX compiler version (12.6.20). Because the driver is older than the PTX compiler version, XLA is disabling parallel compilation, which may slow down compilation. You should update your NVIDIA driver or use the NVIDIA-provided CUDA forward compatibility packages.
 </pre></div>
 </div>
 </div>
@@ -744,7 +749,7 @@ in the Bellman operator.</p>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Starting VFI using vectorization.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>VFI completed in 0.6622564792633057 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>VFI completed in 0.7179312705993652 seconds.
 </pre></div>
 </div>
 </div>
@@ -760,7 +765,7 @@ in the Bellman operator.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>VFI completed in 0.31258082389831543 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>VFI completed in 0.31941699981689453 seconds.
 </pre></div>
 </div>
 </div>
@@ -773,7 +778,7 @@ in the Bellman operator.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Relative speed gain = 37.8348312318515
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Relative speed gain = 36.035398124401
 </pre></div>
 </div>
 </div>
@@ -784,7 +789,7 @@ to alternative algorithms that are better suited to parallelization.</p>
 </section>
 </section>
 <section id="switching-to-vmap">
-<h2><span class="section-number">10.4. </span>Switching to vmap<a class="headerlink" href="#switching-to-vmap" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">11.4. </span>Switching to vmap<a class="headerlink" href="#switching-to-vmap" title="Permalink to this heading">#</a></h2>
 <p>Before we discuss alternative algorithms, let’s take another look at value
 function iteration.</p>
 <p>For this simple optimal savings problem, direct vectorization is relatively easy.</p>
@@ -883,7 +888,7 @@ up our sleeves.</p>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Starting VFI using vmap.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>VFI completed in 0.41678929328918457 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>VFI completed in 0.4236183166503906 seconds.
 </pre></div>
 </div>
 </div>
@@ -899,7 +904,7 @@ up our sleeves.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>VFI completed in 0.32491278648376465 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>VFI completed in 0.3306581974029541 seconds.
 </pre></div>
 </div>
 </div>
@@ -927,7 +932,7 @@ True
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Relative speed = 36.39882211621366
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Relative speed = 34.810323308200196
 </pre></div>
 </div>
 </div>
@@ -940,7 +945,7 @@ True
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Relative speed = 0.9620453146245587
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Relative speed = 0.9660035720440326
 </pre></div>
 </div>
 </div>
@@ -1018,8 +1023,13 @@ sophisticated Bellman equations.</p>
   </a>
  </li>
  <li class="toctree-l1">
+  <a class="reference internal" href="autodiff.html">
+   3. Adventures with Autodiff
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="newtons_method.html">
-   3. Newton’s Method via JAX
+   4. Newton’s Method via JAX
   </a>
  </li>
 </ul>
@@ -1031,17 +1041,17 @@ sophisticated Bellman equations.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="inventory_dynamics.html">
-   4. Inventory Dynamics
+   5. Inventory Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kesten_processes.html">
-   5. Kesten Processes and Firm Dynamics
+   6. Kesten Processes and Firm Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wealth_dynamics.html">
-   6. Wealth Distribution Dynamics
+   7. Wealth Distribution Dynamics
   </a>
  </li>
 </ul>
@@ -1053,12 +1063,12 @@ sophisticated Bellman equations.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lucas_model.html">
-   7. Asset Pricing: The Lucas Asset Pricing Model
+   8. Asset Pricing: The Lucas Asset Pricing Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="markov_asset.html">
-   8. An Asset Pricing Problem
+   9. An Asset Pricing Problem
   </a>
  </li>
 </ul>
@@ -1070,37 +1080,37 @@ sophisticated Bellman equations.</p>
 <ul class="current nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="job_search.html">
-   9. Job Search
+   10. Job Search
   </a>
  </li>
  <li class="toctree-l1 current active active">
   <a class="current reference internal" href="#">
-   10. Optimal Savings I: Value Function Iteration
+   11. Optimal Savings I: Value Function Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="opt_savings_2.html">
-   11. Optimal Savings II: Alternative Algorithms
+   12. Optimal Savings II: Alternative Algorithms
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="short_path.html">
-   12. Shortest Paths
+   13. Shortest Paths
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="opt_invest.html">
-   13. Optimal Investment
+   14. Optimal Investment
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="inventory_ssd.html">
-   14. Inventory Management Model
+   15. Inventory Management Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_egm.html">
-   15. Endogenous Grid Method
+   16. Endogenous Grid Method
   </a>
  </li>
 </ul>
@@ -1112,22 +1122,22 @@ sophisticated Bellman equations.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="arellano.html">
-   16. Default Risk and Income Fluctuations
+   17. Default Risk and Income Fluctuations
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="aiyagari_jax.html">
-   17. The Aiyagari Model
+   18. The Aiyagari Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="hopenhayn.html">
-   18. The Hopenhayn Entry-Exit Model
+   19. The Hopenhayn Entry-Exit Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="overborrowing.html">
-   19. Bianchi Overborrowing Model
+   20. Bianchi Overborrowing Model
   </a>
  </li>
 </ul>
@@ -1139,7 +1149,7 @@ sophisticated Bellman equations.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="mle.html">
-   20. Maximum Likelihood Estimation
+   21. Maximum Likelihood Estimation
   </a>
  </li>
 </ul>
@@ -1151,17 +1161,17 @@ sophisticated Bellman equations.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   21. Troubleshooting
+   22. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   22. References
+   23. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   23. Execution Statistics
+   24. Execution Statistics
   </a>
  </li>
 </ul>

@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>6. Wealth Distribution Dynamics &#8212; Quantitative Economics with Python using JAX</title>
+    <title>7. Wealth Distribution Dynamics &#8212; Quantitative Economics with Python using JAX</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
@@ -60,12 +60,12 @@
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="_static/styles/theme.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
-<link href="_static/styles/bootstrap.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
-<link href="_static/styles/pydata-sphinx-theme.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
 
   
-  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
   <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
@@ -80,9 +80,9 @@
     <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=3ee479438cf8b5e0d341" />
-<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=3ee479438cf8b5e0d341" />
-  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=3ee479438cf8b5e0d341"></script>
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
 
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
@@ -121,8 +121,8 @@ const thebe_selector_output = ".output, .cell_output"
     <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="7. Asset Pricing: The Lucas Asset Pricing Model" href="lucas_model.html" />
-    <link rel="prev" title="5. Kesten Processes and Firm Dynamics" href="kesten_processes.html" />
+    <link rel="next" title="8. Asset Pricing: The Lucas Asset Pricing Model" href="lucas_model.html" />
+    <link rel="prev" title="6. Kesten Processes and Firm Dynamics" href="kesten_processes.html" />
 
 <!-- Normal Meta Tags -->
 <meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
@@ -170,19 +170,19 @@ const thebe_selector_output = ".output, .cell_output"
 
                         <nav id="bd-toc-nav" class="qe-page__toc-nav">
                             <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#wealth-dynamics">6.1. Wealth dynamics</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implementation">6.2. Implementation</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#numba-implementation">6.2.1. Numba implementation</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#jax-implementation">6.2.2. JAX implementation</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pareto-tails">6.2.3. Pareto tails</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lorenz-curves-and-gini-coefficients">6.2.4. Lorenz curves and Gini coefficients</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#lorenz-curve">6.2.4.1. Lorenz curve</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#gini-coefficient">6.2.4.2. Gini Coefficient</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#wealth-dynamics">7.1. Wealth dynamics</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implementation">7.2. Implementation</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#numba-implementation">7.2.1. Numba implementation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#jax-implementation">7.2.2. JAX implementation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pareto-tails">7.2.3. Pareto tails</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lorenz-curves-and-gini-coefficients">7.2.4. Lorenz curves and Gini coefficients</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#lorenz-curve">7.2.4.1. Lorenz curve</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#gini-coefficient">7.2.4.2. Gini Coefficient</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">6.3. Exercises</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">7.3. Exercises</a></li>
 </ul>
                             <p class="logo">
                                 
@@ -242,7 +242,7 @@ const thebe_selector_output = ".output, .cell_output"
                     <div>
                         
   <section class="tex2jax_ignore mathjax_ignore" id="wealth-distribution-dynamics">
-<h1><span class="section-number">6. </span>Wealth Distribution Dynamics<a class="headerlink" href="#wealth-distribution-dynamics" title="Permalink to this heading">#</a></h1>
+<h1><span class="section-number">7. </span>Wealth Distribution Dynamics<a class="headerlink" href="#wealth-distribution-dynamics" title="Permalink to this heading">#</a></h1>
 <div class="warning admonition">
 <p class="admonition-title">GPU</p>
 <p>This lecture was built using a machine with JAX installed and access to a GPU.</p>
@@ -276,18 +276,18 @@ inequality, such as the Gini coefficient.</p>
 </summary>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /opt/conda/envs/quantecon/lib/python3.11/site-packages (0.7.2)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: numba&gt;=0.49.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (0.59.0)
+Requirement already satisfied: numba&gt;=0.49.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (0.59.1)
 Requirement already satisfied: numpy&gt;=1.17.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (1.26.4)
-Requirement already satisfied: requests in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (2.31.0)
-Requirement already satisfied: scipy&gt;=1.5.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (1.11.4)
+Requirement already satisfied: requests in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (2.32.2)
+Requirement already satisfied: scipy&gt;=1.5.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (1.13.1)
 Requirement already satisfied: sympy in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (1.12)
 Requirement already satisfied: llvmlite&lt;0.43,&gt;=0.42.0dev0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from numba&gt;=0.49.0-&gt;quantecon) (0.42.0)
-Requirement already satisfied: charset-normalizer&lt;4,&gt;=2 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests-&gt;quantecon) (2.0.4)
-Requirement already satisfied: idna&lt;4,&gt;=2.5 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests-&gt;quantecon) (3.4)
-Requirement already satisfied: urllib3&lt;3,&gt;=1.21.1 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests-&gt;quantecon) (2.0.7)
-Requirement already satisfied: certifi&gt;=2017.4.17 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests-&gt;quantecon) (2024.2.2)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: charset-normalizer&lt;4,&gt;=2 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests-&gt;quantecon) (2.0.4)
+Requirement already satisfied: idna&lt;4,&gt;=2.5 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests-&gt;quantecon) (3.7)
+Requirement already satisfied: urllib3&lt;3,&gt;=1.21.1 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests-&gt;quantecon) (2.2.2)
+Requirement already satisfied: certifi&gt;=2017.4.17 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests-&gt;quantecon) (2024.6.2)
 Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from sympy-&gt;quantecon) (1.3.0)
 </pre></div>
 </div>
@@ -321,7 +321,7 @@ Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/envs/quantecon/lib/
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Thu Jun 13 04:31:18 2024       
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Mon Aug 12 04:05:58 2024       
 +---------------------------------------------------------------------------------------+
 | NVIDIA-SMI 535.54.03              Driver Version: 535.54.03    CUDA Version: 12.5     |
 |-----------------------------------------+----------------------+----------------------+
@@ -330,7 +330,7 @@ Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/envs/quantecon/lib/
 |                                         |                      |               MIG M. |
 |=========================================+======================+======================|
 |   0  Tesla T4                       On  | 00000001:00:00.0 Off |                  Off |
-| N/A   58C    P8              10W /  70W |      2MiB / 16384MiB |      0%      Default |
+| N/A   59C    P8              10W /  70W |      2MiB / 16384MiB |      0%      Default |
 |                                         |                      |                  N/A |
 +-----------------------------------------+----------------------+----------------------+
                                                                                          
@@ -346,7 +346,7 @@ Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/envs/quantecon/lib/
 </div>
 </div>
 <section id="wealth-dynamics">
-<h2><span class="section-number">6.1. </span>Wealth dynamics<a class="headerlink" href="#wealth-dynamics" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">7.1. </span>Wealth dynamics<a class="headerlink" href="#wealth-dynamics" title="Permalink to this heading">#</a></h2>
 <p>Wealth evolves as follows:</p>
 <div class="math notranslate nohighlight">
 \[    w_{t+1} = (1 + r_{t+1}) s(w_t) + y_{t+1}\]</div>
@@ -377,7 +377,7 @@ Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/envs/quantecon/lib/
 <p>(Each household receives their own idiosyncratic shocks.)</p>
 <p>Regarding the savings function <span class="math notranslate nohighlight">\(s\)</span>, our default model will be</p>
 <div class="math notranslate nohighlight" id="equation-sav-ah">
-<span class="eqno">(6.1)<a class="headerlink" href="#equation-sav-ah" title="Permalink to this equation">#</a></span>\[s(w) = s_0 w \cdot \mathbb 1\{w \geq \hat w\}\]</div>
+<span class="eqno">(7.1)<a class="headerlink" href="#equation-sav-ah" title="Permalink to this equation">#</a></span>\[s(w) = s_0 w \cdot \mathbb 1\{w \geq \hat w\}\]</div>
 <p>where <span class="math notranslate nohighlight">\(s_0\)</span> is a positive constant.</p>
 <p>Thus,</p>
 <ul class="simple">
@@ -386,9 +386,9 @@ Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/envs/quantecon/lib/
 </ul>
 </section>
 <section id="implementation">
-<h2><span class="section-number">6.2. </span>Implementation<a class="headerlink" href="#implementation" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">7.2. </span>Implementation<a class="headerlink" href="#implementation" title="Permalink to this heading">#</a></h2>
 <section id="numba-implementation">
-<h3><span class="section-number">6.2.1. </span>Numba implementation<a class="headerlink" href="#numba-implementation" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">7.2.1. </span>Numba implementation<a class="headerlink" href="#numba-implementation" title="Permalink to this heading">#</a></h3>
 <p>Here’s a function that collects parameters and useful constants</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -516,7 +516,7 @@ current value of the aggregate shock</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/5cf3b3546d0c1737c035e29cf742237c97aa030800c60afe32bbc71f0d6fc9ef.png"><img alt="_images/5cf3b3546d0c1737c035e29cf742237c97aa030800c60afe32bbc71f0d6fc9ef.png" src="_images/5cf3b3546d0c1737c035e29cf742237c97aa030800c60afe32bbc71f0d6fc9ef.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/eb2bf307d0f630eed85fdac85330384d13118dc8d63a9a30d41dfe014ed7e2cc.png"><img alt="_images/eb2bf307d0f630eed85fdac85330384d13118dc8d63a9a30d41dfe014ed7e2cc.png" src="_images/eb2bf307d0f630eed85fdac85330384d13118dc8d63a9a30d41dfe014ed7e2cc.png" style="width: 80%;" /></a>
 </div>
 </div>
 <p>Notice the large spikes in wealth over time.</p>
@@ -584,7 +584,7 @@ is known.</p>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Generating cross-section using Numba
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Generated cross-section in 56.959468126297 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Generated cross-section in 57.59461736679077 seconds.
 </pre></div>
 </div>
 </div>
@@ -600,14 +600,14 @@ is known.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Generated cross-section in 56.71404027938843 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Generated cross-section in 56.80775547027588 seconds.
 </pre></div>
 </div>
 </div>
 </div>
 </section>
 <section id="jax-implementation">
-<h3><span class="section-number">6.2.2. </span>JAX implementation<a class="headerlink" href="#jax-implementation" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">7.2.2. </span>JAX implementation<a class="headerlink" href="#jax-implementation" title="Permalink to this heading">#</a></h3>
 <p>Let’s redo some of the preceding calculations using JAX and see how execution
 speed compares</p>
 <div class="cell docutils container">
@@ -659,6 +659,11 @@ using JAX</p>
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2024-08-12 04:07:54.613303: W external/xla/xla/service/gpu/nvptx_compiler.cc:836] The NVIDIA driver&#39;s CUDA version is 12.5 which is older than the PTX compiler version (12.6.20). Because the driver is older than the PTX compiler version, XLA is disabling parallel compilation, which may slow down compilation. You should update your NVIDIA driver or use the NVIDIA-provided CUDA forward compatibility packages.
+</pre></div>
+</div>
+</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -675,7 +680,7 @@ using JAX</p>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Generating cross-section using JAX
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Generated cross-section in 2.2762949466705322 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Generated cross-section in 2.3496782779693604 seconds.
 </pre></div>
 </div>
 </div>
@@ -695,7 +700,7 @@ using JAX</p>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Repeating without compile time.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Generated cross-section in 1.2332696914672852 seconds
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Generated cross-section in 1.235994577407837 seconds
 </pre></div>
 </div>
 </div>
@@ -771,7 +776,7 @@ using JAX</p>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Generating cross-section using JAX with compiled loop
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Generated cross-section in 0.5849342346191406 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Generated cross-section in 0.570561408996582 seconds.
 </pre></div>
 </div>
 </div>
@@ -791,7 +796,7 @@ using JAX</p>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Repeating without compile time
-Generated cross-section in 0.17472052574157715 seconds
+Generated cross-section in 0.1854405403137207 seconds
 </pre></div>
 </div>
 </div>
@@ -803,14 +808,14 @@ Generated cross-section in 0.17472052574157715 seconds
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>JAX is 324.5986 times faster.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>JAX is 306.3395 times faster.
 </pre></div>
 </div>
 </div>
 </div>
 </section>
 <section id="pareto-tails">
-<h3><span class="section-number">6.2.3. </span>Pareto tails<a class="headerlink" href="#pareto-tails" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">7.2.3. </span>Pareto tails<a class="headerlink" href="#pareto-tails" title="Permalink to this heading">#</a></h3>
 <p>In most countries, the cross-sectional distribution of wealth exhibits a Pareto
 tail (power law).</p>
 <p>Let’s see if our model can replicate this stylized fact by running a simulation
@@ -836,18 +841,18 @@ that generates a cross-section of wealth and generating a suitable rank-size plo
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/06e2ba95aa9d82f2aa3c395c28b652c57144e9a6ef2c12cbb5dffe2d8ddecd57.png"><img alt="_images/06e2ba95aa9d82f2aa3c395c28b652c57144e9a6ef2c12cbb5dffe2d8ddecd57.png" src="_images/06e2ba95aa9d82f2aa3c395c28b652c57144e9a6ef2c12cbb5dffe2d8ddecd57.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/eebee21e90f665aea6c5fdca8eb99dc5d0df0717fdde39b6b059d4206b490c2a.png"><img alt="_images/eebee21e90f665aea6c5fdca8eb99dc5d0df0717fdde39b6b059d4206b490c2a.png" src="_images/eebee21e90f665aea6c5fdca8eb99dc5d0df0717fdde39b6b059d4206b490c2a.png" style="width: 80%;" /></a>
 </div>
 </div>
 </section>
 <section id="lorenz-curves-and-gini-coefficients">
-<h3><span class="section-number">6.2.4. </span>Lorenz curves and Gini coefficients<a class="headerlink" href="#lorenz-curves-and-gini-coefficients" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">7.2.4. </span>Lorenz curves and Gini coefficients<a class="headerlink" href="#lorenz-curves-and-gini-coefficients" title="Permalink to this heading">#</a></h3>
 <p>To study the impact of parameters on inequality, we examine Lorenz curves
 and the Gini coefficients at different parameters.</p>
 <p>QuantEcon provides functions to compute Lorenz curves and Gini coefficients that are accelerated using Numba.</p>
 <p>Here we provide JAX-based functions that do the same job and are faster for large data sets on parallel hardware.</p>
 <section id="lorenz-curve">
-<h4><span class="section-number">6.2.4.1. </span>Lorenz curve<a class="headerlink" href="#lorenz-curve" title="Permalink to this heading">#</a></h4>
+<h4><span class="section-number">7.2.4.1. </span>Lorenz curve<a class="headerlink" href="#lorenz-curve" title="Permalink to this heading">#</a></h4>
 <p>Recall that, for sorted data <span class="math notranslate nohighlight">\(w_1, \ldots, w_n\)</span>, the Lorenz curve
 generates data points <span class="math notranslate nohighlight">\((x_i, y_i)_{i=0}^n\)</span>  according to</p>
 <div class="math notranslate nohighlight">
@@ -904,8 +909,8 @@ generates data points <span class="math notranslate nohighlight">\((x_i, y_i)_{i
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 874 ms, sys: 4.02 ms, total: 878 ms
-Wall time: 1.35 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 936 ms, sys: 4.02 ms, total: 940 ms
+Wall time: 1.39 s
 </pre></div>
 </div>
 </div>
@@ -918,8 +923,8 @@ Wall time: 1.35 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 345 µs, sys: 0 ns, total: 345 µs
-Wall time: 182 µs
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 378 μs, sys: 1 μs, total: 379 μs
+Wall time: 197 μs
 </pre></div>
 </div>
 </div>
@@ -935,15 +940,15 @@ Wall time: 182 µs
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/11447ddec383980fab08ad41b1c206dd77effc19eea8ec9a1511ab7f8f2ff175.png"><img alt="_images/11447ddec383980fab08ad41b1c206dd77effc19eea8ec9a1511ab7f8f2ff175.png" src="_images/11447ddec383980fab08ad41b1c206dd77effc19eea8ec9a1511ab7f8f2ff175.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/49f7de71021656a7029d3de81b4572faca8d8271ff2be5e4e401d1e410d1683c.png"><img alt="_images/49f7de71021656a7029d3de81b4572faca8d8271ff2be5e4e401d1e410d1683c.png" src="_images/49f7de71021656a7029d3de81b4572faca8d8271ff2be5e4e401d1e410d1683c.png" style="width: 80%;" /></a>
 </div>
 </div>
 </section>
 <section id="gini-coefficient">
-<h4><span class="section-number">6.2.4.2. </span>Gini Coefficient<a class="headerlink" href="#gini-coefficient" title="Permalink to this heading">#</a></h4>
+<h4><span class="section-number">7.2.4.2. </span>Gini Coefficient<a class="headerlink" href="#gini-coefficient" title="Permalink to this heading">#</a></h4>
 <p>Recall that, for sorted data <span class="math notranslate nohighlight">\(w_1, \ldots, w_n\)</span>, the Gini coefficient takes the form</p>
 <div class="math notranslate nohighlight" id="equation-eq-gini">
-<span class="eqno">(6.2)<a class="headerlink" href="#equation-eq-gini" title="Permalink to this equation">#</a></span>\[
+<span class="eqno">(7.2)<a class="headerlink" href="#equation-eq-gini" title="Permalink to this equation">#</a></span>\[
 G :=
 \frac
     {\sum_{i=1}^n \sum_{j = 1}^n |w_j - w_i|}
@@ -970,8 +975,8 @@ G :=
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 71.8 ms, sys: 4.01 ms, total: 75.8 ms
-Wall time: 8.49 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 79.3 ms, sys: 9 μs, total: 79.3 ms
+Wall time: 8.16 s
 </pre></div>
 </div>
 </div>
@@ -984,8 +989,8 @@ Wall time: 8.49 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 2.14 ms, sys: 5 µs, total: 2.14 ms
-Wall time: 8.29 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1.37 ms, sys: 1 ms, total: 2.37 ms
+Wall time: 7.99 s
 </pre></div>
 </div>
 </div>
@@ -997,7 +1002,7 @@ Wall time: 8.29 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Array(0.75700235, dtype=float32)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Array(0.7594847, dtype=float32)
 </pre></div>
 </div>
 </div>
@@ -1006,10 +1011,10 @@ Wall time: 8.29 s
 </section>
 </section>
 <section id="exercises">
-<h2><span class="section-number">6.3. </span>Exercises<a class="headerlink" href="#exercises" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">7.3. </span>Exercises<a class="headerlink" href="#exercises" title="Permalink to this heading">#</a></h2>
 <div class="exercise admonition" id="wd_ex1">
 
-<p class="admonition-title"><span class="caption-number">Exercise 6.1 </span></p>
+<p class="admonition-title"><span class="caption-number">Exercise 7.1 </span></p>
 <section id="exercise-content">
 <p>In this exercise, write an alternative version of <code class="docutils literal notranslate"><span class="pre">gini_jax</span></code> that uses <code class="docutils literal notranslate"><span class="pre">vmap</span></code> instead of reshaping and broadcasting.</p>
 <p>Test with the same array to see if you can obtain the same output</p>
@@ -1017,7 +1022,7 @@ Wall time: 8.29 s
 </div>
 <div class="solution dropdown admonition" id="wealth_dynamics-solution-1">
 
-<p class="admonition-title">Solution to<a class="reference internal" href="#wd_ex1"> Exercise 6.1</a></p>
+<p class="admonition-title">Solution to<a class="reference internal" href="#wd_ex1"> Exercise 7.1</a></p>
 <section id="solution-content">
 <p>Here’s one solution:</p>
 <div class="cell docutils container">
@@ -1043,8 +1048,8 @@ Wall time: 8.29 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 76.1 ms, sys: 1e+03 ns, total: 76.1 ms
-Wall time: 8.41 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 79.6 ms, sys: 11 μs, total: 79.7 ms
+Wall time: 8.16 s
 </pre></div>
 </div>
 </div>
@@ -1057,8 +1062,8 @@ Wall time: 8.41 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 2.32 ms, sys: 7 µs, total: 2.33 ms
-Wall time: 8.38 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 2.41 ms, sys: 7 μs, total: 2.42 ms
+Wall time: 8.09 s
 </pre></div>
 </div>
 </div>
@@ -1070,7 +1075,7 @@ Wall time: 8.38 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Array(0.75700235, dtype=float32)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Array(0.7594847, dtype=float32)
 </pre></div>
 </div>
 </div>
@@ -1079,7 +1084,7 @@ Wall time: 8.38 s
 </div>
 <div class="exercise admonition" id="wd_ex2">
 
-<p class="admonition-title"><span class="caption-number">Exercise 6.2 </span></p>
+<p class="admonition-title"><span class="caption-number">Exercise 7.2 </span></p>
 <section id="exercise-content">
 <p>In this exercise we investigate how the parameters determining the rate of return on assets and labor income shape inequality.</p>
 <p>In doing so we recall that</p>
@@ -1116,7 +1121,7 @@ Wall time: 8.38 s
 </div>
 <div class="solution dropdown admonition" id="wealth_dynamics-solution-3">
 
-<p class="admonition-title">Solution to<a class="reference internal" href="#wd_ex2"> Exercise 6.2</a></p>
+<p class="admonition-title">Solution to<a class="reference internal" href="#wd_ex2"> Exercise 7.2</a></p>
 <section id="solution-content">
 <p>Here is one solution</p>
 <div class="cell docutils container">
@@ -1140,7 +1145,7 @@ Wall time: 8.38 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/c1a7d29e7f4990a27f98fc140968fadbb9239c2ab1153c474246ea8de560700a.png"><img alt="_images/c1a7d29e7f4990a27f98fc140968fadbb9239c2ab1153c474246ea8de560700a.png" src="_images/c1a7d29e7f4990a27f98fc140968fadbb9239c2ab1153c474246ea8de560700a.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/d6dc9cdf5fdec68460db890a2b079464a598903dfdcf11f7e75d30f4eacf1763.png"><img alt="_images/d6dc9cdf5fdec68460db890a2b079464a598903dfdcf11f7e75d30f4eacf1763.png" src="_images/d6dc9cdf5fdec68460db890a2b079464a598903dfdcf11f7e75d30f4eacf1763.png" style="width: 80%;" /></a>
 </div>
 </div>
 <p>The Lorenz curve shifts downwards as returns on financial income rise, indicating a rise in inequality.</p>
@@ -1156,7 +1161,7 @@ Wall time: 8.38 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/dda75cc5347accfbaea10446e18e764734ec972776bb8be0375ee45c8c87c02d.png"><img alt="_images/dda75cc5347accfbaea10446e18e764734ec972776bb8be0375ee45c8c87c02d.png" src="_images/dda75cc5347accfbaea10446e18e764734ec972776bb8be0375ee45c8c87c02d.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/63542f6535ba57a2e9d4dda6f953624ea3bc9a54723db0d8e34d58e0dd068fb0.png"><img alt="_images/63542f6535ba57a2e9d4dda6f953624ea3bc9a54723db0d8e34d58e0dd068fb0.png" src="_images/63542f6535ba57a2e9d4dda6f953624ea3bc9a54723db0d8e34d58e0dd068fb0.png" style="width: 80%;" /></a>
 </div>
 </div>
 <p>As expected, inequality increases as returns on financial income rise.</p>
@@ -1164,7 +1169,7 @@ Wall time: 8.38 s
 </div>
 <div class="exercise admonition" id="wd_ex3">
 
-<p class="admonition-title"><span class="caption-number">Exercise 6.3 </span></p>
+<p class="admonition-title"><span class="caption-number">Exercise 7.3 </span></p>
 <section id="exercise-content">
 <p>Now investigate what happens when we change the volatility term <span class="math notranslate nohighlight">\(\sigma_r\)</span> in financial returns.</p>
 <p>Use the same initial condition as before and the sequence</p>
@@ -1181,7 +1186,7 @@ Wall time: 8.38 s
 </div>
 <div class="solution dropdown admonition" id="wealth_dynamics-solution-5">
 
-<p class="admonition-title">Solution to<a class="reference internal" href="#wd_ex3"> Exercise 6.3</a></p>
+<p class="admonition-title">Solution to<a class="reference internal" href="#wd_ex3"> Exercise 7.3</a></p>
 <section id="solution-content">
 <p>Here’s one solution</p>
 <div class="cell docutils container">
@@ -1206,7 +1211,7 @@ Wall time: 8.38 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/4d7af8079b6a0d4fa1da338925eadba886083d9fdb95741a00ac3242e80baec5.png"><img alt="_images/4d7af8079b6a0d4fa1da338925eadba886083d9fdb95741a00ac3242e80baec5.png" src="_images/4d7af8079b6a0d4fa1da338925eadba886083d9fdb95741a00ac3242e80baec5.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/0c3052f52f8d301fd4be2878649b6da3efea6a2c91884e6c30c2c0db26b4a98b.png"><img alt="_images/0c3052f52f8d301fd4be2878649b6da3efea6a2c91884e6c30c2c0db26b4a98b.png" src="_images/0c3052f52f8d301fd4be2878649b6da3efea6a2c91884e6c30c2c0db26b4a98b.png" style="width: 80%;" /></a>
 </div>
 </div>
 <div class="cell docutils container">
@@ -1220,14 +1225,14 @@ Wall time: 8.38 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/f9d2b4c30540c6040e17308f2b0d237f1c160ed15386a94991b3f36146370a3a.png"><img alt="_images/f9d2b4c30540c6040e17308f2b0d237f1c160ed15386a94991b3f36146370a3a.png" src="_images/f9d2b4c30540c6040e17308f2b0d237f1c160ed15386a94991b3f36146370a3a.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/1ffcadf61513fa31f3d6f714b1add327032aed5225dcaf0cba3b5cc9b67acb5f.png"><img alt="_images/1ffcadf61513fa31f3d6f714b1add327032aed5225dcaf0cba3b5cc9b67acb5f.png" src="_images/1ffcadf61513fa31f3d6f714b1add327032aed5225dcaf0cba3b5cc9b67acb5f.png" style="width: 80%;" /></a>
 </div>
 </div>
 </section>
 </div>
 <div class="exercise admonition" id="wd_ex4">
 
-<p class="admonition-title"><span class="caption-number">Exercise 6.4 </span></p>
+<p class="admonition-title"><span class="caption-number">Exercise 7.4 </span></p>
 <section id="exercise-content">
 <p>In this exercise, examine which has more impact on inequality:</p>
 <ul class="simple">
@@ -1244,7 +1249,7 @@ Wall time: 8.38 s
 </div>
 <div class="solution dropdown admonition" id="wealth_dynamics-solution-7">
 
-<p class="admonition-title">Solution to<a class="reference internal" href="#wd_ex4"> Exercise 6.4</a></p>
+<p class="admonition-title">Solution to<a class="reference internal" href="#wd_ex4"> Exercise 7.4</a></p>
 <section id="solution-content">
 <p>Here’s one solution.</p>
 <p>It shows that increasing volatility in financial income has a greater effect</p>
@@ -1283,7 +1288,7 @@ Wall time: 8.38 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/7783c56b5ef40971d685193e14bb51554a7af19ce3bfc477144a68b0e4345d08.png"><img alt="_images/7783c56b5ef40971d685193e14bb51554a7af19ce3bfc477144a68b0e4345d08.png" src="_images/7783c56b5ef40971d685193e14bb51554a7af19ce3bfc477144a68b0e4345d08.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/ff8321bf197f3aba825db5563b100b3e22244f94dfb33f042dd1c9c8a4dc9edc.png"><img alt="_images/ff8321bf197f3aba825db5563b100b3e22244f94dfb33f042dd1c9c8a4dc9edc.png" src="_images/ff8321bf197f3aba825db5563b100b3e22244f94dfb33f042dd1c9c8a4dc9edc.png" style="width: 80%;" /></a>
 </div>
 </div>
 </section>
@@ -1357,8 +1362,13 @@ Wall time: 8.38 s
   </a>
  </li>
  <li class="toctree-l1">
+  <a class="reference internal" href="autodiff.html">
+   3. Adventures with Autodiff
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="newtons_method.html">
-   3. Newton’s Method via JAX
+   4. Newton’s Method via JAX
   </a>
  </li>
 </ul>
@@ -1370,17 +1380,17 @@ Wall time: 8.38 s
 <ul class="current nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="inventory_dynamics.html">
-   4. Inventory Dynamics
+   5. Inventory Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kesten_processes.html">
-   5. Kesten Processes and Firm Dynamics
+   6. Kesten Processes and Firm Dynamics
   </a>
  </li>
  <li class="toctree-l1 current active active">
   <a class="current reference internal" href="#">
-   6. Wealth Distribution Dynamics
+   7. Wealth Distribution Dynamics
   </a>
  </li>
 </ul>
@@ -1392,12 +1402,12 @@ Wall time: 8.38 s
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lucas_model.html">
-   7. Asset Pricing: The Lucas Asset Pricing Model
+   8. Asset Pricing: The Lucas Asset Pricing Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="markov_asset.html">
-   8. An Asset Pricing Problem
+   9. An Asset Pricing Problem
   </a>
  </li>
 </ul>
@@ -1409,37 +1419,37 @@ Wall time: 8.38 s
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="job_search.html">
-   9. Job Search
+   10. Job Search
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="opt_savings_1.html">
-   10. Optimal Savings I: Value Function Iteration
+   11. Optimal Savings I: Value Function Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="opt_savings_2.html">
-   11. Optimal Savings II: Alternative Algorithms
+   12. Optimal Savings II: Alternative Algorithms
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="short_path.html">
-   12. Shortest Paths
+   13. Shortest Paths
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="opt_invest.html">
-   13. Optimal Investment
+   14. Optimal Investment
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="inventory_ssd.html">
-   14. Inventory Management Model
+   15. Inventory Management Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_egm.html">
-   15. Endogenous Grid Method
+   16. Endogenous Grid Method
   </a>
  </li>
 </ul>
@@ -1451,22 +1461,22 @@ Wall time: 8.38 s
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="arellano.html">
-   16. Default Risk and Income Fluctuations
+   17. Default Risk and Income Fluctuations
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="aiyagari_jax.html">
-   17. The Aiyagari Model
+   18. The Aiyagari Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="hopenhayn.html">
-   18. The Hopenhayn Entry-Exit Model
+   19. The Hopenhayn Entry-Exit Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="overborrowing.html">
-   19. Bianchi Overborrowing Model
+   20. Bianchi Overborrowing Model
   </a>
  </li>
 </ul>
@@ -1478,7 +1488,7 @@ Wall time: 8.38 s
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="mle.html">
-   20. Maximum Likelihood Estimation
+   21. Maximum Likelihood Estimation
   </a>
  </li>
 </ul>
@@ -1490,17 +1500,17 @@ Wall time: 8.38 s
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   21. Troubleshooting
+   22. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   22. References
+   23. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   23. Execution Statistics
+   24. Execution Statistics
   </a>
  </li>
 </ul>

@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>3. Newton’s Method via JAX &#8212; Quantitative Economics with Python using JAX</title>
+    <title>4. Newton’s Method via JAX &#8212; Quantitative Economics with Python using JAX</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
@@ -60,12 +60,12 @@
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="_static/styles/theme.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
-<link href="_static/styles/bootstrap.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
-<link href="_static/styles/pydata-sphinx-theme.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
 
   
-  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
   <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
@@ -80,9 +80,9 @@
     <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=3ee479438cf8b5e0d341" />
-<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=3ee479438cf8b5e0d341" />
-  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=3ee479438cf8b5e0d341"></script>
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
 
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
@@ -121,8 +121,8 @@ const thebe_selector_output = ".output, .cell_output"
     <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="4. Inventory Dynamics" href="inventory_dynamics.html" />
-    <link rel="prev" title="2. An Introduction to JAX" href="jax_intro.html" />
+    <link rel="next" title="5. Inventory Dynamics" href="inventory_dynamics.html" />
+    <link rel="prev" title="3. Adventures with Autodiff" href="autodiff.html" />
 
 <!-- Normal Meta Tags -->
 <meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
@@ -170,15 +170,15 @@ const thebe_selector_output = ".output, .cell_output"
 
                         <nav id="bd-toc-nav" class="qe-page__toc-nav">
                             <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">3.1. Overview</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#newton-in-one-dimension">3.2. Newton in one dimension</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#an-equilibrium-problem">3.3. An Equilibrium Problem</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#computation">3.4. Computation</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#newtons-method">3.4.1. Newton’s Method</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#application">3.4.2. Application</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">4.1. Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#newton-in-one-dimension">4.2. Newton in one dimension</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#an-equilibrium-problem">4.3. An Equilibrium Problem</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#computation">4.4. Computation</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#newtons-method">4.4.1. Newton’s Method</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#application">4.4.2. Application</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">3.5. Exercises</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">4.5. Exercises</a></li>
 </ul>
                             <p class="logo">
                                 
@@ -238,7 +238,7 @@ const thebe_selector_output = ".output, .cell_output"
                     <div>
                         
   <section class="tex2jax_ignore mathjax_ignore" id="newtons-method-via-jax">
-<h1><span class="section-number">3. </span>Newton’s Method via JAX<a class="headerlink" href="#newtons-method-via-jax" title="Permalink to this heading">#</a></h1>
+<h1><span class="section-number">4. </span>Newton’s Method via JAX<a class="headerlink" href="#newtons-method-via-jax" title="Permalink to this heading">#</a></h1>
 <div class="warning admonition">
 <p class="admonition-title">GPU</p>
 <p>This lecture was built using a machine with JAX installed and access to a GPU.</p>
@@ -246,17 +246,13 @@ const thebe_selector_output = ".output, .cell_output"
 <p>To run this lecture on your own machine, you need to install <a class="reference external" href="https://github.com/google/jax">Google JAX</a>.</p>
 </div>
 <section id="overview">
-<h2><span class="section-number">3.1. </span>Overview<a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">4.1. </span>Overview<a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
 <p>One of the key features of JAX is automatic differentiation.</p>
-<p>While other software packages also offer this feature, the JAX version is
-particularly powerful because it integrates so closely with other core
-components of JAX, such as accelerated linear algebra, JIT compilation and
-parallelization.</p>
-<p>The application of automatic differentiation we consider is computing economic equilibria via Newton’s method.</p>
+<p>We introduced this feature in <a class="reference internal" href="autodiff.html"><span class="doc">Adventures with Autodiff</span></a>.</p>
+<p>In this lecture we apply automatic differentiation to the problem of computing economic equilibria via Newton’s method.</p>
 <p>Newton’s method is a relatively simple root and fixed point solution algorithm, which we discussed
 in <a class="reference external" href="https://python.quantecon.org/newton_method.html">a more elementary QuantEcon lecture</a>.</p>
-<p>JAX is almost ideally suited to implementing Newton’s method efficiently, even
-in high dimensions.</p>
+<p>JAX is ideally suited to implementing Newton’s method efficiently, even in high dimensions.</p>
 <p>We use the following imports in this lecture</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -276,7 +272,7 @@ in high dimensions.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Thu Jun 13 04:26:01 2024       
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Mon Aug 12 04:00:24 2024       
 +---------------------------------------------------------------------------------------+
 | NVIDIA-SMI 535.54.03              Driver Version: 535.54.03    CUDA Version: 12.5     |
 |-----------------------------------------+----------------------+----------------------+
@@ -285,7 +281,7 @@ in high dimensions.</p>
 |                                         |                      |               MIG M. |
 |=========================================+======================+======================|
 |   0  Tesla T4                       On  | 00000001:00:00.0 Off |                  Off |
-| N/A   46C    P0              33W /  70W |      2MiB / 16384MiB |      0%      Default |
+| N/A   44C    P0              32W /  70W |      2MiB / 16384MiB |      0%      Default |
 |                                         |                      |                  N/A |
 +-----------------------------------------+----------------------+----------------------+
                                                                                          
@@ -302,7 +298,7 @@ in high dimensions.</p>
 </div>
 </section>
 <section id="newton-in-one-dimension">
-<h2><span class="section-number">3.2. </span>Newton in one dimension<a class="headerlink" href="#newton-in-one-dimension" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">4.2. </span>Newton in one dimension<a class="headerlink" href="#newton-in-one-dimension" title="Permalink to this heading">#</a></h2>
 <p>As a warm up, let’s implement Newton’s method in JAX for a simple
 one-dimensional root-finding problem.</p>
 <p>Let <span class="math notranslate nohighlight">\(f\)</span> be a function from <span class="math notranslate nohighlight">\(\mathbb R\)</span> to itself.</p>
@@ -351,7 +347,10 @@ iterates with <span class="math notranslate nohighlight">\(q\)</span> starting f
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/6f6c91d2030a4f24ec5c33530759eae036115a67721d70346886088340e5e9e8.png"><img alt="_images/6f6c91d2030a4f24ec5c33530759eae036115a67721d70346886088340e5e9e8.png" src="_images/6f6c91d2030a4f24ec5c33530759eae036115a67721d70346886088340e5e9e8.png" style="width: 80%;" /></a>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2024-08-12 04:00:25.172419: W external/xla/xla/service/gpu/nvptx_compiler.cc:836] The NVIDIA driver&#39;s CUDA version is 12.5 which is older than the PTX compiler version (12.6.20). Because the driver is older than the PTX compiler version, XLA is disabling parallel compilation, which may slow down compilation. You should update your NVIDIA driver or use the NVIDIA-provided CUDA forward compatibility packages.
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="_images/625b625fbf7119acb63e3fc4aa62b90c4eae0ac707ad125640e99b981ff552cc.png"><img alt="_images/625b625fbf7119acb63e3fc4aa62b90c4eae0ac707ad125640e99b981ff552cc.png" src="_images/625b625fbf7119acb63e3fc4aa62b90c4eae0ac707ad125640e99b981ff552cc.png" style="width: 80%;" /></a>
 </div>
 </div>
 <p>Here we go</p>
@@ -370,7 +369,7 @@ iterates with <span class="math notranslate nohighlight">\(q\)</span> starting f
 <p>This number looks to be close to the root, given the figure.</p>
 </section>
 <section id="an-equilibrium-problem">
-<h2><span class="section-number">3.3. </span>An Equilibrium Problem<a class="headerlink" href="#an-equilibrium-problem" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">4.3. </span>An Equilibrium Problem<a class="headerlink" href="#an-equilibrium-problem" title="Permalink to this heading">#</a></h2>
 <p>Now let’s move up to higher dimensions.</p>
 <p>First we describe a market equilibrium problem we will solve with JAX via root-finding.</p>
 <p>The market is for <span class="math notranslate nohighlight">\(n\)</span> goods.</p>
@@ -412,14 +411,14 @@ vector <span class="math notranslate nohighlight">\(- A p\)</span>.)</p>
 </div>
 </section>
 <section id="computation">
-<h2><span class="section-number">3.4. </span>Computation<a class="headerlink" href="#computation" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">4.4. </span>Computation<a class="headerlink" href="#computation" title="Permalink to this heading">#</a></h2>
 <p>In this section we describe and then implement the solution method.</p>
 <section id="newtons-method">
-<h3><span class="section-number">3.4.1. </span>Newton’s Method<a class="headerlink" href="#newtons-method" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">4.4.1. </span>Newton’s Method<a class="headerlink" href="#newtons-method" title="Permalink to this heading">#</a></h3>
 <p>We use a multivariate version of Newton’s method to compute the equilibrium price.</p>
 <p>The rule for updating a guess <span class="math notranslate nohighlight">\(p_n\)</span> of the equilibrium price vector is</p>
 <div class="math notranslate nohighlight" id="equation-multi-newton">
-<span class="eqno">(3.1)<a class="headerlink" href="#equation-multi-newton" title="Permalink to this equation">#</a></span>\[p_{n+1} = p_n - J_e(p_n)^{-1} e(p_n)\]</div>
+<span class="eqno">(4.1)<a class="headerlink" href="#equation-multi-newton" title="Permalink to this equation">#</a></span>\[p_{n+1} = p_n - J_e(p_n)^{-1} e(p_n)\]</div>
 <p>Here <span class="math notranslate nohighlight">\(J_e(p_n)\)</span> is the Jacobian of <span class="math notranslate nohighlight">\(e\)</span> evaluated at <span class="math notranslate nohighlight">\(p_n\)</span>.</p>
 <p>Iteration starts from initial guess <span class="math notranslate nohighlight">\(p_0\)</span>.</p>
 <p>Instead of coding the Jacobian by hand, we use automatic differentiation via <code class="docutils literal notranslate"><span class="pre">jax.jacobian()</span></code>.</p>
@@ -453,7 +452,7 @@ vector <span class="math notranslate nohighlight">\(- A p\)</span>.)</p>
 </div>
 </section>
 <section id="application">
-<h3><span class="section-number">3.4.2. </span>Application<a class="headerlink" href="#application" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">4.4.2. </span>Application<a class="headerlink" href="#application" title="Permalink to this heading">#</a></h3>
 <p>Let’s now apply the method just described to investigate a large market with 5,000 goods.</p>
 <p>We randomly generate the matrix <span class="math notranslate nohighlight">\(A\)</span> and set the parameter vectors <span class="math notranslate nohighlight">\(b, c\)</span> to <span class="math notranslate nohighlight">\(1\)</span>.</p>
 <div class="cell docutils container">
@@ -493,16 +492,16 @@ this high-dimensional problem in just a few seconds:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>iteration 1, error = 29.97745704650879
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>iteration 1, error = 29.977458953857422
 iteration 2, error = 5.092828750610352
-iteration 3, error = 0.10971633344888687
+iteration 3, error = 0.10971637070178986
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>iteration 4, error = 5.172625606064685e-05
-iteration 5, error = 1.1878533769049682e-05
-iteration 6, error = 4.457215709408047e-06
-CPU times: user 4.8 s, sys: 221 ms, total: 5.02 s
-Wall time: 4.88 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>iteration 4, error = 5.167595372768119e-05
+iteration 5, error = 1.1732883649528958e-05
+iteration 6, error = 4.191016159893479e-06
+CPU times: user 5.24 s, sys: 509 ms, total: 5.75 s
+Wall time: 5.59 s
 </pre></div>
 </div>
 </div>
@@ -516,16 +515,16 @@ Wall time: 4.88 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>iteration 1, error = 29.97745704650879
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>iteration 1, error = 29.977458953857422
 iteration 2, error = 5.092828750610352
-iteration 3, error = 0.10971633344888687
+iteration 3, error = 0.10971637070178986
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>iteration 4, error = 5.172625606064685e-05
-iteration 5, error = 1.1878533769049682e-05
-iteration 6, error = 4.457215709408047e-06
-CPU times: user 1.35 s, sys: 170 ms, total: 1.52 s
-Wall time: 1.4 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>iteration 4, error = 5.167595372768119e-05
+iteration 5, error = 1.1732883649528958e-05
+iteration 6, error = 4.191016159893479e-06
+CPU times: user 1.58 s, sys: 421 ms, total: 2 s
+Wall time: 1.87 s
 </pre></div>
 </div>
 </div>
@@ -557,8 +556,8 @@ even with the Jacobian supplied.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1min 51s, sys: 144 ms, total: 1min 52s
-Wall time: 1min 52s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1min 51s, sys: 169 ms, total: 1min 51s
+Wall time: 1min 51s
 </pre></div>
 </div>
 </div>
@@ -580,10 +579,10 @@ Wall time: 1min 52s
 </section>
 </section>
 <section id="exercises">
-<h2><span class="section-number">3.5. </span>Exercises<a class="headerlink" href="#exercises" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">4.5. </span>Exercises<a class="headerlink" href="#exercises" title="Permalink to this heading">#</a></h2>
 <div class="exercise admonition" id="newton_ex1">
 
-<p class="admonition-title"><span class="caption-number">Exercise 3.1 </span></p>
+<p class="admonition-title"><span class="caption-number">Exercise 4.1 </span></p>
 <section id="exercise-content">
 <p>Consider a three-dimensional extension of <a class="reference external" href="https://python.quantecon.org/newton_method.html#the-solow-model">the Solow fixed point
 problem</a> with</p>
@@ -632,7 +631,7 @@ s = 0.2, \quad α = 0.5, \quad δ = 0.8
 </div>
 <div class="solution dropdown admonition" id="newtons_method-solution-1">
 
-<p class="admonition-title">Solution to<a class="reference internal" href="#newton_ex1"> Exercise 3.1</a></p>
+<p class="admonition-title">Solution to<a class="reference internal" href="#newton_ex1"> Exercise 4.1</a></p>
 <section id="solution-content">
 <p>Let’s first define the parameters for this problem</p>
 <div class="cell docutils container">
@@ -682,22 +681,22 @@ iteration 3, error = 4.294127464294434
 iteration 4, error = 0.3854290544986725
 iteration 5, error = 0.0054382034577429295
 iteration 6, error = 8.92080606718082e-07
-CPU times: user 126 ms, sys: 87 µs, total: 126 ms
-Wall time: 163 ms
+CPU times: user 138 ms, sys: 4.14 ms, total: 142 ms
+Wall time: 177 ms
 ----------------------------------------------------------------
 Attempt 2: Starting value is [3. 5. 5.] 
-
-iteration 1, error = 2.0701100826263428
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>iteration 1, error = 2.0701100826263428
 iteration 2, error = 0.12642373144626617
 iteration 3, error = 0.0006017307168804109
 iteration 4, error = 3.3717478231665154e-07
-CPU times: user 69.8 ms, sys: 84 µs, total: 69.9 ms
-Wall time: 65.5 ms
+CPU times: user 77 ms, sys: 0 ns, total: 77 ms
+Wall time: 71.2 ms
 ----------------------------------------------------------------
 Attempt 3: Starting value is [50. 50. 50.] 
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>iteration 1, error = 73.00942993164062
+
+iteration 1, error = 73.00942993164062
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>iteration 2, error = 6.493789196014404
@@ -705,8 +704,8 @@ iteration 3, error = 0.6806989312171936
 iteration 4, error = 0.016202213242650032
 iteration 5, error = 1.0600916539260652e-05
 iteration 6, error = 9.830249609876773e-07
-CPU times: user 156 ms, sys: 12.1 ms, total: 168 ms
-Wall time: 158 ms
+CPU times: user 173 ms, sys: 7.94 ms, total: 181 ms
+Wall time: 171 ms
 ----------------------------------------------------------------
 </pre></div>
 </div>
@@ -745,13 +744,11 @@ Wall time: 158 ms
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>iteration 1, error = 1.5745922327041626
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>iteration 2, error = 0.21344946324825287
+iteration 2, error = 0.21344946324825287
 iteration 3, error = 0.002045975998044014
 iteration 4, error = 8.259061701210157e-07
-CPU times: user 137 ms, sys: 7.99 ms, total: 145 ms
-Wall time: 161 ms
+CPU times: user 144 ms, sys: 12.1 ms, total: 156 ms
+Wall time: 170 ms
 </pre></div>
 </div>
 </div>
@@ -771,8 +768,8 @@ Wall time: 161 ms
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>iteration 2, error = 0.21344946324825287
 iteration 3, error = 0.002045975998044014
 iteration 4, error = 8.259061701210157e-07
-CPU times: user 143 ms, sys: 327 µs, total: 144 ms
-Wall time: 134 ms
+CPU times: user 152 ms, sys: 4.06 ms, total: 156 ms
+Wall time: 145 ms
 </pre></div>
 </div>
 </div>
@@ -796,8 +793,8 @@ iteration 2, error = 0.21344933091258958
 iteration 3, error = 0.0020465547718452695
 iteration 4, error = 2.0309190076799282e-07
 iteration 5, error = 1.538370149106851e-15
-CPU times: user 144 ms, sys: 11.9 ms, total: 156 ms
-Wall time: 204 ms
+CPU times: user 165 ms, sys: 8.08 ms, total: 173 ms
+Wall time: 219 ms
 </pre></div>
 </div>
 </div>
@@ -816,8 +813,8 @@ iteration 2, error = 0.21344933091258958
 iteration 3, error = 0.0020465547718452695
 iteration 4, error = 2.0309190076799282e-07
 iteration 5, error = 1.538370149106851e-15
-CPU times: user 69.2 ms, sys: 3.98 ms, total: 73.2 ms
-Wall time: 91.4 ms
+CPU times: user 79.9 ms, sys: 0 ns, total: 79.9 ms
+Wall time: 97.9 ms
 </pre></div>
 </div>
 </div>
@@ -827,7 +824,7 @@ Wall time: 91.4 ms
 </div>
 <div class="exercise admonition" id="newton_ex2">
 
-<p class="admonition-title"><span class="caption-number">Exercise 3.2 </span></p>
+<p class="admonition-title"><span class="caption-number">Exercise 4.2 </span></p>
 <section id="exercise-content">
 <p>In this exercise, let’s try different initial values and check how Newton’s method responds to different starting points.</p>
 <p>Let’s define a three-good problem with the following default values:</p>
@@ -868,7 +865,7 @@ c = \begin{pmatrix}
 </div>
 <div class="solution dropdown admonition" id="newtons_method-solution-3">
 
-<p class="admonition-title">Solution to<a class="reference internal" href="#newton_ex2"> Exercise 3.2</a></p>
+<p class="admonition-title">Solution to<a class="reference internal" href="#newton_ex2"> Exercise 4.2</a></p>
 <section id="solution-content">
 <p>Define parameters and initial values</p>
 <div class="cell docutils container">
@@ -907,8 +904,8 @@ c = \begin{pmatrix}
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>iteration 1, error = 9.243805733085065
 iteration 2, error = nan
-CPU times: user 87 ms, sys: 0 ns, total: 87 ms
-Wall time: 107 ms
+CPU times: user 93.9 ms, sys: 24 μs, total: 93.9 ms
+Wall time: 113 ms
 ----------------------------------------------------------------
 Attempt 2: Starting value is [4.5 0.1 4. ] 
 
@@ -920,8 +917,8 @@ iteration 5, error = 0.005209730313222213
 iteration 6, error = 4.3632751705775364e-06
 iteration 7, error = 3.0460818773540415e-12
 iteration 8, error = 0.0
-CPU times: user 61.5 ms, sys: 48 µs, total: 61.5 ms
-Wall time: 56.8 ms
+CPU times: user 64.2 ms, sys: 4.06 ms, total: 68.3 ms
+Wall time: 62.5 ms
 ----------------------------------------------------------------
 </pre></div>
 </div>
@@ -1013,9 +1010,14 @@ Wall time: 56.8 ms
    2. An Introduction to JAX
   </a>
  </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="autodiff.html">
+   3. Adventures with Autodiff
+  </a>
+ </li>
  <li class="toctree-l1 current active active">
   <a class="current reference internal" href="#">
-   3. Newton’s Method via JAX
+   4. Newton’s Method via JAX
   </a>
  </li>
 </ul>
@@ -1027,17 +1029,17 @@ Wall time: 56.8 ms
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="inventory_dynamics.html">
-   4. Inventory Dynamics
+   5. Inventory Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kesten_processes.html">
-   5. Kesten Processes and Firm Dynamics
+   6. Kesten Processes and Firm Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wealth_dynamics.html">
-   6. Wealth Distribution Dynamics
+   7. Wealth Distribution Dynamics
   </a>
  </li>
 </ul>
@@ -1049,12 +1051,12 @@ Wall time: 56.8 ms
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lucas_model.html">
-   7. Asset Pricing: The Lucas Asset Pricing Model
+   8. Asset Pricing: The Lucas Asset Pricing Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="markov_asset.html">
-   8. An Asset Pricing Problem
+   9. An Asset Pricing Problem
   </a>
  </li>
 </ul>
@@ -1066,37 +1068,37 @@ Wall time: 56.8 ms
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="job_search.html">
-   9. Job Search
+   10. Job Search
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="opt_savings_1.html">
-   10. Optimal Savings I: Value Function Iteration
+   11. Optimal Savings I: Value Function Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="opt_savings_2.html">
-   11. Optimal Savings II: Alternative Algorithms
+   12. Optimal Savings II: Alternative Algorithms
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="short_path.html">
-   12. Shortest Paths
+   13. Shortest Paths
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="opt_invest.html">
-   13. Optimal Investment
+   14. Optimal Investment
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="inventory_ssd.html">
-   14. Inventory Management Model
+   15. Inventory Management Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_egm.html">
-   15. Endogenous Grid Method
+   16. Endogenous Grid Method
   </a>
  </li>
 </ul>
@@ -1108,22 +1110,22 @@ Wall time: 56.8 ms
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="arellano.html">
-   16. Default Risk and Income Fluctuations
+   17. Default Risk and Income Fluctuations
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="aiyagari_jax.html">
-   17. The Aiyagari Model
+   18. The Aiyagari Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="hopenhayn.html">
-   18. The Hopenhayn Entry-Exit Model
+   19. The Hopenhayn Entry-Exit Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="overborrowing.html">
-   19. Bianchi Overborrowing Model
+   20. Bianchi Overborrowing Model
   </a>
  </li>
 </ul>
@@ -1135,7 +1137,7 @@ Wall time: 56.8 ms
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="mle.html">
-   20. Maximum Likelihood Estimation
+   21. Maximum Likelihood Estimation
   </a>
  </li>
 </ul>
@@ -1147,17 +1149,17 @@ Wall time: 56.8 ms
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   21. Troubleshooting
+   22. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   22. References
+   23. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   23. Execution Statistics
+   24. Execution Statistics
   </a>
  </li>
 </ul>

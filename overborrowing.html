@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>19. Bianchi Overborrowing Model &#8212; Quantitative Economics with Python using JAX</title>
+    <title>20. Bianchi Overborrowing Model &#8212; Quantitative Economics with Python using JAX</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
@@ -60,12 +60,12 @@
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="_static/styles/theme.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
-<link href="_static/styles/bootstrap.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
-<link href="_static/styles/pydata-sphinx-theme.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
 
   
-  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
   <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
@@ -80,9 +80,9 @@
     <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=3ee479438cf8b5e0d341" />
-<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=3ee479438cf8b5e0d341" />
-  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=3ee479438cf8b5e0d341"></script>
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
 
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
@@ -121,8 +121,8 @@ const thebe_selector_output = ".output, .cell_output"
     <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="20. Maximum Likelihood Estimation" href="mle.html" />
-    <link rel="prev" title="18. The Hopenhayn Entry-Exit Model" href="hopenhayn.html" />
+    <link rel="next" title="21. Maximum Likelihood Estimation" href="mle.html" />
+    <link rel="prev" title="19. The Hopenhayn Entry-Exit Model" href="hopenhayn.html" />
 
 <!-- Normal Meta Tags -->
 <meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
@@ -170,21 +170,21 @@ const thebe_selector_output = ".output, .cell_output"
 
                         <nav id="bd-toc-nav" class="qe-page__toc-nav">
                             <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#description-of-the-model">19.1. Description of the model</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#decentralized-equilibrium">19.1.1. Decentralized equilibrium</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#notation">19.1.2. Notation</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#constrained-planner">19.1.3. Constrained planner</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#description-of-the-model">20.1. Description of the model</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#decentralized-equilibrium">20.1.1. Decentralized equilibrium</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#notation">20.1.2. Notation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#constrained-planner">20.1.3. Constrained planner</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#markov-dynamics">19.2. Markov dynamics</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overborrowing-model">19.3. Overborrowing Model</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#planner-problem">19.4. Planner problem</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#numerical-solution">19.5. Numerical solution</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#generating-solutions">19.5.1. Generating solutions</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#policy-plots">19.5.2. Policy plots</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#markov-dynamics">20.2. Markov dynamics</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overborrowing-model">20.3. Overborrowing Model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#planner-problem">20.4. Planner problem</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#numerical-solution">20.5. Numerical solution</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#generating-solutions">20.5.1. Generating solutions</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#policy-plots">20.5.2. Policy plots</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise">19.6. Exercise</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise">20.6. Exercise</a></li>
 </ul>
                             <p class="logo">
                                 
@@ -244,7 +244,7 @@ const thebe_selector_output = ".output, .cell_output"
                     <div>
                         
   <section class="tex2jax_ignore mathjax_ignore" id="bianchi-overborrowing-model">
-<h1><span class="section-number">19. </span>Bianchi Overborrowing Model<a class="headerlink" href="#bianchi-overborrowing-model" title="Permalink to this heading">#</a></h1>
+<h1><span class="section-number">20. </span>Bianchi Overborrowing Model<a class="headerlink" href="#bianchi-overborrowing-model" title="Permalink to this heading">#</a></h1>
 <div class="warning admonition">
 <p class="admonition-title">GPU</p>
 <p>This lecture was built using a machine with JAX installed and access to a GPU.</p>
@@ -266,18 +266,18 @@ const thebe_selector_output = ".output, .cell_output"
 </summary>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /opt/conda/envs/quantecon/lib/python3.11/site-packages (0.7.2)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: numba&gt;=0.49.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (0.59.0)
+Requirement already satisfied: numba&gt;=0.49.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (0.59.1)
 Requirement already satisfied: numpy&gt;=1.17.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (1.26.4)
-Requirement already satisfied: requests in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (2.31.0)
-Requirement already satisfied: scipy&gt;=1.5.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (1.11.4)
+Requirement already satisfied: requests in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (2.32.2)
+Requirement already satisfied: scipy&gt;=1.5.0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (1.13.1)
 Requirement already satisfied: sympy in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from quantecon) (1.12)
 Requirement already satisfied: llvmlite&lt;0.43,&gt;=0.42.0dev0 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from numba&gt;=0.49.0-&gt;quantecon) (0.42.0)
-Requirement already satisfied: charset-normalizer&lt;4,&gt;=2 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests-&gt;quantecon) (2.0.4)
-Requirement already satisfied: idna&lt;4,&gt;=2.5 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests-&gt;quantecon) (3.4)
-Requirement already satisfied: urllib3&lt;3,&gt;=1.21.1 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests-&gt;quantecon) (2.0.7)
-Requirement already satisfied: certifi&gt;=2017.4.17 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests-&gt;quantecon) (2024.2.2)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: charset-normalizer&lt;4,&gt;=2 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests-&gt;quantecon) (2.0.4)
+Requirement already satisfied: idna&lt;4,&gt;=2.5 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests-&gt;quantecon) (3.7)
+Requirement already satisfied: urllib3&lt;3,&gt;=1.21.1 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests-&gt;quantecon) (2.2.2)
+Requirement already satisfied: certifi&gt;=2017.4.17 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from requests-&gt;quantecon) (2024.6.2)
 Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/envs/quantecon/lib/python3.11/site-packages (from sympy-&gt;quantecon) (1.3.0)
 </pre></div>
 </div>
@@ -306,7 +306,7 @@ Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/envs/quantecon/lib/
 </div>
 </div>
 <section id="description-of-the-model">
-<h2><span class="section-number">19.1. </span>Description of the model<a class="headerlink" href="#description-of-the-model" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">20.1. </span>Description of the model<a class="headerlink" href="#description-of-the-model" title="Permalink to this heading">#</a></h2>
 <p>The model seeks to explain sudden stops in emerging market economies, where
 painful financial disruption follows a period of sustained heavy borrowing.</p>
 <p>A representative household chooses how much to borrow on international markets and how much to consume.</p>
@@ -328,7 +328,7 @@ effect of borrowing on the credit constraint.</p>
 <li><p>This fall in the exchange rate further tightens the borrowing constraint, amplifying the shock</p></li>
 </ol>
 <section id="decentralized-equilibrium">
-<h3><span class="section-number">19.1.1. </span>Decentralized equilibrium<a class="headerlink" href="#decentralized-equilibrium" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">20.1.1. </span>Decentralized equilibrium<a class="headerlink" href="#decentralized-equilibrium" title="Permalink to this heading">#</a></h3>
 <p>The model contains a representative household that seeks to maximize
 an expected sum of discounted utility where</p>
 <ul class="simple">
@@ -384,7 +384,7 @@ policy <span class="math notranslate nohighlight">\(b' = b'(b, B, y)\)</span> ve
 \]</div>
 </section>
 <section id="notation">
-<h3><span class="section-number">19.1.2. </span>Notation<a class="headerlink" href="#notation" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">20.1.2. </span>Notation<a class="headerlink" href="#notation" title="Permalink to this heading">#</a></h3>
 <p>Let</p>
 <div class="math notranslate nohighlight">
 \[
@@ -418,7 +418,7 @@ household problem as</p>
 \]</div>
 </section>
 <section id="constrained-planner">
-<h3><span class="section-number">19.1.3. </span>Constrained planner<a class="headerlink" href="#constrained-planner" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">20.1.3. </span>Constrained planner<a class="headerlink" href="#constrained-planner" title="Permalink to this heading">#</a></h3>
 <p>The constrained planner solves</p>
 <div class="math notranslate nohighlight">
 \[
@@ -446,7 +446,7 @@ the price of nontradables and hence the credit constraint.</p>
 </section>
 </section>
 <section id="markov-dynamics">
-<h2><span class="section-number">19.2. </span>Markov dynamics<a class="headerlink" href="#markov-dynamics" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">20.2. </span>Markov dynamics<a class="headerlink" href="#markov-dynamics" title="Permalink to this heading">#</a></h2>
 <p>We develop some functions for working with the VAR process</p>
 <div class="math notranslate nohighlight">
 \[
@@ -606,11 +606,11 @@ testing.</p>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Statistics for original process.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Std dev of y_t is 0.08787696379956297
-Std dev of y_n is 0.10579747263041211
-corr(y_t, y_n) is 0.5401136689120419
-auto_corr(y_t) is 0.4550267661562017
-auto_corr(y_n) is 0.6666493991666815
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Std dev of y_t is 0.08786665450592301
+Std dev of y_n is 0.10553816506894553
+corr(y_t, y_n) is 0.540315803170419
+auto_corr(y_t) is 0.4558023516128351
+auto_corr(y_n) is 0.6648046319195241
 </pre></div>
 </div>
 </div>
@@ -626,18 +626,18 @@ auto_corr(y_n) is 0.6666493991666815
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Statistics for discretized process.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Std dev of y_t is 0.08762838890355906
-Std dev of y_n is 0.10539155426964575
-corr(y_t, y_n) is 0.4770200010325035
-auto_corr(y_t) is 0.4020942100287801
-auto_corr(y_n) is 0.5883879686359188
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Std dev of y_t is 0.08753613842184708
+Std dev of y_n is 0.10546398305554536
+corr(y_t, y_n) is 0.4763676161427541
+auto_corr(y_t) is 0.4013004558421011
+auto_corr(y_n) is 0.5896270019961042
 </pre></div>
 </div>
 </div>
 </div>
 </section>
 <section id="overborrowing-model">
-<h2><span class="section-number">19.3. </span>Overborrowing Model<a class="headerlink" href="#overborrowing-model" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">20.3. </span>Overborrowing Model<a class="headerlink" href="#overborrowing-model" title="Permalink to this heading">#</a></h2>
 <p>In what follows</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">y</span></code> = <code class="docutils literal notranslate"><span class="pre">(y_t,</span> <span class="pre">y_n)</span></code> is the exogenous state process</p></li>
@@ -958,7 +958,7 @@ and a damped fixed point iteration scheme.</p>
 </div>
 </section>
 <section id="planner-problem">
-<h2><span class="section-number">19.4. </span>Planner problem<a class="headerlink" href="#planner-problem" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">20.4. </span>Planner problem<a class="headerlink" href="#planner-problem" title="Permalink to this heading">#</a></h2>
 <p>Now we switch to the planner problem.</p>
 <p>Our first function returns the (unmaximized) RHS of the Bellman equation.</p>
 <div class="cell docutils container">
@@ -1077,10 +1077,10 @@ and a damped fixed point iteration scheme.</p>
 </div>
 </section>
 <section id="numerical-solution">
-<h2><span class="section-number">19.5. </span>Numerical solution<a class="headerlink" href="#numerical-solution" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">20.5. </span>Numerical solution<a class="headerlink" href="#numerical-solution" title="Permalink to this heading">#</a></h2>
 <p>Let’s now solve the model and compare the decentralized and planner solutions</p>
 <section id="generating-solutions">
-<h3><span class="section-number">19.5.1. </span>Generating solutions<a class="headerlink" href="#generating-solutions" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">20.5.1. </span>Generating solutions<a class="headerlink" href="#generating-solutions" title="Permalink to this heading">#</a></h3>
 <p>Here we compute the two solutions.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1088,6 +1088,11 @@ and a damped fixed point iteration scheme.</p>
 <span class="n">parameters</span><span class="p">,</span> <span class="n">sizes</span><span class="p">,</span> <span class="n">arrays</span> <span class="o">=</span> <span class="n">model</span>
 <span class="n">b_size</span><span class="p">,</span> <span class="n">y_size</span> <span class="o">=</span> <span class="n">sizes</span>
 <span class="n">b_grid</span><span class="p">,</span> <span class="n">y_t_nodes</span><span class="p">,</span> <span class="n">y_n_nodes</span><span class="p">,</span> <span class="n">Q</span> <span class="o">=</span> <span class="n">arrays</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2024-08-12 04:03:55.031323: W external/xla/xla/service/gpu/nvptx_compiler.cc:836] The NVIDIA driver&#39;s CUDA version is 12.5 which is older than the PTX compiler version (12.6.20). Because the driver is older than the PTX compiler version, XLA is disabling parallel compilation, which may slow down compilation. You should update your NVIDIA driver or use the NVIDIA-provided CUDA forward compatibility packages.
 </pre></div>
 </div>
 </div>
@@ -1152,7 +1157,7 @@ VFI terminated after 128 iterations.
 Updated H at iteration 21 with error 0.006165444850921631.
 VFI terminated after 128 iterations.
 Updated H at iteration 22 with error 0.0041103363037109375.
-Computed decentralized equilibrium in 45.74346375465393 seconds
+Computed decentralized equilibrium in 54.89348554611206 seconds
 </pre></div>
 </div>
 </div>
@@ -1214,7 +1219,7 @@ VFI terminated after 128 iterations.
 Updated H at iteration 21 with error 0.006165444850921631.
 VFI terminated after 128 iterations.
 Updated H at iteration 22 with error 0.0041103363037109375.
-Computed decentralized equilibrium in 45.17244863510132 seconds
+Computed decentralized equilibrium in 54.168943643569946 seconds
 </pre></div>
 </div>
 </div>
@@ -1233,7 +1238,7 @@ Computed decentralized equilibrium in 45.17244863510132 seconds
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computing planner&#39;s solution.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed planner&#39;s equilibrium in 0.8720040321350098 seconds
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed planner&#39;s equilibrium in 0.8798391819000244 seconds
 </pre></div>
 </div>
 </div>
@@ -1249,14 +1254,14 @@ Computed decentralized equilibrium in 45.17244863510132 seconds
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed planner&#39;s equilibrium in 0.2260909080505371 seconds
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed planner&#39;s equilibrium in 0.22881293296813965 seconds
 </pre></div>
 </div>
 </div>
 </div>
 </section>
 <section id="policy-plots">
-<h3><span class="section-number">19.5.2. </span>Policy plots<a class="headerlink" href="#policy-plots" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">20.5.2. </span>Policy plots<a class="headerlink" href="#policy-plots" title="Permalink to this heading">#</a></h3>
 <p>We produce a policy plot that is similar to Figure 1 in <span id="id2">[<a class="reference internal" href="zreferences.html#id256" title="Javier Bianchi. Overborrowing and systemic externalities in the business cycle. American Economic Review, 101(7):3400-3426, December 2011. URL: https://www.aeaweb.org/articles?id=10.1257/aer.101.7.3400, doi:10.1257/aer.101.7.3400.">Bianchi, 2011</a>]</span>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1277,7 +1282,7 @@ Computed decentralized equilibrium in 45.17244863510132 seconds
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/e774b2c88f700292ae1ecc98c5dcd61ae42eca24d5c08369631feeebb0aa4c9a.png"><img alt="_images/e774b2c88f700292ae1ecc98c5dcd61ae42eca24d5c08369631feeebb0aa4c9a.png" src="_images/e774b2c88f700292ae1ecc98c5dcd61ae42eca24d5c08369631feeebb0aa4c9a.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/1bb3b398e4e32f466d7488f9cee7436a7b3696bf2fcdae09d370f74cee10443c.png"><img alt="_images/1bb3b398e4e32f466d7488f9cee7436a7b3696bf2fcdae09d370f74cee10443c.png" src="_images/1bb3b398e4e32f466d7488f9cee7436a7b3696bf2fcdae09d370f74cee10443c.png" style="width: 80%;" /></a>
 </div>
 </div>
 <p>The match is not exact because we use a different estimate of the Markov
@@ -1286,10 +1291,10 @@ dynamics for income.</p>
 </section>
 </section>
 <section id="exercise">
-<h2><span class="section-number">19.6. </span>Exercise<a class="headerlink" href="#exercise" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">20.6. </span>Exercise<a class="headerlink" href="#exercise" title="Permalink to this heading">#</a></h2>
 <div class="exercise admonition" id="overborrow_1">
 
-<p class="admonition-title"><span class="caption-number">Exercise 19.1 </span></p>
+<p class="admonition-title"><span class="caption-number">Exercise 20.1 </span></p>
 <section id="exercise-content">
 <p>Your task is to examine the ergodic distribution of borrowing in the decentralized and
 planner equilibria.</p>
@@ -1331,7 +1336,7 @@ planner equilibria.</p>
 </div>
 <div class="solution dropdown admonition" id="overborrowing-solution-1">
 
-<p class="admonition-title">Solution to<a class="reference internal" href="#overborrow_1"> Exercise 19.1</a></p>
+<p class="admonition-title">Solution to<a class="reference internal" href="#overborrow_1"> Exercise 20.1</a></p>
 <section id="solution-content">
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1386,7 +1391,7 @@ planner equilibria.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/1294d4fd4b86d82b4add238439dcec258785622622237f74cdd83d915c021e4e.png"><img alt="_images/1294d4fd4b86d82b4add238439dcec258785622622237f74cdd83d915c021e4e.png" src="_images/1294d4fd4b86d82b4add238439dcec258785622622237f74cdd83d915c021e4e.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/33a65a4af875d9bb1eab61f77381d4fd023adbc3e50a1033dd4b826ca730676e.png"><img alt="_images/33a65a4af875d9bb1eab61f77381d4fd023adbc3e50a1033dd4b826ca730676e.png" src="_images/33a65a4af875d9bb1eab61f77381d4fd023adbc3e50a1033dd4b826ca730676e.png" style="width: 80%;" /></a>
 </div>
 </div>
 <p>This corresponds to Figure 2 in <span id="id4">[<a class="reference internal" href="zreferences.html#id256" title="Javier Bianchi. Overborrowing and systemic externalities in the business cycle. American Economic Review, 101(7):3400-3426, December 2011. URL: https://www.aeaweb.org/articles?id=10.1257/aer.101.7.3400, doi:10.1257/aer.101.7.3400.">Bianchi, 2011</a>]</span>.</p>
@@ -1464,8 +1469,13 @@ leaving the economy more vulnerable to bad shocks.</p>
   </a>
  </li>
  <li class="toctree-l1">
+  <a class="reference internal" href="autodiff.html">
+   3. Adventures with Autodiff
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="newtons_method.html">
-   3. Newton’s Method via JAX
+   4. Newton’s Method via JAX
   </a>
  </li>
 </ul>
@@ -1477,17 +1487,17 @@ leaving the economy more vulnerable to bad shocks.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="inventory_dynamics.html">
-   4. Inventory Dynamics
+   5. Inventory Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kesten_processes.html">
-   5. Kesten Processes and Firm Dynamics
+   6. Kesten Processes and Firm Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wealth_dynamics.html">
-   6. Wealth Distribution Dynamics
+   7. Wealth Distribution Dynamics
   </a>
  </li>
 </ul>
@@ -1499,12 +1509,12 @@ leaving the economy more vulnerable to bad shocks.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lucas_model.html">
-   7. Asset Pricing: The Lucas Asset Pricing Model
+   8. Asset Pricing: The Lucas Asset Pricing Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="markov_asset.html">
-   8. An Asset Pricing Problem
+   9. An Asset Pricing Problem
   </a>
  </li>
 </ul>
@@ -1516,37 +1526,37 @@ leaving the economy more vulnerable to bad shocks.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="job_search.html">
-   9. Job Search
+   10. Job Search
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="opt_savings_1.html">
-   10. Optimal Savings I: Value Function Iteration
+   11. Optimal Savings I: Value Function Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="opt_savings_2.html">
-   11. Optimal Savings II: Alternative Algorithms
+   12. Optimal Savings II: Alternative Algorithms
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="short_path.html">
-   12. Shortest Paths
+   13. Shortest Paths
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="opt_invest.html">
-   13. Optimal Investment
+   14. Optimal Investment
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="inventory_ssd.html">
-   14. Inventory Management Model
+   15. Inventory Management Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_egm.html">
-   15. Endogenous Grid Method
+   16. Endogenous Grid Method
   </a>
  </li>
 </ul>
@@ -1558,22 +1568,22 @@ leaving the economy more vulnerable to bad shocks.</p>
 <ul class="current nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="arellano.html">
-   16. Default Risk and Income Fluctuations
+   17. Default Risk and Income Fluctuations
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="aiyagari_jax.html">
-   17. The Aiyagari Model
+   18. The Aiyagari Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="hopenhayn.html">
-   18. The Hopenhayn Entry-Exit Model
+   19. The Hopenhayn Entry-Exit Model
   </a>
  </li>
  <li class="toctree-l1 current active active">
   <a class="current reference internal" href="#">
-   19. Bianchi Overborrowing Model
+   20. Bianchi Overborrowing Model
   </a>
  </li>
 </ul>
@@ -1585,7 +1595,7 @@ leaving the economy more vulnerable to bad shocks.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="mle.html">
-   20. Maximum Likelihood Estimation
+   21. Maximum Likelihood Estimation
   </a>
  </li>
 </ul>
@@ -1597,17 +1607,17 @@ leaving the economy more vulnerable to bad shocks.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   21. Troubleshooting
+   22. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   22. References
+   23. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   23. Execution Statistics
+   24. Execution Statistics
   </a>
  </li>
 </ul>

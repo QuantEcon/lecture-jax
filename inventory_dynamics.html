@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>4. Inventory Dynamics &#8212; Quantitative Economics with Python using JAX</title>
+    <title>5. Inventory Dynamics &#8212; Quantitative Economics with Python using JAX</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
@@ -60,12 +60,12 @@
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="_static/styles/theme.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
-<link href="_static/styles/bootstrap.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
-<link href="_static/styles/pydata-sphinx-theme.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
 
   
-  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=3ee479438cf8b5e0d341" rel="stylesheet" />
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
   <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
@@ -80,9 +80,9 @@
     <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=3ee479438cf8b5e0d341" />
-<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=3ee479438cf8b5e0d341" />
-  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=3ee479438cf8b5e0d341"></script>
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
 
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
@@ -121,8 +121,8 @@ const thebe_selector_output = ".output, .cell_output"
     <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="5. Kesten Processes and Firm Dynamics" href="kesten_processes.html" />
-    <link rel="prev" title="3. Newton’s Method via JAX" href="newtons_method.html" />
+    <link rel="next" title="6. Kesten Processes and Firm Dynamics" href="kesten_processes.html" />
+    <link rel="prev" title="4. Newton’s Method via JAX" href="newtons_method.html" />
 
 <!-- Normal Meta Tags -->
 <meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
@@ -170,17 +170,17 @@ const thebe_selector_output = ".output, .cell_output"
 
                         <nav id="bd-toc-nav" class="qe-page__toc-nav">
                             <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">4.1. Overview</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sample-paths">4.2. Sample paths</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cross-sectional-distributions">4.3. Cross-sectional distributions</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#for-loop-version">4.3.1. For loop version</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#compiling-the-outer-loop">4.3.2. Compiling the outer loop</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#further-vectorization">4.3.3. Further vectorization</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">5.1. Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sample-paths">5.2. Sample paths</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cross-sectional-distributions">5.3. Cross-sectional distributions</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#for-loop-version">5.3.1. For loop version</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#compiling-the-outer-loop">5.3.2. Compiling the outer loop</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#further-vectorization">5.3.3. Further vectorization</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#distribution-dynamics">4.4. Distribution dynamics</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#restock-frequency">4.5. Restock frequency</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">4.5.1. For loop version</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#distribution-dynamics">5.4. Distribution dynamics</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#restock-frequency">5.5. Restock frequency</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">5.5.1. For loop version</a></li>
 </ul>
 </li>
 </ul>
@@ -246,7 +246,7 @@ const thebe_selector_output = ".output, .cell_output"
                 <img style="width:250px;display:inline;" width="250px" src="https://assets.quantecon.org/img/qe-menubar-logo.svg" alt="QuantEcon">
         </a>
 </div><section class="tex2jax_ignore mathjax_ignore" id="inventory-dynamics">
-<h1><span class="section-number">4. </span>Inventory Dynamics<a class="headerlink" href="#inventory-dynamics" title="Permalink to this heading">#</a></h1>
+<h1><span class="section-number">5. </span>Inventory Dynamics<a class="headerlink" href="#inventory-dynamics" title="Permalink to this heading">#</a></h1>
 <div class="warning admonition">
 <p class="admonition-title">GPU</p>
 <p>This lecture was built using a machine with JAX installed and access to a GPU.</p>
@@ -254,7 +254,7 @@ const thebe_selector_output = ".output, .cell_output"
 <p>To run this lecture on your own machine, you need to install <a class="reference external" href="https://github.com/google/jax">Google JAX</a>.</p>
 </div>
 <section id="overview">
-<span id="index-0"></span><h2><span class="section-number">4.1. </span>Overview<a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
+<span id="index-0"></span><h2><span class="section-number">5.1. </span>Overview<a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
 <p>This lecture explores the inventory dynamics of a firm using so-called s-S inventory control.</p>
 <p>Loosely speaking, this means that the firm</p>
 <ul class="simple">
@@ -292,7 +292,7 @@ lecture</a>, using Numba.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Thu Jun 13 03:51:54 2024       
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Mon Aug 12 03:26:11 2024       
 +---------------------------------------------------------------------------------------+
 | NVIDIA-SMI 535.54.03              Driver Version: 535.54.03    CUDA Version: 12.5     |
 |-----------------------------------------+----------------------+----------------------+
@@ -301,7 +301,7 @@ lecture</a>, using Numba.</p>
 |                                         |                      |               MIG M. |
 |=========================================+======================+======================|
 |   0  Tesla T4                       On  | 00000001:00:00.0 Off |                  Off |
-| N/A   44C    P0              25W /  70W |      2MiB / 16384MiB |      0%      Default |
+| N/A   43C    P0              26W /  70W |      2MiB / 16384MiB |      0%      Default |
 |                                         |                      |                  N/A |
 +-----------------------------------------+----------------------+----------------------+
                                                                                          
@@ -318,7 +318,7 @@ lecture</a>, using Numba.</p>
 </div>
 </section>
 <section id="sample-paths">
-<h2><span class="section-number">4.2. </span>Sample paths<a class="headerlink" href="#sample-paths" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">5.2. </span>Sample paths<a class="headerlink" href="#sample-paths" title="Permalink to this heading">#</a></h2>
 <p>Consider a firm with inventory <span class="math notranslate nohighlight">\(X_t\)</span>.</p>
 <p>The firm waits until <span class="math notranslate nohighlight">\(X_t \leq s\)</span> and then restocks up to <span class="math notranslate nohighlight">\(S\)</span> units.</p>
 <p>It faces stochastic demand <span class="math notranslate nohighlight">\(\{ D_t \}\)</span>, which we assume is IID across time and
@@ -353,7 +353,7 @@ and standard normal.</p>
 </div>
 </section>
 <section id="cross-sectional-distributions">
-<h2><span class="section-number">4.3. </span>Cross-sectional distributions<a class="headerlink" href="#cross-sectional-distributions" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">5.3. </span>Cross-sectional distributions<a class="headerlink" href="#cross-sectional-distributions" title="Permalink to this heading">#</a></h2>
 <p>Now let’s look at the marginal distribution <span class="math notranslate nohighlight">\(\psi_T\)</span> of <span class="math notranslate nohighlight">\(X_T\)</span> for some fixed <span class="math notranslate nohighlight">\(T\)</span>.</p>
 <p>The probability distribution <span class="math notranslate nohighlight">\(\psi_T\)</span> is the time <span class="math notranslate nohighlight">\(T\)</span> distribution of firm
 inventory levels implied by the model.</p>
@@ -391,7 +391,7 @@ initial cross-section of inventories for the <span class="math notranslate nohig
 </div>
 </div>
 <section id="for-loop-version">
-<h3><span class="section-number">4.3.1. </span>For loop version<a class="headerlink" href="#for-loop-version" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">5.3.1. </span>For loop version<a class="headerlink" href="#for-loop-version" title="Permalink to this heading">#</a></h3>
 <p>Now we provide code to compute the cross-sectional distribution <span class="math notranslate nohighlight">\(\psi_T\)</span> given some
 initial distribution <span class="math notranslate nohighlight">\(\psi_0\)</span> and a positive integer <span class="math notranslate nohighlight">\(T\)</span>.</p>
 <p>In this code we use an ordinary Python <code class="docutils literal notranslate"><span class="pre">for</span></code> loop to step forward through time</p>
@@ -429,6 +429,11 @@ initial inventory <code class="docutils literal notranslate"><span class="pre">x
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2024-08-12 03:26:11.944704: W external/xla/xla/service/gpu/nvptx_compiler.cc:836] The NVIDIA driver&#39;s CUDA version is 12.5 which is older than the PTX compiler version (12.6.20). Because the driver is older than the PTX compiler version, XLA is disabling parallel compilation, which may slow down compilation. You should update your NVIDIA driver or use the NVIDIA-provided CUDA forward compatibility packages.
+</pre></div>
+</div>
+</div>
 </div>
 <p>Let’s look at the timing.</p>
 <div class="cell docutils container">
@@ -439,8 +444,8 @@ initial inventory <code class="docutils literal notranslate"><span class="pre">x
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 761 ms, sys: 143 ms, total: 904 ms
-Wall time: 758 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 813 ms, sys: 156 ms, total: 969 ms
+Wall time: 801 ms
 </pre></div>
 </div>
 </div>
@@ -454,8 +459,8 @@ Wall time: 758 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 273 ms, sys: 133 ms, total: 406 ms
-Wall time: 238 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 318 ms, sys: 107 ms, total: 425 ms
+Wall time: 244 ms
 </pre></div>
 </div>
 </div>
@@ -476,12 +481,12 @@ Wall time: 238 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/ac0fe867ee7589c0e0e628174a1981b2912315372378d24095c1d3701f7b15f2.png"><img alt="_images/ac0fe867ee7589c0e0e628174a1981b2912315372378d24095c1d3701f7b15f2.png" src="_images/ac0fe867ee7589c0e0e628174a1981b2912315372378d24095c1d3701f7b15f2.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/8d5ac15bc3eacf085a720a74bed3afa32dd8f909a2d14abfb3a52f950c370884.png"><img alt="_images/8d5ac15bc3eacf085a720a74bed3afa32dd8f909a2d14abfb3a52f950c370884.png" src="_images/8d5ac15bc3eacf085a720a74bed3afa32dd8f909a2d14abfb3a52f950c370884.png" style="width: 80%;" /></a>
 </div>
 </div>
 </section>
 <section id="compiling-the-outer-loop">
-<h3><span class="section-number">4.3.2. </span>Compiling the outer loop<a class="headerlink" href="#compiling-the-outer-loop" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">5.3.2. </span>Compiling the outer loop<a class="headerlink" href="#compiling-the-outer-loop" title="Permalink to this heading">#</a></h3>
 <p>Now let’s see if we can gain some speed by compiling the outer loop, which steps
 through the time dimension.</p>
 <p>We will do this using <code class="docutils literal notranslate"><span class="pre">jax.jit</span></code> and a <code class="docutils literal notranslate"><span class="pre">fori_loop</span></code>, which is a compiler-ready version of a <code class="docutils literal notranslate"><span class="pre">for</span></code> loop provided by JAX.</p>
@@ -529,8 +534,8 @@ through the time dimension.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 415 ms, sys: 268 µs, total: 415 ms
-Wall time: 366 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 459 ms, sys: 25.2 ms, total: 484 ms
+Wall time: 424 ms
 </pre></div>
 </div>
 </div>
@@ -544,8 +549,8 @@ Wall time: 366 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1.76 ms, sys: 439 µs, total: 2.2 ms
-Wall time: 8.65 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1.82 ms, sys: 461 μs, total: 2.28 ms
+Wall time: 7.99 ms
 </pre></div>
 </div>
 </div>
@@ -555,7 +560,7 @@ produced a nontrivial speed gain.</p>
 <p>This is due to the fact that we have compiled the whole operation.</p>
 </section>
 <section id="further-vectorization">
-<h3><span class="section-number">4.3.3. </span>Further vectorization<a class="headerlink" href="#further-vectorization" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">5.3.3. </span>Further vectorization<a class="headerlink" href="#further-vectorization" title="Permalink to this heading">#</a></h3>
 <p>For relatively small problems, we can make this code run even faster by generating
 all random variables at once.</p>
 <p>This improves efficiency because we are taking more operations out of the loop.</p>
@@ -594,8 +599,8 @@ all random variables at once.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 328 ms, sys: 0 ns, total: 328 ms
-Wall time: 308 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 260 ms, sys: 0 ns, total: 260 ms
+Wall time: 243 ms
 </pre></div>
 </div>
 </div>
@@ -609,8 +614,8 @@ Wall time: 308 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 3.54 ms, sys: 0 ns, total: 3.54 ms
-Wall time: 5.83 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 3.76 ms, sys: 0 ns, total: 3.76 ms
+Wall time: 6.15 ms
 </pre></div>
 </div>
 </div>
@@ -623,7 +628,7 @@ store large arrays of random draws.</p>
 </section>
 </section>
 <section id="distribution-dynamics">
-<h2><span class="section-number">4.4. </span>Distribution dynamics<a class="headerlink" href="#distribution-dynamics" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">5.4. </span>Distribution dynamics<a class="headerlink" href="#distribution-dynamics" title="Permalink to this heading">#</a></h2>
 <p>Next let’s take a look at how the distribution sequence evolves over time.</p>
 <p>We will go back to using ordinary Python <code class="docutils literal notranslate"><span class="pre">for</span></code> loops.</p>
 <p>Here is code that repeatedly shifts the cross-section forward while
@@ -667,8 +672,8 @@ recording the cross-section at the dates in <code class="docutils literal notran
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 567 ms, sys: 170 ms, total: 736 ms
-Wall time: 556 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 642 ms, sys: 204 ms, total: 846 ms
+Wall time: 639 ms
 </pre></div>
 </div>
 </div>
@@ -682,8 +687,8 @@ Wall time: 556 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 481 ms, sys: 141 ms, total: 622 ms
-Wall time: 375 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 476 ms, sys: 179 ms, total: 656 ms
+Wall time: 390 ms
 </pre></div>
 </div>
 </div>
@@ -707,7 +712,7 @@ Wall time: 375 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/c2eec719c15411ac368b6151e5d6cb51739f91fdea11e2f92f481035a2d8d6de.png"><img alt="_images/c2eec719c15411ac368b6151e5d6cb51739f91fdea11e2f92f481035a2d8d6de.png" src="_images/c2eec719c15411ac368b6151e5d6cb51739f91fdea11e2f92f481035a2d8d6de.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/27e7bc2ae2dc9c93b2c2175d74fb388778a754a742e019cfda761701290843dd.png"><img alt="_images/27e7bc2ae2dc9c93b2c2175d74fb388778a754a742e019cfda761701290843dd.png" src="_images/27e7bc2ae2dc9c93b2c2175d74fb388778a754a742e019cfda761701290843dd.png" style="width: 80%;" /></a>
 </div>
 </div>
 <p>This model for inventory dynamics is asymptotically stationary, with a unique
@@ -720,7 +725,7 @@ initial conditions.</p>
 <p>If you test a few different initial conditions, you will see that they do not affect long-run outcomes.</p>
 </section>
 <section id="restock-frequency">
-<h2><span class="section-number">4.5. </span>Restock frequency<a class="headerlink" href="#restock-frequency" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">5.5. </span>Restock frequency<a class="headerlink" href="#restock-frequency" title="Permalink to this heading">#</a></h2>
 <p>As an exercise, let’s study the probability that firms need to restock over a given time period.</p>
 <p>In the exercise, we will</p>
 <ul class="simple">
@@ -730,7 +735,7 @@ initial conditions.</p>
 <p>This proportion approximates the probability of the event when the sample size
 is large.</p>
 <section id="id1">
-<h3><span class="section-number">4.5.1. </span>For loop version<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">5.5.1. </span>For loop version<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h3>
 <p>We start with an easier <code class="docutils literal notranslate"><span class="pre">for</span></code> loop implementation</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -778,8 +783,8 @@ is large.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 663 ms, sys: 0 ns, total: 663 ms
-Wall time: 700 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 661 ms, sys: 0 ns, total: 661 ms
+Wall time: 722 ms
 </pre></div>
 </div>
 </div>
@@ -792,8 +797,8 @@ Wall time: 700 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 48.4 ms, sys: 7.32 ms, total: 55.7 ms
-Wall time: 36.7 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 60 ms, sys: 7.73 ms, total: 67.7 ms
+Wall time: 48.3 ms
 </pre></div>
 </div>
 </div>
@@ -812,7 +817,7 @@ Wall time: 36.7 ms
 </div>
 <div class="exercise admonition" id="inventory_dynamics_ex1">
 
-<p class="admonition-title"><span class="caption-number">Exercise 4.1 </span></p>
+<p class="admonition-title"><span class="caption-number">Exercise 5.1 </span></p>
 <section id="exercise-content">
 <p>Write a <code class="docutils literal notranslate"><span class="pre">fori_loop</span></code> version of the last function.  See if you can increase the
 speed while generating a similar answer.</p>
@@ -820,7 +825,7 @@ speed while generating a similar answer.</p>
 </div>
 <div class="solution dropdown admonition" id="inventory_dynamics-solution-1">
 
-<p class="admonition-title">Solution to<a class="reference internal" href="#inventory_dynamics_ex1"> Exercise 4.1</a></p>
+<p class="admonition-title">Solution to<a class="reference internal" href="#inventory_dynamics_ex1"> Exercise 5.1</a></p>
 <section id="solution-content">
 <p>Here is a <code class="docutils literal notranslate"><span class="pre">lax.fori_loop</span></code> version that JIT compiles the whole function</p>
 <div class="cell docutils container">
@@ -871,8 +876,8 @@ speed while generating a similar answer.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 269 ms, sys: 32 ms, total: 301 ms
-Wall time: 296 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 296 ms, sys: 0 ns, total: 296 ms
+Wall time: 294 ms
 </pre></div>
 </div>
 </div>
@@ -885,8 +890,8 @@ Wall time: 296 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1.14 ms, sys: 0 ns, total: 1.14 ms
-Wall time: 7.03 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1.28 ms, sys: 0 ns, total: 1.28 ms
+Wall time: 7.12 ms
 </pre></div>
 </div>
 </div>
@@ -975,8 +980,13 @@ Wall time: 7.03 ms
   </a>
  </li>
  <li class="toctree-l1">
+  <a class="reference internal" href="autodiff.html">
+   3. Adventures with Autodiff
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="newtons_method.html">
-   3. Newton’s Method via JAX
+   4. Newton’s Method via JAX
   </a>
  </li>
 </ul>
@@ -988,17 +998,17 @@ Wall time: 7.03 ms
 <ul class="current nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1 current active active">
   <a class="current reference internal" href="#">
-   4. Inventory Dynamics
+   5. Inventory Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="kesten_processes.html">
-   5. Kesten Processes and Firm Dynamics
+   6. Kesten Processes and Firm Dynamics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="wealth_dynamics.html">
-   6. Wealth Distribution Dynamics
+   7. Wealth Distribution Dynamics
   </a>
  </li>
 </ul>
@@ -1010,12 +1020,12 @@ Wall time: 7.03 ms
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="lucas_model.html">
-   7. Asset Pricing: The Lucas Asset Pricing Model
+   8. Asset Pricing: The Lucas Asset Pricing Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="markov_asset.html">
-   8. An Asset Pricing Problem
+   9. An Asset Pricing Problem
   </a>
  </li>
 </ul>
@@ -1027,37 +1037,37 @@ Wall time: 7.03 ms
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="job_search.html">
-   9. Job Search
+   10. Job Search
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="opt_savings_1.html">
-   10. Optimal Savings I: Value Function Iteration
+   11. Optimal Savings I: Value Function Iteration
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="opt_savings_2.html">
-   11. Optimal Savings II: Alternative Algorithms
+   12. Optimal Savings II: Alternative Algorithms
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="short_path.html">
-   12. Shortest Paths
+   13. Shortest Paths
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="opt_invest.html">
-   13. Optimal Investment
+   14. Optimal Investment
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="inventory_ssd.html">
-   14. Inventory Management Model
+   15. Inventory Management Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="ifp_egm.html">
-   15. Endogenous Grid Method
+   16. Endogenous Grid Method
   </a>
  </li>
 </ul>
@@ -1069,22 +1079,22 @@ Wall time: 7.03 ms
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="arellano.html">
-   16. Default Risk and Income Fluctuations
+   17. Default Risk and Income Fluctuations
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="aiyagari_jax.html">
-   17. The Aiyagari Model
+   18. The Aiyagari Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="hopenhayn.html">
-   18. The Hopenhayn Entry-Exit Model
+   19. The Hopenhayn Entry-Exit Model
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="overborrowing.html">
-   19. Bianchi Overborrowing Model
+   20. Bianchi Overborrowing Model
   </a>
  </li>
 </ul>
@@ -1096,7 +1106,7 @@ Wall time: 7.03 ms
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="mle.html">
-   20. Maximum Likelihood Estimation
+   21. Maximum Likelihood Estimation
   </a>
  </li>
 </ul>
@@ -1108,17 +1118,17 @@ Wall time: 7.03 ms
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   21. Troubleshooting
+   22. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   22. References
+   23. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   23. Execution Statistics
+   24. Execution Statistics
   </a>
  </li>
 </ul>
