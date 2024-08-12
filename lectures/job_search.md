@@ -20,8 +20,12 @@ kernelspec:
 In this lecture we study a basic infinite-horizon job search problem with Markov wage
 draws 
 
-The exercise at the end asks you to add recursive preferences and compare
-the result.
+```{note}
+For background on infinite horizon job search see, e.g., [DP1](https://dp.quantecon.org/).
+```
+
+The exercise at the end asks you to add risk-sensitive preferences and see how
+the main results change.
 
 In addition to what’s in Anaconda, this lecture will need the following libraries:
 
@@ -237,6 +241,8 @@ res_wage_index = min(stop_indices[0])
 ```{code-cell} ipython3
 res_wage = w_vals[res_wage_index]
 ```
+
+Here's a joint plot of the value function and the reservation wage.
 
 ```{code-cell} ipython3
 fig, ax = plt.subplots()
