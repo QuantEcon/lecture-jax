@@ -71,7 +71,7 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=b09b2da44b9015b4fa76ea072fa2d8f7faee5492" type="text/css" />
+    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=f77998adf44a3f900caaca31caf410c810f6f245" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
@@ -272,16 +272,16 @@ in <a class="reference external" href="https://python.quantecon.org/newton_metho
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Mon Aug 12 04:00:24 2024       
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Mon Oct 21 11:07:39 2024       
 +---------------------------------------------------------------------------------------+
-| NVIDIA-SMI 535.54.03              Driver Version: 535.54.03    CUDA Version: 12.5     |
+| NVIDIA-SMI 535.54.03              Driver Version: 535.54.03    CUDA Version: 12.6     |
 |-----------------------------------------+----------------------+----------------------+
 | GPU  Name                 Persistence-M | Bus-Id        Disp.A | Volatile Uncorr. ECC |
 | Fan  Temp   Perf          Pwr:Usage/Cap |         Memory-Usage | GPU-Util  Compute M. |
 |                                         |                      |               MIG M. |
 |=========================================+======================+======================|
 |   0  Tesla T4                       On  | 00000001:00:00.0 Off |                  Off |
-| N/A   44C    P0              32W /  70W |      2MiB / 16384MiB |      0%      Default |
+| N/A   46C    P0              36W /  70W |      2MiB / 16384MiB |      0%      Default |
 |                                         |                      |                  N/A |
 +-----------------------------------------+----------------------+----------------------+
                                                                                          
@@ -347,9 +347,6 @@ iterates with <span class="math notranslate nohighlight">\(q\)</span> starting f
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2024-08-12 04:00:25.172419: W external/xla/xla/service/gpu/nvptx_compiler.cc:836] The NVIDIA driver&#39;s CUDA version is 12.5 which is older than the PTX compiler version (12.6.20). Because the driver is older than the PTX compiler version, XLA is disabling parallel compilation, which may slow down compilation. You should update your NVIDIA driver or use the NVIDIA-provided CUDA forward compatibility packages.
-</pre></div>
-</div>
 <a class="reference internal image-reference" href="_images/625b625fbf7119acb63e3fc4aa62b90c4eae0ac707ad125640e99b981ff552cc.png"><img alt="_images/625b625fbf7119acb63e3fc4aa62b90c4eae0ac707ad125640e99b981ff552cc.png" src="_images/625b625fbf7119acb63e3fc4aa62b90c4eae0ac707ad125640e99b981ff552cc.png" style="width: 80%;" /></a>
 </div>
 </div>
@@ -500,8 +497,8 @@ iteration 3, error = 0.10971637070178986
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>iteration 4, error = 5.167595372768119e-05
 iteration 5, error = 1.1732883649528958e-05
 iteration 6, error = 4.191016159893479e-06
-CPU times: user 5.24 s, sys: 509 ms, total: 5.75 s
-Wall time: 5.59 s
+CPU times: user 5.24 s, sys: 600 ms, total: 5.84 s
+Wall time: 5.69 s
 </pre></div>
 </div>
 </div>
@@ -523,8 +520,8 @@ iteration 3, error = 0.10971637070178986
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>iteration 4, error = 5.167595372768119e-05
 iteration 5, error = 1.1732883649528958e-05
 iteration 6, error = 4.191016159893479e-06
-CPU times: user 1.58 s, sys: 421 ms, total: 2 s
-Wall time: 1.87 s
+CPU times: user 1.57 s, sys: 451 ms, total: 2.02 s
+Wall time: 1.9 s
 </pre></div>
 </div>
 </div>
@@ -556,8 +553,8 @@ even with the Jacobian supplied.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1min 51s, sys: 169 ms, total: 1min 51s
-Wall time: 1min 51s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1min 54s, sys: 156 ms, total: 1min 55s
+Wall time: 1min 54s
 </pre></div>
 </div>
 </div>
@@ -681,8 +678,8 @@ iteration 3, error = 4.294127464294434
 iteration 4, error = 0.3854290544986725
 iteration 5, error = 0.0054382034577429295
 iteration 6, error = 8.92080606718082e-07
-CPU times: user 138 ms, sys: 4.14 ms, total: 142 ms
-Wall time: 177 ms
+CPU times: user 135 ms, sys: 4.01 ms, total: 139 ms
+Wall time: 175 ms
 ----------------------------------------------------------------
 Attempt 2: Starting value is [3. 5. 5.] 
 </pre></div>
@@ -691,8 +688,8 @@ Attempt 2: Starting value is [3. 5. 5.]
 iteration 2, error = 0.12642373144626617
 iteration 3, error = 0.0006017307168804109
 iteration 4, error = 3.3717478231665154e-07
-CPU times: user 77 ms, sys: 0 ns, total: 77 ms
-Wall time: 71.2 ms
+CPU times: user 77.3 ms, sys: 72 μs, total: 77.4 ms
+Wall time: 72.5 ms
 ----------------------------------------------------------------
 Attempt 3: Starting value is [50. 50. 50.] 
 
@@ -704,8 +701,8 @@ iteration 3, error = 0.6806989312171936
 iteration 4, error = 0.016202213242650032
 iteration 5, error = 1.0600916539260652e-05
 iteration 6, error = 9.830249609876773e-07
-CPU times: user 173 ms, sys: 7.94 ms, total: 181 ms
-Wall time: 171 ms
+CPU times: user 174 ms, sys: 8.03 ms, total: 182 ms
+Wall time: 173 ms
 ----------------------------------------------------------------
 </pre></div>
 </div>
@@ -747,8 +744,8 @@ Wall time: 171 ms
 iteration 2, error = 0.21344946324825287
 iteration 3, error = 0.002045975998044014
 iteration 4, error = 8.259061701210157e-07
-CPU times: user 144 ms, sys: 12.1 ms, total: 156 ms
-Wall time: 170 ms
+CPU times: user 147 ms, sys: 8.05 ms, total: 155 ms
+Wall time: 171 ms
 </pre></div>
 </div>
 </div>
@@ -768,8 +765,8 @@ Wall time: 170 ms
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>iteration 2, error = 0.21344946324825287
 iteration 3, error = 0.002045975998044014
 iteration 4, error = 8.259061701210157e-07
-CPU times: user 152 ms, sys: 4.06 ms, total: 156 ms
-Wall time: 145 ms
+CPU times: user 147 ms, sys: 8.11 ms, total: 155 ms
+Wall time: 147 ms
 </pre></div>
 </div>
 </div>
@@ -793,8 +790,8 @@ iteration 2, error = 0.21344933091258958
 iteration 3, error = 0.0020465547718452695
 iteration 4, error = 2.0309190076799282e-07
 iteration 5, error = 1.538370149106851e-15
-CPU times: user 165 ms, sys: 8.08 ms, total: 173 ms
-Wall time: 219 ms
+CPU times: user 228 ms, sys: 12 ms, total: 240 ms
+Wall time: 287 ms
 </pre></div>
 </div>
 </div>
@@ -813,8 +810,8 @@ iteration 2, error = 0.21344933091258958
 iteration 3, error = 0.0020465547718452695
 iteration 4, error = 2.0309190076799282e-07
 iteration 5, error = 1.538370149106851e-15
-CPU times: user 79.9 ms, sys: 0 ns, total: 79.9 ms
-Wall time: 97.9 ms
+CPU times: user 76 ms, sys: 3.94 ms, total: 80 ms
+Wall time: 98 ms
 </pre></div>
 </div>
 </div>
@@ -904,8 +901,8 @@ c = \begin{pmatrix}
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>iteration 1, error = 9.243805733085065
 iteration 2, error = nan
-CPU times: user 93.9 ms, sys: 24 μs, total: 93.9 ms
-Wall time: 113 ms
+CPU times: user 90.4 ms, sys: 4.03 ms, total: 94.4 ms
+Wall time: 114 ms
 ----------------------------------------------------------------
 Attempt 2: Starting value is [4.5 0.1 4. ] 
 
@@ -917,8 +914,8 @@ iteration 5, error = 0.005209730313222213
 iteration 6, error = 4.3632751705775364e-06
 iteration 7, error = 3.0460818773540415e-12
 iteration 8, error = 0.0
-CPU times: user 64.2 ms, sys: 4.06 ms, total: 68.3 ms
-Wall time: 62.5 ms
+CPU times: user 64 ms, sys: 4.06 ms, total: 68.1 ms
+Wall time: 63.1 ms
 ----------------------------------------------------------------
 </pre></div>
 </div>
@@ -1227,18 +1224,18 @@ Wall time: 62.5 ms
                 <span class="label">Public</span>
                 <select id="launcher-public-input">
                 
-                    <option value="https://colab.research.google.com/github/QuantEcon/lecture-jax.notebooks/blob/master/newtons_method.ipynb">Colab</option>
+                    <option value="https://colab.research.google.com/github/QuantEcon/lecture-jax.notebooks/blob/main/newtons_method.ipynb">Colab</option>
                 
                 </select>
                 <i class="fas fa-check-circle"></i>
             </li>
             <li class="launcher-private">
                 <span class="label">Private</span>
-                <input type="text" id="launcher-private-input" data-repourl="https://github.com/QuantEcon/lecture-jax.notebooks" data-urlpath="tree/lecture-jax.notebooks/newtons_method.ipynb" data-branch=master>
+                <input type="text" id="launcher-private-input" data-repourl="https://github.com/QuantEcon/lecture-jax.notebooks" data-urlpath="tree/lecture-jax.notebooks/newtons_method.ipynb" data-branch=main>
                 <i class="fas fa-check-circle"></i>
             </li>
             </ul>
-            <p class="launch"><a href="https://colab.research.google.com/github/QuantEcon/lecture-jax.notebooks/blob/master/newtons_method.ipynb" id="advancedLaunchButton" target="_blank">Launch Notebook</a></p>
+            <p class="launch"><a href="https://colab.research.google.com/github/QuantEcon/lecture-jax.notebooks/blob/main/newtons_method.ipynb" id="advancedLaunchButton" target="_blank">Launch Notebook</a></p>
             <script>
                 // QuantEcon Notebook Launcher
                 const launcherTypeElements = document.querySelectorAll('#settingsModal .modal-servers li');
@@ -1271,7 +1268,7 @@ Wall time: 62.5 ms
                 const pageName = "newtons_method";
                 const repoURL = "https://github.com/QuantEcon/lecture-jax.notebooks";
                 const urlPath = "tree/lecture-jax.notebooks/newtons_method.ipynb";
-                const branch = "master"
+                const branch = "main"
                 const launchNotebookLink = document.getElementById('advancedLaunchButton');
 
                 // Highlight public server option if previous selection exists

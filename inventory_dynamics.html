@@ -71,7 +71,7 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=b09b2da44b9015b4fa76ea072fa2d8f7faee5492" type="text/css" />
+    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=f77998adf44a3f900caaca31caf410c810f6f245" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
@@ -292,16 +292,16 @@ lecture</a>, using Numba.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Mon Aug 12 03:26:11 2024       
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Mon Oct 21 10:33:53 2024       
 +---------------------------------------------------------------------------------------+
-| NVIDIA-SMI 535.54.03              Driver Version: 535.54.03    CUDA Version: 12.5     |
+| NVIDIA-SMI 535.54.03              Driver Version: 535.54.03    CUDA Version: 12.6     |
 |-----------------------------------------+----------------------+----------------------+
 | GPU  Name                 Persistence-M | Bus-Id        Disp.A | Volatile Uncorr. ECC |
 | Fan  Temp   Perf          Pwr:Usage/Cap |         Memory-Usage | GPU-Util  Compute M. |
 |                                         |                      |               MIG M. |
 |=========================================+======================+======================|
 |   0  Tesla T4                       On  | 00000001:00:00.0 Off |                  Off |
-| N/A   43C    P0              26W /  70W |      2MiB / 16384MiB |      0%      Default |
+| N/A   44C    P0              28W /  70W |      2MiB / 16384MiB |      0%      Default |
 |                                         |                      |                  N/A |
 +-----------------------------------------+----------------------+----------------------+
                                                                                          
@@ -429,11 +429,6 @@ initial inventory <code class="docutils literal notranslate"><span class="pre">x
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2024-08-12 03:26:11.944704: W external/xla/xla/service/gpu/nvptx_compiler.cc:836] The NVIDIA driver&#39;s CUDA version is 12.5 which is older than the PTX compiler version (12.6.20). Because the driver is older than the PTX compiler version, XLA is disabling parallel compilation, which may slow down compilation. You should update your NVIDIA driver or use the NVIDIA-provided CUDA forward compatibility packages.
-</pre></div>
-</div>
-</div>
 </div>
 <p>Let’s look at the timing.</p>
 <div class="cell docutils container">
@@ -444,8 +439,8 @@ initial inventory <code class="docutils literal notranslate"><span class="pre">x
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 813 ms, sys: 156 ms, total: 969 ms
-Wall time: 801 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 783 ms, sys: 156 ms, total: 938 ms
+Wall time: 788 ms
 </pre></div>
 </div>
 </div>
@@ -459,8 +454,8 @@ Wall time: 801 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 318 ms, sys: 107 ms, total: 425 ms
-Wall time: 244 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 335 ms, sys: 123 ms, total: 458 ms
+Wall time: 271 ms
 </pre></div>
 </div>
 </div>
@@ -534,8 +529,8 @@ through the time dimension.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 459 ms, sys: 25.2 ms, total: 484 ms
-Wall time: 424 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 362 ms, sys: 206 μs, total: 362 ms
+Wall time: 322 ms
 </pre></div>
 </div>
 </div>
@@ -549,8 +544,8 @@ Wall time: 424 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1.82 ms, sys: 461 μs, total: 2.28 ms
-Wall time: 7.99 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 2.24 ms, sys: 0 ns, total: 2.24 ms
+Wall time: 8.11 ms
 </pre></div>
 </div>
 </div>
@@ -599,8 +594,8 @@ all random variables at once.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 260 ms, sys: 0 ns, total: 260 ms
-Wall time: 243 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 243 ms, sys: 0 ns, total: 243 ms
+Wall time: 235 ms
 </pre></div>
 </div>
 </div>
@@ -614,8 +609,8 @@ Wall time: 243 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 3.76 ms, sys: 0 ns, total: 3.76 ms
-Wall time: 6.15 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 3.28 ms, sys: 606 μs, total: 3.88 ms
+Wall time: 6.58 ms
 </pre></div>
 </div>
 </div>
@@ -672,8 +667,8 @@ recording the cross-section at the dates in <code class="docutils literal notran
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 642 ms, sys: 204 ms, total: 846 ms
-Wall time: 639 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 714 ms, sys: 221 ms, total: 935 ms
+Wall time: 718 ms
 </pre></div>
 </div>
 </div>
@@ -687,8 +682,8 @@ Wall time: 639 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 476 ms, sys: 179 ms, total: 656 ms
-Wall time: 390 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 498 ms, sys: 253 ms, total: 751 ms
+Wall time: 467 ms
 </pre></div>
 </div>
 </div>
@@ -783,8 +778,8 @@ is large.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 661 ms, sys: 0 ns, total: 661 ms
-Wall time: 722 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 565 ms, sys: 45.2 ms, total: 611 ms
+Wall time: 674 ms
 </pre></div>
 </div>
 </div>
@@ -797,8 +792,8 @@ Wall time: 722 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 60 ms, sys: 7.73 ms, total: 67.7 ms
-Wall time: 48.3 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 41.8 ms, sys: 36 ms, total: 77.7 ms
+Wall time: 57.3 ms
 </pre></div>
 </div>
 </div>
@@ -876,8 +871,8 @@ speed while generating a similar answer.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 296 ms, sys: 0 ns, total: 296 ms
-Wall time: 294 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 270 ms, sys: 6.62 ms, total: 277 ms
+Wall time: 286 ms
 </pre></div>
 </div>
 </div>
@@ -890,8 +885,8 @@ Wall time: 294 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1.28 ms, sys: 0 ns, total: 1.28 ms
-Wall time: 7.12 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 815 μs, sys: 398 μs, total: 1.21 ms
+Wall time: 7.1 ms
 </pre></div>
 </div>
 </div>
@@ -1196,18 +1191,18 @@ Wall time: 7.12 ms
                 <span class="label">Public</span>
                 <select id="launcher-public-input">
                 
-                    <option value="https://colab.research.google.com/github/QuantEcon/lecture-jax.notebooks/blob/master/inventory_dynamics.ipynb">Colab</option>
+                    <option value="https://colab.research.google.com/github/QuantEcon/lecture-jax.notebooks/blob/main/inventory_dynamics.ipynb">Colab</option>
                 
                 </select>
                 <i class="fas fa-check-circle"></i>
             </li>
             <li class="launcher-private">
                 <span class="label">Private</span>
-                <input type="text" id="launcher-private-input" data-repourl="https://github.com/QuantEcon/lecture-jax.notebooks" data-urlpath="tree/lecture-jax.notebooks/inventory_dynamics.ipynb" data-branch=master>
+                <input type="text" id="launcher-private-input" data-repourl="https://github.com/QuantEcon/lecture-jax.notebooks" data-urlpath="tree/lecture-jax.notebooks/inventory_dynamics.ipynb" data-branch=main>
                 <i class="fas fa-check-circle"></i>
             </li>
             </ul>
-            <p class="launch"><a href="https://colab.research.google.com/github/QuantEcon/lecture-jax.notebooks/blob/master/inventory_dynamics.ipynb" id="advancedLaunchButton" target="_blank">Launch Notebook</a></p>
+            <p class="launch"><a href="https://colab.research.google.com/github/QuantEcon/lecture-jax.notebooks/blob/main/inventory_dynamics.ipynb" id="advancedLaunchButton" target="_blank">Launch Notebook</a></p>
             <script>
                 // QuantEcon Notebook Launcher
                 const launcherTypeElements = document.querySelectorAll('#settingsModal .modal-servers li');
@@ -1240,7 +1235,7 @@ Wall time: 7.12 ms
                 const pageName = "inventory_dynamics";
                 const repoURL = "https://github.com/QuantEcon/lecture-jax.notebooks";
                 const urlPath = "tree/lecture-jax.notebooks/inventory_dynamics.ipynb";
-                const branch = "master"
+                const branch = "main"
                 const launchNotebookLink = document.getElementById('advancedLaunchButton');
 
                 // Highlight public server option if previous selection exists
