@@ -266,20 +266,20 @@ the main results change.</p>
 </summary>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /opt/conda/envs/quantecon/lib/python3.12/site-packages (0.7.2)
-Requirement already satisfied: numba&gt;=0.49.0 in /opt/conda/envs/quantecon/lib/python3.12/site-packages (from quantecon) (0.59.1)
+Requirement already satisfied: numba&gt;=0.49.0 in /opt/conda/envs/quantecon/lib/python3.12/site-packages (from quantecon) (0.60.0)
 Requirement already satisfied: numpy&gt;=1.17.0 in /opt/conda/envs/quantecon/lib/python3.12/site-packages (from quantecon) (1.26.4)
-Requirement already satisfied: requests in /opt/conda/envs/quantecon/lib/python3.12/site-packages (from quantecon) (2.32.2)
+Requirement already satisfied: requests in /opt/conda/envs/quantecon/lib/python3.12/site-packages (from quantecon) (2.32.3)
 Requirement already satisfied: scipy&gt;=1.5.0 in /opt/conda/envs/quantecon/lib/python3.12/site-packages (from quantecon) (1.13.1)
-Requirement already satisfied: sympy in /opt/conda/envs/quantecon/lib/python3.12/site-packages (from quantecon) (1.12)
-Requirement already satisfied: llvmlite&lt;0.43,&gt;=0.42.0dev0 in /opt/conda/envs/quantecon/lib/python3.12/site-packages (from numba&gt;=0.49.0-&gt;quantecon) (0.42.0)
-Requirement already satisfied: charset-normalizer&lt;4,&gt;=2 in /opt/conda/envs/quantecon/lib/python3.12/site-packages (from requests-&gt;quantecon) (2.0.4)
+Requirement already satisfied: sympy in /opt/conda/envs/quantecon/lib/python3.12/site-packages (from quantecon) (1.13.2)
+Requirement already satisfied: llvmlite&lt;0.44,&gt;=0.43.0dev0 in /opt/conda/envs/quantecon/lib/python3.12/site-packages (from numba&gt;=0.49.0-&gt;quantecon) (0.43.0)
+Requirement already satisfied: charset-normalizer&lt;4,&gt;=2 in /opt/conda/envs/quantecon/lib/python3.12/site-packages (from requests-&gt;quantecon) (3.3.2)
 Requirement already satisfied: idna&lt;4,&gt;=2.5 in /opt/conda/envs/quantecon/lib/python3.12/site-packages (from requests-&gt;quantecon) (3.7)
-Requirement already satisfied: urllib3&lt;3,&gt;=1.21.1 in /opt/conda/envs/quantecon/lib/python3.12/site-packages (from requests-&gt;quantecon) (2.2.2)
-Requirement already satisfied: certifi&gt;=2017.4.17 in /opt/conda/envs/quantecon/lib/python3.12/site-packages (from requests-&gt;quantecon) (2024.6.2)
-Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/envs/quantecon/lib/python3.12/site-packages (from sympy-&gt;quantecon) (1.3.0)
+Requirement already satisfied: urllib3&lt;3,&gt;=1.21.1 in /opt/conda/envs/quantecon/lib/python3.12/site-packages (from requests-&gt;quantecon) (2.2.3)
+Requirement already satisfied: certifi&gt;=2017.4.17 in /opt/conda/envs/quantecon/lib/python3.12/site-packages (from requests-&gt;quantecon) (2024.8.30)
+Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in /opt/conda/envs/quantecon/lib/python3.12/site-packages (from sympy-&gt;quantecon) (1.3.0)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Yellow">WARNING: Running pip as the &#39;root&#39; user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Yellow">WARNING: Running pip as the &#39;root&#39; user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable.It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.</span>
 
 </pre></div>
 </div>
@@ -515,7 +515,7 @@ the value function.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/08a442f22d83810445a5a14b5401fba1df525f345a6bffb85aad72a72c54110f.png"><img alt="_images/08a442f22d83810445a5a14b5401fba1df525f345a6bffb85aad72a72c54110f.png" src="_images/08a442f22d83810445a5a14b5401fba1df525f345a6bffb85aad72a72c54110f.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/37f92b538d37a0b6693cccc0cd2e7cd0db6a2f95f771c4b9c52d3216c2d2ec10.png"><img alt="_images/37f92b538d37a0b6693cccc0cd2e7cd0db6a2f95f771c4b9c52d3216c2d2ec10.png" src="_images/37f92b538d37a0b6693cccc0cd2e7cd0db6a2f95f771c4b9c52d3216c2d2ec10.png" style="width: 80%;" /></a>
 </div>
 </div>
 <p>We compute the reservation wage as the first <span class="math notranslate nohighlight">\(w\)</span> such that <span class="math notranslate nohighlight">\(\sigma(w)=1\)</span>.</p>
@@ -567,7 +567,7 @@ the value function.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/4e50dc5d0db853ce51d0a056bf0555e1e8ca75dfa89d08d5a50a1bb92efaad81.png"><img alt="_images/4e50dc5d0db853ce51d0a056bf0555e1e8ca75dfa89d08d5a50a1bb92efaad81.png" src="_images/4e50dc5d0db853ce51d0a056bf0555e1e8ca75dfa89d08d5a50a1bb92efaad81.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/72b5dbe7759fc42dc33eb063f29db1473fd7b3a472279e651707faee1acb3239.png"><img alt="_images/72b5dbe7759fc42dc33eb063f29db1473fd7b3a472279e651707faee1acb3239.png" src="_images/72b5dbe7759fc42dc33eb063f29db1473fd7b3a472279e651707faee1acb3239.png" style="width: 80%;" /></a>
 </div>
 </div>
 </section>
@@ -731,7 +731,7 @@ case.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/1a6ccb1d171f67b7119f3a53f32dc0c372d4b55e29ed895bf9e1654d746b3355.png"><img alt="_images/1a6ccb1d171f67b7119f3a53f32dc0c372d4b55e29ed895bf9e1654d746b3355.png" src="_images/1a6ccb1d171f67b7119f3a53f32dc0c372d4b55e29ed895bf9e1654d746b3355.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/e9783e98f9243d0eacfd26651a9967a32632a0196b5280c4c558de33b37e7622.png"><img alt="_images/e9783e98f9243d0eacfd26651a9967a32632a0196b5280c4c558de33b37e7622.png" src="_images/e9783e98f9243d0eacfd26651a9967a32632a0196b5280c4c558de33b37e7622.png" style="width: 80%;" /></a>
 </div>
 </div>
 <p>The figure shows that the reservation wage under risk sensitive preferences (RS <span class="math notranslate nohighlight">\(\bar w\)</span>) shifts down.</p>

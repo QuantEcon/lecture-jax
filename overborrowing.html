@@ -270,22 +270,20 @@ const thebe_selector_output = ".output, .cell_output"
 </summary>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /opt/conda/envs/quantecon/lib/python3.12/site-packages (0.7.2)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: numba&gt;=0.49.0 in /opt/conda/envs/quantecon/lib/python3.12/site-packages (from quantecon) (0.59.1)
+Requirement already satisfied: numba&gt;=0.49.0 in /opt/conda/envs/quantecon/lib/python3.12/site-packages (from quantecon) (0.60.0)
 Requirement already satisfied: numpy&gt;=1.17.0 in /opt/conda/envs/quantecon/lib/python3.12/site-packages (from quantecon) (1.26.4)
-Requirement already satisfied: requests in /opt/conda/envs/quantecon/lib/python3.12/site-packages (from quantecon) (2.32.2)
+Requirement already satisfied: requests in /opt/conda/envs/quantecon/lib/python3.12/site-packages (from quantecon) (2.32.3)
 Requirement already satisfied: scipy&gt;=1.5.0 in /opt/conda/envs/quantecon/lib/python3.12/site-packages (from quantecon) (1.13.1)
-Requirement already satisfied: sympy in /opt/conda/envs/quantecon/lib/python3.12/site-packages (from quantecon) (1.12)
-Requirement already satisfied: llvmlite&lt;0.43,&gt;=0.42.0dev0 in /opt/conda/envs/quantecon/lib/python3.12/site-packages (from numba&gt;=0.49.0-&gt;quantecon) (0.42.0)
-Requirement already satisfied: charset-normalizer&lt;4,&gt;=2 in /opt/conda/envs/quantecon/lib/python3.12/site-packages (from requests-&gt;quantecon) (2.0.4)
+Requirement already satisfied: sympy in /opt/conda/envs/quantecon/lib/python3.12/site-packages (from quantecon) (1.13.2)
+Requirement already satisfied: llvmlite&lt;0.44,&gt;=0.43.0dev0 in /opt/conda/envs/quantecon/lib/python3.12/site-packages (from numba&gt;=0.49.0-&gt;quantecon) (0.43.0)
+Requirement already satisfied: charset-normalizer&lt;4,&gt;=2 in /opt/conda/envs/quantecon/lib/python3.12/site-packages (from requests-&gt;quantecon) (3.3.2)
 Requirement already satisfied: idna&lt;4,&gt;=2.5 in /opt/conda/envs/quantecon/lib/python3.12/site-packages (from requests-&gt;quantecon) (3.7)
-Requirement already satisfied: urllib3&lt;3,&gt;=1.21.1 in /opt/conda/envs/quantecon/lib/python3.12/site-packages (from requests-&gt;quantecon) (2.2.2)
-Requirement already satisfied: certifi&gt;=2017.4.17 in /opt/conda/envs/quantecon/lib/python3.12/site-packages (from requests-&gt;quantecon) (2024.6.2)
-Requirement already satisfied: mpmath&gt;=0.19 in /opt/conda/envs/quantecon/lib/python3.12/site-packages (from sympy-&gt;quantecon) (1.3.0)
+Requirement already satisfied: urllib3&lt;3,&gt;=1.21.1 in /opt/conda/envs/quantecon/lib/python3.12/site-packages (from requests-&gt;quantecon) (2.2.3)
+Requirement already satisfied: certifi&gt;=2017.4.17 in /opt/conda/envs/quantecon/lib/python3.12/site-packages (from requests-&gt;quantecon) (2024.8.30)
+Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in /opt/conda/envs/quantecon/lib/python3.12/site-packages (from sympy-&gt;quantecon) (1.3.0)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Yellow">WARNING: Running pip as the &#39;root&#39; user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Yellow">WARNING: Running pip as the &#39;root&#39; user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable.It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.</span>
 
 </pre></div>
 </div>
@@ -479,11 +477,11 @@ rectilinear grid of points in <span class="math notranslate nohighlight">\(\math
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Statistics for original process.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Std dev of y_t is 0.088
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Std dev of y_t is 0.0879
 Std dev of y_n is 0.106
 corr(y_t, y_n) is 0.541
 auto_corr(y_t) is 0.456
-auto_corr(y_n) is 0.666
+auto_corr(y_n) is 0.667
 </pre></div>
 </div>
 </div>
@@ -499,10 +497,10 @@ auto_corr(y_n) is 0.666
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Statistics for discretized process.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Std dev of y_t is 0.0874
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Std dev of y_t is 0.0876
 Std dev of y_n is 0.105
 corr(y_t, y_n) is 0.477
-auto_corr(y_t) is 0.401
+auto_corr(y_t) is 0.402
 auto_corr(y_n) is 0.589
 </pre></div>
 </div>
@@ -1227,7 +1225,7 @@ the price of nontradables and hence the credit constraint.</p>
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Updated H at iteration 22 with error 0.0041051506996154785.
-Computed decentralized equilibrium in 11.755997657775879 seconds
+Computed decentralized equilibrium in 11.54719090461731 seconds
 </pre></div>
 </div>
 </div>
@@ -1247,7 +1245,7 @@ Computed decentralized equilibrium in 11.755997657775879 seconds
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computing planner&#39;s solution.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed planner&#39;s solution in 0.9775702953338623 seconds
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed planner&#39;s solution in 1.0042858123779297 seconds
 </pre></div>
 </div>
 </div>
@@ -1275,7 +1273,7 @@ Computed decentralized equilibrium in 11.755997657775879 seconds
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/816a03ea7323bac921f2082343bf6943d88b5087e4d368ea6064c31aeca1c7cb.png"><img alt="_images/816a03ea7323bac921f2082343bf6943d88b5087e4d368ea6064c31aeca1c7cb.png" src="_images/816a03ea7323bac921f2082343bf6943d88b5087e4d368ea6064c31aeca1c7cb.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/0663678ef213b2902fc91ae0b9d0a70dd8908e51ab5828ea7a3b30fd31a06666.png"><img alt="_images/0663678ef213b2902fc91ae0b9d0a70dd8908e51ab5828ea7a3b30fd31a06666.png" src="_images/0663678ef213b2902fc91ae0b9d0a70dd8908e51ab5828ea7a3b30fd31a06666.png" style="width: 80%;" /></a>
 </div>
 </div>
 <p>The match is not exact because we use a different estimate of the Markov
@@ -1391,7 +1389,7 @@ planner equilibria.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/7bef75190c5cb0b7dda0ef327416a346b8407d326388e13e7937e9c85b2a7183.png"><img alt="_images/7bef75190c5cb0b7dda0ef327416a346b8407d326388e13e7937e9c85b2a7183.png" src="_images/7bef75190c5cb0b7dda0ef327416a346b8407d326388e13e7937e9c85b2a7183.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/9187845795e92b27be62c9638a1d7803083961d284f021a3f390c2aa52870e6d.png"><img alt="_images/9187845795e92b27be62c9638a1d7803083961d284f021a3f390c2aa52870e6d.png" src="_images/9187845795e92b27be62c9638a1d7803083961d284f021a3f390c2aa52870e6d.png" style="width: 80%;" /></a>
 </div>
 </div>
 <p>This corresponds to Figure 2 in Bianchi.</p>
