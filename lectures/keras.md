@@ -211,13 +211,13 @@ Let's print the final MSE on the cross-validation data.
 
 ```{code-cell} ipython3
 print("Testing loss on the validation set.")
-regression_model.evaluate(x_validate, y_validate)
+regression_model.evaluate(x_validate, y_validate, verbose=2)
 ```
 
 Here's our output predictions on the cross-validation data.
 
 ```{code-cell} ipython3
-y_predict = regression_model.predict(x_validate)
+y_predict = regression_model.predict(x_validate, verbose=2)
 ```
 
 We use the following function to plot our predictions along with the data.
@@ -265,7 +265,7 @@ Here's the final MSE for the deep learning model.
 
 ```{code-cell} ipython3
 print("Testing loss on the validation set.")
-nn_model.evaluate(x_validate, y_validate)
+nn_model.evaluate(x_validate, y_validate, verbose=2)
 ```
 
 You will notice that this loss is much lower than the one we achieved with
@@ -274,7 +274,7 @@ linear regression, suggesting a better fit.
 To confirm this, let's look at the fitted function.
 
 ```{code-cell} ipython3
-y_predict = nn_model.predict(x_validate)
+y_predict = nn_model.predict(x_validate, verbose=2)
 ```
 
 ```{code-cell} ipython3
@@ -290,4 +290,3 @@ fig, ax = plt.subplots()
 plot_results(x_validate, y_validate, y_predict, ax)
 plt.show()
 ```
-
