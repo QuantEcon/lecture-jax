@@ -289,10 +289,3 @@ plot_results(x_validate, y_validate, y_predict, ax)
 plt.show()
 ```
 
-```{code-cell} ipython3
-
-```
-
-```{code-cell} ipython3
-
-```
