@@ -42,7 +42,7 @@ import matplotlib.pyplot as plt
 Let's install Keras.
 
 ```{code-cell} ipython3
-:tags: hide-output
+:tags: [hide-output]
 
 !pip install keras
 ```
