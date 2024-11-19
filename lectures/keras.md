@@ -22,7 +22,7 @@ using a neural network.
 We will use the popular deep learning library [Keras](https://keras.io/), which
 provides a simple and elegant interface to deep learning.
 
-The emphasis in Keras on providing an intuitive API, while the heavy lifting is
+The emphasis in Keras is on providing an intuitive API, while the heavy lifting is
 done by another library.
 
 Currently the backend library can be Tensorflow, PyTorch, or JAX.
@@ -60,10 +60,6 @@ Next we import some tools from Keras.
 import keras
 from keras.models import Sequential
 from keras.layers import Dense
-```
-
-```{code-cell} ipython3
-Dense?
 ```
 
 ## Data
