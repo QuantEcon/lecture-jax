@@ -133,7 +133,7 @@ def build_regression_model(model):
     return model
 ```
 
-In the function above you can see that we use stochatic gradient descent to
+In the function above you can see that we use stochastic gradient descent to
 train the model, and that the loss is mean squared error (MSE).
 
 MSE is the standard loss function for ordinary least squares regression.
