@@ -120,7 +120,7 @@ We supply functions to build two types of models.
 The first implements linear regression.
 
 This is achieved by constructing a neural network with just one layer, that maps
-to a single dimension (since the prediction
+to a single dimension (since the prediction is real-valued).
 
 The input `model` will be an instance of `keras.Sequential`, which is used to
 group a stack of layers into a single prediction model.
