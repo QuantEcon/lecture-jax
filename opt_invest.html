@@ -311,7 +311,7 @@ P_t = a_0 - a_1 Y_t + Z_t,
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Wed Nov 13 00:48:16 2024       
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Tue Nov 19 07:43:56 2024       
 +---------------------------------------------------------------------------------------+
 | NVIDIA-SMI 535.54.03              Driver Version: 535.54.03    CUDA Version: 12.6     |
 |-----------------------------------------+----------------------+----------------------+
@@ -320,7 +320,7 @@ P_t = a_0 - a_1 Y_t + Z_t,
 |                                         |                      |               MIG M. |
 |=========================================+======================+======================|
 |   0  Tesla T4                       On  | 00000001:00:00.0 Off |                  Off |
-| N/A   42C    P8              25W /  70W |      2MiB / 16384MiB |      0%      Default |
+| N/A   45C    P0              29W /  70W |      2MiB / 16384MiB |      0%      Default |
 |                                         |                      |                  N/A |
 +-----------------------------------------+----------------------+----------------------+
                                                                                          
@@ -734,8 +734,8 @@ Concluded loop 9 with error 1.
 Concluded loop 10 with error 1.
 Concluded loop 11 with error 1.
 Concluded loop 12 with error 0.
-CPU times: user 593 ms, sys: 65.9 ms, total: 659 ms
-Wall time: 837 ms
+CPU times: user 539 ms, sys: 77.9 ms, total: 617 ms
+Wall time: 791 ms
 </pre></div>
 </div>
 </div>
@@ -757,11 +757,11 @@ Wall time: 837 ms
 Concluded loop 2 with error 26.
 Concluded loop 3 with error 17.
 Concluded loop 4 with error 10.
+Concluded loop 5 with error 7.
+Concluded loop 6 with error 4.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Concluded loop 5 with error 7.
-Concluded loop 6 with error 4.
-Concluded loop 7 with error 3.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Concluded loop 7 with error 3.
 Concluded loop 8 with error 1.
 Concluded loop 9 with error 1.
 Concluded loop 10 with error 1.
@@ -774,7 +774,7 @@ Concluded loop 12 with error 0.
  [82 82 82 ... 86 86 86]
  [83 83 83 ... 86 86 86]
  [84 84 84 ... 87 87 87]]
-HPI completed in 0.10019540786743164 seconds.
+HPI completed in 0.11295342445373535 seconds.
 </pre></div>
 </div>
 </div>
@@ -796,9 +796,9 @@ HPI completed in 0.10019540786743164 seconds.
 &lt;&gt;:4: SyntaxWarning: invalid escape sequence &#39;\c&#39;
 &lt;&gt;:3: SyntaxWarning: invalid escape sequence &#39;\c&#39;
 &lt;&gt;:4: SyntaxWarning: invalid escape sequence &#39;\c&#39;
-/tmp/ipykernel_2119/2467401157.py:3: SyntaxWarning: invalid escape sequence &#39;\c&#39;
+/tmp/ipykernel_2256/2467401157.py:3: SyntaxWarning: invalid escape sequence &#39;\c&#39;
   ax.plot(y_grid, y_grid[σ_star_hpi[:, 1]], label=&quot;$\\sigma^{*}_{HPI}(\cdot, z_1)$&quot;)
-/tmp/ipykernel_2119/2467401157.py:4: SyntaxWarning: invalid escape sequence &#39;\c&#39;
+/tmp/ipykernel_2256/2467401157.py:4: SyntaxWarning: invalid escape sequence &#39;\c&#39;
   ax.plot(y_grid, y_grid[σ_star_hpi[:, -1]], label=&quot;$\\sigma^{*}_{HPI}(\cdot, z_N)$&quot;)
 </pre></div>
 </div>
@@ -821,8 +821,8 @@ HPI completed in 0.10019540786743164 seconds.
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Starting VFI.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 534 ms, sys: 7.79 ms, total: 541 ms
-Wall time: 609 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 529 ms, sys: 4.15 ms, total: 533 ms
+Wall time: 600 ms
 </pre></div>
 </div>
 </div>
@@ -847,7 +847,7 @@ Wall time: 609 ms
  [82 82 82 ... 86 86 86]
  [83 83 83 ... 86 86 86]
  [84 84 84 ... 87 87 87]]
-VFI completed in 0.49863433837890625 seconds.
+VFI completed in 0.4960794448852539 seconds.
 </pre></div>
 </div>
 </div>
@@ -869,9 +869,9 @@ VFI completed in 0.49863433837890625 seconds.
 &lt;&gt;:4: SyntaxWarning: invalid escape sequence &#39;\c&#39;
 &lt;&gt;:3: SyntaxWarning: invalid escape sequence &#39;\c&#39;
 &lt;&gt;:4: SyntaxWarning: invalid escape sequence &#39;\c&#39;
-/tmp/ipykernel_2119/2642608191.py:3: SyntaxWarning: invalid escape sequence &#39;\c&#39;
+/tmp/ipykernel_2256/2642608191.py:3: SyntaxWarning: invalid escape sequence &#39;\c&#39;
   ax.plot(y_grid, y_grid[σ_star_vfi[:, 1]], label=&quot;$\\sigma^{*}_{VFI}(\cdot, z_1)$&quot;)
-/tmp/ipykernel_2119/2642608191.py:4: SyntaxWarning: invalid escape sequence &#39;\c&#39;
+/tmp/ipykernel_2256/2642608191.py:4: SyntaxWarning: invalid escape sequence &#39;\c&#39;
   ax.plot(y_grid, y_grid[σ_star_vfi[:, -1]], label=&quot;$\\sigma^{*}_{VFI}(\cdot, z_N)$&quot;)
 </pre></div>
 </div>
@@ -894,8 +894,8 @@ VFI completed in 0.49863433837890625 seconds.
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Starting OPI.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 409 ms, sys: 15.4 ms, total: 424 ms
-Wall time: 493 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 408 ms, sys: 8.98 ms, total: 417 ms
+Wall time: 481 ms
 </pre></div>
 </div>
 </div>
@@ -920,7 +920,7 @@ Wall time: 493 ms
  [82 82 82 ... 86 86 86]
  [83 83 83 ... 86 86 86]
  [84 84 84 ... 87 87 87]]
-OPI completed in 0.22461915016174316 seconds.
+OPI completed in 0.2252967357635498 seconds.
 </pre></div>
 </div>
 </div>
@@ -942,9 +942,9 @@ OPI completed in 0.22461915016174316 seconds.
 &lt;&gt;:4: SyntaxWarning: invalid escape sequence &#39;\c&#39;
 &lt;&gt;:3: SyntaxWarning: invalid escape sequence &#39;\c&#39;
 &lt;&gt;:4: SyntaxWarning: invalid escape sequence &#39;\c&#39;
-/tmp/ipykernel_2119/3367176246.py:3: SyntaxWarning: invalid escape sequence &#39;\c&#39;
+/tmp/ipykernel_2256/3367176246.py:3: SyntaxWarning: invalid escape sequence &#39;\c&#39;
   ax.plot(y_grid, y_grid[σ_star_opi[:, 1]], label=&quot;$\\sigma^{*}_{OPI}(\cdot, z_1)$&quot;)
-/tmp/ipykernel_2119/3367176246.py:4: SyntaxWarning: invalid escape sequence &#39;\c&#39;
+/tmp/ipykernel_2256/3367176246.py:4: SyntaxWarning: invalid escape sequence &#39;\c&#39;
   ax.plot(y_grid, y_grid[σ_star_opi[:, -1]], label=&quot;$\\sigma^{*}_{OPI}(\cdot, z_N)$&quot;)
 </pre></div>
 </div>
@@ -983,8 +983,8 @@ Concluded loop 8 with error 1.
 Concluded loop 10 with error 1.
 Concluded loop 11 with error 1.
 Concluded loop 12 with error 0.
-CPU times: user 101 ms, sys: 5.57 ms, total: 106 ms
-Wall time: 94.3 ms
+CPU times: user 103 ms, sys: 3.75 ms, total: 107 ms
+Wall time: 94.9 ms
 </pre></div>
 </div>
 </div>
@@ -1012,7 +1012,7 @@ Concluded loop 9 with error 1.
 Concluded loop 10 with error 1.
 Concluded loop 11 with error 1.
 Concluded loop 12 with error 0.
-HPI completed in 0.09451150894165039 seconds.
+HPI completed in 0.09495401382446289 seconds.
 </pre></div>
 </div>
 </div>
@@ -1028,8 +1028,8 @@ HPI completed in 0.09451150894165039 seconds.
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Running value function iteration.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 499 ms, sys: 7.51 ms, total: 506 ms
-Wall time: 501 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 496 ms, sys: 7.69 ms, total: 504 ms
+Wall time: 499 ms
 </pre></div>
 </div>
 </div>
@@ -1045,7 +1045,7 @@ Wall time: 501 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>VFI completed in 0.4996178150177002 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>VFI completed in 0.4952414035797119 seconds.
 </pre></div>
 </div>
 </div>
@@ -1075,63 +1075,63 @@ Wall time: 501 ms
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Running optimistic policy iteration with m=5.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OPI with m=5 completed in 0.26735591888427734 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OPI with m=5 completed in 0.2674858570098877 seconds.
 Running optimistic policy iteration with m=45.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OPI with m=45 completed in 0.20908737182617188 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OPI with m=45 completed in 0.20908904075622559 seconds.
 Running optimistic policy iteration with m=85.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OPI with m=85 completed in 0.219407320022583 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OPI with m=85 completed in 0.21918535232543945 seconds.
 Running optimistic policy iteration with m=125.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OPI with m=125 completed in 0.2260878086090088 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OPI with m=125 completed in 0.22591328620910645 seconds.
 Running optimistic policy iteration with m=165.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OPI with m=165 completed in 0.2442188262939453 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OPI with m=165 completed in 0.2441387176513672 seconds.
 Running optimistic policy iteration with m=205.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OPI with m=205 completed in 0.2807631492614746 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OPI with m=205 completed in 0.2808959484100342 seconds.
 Running optimistic policy iteration with m=245.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OPI with m=245 completed in 0.308990478515625 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OPI with m=245 completed in 0.3088960647583008 seconds.
 Running optimistic policy iteration with m=285.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OPI with m=285 completed in 0.328688383102417 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OPI with m=285 completed in 0.32922792434692383 seconds.
 Running optimistic policy iteration with m=325.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OPI with m=325 completed in 0.3743312358856201 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OPI with m=325 completed in 0.3745746612548828 seconds.
 Running optimistic policy iteration with m=365.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OPI with m=365 completed in 0.4201228618621826 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OPI with m=365 completed in 0.4202132225036621 seconds.
 Running optimistic policy iteration with m=405.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OPI with m=405 completed in 0.4656672477722168 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OPI with m=405 completed in 0.4656407833099365 seconds.
 Running optimistic policy iteration with m=445.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OPI with m=445 completed in 0.5112724304199219 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OPI with m=445 completed in 0.511193037033081 seconds.
 Running optimistic policy iteration with m=485.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OPI with m=485 completed in 0.556849479675293 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OPI with m=485 completed in 0.5569827556610107 seconds.
 Running optimistic policy iteration with m=525.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OPI with m=525 completed in 0.6022326946258545 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OPI with m=525 completed in 0.602881908416748 seconds.
 Running optimistic policy iteration with m=565.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OPI with m=565 completed in 0.6477863788604736 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OPI with m=565 completed in 0.6485006809234619 seconds.
 </pre></div>
 </div>
 </div>
@@ -1153,7 +1153,7 @@ Running optimistic policy iteration with m=565.
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/751a8baf8cf75826af6393188e62dcbd605c87b9d7cd42d67df73bbe47dc1f06.png"><img alt="_images/751a8baf8cf75826af6393188e62dcbd605c87b9d7cd42d67df73bbe47dc1f06.png" src="_images/751a8baf8cf75826af6393188e62dcbd605c87b9d7cd42d67df73bbe47dc1f06.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/929062aa4f5eb06438603ade95040d2aa86d2a0b1a03bb38057f8d7ec2207d2f.png"><img alt="_images/929062aa4f5eb06438603ade95040d2aa86d2a0b1a03bb38057f8d7ec2207d2f.png" src="_images/929062aa4f5eb06438603ade95040d2aa86d2a0b1a03bb38057f8d7ec2207d2f.png" style="width: 80%;" /></a>
 </div>
 </div>
 </section>
@@ -1353,6 +1353,11 @@ Running optimistic policy iteration with m=565.
    21. Maximum Likelihood Estimation
   </a>
  </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="keras.html">
+   22. Simple Neural Network Regression with Keras and JAX
+  </a>
+ </li>
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
@@ -1362,17 +1367,17 @@ Running optimistic policy iteration with m=565.
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   22. Troubleshooting
+   23. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   23. References
+   24. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   24. Execution Statistics
+   25. Execution Statistics
   </a>
  </li>
 </ul>
