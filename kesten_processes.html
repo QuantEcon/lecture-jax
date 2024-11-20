@@ -314,7 +314,7 @@ to accelerate the computations.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Tue Nov 19 07:40:54 2024       
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Wed Nov 20 00:32:12 2024       
 +---------------------------------------------------------------------------------------+
 | NVIDIA-SMI 535.54.03              Driver Version: 535.54.03    CUDA Version: 12.6     |
 |-----------------------------------------+----------------------+----------------------+
@@ -322,8 +322,8 @@ to accelerate the computations.</p>
 | Fan  Temp   Perf          Pwr:Usage/Cap |         Memory-Usage | GPU-Util  Compute M. |
 |                                         |                      |               MIG M. |
 |=========================================+======================+======================|
-|   0  Tesla T4                       On  | 00000001:00:00.0 Off |                  Off |
-| N/A   44C    P0              28W /  70W |      2MiB / 16384MiB |      0%      Default |
+|   0  Tesla T4                       On  | 00000001:00:00.0 Off |                    0 |
+| N/A   43C    P0              28W /  70W |      2MiB / 15360MiB |      0%      Default |
 |                                         |                      |                  N/A |
 +-----------------------------------------+----------------------+----------------------+
                                                                                          
@@ -468,7 +468,7 @@ time <code class="docutils literal notranslate"><span class="pre">T</span></code
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 2.23 s, sys: 857 ms, total: 3.09 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 2.24 s, sys: 873 ms, total: 3.11 s
 Wall time: 2.31 s
 </pre></div>
 </div>
@@ -482,8 +482,8 @@ Wall time: 2.31 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1.48 s, sys: 516 ms, total: 2 s
-Wall time: 1.19 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1.47 s, sys: 516 ms, total: 1.99 s
+Wall time: 1.14 s
 </pre></div>
 </div>
 </div>
@@ -569,8 +569,8 @@ store large matrices of random draws</p></li>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 585 ms, sys: 30.6 ms, total: 616 ms
-Wall time: 645 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 591 ms, sys: 29.1 ms, total: 620 ms
+Wall time: 654 ms
 </pre></div>
 </div>
 </div>
@@ -584,8 +584,8 @@ we see some speed gain over the for loop implementation:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 2.8 ms, sys: 597 μs, total: 3.4 ms
-Wall time: 60.5 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 3.15 ms, sys: 307 μs, total: 3.46 ms
+Wall time: 65 ms
 </pre></div>
 </div>
 </div>
@@ -616,8 +616,8 @@ Wall time: 60.5 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1.85 s, sys: 481 ms, total: 2.34 s
-Wall time: 1.48 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1.86 s, sys: 521 ms, total: 2.38 s
+Wall time: 1.51 s
 </pre></div>
 </div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Array([2.389801 , 2.2558599, 3.3113828, ..., 2.7102313, 2.5520844,
@@ -634,8 +634,8 @@ Wall time: 1.48 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1.5 s, sys: 494 ms, total: 1.99 s
-Wall time: 1.13 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1.45 s, sys: 619 ms, total: 2.07 s
+Wall time: 1.19 s
 </pre></div>
 </div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Array([2.389801 , 2.2558599, 3.3113828, ..., 2.7102313, 2.5520844,

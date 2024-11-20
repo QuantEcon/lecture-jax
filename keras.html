@@ -247,7 +247,7 @@ const thebe_selector_output = ".output, .cell_output"
 using a neural network.</p>
 <p>We will use the popular deep learning library <a class="reference external" href="https://keras.io/">Keras</a>, which
 provides a simple and elegant interface to deep learning.</p>
-<p>The emphasis in Keras on providing an intuitive API, while the heavy lifting is
+<p>The emphasis in Keras is on providing an intuitive API, while the heavy lifting is
 done by another library.</p>
 <p>Currently the backend library can be Tensorflow, PyTorch, or JAX.</p>
 <p>In this lecture we will use JAX.</p>
@@ -282,7 +282,9 @@ learning in a regression setting.</p>
 Collecting absl-py (from keras)
   Downloading absl_py-2.1.0-py3-none-any.whl.metadata (2.3 kB)
 Requirement already satisfied: numpy in /opt/conda/envs/quantecon/lib/python3.12/site-packages (from keras) (1.26.4)
-Requirement already satisfied: rich in /opt/conda/envs/quantecon/lib/python3.12/site-packages (from keras) (13.7.1)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: rich in /opt/conda/envs/quantecon/lib/python3.12/site-packages (from keras) (13.7.1)
 Collecting namex (from keras)
   Downloading namex-0.0.8-py3-none-any.whl.metadata (246 bytes)
 Requirement already satisfied: h5py in /opt/conda/envs/quantecon/lib/python3.12/site-packages (from keras) (3.11.0)
@@ -290,21 +292,19 @@ Requirement already satisfied: h5py in /opt/conda/envs/quantecon/lib/python3.12/
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting optree (from keras)
   Downloading optree-0.13.1-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (47 kB)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: ml-dtypes in /opt/conda/envs/quantecon/lib/python3.12/site-packages (from keras) (0.5.0)
+Requirement already satisfied: ml-dtypes in /opt/conda/envs/quantecon/lib/python3.12/site-packages (from keras) (0.5.0)
 Requirement already satisfied: packaging in /opt/conda/envs/quantecon/lib/python3.12/site-packages (from keras) (24.1)
 Requirement already satisfied: typing-extensions&gt;=4.5.0 in /opt/conda/envs/quantecon/lib/python3.12/site-packages (from optree-&gt;keras) (4.11.0)
 Requirement already satisfied: markdown-it-py&gt;=2.2.0 in /opt/conda/envs/quantecon/lib/python3.12/site-packages (from rich-&gt;keras) (2.2.0)
 Requirement already satisfied: pygments&lt;3.0.0,&gt;=2.13.0 in /opt/conda/envs/quantecon/lib/python3.12/site-packages (from rich-&gt;keras) (2.15.1)
 Requirement already satisfied: mdurl~=0.1 in /opt/conda/envs/quantecon/lib/python3.12/site-packages (from markdown-it-py&gt;=2.2.0-&gt;rich-&gt;keras) (0.1.0)
-Downloading keras-3.6.0-py3-none-any.whl (1.2 MB)
-?25l   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">0.0/1.2 MB</span> <span class=" -Color -Color-Red">?</span> eta <span class=" -Color -Color-Cyan">-:--:--</span>
-   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">1.2/1.2 MB</span> <span class=" -Color -Color-Red">84.7 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
-?25hDownloading absl_py-2.1.0-py3-none-any.whl (133 kB)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Downloading namex-0.0.8-py3-none-any.whl (5.8 kB)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Downloading keras-3.6.0-py3-none-any.whl (1.2 MB)
+?25l   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">0.0/1.2 MB</span> <span class=" -Color -Color-Red">?</span> eta <span class=" -Color -Color-Cyan">-:--:--</span>
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">1.2/1.2 MB</span> <span class=" -Color -Color-Red">122.6 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
+?25hDownloading absl_py-2.1.0-py3-none-any.whl (133 kB)
+Downloading namex-0.0.8-py3-none-any.whl (5.8 kB)
 Downloading optree-0.13.1-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (385 kB)
 </pre></div>
 </div>
@@ -334,13 +334,6 @@ Downloading optree-0.13.1-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">keras</span>
 <span class="kn">from</span> <span class="nn">keras.models</span> <span class="kn">import</span> <span class="n">Sequential</span>
 <span class="kn">from</span> <span class="nn">keras.layers</span> <span class="kn">import</span> <span class="n">Dense</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>Dense<span class="o">?</span>
 </pre></div>
 </div>
 </div>
@@ -391,7 +384,7 @@ above.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/1ba423171b76e860b4455146372b8b71fbe270cd7e8412b3fdc6457ab5e01c8c.png"><img alt="_images/1ba423171b76e860b4455146372b8b71fbe270cd7e8412b3fdc6457ab5e01c8c.png" src="_images/1ba423171b76e860b4455146372b8b71fbe270cd7e8412b3fdc6457ab5e01c8c.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/04ece471411c8c561861da07a20520e2e8a86a82cc38b0de74b3741ce28a1fcf.png"><img alt="_images/04ece471411c8c561861da07a20520e2e8a86a82cc38b0de74b3741ce28a1fcf.png" src="_images/04ece471411c8c561861da07a20520e2e8a86a82cc38b0de74b3741ce28a1fcf.png" style="width: 80%;" /></a>
 </div>
 </div>
 <p>We’ll also use data from the same process for cross-validation.</p>
@@ -499,7 +492,7 @@ as the parameters are adjusted to better fit the data.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/422337ceb023f26dc488a5dbbacb0b20944ea4ac9b19334586ba3d6fd8c068f0.png"><img alt="_images/422337ceb023f26dc488a5dbbacb0b20944ea4ac9b19334586ba3d6fd8c068f0.png" src="_images/422337ceb023f26dc488a5dbbacb0b20944ea4ac9b19334586ba3d6fd8c068f0.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/e4912a8149bb30727b84d40a9d8bee4c3016394d02e9d08013b853e0d421e197.png"><img alt="_images/e4912a8149bb30727b84d40a9d8bee4c3016394d02e9d08013b853e0d421e197.png" src="_images/e4912a8149bb30727b84d40a9d8bee4c3016394d02e9d08013b853e0d421e197.png" style="width: 80%;" /></a>
 </div>
 </div>
 <p>Let’s print the final MSE on the cross-validation data.</p>
@@ -512,10 +505,10 @@ as the parameters are adjusted to better fit the data.</p>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Testing loss on the validation set.
-13/13 - 0s - 11ms/step - loss: 0.3070
+13/13 - 0s - 11ms/step - loss: 0.3260
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.30700936913490295
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.3260418772697449
 </pre></div>
 </div>
 </div>
@@ -555,7 +548,7 @@ as the parameters are adjusted to better fit the data.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/cba5efac31ba3e95d31d610d4cf0b986b5524eb9b60ed7224a3b927fe2f9883d.png"><img alt="_images/cba5efac31ba3e95d31d610d4cf0b986b5524eb9b60ed7224a3b927fe2f9883d.png" src="_images/cba5efac31ba3e95d31d610d4cf0b986b5524eb9b60ed7224a3b927fe2f9883d.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/460a505c0e796e80049f00c65d19027612e2569a80c431bb0b7e7247ff83fa7e.png"><img alt="_images/460a505c0e796e80049f00c65d19027612e2569a80c431bb0b7e7247ff83fa7e.png" src="_images/460a505c0e796e80049f00c65d19027612e2569a80c431bb0b7e7247ff83fa7e.png" style="width: 80%;" /></a>
 </div>
 </div>
 </section>
@@ -589,7 +582,7 @@ as the parameters are adjusted to better fit the data.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/e03e43d2b26fe3259c66d6ee919828f152d8bb922bfd7229e32e0e795f13ed61.png"><img alt="_images/e03e43d2b26fe3259c66d6ee919828f152d8bb922bfd7229e32e0e795f13ed61.png" src="_images/e03e43d2b26fe3259c66d6ee919828f152d8bb922bfd7229e32e0e795f13ed61.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/05b4c34823f00fa6940f903a5a15c87baf37bfd73c252242b2757df2b44a9543.png"><img alt="_images/05b4c34823f00fa6940f903a5a15c87baf37bfd73c252242b2757df2b44a9543.png" src="_images/05b4c34823f00fa6940f903a5a15c87baf37bfd73c252242b2757df2b44a9543.png" style="width: 80%;" /></a>
 </div>
 </div>
 <p>Here’s the final MSE for the deep learning model.</p>
@@ -604,10 +597,10 @@ as the parameters are adjusted to better fit the data.</p>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Testing loss on the validation set.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>13/13 - 0s - 24ms/step - loss: 0.0450
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>13/13 - 0s - 31ms/step - loss: 0.0407
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.044971950352191925
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.040745146572589874
 </pre></div>
 </div>
 </div>
@@ -647,7 +640,7 @@ linear regression, suggesting a better fit.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/0a8d56dae6d6bdc4a65af47e8ff6858192d82f7be8cd30e8dc765c44dc33c84f.png"><img alt="_images/0a8d56dae6d6bdc4a65af47e8ff6858192d82f7be8cd30e8dc765c44dc33c84f.png" src="_images/0a8d56dae6d6bdc4a65af47e8ff6858192d82f7be8cd30e8dc765c44dc33c84f.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/bbdcdbce7abad8f47f9ec2a061a9479d614ea003a2bbddddbd75aa159061a85f.png"><img alt="_images/bbdcdbce7abad8f47f9ec2a061a9479d614ea003a2bbddddbd75aa159061a85f.png" src="_images/bbdcdbce7abad8f47f9ec2a061a9479d614ea003a2bbddddbd75aa159061a85f.png" style="width: 80%;" /></a>
 </div>
 </div>
 </section>
