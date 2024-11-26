@@ -2,7 +2,7 @@ name: Build Project on Google Collab (Execution)
 on: [pull_request]
 jobs:
   execution-checks:
-    runs-on: quantecon-gpu-runner
+    runs-on: quantecon-gpu
     container:
       image: docker://us-docker.pkg.dev/colab-images/public/runtime
       options: --gpus all
