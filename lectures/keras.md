@@ -4,7 +4,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.16.4
+    jupytext_version: 1.16.7
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -58,7 +58,7 @@ Next we import some tools from Keras.
 
 ```{code-cell} ipython3
 import keras
-from keras.models import Sequential
+from keras import Sequential
 from keras.layers import Dense
 ```
 
@@ -70,22 +70,30 @@ The data has the form
 
 $$
     y_i = f(x_i) + \epsilon_i,
-    \qquad i=1, \ldots, n
+    \qquad i=1, \ldots, n,
 $$
 
-The map $f$ is specified inside the function and $\epsilon_i$ is an independent
-draw from a fixed normal distribution.
+where 
+
+* the input sequence $(x_i)$ is an evenly-spaced grid,
+* $f$ is a nonlinear transformation, and
+* each $\epsilon_i$ is independent white noise.
 
 Here's the function that creates vectors `x` and `y` according to the rule
 above.
 
 ```{code-cell} ipython3
-def generate_data(x_min=0, x_max=5, data_size=400):
+def generate_data(x_min=0,           # Minimum x value
+                  x_max=5,           # Max x value
+                  data_size=400,     # Default size for dataset
+                  seed=1234):
+    np.random.seed(seed)
     x = np.linspace(x_min, x_max, num=data_size)
-    x = x.reshape(data_size, 1)
-    ϵ = 0.2 * np.random.randn(*x.shape)
+    
+    ϵ = 0.2 * np.random.randn(data_size)
     y = x**0.5 + np.sin(x) + ϵ
-    x, y = [z.astype('float32') for z in (x, y)]
+    # Keras expects two dimensions, not flat arrays
+    x, y = [np.reshape(z, (data_size, 1)) for z in (x, y)]
     return x, y
 ```
 
@@ -115,42 +123,60 @@ x_validate, y_validate = generate_data()
 
 We supply functions to build two types of models.
 
+## Regression model
+
 The first implements linear regression.
 
 This is achieved by constructing a neural network with just one layer, that maps
 to a single dimension (since the prediction is real-valued).
 
-The input `model` will be an instance of `keras.Sequential`, which is used to
+The object `model` will be an instance of `keras.Sequential`, which is used to
 group a stack of layers into a single prediction model.
 
 ```{code-cell} ipython3
-def build_regression_model(model):
-    model.add(Dense(units=1))
+def build_regression_model():
+    # Generate an instance of Sequential, to store layers and training attributes
+    model = Sequential()
+    # Add a single layer with scalar output
+    model.add(Dense(units=1))  
+    # Configure the model for training
     model.compile(optimizer=keras.optimizers.SGD(), 
                   loss='mean_squared_error')
     return model
 ```
 
-In the function above you can see that we use stochastic gradient descent to
-train the model, and that the loss is mean squared error (MSE).
+In the function above you can see that 
+
+* we use stochastic gradient descent to train the model, and
+* the loss is mean squared error (MSE).
+
+The call `model.add` adds a single layer the activation function equal to the identity map.
 
 MSE is the standard loss function for ordinary least squares regression.
+
+### Deep Network
 
 The second function creates a dense (i.e., fully connected) neural network with
 3 hidden layers, where each hidden layer maps to a k-dimensional output space.
 
 ```{code-cell} ipython3
-def build_nn_model(model, k=10, activation_function='tanh'):
-    # Construct network
-    model.add(Dense(units=k, activation=activation_function))
-    model.add(Dense(units=k, activation=activation_function))
-    model.add(Dense(units=k, activation=activation_function))
-    model.add(Dense(1))
+def build_nn_model(output_dim=10, num_layers=3, activation_function='tanh'):
+    # Create a Keras Model instance using Sequential()
+    model = Sequential()
+    # Add layers to the network sequentially, from inputs towards outputs
+    for i in range(num_layers):
+        model.add(Dense(units=output_dim, activation=activation_function))
+    # Add a final layer that maps to a scalar value, for regression.
+    model.add(Dense(units=1))
     # Embed training configurations
     model.compile(optimizer=keras.optimizers.SGD(), 
                   loss='mean_squared_error')
     return model
 ```
+
+### Tracking errors
+
++++
 
 The following function will be used to plot the MSE of the model during the
 training process.
@@ -160,12 +186,16 @@ as the parameters are adjusted to better fit the data.
 
 ```{code-cell} ipython3
 def plot_loss_history(training_history, ax):
-    ax.plot(training_history.epoch, 
+    # Plot MSE of training data against epoch
+    epochs = training_history.epoch
+    ax.plot(epochs, 
             np.array(training_history.history['loss']), 
             label='training loss')
-    ax.plot(training_history.epoch, 
+    # Plot MSE of validation data against epoch
+    ax.plot(epochs, 
             np.array(training_history.history['val_loss']),
             label='validation loss')
+    # Add labels
     ax.set_xlabel('Epoch')
     ax.set_ylabel('Loss (Mean squared error)')
     ax.legend()
@@ -180,11 +210,8 @@ Now let's go ahead and train our  models.
 
 We'll start with linear regression.
 
-First we create a `Model` instance using `Sequential()`.
-
 ```{code-cell} ipython3
-model = Sequential()
-regression_model = build_regression_model(model)
+regression_model = build_regression_model()
 ```
 
 Now we train the model using the training data.
@@ -192,7 +219,7 @@ Now we train the model using the training data.
 ```{code-cell} ipython3
 training_history = regression_model.fit(
     x, y, batch_size=x.shape[0], verbose=0,
-    epochs=4000, validation_data=(x_validate, y_validate))
+    epochs=2000, validation_data=(x_validate, y_validate))
 ```
 
 Let's have a look at the evolution of MSE as the model is trained.
@@ -241,14 +268,13 @@ Now let's switch to a neural network with multiple layers.
 We implement the same steps as before.
 
 ```{code-cell} ipython3
-model = Sequential()
-nn_model = build_nn_model(model)
+nn_model = build_nn_model()
 ```
 
 ```{code-cell} ipython3
 training_history = nn_model.fit(
     x, y, batch_size=x.shape[0], verbose=0,
-    epochs=4000, validation_data=(x_validate, y_validate))
+    epochs=2000, validation_data=(x_validate, y_validate))
 ```
 
 ```{code-cell} ipython3
@@ -285,4 +311,10 @@ def plot_results(x, y, y_predict, ax):
 fig, ax = plt.subplots()
 plot_results(x_validate, y_validate, y_predict, ax)
 plt.show()
+```
+
+Not surprisingly, the multilayer neural network does a much better job of fitting the data.
+
+```{code-cell} ipython3
+
 ```
