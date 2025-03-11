@@ -71,13 +71,13 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=f77998adf44a3f900caaca31caf410c810f6f245" type="text/css" />
+    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=bd0785fbb14d8d2bd4d9ae501d79ed8d3bc089ec" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
     <link rel="stylesheet" type="text/css" href="_static/exercise.css" />
-    <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.5ea377869091fd0449014c60fc090103.min.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
@@ -90,14 +90,15 @@
     <script src="_static/underscore.js"></script>
     <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
     <script src="_static/clipboard.min.js"></script>
     <script src="_static/copybutton.js"></script>
-    <script src="_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script src="_static/scripts/sphinx-book-theme.js"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="_static/togglebutton.js"></script>
-    <script src="_static/scripts/quantecon-book-theme.js?digest=eed9c059a3ee152aae2353ec732f0a6d12e6aa07"></script>
+    <script src="_static/scripts/quantecon-book-theme.js?digest=d6d86bce9979111653c4c495e33499e1796e172a"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script src="_static/design-tabs.js"></script>
     <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-K1NYBSC1CZ"></script>
@@ -107,11 +108,7 @@
                 gtag('js', new Date());
                 gtag('config', 'G-K1NYBSC1CZ');
             </script>
-    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
-const thebe_selector = ".thebe,.cell"
-const thebe_selector_input = "pre"
-const thebe_selector_output = ".output, .cell_output"
-</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script async="async" src="_static/sphinx-thebe.js"></script>
     <script>window.MathJax = {"tex": {"macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
@@ -272,26 +269,26 @@ in <a class="reference external" href="https://python.quantecon.org/newton_metho
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Wed Nov 20 00:33:02 2024       
-+---------------------------------------------------------------------------------------+
-| NVIDIA-SMI 535.54.03              Driver Version: 535.54.03    CUDA Version: 12.6     |
-|-----------------------------------------+----------------------+----------------------+
-| GPU  Name                 Persistence-M | Bus-Id        Disp.A | Volatile Uncorr. ECC |
-| Fan  Temp   Perf          Pwr:Usage/Cap |         Memory-Usage | GPU-Util  Compute M. |
-|                                         |                      |               MIG M. |
-|=========================================+======================+======================|
-|   0  Tesla T4                       On  | 00000001:00:00.0 Off |                    0 |
-| N/A   45C    P0              28W /  70W |      2MiB / 15360MiB |      0%      Default |
-|                                         |                      |                  N/A |
-+-----------------------------------------+----------------------+----------------------+
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Mon Feb 10 03:50:28 2025       
++-----------------------------------------------------------------------------------------+
+| NVIDIA-SMI 550.127.05             Driver Version: 550.127.05     CUDA Version: 12.4     |
+|-----------------------------------------+------------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |
+|                                         |                        |               MIG M. |
+|=========================================+========================+======================|
+|   0  Tesla T4                       On  |   00000001:00:00.0 Off |                  Off |
+| N/A   40C    P0             25W /   70W |       1MiB /  16384MiB |      0%      Default |
+|                                         |                        |                  N/A |
++-----------------------------------------+------------------------+----------------------+
                                                                                          
-+---------------------------------------------------------------------------------------+
-| Processes:                                                                            |
-|  GPU   GI   CI        PID   Type   Process name                            GPU Memory |
-|        ID   ID                                                             Usage      |
-|=======================================================================================|
-|  No running processes found                                                           |
-+---------------------------------------------------------------------------------------+
++-----------------------------------------------------------------------------------------+
+| Processes:                                                                              |
+|  GPU   GI   CI        PID   Type   Process name                              GPU Memory |
+|        ID   ID                                                               Usage      |
+|=========================================================================================|
+|  No running processes found                                                             |
++-----------------------------------------------------------------------------------------+
 </pre></div>
 </div>
 </div>
@@ -497,8 +494,8 @@ iteration 3, error = 0.10971637070178986
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>iteration 4, error = 5.167595372768119e-05
 iteration 5, error = 1.1732883649528958e-05
 iteration 6, error = 4.191016159893479e-06
-CPU times: user 5.45 s, sys: 520 ms, total: 5.97 s
-Wall time: 5.85 s
+CPU times: user 5.11 s, sys: 951 ms, total: 6.06 s
+Wall time: 5.88 s
 </pre></div>
 </div>
 </div>
@@ -514,14 +511,16 @@ Wall time: 5.85 s
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>iteration 1, error = 29.977458953857422
 iteration 2, error = 5.092828750610352
-iteration 3, error = 0.10971637070178986
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>iteration 4, error = 5.167595372768119e-05
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>iteration 3, error = 0.10971637070178986
+iteration 4, error = 5.167595372768119e-05
 iteration 5, error = 1.1732883649528958e-05
-iteration 6, error = 4.191016159893479e-06
-CPU times: user 1.56 s, sys: 337 ms, total: 1.9 s
-Wall time: 1.8 s
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>iteration 6, error = 4.191016159893479e-06
+CPU times: user 1.67 s, sys: 925 ms, total: 2.59 s
+Wall time: 2.48 s
 </pre></div>
 </div>
 </div>
@@ -553,8 +552,8 @@ even with the Jacobian supplied.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1min 55s, sys: 148 ms, total: 1min 55s
-Wall time: 1min 55s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1min 56s, sys: 230 ms, total: 1min 56s
+Wall time: 1min 56s
 </pre></div>
 </div>
 </div>
@@ -678,8 +677,8 @@ iteration 3, error = 4.294127464294434
 iteration 4, error = 0.3854290544986725
 iteration 5, error = 0.0054382034577429295
 iteration 6, error = 8.92080606718082e-07
-CPU times: user 130 ms, sys: 12.1 ms, total: 142 ms
-Wall time: 177 ms
+CPU times: user 136 ms, sys: 14 ms, total: 150 ms
+Wall time: 193 ms
 ----------------------------------------------------------------
 Attempt 2: Starting value is [3. 5. 5.] 
 </pre></div>
@@ -688,8 +687,8 @@ Attempt 2: Starting value is [3. 5. 5.]
 iteration 2, error = 0.12642373144626617
 iteration 3, error = 0.0006017307168804109
 iteration 4, error = 3.3717478231665154e-07
-CPU times: user 78.6 ms, sys: 32 μs, total: 78.6 ms
-Wall time: 72.8 ms
+CPU times: user 76.7 ms, sys: 6.09 ms, total: 82.8 ms
+Wall time: 75.5 ms
 ----------------------------------------------------------------
 Attempt 3: Starting value is [50. 50. 50.] 
 
@@ -701,8 +700,8 @@ iteration 3, error = 0.6806989312171936
 iteration 4, error = 0.016202213242650032
 iteration 5, error = 1.0600916539260652e-05
 iteration 6, error = 9.830249609876773e-07
-CPU times: user 179 ms, sys: 7.86 ms, total: 187 ms
-Wall time: 176 ms
+CPU times: user 184 ms, sys: 10.2 ms, total: 194 ms
+Wall time: 182 ms
 ----------------------------------------------------------------
 </pre></div>
 </div>
@@ -744,8 +743,8 @@ Wall time: 176 ms
 iteration 2, error = 0.21344946324825287
 iteration 3, error = 0.002045975998044014
 iteration 4, error = 8.259061701210157e-07
-CPU times: user 146 ms, sys: 12.2 ms, total: 158 ms
-Wall time: 173 ms
+CPU times: user 159 ms, sys: 6.04 ms, total: 166 ms
+Wall time: 183 ms
 </pre></div>
 </div>
 </div>
@@ -765,8 +764,8 @@ Wall time: 173 ms
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>iteration 2, error = 0.21344946324825287
 iteration 3, error = 0.002045975998044014
 iteration 4, error = 8.259061701210157e-07
-CPU times: user 159 ms, sys: 0 ns, total: 159 ms
-Wall time: 148 ms
+CPU times: user 153 ms, sys: 12 ms, total: 164 ms
+Wall time: 152 ms
 </pre></div>
 </div>
 </div>
@@ -790,8 +789,8 @@ iteration 2, error = 0.21344933091258958
 iteration 3, error = 0.0020465547718452695
 iteration 4, error = 2.0309190076799282e-07
 iteration 5, error = 1.538370149106851e-15
-CPU times: user 167 ms, sys: 7.95 ms, total: 175 ms
-Wall time: 222 ms
+CPU times: user 172 ms, sys: 13.1 ms, total: 185 ms
+Wall time: 243 ms
 </pre></div>
 </div>
 </div>
@@ -810,8 +809,8 @@ iteration 2, error = 0.21344933091258958
 iteration 3, error = 0.0020465547718452695
 iteration 4, error = 2.0309190076799282e-07
 iteration 5, error = 1.538370149106851e-15
-CPU times: user 78.1 ms, sys: 4.19 ms, total: 82.3 ms
-Wall time: 99 ms
+CPU times: user 82.3 ms, sys: 4.04 ms, total: 86.3 ms
+Wall time: 106 ms
 </pre></div>
 </div>
 </div>
@@ -901,8 +900,8 @@ c = \begin{pmatrix}
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>iteration 1, error = 9.243805733085065
 iteration 2, error = nan
-CPU times: user 92.7 ms, sys: 4.07 ms, total: 96.8 ms
-Wall time: 116 ms
+CPU times: user 90.9 ms, sys: 9.01 ms, total: 99.9 ms
+Wall time: 122 ms
 ----------------------------------------------------------------
 Attempt 2: Starting value is [4.5 0.1 4. ] 
 
@@ -914,8 +913,8 @@ iteration 5, error = 0.005209730313222213
 iteration 6, error = 4.3632751705775364e-06
 iteration 7, error = 3.0460818773540415e-12
 iteration 8, error = 0.0
-CPU times: user 72.6 ms, sys: 0 ns, total: 72.6 ms
-Wall time: 65.5 ms
+CPU times: user 66 ms, sys: 9.99 ms, total: 76 ms
+Wall time: 67.3 ms
 ----------------------------------------------------------------
 </pre></div>
 </div>
@@ -1200,7 +1199,11 @@ Wall time: 65.5 ms
                     <li data-tippy-content="Download Notebook"><a href="/_notebooks/newtons_method.ipynb" download><i data-feather="download-cloud"></i></a></li>
                     <li class="settings-button" id="settingsButton"><div data-tippy-content="Launch Notebook"><i data-feather="play-circle"></i></div></li>
                         <li class="download-pdf" id="downloadButton"><i data-feather="file"></i></li>
+                    <!--
+                    # Enable if looking for link to specific document hosted on GitHub
                     <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-jax/blob/main/lectures/newtons_method.md" download><i data-feather="github"></i></a></li>
+                    -->
+                    <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-jax" download><i data-feather="github"></i></a></li>
                 </ul>
 
             </div>

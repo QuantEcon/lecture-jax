@@ -71,13 +71,13 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=f77998adf44a3f900caaca31caf410c810f6f245" type="text/css" />
+    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=bd0785fbb14d8d2bd4d9ae501d79ed8d3bc089ec" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
     <link rel="stylesheet" type="text/css" href="_static/exercise.css" />
-    <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.5ea377869091fd0449014c60fc090103.min.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
@@ -90,14 +90,15 @@
     <script src="_static/underscore.js"></script>
     <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
     <script src="_static/clipboard.min.js"></script>
     <script src="_static/copybutton.js"></script>
-    <script src="_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script src="_static/scripts/sphinx-book-theme.js"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="_static/togglebutton.js"></script>
-    <script src="_static/scripts/quantecon-book-theme.js?digest=eed9c059a3ee152aae2353ec732f0a6d12e6aa07"></script>
+    <script src="_static/scripts/quantecon-book-theme.js?digest=d6d86bce9979111653c4c495e33499e1796e172a"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script src="_static/design-tabs.js"></script>
     <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-K1NYBSC1CZ"></script>
@@ -107,11 +108,7 @@
                 gtag('js', new Date());
                 gtag('config', 'G-K1NYBSC1CZ');
             </script>
-    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
-const thebe_selector = ".thebe,.cell"
-const thebe_selector_input = "pre"
-const thebe_selector_output = ".output, .cell_output"
-</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script async="async" src="_static/sphinx-thebe.js"></script>
     <script>window.MathJax = {"tex": {"macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
@@ -319,26 +316,26 @@ Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in /opt/conda/envs/quant
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Wed Nov 20 00:36:54 2024       
-+---------------------------------------------------------------------------------------+
-| NVIDIA-SMI 535.54.03              Driver Version: 535.54.03    CUDA Version: 12.6     |
-|-----------------------------------------+----------------------+----------------------+
-| GPU  Name                 Persistence-M | Bus-Id        Disp.A | Volatile Uncorr. ECC |
-| Fan  Temp   Perf          Pwr:Usage/Cap |         Memory-Usage | GPU-Util  Compute M. |
-|                                         |                      |               MIG M. |
-|=========================================+======================+======================|
-|   0  Tesla T4                       On  | 00000001:00:00.0 Off |                    0 |
-| N/A   47C    P8              12W /  70W |      2MiB / 15360MiB |      0%      Default |
-|                                         |                      |                  N/A |
-+-----------------------------------------+----------------------+----------------------+
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Mon Feb 10 03:54:29 2025       
++-----------------------------------------------------------------------------------------+
+| NVIDIA-SMI 550.127.05             Driver Version: 550.127.05     CUDA Version: 12.4     |
+|-----------------------------------------+------------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |
+|                                         |                        |               MIG M. |
+|=========================================+========================+======================|
+|   0  Tesla T4                       On  |   00000001:00:00.0 Off |                  Off |
+| N/A   42C    P8              9W /   70W |       1MiB /  16384MiB |      0%      Default |
+|                                         |                        |                  N/A |
++-----------------------------------------+------------------------+----------------------+
                                                                                          
-+---------------------------------------------------------------------------------------+
-| Processes:                                                                            |
-|  GPU   GI   CI        PID   Type   Process name                            GPU Memory |
-|        ID   ID                                                             Usage      |
-|=======================================================================================|
-|  No running processes found                                                           |
-+---------------------------------------------------------------------------------------+
++-----------------------------------------------------------------------------------------+
+| Processes:                                                                              |
+|  GPU   GI   CI        PID   Type   Process name                              GPU Memory |
+|        ID   ID                                                               Usage      |
+|=========================================================================================|
+|  No running processes found                                                             |
++-----------------------------------------------------------------------------------------+
 </pre></div>
 </div>
 </div>
@@ -514,7 +511,7 @@ current value of the aggregate shock</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/fd2c29b5e8406fe269d67c0ac02fa318d4caf3a341b801e9fcbdcc5f2841a478.png"><img alt="_images/fd2c29b5e8406fe269d67c0ac02fa318d4caf3a341b801e9fcbdcc5f2841a478.png" src="_images/fd2c29b5e8406fe269d67c0ac02fa318d4caf3a341b801e9fcbdcc5f2841a478.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/152ccab50ba67ee52ea927a3972ac85f6183b6b2418a7895298f2de85e8d601e.png"><img alt="_images/152ccab50ba67ee52ea927a3972ac85f6183b6b2418a7895298f2de85e8d601e.png" src="_images/152ccab50ba67ee52ea927a3972ac85f6183b6b2418a7895298f2de85e8d601e.png" style="width: 80%;" /></a>
 </div>
 </div>
 <p>Notice the large spikes in wealth over time.</p>
@@ -582,7 +579,7 @@ is known.</p>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Generating cross-section using Numba
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Generated cross-section in 59.14428520202637 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Generated cross-section in 59.51103377342224 seconds.
 </pre></div>
 </div>
 </div>
@@ -598,7 +595,7 @@ is known.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Generated cross-section in 58.846524715423584 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Generated cross-section in 59.322184324264526 seconds.
 </pre></div>
 </div>
 </div>
@@ -673,7 +670,7 @@ using JAX</p>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Generating cross-section using JAX
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Generated cross-section in 2.6317644119262695 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Generated cross-section in 2.534062623977661 seconds.
 </pre></div>
 </div>
 </div>
@@ -693,7 +690,7 @@ using JAX</p>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Repeating without compile time.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Generated cross-section in 1.519399881362915 seconds
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Generated cross-section in 1.2697641849517822 seconds
 </pre></div>
 </div>
 </div>
@@ -769,7 +766,7 @@ using JAX</p>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Generating cross-section using JAX with compiled loop
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Generated cross-section in 0.7691524028778076 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Generated cross-section in 0.75502610206604 seconds.
 </pre></div>
 </div>
 </div>
@@ -791,7 +788,7 @@ using JAX</p>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Repeating without compile time
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Generated cross-section in 0.2684907913208008 seconds
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Generated cross-section in 0.2345421314239502 seconds
 </pre></div>
 </div>
 </div>
@@ -803,7 +800,7 @@ using JAX</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>JAX is 219.1752 times faster.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>JAX is 252.9276 times faster.
 </pre></div>
 </div>
 </div>
@@ -836,7 +833,7 @@ that generates a cross-section of wealth and generating a suitable rank-size plo
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/581492116edbc7fb3dac29b827046967f991418ff9c5215f97897974a9ee5b05.png"><img alt="_images/581492116edbc7fb3dac29b827046967f991418ff9c5215f97897974a9ee5b05.png" src="_images/581492116edbc7fb3dac29b827046967f991418ff9c5215f97897974a9ee5b05.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/7ff6ea47361dacdf7caa8cd9ac2657f9abdbe7a17c6bdae5c59878d124c14617.png"><img alt="_images/7ff6ea47361dacdf7caa8cd9ac2657f9abdbe7a17c6bdae5c59878d124c14617.png" src="_images/7ff6ea47361dacdf7caa8cd9ac2657f9abdbe7a17c6bdae5c59878d124c14617.png" style="width: 80%;" /></a>
 </div>
 </div>
 </section>
@@ -904,8 +901,8 @@ generates data points <span class="math notranslate nohighlight">\((x_i, y_i)_{i
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 919 ms, sys: 4.02 ms, total: 923 ms
-Wall time: 1.38 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 943 ms, sys: 2.02 ms, total: 945 ms
+Wall time: 1.42 s
 </pre></div>
 </div>
 </div>
@@ -918,8 +915,8 @@ Wall time: 1.38 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 0 ns, sys: 394 μs, total: 394 μs
-Wall time: 216 μs
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 445 μs, sys: 2 μs, total: 447 μs
+Wall time: 220 μs
 </pre></div>
 </div>
 </div>
@@ -935,7 +932,7 @@ Wall time: 216 μs
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/896bdff2cec4c60ddd0b7045c2d917b7a13a16c02cb26781f1f3f504258eaf71.png"><img alt="_images/896bdff2cec4c60ddd0b7045c2d917b7a13a16c02cb26781f1f3f504258eaf71.png" src="_images/896bdff2cec4c60ddd0b7045c2d917b7a13a16c02cb26781f1f3f504258eaf71.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/6958fb56240dd76769bfd97b11bfc49851e40454a7b166c3ebcf95891f5122c6.png"><img alt="_images/6958fb56240dd76769bfd97b11bfc49851e40454a7b166c3ebcf95891f5122c6.png" src="_images/6958fb56240dd76769bfd97b11bfc49851e40454a7b166c3ebcf95891f5122c6.png" style="width: 80%;" /></a>
 </div>
 </div>
 </section>
@@ -970,8 +967,8 @@ G :=
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 80.2 ms, sys: 1e+03 ns, total: 80.2 ms
-Wall time: 8.47 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 82 ms, sys: 8 μs, total: 82 ms
+Wall time: 8.38 s
 </pre></div>
 </div>
 </div>
@@ -984,8 +981,8 @@ Wall time: 8.47 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 2.22 ms, sys: 5 μs, total: 2.23 ms
-Wall time: 8.27 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 3.12 ms, sys: 13 μs, total: 3.13 ms
+Wall time: 8.16 s
 </pre></div>
 </div>
 </div>
@@ -997,7 +994,7 @@ Wall time: 8.27 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Array(0.76475036, dtype=float32)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Array(0.76222056, dtype=float32)
 </pre></div>
 </div>
 </div>
@@ -1043,8 +1040,8 @@ Wall time: 8.27 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 79.3 ms, sys: 10 μs, total: 79.3 ms
-Wall time: 8.44 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 80.1 ms, sys: 2.01 ms, total: 82.1 ms
+Wall time: 8.31 s
 </pre></div>
 </div>
 </div>
@@ -1057,8 +1054,8 @@ Wall time: 8.44 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 2.47 ms, sys: 6 μs, total: 2.47 ms
-Wall time: 8.37 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1.33 ms, sys: 1.8 ms, total: 3.13 ms
+Wall time: 8.21 s
 </pre></div>
 </div>
 </div>
@@ -1070,7 +1067,7 @@ Wall time: 8.37 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Array(0.76475036, dtype=float32)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Array(0.76222056, dtype=float32)
 </pre></div>
 </div>
 </div>
@@ -1142,11 +1139,11 @@ Wall time: 8.37 s
 <div class="cell_output docutils container">
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;&gt;:11: SyntaxWarning: invalid escape sequence &#39;\p&#39;
 &lt;&gt;:11: SyntaxWarning: invalid escape sequence &#39;\p&#39;
-/tmp/ipykernel_2878/18329590.py:11: SyntaxWarning: invalid escape sequence &#39;\p&#39;
+/tmp/ipykernel_2887/18329590.py:11: SyntaxWarning: invalid escape sequence &#39;\p&#39;
   ax.plot(x, y, label=f&#39;$\psi^*$ at $\mu_r = {μ_r:0.2}$&#39;)
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="_images/d0bbb02efce7d9dc6b4f4529472b206cab70b6940c92de0ea5e7f4507477007e.png"><img alt="_images/d0bbb02efce7d9dc6b4f4529472b206cab70b6940c92de0ea5e7f4507477007e.png" src="_images/d0bbb02efce7d9dc6b4f4529472b206cab70b6940c92de0ea5e7f4507477007e.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/347ea1eba39e4a06681b72302e3962b220ee004b266ddabad66b5e4eaffdb63b.png"><img alt="_images/347ea1eba39e4a06681b72302e3962b220ee004b266ddabad66b5e4eaffdb63b.png" src="_images/347ea1eba39e4a06681b72302e3962b220ee004b266ddabad66b5e4eaffdb63b.png" style="width: 80%;" /></a>
 </div>
 </div>
 <p>The Lorenz curve shifts downwards as returns on financial income rise, indicating a rise in inequality.</p>
@@ -1164,11 +1161,11 @@ Wall time: 8.37 s
 <div class="cell_output docutils container">
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;&gt;:3: SyntaxWarning: invalid escape sequence &#39;\m&#39;
 &lt;&gt;:3: SyntaxWarning: invalid escape sequence &#39;\m&#39;
-/tmp/ipykernel_2878/151802629.py:3: SyntaxWarning: invalid escape sequence &#39;\m&#39;
+/tmp/ipykernel_2887/151802629.py:3: SyntaxWarning: invalid escape sequence &#39;\m&#39;
   ax.set_xlabel(&quot;$\mu_r$&quot;)
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="_images/7eab6ea90164a69f278c3bca3438941318fe803c828343c0d7d2428f00e94193.png"><img alt="_images/7eab6ea90164a69f278c3bca3438941318fe803c828343c0d7d2428f00e94193.png" src="_images/7eab6ea90164a69f278c3bca3438941318fe803c828343c0d7d2428f00e94193.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/50bcdb90aa754ae2e1ba6368aa245c38a4553b7d654eaabec799429a45793f3e.png"><img alt="_images/50bcdb90aa754ae2e1ba6368aa245c38a4553b7d654eaabec799429a45793f3e.png" src="_images/50bcdb90aa754ae2e1ba6368aa245c38a4553b7d654eaabec799429a45793f3e.png" style="width: 80%;" /></a>
 </div>
 </div>
 <p>As expected, inequality increases as returns on financial income rise.</p>
@@ -1220,11 +1217,11 @@ Wall time: 8.37 s
 <div class="cell_output docutils container">
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;&gt;:12: SyntaxWarning: invalid escape sequence &#39;\p&#39;
 &lt;&gt;:12: SyntaxWarning: invalid escape sequence &#39;\p&#39;
-/tmp/ipykernel_2878/3870011077.py:12: SyntaxWarning: invalid escape sequence &#39;\p&#39;
+/tmp/ipykernel_2887/3870011077.py:12: SyntaxWarning: invalid escape sequence &#39;\p&#39;
   ax.plot(x, y, label=f&#39;$\psi^*$ at $\sigma_r = {σ_r:0.2}$&#39;)
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="_images/1e43b9ea669d20ebcf373229e43485923fd6bfd6eee62fcaef6f0112e42adb33.png"><img alt="_images/1e43b9ea669d20ebcf373229e43485923fd6bfd6eee62fcaef6f0112e42adb33.png" src="_images/1e43b9ea669d20ebcf373229e43485923fd6bfd6eee62fcaef6f0112e42adb33.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/8edb31952ed64bbe046dab40c313ac7daa13ef05c67a6abbe1818d2530ca8db9.png"><img alt="_images/8edb31952ed64bbe046dab40c313ac7daa13ef05c67a6abbe1818d2530ca8db9.png" src="_images/8edb31952ed64bbe046dab40c313ac7daa13ef05c67a6abbe1818d2530ca8db9.png" style="width: 80%;" /></a>
 </div>
 </div>
 <div class="cell docutils container">
@@ -1240,11 +1237,11 @@ Wall time: 8.37 s
 <div class="cell_output docutils container">
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;&gt;:3: SyntaxWarning: invalid escape sequence &#39;\s&#39;
 &lt;&gt;:3: SyntaxWarning: invalid escape sequence &#39;\s&#39;
-/tmp/ipykernel_2878/693578165.py:3: SyntaxWarning: invalid escape sequence &#39;\s&#39;
+/tmp/ipykernel_2887/693578165.py:3: SyntaxWarning: invalid escape sequence &#39;\s&#39;
   ax.set_xlabel(&quot;$\sigma_r$&quot;)
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="_images/2c854d328ae58455dd650c8f3dd576c2e6bb641d669a150d9856c0c6be979d61.png"><img alt="_images/2c854d328ae58455dd650c8f3dd576c2e6bb641d669a150d9856c0c6be979d61.png" src="_images/2c854d328ae58455dd650c8f3dd576c2e6bb641d669a150d9856c0c6be979d61.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/a5b895538834e5d39eb85d51ec5c53006ffca025707efa1bc0e3891fd5c3c7f6.png"><img alt="_images/a5b895538834e5d39eb85d51ec5c53006ffca025707efa1bc0e3891fd5c3c7f6.png" src="_images/a5b895538834e5d39eb85d51ec5c53006ffca025707efa1bc0e3891fd5c3c7f6.png" style="width: 80%;" /></a>
 </div>
 </div>
 </section>
@@ -1307,7 +1304,7 @@ Wall time: 8.37 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/748c0587141f95f84de3cf827449ec5c5255446ab6daff2e5db723217313925d.png"><img alt="_images/748c0587141f95f84de3cf827449ec5c5255446ab6daff2e5db723217313925d.png" src="_images/748c0587141f95f84de3cf827449ec5c5255446ab6daff2e5db723217313925d.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/a4d7ce71d46b64b97e6739da812c7e939849bb64c7cf31f061712d6f7d1025ed.png"><img alt="_images/a4d7ce71d46b64b97e6739da812c7e939849bb64c7cf31f061712d6f7d1025ed.png" src="_images/a4d7ce71d46b64b97e6739da812c7e939849bb64c7cf31f061712d6f7d1025ed.png" style="width: 80%;" /></a>
 </div>
 </div>
 </section>
@@ -1573,7 +1570,11 @@ Wall time: 8.37 s
                     <li data-tippy-content="Download Notebook"><a href="/_notebooks/wealth_dynamics.ipynb" download><i data-feather="download-cloud"></i></a></li>
                     <li class="settings-button" id="settingsButton"><div data-tippy-content="Launch Notebook"><i data-feather="play-circle"></i></div></li>
                         <li class="download-pdf" id="downloadButton"><i data-feather="file"></i></li>
+                    <!--
+                    # Enable if looking for link to specific document hosted on GitHub
                     <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-jax/blob/main/lectures/wealth_dynamics.md" download><i data-feather="github"></i></a></li>
+                    -->
+                    <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-jax" download><i data-feather="github"></i></a></li>
                 </ul>
 
             </div>

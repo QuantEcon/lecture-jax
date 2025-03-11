@@ -71,13 +71,13 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=f77998adf44a3f900caaca31caf410c810f6f245" type="text/css" />
+    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=bd0785fbb14d8d2bd4d9ae501d79ed8d3bc089ec" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
     <link rel="stylesheet" type="text/css" href="_static/exercise.css" />
-    <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.5ea377869091fd0449014c60fc090103.min.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
@@ -90,14 +90,15 @@
     <script src="_static/underscore.js"></script>
     <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
     <script src="_static/clipboard.min.js"></script>
     <script src="_static/copybutton.js"></script>
-    <script src="_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script src="_static/scripts/sphinx-book-theme.js"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="_static/togglebutton.js"></script>
-    <script src="_static/scripts/quantecon-book-theme.js?digest=eed9c059a3ee152aae2353ec732f0a6d12e6aa07"></script>
+    <script src="_static/scripts/quantecon-book-theme.js?digest=d6d86bce9979111653c4c495e33499e1796e172a"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script src="_static/design-tabs.js"></script>
     <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-K1NYBSC1CZ"></script>
@@ -107,11 +108,7 @@
                 gtag('js', new Date());
                 gtag('config', 'G-K1NYBSC1CZ');
             </script>
-    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
-const thebe_selector = ".thebe,.cell"
-const thebe_selector_input = "pre"
-const thebe_selector_output = ".output, .cell_output"
-</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script async="async" src="_static/sphinx-thebe.js"></script>
     <script>window.MathJax = {"tex": {"macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
@@ -405,26 +402,26 @@ on <span class="math notranslate nohighlight">\(Z\)</span> with Markov matrix <s
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Tue Nov 19 23:57:40 2024       
-+---------------------------------------------------------------------------------------+
-| NVIDIA-SMI 535.54.03              Driver Version: 535.54.03    CUDA Version: 12.6     |
-|-----------------------------------------+----------------------+----------------------+
-| GPU  Name                 Persistence-M | Bus-Id        Disp.A | Volatile Uncorr. ECC |
-| Fan  Temp   Perf          Pwr:Usage/Cap |         Memory-Usage | GPU-Util  Compute M. |
-|                                         |                      |               MIG M. |
-|=========================================+======================+======================|
-|   0  Tesla T4                       On  | 00000001:00:00.0 Off |                    0 |
-| N/A   43C    P0              28W /  70W |      2MiB / 15360MiB |      0%      Default |
-|                                         |                      |                  N/A |
-+-----------------------------------------+----------------------+----------------------+
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Mon Feb 10 03:16:03 2025       
++-----------------------------------------------------------------------------------------+
+| NVIDIA-SMI 550.127.05             Driver Version: 550.127.05     CUDA Version: 12.4     |
+|-----------------------------------------+------------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |
+|                                         |                        |               MIG M. |
+|=========================================+========================+======================|
+|   0  Tesla T4                       On  |   00000001:00:00.0 Off |                  Off |
+| N/A   38C    P8              9W /   70W |       1MiB /  16384MiB |      0%      Default |
+|                                         |                        |                  N/A |
++-----------------------------------------+------------------------+----------------------+
                                                                                          
-+---------------------------------------------------------------------------------------+
-| Processes:                                                                            |
-|  GPU   GI   CI        PID   Type   Process name                            GPU Memory |
-|        ID   ID                                                             Usage      |
-|=======================================================================================|
-|  No running processes found                                                           |
-+---------------------------------------------------------------------------------------+
++-----------------------------------------------------------------------------------------+
+| Processes:                                                                              |
+|  GPU   GI   CI        PID   Type   Process name                              GPU Memory |
+|        ID   ID                                                               Usage      |
+|=========================================================================================|
+|  No running processes found                                                             |
++-----------------------------------------------------------------------------------------+
 </pre></div>
 </div>
 </div>
@@ -688,7 +685,7 @@ argument.</p>
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Terminated successfully in 550 iterations.
-Jax compile plus execution time =  5.9160120487213135
+Jax compile plus execution time =  6.074509143829346
 </pre></div>
 </div>
 </div>
@@ -768,7 +765,7 @@ Jax compile plus execution time =  5.9160120487213135
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Terminated successfully in 550 iterations.
-Jax execution time =  5.303308963775635
+Jax execution time =  5.28187370300293
 </pre></div>
 </div>
 </div>
@@ -831,7 +828,7 @@ Jax execution time =  5.303308963775635
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/2cfa516c88a9720c0fd55afed140bb4c699e30f2cb86c65c716a142df02863c3.png"><img alt="_images/2cfa516c88a9720c0fd55afed140bb4c699e30f2cb86c65c716a142df02863c3.png" src="_images/2cfa516c88a9720c0fd55afed140bb4c699e30f2cb86c65c716a142df02863c3.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/173eb244b7b8f92b41876b140252e7f26d4c9a5051ef33db382f4d912525d8f3.png"><img alt="_images/173eb244b7b8f92b41876b140252e7f26d4c9a5051ef33db382f4d912525d8f3.png" src="_images/173eb244b7b8f92b41876b140252e7f26d4c9a5051ef33db382f4d912525d8f3.png" style="width: 80%;" /></a>
 </div>
 </div>
 </section>
@@ -983,7 +980,7 @@ Jax execution time =  5.303308963775635
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Terminated successfully in 550 iterations.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Numba compile plus execution time =  1015.8022680282593
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Numba compile plus execution time =  958.0736536979675
 </pre></div>
 </div>
 </div>
@@ -1065,7 +1062,7 @@ Jax execution time =  5.303308963775635
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Terminated successfully in 550 iterations.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Numba execution time =  965.9102244377136
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Numba execution time =  956.8223135471344
 </pre></div>
 </div>
 </div>
@@ -1093,7 +1090,7 @@ Jax execution time =  5.303308963775635
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>JAX vectorized implementation is 182.13350024209112 faster than Numba&#39;s parallel implementation
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>JAX vectorized implementation is 181.15206219398004 faster than Numba&#39;s parallel implementation
 </pre></div>
 </div>
 </div>
@@ -1359,7 +1356,11 @@ Jax execution time =  5.303308963775635
                     <li data-tippy-content="Download Notebook"><a href="/_notebooks/inventory_ssd.ipynb" download><i data-feather="download-cloud"></i></a></li>
                     <li class="settings-button" id="settingsButton"><div data-tippy-content="Launch Notebook"><i data-feather="play-circle"></i></div></li>
                         <li class="download-pdf" id="downloadButton"><i data-feather="file"></i></li>
+                    <!--
+                    # Enable if looking for link to specific document hosted on GitHub
                     <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-jax/blob/main/lectures/inventory_ssd.md" download><i data-feather="github"></i></a></li>
+                    -->
+                    <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-jax" download><i data-feather="github"></i></a></li>
                 </ul>
 
             </div>

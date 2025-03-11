@@ -71,13 +71,13 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=f77998adf44a3f900caaca31caf410c810f6f245" type="text/css" />
+    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=bd0785fbb14d8d2bd4d9ae501d79ed8d3bc089ec" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
     <link rel="stylesheet" type="text/css" href="_static/exercise.css" />
-    <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.5ea377869091fd0449014c60fc090103.min.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
@@ -90,14 +90,15 @@
     <script src="_static/underscore.js"></script>
     <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
     <script src="_static/clipboard.min.js"></script>
     <script src="_static/copybutton.js"></script>
-    <script src="_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script src="_static/scripts/sphinx-book-theme.js"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="_static/togglebutton.js"></script>
-    <script src="_static/scripts/quantecon-book-theme.js?digest=eed9c059a3ee152aae2353ec732f0a6d12e6aa07"></script>
+    <script src="_static/scripts/quantecon-book-theme.js?digest=d6d86bce9979111653c4c495e33499e1796e172a"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script src="_static/design-tabs.js"></script>
     <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-K1NYBSC1CZ"></script>
@@ -107,11 +108,7 @@
                 gtag('js', new Date());
                 gtag('config', 'G-K1NYBSC1CZ');
             </script>
-    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
-const thebe_selector = ".thebe,.cell"
-const thebe_selector_input = "pre"
-const thebe_selector_output = ".output, .cell_output"
-</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script async="async" src="_static/sphinx-thebe.js"></script>
     <script>window.MathJax = {"tex": {"macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
@@ -311,26 +308,26 @@ P_t = a_0 - a_1 Y_t + Z_t,
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Wed Nov 20 00:35:13 2024       
-+---------------------------------------------------------------------------------------+
-| NVIDIA-SMI 535.54.03              Driver Version: 535.54.03    CUDA Version: 12.6     |
-|-----------------------------------------+----------------------+----------------------+
-| GPU  Name                 Persistence-M | Bus-Id        Disp.A | Volatile Uncorr. ECC |
-| Fan  Temp   Perf          Pwr:Usage/Cap |         Memory-Usage | GPU-Util  Compute M. |
-|                                         |                      |               MIG M. |
-|=========================================+======================+======================|
-|   0  Tesla T4                       On  | 00000001:00:00.0 Off |                    0 |
-| N/A   44C    P8              28W /  70W |      2MiB / 15360MiB |      0%      Default |
-|                                         |                      |                  N/A |
-+-----------------------------------------+----------------------+----------------------+
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Mon Feb 10 03:52:42 2025       
++-----------------------------------------------------------------------------------------+
+| NVIDIA-SMI 550.127.05             Driver Version: 550.127.05     CUDA Version: 12.4     |
+|-----------------------------------------+------------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |
+|                                         |                        |               MIG M. |
+|=========================================+========================+======================|
+|   0  Tesla T4                       On  |   00000001:00:00.0 Off |                  Off |
+| N/A   38C    P8              9W /   70W |       1MiB /  16384MiB |      0%      Default |
+|                                         |                        |                  N/A |
++-----------------------------------------+------------------------+----------------------+
                                                                                          
-+---------------------------------------------------------------------------------------+
-| Processes:                                                                            |
-|  GPU   GI   CI        PID   Type   Process name                            GPU Memory |
-|        ID   ID                                                             Usage      |
-|=======================================================================================|
-|  No running processes found                                                           |
-+---------------------------------------------------------------------------------------+
++-----------------------------------------------------------------------------------------+
+| Processes:                                                                              |
+|  GPU   GI   CI        PID   Type   Process name                              GPU Memory |
+|        ID   ID                                                               Usage      |
+|=========================================================================================|
+|  No running processes found                                                             |
++-----------------------------------------------------------------------------------------+
 </pre></div>
 </div>
 </div>
@@ -734,8 +731,8 @@ Concluded loop 9 with error 1.
 Concluded loop 10 with error 1.
 Concluded loop 11 with error 1.
 Concluded loop 12 with error 0.
-CPU times: user 567 ms, sys: 72.4 ms, total: 639 ms
-Wall time: 812 ms
+CPU times: user 556 ms, sys: 136 ms, total: 692 ms
+Wall time: 885 ms
 </pre></div>
 </div>
 </div>
@@ -756,11 +753,11 @@ Wall time: 812 ms
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Concluded loop 1 with error 50.
 Concluded loop 2 with error 26.
 Concluded loop 3 with error 17.
+Concluded loop 4 with error 10.
+Concluded loop 5 with error 7.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Concluded loop 4 with error 10.
-Concluded loop 5 with error 7.
-Concluded loop 6 with error 4.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Concluded loop 6 with error 4.
 Concluded loop 7 with error 3.
 Concluded loop 8 with error 1.
 Concluded loop 9 with error 1.
@@ -774,7 +771,7 @@ Concluded loop 12 with error 0.
  [82 82 82 ... 86 86 86]
  [83 83 83 ... 86 86 86]
  [84 84 84 ... 87 87 87]]
-HPI completed in 0.11434435844421387 seconds.
+HPI completed in 0.11818718910217285 seconds.
 </pre></div>
 </div>
 </div>
@@ -796,9 +793,9 @@ HPI completed in 0.11434435844421387 seconds.
 &lt;&gt;:4: SyntaxWarning: invalid escape sequence &#39;\c&#39;
 &lt;&gt;:3: SyntaxWarning: invalid escape sequence &#39;\c&#39;
 &lt;&gt;:4: SyntaxWarning: invalid escape sequence &#39;\c&#39;
-/tmp/ipykernel_2254/2467401157.py:3: SyntaxWarning: invalid escape sequence &#39;\c&#39;
+/tmp/ipykernel_2263/2467401157.py:3: SyntaxWarning: invalid escape sequence &#39;\c&#39;
   ax.plot(y_grid, y_grid[σ_star_hpi[:, 1]], label=&quot;$\\sigma^{*}_{HPI}(\cdot, z_1)$&quot;)
-/tmp/ipykernel_2254/2467401157.py:4: SyntaxWarning: invalid escape sequence &#39;\c&#39;
+/tmp/ipykernel_2263/2467401157.py:4: SyntaxWarning: invalid escape sequence &#39;\c&#39;
   ax.plot(y_grid, y_grid[σ_star_hpi[:, -1]], label=&quot;$\\sigma^{*}_{HPI}(\cdot, z_N)$&quot;)
 </pre></div>
 </div>
@@ -821,8 +818,8 @@ HPI completed in 0.11434435844421387 seconds.
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Starting VFI.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 524 ms, sys: 11.4 ms, total: 536 ms
-Wall time: 602 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 529 ms, sys: 9.86 ms, total: 539 ms
+Wall time: 611 ms
 </pre></div>
 </div>
 </div>
@@ -847,7 +844,7 @@ Wall time: 602 ms
  [82 82 82 ... 86 86 86]
  [83 83 83 ... 86 86 86]
  [84 84 84 ... 87 87 87]]
-VFI completed in 0.497394323348999 seconds.
+VFI completed in 0.49846553802490234 seconds.
 </pre></div>
 </div>
 </div>
@@ -869,9 +866,9 @@ VFI completed in 0.497394323348999 seconds.
 &lt;&gt;:4: SyntaxWarning: invalid escape sequence &#39;\c&#39;
 &lt;&gt;:3: SyntaxWarning: invalid escape sequence &#39;\c&#39;
 &lt;&gt;:4: SyntaxWarning: invalid escape sequence &#39;\c&#39;
-/tmp/ipykernel_2254/2642608191.py:3: SyntaxWarning: invalid escape sequence &#39;\c&#39;
+/tmp/ipykernel_2263/2642608191.py:3: SyntaxWarning: invalid escape sequence &#39;\c&#39;
   ax.plot(y_grid, y_grid[σ_star_vfi[:, 1]], label=&quot;$\\sigma^{*}_{VFI}(\cdot, z_1)$&quot;)
-/tmp/ipykernel_2254/2642608191.py:4: SyntaxWarning: invalid escape sequence &#39;\c&#39;
+/tmp/ipykernel_2263/2642608191.py:4: SyntaxWarning: invalid escape sequence &#39;\c&#39;
   ax.plot(y_grid, y_grid[σ_star_vfi[:, -1]], label=&quot;$\\sigma^{*}_{VFI}(\cdot, z_N)$&quot;)
 </pre></div>
 </div>
@@ -894,8 +891,8 @@ VFI completed in 0.497394323348999 seconds.
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Starting OPI.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 413 ms, sys: 9.63 ms, total: 422 ms
-Wall time: 487 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 415 ms, sys: 9.77 ms, total: 425 ms
+Wall time: 493 ms
 </pre></div>
 </div>
 </div>
@@ -920,7 +917,7 @@ Wall time: 487 ms
  [82 82 82 ... 86 86 86]
  [83 83 83 ... 86 86 86]
  [84 84 84 ... 87 87 87]]
-OPI completed in 0.2279808521270752 seconds.
+OPI completed in 0.2251429557800293 seconds.
 </pre></div>
 </div>
 </div>
@@ -942,9 +939,9 @@ OPI completed in 0.2279808521270752 seconds.
 &lt;&gt;:4: SyntaxWarning: invalid escape sequence &#39;\c&#39;
 &lt;&gt;:3: SyntaxWarning: invalid escape sequence &#39;\c&#39;
 &lt;&gt;:4: SyntaxWarning: invalid escape sequence &#39;\c&#39;
-/tmp/ipykernel_2254/3367176246.py:3: SyntaxWarning: invalid escape sequence &#39;\c&#39;
+/tmp/ipykernel_2263/3367176246.py:3: SyntaxWarning: invalid escape sequence &#39;\c&#39;
   ax.plot(y_grid, y_grid[σ_star_opi[:, 1]], label=&quot;$\\sigma^{*}_{OPI}(\cdot, z_1)$&quot;)
-/tmp/ipykernel_2254/3367176246.py:4: SyntaxWarning: invalid escape sequence &#39;\c&#39;
+/tmp/ipykernel_2263/3367176246.py:4: SyntaxWarning: invalid escape sequence &#39;\c&#39;
   ax.plot(y_grid, y_grid[σ_star_opi[:, -1]], label=&quot;$\\sigma^{*}_{OPI}(\cdot, z_N)$&quot;)
 </pre></div>
 </div>
@@ -983,8 +980,8 @@ Concluded loop 8 with error 1.
 Concluded loop 10 with error 1.
 Concluded loop 11 with error 1.
 Concluded loop 12 with error 0.
-CPU times: user 96.5 ms, sys: 16.5 ms, total: 113 ms
-Wall time: 101 ms
+CPU times: user 101 ms, sys: 9.69 ms, total: 111 ms
+Wall time: 95.7 ms
 </pre></div>
 </div>
 </div>
@@ -1011,10 +1008,8 @@ Concluded loop 8 with error 1.
 Concluded loop 9 with error 1.
 Concluded loop 10 with error 1.
 Concluded loop 11 with error 1.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Concluded loop 12 with error 0.
-HPI completed in 0.10066628456115723 seconds.
+Concluded loop 12 with error 0.
+HPI completed in 0.09476304054260254 seconds.
 </pre></div>
 </div>
 </div>
@@ -1030,8 +1025,8 @@ HPI completed in 0.10066628456115723 seconds.
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Running value function iteration.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 497 ms, sys: 8.1 ms, total: 505 ms
-Wall time: 499 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 498 ms, sys: 8.91 ms, total: 507 ms
+Wall time: 501 ms
 </pre></div>
 </div>
 </div>
@@ -1047,7 +1042,7 @@ Wall time: 499 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>VFI completed in 0.4996371269226074 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>VFI completed in 0.4979712963104248 seconds.
 </pre></div>
 </div>
 </div>
@@ -1077,63 +1072,63 @@ Wall time: 499 ms
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Running optimistic policy iteration with m=5.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OPI with m=5 completed in 0.27053332328796387 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OPI with m=5 completed in 0.267711877822876 seconds.
 Running optimistic policy iteration with m=45.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OPI with m=45 completed in 0.21165752410888672 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OPI with m=45 completed in 0.20915484428405762 seconds.
 Running optimistic policy iteration with m=85.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OPI with m=85 completed in 0.22225379943847656 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OPI with m=85 completed in 0.21968317031860352 seconds.
 Running optimistic policy iteration with m=125.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OPI with m=125 completed in 0.22933459281921387 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OPI with m=125 completed in 0.22610998153686523 seconds.
 Running optimistic policy iteration with m=165.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OPI with m=165 completed in 0.2474074363708496 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OPI with m=165 completed in 0.24443650245666504 seconds.
 Running optimistic policy iteration with m=205.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OPI with m=205 completed in 0.28338074684143066 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OPI with m=205 completed in 0.2811572551727295 seconds.
 Running optimistic policy iteration with m=245.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OPI with m=245 completed in 0.31289148330688477 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OPI with m=245 completed in 0.3090987205505371 seconds.
 Running optimistic policy iteration with m=285.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OPI with m=285 completed in 0.3332517147064209 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OPI with m=285 completed in 0.3291289806365967 seconds.
 Running optimistic policy iteration with m=325.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OPI with m=325 completed in 0.3802649974822998 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OPI with m=325 completed in 0.37458109855651855 seconds.
 Running optimistic policy iteration with m=365.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OPI with m=365 completed in 0.42632532119750977 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OPI with m=365 completed in 0.42017650604248047 seconds.
 Running optimistic policy iteration with m=405.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OPI with m=405 completed in 0.4721670150756836 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OPI with m=405 completed in 0.46588993072509766 seconds.
 Running optimistic policy iteration with m=445.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OPI with m=445 completed in 0.5191717147827148 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OPI with m=445 completed in 0.5115683078765869 seconds.
 Running optimistic policy iteration with m=485.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OPI with m=485 completed in 0.5640928745269775 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OPI with m=485 completed in 0.557152509689331 seconds.
 Running optimistic policy iteration with m=525.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OPI with m=525 completed in 0.6111481189727783 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OPI with m=525 completed in 0.6027238368988037 seconds.
 Running optimistic policy iteration with m=565.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OPI with m=565 completed in 0.6569793224334717 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OPI with m=565 completed in 0.6483728885650635 seconds.
 </pre></div>
 </div>
 </div>
@@ -1155,7 +1150,7 @@ Running optimistic policy iteration with m=565.
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/ee6686b7ec39366b8e52da74917914c1a25c950c76267bbbc7da72e3fef0e599.png"><img alt="_images/ee6686b7ec39366b8e52da74917914c1a25c950c76267bbbc7da72e3fef0e599.png" src="_images/ee6686b7ec39366b8e52da74917914c1a25c950c76267bbbc7da72e3fef0e599.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/59b2e6c453a22a23998029ca1a5a5dcf945ce9f2839fe5a0c70835bf06a0ddd5.png"><img alt="_images/59b2e6c453a22a23998029ca1a5a5dcf945ce9f2839fe5a0c70835bf06a0ddd5.png" src="_images/59b2e6c453a22a23998029ca1a5a5dcf945ce9f2839fe5a0c70835bf06a0ddd5.png" style="width: 80%;" /></a>
 </div>
 </div>
 </section>
@@ -1418,7 +1413,11 @@ Running optimistic policy iteration with m=565.
                     <li data-tippy-content="Download Notebook"><a href="/_notebooks/opt_invest.ipynb" download><i data-feather="download-cloud"></i></a></li>
                     <li class="settings-button" id="settingsButton"><div data-tippy-content="Launch Notebook"><i data-feather="play-circle"></i></div></li>
                         <li class="download-pdf" id="downloadButton"><i data-feather="file"></i></li>
+                    <!--
+                    # Enable if looking for link to specific document hosted on GitHub
                     <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-jax/blob/main/lectures/opt_invest.md" download><i data-feather="github"></i></a></li>
+                    -->
+                    <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-jax" download><i data-feather="github"></i></a></li>
                 </ul>
 
             </div>
