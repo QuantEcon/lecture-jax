@@ -180,8 +180,6 @@ def build_nn_model(output_dim=10, num_layers=3, activation_function='tanh'):
 
 ### Tracking errors
 
-+++
-
 The following function will be used to plot the MSE of the model during the
 training process.
 
@@ -319,10 +317,4 @@ plt.show()
 
 Not surprisingly, the multilayer neural network does a much better job of fitting the data.
 
-+++
-
 In a {doc}`a follow-up lecture <jax_nn>`, we will try to achieve the same fit using pure JAX, rather than relying on the Keras front-end.
-
-```{code-cell} ipython3
-
-```

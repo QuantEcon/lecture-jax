@@ -176,8 +176,6 @@ keras_run_all()
 
 We've seen this figure before and we note the relatively low final MSE.
 
-+++
-
 ## Training with JAX 
 
 For the JAX implementation, we need to construct the network ourselves, as a map
@@ -253,8 +251,6 @@ Wait, you say!
 Shouldn't we concatenate the elements of $\theta$ into some kind of big array, so that we can do autodiff with respect to this array?
 
 Actually we don't need to, as will become clear below.
-
-+++
 
 ### Coding the network
 
@@ -516,4 +512,3 @@ ax.set_xlabel('x')
 ax.set_ylabel('y')
 plt.show()
 ```
-
