@@ -18,7 +18,7 @@ kernelspec:
 
 In a [previous lecture](keras), we showed how to implement regression using a neural network via the popular deep learning library [Keras](https://keras.io/).
 
-In this lecture, we solve the same problem using pure JAX instead.
+In this lecture, we solve the same problem directly, using JAX operations rather than than relying on the Keras frontend.
 
 The objective is to understand the nuts and bolts of the exercise better, as
 well as to explore more features of JAX.
@@ -37,6 +37,7 @@ import jax
 import jax.numpy as jnp
 import matplotlib.pyplot as plt
 import os
+from time import time
 ```
 
 ```{code-cell} ipython3
@@ -127,6 +128,7 @@ Here is a function to train the model.
 ```{code-cell} ipython3
 def train_keras_model(model, x, y, x_validate, y_validate):
     print(f"Training NN using Keras.")
+    start_time = time()
     training_history = model.fit(
         x, y, 
         batch_size=max(x.shape), 
@@ -134,8 +136,9 @@ def train_keras_model(model, x, y, x_validate, y_validate):
         epochs=EPOCHS, 
         validation_data=(x_validate, y_validate)
     )
+    elapsed = time() - start_time
     mse = model.evaluate(x_validate, y_validate, verbose=2)
-    print(f"Trained Keras model with final MSE on validation data = {mse}")
+    print(f"Trained Keras model in {elapsed:.2f} seconds with final MSE on validation data = {mse}")
     return model, training_history
 ```
 
@@ -168,11 +171,12 @@ def keras_run_all():
 Let's put it to work:
 
 ```{code-cell} ipython3
-%time keras_run_all()
+keras_run_all()
 ```
 
 We've seen this figure before and we note the relatively low final MSE.
 
++++
 
 ## Training with JAX 
 
@@ -188,13 +192,14 @@ The neural network as the form
 
 $$
     f(\theta, x) 
-    = (A_3 \circ \sigma \circ A_2 \circ \sigma \circ A_1 \circ \sigma A_0)(x)
+    = (A_3 \circ \sigma \circ A_2 \circ \sigma \circ A_1 \circ \sigma \circ A_0)(x)
 $$
 
 Here 
 
+* $x$ is a scalar input -- a point on the horizontal axis in the Keras estimation above,
 * $\circ$ means composition of maps,
-* $\sigma$ is the activation funcion -- in our case, $\tanh$, and
+* $\sigma$ is the activation function -- in our case, $\tanh$, and
 * $A_i$ represents the affine map $A_i x = W_i x + b_i$.
 
 Each matrix $W_i$ is called a **weight matrix** and each vector $b_i$ is called **bias** term.
@@ -209,7 +214,7 @@ In fact, when we implement the affine map $A_i x = W_i x + b_i$, we will work
 with row vectors rather than column vectors, so that
 
 * $x$ and $b_i$ are stored as row vectors, and
-* the mapping is executed as $x @ W + b$.
+* the mapping is executed by JAX via `x @ W + b`.
 
 This is because Python numerical operations are row-major rather than column-major, so that row-based operations tend to be more efficient.
 
@@ -243,13 +248,21 @@ def initialize_params(seed=1234):
     return θ
 ```
 
+Wait, you say!  
+
+Shouldn't we concatenate the elements of $\theta$ into some kind of big array, so that we can do autodiff with respect to this array?
+
+Actually we don't need to, as will become clear below.
+
++++
+
 ### Coding the network
 
 Here's our implementation of $f$:
 
 ```{code-cell} ipython3
 @jax.jit
-def f(θ, x):
+def f(θ, x, σ=jnp.tanh):
     """
     Perform a forward pass over the network to evaluate f(θ, x).
     The state x is stored and iterated on as a row vector.
@@ -257,7 +270,7 @@ def f(θ, x):
     *hidden, last = θ
     for layer in hidden:
         W, b = layer['W'], layer['b']
-        x = jnp.tanh(x @ W + b)
+        x = σ(x @ W + b)
     W, b = last['W'], last['b']
     x = x @ W + b
     return x 
@@ -405,12 +418,14 @@ ax.set_ylabel('y')
 plt.show()
 ```
 
-## Using Optax
+## JAX plus Optax
 
 Our hand-coded optimization routine above was quite effective, but in practice
 we might wish to use an optimization library written for JAX.
 
 One such library is [Optax](https://optax.readthedocs.io/en/latest/).
+
+### Optax with SGD
 
 Here's a training routine using Optax's stochastic gradient descent solver.
 
@@ -428,15 +443,13 @@ def train_jax_optax(θ, x, y):
 Let's try running it.
 
 ```{code-cell} ipython3
-%% time 
-
 # Reset parameter vector
 θ = initialize_params()
 # Train network
-θ = train_jax_optax(θ, x, y)
+%time θ = train_jax_optax(θ, x, y)
 ```
 
-The results are similar to our hand-coded routine.
+The resulting MSE is the same as our hand-coded routine.
 
 ```{code-cell} ipython3
 print(f"""
@@ -456,11 +469,13 @@ ax.set_ylabel('y')
 plt.show()
 ```
 
+### Optax with ADAM
+
 We can also consider using a slightly more sophisticated gradient-based method,
 such as [ADAM](https://arxiv.org/pdf/1412.6980).
 
 
-You will notice that the method is very similar.
+You will notice that the syntax for using this alternative optimizer is very similar.
 
 ```{code-cell} ipython3
 def train_jax_optax(θ, x, y):
@@ -474,12 +489,10 @@ def train_jax_optax(θ, x, y):
 ```
 
 ```{code-cell} ipython3
-%% time 
-
 # Reset parameter vector
 θ = initialize_params()
 # Train network
-θ = train_jax_optax(θ, x, y)
+%time θ = train_jax_optax(θ, x, y)
 ```
 
 Here's the MSE.
@@ -502,4 +515,12 @@ ax.plot(x.flatten(), f(θ, x).flatten(),
 ax.set_xlabel('x')
 ax.set_ylabel('y')
 plt.show()
+```
+
+```{code-cell} ipython3
+
+```
+
+```{code-cell} ipython3
+
 ```

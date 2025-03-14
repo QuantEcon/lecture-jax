@@ -56,7 +56,9 @@ import os
 os.environ['KERAS_BACKEND'] = 'jax'
 ```
 
-Next we import some tools from Keras.
+Now we should be able to import some tools from Keras.
+
+(Without setting the backend to JAX, these imports might fail -- unless you have PyTorch or Tensorflow set up.)
 
 ```{code-cell} ipython3
 import keras
