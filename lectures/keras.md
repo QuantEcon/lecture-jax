@@ -20,19 +20,21 @@ In this lecture we show how to implement one-dimensional nonlinear regression
 using a neural network.
 
 We will use the popular deep learning library [Keras](https://keras.io/), which
-provides a simple and elegant interface to deep learning.
+provides a simple interface to deep learning.
 
 The emphasis in Keras is on providing an intuitive API, while the heavy lifting is
-done by another library.
+done by one of several possible backends.
 
-Currently the backend library can be Tensorflow, PyTorch, or JAX.
+Currently the backend library options are Tensorflow, PyTorch, and JAX.
 
 In this lecture we will use JAX.
 
 The objective of this lecture is to provide a very simple introduction to deep
 learning in a regression setting.
 
-We begin with some standard imports.
+Later, in [a separate lecture](jax_nn), we will investigate how to do the same learning task using pure JAX, rather than relying on Keras.
+
+We begin this lecture with some standard imports.
 
 ```{code-cell} ipython3
 import numpy as np
@@ -314,6 +316,10 @@ plt.show()
 ```
 
 Not surprisingly, the multilayer neural network does a much better job of fitting the data.
+
++++
+
+In a [follow-up lecture](jax_nn), we will try to achieve the same fit using pure JAX, rather than relying on the Keras front-end.
 
 ```{code-cell} ipython3
 
