@@ -118,7 +118,7 @@
     <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="23. Troubleshooting" href="troubleshooting.html" />
+    <link rel="next" title="23. Neural Network Regression with JAX and Optax" href="jax_nn.html" />
     <link rel="prev" title="21. Maximum Likelihood Estimation" href="mle.html" />
 
 <!-- Normal Meta Tags -->
@@ -248,14 +248,15 @@
 <p>In this lecture we show how to implement one-dimensional nonlinear regression
 using a neural network.</p>
 <p>We will use the popular deep learning library <a class="reference external" href="https://keras.io/">Keras</a>, which
-provides a simple and elegant interface to deep learning.</p>
+provides a simple interface to deep learning.</p>
 <p>The emphasis in Keras is on providing an intuitive API, while the heavy lifting is
-done by another library.</p>
-<p>Currently the backend library can be Tensorflow, PyTorch, or JAX.</p>
+done by one of several possible backends.</p>
+<p>Currently the backend library options are Tensorflow, PyTorch, and JAX.</p>
 <p>In this lecture we will use JAX.</p>
 <p>The objective of this lecture is to provide a very simple introduction to deep
 learning in a regression setting.</p>
-<p>We begin with some standard imports.</p>
+<p>Later, in <a class="reference internal" href="jax_nn.html"><span class="doc">a separate lecture</span></a>, we will investigate how to do the same learning task using pure JAX, rather than relying on Keras.</p>
+<p>We begin this lecture with some standard imports.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -277,46 +278,22 @@ learning in a regression setting.</p>
 <span class="expanded">Hide code cell output</span>
 </summary>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting keras
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Downloading keras-3.9.0-py3-none-any.whl.metadata (6.1 kB)
-Collecting absl-py (from keras)
-  Downloading absl_py-2.1.0-py3-none-any.whl.metadata (2.3 kB)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: keras in /opt/conda/envs/quantecon/lib/python3.12/site-packages (3.9.0)
+Requirement already satisfied: absl-py in /opt/conda/envs/quantecon/lib/python3.12/site-packages (from keras) (2.1.0)
 Requirement already satisfied: numpy in /opt/conda/envs/quantecon/lib/python3.12/site-packages (from keras) (1.26.4)
 Requirement already satisfied: rich in /opt/conda/envs/quantecon/lib/python3.12/site-packages (from keras) (13.7.1)
-Collecting namex (from keras)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Downloading namex-0.0.8-py3-none-any.whl.metadata (246 bytes)
+Requirement already satisfied: namex in /opt/conda/envs/quantecon/lib/python3.12/site-packages (from keras) (0.0.8)
 Requirement already satisfied: h5py in /opt/conda/envs/quantecon/lib/python3.12/site-packages (from keras) (3.11.0)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting optree (from keras)
-  Downloading optree-0.14.1-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (49 kB)
+Requirement already satisfied: optree in /opt/conda/envs/quantecon/lib/python3.12/site-packages (from keras) (0.14.1)
 Requirement already satisfied: ml-dtypes in /opt/conda/envs/quantecon/lib/python3.12/site-packages (from keras) (0.5.0)
 Requirement already satisfied: packaging in /opt/conda/envs/quantecon/lib/python3.12/site-packages (from keras) (24.1)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: typing-extensions&gt;=4.5.0 in /opt/conda/envs/quantecon/lib/python3.12/site-packages (from optree-&gt;keras) (4.11.0)
+Requirement already satisfied: typing-extensions&gt;=4.5.0 in /opt/conda/envs/quantecon/lib/python3.12/site-packages (from optree-&gt;keras) (4.11.0)
 Requirement already satisfied: markdown-it-py&gt;=2.2.0 in /opt/conda/envs/quantecon/lib/python3.12/site-packages (from rich-&gt;keras) (2.2.0)
 Requirement already satisfied: pygments&lt;3.0.0,&gt;=2.13.0 in /opt/conda/envs/quantecon/lib/python3.12/site-packages (from rich-&gt;keras) (2.15.1)
 Requirement already satisfied: mdurl~=0.1 in /opt/conda/envs/quantecon/lib/python3.12/site-packages (from markdown-it-py&gt;=2.2.0-&gt;rich-&gt;keras) (0.1.0)
-Downloading keras-3.9.0-py3-none-any.whl (1.3 MB)
-?25l   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">0.0/1.3 MB</span> <span class=" -Color -Color-Red">?</span> eta <span class=" -Color -Color-Cyan">-:--:--</span>
-   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">1.3/1.3 MB</span> <span class=" -Color -Color-Red">69.0 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
-?25hDownloading absl_py-2.1.0-py3-none-any.whl (133 kB)
-Downloading namex-0.0.8-py3-none-any.whl (5.8 kB)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Downloading optree-0.14.1-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (403 kB)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Installing collected packages: namex, optree, absl-py, keras
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Successfully installed absl-py-2.1.0 keras-3.9.0 namex-0.0.8 optree-0.14.1
-<span class=" -Color -Color-Yellow">WARNING: Running pip as the &#39;root&#39; user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable.It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Yellow">WARNING: Running pip as the &#39;root&#39; user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable.It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.</span>
 
 </pre></div>
 </div>
@@ -332,7 +309,8 @@ Downloading namex-0.0.8-py3-none-any.whl (5.8 kB)
 </div>
 </div>
 </div>
-<p>Next we import some tools from Keras.</p>
+<p>Now we should be able to import some tools from Keras.</p>
+<p>(Without setting the backend to JAX, these imports might fail – unless you have PyTorch or Tensorflow set up.)</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">keras</span>
@@ -526,7 +504,7 @@ as the parameters are adjusted to better fit the data.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/70bbed50585dc0b20119d7c23c0d01ea06daa926a98a9137d1f4d3890282aee9.png"><img alt="_images/70bbed50585dc0b20119d7c23c0d01ea06daa926a98a9137d1f4d3890282aee9.png" src="_images/70bbed50585dc0b20119d7c23c0d01ea06daa926a98a9137d1f4d3890282aee9.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/bb06e5b33b42f3099c299c7d82a42fc628a9f58b3d9f51ddffbe15b2c9f3d391.png"><img alt="_images/bb06e5b33b42f3099c299c7d82a42fc628a9f58b3d9f51ddffbe15b2c9f3d391.png" src="_images/bb06e5b33b42f3099c299c7d82a42fc628a9f58b3d9f51ddffbe15b2c9f3d391.png" style="width: 80%;" /></a>
 </div>
 </div>
 <p>Let’s print the final MSE on the cross-validation data.</p>
@@ -542,7 +520,7 @@ as the parameters are adjusted to better fit the data.</p>
 13/13 - 0s - 13ms/step - loss: 0.3016
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.3015977442264557
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.3015977740287781
 </pre></div>
 </div>
 </div>
@@ -615,7 +593,7 @@ as the parameters are adjusted to better fit the data.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/e9a18fba1ae9eaf094ad9576cccc44d353560220de9c1b15bd8e9531c7f6cd5b.png"><img alt="_images/e9a18fba1ae9eaf094ad9576cccc44d353560220de9c1b15bd8e9531c7f6cd5b.png" src="_images/e9a18fba1ae9eaf094ad9576cccc44d353560220de9c1b15bd8e9531c7f6cd5b.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/ea4d305ad6a2ab57c0ec2dbea3801f6d533558f79e7e7ebdd964c0aecf95cd10.png"><img alt="_images/ea4d305ad6a2ab57c0ec2dbea3801f6d533558f79e7e7ebdd964c0aecf95cd10.png" src="_images/ea4d305ad6a2ab57c0ec2dbea3801f6d533558f79e7e7ebdd964c0aecf95cd10.png" style="width: 80%;" /></a>
 </div>
 </div>
 <p>Here’s the final MSE for the deep learning model.</p>
@@ -630,10 +608,10 @@ as the parameters are adjusted to better fit the data.</p>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Testing loss on the validation set.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>13/13 - 0s - 26ms/step - loss: 0.0422
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>13/13 - 0s - 26ms/step - loss: 0.0432
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.0421643927693367
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.04316260293126106
 </pre></div>
 </div>
 </div>
@@ -673,10 +651,11 @@ linear regression, suggesting a better fit.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/013adb67419960e1c19111c612378dc5c5fc01bd7eb9eb9f858fc4dbeee9761a.png"><img alt="_images/013adb67419960e1c19111c612378dc5c5fc01bd7eb9eb9f858fc4dbeee9761a.png" src="_images/013adb67419960e1c19111c612378dc5c5fc01bd7eb9eb9f858fc4dbeee9761a.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/2c463dfcd9098b122a311186656e984d9b3d3187007a19c2bdd636cd0965b922.png"><img alt="_images/2c463dfcd9098b122a311186656e984d9b3d3187007a19c2bdd636cd0965b922.png" src="_images/2c463dfcd9098b122a311186656e984d9b3d3187007a19c2bdd636cd0965b922.png" style="width: 80%;" /></a>
 </div>
 </div>
 <p>Not surprisingly, the multilayer neural network does a much better job of fitting the data.</p>
+<p>In a <a class="reference internal" href="jax_nn.html"><span class="doc">a follow-up lecture</span></a>, we will try to achieve the same fit using pure JAX, rather than relying on the Keras front-end.</p>
 </section>
 </section>
 </section>
@@ -881,6 +860,11 @@ linear regression, suggesting a better fit.</p>
    22. Simple Neural Network Regression with Keras and JAX
   </a>
  </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="jax_nn.html">
+   23. Neural Network Regression with JAX and Optax
+  </a>
+ </li>
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
@@ -890,17 +874,17 @@ linear regression, suggesting a better fit.</p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   23. Troubleshooting
+   24. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   24. References
+   25. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   25. Execution Statistics
+   26. Execution Statistics
   </a>
  </li>
 </ul>
