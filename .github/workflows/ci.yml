@@ -16,10 +16,10 @@ jobs:
           python-version: "3.12"
           environment-file: environment.yml
           activate-environment: quantecon
-      - uses: Jimver/cuda-toolkit@v0.2.21
-        id: cuda-toolkit
-        with:
-          cuda: '12.8.0'
+      - name: Check nvidia drivers
+        shell: bash -l {0}
+        run: |
+          nvidia-smi
       - name: Install JAX
         shell: bash -l {0}
         run: |
