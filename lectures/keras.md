@@ -32,7 +32,7 @@ In this lecture we will use JAX.
 The objective of this lecture is to provide a very simple introduction to deep
 learning in a regression setting.
 
-Later, in [a separate lecture](jax_nn), we will investigate how to do the same learning task using pure JAX, rather than relying on Keras.
+Later, in {doc}`a separate lecture <jax_nn>`, we will investigate how to do the same learning task using pure JAX, rather than relying on Keras.
 
 We begin this lecture with some standard imports.
 
@@ -321,7 +321,7 @@ Not surprisingly, the multilayer neural network does a much better job of fittin
 
 +++
 
-In a [follow-up lecture](jax_nn), we will try to achieve the same fit using pure JAX, rather than relying on the Keras front-end.
+In a {doc}`a follow-up lecture <jax_nn>`, we will try to achieve the same fit using pure JAX, rather than relying on the Keras front-end.
 
 ```{code-cell} ipython3
 

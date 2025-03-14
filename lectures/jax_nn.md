@@ -16,7 +16,7 @@ kernelspec:
 ```{include} _admonition/gpu.md
 ```
 
-In a [previous lecture](keras), we showed how to implement regression using a neural network via the popular deep learning library [Keras](https://keras.io/).
+In a {doc}`previous lecture <keras>`, we showed how to implement regression using a neural network via the popular deep learning library [Keras](https://keras.io/).
 
 In this lecture, we solve the same problem directly, using JAX operations rather than than relying on the Keras frontend.
 
@@ -76,7 +76,7 @@ OUTPUT_DIM = 10         # Output dimension of input and hidden layers
 LEARNING_RATE = 0.001   # Learning rate for gradient descent
 ```
 
-The next piece of code is repeated from [our Keras lecture](keras) and generates
+The next piece of code is repeated from {doc}`our Keras lecture <keras>` and generates
 the data.
 
 ```{code-cell} ipython3
@@ -96,7 +96,7 @@ def generate_data(x_min=0,
 ## Training with Keras 
 
 
-We repeat the Keras training exercise from [our Keras lecture](keras) as a
+We repeat the Keras training exercise from {doc}`our Keras lecture <keras>` as a
 benchmark.
 
 The code is essentially the same, although written slightly more succinctly.
