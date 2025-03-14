@@ -517,10 +517,3 @@ ax.set_ylabel('y')
 plt.show()
 ```
 
-```{code-cell} ipython3
-
-```
-
-```{code-cell} ipython3
-
-```
