@@ -18,7 +18,7 @@ kernelspec:
 
 In a {doc}`previous lecture <keras>`, we showed how to implement regression using a neural network via the popular deep learning library [Keras](https://keras.io/).
 
-In this lecture, we solve the same problem directly, using JAX operations rather than than relying on the Keras frontend.
+In this lecture, we solve the same problem directly, using JAX operations rather than relying on the Keras frontend.
 
 The objective is to understand the nuts and bolts of the exercise better, as
 well as to explore more features of JAX.
@@ -214,13 +214,13 @@ In fact, when we implement the affine map $A_i x = W_i x + b_i$, we will work
 with row vectors rather than column vectors, so that
 
 * $x$ and $b_i$ are stored as row vectors, and
-* the mapping is executed by JAX via `x @ W + b`.
+* the mapping is executed by JAX via the expression `x @ W + b`.
 
-This is because Python numerical operations are row-major rather than column-major, so that row-based operations tend to be more efficient.
+We work with row vectors because Python numerical operations are row-major rather than column-major, so that row-based operations tend to be more efficient.
 
 Here's a function to initialize parameters.
 
-The parameter ``vector'' `θ`  will be stored as a list of dicts.
+The parameter "vector" `θ`  will be stored as a list of dicts.
 
 ```{code-cell} ipython3
 def initialize_params(seed=1234):
@@ -302,7 +302,7 @@ loss_gradient = jax.jit(jax.grad(loss_fn))
 ```
 
 The line above seems kind of magical, since we are differentiating with respect
-to a parameter ``vector'' stored as a list of dictionaries containing arrays.
+to a parameter "vector" stored as a list of dictionaries containing arrays.
 
 How can we differentiate with respect to such a complex object?
 
