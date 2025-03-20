@@ -24,7 +24,6 @@ jobs:
         shell: bash -l {0}
         run: |
           echo "Installed cuda version is: ${{steps.cuda-toolkit.outputs.cuda}}"
-          nvcc -V
       - name: Install JAX
         shell: bash -l {0}
         run: |
