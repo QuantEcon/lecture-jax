@@ -4,7 +4,7 @@ jobs:
   preview:
     runs-on: quantecon-gpu
     container:
-      image: ghcr.io/quantecon/lecture-python-container:cuda-12.6.0-anaconda-2024-10-py312-b
+      image: ghcr.io/quantecon/lecture-python-container:cuda-12.8.1-anaconda-2024-10-py312
       options: --gpus all
     steps:
       - uses: actions/checkout@v4
@@ -24,13 +24,13 @@ jobs:
       - name: Display Pip Versions
         shell: bash -l {0}
         run: pip list
-      - name: Download "build" folder (cache)
-        uses: dawidd6/action-download-artifact@v3
-        with:
-          workflow: cache.yml
-          branch: main
-          name: build-cache
-          path: _build
+      # - name: Download "build" folder (cache)
+      #   uses: dawidd6/action-download-artifact@v3
+      #   with:
+      #     workflow: cache.yml
+      #     branch: main
+      #     name: build-cache
+      #     path: _build
       # Build Assets (Download Notebooks and PDF via LaTeX)
       - name: Build Download Notebooks (sphinx-tojupyter)
         shell: bash -l {0}
