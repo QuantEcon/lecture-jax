@@ -3,13 +3,19 @@ on: [pull_request]
 jobs:
   preview:
     runs-on: "runs-on=${{ github.run_id }}/family=g4dn.xlarge/image=ubuntu22-gpu-x64"
-    container:
-      image: ghcr.io/quantecon/lecture-python-container:cuda-12.6.0-anaconda-2024-10-py312-b
-      options: --gpus all
     steps:
       - uses: actions/checkout@v4
         with:
           ref: ${{ github.event.pull_request.head.sha }}
+      - name: Setup Anaconda
+        uses: conda-incubator/setup-miniconda@v3
+        with:
+          auto-update-conda: true
+          auto-activate-base: true
+          miniconda-version: 'latest'
+          python-version: "3.12"
+          environment-file: environment.yml
+          activate-environment: quantecon
       - name: Check nvidia drivers
         shell: bash -l {0}
         run: |
