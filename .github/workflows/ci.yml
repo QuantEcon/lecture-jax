@@ -31,7 +31,7 @@ jobs:
             cm-super
       - name: Install jax and jaxlib
         run: |
-          conda install "jaxlib=*=*cuda*" jax -c conda-forge
+          conda install -y "jaxlib=*=*cuda*" jax -c conda-forge
       - name: Check nvidia drivers
         shell: bash -l {0}
         run: |
