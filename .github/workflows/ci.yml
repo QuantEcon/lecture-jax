@@ -30,8 +30,10 @@ jobs:
             dvipng                    \
             cm-super
       - name: Install jax and jaxlib
+        shell: bash -l {0}
         run: |
-          conda install -y "jaxlib=*=*cuda*" jax -c conda-forge
+          python --version
+          sudo pip install "jax[cuda12_pip]" -f https://storage.googleapis.com/jax-releases/jax_cuda_releases.html
       - name: Check nvidia drivers
         shell: bash -l {0}
         run: |
