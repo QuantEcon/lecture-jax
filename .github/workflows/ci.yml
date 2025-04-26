@@ -31,8 +31,7 @@ jobs:
             cm-super
       - name: Install jax and jaxlib
         run: |
-          sudo pip install "numpyro[cuda]" -f https://storage.googleapis.com/jax-releases/jax_cuda_releases.html
-          sudo pip install "jax[cuda12_pip]" -f https://storage.googleapis.com/jax-releases/jax_cuda_releases.html
+          conda install "jaxlib=*=*cuda*" jax -c conda-forge
       - name: Check nvidia drivers
         shell: bash -l {0}
         run: |
