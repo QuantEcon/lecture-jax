@@ -35,6 +35,7 @@ jobs:
           python --version
           sudo pip install --upgrade pip
           sudo pip install "jax[cuda12_local]"
+          python test-jax-install.py
       - name: Check nvidia drivers
         shell: bash -l {0}
         run: |
