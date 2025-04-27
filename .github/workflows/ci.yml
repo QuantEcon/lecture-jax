@@ -32,9 +32,8 @@ jobs:
       - name: Install jax and jaxlib
         shell: bash -l {0}
         run: |
-          which pip
-          ~/anaconda3/bin/pip install --upgrade pip
-          ~/anaconda3/bin/pippip install "jax[cuda12_local]"
+          /home/runner/miniconda3/bin/pip install --upgrade pip
+          /home/runner/miniconda3/bin/pip install "jax[cuda12_local]"
           python test-jax-install.py
       - name: Check nvidia drivers
         shell: bash -l {0}
