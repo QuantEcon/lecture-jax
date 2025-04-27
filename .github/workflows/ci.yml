@@ -34,7 +34,8 @@ jobs:
         run: |
           /home/runner/miniconda3/bin/pip install --upgrade pip
           /home/runner/miniconda3/bin/pip install "jax[cuda12_local]"
-          python test-jax-install.py
+          /home/runner/miniconda3/bin/python --version
+          /home/runner/miniconda3/bin/python test-jax-install.py
       - name: Check nvidia drivers
         shell: bash -l {0}
         run: |
