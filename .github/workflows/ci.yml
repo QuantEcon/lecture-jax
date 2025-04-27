@@ -22,8 +22,7 @@ jobs:
           echo $PATH
           PATH=$PATH:/home/runner/miniconda3/bin
           echo $PATH
-          pip install --upgrade pip
-          pip install "jax[cuda12_pip]"
+          pip install --upgrade "jax[cuda12_pip]" -f https://storage.googleapis.com/jax-releases/jax_cuda_releases.html
           python --version
           python test-jax-install.py
       - name: Install latex dependencies
