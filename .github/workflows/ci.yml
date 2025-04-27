@@ -33,7 +33,8 @@ jobs:
         shell: bash -l {0}
         run: |
           python --version
-          sudo pip install "jax[cuda12_pip]" -f https://storage.googleapis.com/jax-releases/jax_cuda_releases.html
+          sudo pip install --upgrade pip
+          sudo pip install "jax[cuda12_local]"
       - name: Check nvidia drivers
         shell: bash -l {0}
         run: |
