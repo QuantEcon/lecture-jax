@@ -63,6 +63,8 @@ jobs:
       - name: Build Download Notebooks (sphinx-tojupyter)
         shell: bash -l {0}
         run: |
+          echo $PATH
+          PATH=$PATH:/home/runner/miniconda3/bin
           jb build lectures --path-output ./ --builder=custom --custom-builder=jupyter -n -W --keep-going
           mkdir -p _build/html/_notebooks
           cp -u _build/jupyter/*.ipynb _build/html/_notebooks
