@@ -1,2 +1,2 @@
 import jax
-print(jax.devices())
+print("The available devices are: " + jax.devices())
