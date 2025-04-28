@@ -1,2 +1,3 @@
 import jax
-print("The available devices are: " + jax.devices())
+devices = jax.devices()
+print(f"The available devices are: {devices}")
