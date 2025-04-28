@@ -25,8 +25,7 @@ You can check the backend used by JAX using:
 
 ```{code-cell} ipython3
 import jax
-# Check if JAX is using GPU
-print(f"JAX backend: {jax.devices()[0].platform}")
+print(f"JAX backend: {jax.devices()[0].platform}") # Check if JAX is using GPU
 ```
 
 and the hardware we are running on:
