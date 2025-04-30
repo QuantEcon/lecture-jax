@@ -290,22 +290,22 @@ multi-dimensional nonlinear optimization and root-finding problems.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Mon Feb 10 03:13:21 2025       
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Tue Apr 29 04:38:29 2025       
 +-----------------------------------------------------------------------------------------+
-| NVIDIA-SMI 550.127.05             Driver Version: 550.127.05     CUDA Version: 12.4     |
+| NVIDIA-SMI 570.133.20             Driver Version: 570.133.20     CUDA Version: 12.8     |
 |-----------------------------------------+------------------------+----------------------+
 | GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |
 | Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |
 |                                         |                        |               MIG M. |
 |=========================================+========================+======================|
-|   0  Tesla T4                       On  |   00000001:00:00.0 Off |                  Off |
-| N/A   38C    P0             25W /   70W |       1MiB /  16384MiB |      0%      Default |
+|   0  Tesla T4                       Off |   00000000:00:1E.0 Off |                    0 |
+| N/A   31C    P0             31W /   70W |       0MiB /  15360MiB |      0%      Default |
 |                                         |                        |                  N/A |
 +-----------------------------------------+------------------------+----------------------+
                                                                                          
 +-----------------------------------------------------------------------------------------+
 | Processes:                                                                              |
-|  GPU   GI   CI        PID   Type   Process name                              GPU Memory |
+|  GPU   GI   CI              PID   Type   Process name                        GPU Memory |
 |        ID   ID                                                               Usage      |
 |=========================================================================================|
 |  No running processes found                                                             |
@@ -666,7 +666,7 @@ expression representing the entire derivative.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/7b413b6150e34f39de3ec9ba2dad846dc6d53a7746abc0d921a3d91c37cbbe72.png"><img alt="_images/7b413b6150e34f39de3ec9ba2dad846dc6d53a7746abc0d921a3d91c37cbbe72.png" src="_images/7b413b6150e34f39de3ec9ba2dad846dc6d53a7746abc0d921a3d91c37cbbe72.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/bb4028f55bc123cfe69554b7940c02f78b5451350b7099a6715e9bbed66f0204.png"><img alt="_images/bb4028f55bc123cfe69554b7940c02f78b5451350b7099a6715e9bbed66f0204.png" src="_images/bb4028f55bc123cfe69554b7940c02f78b5451350b7099a6715e9bbed66f0204.png" style="width: 80%;" /></a>
 </div>
 </div>
 <p>Let’s start by calculating the estimated slope and intercept using closed form solutions.</p>
@@ -687,7 +687,7 @@ expression representing the entire derivative.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(Array(0.45994443, dtype=float32), Array(1.0219053, dtype=float32))
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(Array(0.49340868, dtype=float32), Array(1.0055456, dtype=float32))
 </pre></div>
 </div>
 </div>
@@ -704,7 +704,7 @@ expression representing the entire derivative.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/26c3ecda385bedbc37081cee37cc235994731f276dfe730266deeb5565921b4b.png"><img alt="_images/26c3ecda385bedbc37081cee37cc235994731f276dfe730266deeb5565921b4b.png" src="_images/26c3ecda385bedbc37081cee37cc235994731f276dfe730266deeb5565921b4b.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/43e5dd85a891ab09b0501943a2e7936f674111624a5e7b437e66539894e51f11.png"><img alt="_images/43e5dd85a891ab09b0501943a2e7936f674111624a5e7b437e66539894e51f11.png" src="_images/43e5dd85a891ab09b0501943a2e7936f674111624a5e7b437e66539894e51f11.png" style="width: 80%;" /></a>
 </div>
 </div>
 </section>
@@ -747,7 +747,7 @@ expression representing the entire derivative.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/d3d78a712644ddff423c2ce916bf03dbb445c1cb88e8030ef5f195b2be7fa755.png"><img alt="_images/d3d78a712644ddff423c2ce916bf03dbb445c1cb88e8030ef5f195b2be7fa755.png" src="_images/d3d78a712644ddff423c2ce916bf03dbb445c1cb88e8030ef5f195b2be7fa755.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/da92de1f44a7d880c38b6be1f469e45d0d264eb57aa7a98b9e4d0a7be47c3697.png"><img alt="_images/da92de1f44a7d880c38b6be1f469e45d0d264eb57aa7a98b9e4d0a7be47c3697.png" src="_images/da92de1f44a7d880c38b6be1f469e45d0d264eb57aa7a98b9e4d0a7be47c3697.png" style="width: 80%;" /></a>
 </div>
 </div>
 <p>Notice that we get the same estimates as we did from the closed form solutions.</p>
@@ -784,7 +784,7 @@ expression representing the entire derivative.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/379d980249c6d6074be6f3d9d690553d9c91c9e6ccbaed2b190ee43aec48dcf3.png"><img alt="_images/379d980249c6d6074be6f3d9d690553d9c91c9e6ccbaed2b190ee43aec48dcf3.png" src="_images/379d980249c6d6074be6f3d9d690553d9c91c9e6ccbaed2b190ee43aec48dcf3.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/7b2034e1cf65bf193c4f60b6e11404982eb9dd277a1a22a3e0b667efc5ffa10e.png"><img alt="_images/7b2034e1cf65bf193c4f60b6e11404982eb9dd277a1a22a3e0b667efc5ffa10e.png" src="_images/7b2034e1cf65bf193c4f60b6e11404982eb9dd277a1a22a3e0b667efc5ffa10e.png" style="width: 80%;" /></a>
 </div>
 </div>
 </section>
@@ -845,10 +845,10 @@ function and plot the result (following the examples above).</p>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Estimated parameter vector:
-[-0.78131     1.3049686  -0.13246928  1.0781875 ]
+[-0.76444525  1.0770515   0.11147378  1.0265538 ]
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="_images/1c8aae2dcf53fbdfe985c2f0a26b669092acd086d11876a414a7f846270b2c3e.png"><img alt="_images/1c8aae2dcf53fbdfe985c2f0a26b669092acd086d11876a414a7f846270b2c3e.png" src="_images/1c8aae2dcf53fbdfe985c2f0a26b669092acd086d11876a414a7f846270b2c3e.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/2b6ed535b5033eee77de3c0c441549cff1e813db8840ad0cd7a669b2154c2f07.png"><img alt="_images/2b6ed535b5033eee77de3c0c441549cff1e813db8840ad0cd7a669b2154c2f07.png" src="_images/2b6ed535b5033eee77de3c0c441549cff1e813db8840ad0cd7a669b2154c2f07.png" style="width: 80%;" /></a>
 </div>
 </div>
 </section>

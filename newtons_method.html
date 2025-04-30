@@ -269,22 +269,22 @@ in <a class="reference external" href="https://python.quantecon.org/newton_metho
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Mon Feb 10 03:50:28 2025       
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Tue Apr 29 05:21:38 2025       
 +-----------------------------------------------------------------------------------------+
-| NVIDIA-SMI 550.127.05             Driver Version: 550.127.05     CUDA Version: 12.4     |
+| NVIDIA-SMI 570.133.20             Driver Version: 570.133.20     CUDA Version: 12.8     |
 |-----------------------------------------+------------------------+----------------------+
 | GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |
 | Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |
 |                                         |                        |               MIG M. |
 |=========================================+========================+======================|
-|   0  Tesla T4                       On  |   00000001:00:00.0 Off |                  Off |
-| N/A   40C    P0             25W /   70W |       1MiB /  16384MiB |      0%      Default |
+|   0  Tesla T4                       Off |   00000000:00:1E.0 Off |                    0 |
+| N/A   31C    P0             26W /   70W |       0MiB /  15360MiB |      0%      Default |
 |                                         |                        |                  N/A |
 +-----------------------------------------+------------------------+----------------------+
                                                                                          
 +-----------------------------------------------------------------------------------------+
 | Processes:                                                                              |
-|  GPU   GI   CI        PID   Type   Process name                              GPU Memory |
+|  GPU   GI   CI              PID   Type   Process name                        GPU Memory |
 |        ID   ID                                                               Usage      |
 |=========================================================================================|
 |  No running processes found                                                             |
@@ -486,16 +486,18 @@ this high-dimensional problem in just a few seconds:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>iteration 1, error = 29.977458953857422
-iteration 2, error = 5.092828750610352
-iteration 3, error = 0.10971637070178986
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>iteration 1, error = 29.977436065673828
+iteration 2, error = 5.092824935913086
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>iteration 4, error = 5.167595372768119e-05
-iteration 5, error = 1.1732883649528958e-05
-iteration 6, error = 4.191016159893479e-06
-CPU times: user 5.11 s, sys: 951 ms, total: 6.06 s
-Wall time: 5.88 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>iteration 3, error = 0.10971599072217941
+iteration 4, error = 5.194256664253771e-05
+iteration 5, error = 1.2965893802174833e-05
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>iteration 6, error = 6.7043965827906504e-06
+CPU times: user 8.46 s, sys: 1.91 s, total: 10.4 s
+Wall time: 8.73 s
 </pre></div>
 </div>
 </div>
@@ -509,18 +511,18 @@ Wall time: 5.88 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>iteration 1, error = 29.977458953857422
-iteration 2, error = 5.092828750610352
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>iteration 1, error = 29.977436065673828
+iteration 2, error = 5.092824935913086
+iteration 3, error = 0.10971599072217941
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>iteration 3, error = 0.10971637070178986
-iteration 4, error = 5.167595372768119e-05
-iteration 5, error = 1.1732883649528958e-05
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>iteration 4, error = 5.194256664253771e-05
+iteration 5, error = 1.2965893802174833e-05
+iteration 6, error = 6.7043965827906504e-06
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>iteration 6, error = 4.191016159893479e-06
-CPU times: user 1.67 s, sys: 925 ms, total: 2.59 s
-Wall time: 2.48 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 4.6 s, sys: 1.75 s, total: 6.35 s
+Wall time: 4.85 s
 </pre></div>
 </div>
 </div>
@@ -533,7 +535,7 @@ Wall time: 2.48 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Array(1.1920929e-07, dtype=float32)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Array(2.3841858e-07, dtype=float32)
 </pre></div>
 </div>
 </div>
@@ -552,8 +554,8 @@ even with the Jacobian supplied.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1min 56s, sys: 230 ms, total: 1min 56s
-Wall time: 1min 56s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 2min 40s, sys: 485 ms, total: 2min 41s
+Wall time: 2min 40s
 </pre></div>
 </div>
 </div>
@@ -567,7 +569,7 @@ Wall time: 1min 56s
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Array(8.34465e-07, dtype=float32)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Array(9.536743e-07, dtype=float32)
 </pre></div>
 </div>
 </div>
@@ -676,32 +678,32 @@ iteration 2, error = 41.1093864440918
 iteration 3, error = 4.294127464294434
 iteration 4, error = 0.3854290544986725
 iteration 5, error = 0.0054382034577429295
-iteration 6, error = 8.92080606718082e-07
-CPU times: user 136 ms, sys: 14 ms, total: 150 ms
-Wall time: 193 ms
-----------------------------------------------------------------
-Attempt 2: Starting value is [3. 5. 5.] 
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>iteration 1, error = 2.0701100826263428
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>iteration 6, error = 8.92080606718082e-07
+CPU times: user 198 ms, sys: 6.03 ms, total: 204 ms
+Wall time: 250 ms
+----------------------------------------------------------------
+Attempt 2: Starting value is [3. 5. 5.] 
+
+iteration 1, error = 2.0701100826263428
 iteration 2, error = 0.12642373144626617
 iteration 3, error = 0.0006017307168804109
 iteration 4, error = 3.3717478231665154e-07
-CPU times: user 76.7 ms, sys: 6.09 ms, total: 82.8 ms
-Wall time: 75.5 ms
+CPU times: user 109 ms, sys: 6.96 ms, total: 116 ms
+Wall time: 139 ms
 ----------------------------------------------------------------
 Attempt 3: Starting value is [50. 50. 50.] 
-
-iteration 1, error = 73.00942993164062
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>iteration 2, error = 6.493789196014404
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>iteration 1, error = 73.00942993164062
+iteration 2, error = 6.493789196014404
 iteration 3, error = 0.6806989312171936
 iteration 4, error = 0.016202213242650032
 iteration 5, error = 1.0600916539260652e-05
 iteration 6, error = 9.830249609876773e-07
-CPU times: user 184 ms, sys: 10.2 ms, total: 194 ms
-Wall time: 182 ms
+CPU times: user 261 ms, sys: 12.1 ms, total: 273 ms
+Wall time: 334 ms
 ----------------------------------------------------------------
 </pre></div>
 </div>
@@ -743,8 +745,8 @@ Wall time: 182 ms
 iteration 2, error = 0.21344946324825287
 iteration 3, error = 0.002045975998044014
 iteration 4, error = 8.259061701210157e-07
-CPU times: user 159 ms, sys: 6.04 ms, total: 166 ms
-Wall time: 183 ms
+CPU times: user 229 ms, sys: 7.05 ms, total: 236 ms
+Wall time: 284 ms
 </pre></div>
 </div>
 </div>
@@ -759,13 +761,11 @@ Wall time: 183 ms
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>iteration 1, error = 1.5745922327041626
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>iteration 2, error = 0.21344946324825287
+iteration 2, error = 0.21344946324825287
 iteration 3, error = 0.002045975998044014
 iteration 4, error = 8.259061701210157e-07
-CPU times: user 153 ms, sys: 12 ms, total: 164 ms
-Wall time: 152 ms
+CPU times: user 224 ms, sys: 11.9 ms, total: 236 ms
+Wall time: 283 ms
 </pre></div>
 </div>
 </div>
@@ -789,8 +789,8 @@ iteration 2, error = 0.21344933091258958
 iteration 3, error = 0.0020465547718452695
 iteration 4, error = 2.0309190076799282e-07
 iteration 5, error = 1.538370149106851e-15
-CPU times: user 172 ms, sys: 13.1 ms, total: 185 ms
-Wall time: 243 ms
+CPU times: user 222 ms, sys: 20 ms, total: 242 ms
+Wall time: 304 ms
 </pre></div>
 </div>
 </div>
@@ -809,8 +809,8 @@ iteration 2, error = 0.21344933091258958
 iteration 3, error = 0.0020465547718452695
 iteration 4, error = 2.0309190076799282e-07
 iteration 5, error = 1.538370149106851e-15
-CPU times: user 82.3 ms, sys: 4.04 ms, total: 86.3 ms
-Wall time: 106 ms
+CPU times: user 112 ms, sys: 3.98 ms, total: 116 ms
+Wall time: 135 ms
 </pre></div>
 </div>
 </div>
@@ -900,12 +900,13 @@ c = \begin{pmatrix}
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>iteration 1, error = 9.243805733085065
 iteration 2, error = nan
-CPU times: user 90.9 ms, sys: 9.01 ms, total: 99.9 ms
-Wall time: 122 ms
+CPU times: user 132 ms, sys: 4 ms, total: 136 ms
+Wall time: 159 ms
 ----------------------------------------------------------------
 Attempt 2: Starting value is [4.5 0.1 4. ] 
-
-iteration 1, error = 4.892018895185869
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>iteration 1, error = 4.892018895185869
 iteration 2, error = 1.2120550201694784
 iteration 3, error = 0.6942087122866175
 iteration 4, error = 0.168951089180319
@@ -913,8 +914,8 @@ iteration 5, error = 0.005209730313222213
 iteration 6, error = 4.3632751705775364e-06
 iteration 7, error = 3.0460818773540415e-12
 iteration 8, error = 0.0
-CPU times: user 66 ms, sys: 9.99 ms, total: 76 ms
-Wall time: 67.3 ms
+CPU times: user 107 ms, sys: 1.23 ms, total: 109 ms
+Wall time: 128 ms
 ----------------------------------------------------------------
 </pre></div>
 </div>
