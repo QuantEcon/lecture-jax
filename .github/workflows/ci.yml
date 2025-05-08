@@ -10,6 +10,10 @@ jobs:
       - name: Testing
         shell: bash -l {0}
         run: |
+          echo $PATH
+          pdflatex --version
+          whereis conda
+          conda activate quantecon
           python --version
           nvidia-smi
           python scripts/test-jax-install.py
