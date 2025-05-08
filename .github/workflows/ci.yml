@@ -10,7 +10,8 @@ jobs:
       - name: Testing
         shell: bash -l {0}
         run: |
-          source ~/.bashrc
+          echo $PATH
+          export PATH="/home/runner/anaconda3/bin:$PATH"
           echo $PATH
           pdflatex --version
           ls ~/
