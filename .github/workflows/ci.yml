@@ -11,7 +11,8 @@ jobs:
         shell: bash -l {0}
         run: |
           export PATH="/home/runner/anaconda3/bin:$PATH"
-          conda init && conda activate quantecon
+          conda init
+          conda activate quantecon
           python --version
           nvidia-smi
           python scripts/test-jax-install.py
