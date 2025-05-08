@@ -10,8 +10,7 @@ jobs:
       - name: Testing
         shell: bash -l {0}
         run: |
-          export PATH="/home/runner/anaconda3/bin:$PATH"
-          conda init bash
+          echo $PATH
           conda activate quantecon
           python --version
           nvidia-smi
