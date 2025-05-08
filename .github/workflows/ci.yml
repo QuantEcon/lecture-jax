@@ -10,15 +10,12 @@ jobs:
       - name: Testing
         shell: bash -l {0}
         run: |
-          echo $PATH
           export PATH="/home/runner/anaconda3/bin:$PATH"
-          echo $PATH
-          pdflatex --version
-          ls ~/
-          more ~/.bashrc
-          whereis conda
-          conda activate quantecon
+          conda init && conda activate quantecon
           python --version
           nvidia-smi
           python scripts/test-jax-install.py
-      
+      - name: Testing 2
+        shell: bash -l {0}
+        run: |
+          echo $PATH
