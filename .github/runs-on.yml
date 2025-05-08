@@ -4,4 +4,6 @@ images:
     arch: "x64"
     ami: "ami-0acff698ccf3ab474"
     preinstall: |
-      source /home/runner/.bashrc
+      export PATH="/home/runner/anaconda3/bin:$PATH"
+      conda init
+
