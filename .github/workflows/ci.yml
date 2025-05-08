@@ -10,6 +10,7 @@ jobs:
       - name: Testing
         shell: bash -l {0}
         run: |
+          source ~/.bashrc
           echo $PATH
           pdflatex --version
           ls ~/
