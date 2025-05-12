@@ -273,7 +273,9 @@
 </summary>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (0.8.0)
-Requirement already satisfied: numba&gt;=0.49.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from quantecon) (0.60.0)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: numba&gt;=0.49.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from quantecon) (0.60.0)
 Requirement already satisfied: numpy&gt;=1.17.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from quantecon) (1.26.4)
 Requirement already satisfied: requests in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from quantecon) (2.32.3)
 Requirement already satisfied: scipy&gt;=1.5.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from quantecon) (1.13.1)
@@ -362,15 +364,15 @@ distribution over <span class="math notranslate nohighlight">\(\mathbb R_+\)</sp
 </ol>
 <p>Scrap value is set to zero and the discount rate is <span class="math notranslate nohighlight">\(\beta \in (0, 1)\)</span>.</p>
 <p>The firm makes their stop-continue choice by first solving for the value function, which is the unique solution in a class of continuous functions <span class="math notranslate nohighlight">\(\mathscr C\)</span> (details omitted) to</p>
-<div class="amsmath math notranslate nohighlight" id="equation-99108008-57ea-4b8c-841e-32e8d65268f6">
-<span class="eqno">(19.1)<a class="headerlink" href="#equation-99108008-57ea-4b8c-841e-32e8d65268f6" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-a8bbd804-1aed-4416-bc9d-ac618a1295b5">
+<span class="eqno">(19.1)<a class="headerlink" href="#equation-a8bbd804-1aed-4416-bc9d-ac618a1295b5" title="Permalink to this equation">#</a></span>\[\begin{equation}
     v(\varphi, p) = \pi(\varphi, p) + \beta 
         \max \left\{ 0, \int v(\varphi', p) \Gamma(\varphi, d \varphi') \right\}.
 \end{equation}\]</div>
 <p>Let <span class="math notranslate nohighlight">\(\bar v\)</span> be the unique solution to this functional equation.</p>
 <p>Given <span class="math notranslate nohighlight">\(\bar v\)</span>, we let <span class="math notranslate nohighlight">\(\bar \varphi\)</span> be the exit threshold function defined by</p>
-<div class="amsmath math notranslate nohighlight" id="equation-d2287ff5-9c46-4580-920c-09a61985c8e5">
-<span class="eqno">(19.2)<a class="headerlink" href="#equation-d2287ff5-9c46-4580-920c-09a61985c8e5" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-75649359-96ad-44a8-959c-acfb3ccd37ab">
+<span class="eqno">(19.2)<a class="headerlink" href="#equation-75649359-96ad-44a8-959c-acfb3ccd37ab" title="Permalink to this equation">#</a></span>\[\begin{equation}
     \bar \varphi(p) := 
     \min
     \left\{ 
@@ -405,13 +407,13 @@ section, a <strong>stationary recursive equilibrium</strong>  is a triple</p>
 \end{equation*}\]</div>
 <p>with <span class="math notranslate nohighlight">\(p\)</span> understood as price, <span class="math notranslate nohighlight">\(M\)</span> as mass of entrants, and <span class="math notranslate nohighlight">\(\mu\)</span> as a
 distribution of firms over productivity levels, such that the goods market clears, or</p>
-<div class="amsmath math notranslate nohighlight" id="equation-f1a62aa8-25c3-4b86-a0ba-d07fbb35947b">
-<span class="eqno">(19.3)<a class="headerlink" href="#equation-f1a62aa8-25c3-4b86-a0ba-d07fbb35947b" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-1937494b-5548-44eb-84fd-fa8b28ffe4b9">
+<span class="eqno">(19.3)<a class="headerlink" href="#equation-1937494b-5548-44eb-84fd-fa8b28ffe4b9" title="Permalink to this equation">#</a></span>\[\begin{equation}
     \int q( \varphi, p) \mu(d \varphi) = D(p),
 \end{equation}\]</div>
 <p>the <em>invariance condition</em> over the firm distribution</p>
-<div class="amsmath math notranslate nohighlight" id="equation-2fb35dd4-b6e9-4d5e-9e1a-e3932fba8d76">
-<span class="eqno">(19.4)<a class="headerlink" href="#equation-2fb35dd4-b6e9-4d5e-9e1a-e3932fba8d76" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-5014db7d-8afe-47c4-8fb4-f4dd8162ef1e">
+<span class="eqno">(19.4)<a class="headerlink" href="#equation-5014db7d-8afe-47c4-8fb4-f4dd8162ef1e" title="Permalink to this equation">#</a></span>\[\begin{equation}
     \mu (B) 
     = \int \Gamma(\varphi, B) \, \mathbf{1}  \{\varphi \geq \bar \varphi(p)\} \,
     \mu(d \varphi)
@@ -419,13 +421,13 @@ distribution of firms over productivity levels, such that the goods market clear
     \text{ for all } B \in \mathscr B,
 \end{equation}\]</div>
 <p>holds (see below for intuition), the <em>equilibrium entry condition</em></p>
-<div class="amsmath math notranslate nohighlight" id="equation-df087544-09be-4e17-8486-27bd70e1e647">
-<span class="eqno">(19.5)<a class="headerlink" href="#equation-df087544-09be-4e17-8486-27bd70e1e647" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-e1bad809-029a-470c-8798-ceada4440271">
+<span class="eqno">(19.5)<a class="headerlink" href="#equation-e1bad809-029a-470c-8798-ceada4440271" title="Permalink to this equation">#</a></span>\[\begin{equation}
     \int \bar v( \varphi, p) \, \gamma(d \varphi) = c_e
 \end{equation}\]</div>
 <p>holds, and the <em>balanced entry and exit condition</em></p>
-<div class="amsmath math notranslate nohighlight" id="equation-62ee3e3b-3fca-4d76-b90b-0cc9ade43344">
-<span class="eqno">(19.6)<a class="headerlink" href="#equation-62ee3e3b-3fca-4d76-b90b-0cc9ade43344" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-b12bcd00-b316-4d2e-8757-587bd8d90be0">
+<span class="eqno">(19.6)<a class="headerlink" href="#equation-b12bcd00-b316-4d2e-8757-587bd8d90be0" title="Permalink to this equation">#</a></span>\[\begin{equation}
     M = \mu \{ \varphi &lt; \bar \varphi(p) \}
 \end{equation}\]</div>
 <p>is verified.</p>
@@ -436,15 +438,15 @@ distribution of firms over productivity levels, such that the goods market clear
 <p>We compute the equilibrium as follows:</p>
 <p>For the purposes of this section, we insert balanced entry and
 exit into the time invariance condition, yielding</p>
-<div class="amsmath math notranslate nohighlight" id="equation-4475e3b7-b1da-4a56-b799-6665894cdc82">
-<span class="eqno">(19.7)<a class="headerlink" href="#equation-4475e3b7-b1da-4a56-b799-6665894cdc82" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-31eaa78b-18a2-4b9b-a786-0898a4f2ddb0">
+<span class="eqno">(19.7)<a class="headerlink" href="#equation-31eaa78b-18a2-4b9b-a786-0898a4f2ddb0" title="Permalink to this equation">#</a></span>\[\begin{equation}
     \mu (B) 
     = \int \Pi(\varphi, B) \mu (d \varphi)
     \quad \text{for all } B \in \mathscr B,
 \end{equation}\]</div>
 <p>where <span class="math notranslate nohighlight">\(\Pi\)</span> is the transition kernel on <span class="math notranslate nohighlight">\(\mathbb R_+\)</span> defined by</p>
-<div class="amsmath math notranslate nohighlight" id="equation-42e96999-e684-4b55-8b91-ce06ed81b2cb">
-<span class="eqno">(19.8)<a class="headerlink" href="#equation-42e96999-e684-4b55-8b91-ce06ed81b2cb" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-126c5b61-0d15-4d70-94d6-8e524f6d0fd3">
+<span class="eqno">(19.8)<a class="headerlink" href="#equation-126c5b61-0d15-4d70-94d6-8e524f6d0fd3" title="Permalink to this equation">#</a></span>\[\begin{equation}
     \Pi(\varphi, B) 
     = \Gamma(\varphi, B) \mathbf{1} \{\varphi \geq \bar \varphi(p) \} + 
     \mathbf{1} \{\varphi &lt; \bar \varphi(p)\} \gamma(B).
@@ -785,7 +787,7 @@ is the stationary distribution of the Markov transition kernel <span class="math
 <div class="cell_output docutils container">
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;&gt;:3: SyntaxWarning: invalid escape sequence &#39;\i&#39;
 &lt;&gt;:3: SyntaxWarning: invalid escape sequence &#39;\i&#39;
-/tmp/ipykernel_2581/2114669550.py:3: SyntaxWarning: invalid escape sequence &#39;\i&#39;
+/tmp/ipykernel_2493/2114669550.py:3: SyntaxWarning: invalid escape sequence &#39;\i&#39;
   &quot;&quot;&quot;
 </pre></div>
 </div>
@@ -888,8 +890,8 @@ from a cold start.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 402 ms, sys: 14.2 ms, total: 416 ms
-Wall time: 456 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 381 ms, sys: 20.6 ms, total: 401 ms
+Wall time: 443 ms
 </pre></div>
 </div>
 </div>
@@ -902,8 +904,8 @@ Wall time: 456 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 57.3 ms, sys: 217 μs, total: 57.5 ms
-Wall time: 55.7 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 44.1 ms, sys: 393 μs, total: 44.5 ms
+Wall time: 42.8 ms
 </pre></div>
 </div>
 </div>
@@ -948,8 +950,8 @@ Wall time: 55.7 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 2.59 s, sys: 124 ms, total: 2.72 s
-Wall time: 2.74 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 2.55 s, sys: 102 ms, total: 2.65 s
+Wall time: 2.73 s
 </pre></div>
 </div>
 </div>
@@ -964,8 +966,8 @@ Wall time: 2.74 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 479 ms, sys: 65 ms, total: 544 ms
-Wall time: 780 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 532 ms, sys: 45.6 ms, total: 578 ms
+Wall time: 819 ms
 </pre></div>
 </div>
 </div>
