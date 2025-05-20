@@ -4,7 +4,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.16.1
+    jupytext_version: 1.16.7
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -27,7 +27,6 @@ In addition to what’s in Anaconda, this lecture will need the following librar
 ```
 
 We use the following imports.
-
 
 ```{code-cell} ipython3
 import time
@@ -883,10 +882,6 @@ Nonetheless, it is qualitatively similar.
 
 +++
 
-
-
-
-
 ## Exercise
 
 
@@ -966,13 +961,6 @@ B_eq = generate_borrowing_sequence(H_eq, y_t_series, y_n_series)
 eq_b_sequence = b_grid[B_eq]
 B_plan = generate_borrowing_sequence(H_plan, y_t_series, y_n_series)
 plan_b_sequence = b_grid[B_plan]
-```
-
-We suppress some annoying warnings produced by the current version of `seaborn`
-
-```{code-cell} ipython3
-import warnings
-warnings.simplefilter(action='ignore', category=FutureWarning)
 ```
 
 Now let's plot the distributions using a kernel density estimator.
