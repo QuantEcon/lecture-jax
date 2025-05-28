@@ -186,8 +186,9 @@ a
 ```
 
 We can see that the array `a` is changed by using the 
-[`at` method](https://docs.jax.dev/en/latest/_autosummary/jax.numpy.ndarray.at.html), which returns 
-a new array
+[`at` method](https://docs.jax.dev/en/latest/_autosummary/jax.numpy.ndarray.at.html).
+
+It returns a new copy of `a` with the specified element changed.
 
 ```{code-cell} ipython3
 a = a.at[0].set(1)
