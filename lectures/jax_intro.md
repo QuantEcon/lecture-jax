@@ -185,8 +185,7 @@ id(a)
 a
 ```
 
-Applying `at[0].set(1)`, we can see that a new copy of `a` with the first element
-set to 1 is returned
+Applying `at[0].set(1)` returns a new copy of `a` with the first element set to 1
 
 ```{code-cell} ipython3
 a = a.at[0].set(1)
