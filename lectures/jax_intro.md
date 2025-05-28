@@ -172,9 +172,9 @@ a, a_new
 The designers of JAX chose to make arrays immutable because JAX uses a
 functional programming style.  More on this below.  
 
-However, JAX provides a functionally pure equivalent of in-place array modifications.
+However, JAX provides a functionally pure equivalent of in-place array modification
+using the [`at` method](https://docs.jax.dev/en/latest/_autosummary/jax.numpy.ndarray.at.html).
 
-To assign a new value to an element of a JAX array, we can use the `at` method
 
 ```{code-cell} ipython3
 a = jnp.linspace(0, 1, 3)
@@ -185,16 +185,15 @@ id(a)
 a
 ```
 
-We can see that the array `a` is changed by using the 
-[`at` method](https://docs.jax.dev/en/latest/_autosummary/jax.numpy.ndarray.at.html).
-
-It returns a new copy of `a` with the specified element changed.
+Applying `at[0].set(1)`, we can see that a new copy of `a` with the first element
+set to 1 is returned
 
 ```{code-cell} ipython3
 a = a.at[0].set(1)
+a
 ```
 
-Inspecting the identifier of `a` shows that it has changed
+Inspecting the identifier of `a` shows that it has been reassigned
 
 ```{code-cell} ipython3
 id(a)
