@@ -190,11 +190,11 @@ class Firm(NamedTuple):
     μ_e:   float = 0.0
     σ_e:   float = 0.5
     s_bar: float = 1.0
-
-#
-# Here's code to update a cross-section of firms according to the dynamics in
-# [](firm_dynam_ee).
 ```
+
+
+Here's code to update a cross-section of firms according to the dynamics in
+ [](firm_dynam_ee).
 
 ```{code-cell} ipython3
 @jax.jit
@@ -249,7 +249,6 @@ tic()
 data = generate_cross_section(firm).block_until_ready()
 toc()
 ```
-
 
 Let's produce the rank-size plot and check the distribution:
 
@@ -311,9 +310,9 @@ def generate_cross_section_lax(
         0, T, update_cross_section, initial_state
     )
     return final_s
-
-# Let's see if we got any speed gain
 ```
+
+Let's see if we get any speed gain
 
 ```{code-cell} ipython3
 tic()
@@ -339,15 +338,19 @@ ax.set_ylabel("log size")
 
 plt.show()
 
-#
-# If the time horizon is not too large, we can also try generating all shocks at
-# once.
-#
-# Note, however, that this approach consumes more memory, as we need to have to
-# store large matrices of random draws
-#
-# Hence the code below will fail due to out-of-memory errors when `T` and `M` are large.
 ```
+
+## Exercises
+
+Try writing an alternative version of `generate_cross_section_lax()` where the entire sequence of random draws is generated at once, so that all of `a`, `b`, and `e` are of shape `(T, M)`.
+
+(The `update_cross_section()` function should not generate any random numbers.)
+
+Does it improve the runtime?
+
+What are the pros and cons of this approach.
+
+*Solution*
 
 ```{code-cell} ipython3
 @jax.jit
@@ -393,6 +396,8 @@ data = generate_cross_section_lax(firm).block_until_ready()
 toc()
 ```
 
-This second method might be slightly faster in some cases but in general the
+This method might be faster in some cases but in general the
 relative speed will depend on the size of the cross-section and the length of
 the simulation paths.
+
+Also, this method is far more memory intensive.
