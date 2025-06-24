@@ -4,7 +4,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.16.1
+    jupytext_version: 1.17.2
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -40,9 +40,8 @@ In addition to JAX and Anaconda, this lecture will need the following libraries:
 This lecture describes Kesten processes, which are an important class of
 stochastic processes, and an application of firm dynamics.
 
-The lecture draws on [an earlier QuantEcon
-lecture](https://python.quantecon.org/kesten_processes.html), which uses Numba
-to accelerate the computations.
+The lecture draws on [an earlier QuantEcon lecture](https://python.quantecon.org/kesten_processes.html), 
+which uses Numba to accelerate the computations.
 
 In that earlier lecture you can find a more detailed discussion of the concepts involved.
 
@@ -57,6 +56,9 @@ import jax
 import jax.numpy as jnp
 from jax import random
 from jax import lax
+from quantecon import tic, toc
+from typing import NamedTuple
+from functools import partial
 ```
 
 Let's check the GPU we are running
@@ -134,10 +136,8 @@ We now study the implications of this specification.
 
 #### Heavy tails
 
-If the conditions of the [Kesten--Goldie
-Theorem](https://python.quantecon.org/kesten_processes.html#the-kestengoldie-theorem)
-are satisfied, then {eq}`firm_dynam` implies that the firm size distribution
-will have Pareto tails.
+If the conditions of the [Kesten--Goldie Theorem](https://python.quantecon.org/kesten_processes.html#the-kestengoldie-theorem)
+are satisfied, then {eq}`firm_dynam` implies that the firm size distribution will have Pareto tails.
 
 This matches empirical findings across many data sets.
 
@@ -168,8 +168,7 @@ We can investigate this question via simulation and rank-size plots.
 
 The approach will be to
 
-1. generate $M$ draws of $s_T$ when $M$ and $T$ are
-   large and
+1. generate $M$ draws of $s_T$ when $M$ and $T$ are large and
 1. plot the largest 1,000 of the resulting draws in a rank-size plot.
 
 (The distribution of $s_T$ will be close to the stationary distribution
@@ -177,20 +176,27 @@ when $T$ is large.)
 
 In the simulation, we assume that each of $a_t, b_t$ and $e_t$ is lognormal.
 
+Here's a class to store parameters:
+
+```{code-cell} ipython3
+class Firm(NamedTuple):
+    μ_a:   float = -0.5
+    σ_a:   float = 0.1
+    μ_b:   float = 0.0
+    σ_b:   float = 0.5
+    μ_e:   float = 0.0
+    σ_e:   float = 0.5
+    s_bar: float = 1.0
+```
+
 Here's code to update a cross-section of firms according to the dynamics in
 [](firm_dynam_ee).
 
 ```{code-cell} ipython3
 @jax.jit
-def update_s(s, s_bar, a_random, b_random, e_random):
-    exp_a = jnp.exp(a_random)
-    exp_b = jnp.exp(b_random)
-    exp_e = jnp.exp(e_random)
-
-    s = jnp.where(s < s_bar,
-                  exp_e,
-                  exp_a * s + exp_b)
-
+def update_cross_section(s, a, b, e, firm):
+    μ_a, σ_a, μ_b, σ_b, μ_e, σ_e, s_bar = firm
+    s = jnp.where(s < s_bar, e, a * s + b)
     return s
 ```
 
@@ -201,51 +207,44 @@ For sufficiently large `T`, the cross-section it returns (the cross-section at
 time `T`) corresponds to firm size distribution in (approximate) equilibrium.
 
 ```{code-cell} ipython3
-def generate_draws(M=1_000_000,
-                   μ_a=-0.5,
-                   σ_a=0.1,
-                   μ_b=0.0,
-                   σ_b=0.5,
-                   μ_e=0.0,
-                   σ_e=0.5,
-                   s_bar=1.0,
-                   T=500,
-                   s_init=1.0,
-                   seed=123):
+def generate_cross_section(
+        firm, M=1_000_000, T=500, s_init=1.0, seed=123
+    ):
 
+    μ_a, σ_a, μ_b, σ_b, μ_e, σ_e, s_bar = firm
     key = random.PRNGKey(seed)
 
-    # Initialize the array of s values with the initial value
+    # Initialize the cross-section to a common value
     s = jnp.full((M, ), s_init)
 
     # Perform updates on s for time t
     for t in range(T):
-        keys = random.split(key, 3)
-        a_random = μ_a + σ_a * random.normal(keys[0], (M, ))
-        b_random = μ_b + σ_b * random.normal(keys[1], (M, ))
-        e_random = μ_e + σ_e * random.normal(keys[2], (M, ))
-
-        s = update_s(s, s_bar, a_random, b_random, e_random)
-        
-        # Generate new key for the next iteration
-        key = random.fold_in(key, t)
+        key, *subkeys = random.split(key, 4)
+        a = μ_a + σ_a * random.normal(subkeys[0], (M,))
+        b = μ_b + σ_b * random.normal(subkeys[1], (M,))
+        e = μ_e + σ_e * random.normal(subkeys[2], (M,))
+        # Exponentiate shocks
+        a, b, e = jax.tree.map(jnp.exp, (a, b, e))
+        # Update the cross-section of firms
+        s = update_cross_section(s, a, b, e, firm)
 
     return s
+```
 
-%time data = generate_draws().block_until_ready()
+```{code-cell} ipython3
+firm = Firm()
+tic()
+data = generate_cross_section(firm).block_until_ready()
+toc()
 ```
 
 Running the above function again so we can see the speed with and without compile time.
 
 ```{code-cell} ipython3
-%time data = generate_draws().block_until_ready()
+tic()
+data = generate_cross_section(firm).block_until_ready()
+toc()
 ```
-
-Notice that we do not JIT-compile the `for` loops, since
-
-1. acceleration of the outer loop makes little difference terms of compute
-   time and
-2. compiling the outer loop is often very slow.
 
 Let's produce the rank-size plot and check the distribution:
 
@@ -265,64 +264,62 @@ The plot produces a straight line, consistent with a Pareto tail.
 
 #### Alternative implementation with `lax.fori_loop`
 
-If the time horizon is not too large, we can try to further accelerate our code
+We did not JIT-compile the `for` loop above because
+acceleration of outer loops makes relatively little difference terms of
+compute time.
+
+However, to maximize performance, let's try squeezing out a bit more speed
 by replacing the `for` loop with
 [`lax.fori_loop`](https://jax.readthedocs.io/en/latest/_autosummary/jax.lax.fori_loop.html).
 
-Note, however, that
-
-1. as mentioned above, there is not much speed gain in accelerating outer loops,
-2. `lax.fori_loop` has a more complicated syntax, and, most importantly,
-3. the `lax.fori_loop` implementation consumes far more memory, as we need to have to
-   store large matrices of random draws
-
-Hence the code below will fail due to out-of-memory errors when `T` and `M` are large.
-
-Here is the `lax.fori_loop` version:
+Here a the `lax.fori_loop` version:
 
 ```{code-cell} ipython3
 @jax.jit
-def generate_draws_lax(μ_a=-0.5,
-                       σ_a=0.1,
-                       μ_b=0.0,
-                       σ_b=0.5,
-                       μ_e=0.0,
-                       σ_e=0.5,
-                       s_bar=1.0,
-                       T=500,
-                       M=500_000,
-                       s_init=1.0,
-                       seed=123):
+def generate_cross_section_lax(
+        firm, T=500, M=500_000, s_init=1.0, seed=123
+    ):
 
+    μ_a, σ_a, μ_b, σ_b, μ_e, σ_e, s_bar = firm
     key = random.PRNGKey(seed)
-    keys = random.split(key, 3)
     
-    # Generate random draws and initial values
-    a_random = μ_a + σ_a * random.normal(keys[0], (T, M))
-    b_random = μ_b + σ_b * random.normal(keys[1], (T, M))
-    e_random = μ_e + σ_e * random.normal(keys[2], (T, M))
+    # Initial cross section
     s = jnp.full((M, ), s_init)
 
-    # Define the function for each update
-    def update_s(i, s):
-        a, b, e = a_random[i], b_random[i], e_random[i]
-        s = jnp.where(s < s_bar,
-                      jnp.exp(e),
-                      jnp.exp(a) * s + jnp.exp(b))
-        return s
+    def update_cross_section(t, state):
+        s, key = state
+        key, *subkeys = jax.random.split(key, 4)
+        # Generate current random draws 
+        a = μ_a + σ_a * random.normal(subkeys[0], (M,))
+        b = μ_b + σ_b * random.normal(subkeys[1], (M,))
+        e = μ_e + σ_e * random.normal(subkeys[2], (M,))
+        # Exponentiate them
+        a, b, e = jax.tree.map(jnp.exp, (a, b, e))
+        # Pull out the t-th cross-section of shocks
+        s = jnp.where(s < s_bar, e, a * s + b)
+        new_state = s, key
+        return new_state
 
-    # Use lax.scan to perform the calculations on all states
-    s_final = lax.fori_loop(0, T, update_s, s)
-    return s_final
-
-%time data = generate_draws_lax().block_until_ready()
+    # Use fori_loop 
+    initial_state = s, key
+    final_s, final_key = lax.fori_loop(
+        0, T, update_cross_section, initial_state
+    )
+    return final_s
 ```
 
-In this case, `M` is small enough for the code to run and
-we see some speed gain over the for loop implementation:
+Let's see if we get any speed gain
 
 ```{code-cell} ipython3
-%time data = generate_draws_lax().block_until_ready()
+tic()
+data = generate_cross_section_lax(firm).block_until_ready()
+toc()
+```
+
+```{code-cell} ipython3
+tic()
+data = generate_cross_section_lax(firm).block_until_ready()
+toc()
 ```
 
 Here we produce the same rank-size plot:
@@ -336,19 +333,79 @@ ax.set_xlabel("log rank")
 ax.set_ylabel("log size")
 
 plt.show()
+
 ```
 
-Let's rerun the `for` loop version on smaller `M` to compare the speed
+## Exercises
+
+```{exercise-start}
+:label: kp_ex1
+```
+
+Try writing an alternative version of `generate_cross_section_lax()` where the entire sequence of random draws is generated at once, so that all of `a`, `b`, and `e` are of shape `(T, M)`.
+
+(The `update_cross_section()` function should not generate any random numbers.)
+
+Does it improve the runtime?
+
+What are the pros and cons of this approach.
+
+```{exercise-end}
+```
+
+```{solution-start} kp_ex1
+:class: dropdown
+```
 
 ```{code-cell} ipython3
-%time generate_draws(M=500_000).block_until_ready()
+@jax.jit
+def generate_cross_section_lax(
+        firm, T=500, M=500_000, s_init=1.0, seed=123
+    ):
+
+    μ_a, σ_a, μ_b, σ_b, μ_e, σ_e, s_bar = firm
+    key = random.PRNGKey(seed)
+    subkey_1, subkey_2, subkey_3 = random.split(key, 3)
+    
+    # Generate entire sequence of random draws 
+    a = μ_a + σ_a * random.normal(subkey_1, (T, M))
+    b = μ_b + σ_b * random.normal(subkey_2, (T, M))
+    e = μ_e + σ_e * random.normal(subkey_3, (T, M))
+    # Exponentiate them
+    a, b, e = jax.tree.map(jnp.exp, (a, b, e))
+    # Initial cross section
+    s = jnp.full((M, ), s_init)
+
+    def update_cross_section(t, s):
+        # Pull out the t-th cross-section of shocks
+        a_t, b_t, e_t = a[t], b[t], e[t]
+        s = jnp.where(s < s_bar, e_t, a_t * s + b_t)
+        return s
+
+    # Use lax.scan to perform the calculations on all states
+    s_final = lax.fori_loop(0, T, update_cross_section, s)
+    return s_final
 ```
 
-Let's run it again to get rid of the compile time.
+Here are the run times.
 
 ```{code-cell} ipython3
-%time generate_draws(M=500_000).block_until_ready()
+tic()
+data = generate_cross_section_lax(firm).block_until_ready()
+toc()
 ```
 
-We see that the `lax.fori_loop` version is faster than the `for` loop version 
-when memory is not an issue.
+```{code-cell} ipython3
+tic()
+data = generate_cross_section_lax(firm).block_until_ready()
+toc()
+```
+
+This method might be faster in some cases but in general the
+relative speed will depend on the size of the cross-section and the length of
+the simulation paths.
+
+Also, this method is far more memory intensive.
+
+```{solution-end}
+```

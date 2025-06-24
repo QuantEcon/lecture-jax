@@ -177,6 +177,7 @@
 </li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">6.3. Exercises</a></li>
 </ul>
                             <p class="logo">
                                 
@@ -260,20 +261,30 @@
 <span class="expanded">Hide code cell output</span>
 </summary>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (0.8.0)
-Requirement already satisfied: numba&gt;=0.49.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from quantecon) (0.60.0)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting quantecon
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Downloading quantecon-0.8.1-py3-none-any.whl.metadata (5.2 kB)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: numba&gt;=0.49.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from quantecon) (0.60.0)
 Requirement already satisfied: numpy&gt;=1.17.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from quantecon) (1.26.4)
 Requirement already satisfied: requests in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from quantecon) (2.32.3)
 Requirement already satisfied: scipy&gt;=1.5.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from quantecon) (1.13.1)
 Requirement already satisfied: sympy in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from quantecon) (1.13.2)
 Requirement already satisfied: llvmlite&lt;0.44,&gt;=0.43.0dev0 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from numba&gt;=0.49.0-&gt;quantecon) (0.43.0)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: charset-normalizer&lt;4,&gt;=2 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from requests-&gt;quantecon) (3.3.2)
+Requirement already satisfied: charset-normalizer&lt;4,&gt;=2 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from requests-&gt;quantecon) (3.3.2)
 Requirement already satisfied: idna&lt;4,&gt;=2.5 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from requests-&gt;quantecon) (3.7)
 Requirement already satisfied: urllib3&lt;3,&gt;=1.21.1 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from requests-&gt;quantecon) (2.2.3)
 Requirement already satisfied: certifi&gt;=2017.4.17 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from requests-&gt;quantecon) (2024.8.30)
 Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from sympy-&gt;quantecon) (1.3.0)
+Downloading quantecon-0.8.1-py3-none-any.whl (322 kB)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Installing collected packages: quantecon
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Successfully installed quantecon-0.8.1
 </pre></div>
 </div>
 </div>
@@ -283,9 +294,8 @@ Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in /home/runner/minicond
 <h2><span class="section-number">6.1. </span>Overview<a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
 <p>This lecture describes Kesten processes, which are an important class of
 stochastic processes, and an application of firm dynamics.</p>
-<p>The lecture draws on <a class="reference external" href="https://python.quantecon.org/kesten_processes.html">an earlier QuantEcon
-lecture</a>, which uses Numba
-to accelerate the computations.</p>
+<p>The lecture draws on <a class="reference external" href="https://python.quantecon.org/kesten_processes.html">an earlier QuantEcon lecture</a>,
+which uses Numba to accelerate the computations.</p>
 <p>In that earlier lecture you can find a more detailed discussion of the concepts involved.</p>
 <p>This lecture focuses on implementing the same computations in JAX.</p>
 <p>Let’s start with some imports:</p>
@@ -297,6 +307,9 @@ to accelerate the computations.</p>
 <span class="kn">import</span> <span class="nn">jax.numpy</span> <span class="k">as</span> <span class="nn">jnp</span>
 <span class="kn">from</span> <span class="nn">jax</span> <span class="kn">import</span> <span class="n">random</span>
 <span class="kn">from</span> <span class="nn">jax</span> <span class="kn">import</span> <span class="n">lax</span>
+<span class="kn">from</span> <span class="nn">quantecon</span> <span class="kn">import</span> <span class="n">tic</span><span class="p">,</span> <span class="n">toc</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">NamedTuple</span>
+<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">partial</span>
 </pre></div>
 </div>
 </div>
@@ -309,7 +322,7 @@ to accelerate the computations.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Mon May 19 04:15:03 2025       
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Tue Jun 24 11:14:30 2025       
 +-----------------------------------------------------------------------------------------+
 | NVIDIA-SMI 575.51.03              Driver Version: 575.51.03      CUDA Version: 12.9     |
 |-----------------------------------------+------------------------+----------------------+
@@ -318,7 +331,7 @@ to accelerate the computations.</p>
 |                                         |                        |               MIG M. |
 |=========================================+========================+======================|
 |   0  Tesla T4                       Off |   00000000:00:1E.0 Off |                    0 |
-| N/A   31C    P8             13W /   70W |       0MiB /  15360MiB |      0%      Default |
+| N/A   25C    P8             15W /   70W |       0MiB /  15360MiB |      0%      Default |
 |                                         |                        |                  N/A |
 +-----------------------------------------+------------------------+----------------------+
                                                                                          
@@ -374,10 +387,8 @@ other.</p>
 </section>
 <section id="heavy-tails">
 <h4><span class="section-number">6.2.1.2. </span>Heavy tails<a class="headerlink" href="#heavy-tails" title="Permalink to this heading">#</a></h4>
-<p>If the conditions of the <a class="reference external" href="https://python.quantecon.org/kesten_processes.html#the-kestengoldie-theorem">Kesten–Goldie
-Theorem</a>
-are satisfied, then <a class="reference internal" href="#equation-firm-dynam">(6.3)</a> implies that the firm size distribution
-will have Pareto tails.</p>
+<p>If the conditions of the <a class="reference external" href="https://python.quantecon.org/kesten_processes.html#the-kestengoldie-theorem">Kesten–Goldie Theorem</a>
+are satisfied, then <a class="reference internal" href="#equation-firm-dynam">(6.3)</a> implies that the firm size distribution will have Pareto tails.</p>
 <p>This matches empirical findings across many data sets.</p>
 <p>But there is another unrealistic aspect of the firm dynamics specified in <a class="reference internal" href="#equation-firm-dynam">(6.3)</a> that we need to address: it ignores entry and exit.</p>
 <p>In any given period and in any given market, we observe significant numbers of
@@ -395,27 +406,35 @@ same way as a Kesten process when <span class="math notranslate nohighlight">\(s
 <p>We can investigate this question via simulation and rank-size plots.</p>
 <p>The approach will be to</p>
 <ol class="arabic simple">
-<li><p>generate <span class="math notranslate nohighlight">\(M\)</span> draws of <span class="math notranslate nohighlight">\(s_T\)</span> when <span class="math notranslate nohighlight">\(M\)</span> and <span class="math notranslate nohighlight">\(T\)</span> are
-large and</p></li>
+<li><p>generate <span class="math notranslate nohighlight">\(M\)</span> draws of <span class="math notranslate nohighlight">\(s_T\)</span> when <span class="math notranslate nohighlight">\(M\)</span> and <span class="math notranslate nohighlight">\(T\)</span> are large and</p></li>
 <li><p>plot the largest 1,000 of the resulting draws in a rank-size plot.</p></li>
 </ol>
 <p>(The distribution of <span class="math notranslate nohighlight">\(s_T\)</span> will be close to the stationary distribution
 when <span class="math notranslate nohighlight">\(T\)</span> is large.)</p>
 <p>In the simulation, we assume that each of <span class="math notranslate nohighlight">\(a_t, b_t\)</span> and <span class="math notranslate nohighlight">\(e_t\)</span> is lognormal.</p>
+<p>Here’s a class to store parameters:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Firm</span><span class="p">(</span><span class="n">NamedTuple</span><span class="p">):</span>
+    <span class="n">μ_a</span><span class="p">:</span>   <span class="nb">float</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.5</span>
+    <span class="n">σ_a</span><span class="p">:</span>   <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.1</span>
+    <span class="n">μ_b</span><span class="p">:</span>   <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="n">σ_b</span><span class="p">:</span>   <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.5</span>
+    <span class="n">μ_e</span><span class="p">:</span>   <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="n">σ_e</span><span class="p">:</span>   <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.5</span>
+    <span class="n">s_bar</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span>
+</pre></div>
+</div>
+</div>
+</div>
 <p>Here’s code to update a cross-section of firms according to the dynamics in
 <a class="reference internal" href="#equation-firm-dynam-ee">(6.4)</a>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jax</span><span class="o">.</span><span class="n">jit</span>
-<span class="k">def</span> <span class="nf">update_s</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">s_bar</span><span class="p">,</span> <span class="n">a_random</span><span class="p">,</span> <span class="n">b_random</span><span class="p">,</span> <span class="n">e_random</span><span class="p">):</span>
-    <span class="n">exp_a</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">a_random</span><span class="p">)</span>
-    <span class="n">exp_b</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">b_random</span><span class="p">)</span>
-    <span class="n">exp_e</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">e_random</span><span class="p">)</span>
-
-    <span class="n">s</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">s</span> <span class="o">&lt;</span> <span class="n">s_bar</span><span class="p">,</span>
-                  <span class="n">exp_e</span><span class="p">,</span>
-                  <span class="n">exp_a</span> <span class="o">*</span> <span class="n">s</span> <span class="o">+</span> <span class="n">exp_b</span><span class="p">)</span>
-
+<span class="k">def</span> <span class="nf">update_cross_section</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">firm</span><span class="p">):</span>
+    <span class="n">μ_a</span><span class="p">,</span> <span class="n">σ_a</span><span class="p">,</span> <span class="n">μ_b</span><span class="p">,</span> <span class="n">σ_b</span><span class="p">,</span> <span class="n">μ_e</span><span class="p">,</span> <span class="n">σ_e</span><span class="p">,</span> <span class="n">s_bar</span> <span class="o">=</span> <span class="n">firm</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">s</span> <span class="o">&lt;</span> <span class="n">s_bar</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">a</span> <span class="o">*</span> <span class="n">s</span> <span class="o">+</span> <span class="n">b</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">s</span>
 </pre></div>
 </div>
@@ -427,44 +446,46 @@ cross-section of firms forward in time.</p>
 time <code class="docutils literal notranslate"><span class="pre">T</span></code>) corresponds to firm size distribution in (approximate) equilibrium.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">generate_draws</span><span class="p">(</span><span class="n">M</span><span class="o">=</span><span class="mi">1_000_000</span><span class="p">,</span>
-                   <span class="n">μ_a</span><span class="o">=-</span><span class="mf">0.5</span><span class="p">,</span>
-                   <span class="n">σ_a</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
-                   <span class="n">μ_b</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
-                   <span class="n">σ_b</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
-                   <span class="n">μ_e</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
-                   <span class="n">σ_e</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
-                   <span class="n">s_bar</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
-                   <span class="n">T</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span>
-                   <span class="n">s_init</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
-                   <span class="n">seed</span><span class="o">=</span><span class="mi">123</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">generate_cross_section</span><span class="p">(</span>
+        <span class="n">firm</span><span class="p">,</span> <span class="n">M</span><span class="o">=</span><span class="mi">1_000_000</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">s_init</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">123</span>
+    <span class="p">):</span>
 
+    <span class="n">μ_a</span><span class="p">,</span> <span class="n">σ_a</span><span class="p">,</span> <span class="n">μ_b</span><span class="p">,</span> <span class="n">σ_b</span><span class="p">,</span> <span class="n">μ_e</span><span class="p">,</span> <span class="n">σ_e</span><span class="p">,</span> <span class="n">s_bar</span> <span class="o">=</span> <span class="n">firm</span>
     <span class="n">key</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">PRNGKey</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
 
-    <span class="c1"># Initialize the array of s values with the initial value</span>
+    <span class="c1"># Initialize the cross-section to a common value</span>
     <span class="n">s</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">full</span><span class="p">((</span><span class="n">M</span><span class="p">,</span> <span class="p">),</span> <span class="n">s_init</span><span class="p">)</span>
 
     <span class="c1"># Perform updates on s for time t</span>
     <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">T</span><span class="p">):</span>
-        <span class="n">keys</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
-        <span class="n">a_random</span> <span class="o">=</span> <span class="n">μ_a</span> <span class="o">+</span> <span class="n">σ_a</span> <span class="o">*</span> <span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">keys</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="p">))</span>
-        <span class="n">b_random</span> <span class="o">=</span> <span class="n">μ_b</span> <span class="o">+</span> <span class="n">σ_b</span> <span class="o">*</span> <span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">keys</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="p">))</span>
-        <span class="n">e_random</span> <span class="o">=</span> <span class="n">μ_e</span> <span class="o">+</span> <span class="n">σ_e</span> <span class="o">*</span> <span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">keys</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="p">))</span>
-
-        <span class="n">s</span> <span class="o">=</span> <span class="n">update_s</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">s_bar</span><span class="p">,</span> <span class="n">a_random</span><span class="p">,</span> <span class="n">b_random</span><span class="p">,</span> <span class="n">e_random</span><span class="p">)</span>
-        
-        <span class="c1"># Generate new key for the next iteration</span>
-        <span class="n">key</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">fold_in</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span>
+        <span class="n">key</span><span class="p">,</span> <span class="o">*</span><span class="n">subkeys</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="n">μ_a</span> <span class="o">+</span> <span class="n">σ_a</span> <span class="o">*</span> <span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">subkeys</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="p">(</span><span class="n">M</span><span class="p">,))</span>
+        <span class="n">b</span> <span class="o">=</span> <span class="n">μ_b</span> <span class="o">+</span> <span class="n">σ_b</span> <span class="o">*</span> <span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">subkeys</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="p">(</span><span class="n">M</span><span class="p">,))</span>
+        <span class="n">e</span> <span class="o">=</span> <span class="n">μ_e</span> <span class="o">+</span> <span class="n">σ_e</span> <span class="o">*</span> <span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">subkeys</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="p">(</span><span class="n">M</span><span class="p">,))</span>
+        <span class="c1"># Exponentiate shocks</span>
+        <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">e</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">tree</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">exp</span><span class="p">,</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">e</span><span class="p">))</span>
+        <span class="c1"># Update the cross-section of firms</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="n">update_cross_section</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">firm</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">s</span>
-
-<span class="o">%</span><span class="k">time</span> data = generate_draws().block_until_ready()
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">firm</span> <span class="o">=</span> <span class="n">Firm</span><span class="p">()</span>
+<span class="n">tic</span><span class="p">()</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">generate_cross_section</span><span class="p">(</span><span class="n">firm</span><span class="p">)</span><span class="o">.</span><span class="n">block_until_ready</span><span class="p">()</span>
+<span class="n">toc</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 3.3 s, sys: 991 ms, total: 4.3 s
-Wall time: 2.96 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:2.37
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2.378364324569702
 </pre></div>
 </div>
 </div>
@@ -472,23 +493,21 @@ Wall time: 2.96 s
 <p>Running the above function again so we can see the speed with and without compile time.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">time</span> data = generate_draws().block_until_ready()
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tic</span><span class="p">()</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">generate_cross_section</span><span class="p">(</span><span class="n">firm</span><span class="p">)</span><span class="o">.</span><span class="n">block_until_ready</span><span class="p">()</span>
+<span class="n">toc</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 2.21 s, sys: 522 ms, total: 2.73 s
-Wall time: 1.38 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:0.80
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.8036484718322754
 </pre></div>
 </div>
 </div>
 </div>
-<p>Notice that we do not JIT-compile the <code class="docutils literal notranslate"><span class="pre">for</span></code> loops, since</p>
-<ol class="arabic simple">
-<li><p>acceleration of the outer loop makes little difference terms of compute
-time and</p></li>
-<li><p>compiling the outer loop is often very slow.</p></li>
-</ol>
 <p>Let’s produce the rank-size plot and check the distribution:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -504,83 +523,88 @@ time and</p></li>
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/b7d7eb702fecd901aa63cba0139d797ec1fd90c31da6fc40528d84c1edfa06c6.png"><img alt="_images/b7d7eb702fecd901aa63cba0139d797ec1fd90c31da6fc40528d84c1edfa06c6.png" src="_images/b7d7eb702fecd901aa63cba0139d797ec1fd90c31da6fc40528d84c1edfa06c6.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/2620cc22889de76a28a4a011caf8eb5036ee8f754ebef52e173695b6340ba08f.png"><img alt="_images/2620cc22889de76a28a4a011caf8eb5036ee8f754ebef52e173695b6340ba08f.png" src="_images/2620cc22889de76a28a4a011caf8eb5036ee8f754ebef52e173695b6340ba08f.png" style="width: 80%;" /></a>
 </div>
 </div>
 <p>The plot produces a straight line, consistent with a Pareto tail.</p>
 </section>
 <section id="alternative-implementation-with-lax-fori-loop">
 <h4><span class="section-number">6.2.1.3. </span>Alternative implementation with <code class="docutils literal notranslate"><span class="pre">lax.fori_loop</span></code><a class="headerlink" href="#alternative-implementation-with-lax-fori-loop" title="Permalink to this heading">#</a></h4>
-<p>If the time horizon is not too large, we can try to further accelerate our code
+<p>We did not JIT-compile the <code class="docutils literal notranslate"><span class="pre">for</span></code> loop above because
+acceleration of outer loops makes relatively little difference terms of
+compute time.</p>
+<p>However, to maximize performance, let’s try squeezing out a bit more speed
 by replacing the <code class="docutils literal notranslate"><span class="pre">for</span></code> loop with
 <a class="reference external" href="https://jax.readthedocs.io/en/latest/_autosummary/jax.lax.fori_loop.html"><code class="docutils literal notranslate"><span class="pre">lax.fori_loop</span></code></a>.</p>
-<p>Note, however, that</p>
-<ol class="arabic simple">
-<li><p>as mentioned above, there is not much speed gain in accelerating outer loops,</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">lax.fori_loop</span></code> has a more complicated syntax, and, most importantly,</p></li>
-<li><p>the <code class="docutils literal notranslate"><span class="pre">lax.fori_loop</span></code> implementation consumes far more memory, as we need to have to
-store large matrices of random draws</p></li>
-</ol>
-<p>Hence the code below will fail due to out-of-memory errors when <code class="docutils literal notranslate"><span class="pre">T</span></code> and <code class="docutils literal notranslate"><span class="pre">M</span></code> are large.</p>
-<p>Here is the <code class="docutils literal notranslate"><span class="pre">lax.fori_loop</span></code> version:</p>
+<p>Here a the <code class="docutils literal notranslate"><span class="pre">lax.fori_loop</span></code> version:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jax</span><span class="o">.</span><span class="n">jit</span>
-<span class="k">def</span> <span class="nf">generate_draws_lax</span><span class="p">(</span><span class="n">μ_a</span><span class="o">=-</span><span class="mf">0.5</span><span class="p">,</span>
-                       <span class="n">σ_a</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
-                       <span class="n">μ_b</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
-                       <span class="n">σ_b</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
-                       <span class="n">μ_e</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
-                       <span class="n">σ_e</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
-                       <span class="n">s_bar</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
-                       <span class="n">T</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span>
-                       <span class="n">M</span><span class="o">=</span><span class="mi">500_000</span><span class="p">,</span>
-                       <span class="n">s_init</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
-                       <span class="n">seed</span><span class="o">=</span><span class="mi">123</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">generate_cross_section_lax</span><span class="p">(</span>
+        <span class="n">firm</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">M</span><span class="o">=</span><span class="mi">500_000</span><span class="p">,</span> <span class="n">s_init</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">123</span>
+    <span class="p">):</span>
 
+    <span class="n">μ_a</span><span class="p">,</span> <span class="n">σ_a</span><span class="p">,</span> <span class="n">μ_b</span><span class="p">,</span> <span class="n">σ_b</span><span class="p">,</span> <span class="n">μ_e</span><span class="p">,</span> <span class="n">σ_e</span><span class="p">,</span> <span class="n">s_bar</span> <span class="o">=</span> <span class="n">firm</span>
     <span class="n">key</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">PRNGKey</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
-    <span class="n">keys</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
     
-    <span class="c1"># Generate random draws and initial values</span>
-    <span class="n">a_random</span> <span class="o">=</span> <span class="n">μ_a</span> <span class="o">+</span> <span class="n">σ_a</span> <span class="o">*</span> <span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">keys</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="n">M</span><span class="p">))</span>
-    <span class="n">b_random</span> <span class="o">=</span> <span class="n">μ_b</span> <span class="o">+</span> <span class="n">σ_b</span> <span class="o">*</span> <span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">keys</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="n">M</span><span class="p">))</span>
-    <span class="n">e_random</span> <span class="o">=</span> <span class="n">μ_e</span> <span class="o">+</span> <span class="n">σ_e</span> <span class="o">*</span> <span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">keys</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="n">M</span><span class="p">))</span>
+    <span class="c1"># Initial cross section</span>
     <span class="n">s</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">full</span><span class="p">((</span><span class="n">M</span><span class="p">,</span> <span class="p">),</span> <span class="n">s_init</span><span class="p">)</span>
 
-    <span class="c1"># Define the function for each update</span>
-    <span class="k">def</span> <span class="nf">update_s</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">s</span><span class="p">):</span>
-        <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">e</span> <span class="o">=</span> <span class="n">a_random</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">b_random</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">e_random</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-        <span class="n">s</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">s</span> <span class="o">&lt;</span> <span class="n">s_bar</span><span class="p">,</span>
-                      <span class="n">jnp</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">e</span><span class="p">),</span>
-                      <span class="n">jnp</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="o">*</span> <span class="n">s</span> <span class="o">+</span> <span class="n">jnp</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">b</span><span class="p">))</span>
-        <span class="k">return</span> <span class="n">s</span>
+    <span class="k">def</span> <span class="nf">update_cross_section</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
+        <span class="n">s</span><span class="p">,</span> <span class="n">key</span> <span class="o">=</span> <span class="n">state</span>
+        <span class="n">key</span><span class="p">,</span> <span class="o">*</span><span class="n">subkeys</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+        <span class="c1"># Generate current random draws </span>
+        <span class="n">a</span> <span class="o">=</span> <span class="n">μ_a</span> <span class="o">+</span> <span class="n">σ_a</span> <span class="o">*</span> <span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">subkeys</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="p">(</span><span class="n">M</span><span class="p">,))</span>
+        <span class="n">b</span> <span class="o">=</span> <span class="n">μ_b</span> <span class="o">+</span> <span class="n">σ_b</span> <span class="o">*</span> <span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">subkeys</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="p">(</span><span class="n">M</span><span class="p">,))</span>
+        <span class="n">e</span> <span class="o">=</span> <span class="n">μ_e</span> <span class="o">+</span> <span class="n">σ_e</span> <span class="o">*</span> <span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">subkeys</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="p">(</span><span class="n">M</span><span class="p">,))</span>
+        <span class="c1"># Exponentiate them</span>
+        <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">e</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">tree</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">exp</span><span class="p">,</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">e</span><span class="p">))</span>
+        <span class="c1"># Pull out the t-th cross-section of shocks</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">s</span> <span class="o">&lt;</span> <span class="n">s_bar</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">a</span> <span class="o">*</span> <span class="n">s</span> <span class="o">+</span> <span class="n">b</span><span class="p">)</span>
+        <span class="n">new_state</span> <span class="o">=</span> <span class="n">s</span><span class="p">,</span> <span class="n">key</span>
+        <span class="k">return</span> <span class="n">new_state</span>
 
-    <span class="c1"># Use lax.scan to perform the calculations on all states</span>
-    <span class="n">s_final</span> <span class="o">=</span> <span class="n">lax</span><span class="o">.</span><span class="n">fori_loop</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">update_s</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">s_final</span>
-
-<span class="o">%</span><span class="k">time</span> data = generate_draws_lax().block_until_ready()
+    <span class="c1"># Use fori_loop </span>
+    <span class="n">initial_state</span> <span class="o">=</span> <span class="n">s</span><span class="p">,</span> <span class="n">key</span>
+    <span class="n">final_s</span><span class="p">,</span> <span class="n">final_key</span> <span class="o">=</span> <span class="n">lax</span><span class="o">.</span><span class="n">fori_loop</span><span class="p">(</span>
+        <span class="mi">0</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">update_cross_section</span><span class="p">,</span> <span class="n">initial_state</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">final_s</span>
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1.03 s, sys: 63.1 ms, total: 1.1 s
-Wall time: 1.07 s
-</pre></div>
 </div>
-</div>
-</div>
-<p>In this case, <code class="docutils literal notranslate"><span class="pre">M</span></code> is small enough for the code to run and
-we see some speed gain over the for loop implementation:</p>
+<p>Let’s see if we get any speed gain</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">time</span> data = generate_draws_lax().block_until_ready()
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tic</span><span class="p">()</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">generate_cross_section_lax</span><span class="p">(</span><span class="n">firm</span><span class="p">)</span><span class="o">.</span><span class="n">block_until_ready</span><span class="p">()</span>
+<span class="n">toc</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 3.01 ms, sys: 956 μs, total: 3.97 ms
-Wall time: 72.2 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:1.16
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1.162796974182129
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tic</span><span class="p">()</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">generate_cross_section_lax</span><span class="p">(</span><span class="n">firm</span><span class="p">)</span><span class="o">.</span><span class="n">block_until_ready</span><span class="p">()</span>
+<span class="n">toc</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:0.05
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.059625864028930664
 </pre></div>
 </div>
 </div>
@@ -600,49 +624,102 @@ Wall time: 72.2 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/444cf54f8010c2d0a67d61f9bd94be74a3d00f9fdfff57e77088d983de070e49.png"><img alt="_images/444cf54f8010c2d0a67d61f9bd94be74a3d00f9fdfff57e77088d983de070e49.png" src="_images/444cf54f8010c2d0a67d61f9bd94be74a3d00f9fdfff57e77088d983de070e49.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/2021ae0983a5e5686ed051c8833c09149993202df25675636c7cf3c163509b99.png"><img alt="_images/2021ae0983a5e5686ed051c8833c09149993202df25675636c7cf3c163509b99.png" src="_images/2021ae0983a5e5686ed051c8833c09149993202df25675636c7cf3c163509b99.png" style="width: 80%;" /></a>
 </div>
 </div>
-<p>Let’s rerun the <code class="docutils literal notranslate"><span class="pre">for</span></code> loop version on smaller <code class="docutils literal notranslate"><span class="pre">M</span></code> to compare the speed</p>
+</section>
+</section>
+</section>
+<section id="exercises">
+<h2><span class="section-number">6.3. </span>Exercises<a class="headerlink" href="#exercises" title="Permalink to this heading">#</a></h2>
+<div class="exercise admonition" id="kp_ex1">
+
+<p class="admonition-title"><span class="caption-number">Exercise 6.1 </span></p>
+<section id="exercise-content">
+<p>Try writing an alternative version of <code class="docutils literal notranslate"><span class="pre">generate_cross_section_lax()</span></code> where the entire sequence of random draws is generated at once, so that all of <code class="docutils literal notranslate"><span class="pre">a</span></code>, <code class="docutils literal notranslate"><span class="pre">b</span></code>, and <code class="docutils literal notranslate"><span class="pre">e</span></code> are of shape <code class="docutils literal notranslate"><span class="pre">(T,</span> <span class="pre">M)</span></code>.</p>
+<p>(The <code class="docutils literal notranslate"><span class="pre">update_cross_section()</span></code> function should not generate any random numbers.)</p>
+<p>Does it improve the runtime?</p>
+<p>What are the pros and cons of this approach.</p>
+</section>
+</div>
+<div class="solution dropdown admonition" id="kesten_processes-solution-1">
+
+<p class="admonition-title">Solution to<a class="reference internal" href="#kp_ex1"> Exercise 6.1</a></p>
+<section id="solution-content">
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">time</span> generate_draws(M=500_000).block_until_ready()
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jax</span><span class="o">.</span><span class="n">jit</span>
+<span class="k">def</span> <span class="nf">generate_cross_section_lax</span><span class="p">(</span>
+        <span class="n">firm</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">M</span><span class="o">=</span><span class="mi">500_000</span><span class="p">,</span> <span class="n">s_init</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">123</span>
+    <span class="p">):</span>
+
+    <span class="n">μ_a</span><span class="p">,</span> <span class="n">σ_a</span><span class="p">,</span> <span class="n">μ_b</span><span class="p">,</span> <span class="n">σ_b</span><span class="p">,</span> <span class="n">μ_e</span><span class="p">,</span> <span class="n">σ_e</span><span class="p">,</span> <span class="n">s_bar</span> <span class="o">=</span> <span class="n">firm</span>
+    <span class="n">key</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">PRNGKey</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
+    <span class="n">subkey_1</span><span class="p">,</span> <span class="n">subkey_2</span><span class="p">,</span> <span class="n">subkey_3</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+    
+    <span class="c1"># Generate entire sequence of random draws </span>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">μ_a</span> <span class="o">+</span> <span class="n">σ_a</span> <span class="o">*</span> <span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">subkey_1</span><span class="p">,</span> <span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="n">M</span><span class="p">))</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="n">μ_b</span> <span class="o">+</span> <span class="n">σ_b</span> <span class="o">*</span> <span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">subkey_2</span><span class="p">,</span> <span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="n">M</span><span class="p">))</span>
+    <span class="n">e</span> <span class="o">=</span> <span class="n">μ_e</span> <span class="o">+</span> <span class="n">σ_e</span> <span class="o">*</span> <span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">subkey_3</span><span class="p">,</span> <span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="n">M</span><span class="p">))</span>
+    <span class="c1"># Exponentiate them</span>
+    <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">e</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">tree</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">exp</span><span class="p">,</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">e</span><span class="p">))</span>
+    <span class="c1"># Initial cross section</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">full</span><span class="p">((</span><span class="n">M</span><span class="p">,</span> <span class="p">),</span> <span class="n">s_init</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">update_cross_section</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">s</span><span class="p">):</span>
+        <span class="c1"># Pull out the t-th cross-section of shocks</span>
+        <span class="n">a_t</span><span class="p">,</span> <span class="n">b_t</span><span class="p">,</span> <span class="n">e_t</span> <span class="o">=</span> <span class="n">a</span><span class="p">[</span><span class="n">t</span><span class="p">],</span> <span class="n">b</span><span class="p">[</span><span class="n">t</span><span class="p">],</span> <span class="n">e</span><span class="p">[</span><span class="n">t</span><span class="p">]</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">s</span> <span class="o">&lt;</span> <span class="n">s_bar</span><span class="p">,</span> <span class="n">e_t</span><span class="p">,</span> <span class="n">a_t</span> <span class="o">*</span> <span class="n">s</span> <span class="o">+</span> <span class="n">b_t</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">s</span>
+
+    <span class="c1"># Use lax.scan to perform the calculations on all states</span>
+    <span class="n">s_final</span> <span class="o">=</span> <span class="n">lax</span><span class="o">.</span><span class="n">fori_loop</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">update_cross_section</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">s_final</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Here are the run times.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tic</span><span class="p">()</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">generate_cross_section_lax</span><span class="p">(</span><span class="n">firm</span><span class="p">)</span><span class="o">.</span><span class="n">block_until_ready</span><span class="p">()</span>
+<span class="n">toc</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 2.81 s, sys: 546 ms, total: 3.36 s
-Wall time: 1.97 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:1.11
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Array([1.8281046, 2.8847322, 2.3919296, ..., 2.9062161, 4.1978517,
-       2.1926358], dtype=float32)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1.1124207973480225
 </pre></div>
 </div>
 </div>
 </div>
-<p>Let’s run it again to get rid of the compile time.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">time</span> generate_draws(M=500_000).block_until_ready()
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tic</span><span class="p">()</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">generate_cross_section_lax</span><span class="p">(</span><span class="n">firm</span><span class="p">)</span><span class="o">.</span><span class="n">block_until_ready</span><span class="p">()</span>
+<span class="n">toc</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 2.26 s, sys: 544 ms, total: 2.8 s
-Wall time: 1.42 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:0.06
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Array([1.8281046, 2.8847322, 2.3919296, ..., 2.9062161, 4.1978517,
-       2.1926358], dtype=float32)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.06845903396606445
 </pre></div>
 </div>
 </div>
 </div>
-<p>We see that the <code class="docutils literal notranslate"><span class="pre">lax.fori_loop</span></code> version is faster than the <code class="docutils literal notranslate"><span class="pre">for</span></code> loop version
-when memory is not an issue.</p>
+<p>This method might be faster in some cases but in general the
+relative speed will depend on the size of the cross-section and the length of
+the simulation paths.</p>
+<p>Also, this method is far more memory intensive.</p>
 </section>
-</section>
+</div>
 </section>
 </section>
 
