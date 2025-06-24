@@ -40,9 +40,8 @@ In addition to JAX and Anaconda, this lecture will need the following libraries:
 This lecture describes Kesten processes, which are an important class of
 stochastic processes, and an application of firm dynamics.
 
-The lecture draws on [an earlier QuantEcon
-lecture](https://python.quantecon.org/kesten_processes.html), which uses Numba
-to accelerate the computations.
+The lecture draws on [an earlier QuantEcon lecture](https://python.quantecon.org/kesten_processes.html), 
+which uses Numba to accelerate the computations.
 
 In that earlier lecture you can find a more detailed discussion of the concepts involved.
 
@@ -137,10 +136,8 @@ We now study the implications of this specification.
 
 #### Heavy tails
 
-If the conditions of the [Kesten--Goldie
-Theorem](https://python.quantecon.org/kesten_processes.html#the-kestengoldie-theorem)
-are satisfied, then {eq}`firm_dynam` implies that the firm size distribution
-will have Pareto tails.
+If the conditions of the [Kesten--Goldie Theorem](https://python.quantecon.org/kesten_processes.html#the-kestengoldie-theorem)
+are satisfied, then {eq}`firm_dynam` implies that the firm size distribution will have Pareto tails.
 
 This matches empirical findings across many data sets.
 
@@ -192,9 +189,8 @@ class Firm(NamedTuple):
     s_bar: float = 1.0
 ```
 
-
 Here's code to update a cross-section of firms according to the dynamics in
- [](firm_dynam_ee).
+[](firm_dynam_ee).
 
 ```{code-cell} ipython3
 @jax.jit
@@ -270,7 +266,7 @@ The plot produces a straight line, consistent with a Pareto tail.
 
 We did not JIT-compile the `for` loop above because
 acceleration of outer loops makes relatively little difference terms of
-   compute time.
+compute time.
 
 However, to maximize performance, let's try squeezing out a bit more speed
 by replacing the `for` loop with
@@ -342,6 +338,10 @@ plt.show()
 
 ## Exercises
 
+```{exercise-start}
+:label: kp_ex1
+```
+
 Try writing an alternative version of `generate_cross_section_lax()` where the entire sequence of random draws is generated at once, so that all of `a`, `b`, and `e` are of shape `(T, M)`.
 
 (The `update_cross_section()` function should not generate any random numbers.)
@@ -350,7 +350,11 @@ Does it improve the runtime?
 
 What are the pros and cons of this approach.
 
-*Solution*
+```{exercise-end}
+```
+
+```{solution-start} kp_ex1
+```
 
 ```{code-cell} ipython3
 @jax.jit
@@ -401,3 +405,6 @@ relative speed will depend on the size of the cross-section and the length of
 the simulation paths.
 
 Also, this method is far more memory intensive.
+
+```{solution-end}
+```
