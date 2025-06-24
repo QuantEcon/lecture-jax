@@ -354,6 +354,7 @@ What are the pros and cons of this approach.
 ```
 
 ```{solution-start} kp_ex1
+:class: dropdown
 ```
 
 ```{code-cell} ipython3
