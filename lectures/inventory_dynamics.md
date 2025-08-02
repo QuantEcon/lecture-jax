@@ -4,7 +4,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.16.1
+    jupytext_version: 1.17.2
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -53,10 +53,11 @@ We will use the following imports:
 ```{code-cell} ipython3
 import matplotlib.pyplot as plt
 import numpy as np
+import quantecon as qe
 import jax
 import jax.numpy as jnp
 from jax import random, lax
-from collections import namedtuple
+from typing import NamedTuple
 ```
 
 Here's a description of our GPU:
@@ -97,10 +98,11 @@ and standard normal.
 Here's a `namedtuple` that stores parameters.
 
 ```{code-cell} ipython3
-Parameters = namedtuple('Parameters', ['s', 'S', 'μ', 'σ'])
-
-# Create a default instance
-params = Parameters(s=10, S=100, μ=1.0, σ=0.5)
+class ModelParameters(NamedTuple):
+    s: int = 10
+    S: int = 100
+    μ: float = 1.0
+    σ: float = 0.5
 ```
 
 ## Cross-sectional distributions
@@ -126,19 +128,21 @@ We will use the following code to update the cross-section of firms by one perio
 
 ```{code-cell} ipython3
 @jax.jit
-def update_cross_section(params, X_vec, D):
+def update_cross_section(params: ModelParameters,
+                         X_vec: jnp.ndarray, 
+                         D: jnp.ndarray) -> jnp.ndarray:
     """
     Update by one period a cross-section of firms with inventory levels given by
-    X_vec, given the vector of demand shocks in D.
-
-       * D[i] is the demand shock for firm i with current inventory X_vec[i]
+    X_vec, given the vector of demand shocks in D. Here D[i] is the demand shock
+    for firm i with current inventory X_vec[i].
 
     """
     # Unpack
     s, S = params.s, params.S
     # Restock if the inventory is below the threshold
     X_new = jnp.where(X_vec <= s, 
-                      jnp.maximum(S - D, 0), jnp.maximum(X_vec - D, 0))
+                      jnp.maximum(S - D, 0), 
+                      jnp.maximum(X_vec - D, 0))
     return X_new
 ```
 
@@ -149,9 +153,6 @@ initial distribution $\psi_0$ and a positive integer $T$.
 
 In this code we use an ordinary Python `for` loop to step forward through time
 
-While Python loops are slow, this approach is reasonable here because
-efficiency of outer loops has far less influence on runtime than efficiency of inner loops.
-
 (Below we will squeeze out more speed by compiling the outer loop as well as the
 update rule.)
 
@@ -159,7 +160,11 @@ In the code below, the initial distribution $\psi_0$ takes all firms to have
 initial inventory `x_init`.
 
 ```{code-cell} ipython3
-def compute_cross_section(params, x_init, T, key, num_firms=50_000):
+def project_cross_section(params: ModelParameters, 
+                          x_init: jnp.ndarray, 
+                          T: int, 
+                          key: jnp.ndarray, 
+                          num_firms: int = 50_000) -> jnp.ndarray:
     # Set up initial distribution
     X_vec = jnp.full((num_firms, ), x_init)
     # Loop
@@ -176,6 +181,7 @@ def compute_cross_section(params, x_init, T, key, num_firms=50_000):
 We'll use the following specification
 
 ```{code-cell} ipython3
+params = ModelParameters()
 x_init = 50
 T = 500
 # Initialize random number generator
@@ -185,15 +191,19 @@ key = random.PRNGKey(10)
 Let's look at the timing.
 
 ```{code-cell} ipython3
-%time X_vec = compute_cross_section(params, \
-        x_init, T, key).block_until_ready()
+qe.tic()
+X_vec = project_cross_section(
+    params, x_init, T, key).block_until_ready()
+qe.toc()
 ```
 
 Let's run again to eliminate compile time.
 
 ```{code-cell} ipython3
-%time X_vec = compute_cross_section(params, \
-        x_init, T, key).block_until_ready()
+qe.tic()
+X_vec = project_cross_section(
+    params, x_init, T, key).block_until_ready()
+qe.toc()
 ```
 
 Here's a histogram of inventory levels at time $T$.
@@ -218,15 +228,21 @@ through the time dimension.
 We will do this using `jax.jit` and a `fori_loop`, which is a compiler-ready version of a `for` loop provided by JAX.
 
 ```{code-cell} ipython3
-def compute_cross_section_fori(params, x_init, T, key, num_firms=50_000):
+def project_cross_section_fori(
+        params: ModelParameters, 
+        x_init: jnp.ndarray, 
+        T: int, 
+        key: jnp.ndarray, 
+        num_firms: int = 50_000
+    ) -> jnp.ndarray:
 
     s, S, μ, σ = params.s, params.S, params.μ, params.σ
     X = jnp.full((num_firms, ), x_init)
 
     # Define the function for each update
-    def fori_update(t, inputs):
+    def fori_update(t, loop_state):
         # Unpack
-        X, key = inputs
+        X, key = loop_state
         # Draw shocks using key
         Z = random.normal(key, shape=(num_firms,))
         D = jnp.exp(μ + σ * Z)
@@ -239,90 +255,38 @@ def compute_cross_section_fori(params, x_init, T, key, num_firms=50_000):
         return X, subkey
 
     # Loop t from 0 to T, applying fori_update each time.
-    # The initial condition for fori_update is (X, key).
-    X, key = lax.fori_loop(0, T, fori_update, (X, key))
-
+    initial_loop_state = X, key
+    X, key = lax.fori_loop(0, T, fori_update, initial_loop_state)
     return X
 
 # Compile taking T and num_firms as static (changes trigger recompile)
-compute_cross_section_fori = jax.jit(
-    compute_cross_section_fori, static_argnums=(2, 4))
+project_cross_section_fori = jax.jit(
+    project_cross_section_fori, static_argnums=(2, 4))
 ```
 
 Let's see how fast this runs with compile time.
 
 ```{code-cell} ipython3
-%time X_vec = compute_cross_section_fori(params, \
-                x_init, T, key).block_until_ready()
+qe.tic()
+X_vec = project_cross_section_fori(
+        params, x_init, T, key).block_until_ready()
+qe.toc()
 ```
 
 And let's see how fast it runs without compile time.
 
 ```{code-cell} ipython3
-%time X_vec = compute_cross_section_fori(params, \
-                x_init, T, key).block_until_ready()
+qe.tic()
+X_vec = project_cross_section_fori(
+        params, x_init, T, key).block_until_ready()
+qe.toc()
 ```
 
 Compared to the original version with a pure Python outer loop, we have 
 produced a nontrivial speed gain.
 
 
-This is due to the fact that we have compiled the whole operation.
-
-
-
-
-### Further vectorization
-
-For relatively small problems, we can make this code run even faster by generating
-all random variables at once.
-
-This improves efficiency because we are taking more operations out of the loop.
-
-```{code-cell} ipython3
-def compute_cross_section_fori(params, x_init, T, key, num_firms=50_000):
-
-    s, S, μ, σ = params.s, params.S, params.μ, params.σ
-    X = jnp.full((num_firms, ), x_init)
-    Z = random.normal(key, shape=(T, num_firms))
-    D = jnp.exp(μ + σ * Z)
-
-    def update_cross_section(i, X):
-        X = jnp.where(X <= s,
-                  jnp.maximum(S - D[i, :], 0),
-                  jnp.maximum(X - D[i, :], 0))
-        return X
-
-    X = lax.fori_loop(0, T, update_cross_section, X)
-
-    return X
-
-# Compile taking T and num_firms as static (changes trigger recompile)
-compute_cross_section_fori = jax.jit(
-    compute_cross_section_fori, static_argnums=(2, 4))
-```
-
-Let's test it with compile time included.
-
-```{code-cell} ipython3
-%time X_vec = compute_cross_section_fori(params, \
-                x_init, T, key).block_until_ready()
-```
-
-Let's run again to eliminate compile time.
-
-```{code-cell} ipython3
-%time X_vec = compute_cross_section_fori(params, \
-                x_init, T, key).block_until_ready()
-```
-
-On one hand, this version is faster than the previous one, where random variables were
-generated inside the loop.
-
-On the other hand, this implementation consumes far more memory, as we need to
-store large arrays of random draws.
-
-The high memory consumption becomes problematic for large problems.
+This is due to the fact that we have compiled the entire sequence of operations.
 
 
 
@@ -364,16 +328,8 @@ num_firms = 10_000
 sample_dates = 10, 50, 250, 500, 750
 key = random.PRNGKey(10)
 
-
-%time X = shift_forward_and_sample(x_init, params, \
-                    sample_dates, key).block_until_ready()
-```
-
-We run the code again to eliminate compile time.
-
-```{code-cell} ipython3
-%time X = shift_forward_and_sample(x_init, params, \
-                    sample_dates, key).block_until_ready()
+X = shift_forward_and_sample(
+    x_init, params, sample_dates, key).block_until_ready()
 ```
 
 Let's plot the output.
@@ -464,13 +420,17 @@ def compute_freq(params, key,
 ```{code-cell} ipython3
 key = random.PRNGKey(27)
 
-%time freq = compute_freq(params, key).block_until_ready()
+qe.tic()
+freq = compute_freq(params, key).block_until_ready()
+qe.toc()
 ```
 
 We run the code again to get rid of compile time.
 
 ```{code-cell} ipython3
-%time freq = compute_freq(params, key).block_until_ready()
+qe.tic()
+freq = compute_freq(params, key).block_until_ready()
+qe.toc()
 ```
 
 ```{code-cell} ipython3
@@ -533,13 +493,17 @@ def compute_freq(params, key,
 Note the time the routine takes to run, as well as the output
 
 ```{code-cell} ipython3
-%time freq = compute_freq(params, key).block_until_ready()
+qe.tic()
+freq = compute_freq(params, key).block_until_ready()
+qe.toc()
 ```
 
 We run the code again to eliminate the compile time.
 
 ```{code-cell} ipython3
-%time freq = compute_freq(params, key).block_until_ready()
+qe.tic()
+freq = compute_freq(params, key).block_until_ready()
+qe.toc()
 ```
 
 ```{code-cell} ipython3
