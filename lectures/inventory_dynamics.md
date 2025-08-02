@@ -27,12 +27,6 @@ kernelspec:
 ```{index} single: Markov process, inventory
 ```
 
-In addition to what's included in base Anaconda, we need to install the following packages
-
-```{code-cell} ipython3
-!pip install quantecon
-```
-
 ## Overview
 
 This lecture explores the inventory dynamics of a firm using so-called s-S inventory control.
@@ -59,11 +53,11 @@ We will use the following imports:
 ```{code-cell} ipython3
 import matplotlib.pyplot as plt
 import numpy as np
-import quantecon as qe
 import jax
 import jax.numpy as jnp
 from jax import random, lax
 from typing import NamedTuple
+from time import time
 ```
 
 Here's a description of our GPU:
@@ -197,19 +191,21 @@ key = random.PRNGKey(10)
 Let's look at the timing.
 
 ```{code-cell} ipython3
-qe.tic()
+start_time = time()
 X_vec = project_cross_section(
     params, x_init, T, key).block_until_ready()
-qe.toc()
+end_time = time()
+print(f"Elapsed time: {(end_time - start_time) * 1000:.6f} ms")
 ```
 
 Let's run again to eliminate compile time.
 
 ```{code-cell} ipython3
-qe.tic()
+start_time = time()
 X_vec = project_cross_section(
     params, x_init, T, key).block_until_ready()
-qe.toc()
+end_time = time()
+print(f"Elapsed time: {(end_time - start_time) * 1000:.6f} ms")
 ```
 
 Here's a histogram of inventory levels at time $T$.
@@ -273,19 +269,21 @@ project_cross_section_fori = jax.jit(
 Let's see how fast this runs with compile time.
 
 ```{code-cell} ipython3
-qe.tic()
+start_time = time()
 X_vec = project_cross_section_fori(
         params, x_init, T, key).block_until_ready()
-qe.toc()
+end_time = time()
+print(f"Elapsed time: {(end_time - start_time) * 1000:.6f} ms")
 ```
 
 And let's see how fast it runs without compile time.
 
 ```{code-cell} ipython3
-qe.tic()
+start_time = time()
 X_vec = project_cross_section_fori(
         params, x_init, T, key).block_until_ready()
-qe.toc()
+end_time = time()
+print(f"Elapsed time: {(end_time - start_time) * 1000:.6f} ms")
 ```
 
 Compared to the original version with a pure Python outer loop, we have 
@@ -426,17 +424,19 @@ def compute_freq(params, key,
 ```{code-cell} ipython3
 key = random.PRNGKey(27)
 
-qe.tic()
+start_time = time()
 freq = compute_freq(params, key).block_until_ready()
-qe.toc()
+end_time = time()
+print(f"Elapsed time: {(end_time - start_time) * 1000:.6f} ms")
 ```
 
 We run the code again to get rid of compile time.
 
 ```{code-cell} ipython3
-qe.tic()
+start_time = time()
 freq = compute_freq(params, key).block_until_ready()
-qe.toc()
+end_time = time()
+print(f"Elapsed time: {(end_time - start_time) * 1000:.6f} ms")
 ```
 
 ```{code-cell} ipython3
@@ -499,17 +499,19 @@ def compute_freq(params, key,
 Note the time the routine takes to run, as well as the output
 
 ```{code-cell} ipython3
-qe.tic()
+start_time = time()
 freq = compute_freq(params, key).block_until_ready()
-qe.toc()
+end_time = time()
+print(f"Elapsed time: {(end_time - start_time) * 1000:.6f} ms")
 ```
 
 We run the code again to eliminate the compile time.
 
 ```{code-cell} ipython3
-qe.tic()
+start_time = time()
 freq = compute_freq(params, key).block_until_ready()
-qe.toc()
+end_time = time()
+print(f"Elapsed time: {(end_time - start_time) * 1000:.6f} ms")
 ```
 
 ```{code-cell} ipython3
