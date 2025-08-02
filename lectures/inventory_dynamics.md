@@ -27,6 +27,12 @@ kernelspec:
 ```{index} single: Markov process, inventory
 ```
 
+In addition to what's included in base Anaconda, we need to install the following packages
+
+```{code-cell} ipython3
+!pip install quantecon
+```
+
 ## Overview
 
 This lecture explores the inventory dynamics of a firm using so-called s-S inventory control.
