@@ -1,13 +1,12 @@
 
-
 <!DOCTYPE html>
 
 
-<html lang="en" data-content_root="" >
+<html lang="en" data-content_root="./" >
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>19. The Hopenhayn Entry-Exit Model &#8212; Quantitative Economics with Python using JAX</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
@@ -70,14 +69,14 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=bd0785fbb14d8d2bd4d9ae501d79ed8d3bc089ec" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
-    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
-    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
-    <link rel="stylesheet" type="text/css" href="_static/exercise.css" />
-    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.5ea377869091fd0449014c60fc090103.min.css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="_static/exercise.css?v=982b99e0" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
@@ -85,22 +84,21 @@
   <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
 
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-    <script src="_static/jquery.js"></script>
-    <script src="_static/underscore.js"></script>
-    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="_static/doctools.js"></script>
-    <script src="_static/sphinx_highlight.js"></script>
-    <script src="_static/clipboard.min.js"></script>
-    <script src="_static/copybutton.js"></script>
+    <script src="_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
     <script src="_static/scripts/sphinx-book-theme.js"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="_static/togglebutton.js"></script>
-    <script src="_static/scripts/quantecon-book-theme.js?digest=d6d86bce9979111653c4c495e33499e1796e172a"></script>
+    <script src="_static/togglebutton.js?v=4a39c7ea"></script>
+    <script src="_static/scripts/quantecon-book-theme.js?digest=d9faaf6c4b57726f74ba012412af1f5681bdff87"></script>
+    <script src="_static/scripts/jquery.js?v=5d32c60e"></script>
+    <script src="_static/scripts/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script src="_static/design-tabs.js"></script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
     <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-K1NYBSC1CZ"></script>
     <script>
                 window.dataLayer = window.dataLayer || [];
@@ -109,12 +107,20 @@
                 gtag('config', 'G-K1NYBSC1CZ');
             </script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-K1NYBSC1CZ');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script>window.MathJax = {"tex": {"macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'hopenhayn';</script>
     <link rel="canonical" href="https://jax.quantecon.org/hopenhayn.html" />
-    <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
+    <link rel="icon" href="_static/lectures-favicon.ico"/>
     <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -146,6 +152,7 @@
   </head>
 <body>
 
+<!-- Override QuantEcon theme colors -->
 
     <span id="top"></span>
 
@@ -243,7 +250,7 @@
                     <div>
                         
   <section class="tex2jax_ignore mathjax_ignore" id="the-hopenhayn-entry-exit-model">
-<h1><span class="section-number">19. </span>The Hopenhayn Entry-Exit Model<a class="headerlink" href="#the-hopenhayn-entry-exit-model" title="Permalink to this heading">#</a></h1>
+<h1><span class="section-number">19. </span>The Hopenhayn Entry-Exit Model<a class="headerlink" href="#the-hopenhayn-entry-exit-model" title="Link to this heading">#</a></h1>
 <div class="warning admonition">
 <p class="admonition-title">GPU</p>
 <p>This lecture was built using a machine with JAX installed and access to a GPU.</p>
@@ -251,7 +258,7 @@
 <p>To run this lecture on your own machine, you need to install <a class="reference external" href="https://github.com/google/jax">Google JAX</a>.</p>
 </div>
 <section id="outline">
-<h2><span class="section-number">19.1. </span>Outline<a class="headerlink" href="#outline" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">19.1. </span>Outline<a class="headerlink" href="#outline" title="Link to this heading">#</a></h2>
 <p>The Hopenhayn (1992, ECMA) entry-exit model is a highly influential (partial equilibrium) heterogeneous agent model where</p>
 <ul class="simple">
 <li><p>the agents receiving idiosyncratic shocks are firms, and</p></li>
@@ -266,13 +273,13 @@
 </pre></div>
 </div>
 </div>
-<details class="hide below-input">
+<details class="admonition hide below-input">
 <summary aria-label="Toggle hidden content">
-<span class="collapsed">Show code cell output</span>
-<span class="expanded">Hide code cell output</span>
+<p class="collapsed admonition-title">Show code cell output</p>
+<p class="expanded admonition-title">Hide code cell output</p>
 </summary>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (0.8.1)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (0.8.2)
 Requirement already satisfied: numba&gt;=0.49.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from quantecon) (0.60.0)
 Requirement already satisfied: numpy&gt;=1.17.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from quantecon) (1.26.4)
 Requirement already satisfied: requests in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from quantecon) (2.32.3)
@@ -292,20 +299,20 @@ Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in /home/runner/minicond
 <p>We will use the following imports.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">jax.numpy</span> <span class="k">as</span> <span class="nn">jnp</span>
-<span class="kn">import</span> <span class="nn">jax</span>
-<span class="kn">import</span> <span class="nn">quantecon</span> <span class="k">as</span> <span class="nn">qe</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">namedtuple</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">jax.numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">jnp</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">jax</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">quantecon</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">qe</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">namedtuple</span>
 </pre></div>
 </div>
 </div>
 </div>
 </section>
 <section id="the-model">
-<h2><span class="section-number">19.2. </span>The Model<a class="headerlink" href="#the-model" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">19.2. </span>The Model<a class="headerlink" href="#the-model" title="Link to this heading">#</a></h2>
 <section id="environment">
-<h3><span class="section-number">19.2.1. </span>Environment<a class="headerlink" href="#environment" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">19.2.1. </span>Environment<a class="headerlink" href="#environment" title="Link to this heading">#</a></h3>
 <p>There is a single good produced by a continuum of competitive firms.</p>
 <p>The productivity <span class="math notranslate nohighlight">\(\varphi_t = \varphi_t^i\)</span> of each firm evolves randomly on <span class="math notranslate nohighlight">\(\mathbb R_+\)</span>.</p>
 <ul class="simple">
@@ -353,7 +360,7 @@ distribution over <span class="math notranslate nohighlight">\(\mathbb R_+\)</sp
 \[D(p) = 1/p \]</div>
 </section>
 <section id="firm-decisions">
-<h3><span class="section-number">19.2.2. </span>Firm decisions<a class="headerlink" href="#firm-decisions" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">19.2.2. </span>Firm decisions<a class="headerlink" href="#firm-decisions" title="Link to this heading">#</a></h3>
 <p>The intertemporal firm decision problem is choosing when to exit.</p>
 <p>The timing is:</p>
 <ol class="arabic simple">
@@ -362,15 +369,15 @@ distribution over <span class="math notranslate nohighlight">\(\mathbb R_+\)</sp
 </ol>
 <p>Scrap value is set to zero and the discount rate is <span class="math notranslate nohighlight">\(\beta \in (0, 1)\)</span>.</p>
 <p>The firm makes their stop-continue choice by first solving for the value function, which is the unique solution in a class of continuous functions <span class="math notranslate nohighlight">\(\mathscr C\)</span> (details omitted) to</p>
-<div class="amsmath math notranslate nohighlight" id="equation-97364e78-9f20-4b79-a1ce-533c0bfa88d6">
-<span class="eqno">(19.1)<a class="headerlink" href="#equation-97364e78-9f20-4b79-a1ce-533c0bfa88d6" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-3ea43d1d-ac7b-47cb-a027-fbe6d0d5e3c9">
+<span class="eqno">(19.1)<a class="headerlink" href="#equation-3ea43d1d-ac7b-47cb-a027-fbe6d0d5e3c9" title="Permalink to this equation">#</a></span>\[\begin{equation}
     v(\varphi, p) = \pi(\varphi, p) + \beta 
         \max \left\{ 0, \int v(\varphi', p) \Gamma(\varphi, d \varphi') \right\}.
 \end{equation}\]</div>
 <p>Let <span class="math notranslate nohighlight">\(\bar v\)</span> be the unique solution to this functional equation.</p>
 <p>Given <span class="math notranslate nohighlight">\(\bar v\)</span>, we let <span class="math notranslate nohighlight">\(\bar \varphi\)</span> be the exit threshold function defined by</p>
-<div class="amsmath math notranslate nohighlight" id="equation-40f141ea-c7f9-4dde-84a0-3ae8f5d423e4">
-<span class="eqno">(19.2)<a class="headerlink" href="#equation-40f141ea-c7f9-4dde-84a0-3ae8f5d423e4" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-6d1ef095-1b1d-4055-843b-ff04914cd4c6">
+<span class="eqno">(19.2)<a class="headerlink" href="#equation-6d1ef095-1b1d-4055-843b-ff04914cd4c6" title="Permalink to this equation">#</a></span>\[\begin{equation}
     \bar \varphi(p) := 
     \min
     \left\{ 
@@ -384,7 +391,7 @@ remain rather than exit, an incumbent with productivity <span class="math notran
 if and only if <span class="math notranslate nohighlight">\(\varphi &lt; \bar \varphi (p)\)</span>.</p>
 </section>
 <section id="equilibrium">
-<h3><span class="section-number">19.2.3. </span>Equilibrium<a class="headerlink" href="#equilibrium" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">19.2.3. </span>Equilibrium<a class="headerlink" href="#equilibrium" title="Link to this heading">#</a></h3>
 <p>Now we describe a stationary recursive equilibrium in the model, where</p>
 <ul class="simple">
 <li><p>the goods market clears (supply equals demand)</p></li>
@@ -405,13 +412,13 @@ section, a <strong>stationary recursive equilibrium</strong>  is a triple</p>
 \end{equation*}\]</div>
 <p>with <span class="math notranslate nohighlight">\(p\)</span> understood as price, <span class="math notranslate nohighlight">\(M\)</span> as mass of entrants, and <span class="math notranslate nohighlight">\(\mu\)</span> as a
 distribution of firms over productivity levels, such that the goods market clears, or</p>
-<div class="amsmath math notranslate nohighlight" id="equation-f815072a-447f-448e-b3be-a72f1d858da4">
-<span class="eqno">(19.3)<a class="headerlink" href="#equation-f815072a-447f-448e-b3be-a72f1d858da4" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-5cb7db07-22f8-4909-846f-7e68a30cf9b1">
+<span class="eqno">(19.3)<a class="headerlink" href="#equation-5cb7db07-22f8-4909-846f-7e68a30cf9b1" title="Permalink to this equation">#</a></span>\[\begin{equation}
     \int q( \varphi, p) \mu(d \varphi) = D(p),
 \end{equation}\]</div>
 <p>the <em>invariance condition</em> over the firm distribution</p>
-<div class="amsmath math notranslate nohighlight" id="equation-d7803261-cd0d-4772-a25c-64f0e989984a">
-<span class="eqno">(19.4)<a class="headerlink" href="#equation-d7803261-cd0d-4772-a25c-64f0e989984a" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-8699c27e-f35e-47b8-b3dd-302d5683c93f">
+<span class="eqno">(19.4)<a class="headerlink" href="#equation-8699c27e-f35e-47b8-b3dd-302d5683c93f" title="Permalink to this equation">#</a></span>\[\begin{equation}
     \mu (B) 
     = \int \Gamma(\varphi, B) \, \mathbf{1}  \{\varphi \geq \bar \varphi(p)\} \,
     \mu(d \varphi)
@@ -419,32 +426,32 @@ distribution of firms over productivity levels, such that the goods market clear
     \text{ for all } B \in \mathscr B,
 \end{equation}\]</div>
 <p>holds (see below for intuition), the <em>equilibrium entry condition</em></p>
-<div class="amsmath math notranslate nohighlight" id="equation-e7ab10ff-4638-4643-b17c-36a4cf6f8bc8">
-<span class="eqno">(19.5)<a class="headerlink" href="#equation-e7ab10ff-4638-4643-b17c-36a4cf6f8bc8" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-94b76718-4198-4854-9019-153eb34ac593">
+<span class="eqno">(19.5)<a class="headerlink" href="#equation-94b76718-4198-4854-9019-153eb34ac593" title="Permalink to this equation">#</a></span>\[\begin{equation}
     \int \bar v( \varphi, p) \, \gamma(d \varphi) = c_e
 \end{equation}\]</div>
 <p>holds, and the <em>balanced entry and exit condition</em></p>
-<div class="amsmath math notranslate nohighlight" id="equation-5af164fb-42bc-46ef-b3ea-437b146bc897">
-<span class="eqno">(19.6)<a class="headerlink" href="#equation-5af164fb-42bc-46ef-b3ea-437b146bc897" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-460ce2fc-d616-4207-8c42-4c2a8c30e6f1">
+<span class="eqno">(19.6)<a class="headerlink" href="#equation-460ce2fc-d616-4207-8c42-4c2a8c30e6f1" title="Permalink to this equation">#</a></span>\[\begin{equation}
     M = \mu \{ \varphi &lt; \bar \varphi(p) \}
 \end{equation}\]</div>
 <p>is verified.</p>
 <p>The invariance condition says that, for any subset <span class="math notranslate nohighlight">\(B\)</span> of the state space, the mass of firms with productivity in set <span class="math notranslate nohighlight">\(B\)</span> today (the left-hand side) is equal to the mass of firms with productivity in set <span class="math notranslate nohighlight">\(B\)</span> tomorrow (the right-hand side).</p>
 </section>
 <section id="computing-equilibrium">
-<h3><span class="section-number">19.2.4. </span>Computing equilibrium<a class="headerlink" href="#computing-equilibrium" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">19.2.4. </span>Computing equilibrium<a class="headerlink" href="#computing-equilibrium" title="Link to this heading">#</a></h3>
 <p>We compute the equilibrium as follows:</p>
 <p>For the purposes of this section, we insert balanced entry and
 exit into the time invariance condition, yielding</p>
-<div class="amsmath math notranslate nohighlight" id="equation-7e09a80b-4ae5-46e2-bb0c-8d3f3ea9a37c">
-<span class="eqno">(19.7)<a class="headerlink" href="#equation-7e09a80b-4ae5-46e2-bb0c-8d3f3ea9a37c" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-0b7d0d05-b769-4507-98ba-2753dd3620ea">
+<span class="eqno">(19.7)<a class="headerlink" href="#equation-0b7d0d05-b769-4507-98ba-2753dd3620ea" title="Permalink to this equation">#</a></span>\[\begin{equation}
     \mu (B) 
     = \int \Pi(\varphi, B) \mu (d \varphi)
     \quad \text{for all } B \in \mathscr B,
 \end{equation}\]</div>
 <p>where <span class="math notranslate nohighlight">\(\Pi\)</span> is the transition kernel on <span class="math notranslate nohighlight">\(\mathbb R_+\)</span> defined by</p>
-<div class="amsmath math notranslate nohighlight" id="equation-143a25d1-b8a8-4e3e-8c12-2a1751f62fad">
-<span class="eqno">(19.8)<a class="headerlink" href="#equation-143a25d1-b8a8-4e3e-8c12-2a1751f62fad" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-81ad551c-2c09-4174-96cb-6b12cdf70284">
+<span class="eqno">(19.8)<a class="headerlink" href="#equation-81ad551c-2c09-4174-96cb-6b12cdf70284" title="Permalink to this equation">#</a></span>\[\begin{equation}
     \Pi(\varphi, B) 
     = \Gamma(\varphi, B) \mathbf{1} \{\varphi \geq \bar \varphi(p) \} + 
     \mathbf{1} \{\varphi &lt; \bar \varphi(p)\} \gamma(B).
@@ -474,7 +481,7 @@ is the stationary distribution of the Markov transition kernel <span class="math
 </ol>
 </section>
 <section id="specification-of-dynamics">
-<h3><span class="section-number">19.2.5. </span>Specification of dynamics<a class="headerlink" href="#specification-of-dynamics" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">19.2.5. </span>Specification of dynamics<a class="headerlink" href="#specification-of-dynamics" title="Link to this heading">#</a></h3>
 <p>Before solving the model we need to specify <span class="math notranslate nohighlight">\(\Gamma\)</span> and <span class="math notranslate nohighlight">\(\gamma\)</span>.</p>
 <p>We assume <span class="math notranslate nohighlight">\(\Gamma(\varphi, d \varphi')\)</span> is given by</p>
 <div class="math notranslate nohighlight">
@@ -487,7 +494,7 @@ is the stationary distribution of the Markov transition kernel <span class="math
 </section>
 </section>
 <section id="code">
-<h2><span class="section-number">19.3. </span>Code<a class="headerlink" href="#code" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">19.3. </span>Code<a class="headerlink" href="#code" title="Link to this heading">#</a></h2>
 <p>We use 64 bit floats for extra precision.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -534,7 +541,7 @@ is the stationary distribution of the Markov transition kernel <span class="math
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">create_model</span><span class="p">(</span><span class="n">β</span><span class="o">=</span><span class="mf">0.95</span><span class="p">,</span>             <span class="c1"># discount factor</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">create_model</span><span class="p">(</span><span class="n">β</span><span class="o">=</span><span class="mf">0.95</span><span class="p">,</span>             <span class="c1"># discount factor</span>
                  <span class="n">θ</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span>              <span class="c1"># labor productivity</span>
                  <span class="n">c</span><span class="o">=</span><span class="mf">4.0</span><span class="p">,</span>              <span class="c1"># fixed cost in production</span>
                  <span class="n">c_e</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>            <span class="c1"># entry cost</span>
@@ -574,7 +581,7 @@ is the stationary distribution of the Markov transition kernel <span class="math
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jax</span><span class="o">.</span><span class="n">jit</span>
-<span class="k">def</span> <span class="nf">π</span><span class="p">(</span><span class="n">φ</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">parameters</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">π</span><span class="p">(</span><span class="n">φ</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">parameters</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot; Profits. &quot;&quot;&quot;</span>
     <span class="c1"># Unpack</span>
     <span class="n">β</span><span class="p">,</span> <span class="n">θ</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">c_e</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">m_a</span><span class="p">,</span> <span class="n">σ_a</span><span class="p">,</span> <span class="n">m_e</span><span class="p">,</span> <span class="n">σ_e</span> <span class="o">=</span> <span class="n">parameters</span>
@@ -587,7 +594,7 @@ is the stationary distribution of the Markov transition kernel <span class="math
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jax</span><span class="o">.</span><span class="n">jit</span>
-<span class="k">def</span> <span class="nf">q</span><span class="p">(</span><span class="n">φ</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">parameters</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">q</span><span class="p">(</span><span class="n">φ</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">parameters</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot; Output. &quot;&quot;&quot;</span>
     <span class="c1"># Unpack</span>
     <span class="n">β</span><span class="p">,</span> <span class="n">θ</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">c_e</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">m_a</span><span class="p">,</span> <span class="n">σ_a</span><span class="p">,</span> <span class="n">m_e</span><span class="p">,</span> <span class="n">σ_e</span> <span class="o">=</span> <span class="n">parameters</span>
@@ -602,7 +609,7 @@ is the stationary distribution of the Markov transition kernel <span class="math
 <p>Our first function updates by one step</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">update_cross_section</span><span class="p">(</span><span class="n">φ_bar</span><span class="p">,</span> <span class="n">φ_vec</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">parameters</span><span class="p">,</span> <span class="n">num_firms</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">update_cross_section</span><span class="p">(</span><span class="n">φ_bar</span><span class="p">,</span> <span class="n">φ_vec</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">parameters</span><span class="p">,</span> <span class="n">num_firms</span><span class="p">):</span>
     <span class="c1"># Unpack</span>
     <span class="n">β</span><span class="p">,</span> <span class="n">θ</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">c_e</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">m_a</span><span class="p">,</span> <span class="n">σ_a</span><span class="p">,</span> <span class="n">m_e</span><span class="p">,</span> <span class="n">σ_e</span> <span class="o">=</span> <span class="n">parameters</span>
     <span class="c1"># Update</span>
@@ -624,7 +631,7 @@ is the stationary distribution of the Markov transition kernel <span class="math
 <p>Our next function runs the cross-section forward in time <code class="docutils literal notranslate"><span class="pre">sim_length</span></code> periods.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">simulate_firms</span><span class="p">(</span><span class="n">φ_bar</span><span class="p">,</span> <span class="n">parameters</span><span class="p">,</span> <span class="n">grids</span><span class="p">,</span> 
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">simulate_firms</span><span class="p">(</span><span class="n">φ_bar</span><span class="p">,</span> <span class="n">parameters</span><span class="p">,</span> <span class="n">grids</span><span class="p">,</span> 
                    <span class="n">sim_length</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">num_firms</span><span class="o">=</span><span class="mi">1_000_000</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">12</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Simulate a cross-section of firms when the exit threshold is φ_bar.</span>
@@ -651,7 +658,7 @@ is the stationary distribution of the Markov transition kernel <span class="math
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jax</span><span class="o">.</span><span class="n">jit</span>
-<span class="k">def</span> <span class="nf">_compute_exp_value_at_phi</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">φ</span><span class="p">,</span> <span class="n">grids</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_compute_exp_value_at_phi</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">φ</span><span class="p">,</span> <span class="n">grids</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Compute </span>
 <span class="sd">    </span>
@@ -681,7 +688,7 @@ is the stationary distribution of the Markov transition kernel <span class="math
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jax</span><span class="o">.</span><span class="n">jit</span>
-<span class="k">def</span> <span class="nf">compute_exp_value</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">grids</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">compute_exp_value</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">grids</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Compute </span>
 <span class="sd">    </span>
@@ -699,7 +706,7 @@ is the stationary distribution of the Markov transition kernel <span class="math
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jax</span><span class="o">.</span><span class="n">jit</span>
-<span class="k">def</span> <span class="nf">T</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">parameters</span><span class="p">,</span> <span class="n">grids</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">T</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">parameters</span><span class="p">,</span> <span class="n">grids</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot; Bellman operator. &quot;&quot;&quot;</span>
     <span class="c1"># Unpack</span>
     <span class="n">β</span><span class="p">,</span> <span class="n">θ</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">c_e</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">m_a</span><span class="p">,</span> <span class="n">σ_a</span><span class="p">,</span> <span class="n">m_e</span><span class="p">,</span> <span class="n">σ_e</span> <span class="o">=</span> <span class="n">parameters</span>
@@ -716,7 +723,7 @@ is the stationary distribution of the Markov transition kernel <span class="math
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jax</span><span class="o">.</span><span class="n">jit</span>
-<span class="k">def</span> <span class="nf">get_threshold</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">grids</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_threshold</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">grids</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot; Compute the exit threshold. &quot;&quot;&quot;</span>
     <span class="c1"># Unpack</span>
     <span class="n">φ_grid</span><span class="p">,</span> <span class="n">E_draws</span><span class="p">,</span> <span class="n">A_draws</span> <span class="o">=</span> <span class="n">grids</span>
@@ -733,18 +740,18 @@ is the stationary distribution of the Markov transition kernel <span class="math
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jax</span><span class="o">.</span><span class="n">jit</span>
-<span class="k">def</span> <span class="nf">vfi</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">v_init</span><span class="p">,</span> <span class="n">parameters</span><span class="p">,</span> <span class="n">grids</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">10_000</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">vfi</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">v_init</span><span class="p">,</span> <span class="n">parameters</span><span class="p">,</span> <span class="n">grids</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">10_000</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Implement value function iteration to solve for the value function.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Unpack</span>
     <span class="n">φ_grid</span><span class="p">,</span> <span class="n">E_draws</span><span class="p">,</span> <span class="n">A_draws</span> <span class="o">=</span> <span class="n">grids</span>
     <span class="c1"># Set up</span>
-    <span class="k">def</span> <span class="nf">cond_function</span><span class="p">(</span><span class="n">state</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">cond_function</span><span class="p">(</span><span class="n">state</span><span class="p">):</span>
         <span class="n">i</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">error</span> <span class="o">=</span> <span class="n">state</span>
         <span class="k">return</span> <span class="n">jnp</span><span class="o">.</span><span class="n">logical_and</span><span class="p">(</span><span class="n">i</span> <span class="o">&lt;</span> <span class="n">max_iter</span><span class="p">,</span> <span class="n">error</span> <span class="o">&gt;</span> <span class="n">tol</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">body_function</span><span class="p">(</span><span class="n">state</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">body_function</span><span class="p">(</span><span class="n">state</span><span class="p">):</span>
         <span class="n">i</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">error</span> <span class="o">=</span> <span class="n">state</span>
         <span class="n">new_v</span> <span class="o">=</span> <span class="n">T</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">parameters</span><span class="p">,</span> <span class="n">grids</span><span class="p">)</span>
         <span class="n">error</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">v</span> <span class="o">-</span> <span class="n">new_v</span><span class="p">))</span>
@@ -763,7 +770,7 @@ is the stationary distribution of the Markov transition kernel <span class="math
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jax</span><span class="o">.</span><span class="n">jit</span>
-<span class="k">def</span> <span class="nf">compute_net_entry_value</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">v_init</span><span class="p">,</span> <span class="n">parameters</span><span class="p">,</span> <span class="n">grids</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">compute_net_entry_value</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">v_init</span><span class="p">,</span> <span class="n">parameters</span><span class="p">,</span> <span class="n">grids</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns the net value of entry, which is </span>
 <span class="sd">        </span>
@@ -785,7 +792,7 @@ is the stationary distribution of the Markov transition kernel <span class="math
 <div class="cell_output docutils container">
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;&gt;:3: SyntaxWarning: invalid escape sequence &#39;\i&#39;
 &lt;&gt;:3: SyntaxWarning: invalid escape sequence &#39;\i&#39;
-/tmp/ipykernel_3080/2114669550.py:3: SyntaxWarning: invalid escape sequence &#39;\i&#39;
+/tmp/ipykernel_3885/2114669550.py:3: SyntaxWarning: invalid escape sequence &#39;\i&#39;
   &quot;&quot;&quot;
 </pre></div>
 </div>
@@ -801,7 +808,7 @@ is the stationary distribution of the Markov transition kernel <span class="math
 <p>We will write our own bisection routine because, when we shift to a new price, we want to update the initial condition for value function iteration to the value function from the previous price.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">compute_p_star</span><span class="p">(</span><span class="n">parameters</span><span class="p">,</span> <span class="n">grids</span><span class="p">,</span> <span class="n">p_min</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">p_max</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">10e-5</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">compute_p_star</span><span class="p">(</span><span class="n">parameters</span><span class="p">,</span> <span class="n">grids</span><span class="p">,</span> <span class="n">p_min</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">p_max</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">10e-5</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Compute the equilibrium entry price p^* via bisection.</span>
 
@@ -832,7 +839,7 @@ is the stationary distribution of the Markov transition kernel <span class="math
 <p>We are now ready to compute all elements of the stationary recursive equilibrium.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">compute_equilibrium_prices_and_quantities</span><span class="p">(</span><span class="n">model</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">compute_equilibrium_prices_and_quantities</span><span class="p">(</span><span class="n">model</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Compute </span>
 
@@ -865,9 +872,9 @@ is the stationary distribution of the Markov transition kernel <span class="math
 </div>
 </section>
 <section id="solving-the-model">
-<h2><span class="section-number">19.4. </span>Solving the model<a class="headerlink" href="#solving-the-model" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">19.4. </span>Solving the model<a class="headerlink" href="#solving-the-model" title="Link to this heading">#</a></h2>
 <section id="preliminary-calculations">
-<h3><span class="section-number">19.4.1. </span>Preliminary calculations<a class="headerlink" href="#preliminary-calculations" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">19.4.1. </span>Preliminary calculations<a class="headerlink" href="#preliminary-calculations" title="Link to this heading">#</a></h3>
 <p>Let’s create an instance of the model.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -888,8 +895,8 @@ from a cold start.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 371 ms, sys: 17 ms, total: 388 ms
-Wall time: 433 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 374 ms, sys: 14.8 ms, total: 389 ms
+Wall time: 430 ms
 </pre></div>
 </div>
 </div>
@@ -902,8 +909,8 @@ Wall time: 433 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 45.2 ms, sys: 258 μs, total: 45.5 ms
-Wall time: 43.9 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 45.9 ms, sys: 640 μs, total: 46.5 ms
+Wall time: 45 ms
 </pre></div>
 </div>
 </div>
@@ -930,14 +937,15 @@ Wall time: 43.9 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/e984f1d27a481baa3034fc4024b95cee1673c147c647ef98c2fe743defa720f5.png"><img alt="_images/e984f1d27a481baa3034fc4024b95cee1673c147c647ef98c2fe743defa720f5.png" src="_images/e984f1d27a481baa3034fc4024b95cee1673c147c647ef98c2fe743defa720f5.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/e984f1d27a481baa3034fc4024b95cee1673c147c647ef98c2fe743defa720f5.png"><img alt="_images/e984f1d27a481baa3034fc4024b95cee1673c147c647ef98c2fe743defa720f5.png" src="_images/e984f1d27a481baa3034fc4024b95cee1673c147c647ef98c2fe743defa720f5.png" style="width: 80%;" />
+</a>
 </div>
 </div>
 <p>Below we solve for the zero of this function to calculate <span class="math notranslate nohighlight">\(p*\)</span>.</p>
 <p>From the figure it looks like <span class="math notranslate nohighlight">\(p^*\)</span> will be close to 1.5.</p>
 </section>
 <section id="computing-the-equilibrium">
-<h3><span class="section-number">19.4.2. </span>Computing the equilibrium<a class="headerlink" href="#computing-the-equilibrium" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">19.4.2. </span>Computing the equilibrium<a class="headerlink" href="#computing-the-equilibrium" title="Link to this heading">#</a></h3>
 <p>Now let’s try computing the equilibrium</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -948,8 +956,8 @@ Wall time: 43.9 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 2.5 s, sys: 110 ms, total: 2.61 s
-Wall time: 2.74 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 2.47 s, sys: 76.9 ms, total: 2.55 s
+Wall time: 2.7 s
 </pre></div>
 </div>
 </div>
@@ -964,8 +972,8 @@ Wall time: 2.74 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 421 ms, sys: 36.1 ms, total: 457 ms
-Wall time: 778 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 432 ms, sys: 30.8 ms, total: 463 ms
+Wall time: 774 ms
 </pre></div>
 </div>
 </div>
@@ -996,7 +1004,8 @@ Wall time: 778 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/e13f675d384808349af027cbdb801513b927f2c74a6cbb1ef8dc92b1b2a11ff4.png"><img alt="_images/e13f675d384808349af027cbdb801513b927f2c74a6cbb1ef8dc92b1b2a11ff4.png" src="_images/e13f675d384808349af027cbdb801513b927f2c74a6cbb1ef8dc92b1b2a11ff4.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/e13f675d384808349af027cbdb801513b927f2c74a6cbb1ef8dc92b1b2a11ff4.png"><img alt="_images/e13f675d384808349af027cbdb801513b927f2c74a6cbb1ef8dc92b1b2a11ff4.png" src="_images/e13f675d384808349af027cbdb801513b927f2c74a6cbb1ef8dc92b1b2a11ff4.png" style="width: 80%;" />
+</a>
 </div>
 </div>
 <p>Let’s have a look at the firm size distribution, with firm size measured by output.</p>
@@ -1020,13 +1029,14 @@ Wall time: 778 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/2aef1bc067480cd43e61ffad54f5f72eb24a3c484224c232f97f165f15cc028a.png"><img alt="_images/2aef1bc067480cd43e61ffad54f5f72eb24a3c484224c232f97f165f15cc028a.png" src="_images/2aef1bc067480cd43e61ffad54f5f72eb24a3c484224c232f97f165f15cc028a.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/2aef1bc067480cd43e61ffad54f5f72eb24a3c484224c232f97f165f15cc028a.png"><img alt="_images/2aef1bc067480cd43e61ffad54f5f72eb24a3c484224c232f97f165f15cc028a.png" src="_images/2aef1bc067480cd43e61ffad54f5f72eb24a3c484224c232f97f165f15cc028a.png" style="width: 80%;" />
+</a>
 </div>
 </div>
 </section>
 </section>
 <section id="pareto-tails">
-<h2><span class="section-number">19.5. </span>Pareto tails<a class="headerlink" href="#pareto-tails" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">19.5. </span>Pareto tails<a class="headerlink" href="#pareto-tails" title="Link to this heading">#</a></h2>
 <p>The firm size distribution shown above appears to have a long right tail.</p>
 <p>This matches the observed firm size distribution.</p>
 <p>In fact the firm size distribution obeys a <strong>power law</strong>.</p>
@@ -1058,11 +1068,11 @@ Wall time: 778 ms
 <p>Here’s a function to compute the empirical counter CDF:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">ECCDF</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">ECCDF</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Return a function that implements the ECCDF given the data.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">eccdf</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">eccdf</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">jnp</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">data</span> <span class="o">&gt;</span> <span class="n">x</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">eccdf</span>
 </pre></div>
@@ -1087,12 +1097,13 @@ Wall time: 778 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/56e143b3b3255906a6beb7da9992ed5d0543a971e3ab6488226474ffec0cd105.png"><img alt="_images/56e143b3b3255906a6beb7da9992ed5d0543a971e3ab6488226474ffec0cd105.png" src="_images/56e143b3b3255906a6beb7da9992ed5d0543a971e3ab6488226474ffec0cd105.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/56e143b3b3255906a6beb7da9992ed5d0543a971e3ab6488226474ffec0cd105.png"><img alt="_images/56e143b3b3255906a6beb7da9992ed5d0543a971e3ab6488226474ffec0cd105.png" src="_images/56e143b3b3255906a6beb7da9992ed5d0543a971e3ab6488226474ffec0cd105.png" style="width: 80%;" />
+</a>
 </div>
 </div>
 </section>
 <section id="exercise">
-<h2><span class="section-number">19.6. </span>Exercise<a class="headerlink" href="#exercise" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">19.6. </span>Exercise<a class="headerlink" href="#exercise" title="Link to this heading">#</a></h2>
 <div class="exercise admonition" id="hopen_ex1">
 
 <p class="admonition-title"><span class="caption-number">Exercise 19.1 </span></p>
@@ -1113,7 +1124,8 @@ Wall time: 778 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/0b79f4ad86de2930b4de5f31f1d89bf2fce8552c61c5f9e5f718777293ae2baa.png"><img alt="_images/0b79f4ad86de2930b4de5f31f1d89bf2fce8552c61c5f9e5f718777293ae2baa.png" src="_images/0b79f4ad86de2930b4de5f31f1d89bf2fce8552c61c5f9e5f718777293ae2baa.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/0b79f4ad86de2930b4de5f31f1d89bf2fce8552c61c5f9e5f718777293ae2baa.png"><img alt="_images/0b79f4ad86de2930b4de5f31f1d89bf2fce8552c61c5f9e5f718777293ae2baa.png" src="_images/0b79f4ad86de2930b4de5f31f1d89bf2fce8552c61c5f9e5f718777293ae2baa.png" style="width: 80%;" />
+</a>
 </div>
 </div>
 <p>This plot is not linear — as expected, since we are using a folded normal distribution.</p>
@@ -1135,7 +1147,8 @@ Wall time: 778 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/7bd92f4bad80e69f37088f26b9166d1ea7ee7c35b5a696b8eed31fabd0ad99af.png"><img alt="_images/7bd92f4bad80e69f37088f26b9166d1ea7ee7c35b5a696b8eed31fabd0ad99af.png" src="_images/7bd92f4bad80e69f37088f26b9166d1ea7ee7c35b5a696b8eed31fabd0ad99af.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/7bd92f4bad80e69f37088f26b9166d1ea7ee7c35b5a696b8eed31fabd0ad99af.png"><img alt="_images/7bd92f4bad80e69f37088f26b9166d1ea7ee7c35b5a696b8eed31fabd0ad99af.png" src="_images/7bd92f4bad80e69f37088f26b9166d1ea7ee7c35b5a696b8eed31fabd0ad99af.png" style="width: 80%;" />
+</a>
 </div>
 </div>
 <p>This looks very linear — the model generates Pareto tails.</p>
@@ -1212,7 +1225,8 @@ Wall time: 778 ms
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Equilibrium price when c = 5.0 is 1.6
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="_images/afa5597d55d4d8bccf5f066bdc4e1fa325995539fb58b8ce9d88aae18054d12f.png"><img alt="_images/afa5597d55d4d8bccf5f066bdc4e1fa325995539fb58b8ce9d88aae18054d12f.png" src="_images/afa5597d55d4d8bccf5f066bdc4e1fa325995539fb58b8ce9d88aae18054d12f.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/afa5597d55d4d8bccf5f066bdc4e1fa325995539fb58b8ce9d88aae18054d12f.png"><img alt="_images/afa5597d55d4d8bccf5f066bdc4e1fa325995539fb58b8ce9d88aae18054d12f.png" src="_images/afa5597d55d4d8bccf5f066bdc4e1fa325995539fb58b8ce9d88aae18054d12f.png" style="width: 80%;" />
+</a>
 </div>
 </div>
 </section>
@@ -1251,6 +1265,8 @@ Wall time: 778 ms
                     <p><a href="https://creativecommons.org/licenses/by-sa/4.0/"><img src="https://licensebuttons.net/l/by-sa/4.0/80x15.png"></a></p>
 
                     <p>Creative Commons License &ndash; This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International.</p>
+
+                    <p>A theme by <a href="https://quantecon.org">QuantEcon</a></p>
 
                 </footer> <!-- .page__footer -->
 
@@ -1584,7 +1600,7 @@ Wall time: 778 ms
                 function setLaunchServer() {
                   launchNotebookLink.removeAttribute("style")
                   if ( localStorage.launcherType == 'launcher-private' ) {
-                    let repoPrefix = "/jupyter/hub/user-redirect/git-pull?repo=" + repoURL + "&branch=" + branch + "&urlpath=" + urlPath;
+                    let repoPrefix = "/user-redirect/git-pull?repo=" + repoURL + "&branch=" + branch + "&urlpath=" + urlPath;
                     launcherPrivateValue = launcherPrivate.value
                     if (!launcherPrivateValue) {
                         launchNotebookLink.removeAttribute("href")

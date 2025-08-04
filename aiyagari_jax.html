@@ -1,13 +1,12 @@
 
-
 <!DOCTYPE html>
 
 
-<html lang="en" data-content_root="" >
+<html lang="en" data-content_root="./" >
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>18. The Aiyagari Model &#8212; Quantitative Economics with Python using JAX</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
@@ -70,14 +69,14 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=bd0785fbb14d8d2bd4d9ae501d79ed8d3bc089ec" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
-    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
-    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
-    <link rel="stylesheet" type="text/css" href="_static/exercise.css" />
-    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.5ea377869091fd0449014c60fc090103.min.css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="_static/exercise.css?v=982b99e0" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
@@ -85,22 +84,21 @@
   <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
 
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-    <script src="_static/jquery.js"></script>
-    <script src="_static/underscore.js"></script>
-    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="_static/doctools.js"></script>
-    <script src="_static/sphinx_highlight.js"></script>
-    <script src="_static/clipboard.min.js"></script>
-    <script src="_static/copybutton.js"></script>
+    <script src="_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
     <script src="_static/scripts/sphinx-book-theme.js"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="_static/togglebutton.js"></script>
-    <script src="_static/scripts/quantecon-book-theme.js?digest=d6d86bce9979111653c4c495e33499e1796e172a"></script>
+    <script src="_static/togglebutton.js?v=4a39c7ea"></script>
+    <script src="_static/scripts/quantecon-book-theme.js?digest=d9faaf6c4b57726f74ba012412af1f5681bdff87"></script>
+    <script src="_static/scripts/jquery.js?v=5d32c60e"></script>
+    <script src="_static/scripts/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script src="_static/design-tabs.js"></script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
     <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-K1NYBSC1CZ"></script>
     <script>
                 window.dataLayer = window.dataLayer || [];
@@ -109,12 +107,20 @@
                 gtag('config', 'G-K1NYBSC1CZ');
             </script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-K1NYBSC1CZ');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script>window.MathJax = {"tex": {"macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'aiyagari_jax';</script>
     <link rel="canonical" href="https://jax.quantecon.org/aiyagari_jax.html" />
-    <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
+    <link rel="icon" href="_static/lectures-favicon.ico"/>
     <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -146,6 +152,7 @@
   </head>
 <body>
 
+<!-- Override QuantEcon theme colors -->
 
     <span id="top"></span>
 
@@ -243,7 +250,7 @@
                     <div>
                         
   <section class="tex2jax_ignore mathjax_ignore" id="the-aiyagari-model">
-<h1><span class="section-number">18. </span>The Aiyagari Model<a class="headerlink" href="#the-aiyagari-model" title="Permalink to this heading">#</a></h1>
+<h1><span class="section-number">18. </span>The Aiyagari Model<a class="headerlink" href="#the-aiyagari-model" title="Link to this heading">#</a></h1>
 <div class="warning admonition">
 <p class="admonition-title">GPU</p>
 <p>This lecture was built using a machine with JAX installed and access to a GPU.</p>
@@ -251,7 +258,7 @@
 <p>To run this lecture on your own machine, you need to install <a class="reference external" href="https://github.com/google/jax">Google JAX</a>.</p>
 </div>
 <section id="overview">
-<h2><span class="section-number">18.1. </span>Overview<a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">18.1. </span>Overview<a class="headerlink" href="#overview" title="Link to this heading">#</a></h2>
 <p>In this lecture, we describe the structure of a class of models that build on work by Truman Bewley [<a class="reference external" href="https://python.quantecon.org/zreferences.html#id173">Bew77</a>].</p>
 <p>We begin by discussing an example of a Bewley model due to Rao Aiyagari [<a class="reference external" href="https://python.quantecon.org/zreferences.html#id137">Aiy94</a>].</p>
 <p>The model features</p>
@@ -267,28 +274,23 @@
 <li><p>the shape of the wealth distribution [<a class="reference external" href="https://python.quantecon.org/zreferences.html#id131">BBZ15</a>]</p></li>
 </ul>
 <section id="references">
-<h3><span class="section-number">18.1.1. </span>References<a class="headerlink" href="#references" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">18.1.1. </span>References<a class="headerlink" href="#references" title="Link to this heading">#</a></h3>
 <p>The primary reference for this lecture is [<a class="reference external" href="https://python.quantecon.org/zreferences.html#id138">Aiy94</a>].</p>
 <p>A textbook treatment is available in chapter 18 of [<a class="reference external" href="https://python.quantecon.org/zreferences.html#id183">LS18</a>].</p>
 <p>A less sophisticated version of this lecture (without JAX) can be found
 <a class="reference external" href="https://python.quantecon.org/aiyagari.html">here</a>.</p>
 </section>
 <section id="preliminaries">
-<h3><span class="section-number">18.1.2. </span>Preliminaries<a class="headerlink" href="#preliminaries" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">18.1.2. </span>Preliminaries<a class="headerlink" href="#preliminaries" title="Link to this heading">#</a></h3>
 <p>We use the following imports</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">time</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">jax</span>
-<span class="kn">import</span> <span class="nn">jax.numpy</span> <span class="k">as</span> <span class="nn">jnp</span>
-<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">namedtuple</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Matplotlib is building the font cache; this may take a moment.
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">jax</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">jax.numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">jnp</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">namedtuple</span>
 </pre></div>
 </div>
 </div>
@@ -301,7 +303,7 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Mon Jun 23 03:37:12 2025       
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Mon Aug  4 03:46:27 2025       
 +-----------------------------------------------------------------------------------------+
 | NVIDIA-SMI 575.51.03              Driver Version: 575.51.03      CUDA Version: 12.9     |
 |-----------------------------------------+------------------------+----------------------+
@@ -310,7 +312,7 @@
 |                                         |                        |               MIG M. |
 |=========================================+========================+======================|
 |   0  Tesla T4                       Off |   00000000:00:1E.0 Off |                    0 |
-| N/A   28C    P8             13W /   70W |       0MiB /  15360MiB |      0%      Default |
+| N/A   30C    P8              9W /   70W |       0MiB /  15360MiB |      0%      Default |
 |                                         |                        |                  N/A |
 +-----------------------------------------+------------------------+----------------------+
                                                                                          
@@ -337,7 +339,7 @@
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jax</span><span class="o">.</span><span class="n">jit</span>
-<span class="k">def</span> <span class="nf">compute_stationary</span><span class="p">(</span><span class="n">P</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">compute_stationary</span><span class="p">(</span><span class="n">P</span><span class="p">):</span>
     <span class="n">n</span> <span class="o">=</span> <span class="n">P</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
     <span class="n">I</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">identity</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
     <span class="n">O</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">n</span><span class="p">,</span> <span class="n">n</span><span class="p">))</span>
@@ -350,7 +352,7 @@
 </section>
 </section>
 <section id="firms">
-<h2><span class="section-number">18.2. </span>Firms<a class="headerlink" href="#firms" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">18.2. </span>Firms<a class="headerlink" href="#firms" title="Link to this heading">#</a></h2>
 <p>Firms produce output by hiring capital and labor.</p>
 <p>Firms act competitively and face constant returns to scale.</p>
 <p>Since returns to scale are constant the number of firms does not matter.</p>
@@ -377,7 +379,7 @@ Y = A K^{\alpha} N^{1 - \alpha}
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Firm</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s1">&#39;Firm&#39;</span><span class="p">,</span> <span class="p">(</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;N&#39;</span><span class="p">,</span> <span class="s1">&#39;α&#39;</span><span class="p">,</span> <span class="s1">&#39;δ&#39;</span><span class="p">))</span>
 
-<span class="k">def</span> <span class="nf">create_firm</span><span class="p">(</span><span class="n">A</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">create_firm</span><span class="p">(</span><span class="n">A</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
                 <span class="n">N</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
                 <span class="n">α</span><span class="o">=</span><span class="mf">0.33</span><span class="p">,</span>
                 <span class="n">δ</span><span class="o">=</span><span class="mf">0.05</span><span class="p">):</span>
@@ -392,10 +394,10 @@ Y = A K^{\alpha} N^{1 - \alpha}
 </div>
 <p>From the first-order condition with respect to capital, the firm’s inverse demand for capital is</p>
 <div class="math notranslate nohighlight" id="equation-equation-aiy-rgk">
-<span class="eqno">(18.1)<a class="headerlink" href="#equation-equation-aiy-rgk" title="Permalink to this equation">#</a></span>\[r = A \alpha  \left( \frac{N}{K} \right)^{1 - \alpha} - \delta\]</div>
+<span class="eqno">(18.1)<a class="headerlink" href="#equation-equation-aiy-rgk" title="Link to this equation">#</a></span>\[r = A \alpha  \left( \frac{N}{K} \right)^{1 - \alpha} - \delta\]</div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">r_given_k</span><span class="p">(</span><span class="n">K</span><span class="p">,</span> <span class="n">firm</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">r_given_k</span><span class="p">(</span><span class="n">K</span><span class="p">,</span> <span class="n">firm</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Inverse demand curve for capital.  The interest rate associated with a</span>
 <span class="sd">    given demand for capital K.</span>
@@ -408,10 +410,10 @@ Y = A K^{\alpha} N^{1 - \alpha}
 </div>
 <p>Using <a class="reference internal" href="#equation-equation-aiy-rgk">(18.1)</a> and the firm’s first-order condition for labor,</p>
 <div class="math notranslate nohighlight" id="equation-equation-aiy-wgr">
-<span class="eqno">(18.2)<a class="headerlink" href="#equation-equation-aiy-wgr" title="Permalink to this equation">#</a></span>\[w(r) = A  (1 - \alpha)  (A \alpha / (r + \delta))^{\alpha / (1 - \alpha)}\]</div>
+<span class="eqno">(18.2)<a class="headerlink" href="#equation-equation-aiy-wgr" title="Link to this equation">#</a></span>\[w(r) = A  (1 - \alpha)  (A \alpha / (r + \delta))^{\alpha / (1 - \alpha)}\]</div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">r_to_w</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">firm</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">r_to_w</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">firm</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Equilibrium wages associated with a given interest rate r.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -423,7 +425,7 @@ Y = A K^{\alpha} N^{1 - \alpha}
 </div>
 </section>
 <section id="households">
-<h2><span class="section-number">18.3. </span>Households<a class="headerlink" href="#households" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">18.3. </span>Households<a class="headerlink" href="#households" title="Link to this heading">#</a></h2>
 <p>Infinitely lived households / consumers face idiosyncratic income shocks.</p>
 <p>A unit interval of  <em>ex-ante</em> identical households face a common borrowing constraint.</p>
 <p>The savings problem faced by a typical  household is</p>
@@ -453,7 +455,7 @@ a_t \geq -B
 <p>In this simple version of the model, households supply labor  inelastically because they do not value leisure.</p>
 <p>Below we provide code to solve the household problem, taking <span class="math notranslate nohighlight">\(r\)</span> and <span class="math notranslate nohighlight">\(w\)</span> as fixed.</p>
 <section id="primitives-and-operators">
-<h3><span class="section-number">18.3.1. </span>Primitives and Operators<a class="headerlink" href="#primitives-and-operators" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">18.3.1. </span>Primitives and Operators<a class="headerlink" href="#primitives-and-operators" title="Link to this heading">#</a></h3>
 <p>We will solve the household problem using Howard policy iteration
 (see Ch 5 of <a class="reference external" href="https://dp.quantecon.org/">Dynamic Programming</a>).</p>
 <p>First we set up a namedtuple to store the parameters that define a household asset
@@ -468,7 +470,7 @@ accumulation problem, as well as the grids used to solve it.</p>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">create_household</span><span class="p">(</span><span class="n">β</span><span class="o">=</span><span class="mf">0.96</span><span class="p">,</span>                      <span class="c1"># Discount factor</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">create_household</span><span class="p">(</span><span class="n">β</span><span class="o">=</span><span class="mf">0.96</span><span class="p">,</span>                      <span class="c1"># Discount factor</span>
                      <span class="n">Π</span><span class="o">=</span><span class="p">[[</span><span class="mf">0.9</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">]],</span>  <span class="c1"># Markov chain</span>
                      <span class="n">z_grid</span><span class="o">=</span><span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">],</span>           <span class="c1"># Exogenous states</span>
                      <span class="n">a_min</span><span class="o">=</span><span class="mf">1e-10</span><span class="p">,</span> <span class="n">a_max</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span>       <span class="c1"># Asset grid</span>
@@ -499,7 +501,7 @@ accumulation problem, as well as the grids used to solve it.</p>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Prices</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s1">&#39;Prices&#39;</span><span class="p">,</span> <span class="p">(</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">))</span>
 
-<span class="k">def</span> <span class="nf">create_prices</span><span class="p">(</span><span class="n">r</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span>   <span class="c1"># Interest rate</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">create_prices</span><span class="p">(</span><span class="n">r</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span>   <span class="c1"># Interest rate</span>
                   <span class="n">w</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>   <span class="c1"># Wages</span>
     <span class="k">return</span> <span class="n">Prices</span><span class="p">(</span><span class="n">r</span><span class="o">=</span><span class="n">r</span><span class="p">,</span> <span class="n">w</span><span class="o">=</span><span class="n">w</span><span class="p">)</span>
 </pre></div>
@@ -516,7 +518,7 @@ accumulation problem, as well as the grids used to solve it.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jax</span><span class="o">.</span><span class="n">jit</span>
-<span class="k">def</span> <span class="nf">B</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">household</span><span class="p">,</span> <span class="n">prices</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">B</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">household</span><span class="p">,</span> <span class="n">prices</span><span class="p">):</span>
     <span class="c1"># Unpack</span>
     <span class="n">β</span><span class="p">,</span> <span class="n">a_grid</span><span class="p">,</span> <span class="n">z_grid</span><span class="p">,</span> <span class="n">Π</span> <span class="o">=</span> <span class="n">household</span>
     <span class="n">a_size</span><span class="p">,</span> <span class="n">z_size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">a_grid</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">z_grid</span><span class="p">)</span>
@@ -543,7 +545,7 @@ accumulation problem, as well as the grids used to solve it.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jax</span><span class="o">.</span><span class="n">jit</span>
-<span class="k">def</span> <span class="nf">get_greedy</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">household</span><span class="p">,</span> <span class="n">prices</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_greedy</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">household</span><span class="p">,</span> <span class="n">prices</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Computes a v-greedy policy σ, returned as a set of indices.  If </span>
 <span class="sd">    σ[i, j] equals ip, then a_grid[ip] is the maximizer at i, j.</span>
@@ -559,7 +561,7 @@ rewards given policy <span class="math notranslate nohighlight">\(\sigma\)</span
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jax</span><span class="o">.</span><span class="n">jit</span>
-<span class="k">def</span> <span class="nf">compute_r_σ</span><span class="p">(</span><span class="n">σ</span><span class="p">,</span> <span class="n">household</span><span class="p">,</span> <span class="n">prices</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">compute_r_σ</span><span class="p">(</span><span class="n">σ</span><span class="p">,</span> <span class="n">household</span><span class="p">,</span> <span class="n">prices</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Compute current rewards at each i, j under policy σ.  In particular,</span>
 
@@ -601,7 +603,7 @@ rewards given policy <span class="math notranslate nohighlight">\(\sigma\)</span
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jax</span><span class="o">.</span><span class="n">jit</span>
-<span class="k">def</span> <span class="nf">R_σ</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">σ</span><span class="p">,</span> <span class="n">household</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">R_σ</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">σ</span><span class="p">,</span> <span class="n">household</span><span class="p">):</span>
     <span class="c1"># Unpack</span>
     <span class="n">β</span><span class="p">,</span> <span class="n">a_grid</span><span class="p">,</span> <span class="n">z_grid</span><span class="p">,</span> <span class="n">Π</span> <span class="o">=</span> <span class="n">household</span>
     <span class="n">a_size</span><span class="p">,</span> <span class="n">z_size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">a_grid</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">z_grid</span><span class="p">)</span>
@@ -625,7 +627,7 @@ rewards given policy <span class="math notranslate nohighlight">\(\sigma\)</span
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jax</span><span class="o">.</span><span class="n">jit</span>
-<span class="k">def</span> <span class="nf">get_value</span><span class="p">(</span><span class="n">σ</span><span class="p">,</span> <span class="n">household</span><span class="p">,</span> <span class="n">prices</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_value</span><span class="p">(</span><span class="n">σ</span><span class="p">,</span> <span class="n">household</span><span class="p">,</span> <span class="n">prices</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Get the lifetime value of policy σ by computing</span>
 
@@ -644,7 +646,7 @@ rewards given policy <span class="math notranslate nohighlight">\(\sigma\)</span
 <p>Here’s the Howard policy iteration.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">howard_policy_iteration</span><span class="p">(</span><span class="n">household</span><span class="p">,</span> <span class="n">prices</span><span class="p">,</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">howard_policy_iteration</span><span class="p">(</span><span class="n">household</span><span class="p">,</span> <span class="n">prices</span><span class="p">,</span>
                             <span class="n">tol</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">10_000</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Howard policy iteration routine.</span>
@@ -720,8 +722,8 @@ Concluded loop 10 with error 0.002863165320343697.
 Concluded loop 11 with error 0.0016657175376657563.
 Concluded loop 12 with error 0.0004143776102245589.
 Concluded loop 13 with error 0.0.
-CPU times: user 759 ms, sys: 104 ms, total: 862 ms
-Wall time: 1.05 s
+CPU times: user 709 ms, sys: 97.6 ms, total: 806 ms
+Wall time: 986 ms
 </pre></div>
 </div>
 </div>
@@ -745,12 +747,13 @@ Wall time: 1.05 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/8b4fcf9be579643e39a3bcfe5fdcd76d1a9e2876ef72c0ce27ca401b2345d021.png"><img alt="_images/8b4fcf9be579643e39a3bcfe5fdcd76d1a9e2876ef72c0ce27ca401b2345d021.png" src="_images/8b4fcf9be579643e39a3bcfe5fdcd76d1a9e2876ef72c0ce27ca401b2345d021.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/8b4fcf9be579643e39a3bcfe5fdcd76d1a9e2876ef72c0ce27ca401b2345d021.png"><img alt="_images/8b4fcf9be579643e39a3bcfe5fdcd76d1a9e2876ef72c0ce27ca401b2345d021.png" src="_images/8b4fcf9be579643e39a3bcfe5fdcd76d1a9e2876ef72c0ce27ca401b2345d021.png" style="width: 80%;" />
+</a>
 </div>
 </div>
 </section>
 <section id="capital-supply">
-<h3><span class="section-number">18.3.2. </span>Capital Supply<a class="headerlink" href="#capital-supply" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">18.3.2. </span>Capital Supply<a class="headerlink" href="#capital-supply" title="Link to this heading">#</a></h3>
 <p>To start thinking about equilibrium, we need to know how much capital households supply at a given interest rate <span class="math notranslate nohighlight">\(r\)</span>.</p>
 <p>This quantity can be calculated by taking the stationary distribution of assets under the optimal policy and computing the mean.</p>
 <p>The next function computes the stationary distribution for a given policy <span class="math notranslate nohighlight">\(\sigma\)</span> via the following steps:</p>
@@ -762,7 +765,7 @@ Markov chain of the state <span class="math notranslate nohighlight">\((a_t, z_t
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jax</span><span class="o">.</span><span class="n">jit</span>
-<span class="k">def</span> <span class="nf">compute_asset_stationary</span><span class="p">(</span><span class="n">σ</span><span class="p">,</span> <span class="n">household</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">compute_asset_stationary</span><span class="p">(</span><span class="n">σ</span><span class="p">,</span> <span class="n">household</span><span class="p">):</span>
     <span class="c1"># Unpack</span>
     <span class="n">β</span><span class="p">,</span> <span class="n">a_grid</span><span class="p">,</span> <span class="n">z_grid</span><span class="p">,</span> <span class="n">Π</span> <span class="o">=</span> <span class="n">household</span>
     <span class="n">a_size</span><span class="p">,</span> <span class="n">z_size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">a_grid</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">z_grid</span><span class="p">)</span>
@@ -809,7 +812,8 @@ Markov chain of the state <span class="math notranslate nohighlight">\((a_t, z_t
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/c7f36637c90af01db94cfaa7eeca048f5ba70d2739974a2aa9faadda766614fd.png"><img alt="_images/c7f36637c90af01db94cfaa7eeca048f5ba70d2739974a2aa9faadda766614fd.png" src="_images/c7f36637c90af01db94cfaa7eeca048f5ba70d2739974a2aa9faadda766614fd.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/c7f36637c90af01db94cfaa7eeca048f5ba70d2739974a2aa9faadda766614fd.png"><img alt="_images/c7f36637c90af01db94cfaa7eeca048f5ba70d2739974a2aa9faadda766614fd.png" src="_images/c7f36637c90af01db94cfaa7eeca048f5ba70d2739974a2aa9faadda766614fd.png" style="width: 80%;" />
+</a>
 </div>
 </div>
 <p>The distribution should sum to one:</p>
@@ -828,7 +832,7 @@ Markov chain of the state <span class="math notranslate nohighlight">\((a_t, z_t
 <p>The next function computes aggregate capital supply by households under policy <span class="math notranslate nohighlight">\(\sigma\)</span>, given wages and interest rates.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">capital_supply</span><span class="p">(</span><span class="n">σ</span><span class="p">,</span> <span class="n">household</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">capital_supply</span><span class="p">(</span><span class="n">σ</span><span class="p">,</span> <span class="n">household</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Induced level of capital stock under the policy, taking r and w as given.</span>
 <span class="sd">    </span>
@@ -843,7 +847,7 @@ Markov chain of the state <span class="math notranslate nohighlight">\((a_t, z_t
 </section>
 </section>
 <section id="equilibrium">
-<h2><span class="section-number">18.4. </span>Equilibrium<a class="headerlink" href="#equilibrium" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">18.4. </span>Equilibrium<a class="headerlink" href="#equilibrium" title="Link to this heading">#</a></h2>
 <p>We compute a <strong>stationary rational expectations equilibrium</strong> (SREE) as follows:</p>
 <ol class="arabic simple">
 <li><p>set <span class="math notranslate nohighlight">\(n=0\)</span>, start with initial guess <span class="math notranslate nohighlight">\( K_0\)</span> for aggregate capital</p></li>
@@ -862,7 +866,7 @@ K_{n + 1} = G(K_n)
 <p>Here’s <span class="math notranslate nohighlight">\(G\)</span> expressed as a Python function:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">G</span><span class="p">(</span><span class="n">K</span><span class="p">,</span> <span class="n">firm</span><span class="p">,</span> <span class="n">household</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">G</span><span class="p">(</span><span class="n">K</span><span class="p">,</span> <span class="n">firm</span><span class="p">,</span> <span class="n">household</span><span class="p">):</span>
     <span class="c1"># Get prices r, w associated with K</span>
     <span class="n">r</span> <span class="o">=</span> <span class="n">r_given_k</span><span class="p">(</span><span class="n">K</span><span class="p">,</span> <span class="n">firm</span><span class="p">)</span>
     <span class="n">w</span> <span class="o">=</span> <span class="n">r_to_w</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">firm</span><span class="p">)</span>
@@ -876,7 +880,7 @@ K_{n + 1} = G(K_n)
 </div>
 </div>
 <section id="visual-inspection">
-<h3><span class="section-number">18.4.1. </span>Visual inspection<a class="headerlink" href="#visual-inspection" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">18.4.1. </span>Visual inspection<a class="headerlink" href="#visual-inspection" title="Link to this heading">#</a></h3>
 <p>Let’s inspect visually as a first pass.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -901,12 +905,13 @@ K_{n + 1} = G(K_n)
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/00a3ff68b5e460c630093ef7f961be91bc5eb4cfe0b9b32dc7d22d87854d46d4.png"><img alt="_images/00a3ff68b5e460c630093ef7f961be91bc5eb4cfe0b9b32dc7d22d87854d46d4.png" src="_images/00a3ff68b5e460c630093ef7f961be91bc5eb4cfe0b9b32dc7d22d87854d46d4.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/00a3ff68b5e460c630093ef7f961be91bc5eb4cfe0b9b32dc7d22d87854d46d4.png"><img alt="_images/00a3ff68b5e460c630093ef7f961be91bc5eb4cfe0b9b32dc7d22d87854d46d4.png" src="_images/00a3ff68b5e460c630093ef7f961be91bc5eb4cfe0b9b32dc7d22d87854d46d4.png" style="width: 80%;" />
+</a>
 </div>
 </div>
 </section>
 <section id="computing-the-equilibrium">
-<h3><span class="section-number">18.4.2. </span>Computing the equilibrium<a class="headerlink" href="#computing-the-equilibrium" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">18.4.2. </span>Computing the equilibrium<a class="headerlink" href="#computing-the-equilibrium" title="Link to this heading">#</a></h3>
 <p>Now let’s compute the equilibrium.</p>
 <p>Looking at the figure above, we see that a simple iteration scheme <span class="math notranslate nohighlight">\(K_{n+1} = G(K_n)\)</span> will cycle from high to low values, leading to slow convergence.</p>
 <p>As a result, we use a damped iteration scheme of the form</p>
@@ -916,7 +921,7 @@ K_{n+1} = \alpha K_n + (1-\alpha) G(K_n)
 \]</div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">compute_equilibrium</span><span class="p">(</span><span class="n">firm</span><span class="p">,</span> <span class="n">household</span><span class="p">,</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">compute_equilibrium</span><span class="p">(</span><span class="n">firm</span><span class="p">,</span> <span class="n">household</span><span class="p">,</span>
                         <span class="n">K0</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">α</span><span class="o">=</span><span class="mf">0.99</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">1_000</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">,</span> 
                         <span class="n">print_skip</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="n">n</span> <span class="o">=</span> <span class="mi">0</span>
@@ -1001,7 +1006,7 @@ K_{n+1} = \alpha K_n + (1-\alpha) G(K_n)
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>At iteration 170 with error 0.00013938615349395889
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium 8.0918 in 176 iterations and 36.078892946243286 seconds
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium 8.0918 in 176 iterations and 41.847684383392334 seconds
 </pre></div>
 </div>
 </div>
@@ -1012,7 +1017,7 @@ K_{n+1} = \alpha K_n + (1-\alpha) G(K_n)
 </section>
 </section>
 <section id="exercises">
-<h2><span class="section-number">18.5. </span>Exercises<a class="headerlink" href="#exercises" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">18.5. </span>Exercises<a class="headerlink" href="#exercises" title="Link to this heading">#</a></h2>
 <div class="exercise admonition" id="aiyagari-ex1">
 
 <p class="admonition-title"><span class="caption-number">Exercise 18.1 </span></p>
@@ -1032,7 +1037,7 @@ K_{n+1} = \alpha K_n + (1-\alpha) G(K_n)
 <section id="solution-content">
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">scipy.optimize</span> <span class="kn">import</span> <span class="n">bisect</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">scipy.optimize</span><span class="w"> </span><span class="kn">import</span> <span class="n">bisect</span>
 </pre></div>
 </div>
 </div>
@@ -1040,7 +1045,7 @@ K_{n+1} = \alpha K_n + (1-\alpha) G(K_n)
 <p>We use bisection to find the zero of the function <span class="math notranslate nohighlight">\(h(k) = k - G(k)\)</span>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">compute_equilibrium</span><span class="p">(</span><span class="n">firm</span><span class="p">,</span> <span class="n">household</span><span class="p">,</span> <span class="n">a</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mf">20.0</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">compute_equilibrium</span><span class="p">(</span><span class="n">firm</span><span class="p">,</span> <span class="n">household</span><span class="p">,</span> <span class="n">a</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mf">20.0</span><span class="p">):</span>
     <span class="n">K</span> <span class="o">=</span> <span class="n">bisect</span><span class="p">(</span><span class="k">lambda</span> <span class="n">k</span><span class="p">:</span> <span class="n">k</span> <span class="o">-</span> <span class="n">G</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">firm</span><span class="p">,</span> <span class="n">household</span><span class="p">),</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">xtol</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">K</span>
 </pre></div>
@@ -1063,7 +1068,7 @@ K_{n+1} = \alpha K_n + (1-\alpha) G(K_n)
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computing equilibrium capital stock
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium capital stock 8.0938 in 0.8153862953186035 seconds
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium capital stock 8.0938 in 0.9357352256774902 seconds
 </pre></div>
 </div>
 </div>
@@ -1177,7 +1182,8 @@ K_{n+1} = \alpha K_n + (1-\alpha) G(K_n)
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/3df9665be12424bdb26fa8f7acb2270dbeb478a37887be8367e8103409269d12.png"><img alt="_images/3df9665be12424bdb26fa8f7acb2270dbeb478a37887be8367e8103409269d12.png" src="_images/3df9665be12424bdb26fa8f7acb2270dbeb478a37887be8367e8103409269d12.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/3df9665be12424bdb26fa8f7acb2270dbeb478a37887be8367e8103409269d12.png"><img alt="_images/3df9665be12424bdb26fa8f7acb2270dbeb478a37887be8367e8103409269d12.png" src="_images/3df9665be12424bdb26fa8f7acb2270dbeb478a37887be8367e8103409269d12.png" style="width: 80%;" />
+</a>
 </div>
 </div>
 </section>
@@ -1216,6 +1222,8 @@ K_{n+1} = \alpha K_n + (1-\alpha) G(K_n)
                     <p><a href="https://creativecommons.org/licenses/by-sa/4.0/"><img src="https://licensebuttons.net/l/by-sa/4.0/80x15.png"></a></p>
 
                     <p>Creative Commons License &ndash; This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International.</p>
+
+                    <p>A theme by <a href="https://quantecon.org">QuantEcon</a></p>
 
                 </footer> <!-- .page__footer -->
 
@@ -1549,7 +1557,7 @@ K_{n+1} = \alpha K_n + (1-\alpha) G(K_n)
                 function setLaunchServer() {
                   launchNotebookLink.removeAttribute("style")
                   if ( localStorage.launcherType == 'launcher-private' ) {
-                    let repoPrefix = "/jupyter/hub/user-redirect/git-pull?repo=" + repoURL + "&branch=" + branch + "&urlpath=" + urlPath;
+                    let repoPrefix = "/user-redirect/git-pull?repo=" + repoURL + "&branch=" + branch + "&urlpath=" + urlPath;
                     launcherPrivateValue = launcherPrivate.value
                     if (!launcherPrivateValue) {
                         launchNotebookLink.removeAttribute("href")

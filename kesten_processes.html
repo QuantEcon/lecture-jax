@@ -1,13 +1,12 @@
 
-
 <!DOCTYPE html>
 
 
-<html lang="en" data-content_root="" >
+<html lang="en" data-content_root="./" >
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>6. Kesten Processes and Firm Dynamics &#8212; Quantitative Economics with Python using JAX</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
@@ -70,14 +69,14 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=bd0785fbb14d8d2bd4d9ae501d79ed8d3bc089ec" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
-    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
-    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
-    <link rel="stylesheet" type="text/css" href="_static/exercise.css" />
-    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.5ea377869091fd0449014c60fc090103.min.css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="_static/exercise.css?v=982b99e0" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
@@ -85,22 +84,21 @@
   <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
 
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-    <script src="_static/jquery.js"></script>
-    <script src="_static/underscore.js"></script>
-    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="_static/doctools.js"></script>
-    <script src="_static/sphinx_highlight.js"></script>
-    <script src="_static/clipboard.min.js"></script>
-    <script src="_static/copybutton.js"></script>
+    <script src="_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
     <script src="_static/scripts/sphinx-book-theme.js"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="_static/togglebutton.js"></script>
-    <script src="_static/scripts/quantecon-book-theme.js?digest=d6d86bce9979111653c4c495e33499e1796e172a"></script>
+    <script src="_static/togglebutton.js?v=4a39c7ea"></script>
+    <script src="_static/scripts/quantecon-book-theme.js?digest=d9faaf6c4b57726f74ba012412af1f5681bdff87"></script>
+    <script src="_static/scripts/jquery.js?v=5d32c60e"></script>
+    <script src="_static/scripts/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script src="_static/design-tabs.js"></script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
     <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-K1NYBSC1CZ"></script>
     <script>
                 window.dataLayer = window.dataLayer || [];
@@ -109,12 +107,20 @@
                 gtag('config', 'G-K1NYBSC1CZ');
             </script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-K1NYBSC1CZ');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script>window.MathJax = {"tex": {"macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'kesten_processes';</script>
     <link rel="canonical" href="https://jax.quantecon.org/kesten_processes.html" />
-    <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
+    <link rel="icon" href="_static/lectures-favicon.ico"/>
     <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -146,6 +152,7 @@
   </head>
 <body>
 
+<!-- Override QuantEcon theme colors -->
 
     <span id="top"></span>
 
@@ -241,7 +248,7 @@
                 <img style="width:250px;display:inline;" width="250px" src="https://assets.quantecon.org/img/qe-menubar-logo.svg" alt="QuantEcon">
         </a>
 </div><section class="tex2jax_ignore mathjax_ignore" id="kesten-processes-and-firm-dynamics">
-<h1><span class="section-number">6. </span>Kesten Processes and Firm Dynamics<a class="headerlink" href="#kesten-processes-and-firm-dynamics" title="Permalink to this heading">#</a></h1>
+<h1><span class="section-number">6. </span>Kesten Processes and Firm Dynamics<a class="headerlink" href="#kesten-processes-and-firm-dynamics" title="Link to this heading">#</a></h1>
 <div class="warning admonition" id="index-0">
 <p class="admonition-title">GPU</p>
 <p>This lecture was built using a machine with JAX installed and access to a GPU.</p>
@@ -255,16 +262,13 @@
 </pre></div>
 </div>
 </div>
-<details class="hide below-input">
+<details class="admonition hide below-input">
 <summary aria-label="Toggle hidden content">
-<span class="collapsed">Show code cell output</span>
-<span class="expanded">Hide code cell output</span>
+<p class="collapsed admonition-title">Show code cell output</p>
+<p class="expanded admonition-title">Hide code cell output</p>
 </summary>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting quantecon
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Downloading quantecon-0.8.1-py3-none-any.whl.metadata (5.2 kB)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (0.8.2)
 Requirement already satisfied: numba&gt;=0.49.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from quantecon) (0.60.0)
 Requirement already satisfied: numpy&gt;=1.17.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from quantecon) (1.26.4)
 Requirement already satisfied: requests in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from quantecon) (2.32.3)
@@ -278,20 +282,13 @@ Requirement already satisfied: idna&lt;4,&gt;=2.5 in /home/runner/miniconda3/env
 Requirement already satisfied: urllib3&lt;3,&gt;=1.21.1 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from requests-&gt;quantecon) (2.2.3)
 Requirement already satisfied: certifi&gt;=2017.4.17 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from requests-&gt;quantecon) (2024.8.30)
 Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from sympy-&gt;quantecon) (1.3.0)
-Downloading quantecon-0.8.1-py3-none-any.whl (322 kB)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Installing collected packages: quantecon
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Successfully installed quantecon-0.8.1
 </pre></div>
 </div>
 </div>
 </details>
 </div>
 <section id="overview">
-<h2><span class="section-number">6.1. </span>Overview<a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">6.1. </span>Overview<a class="headerlink" href="#overview" title="Link to this heading">#</a></h2>
 <p>This lecture describes Kesten processes, which are an important class of
 stochastic processes, and an application of firm dynamics.</p>
 <p>The lecture draws on <a class="reference external" href="https://python.quantecon.org/kesten_processes.html">an earlier QuantEcon lecture</a>,
@@ -301,20 +298,15 @@ which uses Numba to accelerate the computations.</p>
 <p>Let’s start with some imports:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">import</span> <span class="nn">quantecon</span> <span class="k">as</span> <span class="nn">qe</span>
-<span class="kn">import</span> <span class="nn">jax</span>
-<span class="kn">import</span> <span class="nn">jax.numpy</span> <span class="k">as</span> <span class="nn">jnp</span>
-<span class="kn">from</span> <span class="nn">jax</span> <span class="kn">import</span> <span class="n">random</span>
-<span class="kn">from</span> <span class="nn">jax</span> <span class="kn">import</span> <span class="n">lax</span>
-<span class="kn">from</span> <span class="nn">quantecon</span> <span class="kn">import</span> <span class="n">tic</span><span class="p">,</span> <span class="n">toc</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">NamedTuple</span>
-<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">partial</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Matplotlib is building the font cache; this may take a moment.
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">quantecon</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">qe</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">jax</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">jax.numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">jnp</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">jax</span><span class="w"> </span><span class="kn">import</span> <span class="n">random</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">jax</span><span class="w"> </span><span class="kn">import</span> <span class="n">lax</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">quantecon</span><span class="w"> </span><span class="kn">import</span> <span class="n">tic</span><span class="p">,</span> <span class="n">toc</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">NamedTuple</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">partial</span>
 </pre></div>
 </div>
 </div>
@@ -327,7 +319,7 @@ which uses Numba to accelerate the computations.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Thu Jun 26 00:12:11 2025       
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Mon Aug  4 04:31:53 2025       
 +-----------------------------------------------------------------------------------------+
 | NVIDIA-SMI 575.51.03              Driver Version: 575.51.03      CUDA Version: 12.9     |
 |-----------------------------------------+------------------------+----------------------+
@@ -336,7 +328,7 @@ which uses Numba to accelerate the computations.</p>
 |                                         |                        |               MIG M. |
 |=========================================+========================+======================|
 |   0  Tesla T4                       Off |   00000000:00:1E.0 Off |                    0 |
-| N/A   31C    P8             13W /   70W |       0MiB /  15360MiB |      0%      Default |
+| N/A   34C    P8             13W /   70W |       0MiB /  15360MiB |      0%      Default |
 |                                         |                        |                  N/A |
 +-----------------------------------------+------------------------+----------------------+
                                                                                          
@@ -353,10 +345,10 @@ which uses Numba to accelerate the computations.</p>
 </div>
 </section>
 <section id="kesten-processes">
-<h2><span class="section-number">6.2. </span>Kesten processes<a class="headerlink" href="#kesten-processes" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">6.2. </span>Kesten processes<a class="headerlink" href="#kesten-processes" title="Link to this heading">#</a></h2>
 <p id="index-1">A <strong>Kesten process</strong> is a stochastic process of the form</p>
 <div class="math notranslate nohighlight" id="equation-kesproc">
-<span class="eqno">(6.1)<a class="headerlink" href="#equation-kesproc" title="Permalink to this equation">#</a></span>\[X_{t+1} = a_{t+1} X_t + \eta_{t+1}\]</div>
+<span class="eqno">(6.1)<a class="headerlink" href="#equation-kesproc" title="Link to this equation">#</a></span>\[X_{t+1} = a_{t+1} X_t + \eta_{t+1}\]</div>
 <p>where <span class="math notranslate nohighlight">\(\{a_t\}_{t \geq 1}\)</span> and <span class="math notranslate nohighlight">\(\{\eta_t\}_{t \geq 1}\)</span> are IID
 sequences.</p>
 <p>We are interested in the dynamics of <span class="math notranslate nohighlight">\(\{X_t\}_{t \geq 0}\)</span> when <span class="math notranslate nohighlight">\(X_0\)</span> is given.</p>
@@ -368,10 +360,10 @@ sequences.</p>
 <li><p><span class="math notranslate nohighlight">\(\{\eta_t\}_{t \geq 1}\)</span> is another nonnegative IID stochastic process, independent of the first.</p></li>
 </ul>
 <section id="application-firm-dynamics">
-<h3><span class="section-number">6.2.1. </span>Application: firm dynamics<a class="headerlink" href="#application-firm-dynamics" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">6.2.1. </span>Application: firm dynamics<a class="headerlink" href="#application-firm-dynamics" title="Link to this heading">#</a></h3>
 <p>In this section we apply Kesten process theory to the study of firm dynamics.</p>
 <section id="gibrats-law">
-<h4><span class="section-number">6.2.1.1. </span>Gibrat’s law<a class="headerlink" href="#gibrats-law" title="Permalink to this heading">#</a></h4>
+<h4><span class="section-number">6.2.1.1. </span>Gibrat’s law<a class="headerlink" href="#gibrats-law" title="Link to this heading">#</a></h4>
 <p>It was postulated many years ago by Robert Gibrat that firm size evolves
 according to a simple rule whereby size next period is proportional to current
 size.</p>
@@ -379,19 +371,19 @@ size.</p>
 <p>We can express this idea by stating that a suitably defined measure
 <span class="math notranslate nohighlight">\(s_t\)</span> of firm size obeys</p>
 <div class="math notranslate nohighlight" id="equation-firm-dynam-gb">
-<span class="eqno">(6.2)<a class="headerlink" href="#equation-firm-dynam-gb" title="Permalink to this equation">#</a></span>\[\frac{s_{t+1}}{s_t} = a_{t+1}\]</div>
+<span class="eqno">(6.2)<a class="headerlink" href="#equation-firm-dynam-gb" title="Link to this equation">#</a></span>\[\frac{s_{t+1}}{s_t} = a_{t+1}\]</div>
 <p>for some positive IID sequence <span class="math notranslate nohighlight">\(\{a_t\}\)</span>.</p>
 <p>Subsequent empirical research has shown that this specification is not accurate,
 particularly for small firms.</p>
 <p>However, we can get close to the data by modifying <a class="reference internal" href="#equation-firm-dynam-gb">(6.2)</a> to</p>
 <div class="math notranslate nohighlight" id="equation-firm-dynam">
-<span class="eqno">(6.3)<a class="headerlink" href="#equation-firm-dynam" title="Permalink to this equation">#</a></span>\[s_{t+1} = a_{t+1} s_t + b_{t+1}\]</div>
+<span class="eqno">(6.3)<a class="headerlink" href="#equation-firm-dynam" title="Link to this equation">#</a></span>\[s_{t+1} = a_{t+1} s_t + b_{t+1}\]</div>
 <p>where <span class="math notranslate nohighlight">\(\{a_t\}\)</span> and <span class="math notranslate nohighlight">\(\{b_t\}\)</span> are both IID and independent of each
 other.</p>
 <p>We now study the implications of this specification.</p>
 </section>
 <section id="heavy-tails">
-<h4><span class="section-number">6.2.1.2. </span>Heavy tails<a class="headerlink" href="#heavy-tails" title="Permalink to this heading">#</a></h4>
+<h4><span class="section-number">6.2.1.2. </span>Heavy tails<a class="headerlink" href="#heavy-tails" title="Link to this heading">#</a></h4>
 <p>If the conditions of the <a class="reference external" href="https://python.quantecon.org/kesten_processes.html#the-kestengoldie-theorem">Kesten–Goldie Theorem</a>
 are satisfied, then <a class="reference internal" href="#equation-firm-dynam">(6.3)</a> implies that the firm size distribution will have Pareto tails.</p>
 <p>This matches empirical findings across many data sets.</p>
@@ -400,7 +392,7 @@ are satisfied, then <a class="reference internal" href="#equation-firm-dynam">(6
 firms entering and exiting the market.</p>
 <p>In this setting, firm dynamics can be expressed as</p>
 <div class="math notranslate nohighlight" id="equation-firm-dynam-ee">
-<span class="eqno">(6.4)<a class="headerlink" href="#equation-firm-dynam-ee" title="Permalink to this equation">#</a></span>\[    s_{t+1} = e_{t+1} \mathbb{1}\{s_t &lt; \bar s\} +
+<span class="eqno">(6.4)<a class="headerlink" href="#equation-firm-dynam-ee" title="Link to this equation">#</a></span>\[    s_{t+1} = e_{t+1} \mathbb{1}\{s_t &lt; \bar s\} +
     (a_{t+1} s_t + b_{t+1}) \mathbb{1}\{s_t \geq \bar s\}\]</div>
 <p>The motivation behind and interpretation of <a class="reference internal" href="#equation-firm-dynam-ee">(6.4)</a> can be found in
 <a class="reference external" href="https://python.quantecon.org/kesten_processes.html">our earlier Kesten process lecture</a>.</p>
@@ -420,7 +412,7 @@ when <span class="math notranslate nohighlight">\(T\)</span> is large.)</p>
 <p>Here’s a class to store parameters:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Firm</span><span class="p">(</span><span class="n">NamedTuple</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">Firm</span><span class="p">(</span><span class="n">NamedTuple</span><span class="p">):</span>
     <span class="n">μ_a</span><span class="p">:</span>   <span class="nb">float</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.5</span>
     <span class="n">σ_a</span><span class="p">:</span>   <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.1</span>
     <span class="n">μ_b</span><span class="p">:</span>   <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span>
@@ -437,7 +429,7 @@ when <span class="math notranslate nohighlight">\(T\)</span> is large.)</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jax</span><span class="o">.</span><span class="n">jit</span>
-<span class="k">def</span> <span class="nf">update_cross_section</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">firm</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">update_cross_section</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">firm</span><span class="p">):</span>
     <span class="n">μ_a</span><span class="p">,</span> <span class="n">σ_a</span><span class="p">,</span> <span class="n">μ_b</span><span class="p">,</span> <span class="n">σ_b</span><span class="p">,</span> <span class="n">μ_e</span><span class="p">,</span> <span class="n">σ_e</span><span class="p">,</span> <span class="n">s_bar</span> <span class="o">=</span> <span class="n">firm</span>
     <span class="n">s</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">s</span> <span class="o">&lt;</span> <span class="n">s_bar</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">a</span> <span class="o">*</span> <span class="n">s</span> <span class="o">+</span> <span class="n">b</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">s</span>
@@ -451,7 +443,7 @@ cross-section of firms forward in time.</p>
 time <code class="docutils literal notranslate"><span class="pre">T</span></code>) corresponds to firm size distribution in (approximate) equilibrium.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">generate_cross_section</span><span class="p">(</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">generate_cross_section</span><span class="p">(</span>
         <span class="n">firm</span><span class="p">,</span> <span class="n">M</span><span class="o">=</span><span class="mi">500_000</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">s_init</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">123</span>
     <span class="p">):</span>
 
@@ -488,10 +480,10 @@ time <code class="docutils literal notranslate"><span class="pre">T</span></code
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:2.28
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:2.16
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2.2826273441314697
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2.1659531593322754
 </pre></div>
 </div>
 </div>
@@ -506,10 +498,10 @@ time <code class="docutils literal notranslate"><span class="pre">T</span></code
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:0.80
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:0.73
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.8048596382141113
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.730222225189209
 </pre></div>
 </div>
 </div>
@@ -529,13 +521,14 @@ time <code class="docutils literal notranslate"><span class="pre">T</span></code
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/2021ae0983a5e5686ed051c8833c09149993202df25675636c7cf3c163509b99.png"><img alt="_images/2021ae0983a5e5686ed051c8833c09149993202df25675636c7cf3c163509b99.png" src="_images/2021ae0983a5e5686ed051c8833c09149993202df25675636c7cf3c163509b99.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/2021ae0983a5e5686ed051c8833c09149993202df25675636c7cf3c163509b99.png"><img alt="_images/2021ae0983a5e5686ed051c8833c09149993202df25675636c7cf3c163509b99.png" src="_images/2021ae0983a5e5686ed051c8833c09149993202df25675636c7cf3c163509b99.png" style="width: 80%;" />
+</a>
 </div>
 </div>
 <p>The plot produces a straight line, consistent with a Pareto tail.</p>
 </section>
 <section id="alternative-implementation-with-lax-fori-loop">
-<h4><span class="section-number">6.2.1.3. </span>Alternative implementation with <code class="docutils literal notranslate"><span class="pre">lax.fori_loop</span></code><a class="headerlink" href="#alternative-implementation-with-lax-fori-loop" title="Permalink to this heading">#</a></h4>
+<h4><span class="section-number">6.2.1.3. </span>Alternative implementation with <code class="docutils literal notranslate"><span class="pre">lax.fori_loop</span></code><a class="headerlink" href="#alternative-implementation-with-lax-fori-loop" title="Link to this heading">#</a></h4>
 <p>Although we JIT-compiled some of the code above,
 we did not JIT-compile the <code class="docutils literal notranslate"><span class="pre">for</span></code> loop.</p>
 <p>Let’s try squeezing out a bit more speed
@@ -548,7 +541,7 @@ by</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jax</span><span class="o">.</span><span class="n">jit</span>
-<span class="k">def</span> <span class="nf">generate_cross_section_lax</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">generate_cross_section_lax</span><span class="p">(</span>
         <span class="n">firm</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">M</span><span class="o">=</span><span class="mi">500_000</span><span class="p">,</span> <span class="n">s_init</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">123</span>
     <span class="p">):</span>
 
@@ -558,7 +551,7 @@ by</p>
     <span class="c1"># Initial cross section</span>
     <span class="n">s</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">full</span><span class="p">((</span><span class="n">M</span><span class="p">,</span> <span class="p">),</span> <span class="n">s_init</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">update_cross_section</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">update_cross_section</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
         <span class="n">s</span><span class="p">,</span> <span class="n">key</span> <span class="o">=</span> <span class="n">state</span>
         <span class="n">key</span><span class="p">,</span> <span class="o">*</span><span class="n">subkeys</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
         <span class="c1"># Generate current random draws </span>
@@ -592,10 +585,10 @@ by</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:1.05
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:1.06
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1.0571229457855225
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1.0652735233306885
 </pre></div>
 </div>
 </div>
@@ -609,10 +602,10 @@ by</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:0.05
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:0.06
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.05943560600280762
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.06111764907836914
 </pre></div>
 </div>
 </div>
@@ -632,14 +625,15 @@ by</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/2021ae0983a5e5686ed051c8833c09149993202df25675636c7cf3c163509b99.png"><img alt="_images/2021ae0983a5e5686ed051c8833c09149993202df25675636c7cf3c163509b99.png" src="_images/2021ae0983a5e5686ed051c8833c09149993202df25675636c7cf3c163509b99.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/2021ae0983a5e5686ed051c8833c09149993202df25675636c7cf3c163509b99.png"><img alt="_images/2021ae0983a5e5686ed051c8833c09149993202df25675636c7cf3c163509b99.png" src="_images/2021ae0983a5e5686ed051c8833c09149993202df25675636c7cf3c163509b99.png" style="width: 80%;" />
+</a>
 </div>
 </div>
 </section>
 </section>
 </section>
 <section id="exercises">
-<h2><span class="section-number">6.3. </span>Exercises<a class="headerlink" href="#exercises" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">6.3. </span>Exercises<a class="headerlink" href="#exercises" title="Link to this heading">#</a></h2>
 <div class="exercise admonition" id="kp_ex1">
 
 <p class="admonition-title"><span class="caption-number">Exercise 6.1 </span></p>
@@ -657,7 +651,7 @@ by</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jax</span><span class="o">.</span><span class="n">jit</span>
-<span class="k">def</span> <span class="nf">generate_cross_section_lax</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">generate_cross_section_lax</span><span class="p">(</span>
         <span class="n">firm</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">M</span><span class="o">=</span><span class="mi">500_000</span><span class="p">,</span> <span class="n">s_init</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">123</span>
     <span class="p">):</span>
 
@@ -674,7 +668,7 @@ by</p>
     <span class="c1"># Initial cross section</span>
     <span class="n">s</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">full</span><span class="p">((</span><span class="n">M</span><span class="p">,</span> <span class="p">),</span> <span class="n">s_init</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">update_cross_section</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">s</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">update_cross_section</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">s</span><span class="p">):</span>
         <span class="c1"># Pull out the t-th cross-section of shocks</span>
         <span class="n">a_t</span><span class="p">,</span> <span class="n">b_t</span><span class="p">,</span> <span class="n">e_t</span> <span class="o">=</span> <span class="n">a</span><span class="p">[</span><span class="n">t</span><span class="p">],</span> <span class="n">b</span><span class="p">[</span><span class="n">t</span><span class="p">],</span> <span class="n">e</span><span class="p">[</span><span class="n">t</span><span class="p">]</span>
         <span class="n">s</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">s</span> <span class="o">&lt;</span> <span class="n">s_bar</span><span class="p">,</span> <span class="n">e_t</span><span class="p">,</span> <span class="n">a_t</span> <span class="o">*</span> <span class="n">s</span> <span class="o">+</span> <span class="n">b_t</span><span class="p">)</span>
@@ -700,7 +694,7 @@ by</p>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:1.02
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1.0264887809753418
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1.0226271152496338
 </pre></div>
 </div>
 </div>
@@ -717,7 +711,7 @@ by</p>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:0.07
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.07259297370910645
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.07667231559753418
 </pre></div>
 </div>
 </div>
@@ -763,6 +757,8 @@ the simulation paths.</p>
                     <p><a href="https://creativecommons.org/licenses/by-sa/4.0/"><img src="https://licensebuttons.net/l/by-sa/4.0/80x15.png"></a></p>
 
                     <p>Creative Commons License &ndash; This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International.</p>
+
+                    <p>A theme by <a href="https://quantecon.org">QuantEcon</a></p>
 
                 </footer> <!-- .page__footer -->
 
@@ -1096,7 +1092,7 @@ the simulation paths.</p>
                 function setLaunchServer() {
                   launchNotebookLink.removeAttribute("style")
                   if ( localStorage.launcherType == 'launcher-private' ) {
-                    let repoPrefix = "/jupyter/hub/user-redirect/git-pull?repo=" + repoURL + "&branch=" + branch + "&urlpath=" + urlPath;
+                    let repoPrefix = "/user-redirect/git-pull?repo=" + repoURL + "&branch=" + branch + "&urlpath=" + urlPath;
                     launcherPrivateValue = launcherPrivate.value
                     if (!launcherPrivateValue) {
                         launchNotebookLink.removeAttribute("href")

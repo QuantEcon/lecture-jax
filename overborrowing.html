@@ -1,13 +1,12 @@
 
-
 <!DOCTYPE html>
 
 
-<html lang="en" data-content_root="" >
+<html lang="en" data-content_root="./" >
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>20. Bianchi Overborrowing Model &#8212; Quantitative Economics with Python using JAX</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
@@ -70,14 +69,14 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=bd0785fbb14d8d2bd4d9ae501d79ed8d3bc089ec" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
-    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
-    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
-    <link rel="stylesheet" type="text/css" href="_static/exercise.css" />
-    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.5ea377869091fd0449014c60fc090103.min.css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="_static/exercise.css?v=982b99e0" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
@@ -85,22 +84,21 @@
   <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
 
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-    <script src="_static/jquery.js"></script>
-    <script src="_static/underscore.js"></script>
-    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="_static/doctools.js"></script>
-    <script src="_static/sphinx_highlight.js"></script>
-    <script src="_static/clipboard.min.js"></script>
-    <script src="_static/copybutton.js"></script>
+    <script src="_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
     <script src="_static/scripts/sphinx-book-theme.js"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="_static/togglebutton.js"></script>
-    <script src="_static/scripts/quantecon-book-theme.js?digest=d6d86bce9979111653c4c495e33499e1796e172a"></script>
+    <script src="_static/togglebutton.js?v=4a39c7ea"></script>
+    <script src="_static/scripts/quantecon-book-theme.js?digest=d9faaf6c4b57726f74ba012412af1f5681bdff87"></script>
+    <script src="_static/scripts/jquery.js?v=5d32c60e"></script>
+    <script src="_static/scripts/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script src="_static/design-tabs.js"></script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
     <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-K1NYBSC1CZ"></script>
     <script>
                 window.dataLayer = window.dataLayer || [];
@@ -109,12 +107,20 @@
                 gtag('config', 'G-K1NYBSC1CZ');
             </script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-K1NYBSC1CZ');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script>window.MathJax = {"tex": {"macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'overborrowing';</script>
     <link rel="canonical" href="https://jax.quantecon.org/overborrowing.html" />
-    <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
+    <link rel="icon" href="_static/lectures-favicon.ico"/>
     <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -146,6 +152,7 @@
   </head>
 <body>
 
+<!-- Override QuantEcon theme colors -->
 
     <span id="top"></span>
 
@@ -245,7 +252,7 @@
                     <div>
                         
   <section class="tex2jax_ignore mathjax_ignore" id="bianchi-overborrowing-model">
-<h1><span class="section-number">20. </span>Bianchi Overborrowing Model<a class="headerlink" href="#bianchi-overborrowing-model" title="Permalink to this heading">#</a></h1>
+<h1><span class="section-number">20. </span>Bianchi Overborrowing Model<a class="headerlink" href="#bianchi-overborrowing-model" title="Link to this heading">#</a></h1>
 <div class="warning admonition">
 <p class="admonition-title">GPU</p>
 <p>This lecture was built using a machine with JAX installed and access to a GPU.</p>
@@ -260,13 +267,13 @@
 </pre></div>
 </div>
 </div>
-<details class="hide below-input">
+<details class="admonition hide below-input">
 <summary aria-label="Toggle hidden content">
-<span class="collapsed">Show code cell output</span>
-<span class="expanded">Hide code cell output</span>
+<p class="collapsed admonition-title">Show code cell output</p>
+<p class="expanded admonition-title">Hide code cell output</p>
 </summary>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (0.8.1)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (0.8.2)
 Requirement already satisfied: numba&gt;=0.49.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from quantecon) (0.60.0)
 Requirement already satisfied: numpy&gt;=1.17.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from quantecon) (1.26.4)
 Requirement already satisfied: requests in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from quantecon) (2.32.3)
@@ -286,22 +293,22 @@ Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in /home/runner/minicond
 <p>We use the following imports.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">time</span>
-<span class="kn">import</span> <span class="nn">jax</span>
-<span class="kn">import</span> <span class="nn">numba</span>
-<span class="kn">import</span> <span class="nn">jax.numpy</span> <span class="k">as</span> <span class="nn">jnp</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">quantecon</span> <span class="k">as</span> <span class="nn">qe</span>
-<span class="kn">import</span> <span class="nn">scipy</span> <span class="k">as</span> <span class="nn">sp</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">namedtuple</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">jax</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numba</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">jax.numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">jnp</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">quantecon</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">qe</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">scipy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sp</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">namedtuple</span>
 </pre></div>
 </div>
 </div>
 </div>
 <section id="markov-dynamics">
-<h2><span class="section-number">20.1. </span>Markov dynamics<a class="headerlink" href="#markov-dynamics" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">20.1. </span>Markov dynamics<a class="headerlink" href="#markov-dynamics" title="Link to this heading">#</a></h2>
 <p>Before studying Bianchi (2011), we develop some functions for working with the bivariate VAR process</p>
 <div class="math notranslate nohighlight">
 \[
@@ -337,13 +344,13 @@ Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in /home/runner/minicond
 </div>
 </div>
 <section id="simulating-the-var">
-<h3><span class="section-number">20.1.1. </span>Simulating the VAR<a class="headerlink" href="#simulating-the-var" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">20.1.1. </span>Simulating the VAR<a class="headerlink" href="#simulating-the-var" title="Link to this heading">#</a></h3>
 <p>Here’s code for generating the original VAR process, which can be used for
 testing.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@numba</span><span class="o">.</span><span class="n">jit</span>
-<span class="k">def</span> <span class="nf">generate_var_process</span><span class="p">(</span><span class="n">A</span><span class="o">=</span><span class="n">A</span><span class="p">,</span> <span class="n">C</span><span class="o">=</span><span class="n">C</span><span class="p">,</span> <span class="n">ts_length</span><span class="o">=</span><span class="mi">1_000_000</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">generate_var_process</span><span class="p">(</span><span class="n">A</span><span class="o">=</span><span class="n">A</span><span class="p">,</span> <span class="n">C</span><span class="o">=</span><span class="n">C</span><span class="p">,</span> <span class="n">ts_length</span><span class="o">=</span><span class="mi">1_000_000</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Generate the original VAR process.</span>
 
@@ -361,7 +368,7 @@ testing.</p>
 </div>
 </section>
 <section id="discretizing-the-var">
-<h3><span class="section-number">20.1.2. </span>Discretizing the VAR<a class="headerlink" href="#discretizing-the-var" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">20.1.2. </span>Discretizing the VAR<a class="headerlink" href="#discretizing-the-var" title="Link to this heading">#</a></h3>
 <p>Here’s a function to convert the VAR process to a Markov chain evolving on a
 rectilinear grid of points in <span class="math notranslate nohighlight">\(\mathbb R^2\)</span>.</p>
 <p>The function returns arrays <code class="docutils literal notranslate"><span class="pre">y_t</span></code>, <code class="docutils literal notranslate"><span class="pre">y_n</span></code> and <code class="docutils literal notranslate"><span class="pre">Q</span></code></p>
@@ -371,7 +378,7 @@ rectilinear grid of points in <span class="math notranslate nohighlight">\(\math
 <p>Under the hood, this function uses the QuantEcon function <code class="docutils literal notranslate"><span class="pre">discrete_var</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">discretize_income_var</span><span class="p">(</span><span class="n">A</span><span class="o">=</span><span class="n">A</span><span class="p">,</span> <span class="n">C</span><span class="o">=</span><span class="n">C</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">1234</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">discretize_income_var</span><span class="p">(</span><span class="n">A</span><span class="o">=</span><span class="n">A</span><span class="p">,</span> <span class="n">C</span><span class="o">=</span><span class="n">C</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">1234</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Discretize the VAR model, returning</span>
 
@@ -406,7 +413,7 @@ rectilinear grid of points in <span class="math notranslate nohighlight">\(\math
 <p>Here’s code for sampling from the Markov chain.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">generate_discrete_var</span><span class="p">(</span><span class="n">A</span><span class="o">=</span><span class="n">A</span><span class="p">,</span> <span class="n">C</span><span class="o">=</span><span class="n">C</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">1234</span><span class="p">,</span> 
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">generate_discrete_var</span><span class="p">(</span><span class="n">A</span><span class="o">=</span><span class="n">A</span><span class="p">,</span> <span class="n">C</span><span class="o">=</span><span class="n">C</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">1234</span><span class="p">,</span> 
                           <span class="n">ts_length</span><span class="o">=</span><span class="mi">1_000_000</span><span class="p">,</span>
                           <span class="n">indices</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -434,11 +441,11 @@ rectilinear grid of points in <span class="math notranslate nohighlight">\(\math
 </div>
 </section>
 <section id="testing-the-discretization">
-<h3><span class="section-number">20.1.3. </span>Testing the discretization<a class="headerlink" href="#testing-the-discretization" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">20.1.3. </span>Testing the discretization<a class="headerlink" href="#testing-the-discretization" title="Link to this heading">#</a></h3>
 <p>Let’s check some statistics for both the original and the discretized processes, to see if they match up.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">corr</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">corr</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
     <span class="n">m_x</span><span class="p">,</span> <span class="n">m_y</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span> <span class="n">y</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
     <span class="n">s_xy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">x</span> <span class="o">-</span> <span class="n">m_x</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">y</span> <span class="o">-</span> <span class="n">m_y</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">x</span> <span class="o">-</span> <span class="n">m_x</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">y</span> <span class="o">-</span> <span class="n">m_y</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span><span class="n">s_xy</span><span class="p">)</span>
@@ -448,7 +455,7 @@ rectilinear grid of points in <span class="math notranslate nohighlight">\(\math
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">print_stats</span><span class="p">(</span><span class="n">y_t_series</span><span class="p">,</span> <span class="n">y_n_series</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">print_stats</span><span class="p">(</span><span class="n">y_t_series</span><span class="p">,</span> <span class="n">y_n_series</span><span class="p">):</span>
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Std dev of y_t is </span><span class="si">{</span><span class="n">y_t_series</span><span class="o">.</span><span class="n">std</span><span class="p">()</span><span class="si">:</span><span class="s2">.3</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Std dev of y_n is </span><span class="si">{</span><span class="n">y_n_series</span><span class="o">.</span><span class="n">std</span><span class="p">()</span><span class="si">:</span><span class="s2">.3</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;corr(y_t, y_n) is </span><span class="si">{</span><span class="n">corr</span><span class="p">(</span><span class="n">y_t_series</span><span class="p">,</span><span class="w"> </span><span class="n">y_n_series</span><span class="p">)</span><span class="si">:</span><span class="s2">.3</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
@@ -491,10 +498,10 @@ auto_corr(y_n) is 0.667
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Std dev of y_t is 0.0876
-Std dev of y_n is 0.106
-corr(y_t, y_n) is 0.477
-auto_corr(y_t) is 0.402
-auto_corr(y_n) is 0.59
+Std dev of y_n is 0.105
+corr(y_t, y_n) is 0.476
+auto_corr(y_t) is 0.401
+auto_corr(y_n) is 0.588
 </pre></div>
 </div>
 </div>
@@ -502,7 +509,7 @@ auto_corr(y_n) is 0.59
 </section>
 </section>
 <section id="description-of-the-model">
-<h2><span class="section-number">20.2. </span>Description of the model<a class="headerlink" href="#description-of-the-model" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">20.2. </span>Description of the model<a class="headerlink" href="#description-of-the-model" title="Link to this heading">#</a></h2>
 <p>The Bianchi (2011) model seeks to explain sudden stops in emerging market economies.</p>
 <p>A representative household chooses how much to borrow on international markets and how much to consume.</p>
 <p>The household is credit constrained, with the constraint depending on both current income and the real exchange rate.</p>
@@ -523,7 +530,7 @@ effect of borrowing on the credit constraint.</p>
 <li><p>This fall in the exchange rate further tightens the borrowing constraint, amplifying the shock</p></li>
 </ol>
 <section id="decentralized-equilibrium">
-<h3><span class="section-number">20.2.1. </span>Decentralized equilibrium<a class="headerlink" href="#decentralized-equilibrium" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">20.2.1. </span>Decentralized equilibrium<a class="headerlink" href="#decentralized-equilibrium" title="Link to this heading">#</a></h3>
 <p>The model contains a representative household that seeks to maximize
 an expected sum of discounted utility with</p>
 <div class="math notranslate nohighlight">
@@ -581,7 +588,7 @@ to 1</p></li>
 \]</div>
 </section>
 <section id="notation">
-<h3><span class="section-number">20.2.2. </span>Notation<a class="headerlink" href="#notation" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">20.2.2. </span>Notation<a class="headerlink" href="#notation" title="Link to this heading">#</a></h3>
 <p>Let</p>
 <div class="math notranslate nohighlight">
 \[
@@ -634,7 +641,7 @@ household problem as</p>
 </section>
 </section>
 <section id="overborrowing-model-in-python-jax">
-<h2><span class="section-number">20.3. </span>Overborrowing model in Python / JAX<a class="headerlink" href="#overborrowing-model-in-python-jax" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">20.3. </span>Overborrowing model in Python / JAX<a class="headerlink" href="#overborrowing-model-in-python-jax" title="Link to this heading">#</a></h2>
 <p>In what follows</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">y</span></code> = <code class="docutils literal notranslate"><span class="pre">(y_t,</span> <span class="pre">y_n)</span></code> is the exogenous state process</p></li>
@@ -663,7 +670,7 @@ household problem as</p>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">create_overborrowing_model</span><span class="p">(</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">create_overborrowing_model</span><span class="p">(</span>
         <span class="n">σ</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span>               <span class="c1"># CRRA utility parameter</span>
         <span class="n">η</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="mf">0.83</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span>    <span class="c1"># Elasticity = 0.83, η = 0.2048</span>
         <span class="n">β</span><span class="o">=</span><span class="mf">0.91</span><span class="p">,</span>              <span class="c1"># Discount factor</span>
@@ -704,7 +711,7 @@ household problem as</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jax</span><span class="o">.</span><span class="n">jit</span>
-<span class="k">def</span> <span class="nf">w</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">y_n</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">w</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">y_n</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot; </span>
 <span class="sd">    Current utility when c_t = c and c_n = y_n.</span>
 
@@ -724,7 +731,7 @@ household problem as</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jax</span><span class="o">.</span><span class="n">jit</span>
-<span class="k">def</span> <span class="nf">generate_initial_H</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">at_constraint</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">generate_initial_H</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">at_constraint</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Compute an initial guess for H. Repeat the indices for b_grid over y_t and</span>
 <span class="sd">    y_n axes.</span>
@@ -744,7 +751,7 @@ household problem as</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jax</span><span class="o">.</span><span class="n">jit</span>
-<span class="k">def</span> <span class="nf">BellmanRHS</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">H</span><span class="p">,</span> <span class="n">i_b</span><span class="p">,</span> <span class="n">i_B</span><span class="p">,</span> <span class="n">i_y_t</span><span class="p">,</span> <span class="n">i_y_n</span><span class="p">,</span> <span class="n">i_bp</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">BellmanRHS</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">H</span><span class="p">,</span> <span class="n">i_b</span><span class="p">,</span> <span class="n">i_B</span><span class="p">,</span> <span class="n">i_y_t</span><span class="p">,</span> <span class="n">i_y_n</span><span class="p">,</span> <span class="n">i_bp</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Given current state (b, B, y_t, y_n) with indices (i_b, i_B, i_y_t, i_y_n),</span>
 <span class="sd">    compute the unmaximized right hand side (RHS) of the Bellman equation as a</span>
@@ -799,7 +806,7 @@ household problem as</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jax</span><span class="o">.</span><span class="n">jit</span>
-<span class="k">def</span> <span class="nf">get_greedy</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">H</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_greedy</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">H</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Compute the greedy policy for the household, which maximizes the right hand</span>
 <span class="sd">    side of the Bellman equation given v and H.  The greedy policy is recorded</span>
@@ -825,7 +832,7 @@ household problem as</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jax</span><span class="o">.</span><span class="n">jit</span>
-<span class="k">def</span> <span class="nf">_T_h</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">H</span><span class="p">,</span> <span class="n">i_b</span><span class="p">,</span> <span class="n">i_B</span><span class="p">,</span> <span class="n">i_y_t</span><span class="p">,</span> <span class="n">i_y_n</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_T_h</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">H</span><span class="p">,</span> <span class="n">i_b</span><span class="p">,</span> <span class="n">i_B</span><span class="p">,</span> <span class="n">i_y_t</span><span class="p">,</span> <span class="n">i_y_n</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Evaluate the RHS of the policy operator associated with individual</span>
 <span class="sd">    policy h and aggregate policy H.</span>
@@ -870,7 +877,7 @@ household problem as</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jax</span><span class="o">.</span><span class="n">jit</span>
-<span class="k">def</span> <span class="nf">T_h</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">H</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">T_h</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">H</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Vectorized version of the policy operator.</span>
 
@@ -888,9 +895,9 @@ household problem as</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jax</span><span class="o">.</span><span class="n">jit</span>
-<span class="k">def</span> <span class="nf">iterate_policy_operator</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">H</span><span class="p">,</span> <span class="n">m</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">iterate_policy_operator</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">H</span><span class="p">,</span> <span class="n">m</span><span class="p">):</span>
 
-    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">update</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
         <span class="n">v</span> <span class="o">=</span> <span class="n">T_h</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">H</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">v</span>
     <span class="n">v</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">lax</span><span class="o">.</span><span class="n">fori_loop</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">update</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
@@ -904,7 +911,7 @@ and a damped fixed point iteration scheme.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jax</span><span class="o">.</span><span class="n">jit</span>
-<span class="k">def</span> <span class="nf">update_H</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">H</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">α</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">update_H</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">H</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">α</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Update guess of the aggregate update rule.</span>
 
@@ -928,7 +935,7 @@ and a damped fixed point iteration scheme.</p>
 <p>Now we can write code to compute an equilibrium law of motion <span class="math notranslate nohighlight">\(H\)</span>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">compute_equilibrium</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">compute_equilibrium</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
                           <span class="n">α</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">0.005</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">500</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Compute the equilibrium law of motion.</span>
@@ -958,7 +965,7 @@ and a damped fixed point iteration scheme.</p>
 </div>
 </section>
 <section id="planner-problem">
-<h2><span class="section-number">20.4. </span>Planner problem<a class="headerlink" href="#planner-problem" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">20.4. </span>Planner problem<a class="headerlink" href="#planner-problem" title="Link to this heading">#</a></h2>
 <p>Now we switch to the planner problem.</p>
 <p>The constrained planner solves</p>
 <div class="math notranslate nohighlight">
@@ -988,7 +995,7 @@ the price of nontradables and hence the credit constraint.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jax</span><span class="o">.</span><span class="n">jit</span>
-<span class="k">def</span> <span class="nf">planner_T_generator</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">i_b</span><span class="p">,</span> <span class="n">i_y_t</span><span class="p">,</span> <span class="n">i_y_n</span><span class="p">,</span> <span class="n">i_bp</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">planner_T_generator</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">i_b</span><span class="p">,</span> <span class="n">i_y_t</span><span class="p">,</span> <span class="n">i_y_n</span><span class="p">,</span> <span class="n">i_bp</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Given current state (b, y_t, y_n) with indices (i_b, i_y_t, i_y_n),</span>
 <span class="sd">    compute the unmaximized right hand side (RHS) of the Bellman equation as a</span>
@@ -1035,7 +1042,7 @@ the price of nontradables and hence the credit constraint.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jax</span><span class="o">.</span><span class="n">jit</span>
-<span class="k">def</span> <span class="nf">planner_T</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">planner_T</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
     <span class="n">σ</span><span class="p">,</span> <span class="n">η</span><span class="p">,</span> <span class="n">β</span><span class="p">,</span> <span class="n">ω</span><span class="p">,</span> <span class="n">κ</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">b_grid</span><span class="p">,</span> <span class="n">y_t_nodes</span><span class="p">,</span> <span class="n">y_n_nodes</span><span class="p">,</span> <span class="n">Q</span> <span class="o">=</span> <span class="n">model</span>
     <span class="n">b_size</span><span class="p">,</span> <span class="n">y_size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">b_grid</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">y_t_nodes</span><span class="p">)</span>
     <span class="n">b_indices</span><span class="p">,</span> <span class="n">y_indices</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">b_size</span><span class="p">),</span> <span class="n">jnp</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">y_size</span><span class="p">)</span>
@@ -1052,7 +1059,7 @@ the price of nontradables and hence the credit constraint.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jax</span><span class="o">.</span><span class="n">jit</span>
-<span class="k">def</span> <span class="nf">planner_get_greedy</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">planner_get_greedy</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
     <span class="n">σ</span><span class="p">,</span> <span class="n">η</span><span class="p">,</span> <span class="n">β</span><span class="p">,</span> <span class="n">ω</span><span class="p">,</span> <span class="n">κ</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">b_grid</span><span class="p">,</span> <span class="n">y_t_nodes</span><span class="p">,</span> <span class="n">y_n_nodes</span><span class="p">,</span> <span class="n">Q</span> <span class="o">=</span> <span class="n">model</span>
     <span class="n">b_size</span><span class="p">,</span> <span class="n">y_size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">b_grid</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">y_t_nodes</span><span class="p">)</span>
     <span class="n">b_indices</span><span class="p">,</span> <span class="n">y_indices</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">b_size</span><span class="p">),</span> <span class="n">jnp</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">y_size</span><span class="p">)</span>
@@ -1067,7 +1074,7 @@ the price of nontradables and hence the credit constraint.</p>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">vfi</span><span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="n">v_init</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">10_000</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">vfi</span><span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="n">v_init</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">10_000</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Use successive approximation to compute the fixed point of T, starting from</span>
 <span class="sd">    v_init.</span>
@@ -1075,11 +1082,11 @@ the price of nontradables and hence the credit constraint.</p>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">v</span> <span class="o">=</span> <span class="n">v_init</span>
 
-    <span class="k">def</span> <span class="nf">cond_fun</span><span class="p">(</span><span class="n">state</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">cond_fun</span><span class="p">(</span><span class="n">state</span><span class="p">):</span>
         <span class="n">error</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">state</span>
         <span class="k">return</span> <span class="p">(</span><span class="n">error</span> <span class="o">&gt;</span> <span class="n">tol</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">i</span> <span class="o">&lt;</span> <span class="n">max_iter</span><span class="p">)</span>
     
-    <span class="k">def</span> <span class="nf">body_fun</span><span class="p">(</span><span class="n">state</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">body_fun</span><span class="p">(</span><span class="n">state</span><span class="p">):</span>
         <span class="n">error</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">state</span>
         <span class="n">v_new</span> <span class="o">=</span> <span class="n">T</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
         <span class="n">error</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">v_new</span> <span class="o">-</span> <span class="n">v</span><span class="p">))</span>
@@ -1102,7 +1109,7 @@ the price of nontradables and hence the credit constraint.</p>
 <p>Computing the planner solution is straightforward value function iteration:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">compute_planner_solution</span><span class="p">(</span><span class="n">model</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">compute_planner_solution</span><span class="p">(</span><span class="n">model</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Compute the constrained planner solution.</span>
 
@@ -1122,10 +1129,10 @@ the price of nontradables and hence the credit constraint.</p>
 </div>
 </section>
 <section id="numerical-solution">
-<h2><span class="section-number">20.5. </span>Numerical solution<a class="headerlink" href="#numerical-solution" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">20.5. </span>Numerical solution<a class="headerlink" href="#numerical-solution" title="Link to this heading">#</a></h2>
 <p>Let’s now solve the model and compare the decentralized and planner solutions</p>
 <section id="generating-solutions">
-<h3><span class="section-number">20.5.1. </span>Generating solutions<a class="headerlink" href="#generating-solutions" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">20.5.1. </span>Generating solutions<a class="headerlink" href="#generating-solutions" title="Link to this heading">#</a></h3>
 <p>Here we compute the two solutions.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1218,7 +1225,7 @@ the price of nontradables and hence the credit constraint.</p>
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Updated H at iteration 22 with error 0.0041051506996154785.
-Computed decentralized equilibrium in 8.533052921295166 seconds
+Computed decentralized equilibrium in 8.627148389816284 seconds
 </pre></div>
 </div>
 </div>
@@ -1238,14 +1245,14 @@ Computed decentralized equilibrium in 8.533052921295166 seconds
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computing planner&#39;s solution.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed planner&#39;s solution in 0.9554023742675781 seconds
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed planner&#39;s solution in 0.987839937210083 seconds
 </pre></div>
 </div>
 </div>
 </div>
 </section>
 <section id="policy-plots">
-<h3><span class="section-number">20.5.2. </span>Policy plots<a class="headerlink" href="#policy-plots" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">20.5.2. </span>Policy plots<a class="headerlink" href="#policy-plots" title="Link to this heading">#</a></h3>
 <p>We produce a policy plot that is similar to Figure 1 in Bianchi (2011).</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1266,7 +1273,8 @@ Computed decentralized equilibrium in 8.533052921295166 seconds
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/a53678b542a9e1aed41cfb5ef9af9b053091188d95a3a74c449cb82fd90281c1.png"><img alt="_images/a53678b542a9e1aed41cfb5ef9af9b053091188d95a3a74c449cb82fd90281c1.png" src="_images/a53678b542a9e1aed41cfb5ef9af9b053091188d95a3a74c449cb82fd90281c1.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/a53678b542a9e1aed41cfb5ef9af9b053091188d95a3a74c449cb82fd90281c1.png"><img alt="_images/a53678b542a9e1aed41cfb5ef9af9b053091188d95a3a74c449cb82fd90281c1.png" src="_images/a53678b542a9e1aed41cfb5ef9af9b053091188d95a3a74c449cb82fd90281c1.png" style="width: 80%;" />
+</a>
 </div>
 </div>
 <p>The match is not exact because we use a different estimate of the Markov
@@ -1275,7 +1283,7 @@ dynamics for income.</p>
 </section>
 </section>
 <section id="exercise">
-<h2><span class="section-number">20.6. </span>Exercise<a class="headerlink" href="#exercise" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">20.6. </span>Exercise<a class="headerlink" href="#exercise" title="Link to this heading">#</a></h2>
 <div class="exercise admonition" id="overborrow_1">
 
 <p class="admonition-title"><span class="caption-number">Exercise 20.1 </span></p>
@@ -1288,7 +1296,7 @@ planner equilibria.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@numba</span><span class="o">.</span><span class="n">jit</span>
-<span class="k">def</span> <span class="nf">generate_borrowing_sequence</span><span class="p">(</span><span class="n">H</span><span class="p">,</span> <span class="n">y_t_series</span><span class="p">,</span> <span class="n">y_n_series</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">generate_borrowing_sequence</span><span class="p">(</span><span class="n">H</span><span class="p">,</span> <span class="n">y_t_series</span><span class="p">,</span> <span class="n">y_n_series</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Generate the borrowing sequence B&#39; = H(B, y_t, y_n).</span>
 
@@ -1324,7 +1332,7 @@ planner equilibria.</p>
 <section id="solution-content">
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">seaborn</span>  <span class="c1"># For kernel density plots</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span>  <span class="c1"># For kernel density plots</span>
 </pre></div>
 </div>
 </div>
@@ -1373,7 +1381,8 @@ planner equilibria.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/a8e484e9a9d8c692f5a861e347ccc577a254520387f4f400e398bb2c86aaecd1.png"><img alt="_images/a8e484e9a9d8c692f5a861e347ccc577a254520387f4f400e398bb2c86aaecd1.png" src="_images/a8e484e9a9d8c692f5a861e347ccc577a254520387f4f400e398bb2c86aaecd1.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/b582d872abf530e444d45f950c3383292bcea9362f7baecf81fda818e3237df6.png"><img alt="_images/b582d872abf530e444d45f950c3383292bcea9362f7baecf81fda818e3237df6.png" src="_images/b582d872abf530e444d45f950c3383292bcea9362f7baecf81fda818e3237df6.png" style="width: 80%;" />
+</a>
 </div>
 </div>
 <p>This corresponds to Figure 2 in Bianchi.</p>
@@ -1416,6 +1425,8 @@ leaving the economy more vulnerable to bad shocks.</p>
                     <p><a href="https://creativecommons.org/licenses/by-sa/4.0/"><img src="https://licensebuttons.net/l/by-sa/4.0/80x15.png"></a></p>
 
                     <p>Creative Commons License &ndash; This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International.</p>
+
+                    <p>A theme by <a href="https://quantecon.org">QuantEcon</a></p>
 
                 </footer> <!-- .page__footer -->
 
@@ -1749,7 +1760,7 @@ leaving the economy more vulnerable to bad shocks.</p>
                 function setLaunchServer() {
                   launchNotebookLink.removeAttribute("style")
                   if ( localStorage.launcherType == 'launcher-private' ) {
-                    let repoPrefix = "/jupyter/hub/user-redirect/git-pull?repo=" + repoURL + "&branch=" + branch + "&urlpath=" + urlPath;
+                    let repoPrefix = "/user-redirect/git-pull?repo=" + repoURL + "&branch=" + branch + "&urlpath=" + urlPath;
                     launcherPrivateValue = launcherPrivate.value
                     if (!launcherPrivateValue) {
                         launchNotebookLink.removeAttribute("href")

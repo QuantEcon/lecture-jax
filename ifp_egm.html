@@ -1,13 +1,12 @@
 
-
 <!DOCTYPE html>
 
 
-<html lang="en" data-content_root="" >
+<html lang="en" data-content_root="./" >
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>16. Endogenous Grid Method &#8212; Quantitative Economics with Python using JAX</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
@@ -70,14 +69,14 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=bd0785fbb14d8d2bd4d9ae501d79ed8d3bc089ec" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
-    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
-    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
-    <link rel="stylesheet" type="text/css" href="_static/exercise.css" />
-    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.5ea377869091fd0449014c60fc090103.min.css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="_static/exercise.css?v=982b99e0" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
@@ -85,22 +84,21 @@
   <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
 
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-    <script src="_static/jquery.js"></script>
-    <script src="_static/underscore.js"></script>
-    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="_static/doctools.js"></script>
-    <script src="_static/sphinx_highlight.js"></script>
-    <script src="_static/clipboard.min.js"></script>
-    <script src="_static/copybutton.js"></script>
+    <script src="_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
     <script src="_static/scripts/sphinx-book-theme.js"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="_static/togglebutton.js"></script>
-    <script src="_static/scripts/quantecon-book-theme.js?digest=d6d86bce9979111653c4c495e33499e1796e172a"></script>
+    <script src="_static/togglebutton.js?v=4a39c7ea"></script>
+    <script src="_static/scripts/quantecon-book-theme.js?digest=d9faaf6c4b57726f74ba012412af1f5681bdff87"></script>
+    <script src="_static/scripts/jquery.js?v=5d32c60e"></script>
+    <script src="_static/scripts/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script src="_static/design-tabs.js"></script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
     <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-K1NYBSC1CZ"></script>
     <script>
                 window.dataLayer = window.dataLayer || [];
@@ -109,12 +107,20 @@
                 gtag('config', 'G-K1NYBSC1CZ');
             </script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-K1NYBSC1CZ');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script>window.MathJax = {"tex": {"macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'ifp_egm';</script>
     <link rel="canonical" href="https://jax.quantecon.org/ifp_egm.html" />
-    <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
+    <link rel="icon" href="_static/lectures-favicon.ico"/>
     <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -146,6 +152,7 @@
   </head>
 <body>
 
+<!-- Override QuantEcon theme colors -->
 
     <span id="top"></span>
 
@@ -239,7 +246,7 @@
                     <div>
                         
   <section class="tex2jax_ignore mathjax_ignore" id="endogenous-grid-method">
-<h1><span class="section-number">16. </span>Endogenous Grid Method<a class="headerlink" href="#endogenous-grid-method" title="Permalink to this heading">#</a></h1>
+<h1><span class="section-number">16. </span>Endogenous Grid Method<a class="headerlink" href="#endogenous-grid-method" title="Link to this heading">#</a></h1>
 <div class="warning admonition">
 <p class="admonition-title">GPU</p>
 <p>This lecture was built using a machine with JAX installed and access to a GPU.</p>
@@ -247,7 +254,7 @@
 <p>To run this lecture on your own machine, you need to install <a class="reference external" href="https://github.com/google/jax">Google JAX</a>.</p>
 </div>
 <section id="overview">
-<h2><span class="section-number">16.1. </span>Overview<a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">16.1. </span>Overview<a class="headerlink" href="#overview" title="Link to this heading">#</a></h2>
 <p>In this lecture we use the endogenous grid method (EGM) to solve a basic income
 fluctuation (optimal savings) problem.</p>
 <p>Background on the endogenous grid method can be found in <a class="reference external" href="https://python.quantecon.org/egm_policy_iter.html">an earlier
@@ -260,13 +267,13 @@ QuantEcon lecture</a>.</p>
 </pre></div>
 </div>
 </div>
-<details class="hide below-input">
+<details class="admonition hide below-input">
 <summary aria-label="Toggle hidden content">
-<span class="collapsed">Show code cell output</span>
-<span class="expanded">Hide code cell output</span>
+<p class="collapsed admonition-title">Show code cell output</p>
+<p class="expanded admonition-title">Hide code cell output</p>
 </summary>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (0.8.1)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (0.8.2)
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: numba&gt;=0.49.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from quantecon) (0.60.0)
@@ -287,13 +294,13 @@ Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in /home/runner/minicond
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">quantecon</span> <span class="k">as</span> <span class="nn">qe</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">jax</span>
-<span class="kn">import</span> <span class="nn">jax.numpy</span> <span class="k">as</span> <span class="nn">jnp</span>
-<span class="kn">import</span> <span class="nn">numba</span>
-<span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">time</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">quantecon</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">qe</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">jax</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">jax.numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">jnp</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numba</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">time</span><span class="w"> </span><span class="kn">import</span> <span class="n">time</span>
 </pre></div>
 </div>
 </div>
@@ -306,7 +313,7 @@ Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in /home/runner/minicond
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Mon Jun 23 03:39:17 2025       
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Mon Aug  4 03:48:40 2025       
 +-----------------------------------------------------------------------------------------+
 | NVIDIA-SMI 575.51.03              Driver Version: 575.51.03      CUDA Version: 12.9     |
 |-----------------------------------------+------------------------+----------------------+
@@ -315,7 +322,7 @@ Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in /home/runner/minicond
 |                                         |                        |               MIG M. |
 |=========================================+========================+======================|
 |   0  Tesla T4                       Off |   00000000:00:1E.0 Off |                    0 |
-| N/A   37C    P8             13W /   70W |       0MiB /  15360MiB |      0%      Default |
+| N/A   37C    P8             14W /   70W |       0MiB /  15360MiB |      0%      Default |
 |                                         |                        |                  N/A |
 +-----------------------------------------+------------------------+----------------------+
                                                                                          
@@ -340,7 +347,7 @@ Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in /home/runner/minicond
 </div>
 </section>
 <section id="setup">
-<h2><span class="section-number">16.2. </span>Setup<a class="headerlink" href="#setup" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">16.2. </span>Setup<a class="headerlink" href="#setup" title="Link to this heading">#</a></h2>
 <p>We consider a household that chooses a state-contingent consumption plan <span class="math notranslate nohighlight">\(\{c_t\}_{t \geq 0}\)</span> to maximize</p>
 <div class="math notranslate nohighlight">
 \[
@@ -372,7 +379,7 @@ discretizing the AR(1) process</p>
 fluctuation problem and creates suitable arrays.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">ifp</span><span class="p">(</span><span class="n">R</span><span class="o">=</span><span class="mf">1.01</span><span class="p">,</span>             <span class="c1"># gross interest rate</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">ifp</span><span class="p">(</span><span class="n">R</span><span class="o">=</span><span class="mf">1.01</span><span class="p">,</span>             <span class="c1"># gross interest rate</span>
         <span class="n">β</span><span class="o">=</span><span class="mf">0.99</span><span class="p">,</span>             <span class="c1"># discount factor</span>
         <span class="n">γ</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span>              <span class="c1"># CRRA preference parameter</span>
         <span class="n">s_max</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span>           <span class="c1"># savings grid max</span>
@@ -400,7 +407,7 @@ fluctuation problem and creates suitable arrays.</p>
 </div>
 </section>
 <section id="solution-method">
-<h2><span class="section-number">16.3. </span>Solution method<a class="headerlink" href="#solution-method" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">16.3. </span>Solution method<a class="headerlink" href="#solution-method" title="Link to this heading">#</a></h2>
 <p>Let <span class="math notranslate nohighlight">\(S = \mathbb R_+ \times \mathsf Y\)</span> be the set of possible values for the
 state <span class="math notranslate nohighlight">\((a_t, Y_t)\)</span>.</p>
 <p>We aim to compute an optimal consumption policy <span class="math notranslate nohighlight">\(\sigma^* \colon S \to \mathbb
@@ -413,7 +420,7 @@ R\)</span>, under which dynamics are given by</p>
 \]</div>
 <p>In this section we discuss how we intend to solve for this policy.</p>
 <section id="euler-equation">
-<h3><span class="section-number">16.3.1. </span>Euler equation<a class="headerlink" href="#euler-equation" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">16.3.1. </span>Euler equation<a class="headerlink" href="#euler-equation" title="Link to this heading">#</a></h3>
 <p>The Euler equation for the optimization problem is</p>
 <div class="math notranslate nohighlight">
 \[
@@ -438,7 +445,7 @@ R\)</span>, under which dynamics are given by</p>
 policy.</p>
 <p>For given consumption policy <span class="math notranslate nohighlight">\(\sigma\)</span>, we define <span class="math notranslate nohighlight">\((K \sigma) (a,y)\)</span> as the unique <span class="math notranslate nohighlight">\(c \in [0, a]\)</span> that solves</p>
 <div class="math notranslate nohighlight" id="equation-eq-kaper">
-<span class="eqno">(16.1)<a class="headerlink" href="#equation-eq-kaper" title="Permalink to this equation">#</a></span>\[
+<span class="eqno">(16.1)<a class="headerlink" href="#equation-eq-kaper" title="Link to this equation">#</a></span>\[
 u'(c)
 = \max \left\{
            \beta R \, \mathbb E_y (u' \circ \sigma) \,
@@ -487,7 +494,7 @@ u'(c)
 \end{split}\]</div>
 <p>Equivalently, we can state that the <span class="math notranslate nohighlight">\(c\)</span> satisfying <span class="math notranslate nohighlight">\(c = (K\sigma)(a, y)\)</span> obeys</p>
 <div class="math notranslate nohighlight" id="equation-eq-oro">
-<span class="eqno">(16.2)<a class="headerlink" href="#equation-eq-oro" title="Permalink to this equation">#</a></span>\[\begin{split}
+<span class="eqno">(16.2)<a class="headerlink" href="#equation-eq-oro" title="Link to this equation">#</a></span>\[\begin{split}
 c = \begin{cases}
         (u')^{-1}
         \left\{
@@ -504,7 +511,7 @@ c = \begin{cases}
 <p>First we set <span class="math notranslate nohighlight">\(a_0 = c_0 = 0\)</span>, since zero consumption is an optimal (in fact the only) choice when <span class="math notranslate nohighlight">\(a=0\)</span>.</p>
 <p>Then, for <span class="math notranslate nohighlight">\(i &gt; 0\)</span>, we compute</p>
 <div class="math notranslate nohighlight" id="equation-eq-kaperc">
-<span class="eqno">(16.3)<a class="headerlink" href="#equation-eq-kaperc" title="Permalink to this equation">#</a></span>\[
+<span class="eqno">(16.3)<a class="headerlink" href="#equation-eq-kaperc" title="Link to this equation">#</a></span>\[
     c_i
     = (u')^{-1}
     \left\{ 
@@ -546,7 +553,7 @@ c = \begin{cases}
 <p>We are now ready to iterate with <span class="math notranslate nohighlight">\(K\)</span>.</p>
 </section>
 <section id="jax-version">
-<h3><span class="section-number">16.3.2. </span>JAX version<a class="headerlink" href="#jax-version" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">16.3.2. </span>JAX version<a class="headerlink" href="#jax-version" title="Link to this heading">#</a></h3>
 <p>First we define a vectorized operator <span class="math notranslate nohighlight">\(K\)</span> based on the EGM.</p>
 <p>Notice in the code below that</p>
 <ul class="simple">
@@ -555,7 +562,7 @@ c = \begin{cases}
 </ul>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">K_egm</span><span class="p">(</span><span class="n">a_in</span><span class="p">,</span> <span class="n">σ_in</span><span class="p">,</span> <span class="n">constants</span><span class="p">,</span> <span class="n">sizes</span><span class="p">,</span> <span class="n">arrays</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">K_egm</span><span class="p">(</span><span class="n">a_in</span><span class="p">,</span> <span class="n">σ_in</span><span class="p">,</span> <span class="n">constants</span><span class="p">,</span> <span class="n">sizes</span><span class="p">,</span> <span class="n">arrays</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    The vectorized operator K using EGM.</span>
 
@@ -566,14 +573,14 @@ c = \begin{cases}
     <span class="n">s_size</span><span class="p">,</span> <span class="n">y_size</span> <span class="o">=</span> <span class="n">sizes</span>
     <span class="n">s_grid</span><span class="p">,</span> <span class="n">y_grid</span><span class="p">,</span> <span class="n">P</span> <span class="o">=</span> <span class="n">arrays</span>
     
-    <span class="k">def</span> <span class="nf">u_prime</span><span class="p">(</span><span class="n">c</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">u_prime</span><span class="p">(</span><span class="n">c</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">c</span><span class="o">**</span><span class="p">(</span><span class="o">-</span><span class="n">γ</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">u_prime_inv</span><span class="p">(</span><span class="n">u</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">u_prime_inv</span><span class="p">(</span><span class="n">u</span><span class="p">):</span>
             <span class="k">return</span> <span class="n">u</span><span class="o">**</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="o">/</span><span class="n">γ</span><span class="p">)</span>
 
     <span class="c1"># Linearly interpolate σ(a, y)</span>
-    <span class="k">def</span> <span class="nf">σ</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">σ</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">jnp</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">a_in</span><span class="p">[:,</span> <span class="n">y</span><span class="p">],</span> <span class="n">σ_in</span><span class="p">[:,</span> <span class="n">y</span><span class="p">])</span>
     <span class="n">σ_vec</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">vectorize</span><span class="p">(</span><span class="n">σ</span><span class="p">)</span>
 
@@ -617,7 +624,7 @@ c = \begin{cases}
 <p>Next we define a successive approximator that repeatedly applies <span class="math notranslate nohighlight">\(K\)</span>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">successive_approx_jax</span><span class="p">(</span><span class="n">model</span><span class="p">,</span>        
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">successive_approx_jax</span><span class="p">(</span><span class="n">model</span><span class="p">,</span>        
             <span class="n">tol</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">,</span>
             <span class="n">max_iter</span><span class="o">=</span><span class="mi">100_000</span><span class="p">,</span>
             <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
@@ -658,7 +665,7 @@ c = \begin{cases}
 </div>
 </section>
 <section id="numba-version">
-<h3><span class="section-number">16.3.3. </span>Numba version<a class="headerlink" href="#numba-version" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">16.3.3. </span>Numba version<a class="headerlink" href="#numba-version" title="Link to this heading">#</a></h3>
 <p>Below we provide a second set of code, which solves the same model with Numba.</p>
 <p>The purpose of this code is to cross-check our results from the JAX version, as
 well as to do a runtime comparison.</p>
@@ -667,7 +674,7 @@ model and run the cross-check.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@numba</span><span class="o">.</span><span class="n">jit</span>
-<span class="k">def</span> <span class="nf">K_egm_nb</span><span class="p">(</span><span class="n">a_in</span><span class="p">,</span> <span class="n">σ_in</span><span class="p">,</span> <span class="n">constants</span><span class="p">,</span> <span class="n">sizes</span><span class="p">,</span> <span class="n">arrays</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">K_egm_nb</span><span class="p">(</span><span class="n">a_in</span><span class="p">,</span> <span class="n">σ_in</span><span class="p">,</span> <span class="n">constants</span><span class="p">,</span> <span class="n">sizes</span><span class="p">,</span> <span class="n">arrays</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    The operator K using Numba.</span>
 
@@ -678,14 +685,14 @@ model and run the cross-check.</p>
     <span class="n">s_size</span><span class="p">,</span> <span class="n">y_size</span> <span class="o">=</span> <span class="n">sizes</span>
     <span class="n">s_grid</span><span class="p">,</span> <span class="n">y_grid</span><span class="p">,</span> <span class="n">P</span> <span class="o">=</span> <span class="n">arrays</span>
 
-    <span class="k">def</span> <span class="nf">u_prime</span><span class="p">(</span><span class="n">c</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">u_prime</span><span class="p">(</span><span class="n">c</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">c</span><span class="o">**</span><span class="p">(</span><span class="o">-</span><span class="n">γ</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">u_prime_inv</span><span class="p">(</span><span class="n">u</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">u_prime_inv</span><span class="p">(</span><span class="n">u</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">u</span><span class="o">**</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="o">/</span><span class="n">γ</span><span class="p">)</span>
 
     <span class="c1"># Linear interpolation of policy using endogenous grid</span>
-    <span class="k">def</span> <span class="nf">σ</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">σ</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">a_in</span><span class="p">[:,</span> <span class="n">z</span><span class="p">],</span> <span class="n">σ_in</span><span class="p">[:,</span> <span class="n">z</span><span class="p">])</span>
     
     <span class="c1"># Allocate memory for new consumption array</span>
@@ -710,7 +717,7 @@ model and run the cross-check.</p>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">successive_approx_numba</span><span class="p">(</span><span class="n">model</span><span class="p">,</span>        <span class="c1"># Class with model information</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">successive_approx_numba</span><span class="p">(</span><span class="n">model</span><span class="p">,</span>        <span class="c1"># Class with model information</span>
                               <span class="n">tol</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">,</span>
                               <span class="n">max_iter</span><span class="o">=</span><span class="mi">100_000</span><span class="p">,</span>
                               <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
@@ -753,11 +760,11 @@ model and run the cross-check.</p>
 </section>
 </section>
 <section id="solutions">
-<h2><span class="section-number">16.4. </span>Solutions<a class="headerlink" href="#solutions" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">16.4. </span>Solutions<a class="headerlink" href="#solutions" title="Link to this heading">#</a></h2>
 <p>Here we solve the IFP with JAX and Numba.</p>
 <p>We will compare both the outputs and the execution time.</p>
 <section id="outputs">
-<h3><span class="section-number">16.4.1. </span>Outputs<a class="headerlink" href="#outputs" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">16.4.1. </span>Outputs<a class="headerlink" href="#outputs" title="Link to this heading">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">ifp</span><span class="p">()</span>
@@ -781,8 +788,8 @@ model and run the cross-check.</p>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 2000 is 1.2994575430580468e-05.
 
 Converged in 2192 iterations.
-CPU times: user 3.46 s, sys: 903 ms, total: 4.36 s
-Wall time: 2.92 s
+CPU times: user 3.38 s, sys: 814 ms, total: 4.2 s
+Wall time: 2.78 s
 </pre></div>
 </div>
 </div>
@@ -804,8 +811,8 @@ Wall time: 2.92 s
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Converged in 2192 iterations.
-CPU times: user 1min 6s, sys: 3.52 ms, total: 1min 6s
-Wall time: 1min 6s
+CPU times: user 1min 8s, sys: 0 ns, total: 1min 8s
+Wall time: 1min 8s
 </pre></div>
 </div>
 </div>
@@ -837,12 +844,13 @@ Wall time: 1min 6s
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/a70babe413b6885a0d6cc8ffa57bcc7a789c0d1fae298a899449695756601094.png"><img alt="_images/a70babe413b6885a0d6cc8ffa57bcc7a789c0d1fae298a899449695756601094.png" src="_images/a70babe413b6885a0d6cc8ffa57bcc7a789c0d1fae298a899449695756601094.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/a70babe413b6885a0d6cc8ffa57bcc7a789c0d1fae298a899449695756601094.png"><img alt="_images/a70babe413b6885a0d6cc8ffa57bcc7a789c0d1fae298a899449695756601094.png" src="_images/a70babe413b6885a0d6cc8ffa57bcc7a789c0d1fae298a899449695756601094.png" style="width: 80%;" />
+</a>
 </div>
 </div>
 </section>
 <section id="timing">
-<h3><span class="section-number">16.4.2. </span>Timing<a class="headerlink" href="#timing" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">16.4.2. </span>Timing<a class="headerlink" href="#timing" title="Link to this heading">#</a></h3>
 <p>Now let’s compare execution time of the two methods.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -861,7 +869,7 @@ Wall time: 1min 6s
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error at iteration 2000 is 1.2994575430580468e-05.
 
 Converged in 2192 iterations.
-Jax execution time =  2.0909979343414307
+Jax execution time =  2.0399622917175293
 </pre></div>
 </div>
 </div>
@@ -884,7 +892,7 @@ Jax execution time =  2.0909979343414307
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Converged in 2192 iterations.
-Numba execution time =  65.28890562057495
+Numba execution time =  66.43521189689636
 </pre></div>
 </div>
 </div>
@@ -896,7 +904,7 @@ Numba execution time =  65.28890562057495
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.03202684919384649
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.030706040267974667
 </pre></div>
 </div>
 </div>
@@ -939,6 +947,8 @@ to the model.</p>
                     <p><a href="https://creativecommons.org/licenses/by-sa/4.0/"><img src="https://licensebuttons.net/l/by-sa/4.0/80x15.png"></a></p>
 
                     <p>Creative Commons License &ndash; This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International.</p>
+
+                    <p>A theme by <a href="https://quantecon.org">QuantEcon</a></p>
 
                 </footer> <!-- .page__footer -->
 
@@ -1272,7 +1282,7 @@ to the model.</p>
                 function setLaunchServer() {
                   launchNotebookLink.removeAttribute("style")
                   if ( localStorage.launcherType == 'launcher-private' ) {
-                    let repoPrefix = "/jupyter/hub/user-redirect/git-pull?repo=" + repoURL + "&branch=" + branch + "&urlpath=" + urlPath;
+                    let repoPrefix = "/user-redirect/git-pull?repo=" + repoURL + "&branch=" + branch + "&urlpath=" + urlPath;
                     launcherPrivateValue = launcherPrivate.value
                     if (!launcherPrivateValue) {
                         launchNotebookLink.removeAttribute("href")

@@ -1,13 +1,12 @@
 
-
 <!DOCTYPE html>
 
 
-<html lang="en" data-content_root="" >
+<html lang="en" data-content_root="./" >
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>22. Simple Neural Network Regression with Keras and JAX &#8212; Quantitative Economics with Python using JAX</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
@@ -70,14 +69,14 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=bd0785fbb14d8d2bd4d9ae501d79ed8d3bc089ec" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
-    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
-    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
-    <link rel="stylesheet" type="text/css" href="_static/exercise.css" />
-    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.5ea377869091fd0449014c60fc090103.min.css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="_static/exercise.css?v=982b99e0" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
@@ -85,22 +84,21 @@
   <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
 
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-    <script src="_static/jquery.js"></script>
-    <script src="_static/underscore.js"></script>
-    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="_static/doctools.js"></script>
-    <script src="_static/sphinx_highlight.js"></script>
-    <script src="_static/clipboard.min.js"></script>
-    <script src="_static/copybutton.js"></script>
+    <script src="_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
     <script src="_static/scripts/sphinx-book-theme.js"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="_static/togglebutton.js"></script>
-    <script src="_static/scripts/quantecon-book-theme.js?digest=d6d86bce9979111653c4c495e33499e1796e172a"></script>
+    <script src="_static/togglebutton.js?v=4a39c7ea"></script>
+    <script src="_static/scripts/quantecon-book-theme.js?digest=d9faaf6c4b57726f74ba012412af1f5681bdff87"></script>
+    <script src="_static/scripts/jquery.js?v=5d32c60e"></script>
+    <script src="_static/scripts/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script src="_static/design-tabs.js"></script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
     <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-K1NYBSC1CZ"></script>
     <script>
                 window.dataLayer = window.dataLayer || [];
@@ -109,12 +107,20 @@
                 gtag('config', 'G-K1NYBSC1CZ');
             </script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-K1NYBSC1CZ');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script>window.MathJax = {"tex": {"macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'keras';</script>
     <link rel="canonical" href="https://jax.quantecon.org/keras.html" />
-    <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
+    <link rel="icon" href="_static/lectures-favicon.ico"/>
     <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -146,6 +152,7 @@
   </head>
 <body>
 
+<!-- Override QuantEcon theme colors -->
 
     <span id="top"></span>
 
@@ -238,7 +245,7 @@
                     <div>
                         
   <section class="tex2jax_ignore mathjax_ignore" id="simple-neural-network-regression-with-keras-and-jax">
-<h1><span class="section-number">22. </span>Simple Neural Network Regression with Keras and JAX<a class="headerlink" href="#simple-neural-network-regression-with-keras-and-jax" title="Permalink to this heading">#</a></h1>
+<h1><span class="section-number">22. </span>Simple Neural Network Regression with Keras and JAX<a class="headerlink" href="#simple-neural-network-regression-with-keras-and-jax" title="Link to this heading">#</a></h1>
 <div class="warning admonition">
 <p class="admonition-title">GPU</p>
 <p>This lecture was built using a machine with JAX installed and access to a GPU.</p>
@@ -259,8 +266,8 @@ learning in a regression setting.</p>
 <p>We begin this lecture with some standard imports.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 </pre></div>
 </div>
 </div>
@@ -272,27 +279,27 @@ learning in a regression setting.</p>
 </pre></div>
 </div>
 </div>
-<details class="hide below-input">
+<details class="admonition hide below-input">
 <summary aria-label="Toggle hidden content">
-<span class="collapsed">Show code cell output</span>
-<span class="expanded">Hide code cell output</span>
+<p class="collapsed admonition-title">Show code cell output</p>
+<p class="expanded admonition-title">Hide code cell output</p>
 </summary>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: keras in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (3.10.0)
-Requirement already satisfied: absl-py in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from keras) (2.3.0)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: keras in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (3.11.1)
+Requirement already satisfied: absl-py in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from keras) (2.3.1)
 Requirement already satisfied: numpy in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from keras) (1.26.4)
 Requirement already satisfied: rich in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from keras) (13.7.1)
 Requirement already satisfied: namex in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from keras) (0.1.0)
 Requirement already satisfied: h5py in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from keras) (3.11.0)
-Requirement already satisfied: optree in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from keras) (0.16.0)
-Requirement already satisfied: ml-dtypes in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from keras) (0.5.1)
+Requirement already satisfied: optree in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from keras) (0.17.0)
+Requirement already satisfied: ml-dtypes in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from keras) (0.5.3)
 Requirement already satisfied: packaging in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from keras) (24.1)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: typing-extensions&gt;=4.6.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from optree-&gt;keras) (4.11.0)
+Requirement already satisfied: typing-extensions&gt;=4.6.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from optree-&gt;keras) (4.11.0)
 Requirement already satisfied: markdown-it-py&gt;=2.2.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from rich-&gt;keras) (2.2.0)
 Requirement already satisfied: pygments&lt;3.0.0,&gt;=2.13.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from rich-&gt;keras) (2.15.1)
-Requirement already satisfied: mdurl~=0.1 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from markdown-it-py&gt;=2.2.0-&gt;rich-&gt;keras) (0.1.0)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: mdurl~=0.1 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from markdown-it-py&gt;=2.2.0-&gt;rich-&gt;keras) (0.1.0)
 </pre></div>
 </div>
 </div>
@@ -301,7 +308,7 @@ Requirement already satisfied: mdurl~=0.1 in /home/runner/miniconda3/envs/quante
 <p>Now we specify that the desired backend is JAX.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;KERAS_BACKEND&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;jax&#39;</span>
 </pre></div>
 </div>
@@ -311,15 +318,15 @@ Requirement already satisfied: mdurl~=0.1 in /home/runner/miniconda3/envs/quante
 <p>(Without setting the backend to JAX, these imports might fail – unless you have PyTorch or Tensorflow set up.)</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">keras</span>
-<span class="kn">from</span> <span class="nn">keras</span> <span class="kn">import</span> <span class="n">Sequential</span>
-<span class="kn">from</span> <span class="nn">keras.layers</span> <span class="kn">import</span> <span class="n">Dense</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">keras</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">keras</span><span class="w"> </span><span class="kn">import</span> <span class="n">Sequential</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">keras.layers</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dense</span>
 </pre></div>
 </div>
 </div>
 </div>
 <section id="data">
-<h2><span class="section-number">22.1. </span>Data<a class="headerlink" href="#data" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">22.1. </span>Data<a class="headerlink" href="#data" title="Link to this heading">#</a></h2>
 <p>First let’s write a function to generate some data.</p>
 <p>The data has the form</p>
 <div class="math notranslate nohighlight">
@@ -337,7 +344,7 @@ Requirement already satisfied: mdurl~=0.1 in /home/runner/miniconda3/envs/quante
 above.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">generate_data</span><span class="p">(</span><span class="n">x_min</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>           <span class="c1"># Minimum x value</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">generate_data</span><span class="p">(</span><span class="n">x_min</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>           <span class="c1"># Minimum x value</span>
                   <span class="n">x_max</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>           <span class="c1"># Max x value</span>
                   <span class="n">data_size</span><span class="o">=</span><span class="mi">400</span><span class="p">,</span>     <span class="c1"># Default size for dataset</span>
                   <span class="n">seed</span><span class="o">=</span><span class="mi">1234</span><span class="p">):</span>
@@ -373,7 +380,8 @@ above.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/75e4d35d8c162ccc1bf6e7627055f9d66a15080d8b11ac6f6f20ad7f2196717d.png"><img alt="_images/75e4d35d8c162ccc1bf6e7627055f9d66a15080d8b11ac6f6f20ad7f2196717d.png" src="_images/75e4d35d8c162ccc1bf6e7627055f9d66a15080d8b11ac6f6f20ad7f2196717d.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/75e4d35d8c162ccc1bf6e7627055f9d66a15080d8b11ac6f6f20ad7f2196717d.png"><img alt="_images/75e4d35d8c162ccc1bf6e7627055f9d66a15080d8b11ac6f6f20ad7f2196717d.png" src="_images/75e4d35d8c162ccc1bf6e7627055f9d66a15080d8b11ac6f6f20ad7f2196717d.png" style="width: 80%;" />
+</a>
 </div>
 </div>
 <p>We’ll also use data from the same process for cross-validation.</p>
@@ -386,11 +394,11 @@ above.</p>
 </div>
 </section>
 <section id="models">
-<h2><span class="section-number">22.2. </span>Models<a class="headerlink" href="#models" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">22.2. </span>Models<a class="headerlink" href="#models" title="Link to this heading">#</a></h2>
 <p>We supply functions to build two types of models.</p>
 </section>
 <section id="regression-model">
-<h2><span class="section-number">22.3. </span>Regression model<a class="headerlink" href="#regression-model" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">22.3. </span>Regression model<a class="headerlink" href="#regression-model" title="Link to this heading">#</a></h2>
 <p>The first implements linear regression.</p>
 <p>This is achieved by constructing a neural network with just one layer, that maps
 to a single dimension (since the prediction is real-valued).</p>
@@ -398,7 +406,7 @@ to a single dimension (since the prediction is real-valued).</p>
 group a stack of layers into a single prediction model.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">build_regression_model</span><span class="p">():</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">build_regression_model</span><span class="p">():</span>
     <span class="c1"># Generate an instance of Sequential, to store layers and training attributes</span>
     <span class="n">model</span> <span class="o">=</span> <span class="n">Sequential</span><span class="p">()</span>
     <span class="c1"># Add a single layer with scalar output</span>
@@ -419,12 +427,12 @@ group a stack of layers into a single prediction model.</p>
 <p>The call <code class="docutils literal notranslate"><span class="pre">model.add</span></code> adds a single layer the activation function equal to the identity map.</p>
 <p>MSE is the standard loss function for ordinary least squares regression.</p>
 <section id="deep-network">
-<h3><span class="section-number">22.3.1. </span>Deep Network<a class="headerlink" href="#deep-network" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">22.3.1. </span>Deep Network<a class="headerlink" href="#deep-network" title="Link to this heading">#</a></h3>
 <p>The second function creates a dense (i.e., fully connected) neural network with
 3 hidden layers, where each hidden layer maps to a k-dimensional output space.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">build_nn_model</span><span class="p">(</span><span class="n">output_dim</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">num_layers</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">activation_function</span><span class="o">=</span><span class="s1">&#39;tanh&#39;</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">build_nn_model</span><span class="p">(</span><span class="n">output_dim</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">num_layers</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">activation_function</span><span class="o">=</span><span class="s1">&#39;tanh&#39;</span><span class="p">):</span>
     <span class="c1"># Create a Keras Model instance using Sequential()</span>
     <span class="n">model</span> <span class="o">=</span> <span class="n">Sequential</span><span class="p">()</span>
     <span class="c1"># Add layers to the network sequentially, from inputs towards outputs</span>
@@ -442,14 +450,14 @@ group a stack of layers into a single prediction model.</p>
 </div>
 </section>
 <section id="tracking-errors">
-<h3><span class="section-number">22.3.2. </span>Tracking errors<a class="headerlink" href="#tracking-errors" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">22.3.2. </span>Tracking errors<a class="headerlink" href="#tracking-errors" title="Link to this heading">#</a></h3>
 <p>The following function will be used to plot the MSE of the model during the
 training process.</p>
 <p>Initially the MSE will be relatively high, but it should fall at each iteration,
 as the parameters are adjusted to better fit the data.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plot_loss_history</span><span class="p">(</span><span class="n">training_history</span><span class="p">,</span> <span class="n">ax</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">plot_loss_history</span><span class="p">(</span><span class="n">training_history</span><span class="p">,</span> <span class="n">ax</span><span class="p">):</span>
     <span class="c1"># Plot MSE of training data against epoch</span>
     <span class="n">epochs</span> <span class="o">=</span> <span class="n">training_history</span><span class="o">.</span><span class="n">epoch</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">epochs</span><span class="p">,</span> 
@@ -470,10 +478,10 @@ as the parameters are adjusted to better fit the data.</p>
 </section>
 </section>
 <section id="training">
-<h2><span class="section-number">22.4. </span>Training<a class="headerlink" href="#training" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">22.4. </span>Training<a class="headerlink" href="#training" title="Link to this heading">#</a></h2>
 <p>Now let’s go ahead and train our  models.</p>
 <section id="linear-regression">
-<h3><span class="section-number">22.4.1. </span>Linear regression<a class="headerlink" href="#linear-regression" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">22.4.1. </span>Linear regression<a class="headerlink" href="#linear-regression" title="Link to this heading">#</a></h3>
 <p>We’ll start with linear regression.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -502,7 +510,8 @@ as the parameters are adjusted to better fit the data.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/87b3c34a52d6a095b76f19f70a86cd64cf30ca77ca1722354f31d097867af28d.png"><img alt="_images/87b3c34a52d6a095b76f19f70a86cd64cf30ca77ca1722354f31d097867af28d.png" src="_images/87b3c34a52d6a095b76f19f70a86cd64cf30ca77ca1722354f31d097867af28d.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/2e2a6e6f9b91b917e604f3a491c95d75c814004e5b4217366aef94ffdd59b769.png"><img alt="_images/2e2a6e6f9b91b917e604f3a491c95d75c814004e5b4217366aef94ffdd59b769.png" src="_images/2e2a6e6f9b91b917e604f3a491c95d75c814004e5b4217366aef94ffdd59b769.png" style="width: 80%;" />
+</a>
 </div>
 </div>
 <p>Let’s print the final MSE on the cross-validation data.</p>
@@ -517,10 +526,10 @@ as the parameters are adjusted to better fit the data.</p>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Testing loss on the validation set.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>13/13 - 0s - 17ms/step - loss: 0.3016
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>13/13 - 0s - 18ms/step - loss: 0.3016
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.3015977144241333
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.3015977442264557
 </pre></div>
 </div>
 </div>
@@ -533,7 +542,7 @@ as the parameters are adjusted to better fit the data.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>13/13 - 0s - 6ms/step
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>13/13 - 0s - 7ms/step
 </pre></div>
 </div>
 </div>
@@ -541,7 +550,7 @@ as the parameters are adjusted to better fit the data.</p>
 <p>We use the following function to plot our predictions along with the data.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plot_results</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">y_predict</span><span class="p">,</span> <span class="n">ax</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">plot_results</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">y_predict</span><span class="p">,</span> <span class="n">ax</span><span class="p">):</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y_predict</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;fitted model&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">)</span>
@@ -560,12 +569,13 @@ as the parameters are adjusted to better fit the data.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/e4664a21b21ad60fb18141d403d984386bcd4b125b78c26a3f75bab84eb60c97.png"><img alt="_images/e4664a21b21ad60fb18141d403d984386bcd4b125b78c26a3f75bab84eb60c97.png" src="_images/e4664a21b21ad60fb18141d403d984386bcd4b125b78c26a3f75bab84eb60c97.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/6b0a5bf6f6059a3cfb8179f9a21270559a8a5243d2f1998a49fe9755d337b948.png"><img alt="_images/6b0a5bf6f6059a3cfb8179f9a21270559a8a5243d2f1998a49fe9755d337b948.png" src="_images/6b0a5bf6f6059a3cfb8179f9a21270559a8a5243d2f1998a49fe9755d337b948.png" style="width: 80%;" />
+</a>
 </div>
 </div>
 </section>
 <section id="deep-learning">
-<h3><span class="section-number">22.4.2. </span>Deep learning<a class="headerlink" href="#deep-learning" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">22.4.2. </span>Deep learning<a class="headerlink" href="#deep-learning" title="Link to this heading">#</a></h3>
 <p>Now let’s switch to a neural network with multiple layers.</p>
 <p>We implement the same steps as before.</p>
 <div class="cell docutils container">
@@ -593,7 +603,8 @@ as the parameters are adjusted to better fit the data.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/357d03091c64b4f4869109969f9a4b4ffbb477dcb163ada0afefd811af1156f0.png"><img alt="_images/357d03091c64b4f4869109969f9a4b4ffbb477dcb163ada0afefd811af1156f0.png" src="_images/357d03091c64b4f4869109969f9a4b4ffbb477dcb163ada0afefd811af1156f0.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/722b24e6086b102311e7bd49428b45acb899b48b631c1b5ad7f54ff1564b2dd6.png"><img alt="_images/722b24e6086b102311e7bd49428b45acb899b48b631c1b5ad7f54ff1564b2dd6.png" src="_images/722b24e6086b102311e7bd49428b45acb899b48b631c1b5ad7f54ff1564b2dd6.png" style="width: 80%;" />
+</a>
 </div>
 </div>
 <p>Here’s the final MSE for the deep learning model.</p>
@@ -608,10 +619,10 @@ as the parameters are adjusted to better fit the data.</p>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Testing loss on the validation set.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>13/13 - 1s - 38ms/step - loss: 0.0413
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>13/13 - 1s - 40ms/step - loss: 0.0408
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.04130593314766884
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.04084359481930733
 </pre></div>
 </div>
 </div>
@@ -633,7 +644,7 @@ linear regression, suggesting a better fit.</p>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plot_results</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">y_predict</span><span class="p">,</span> <span class="n">ax</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">plot_results</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">y_predict</span><span class="p">,</span> <span class="n">ax</span><span class="p">):</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y_predict</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;fitted model&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">)</span>
@@ -651,7 +662,8 @@ linear regression, suggesting a better fit.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/db32d463dd5040656ef5c9bb903f409ae5ad9de4d1fff30401e1a14fdf2cfde3.png"><img alt="_images/db32d463dd5040656ef5c9bb903f409ae5ad9de4d1fff30401e1a14fdf2cfde3.png" src="_images/db32d463dd5040656ef5c9bb903f409ae5ad9de4d1fff30401e1a14fdf2cfde3.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/44226157413febb160636dde6f264d1c14311553fa17ae5e7433a0091d54ce24.png"><img alt="_images/44226157413febb160636dde6f264d1c14311553fa17ae5e7433a0091d54ce24.png" src="_images/44226157413febb160636dde6f264d1c14311553fa17ae5e7433a0091d54ce24.png" style="width: 80%;" />
+</a>
 </div>
 </div>
 <p>Not surprisingly, the multilayer neural network does a much better job of fitting the data.</p>
@@ -691,6 +703,8 @@ linear regression, suggesting a better fit.</p>
                     <p><a href="https://creativecommons.org/licenses/by-sa/4.0/"><img src="https://licensebuttons.net/l/by-sa/4.0/80x15.png"></a></p>
 
                     <p>Creative Commons License &ndash; This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International.</p>
+
+                    <p>A theme by <a href="https://quantecon.org">QuantEcon</a></p>
 
                 </footer> <!-- .page__footer -->
 
@@ -1024,7 +1038,7 @@ linear regression, suggesting a better fit.</p>
                 function setLaunchServer() {
                   launchNotebookLink.removeAttribute("style")
                   if ( localStorage.launcherType == 'launcher-private' ) {
-                    let repoPrefix = "/jupyter/hub/user-redirect/git-pull?repo=" + repoURL + "&branch=" + branch + "&urlpath=" + urlPath;
+                    let repoPrefix = "/user-redirect/git-pull?repo=" + repoURL + "&branch=" + branch + "&urlpath=" + urlPath;
                     launcherPrivateValue = launcherPrivate.value
                     if (!launcherPrivateValue) {
                         launchNotebookLink.removeAttribute("href")

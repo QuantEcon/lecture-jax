@@ -1,13 +1,12 @@
 
-
 <!DOCTYPE html>
 
 
-<html lang="en" data-content_root="" >
+<html lang="en" data-content_root="./" >
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>7. Wealth Distribution Dynamics &#8212; Quantitative Economics with Python using JAX</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
@@ -70,14 +69,14 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=bd0785fbb14d8d2bd4d9ae501d79ed8d3bc089ec" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
-    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
-    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
-    <link rel="stylesheet" type="text/css" href="_static/exercise.css" />
-    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.5ea377869091fd0449014c60fc090103.min.css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="_static/exercise.css?v=982b99e0" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
@@ -85,22 +84,21 @@
   <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
 
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-    <script src="_static/jquery.js"></script>
-    <script src="_static/underscore.js"></script>
-    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="_static/doctools.js"></script>
-    <script src="_static/sphinx_highlight.js"></script>
-    <script src="_static/clipboard.min.js"></script>
-    <script src="_static/copybutton.js"></script>
+    <script src="_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
     <script src="_static/scripts/sphinx-book-theme.js"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="_static/togglebutton.js"></script>
-    <script src="_static/scripts/quantecon-book-theme.js?digest=d6d86bce9979111653c4c495e33499e1796e172a"></script>
+    <script src="_static/togglebutton.js?v=4a39c7ea"></script>
+    <script src="_static/scripts/quantecon-book-theme.js?digest=d9faaf6c4b57726f74ba012412af1f5681bdff87"></script>
+    <script src="_static/scripts/jquery.js?v=5d32c60e"></script>
+    <script src="_static/scripts/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script src="_static/design-tabs.js"></script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
     <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-K1NYBSC1CZ"></script>
     <script>
                 window.dataLayer = window.dataLayer || [];
@@ -109,12 +107,20 @@
                 gtag('config', 'G-K1NYBSC1CZ');
             </script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-K1NYBSC1CZ');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script>window.MathJax = {"tex": {"macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'wealth_dynamics';</script>
     <link rel="canonical" href="https://jax.quantecon.org/wealth_dynamics.html" />
-    <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
+    <link rel="icon" href="_static/lectures-favicon.ico"/>
     <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -146,6 +152,7 @@
   </head>
 <body>
 
+<!-- Override QuantEcon theme colors -->
 
     <span id="top"></span>
 
@@ -239,7 +246,7 @@
                     <div>
                         
   <section class="tex2jax_ignore mathjax_ignore" id="wealth-distribution-dynamics">
-<h1><span class="section-number">7. </span>Wealth Distribution Dynamics<a class="headerlink" href="#wealth-distribution-dynamics" title="Permalink to this heading">#</a></h1>
+<h1><span class="section-number">7. </span>Wealth Distribution Dynamics<a class="headerlink" href="#wealth-distribution-dynamics" title="Link to this heading">#</a></h1>
 <div class="warning admonition">
 <p class="admonition-title">GPU</p>
 <p>This lecture was built using a machine with JAX installed and access to a GPU.</p>
@@ -266,13 +273,13 @@ inequality, such as the Gini coefficient.</p>
 </pre></div>
 </div>
 </div>
-<details class="hide below-input">
+<details class="admonition hide below-input">
 <summary aria-label="Toggle hidden content">
-<span class="collapsed">Show code cell output</span>
-<span class="expanded">Hide code cell output</span>
+<p class="collapsed admonition-title">Show code cell output</p>
+<p class="expanded admonition-title">Hide code cell output</p>
 </summary>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (0.8.1)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (0.8.2)
 Requirement already satisfied: numba&gt;=0.49.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from quantecon) (0.60.0)
 Requirement already satisfied: numpy&gt;=1.17.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from quantecon) (1.26.4)
 Requirement already satisfied: requests in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from quantecon) (2.32.3)
@@ -292,14 +299,14 @@ Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in /home/runner/minicond
 <p>We will use the following imports:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numba</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">import</span> <span class="nn">quantecon</span> <span class="k">as</span> <span class="nn">qe</span>
-<span class="kn">import</span> <span class="nn">jax</span>
-<span class="kn">import</span> <span class="nn">jax.numpy</span> <span class="k">as</span> <span class="nn">jnp</span>
-<span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">time</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numba</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">quantecon</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">qe</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">jax</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">jax.numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">jnp</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">time</span><span class="w"> </span><span class="kn">import</span> <span class="n">time</span>
 </pre></div>
 </div>
 </div>
@@ -312,7 +319,7 @@ Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in /home/runner/minicond
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Mon Jun 23 04:26:30 2025       
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Mon Aug  4 04:37:53 2025       
 +-----------------------------------------------------------------------------------------+
 | NVIDIA-SMI 575.51.03              Driver Version: 575.51.03      CUDA Version: 12.9     |
 |-----------------------------------------+------------------------+----------------------+
@@ -321,7 +328,7 @@ Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in /home/runner/minicond
 |                                         |                        |               MIG M. |
 |=========================================+========================+======================|
 |   0  Tesla T4                       Off |   00000000:00:1E.0 Off |                    0 |
-| N/A   34C    P8              9W /   70W |       0MiB /  15360MiB |      0%      Default |
+| N/A   35C    P8              9W /   70W |       0MiB /  15360MiB |      0%      Default |
 |                                         |                        |                  N/A |
 +-----------------------------------------+------------------------+----------------------+
                                                                                          
@@ -337,7 +344,7 @@ Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in /home/runner/minicond
 </div>
 </div>
 <section id="wealth-dynamics">
-<h2><span class="section-number">7.1. </span>Wealth dynamics<a class="headerlink" href="#wealth-dynamics" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">7.1. </span>Wealth dynamics<a class="headerlink" href="#wealth-dynamics" title="Link to this heading">#</a></h2>
 <p>Wealth evolves as follows:</p>
 <div class="math notranslate nohighlight">
 \[    w_{t+1} = (1 + r_{t+1}) s(w_t) + y_{t+1}\]</div>
@@ -368,7 +375,7 @@ Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in /home/runner/minicond
 <p>(Each household receives their own idiosyncratic shocks.)</p>
 <p>Regarding the savings function <span class="math notranslate nohighlight">\(s\)</span>, our default model will be</p>
 <div class="math notranslate nohighlight" id="equation-sav-ah">
-<span class="eqno">(7.1)<a class="headerlink" href="#equation-sav-ah" title="Permalink to this equation">#</a></span>\[s(w) = s_0 w \cdot \mathbb 1\{w \geq \hat w\}\]</div>
+<span class="eqno">(7.1)<a class="headerlink" href="#equation-sav-ah" title="Link to this equation">#</a></span>\[s(w) = s_0 w \cdot \mathbb 1\{w \geq \hat w\}\]</div>
 <p>where <span class="math notranslate nohighlight">\(s_0\)</span> is a positive constant.</p>
 <p>Thus,</p>
 <ul class="simple">
@@ -377,13 +384,13 @@ Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in /home/runner/minicond
 </ul>
 </section>
 <section id="implementation">
-<h2><span class="section-number">7.2. </span>Implementation<a class="headerlink" href="#implementation" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">7.2. </span>Implementation<a class="headerlink" href="#implementation" title="Link to this heading">#</a></h2>
 <section id="numba-implementation">
-<h3><span class="section-number">7.2.1. </span>Numba implementation<a class="headerlink" href="#numba-implementation" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">7.2.1. </span>Numba implementation<a class="headerlink" href="#numba-implementation" title="Link to this heading">#</a></h3>
 <p>Here’s a function that collects parameters and useful constants</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">create_wealth_model</span><span class="p">(</span><span class="n">w_hat</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>   <span class="c1"># Savings parameter</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">create_wealth_model</span><span class="p">(</span><span class="n">w_hat</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>   <span class="c1"># Savings parameter</span>
                         <span class="n">s_0</span><span class="o">=</span><span class="mf">0.75</span><span class="p">,</span>    <span class="c1"># Savings parameter</span>
                         <span class="n">c_y</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>     <span class="c1"># Labor income parameter</span>
                         <span class="n">μ_y</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>     <span class="c1"># Labor income parameter</span>
@@ -427,7 +434,7 @@ Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in /home/runner/minicond
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@numba</span><span class="o">.</span><span class="n">jit</span>
-<span class="k">def</span> <span class="nf">generate_aggregate_state_sequence</span><span class="p">(</span><span class="n">aggregate_params</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">generate_aggregate_state_sequence</span><span class="p">(</span><span class="n">aggregate_params</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
     <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">σ_z</span><span class="p">,</span> <span class="n">z_mean</span><span class="p">,</span> <span class="n">z_var</span> <span class="o">=</span> <span class="n">aggregate_params</span> 
     <span class="n">z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">length</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
     <span class="n">z</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">z_mean</span>   <span class="c1"># Initialize at z_mean</span>
@@ -443,7 +450,7 @@ current value of the aggregate shock</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@numba</span><span class="o">.</span><span class="n">jit</span>
-<span class="k">def</span> <span class="nf">update_wealth</span><span class="p">(</span><span class="n">household_params</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">update_wealth</span><span class="p">(</span><span class="n">household_params</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Generate w_{t+1} given w_t and z_{t+1}.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -464,7 +471,7 @@ current value of the aggregate shock</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@numba</span><span class="o">.</span><span class="n">jit</span>
-<span class="k">def</span> <span class="nf">wealth_time_series</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">w_0</span><span class="p">,</span> <span class="n">sim_length</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">wealth_time_series</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">w_0</span><span class="p">,</span> <span class="n">sim_length</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Generate a single time series of length sim_length for wealth given initial</span>
 <span class="sd">    value w_0.  The function generates its own aggregate shock sequence.</span>
@@ -507,7 +514,8 @@ current value of the aggregate shock</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/d0cee4c1570469830f239551bf54d4aca15b15c5598ae785166628ece8011d96.png"><img alt="_images/d0cee4c1570469830f239551bf54d4aca15b15c5598ae785166628ece8011d96.png" src="_images/d0cee4c1570469830f239551bf54d4aca15b15c5598ae785166628ece8011d96.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/0322c21650f0c6c635c12c3fbe3cc3be80a0ce9b0a40f4a4c714df77a34abb80.png"><img alt="_images/0322c21650f0c6c635c12c3fbe3cc3be80a0ce9b0a40f4a4c714df77a34abb80.png" src="_images/0322c21650f0c6c635c12c3fbe3cc3be80a0ce9b0a40f4a4c714df77a34abb80.png" style="width: 80%;" />
+</a>
 </div>
 </div>
 <p>Notice the large spikes in wealth over time.</p>
@@ -518,7 +526,7 @@ discuss below.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@numba</span><span class="o">.</span><span class="n">jit</span><span class="p">(</span><span class="n">parallel</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">update_cross_section</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">w_distribution</span><span class="p">,</span> <span class="n">z_sequence</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">update_cross_section</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">w_distribution</span><span class="p">,</span> <span class="n">z_sequence</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Shifts a cross-section of households forward in time</span>
 
@@ -575,7 +583,7 @@ is known.</p>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Generating cross-section using Numba
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Generated cross-section in 35.324469566345215 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Generated cross-section in 35.28364562988281 seconds.
 </pre></div>
 </div>
 </div>
@@ -591,19 +599,19 @@ is known.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Generated cross-section in 34.96126461029053 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Generated cross-section in 34.90444374084473 seconds.
 </pre></div>
 </div>
 </div>
 </div>
 </section>
 <section id="jax-implementation">
-<h3><span class="section-number">7.2.2. </span>JAX implementation<a class="headerlink" href="#jax-implementation" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">7.2.2. </span>JAX implementation<a class="headerlink" href="#jax-implementation" title="Link to this heading">#</a></h3>
 <p>Let’s redo some of the preceding calculations using JAX and see how execution
 speed compares</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">update_cross_section_jax</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">w_distribution</span><span class="p">,</span> <span class="n">z_sequence</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">update_cross_section_jax</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">w_distribution</span><span class="p">,</span> <span class="n">z_sequence</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Shifts a cross-section of households forward in time</span>
 
@@ -666,7 +674,7 @@ using JAX</p>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Generating cross-section using JAX
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Generated cross-section in 3.0769736766815186 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Generated cross-section in 3.1203460693359375 seconds.
 </pre></div>
 </div>
 </div>
@@ -686,7 +694,7 @@ using JAX</p>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Repeating without compile time.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Generated cross-section in 1.328817367553711 seconds
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Generated cross-section in 1.3282592296600342 seconds
 </pre></div>
 </div>
 </div>
@@ -694,7 +702,7 @@ using JAX</p>
 <p>And let’s see how long it takes if we compile the loop.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">update_cross_section_jax_compiled</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> 
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">update_cross_section_jax_compiled</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> 
                                       <span class="n">w_distribution</span><span class="p">,</span> 
                                       <span class="n">w_size</span><span class="p">,</span>
                                       <span class="n">z_sequence</span><span class="p">,</span> 
@@ -721,7 +729,7 @@ using JAX</p>
     <span class="n">z</span> <span class="o">=</span> <span class="n">z_sequence</span>
     <span class="n">sim_length</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">body_function</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">body_function</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
         <span class="n">key</span><span class="p">,</span> <span class="n">w</span> <span class="o">=</span> <span class="n">state</span>
         <span class="n">key</span><span class="p">,</span> <span class="n">subkey</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
         <span class="n">U</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">subkey</span><span class="p">,</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">n</span><span class="p">))</span>
@@ -762,7 +770,7 @@ using JAX</p>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Generating cross-section using JAX with compiled loop
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Generated cross-section in 0.8309259414672852 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Generated cross-section in 0.8437566757202148 seconds.
 </pre></div>
 </div>
 </div>
@@ -782,7 +790,7 @@ using JAX</p>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Repeating without compile time
-Generated cross-section in 0.1662895679473877 seconds
+Generated cross-section in 0.17618680000305176 seconds
 </pre></div>
 </div>
 </div>
@@ -794,14 +802,14 @@ Generated cross-section in 0.1662895679473877 seconds
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>JAX is 210.2433 times faster.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>JAX is 198.1104 times faster.
 </pre></div>
 </div>
 </div>
 </div>
 </section>
 <section id="pareto-tails">
-<h3><span class="section-number">7.2.3. </span>Pareto tails<a class="headerlink" href="#pareto-tails" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">7.2.3. </span>Pareto tails<a class="headerlink" href="#pareto-tails" title="Link to this heading">#</a></h3>
 <p>In most countries, the cross-sectional distribution of wealth exhibits a Pareto
 tail (power law).</p>
 <p>Let’s see if our model can replicate this stylized fact by running a simulation
@@ -827,18 +835,19 @@ that generates a cross-section of wealth and generating a suitable rank-size plo
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/d994fde183cb6dae5d4569e905207cbdc745856783214ad741c5c98dfa0500f9.png"><img alt="_images/d994fde183cb6dae5d4569e905207cbdc745856783214ad741c5c98dfa0500f9.png" src="_images/d994fde183cb6dae5d4569e905207cbdc745856783214ad741c5c98dfa0500f9.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/26f3e9ec65b6279fa72ef471f254067396e36f2b5ed20222652af7c2b53be4ef.png"><img alt="_images/26f3e9ec65b6279fa72ef471f254067396e36f2b5ed20222652af7c2b53be4ef.png" src="_images/26f3e9ec65b6279fa72ef471f254067396e36f2b5ed20222652af7c2b53be4ef.png" style="width: 80%;" />
+</a>
 </div>
 </div>
 </section>
 <section id="lorenz-curves-and-gini-coefficients">
-<h3><span class="section-number">7.2.4. </span>Lorenz curves and Gini coefficients<a class="headerlink" href="#lorenz-curves-and-gini-coefficients" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">7.2.4. </span>Lorenz curves and Gini coefficients<a class="headerlink" href="#lorenz-curves-and-gini-coefficients" title="Link to this heading">#</a></h3>
 <p>To study the impact of parameters on inequality, we examine Lorenz curves
 and the Gini coefficients at different parameters.</p>
 <p>QuantEcon provides functions to compute Lorenz curves and Gini coefficients that are accelerated using Numba.</p>
 <p>Here we provide JAX-based functions that do the same job and are faster for large data sets on parallel hardware.</p>
 <section id="lorenz-curve">
-<h4><span class="section-number">7.2.4.1. </span>Lorenz curve<a class="headerlink" href="#lorenz-curve" title="Permalink to this heading">#</a></h4>
+<h4><span class="section-number">7.2.4.1. </span>Lorenz curve<a class="headerlink" href="#lorenz-curve" title="Link to this heading">#</a></h4>
 <p>Recall that, for sorted data <span class="math notranslate nohighlight">\(w_1, \ldots, w_n\)</span>, the Lorenz curve
 generates data points <span class="math notranslate nohighlight">\((x_i, y_i)_{i=0}^n\)</span>  according to</p>
 <div class="math notranslate nohighlight">
@@ -852,7 +861,7 @@ generates data points <span class="math notranslate nohighlight">\((x_i, y_i)_{i
 \]</div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">_lorenz_curve_jax</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">w_size</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">_lorenz_curve_jax</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">w_size</span><span class="p">):</span>
     <span class="n">n</span> <span class="o">=</span> <span class="n">w</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
     <span class="n">w</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
     <span class="n">x</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="n">n</span>
@@ -895,8 +904,8 @@ generates data points <span class="math notranslate nohighlight">\((x_i, y_i)_{i
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 223 ms, sys: 6.01 ms, total: 229 ms
-Wall time: 266 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 232 ms, sys: 4.01 ms, total: 236 ms
+Wall time: 276 ms
 </pre></div>
 </div>
 </div>
@@ -909,8 +918,8 @@ Wall time: 266 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 0 ns, sys: 768 μs, total: 768 μs
-Wall time: 394 μs
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 488 μs, sys: 2 μs, total: 490 μs
+Wall time: 265 μs
 </pre></div>
 </div>
 </div>
@@ -926,15 +935,16 @@ Wall time: 394 μs
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/dd7a7e3aeeb16442a24fb09db99c8594b7ad7ef5d6b2b03123520b6c6473b938.png"><img alt="_images/dd7a7e3aeeb16442a24fb09db99c8594b7ad7ef5d6b2b03123520b6c6473b938.png" src="_images/dd7a7e3aeeb16442a24fb09db99c8594b7ad7ef5d6b2b03123520b6c6473b938.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/872d1dd4d2fcfae489a641faea2ee54ae0ad8ff0e35f5718b36f6e31581aac2f.png"><img alt="_images/872d1dd4d2fcfae489a641faea2ee54ae0ad8ff0e35f5718b36f6e31581aac2f.png" src="_images/872d1dd4d2fcfae489a641faea2ee54ae0ad8ff0e35f5718b36f6e31581aac2f.png" style="width: 80%;" />
+</a>
 </div>
 </div>
 </section>
 <section id="gini-coefficient">
-<h4><span class="section-number">7.2.4.2. </span>Gini Coefficient<a class="headerlink" href="#gini-coefficient" title="Permalink to this heading">#</a></h4>
+<h4><span class="section-number">7.2.4.2. </span>Gini Coefficient<a class="headerlink" href="#gini-coefficient" title="Link to this heading">#</a></h4>
 <p>Recall that, for sorted data <span class="math notranslate nohighlight">\(w_1, \ldots, w_n\)</span>, the Gini coefficient takes the form</p>
 <div class="math notranslate nohighlight" id="equation-eq-gini">
-<span class="eqno">(7.2)<a class="headerlink" href="#equation-eq-gini" title="Permalink to this equation">#</a></span>\[
+<span class="eqno">(7.2)<a class="headerlink" href="#equation-eq-gini" title="Link to this equation">#</a></span>\[
 G :=
 \frac
     {\sum_{i=1}^n \sum_{j = 1}^n |w_j - w_i|}
@@ -943,7 +953,7 @@ G :=
 <p>Here’s a function that computes the Gini coefficient using vectorization.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">_gini_jax</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">w_size</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">_gini_jax</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">w_size</span><span class="p">):</span>
     <span class="n">w_1</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="p">(</span><span class="n">w_size</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
     <span class="n">w_2</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">w_size</span><span class="p">))</span>
     <span class="n">g_sum</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">w_1</span> <span class="o">-</span> <span class="n">w_2</span><span class="p">))</span>
@@ -961,8 +971,8 @@ G :=
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 128 ms, sys: 1.01 ms, total: 129 ms
-Wall time: 6.86 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 131 ms, sys: 2.01 ms, total: 133 ms
+Wall time: 6.76 s
 </pre></div>
 </div>
 </div>
@@ -975,8 +985,8 @@ Wall time: 6.86 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1.55 ms, sys: 2 ms, total: 3.55 ms
-Wall time: 6.6 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1.65 ms, sys: 2 ms, total: 3.65 ms
+Wall time: 6.5 s
 </pre></div>
 </div>
 </div>
@@ -988,7 +998,7 @@ Wall time: 6.6 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Array(0.7593354, dtype=float32)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Array(0.75873095, dtype=float32)
 </pre></div>
 </div>
 </div>
@@ -997,7 +1007,7 @@ Wall time: 6.6 s
 </section>
 </section>
 <section id="exercises">
-<h2><span class="section-number">7.3. </span>Exercises<a class="headerlink" href="#exercises" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">7.3. </span>Exercises<a class="headerlink" href="#exercises" title="Link to this heading">#</a></h2>
 <div class="exercise admonition" id="wd_ex1">
 
 <p class="admonition-title"><span class="caption-number">Exercise 7.1 </span></p>
@@ -1014,9 +1024,9 @@ Wall time: 6.6 s
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jax</span><span class="o">.</span><span class="n">jit</span>
-<span class="k">def</span> <span class="nf">gini_jax_vmap</span><span class="p">(</span><span class="n">w</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">gini_jax_vmap</span><span class="p">(</span><span class="n">w</span><span class="p">):</span>
 
-    <span class="k">def</span> <span class="nf">_inner_sum</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_inner_sum</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">w</span><span class="p">))</span>
     
     <span class="n">inner_sum</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">vmap</span><span class="p">(</span><span class="n">_inner_sum</span><span class="p">)</span>
@@ -1034,8 +1044,8 @@ Wall time: 6.6 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 124 ms, sys: 4 ms, total: 128 ms
-Wall time: 6.77 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 131 ms, sys: 3 ms, total: 134 ms
+Wall time: 6.71 s
 </pre></div>
 </div>
 </div>
@@ -1048,8 +1058,8 @@ Wall time: 6.77 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 2.6 ms, sys: 1.01 ms, total: 3.61 ms
-Wall time: 6.63 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 2.03 ms, sys: 2 ms, total: 4.03 ms
+Wall time: 6.56 s
 </pre></div>
 </div>
 </div>
@@ -1061,7 +1071,7 @@ Wall time: 6.63 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Array(0.7593354, dtype=float32)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Array(0.75873095, dtype=float32)
 </pre></div>
 </div>
 </div>
@@ -1133,11 +1143,12 @@ Wall time: 6.63 s
 <div class="cell_output docutils container">
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;&gt;:11: SyntaxWarning: invalid escape sequence &#39;\p&#39;
 &lt;&gt;:11: SyntaxWarning: invalid escape sequence &#39;\p&#39;
-/tmp/ipykernel_6981/18329590.py:11: SyntaxWarning: invalid escape sequence &#39;\p&#39;
+/tmp/ipykernel_49189/18329590.py:11: SyntaxWarning: invalid escape sequence &#39;\p&#39;
   ax.plot(x, y, label=f&#39;$\psi^*$ at $\mu_r = {μ_r:0.2}$&#39;)
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="_images/357f7a1896b5019fea013db64e73dcf6c92c51600976eaaf3edbe5987728ec30.png"><img alt="_images/357f7a1896b5019fea013db64e73dcf6c92c51600976eaaf3edbe5987728ec30.png" src="_images/357f7a1896b5019fea013db64e73dcf6c92c51600976eaaf3edbe5987728ec30.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/b41eab24580cc8009d0700d2f99f499fe4336cb4391ba290bb9a1d95f9b039a1.png"><img alt="_images/b41eab24580cc8009d0700d2f99f499fe4336cb4391ba290bb9a1d95f9b039a1.png" src="_images/b41eab24580cc8009d0700d2f99f499fe4336cb4391ba290bb9a1d95f9b039a1.png" style="width: 80%;" />
+</a>
 </div>
 </div>
 <p>The Lorenz curve shifts downwards as returns on financial income rise, indicating a rise in inequality.</p>
@@ -1155,11 +1166,12 @@ Wall time: 6.63 s
 <div class="cell_output docutils container">
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;&gt;:3: SyntaxWarning: invalid escape sequence &#39;\m&#39;
 &lt;&gt;:3: SyntaxWarning: invalid escape sequence &#39;\m&#39;
-/tmp/ipykernel_6981/151802629.py:3: SyntaxWarning: invalid escape sequence &#39;\m&#39;
+/tmp/ipykernel_49189/151802629.py:3: SyntaxWarning: invalid escape sequence &#39;\m&#39;
   ax.set_xlabel(&quot;$\mu_r$&quot;)
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="_images/328fc5d78a5aad5df976f1f9b8651376f09da94fc0d79df5d26c9ce17423b0ef.png"><img alt="_images/328fc5d78a5aad5df976f1f9b8651376f09da94fc0d79df5d26c9ce17423b0ef.png" src="_images/328fc5d78a5aad5df976f1f9b8651376f09da94fc0d79df5d26c9ce17423b0ef.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/69015208560f6d015bd817fda6ec53a1f40e86fcd481ce1075c5d89a8bd4979b.png"><img alt="_images/69015208560f6d015bd817fda6ec53a1f40e86fcd481ce1075c5d89a8bd4979b.png" src="_images/69015208560f6d015bd817fda6ec53a1f40e86fcd481ce1075c5d89a8bd4979b.png" style="width: 80%;" />
+</a>
 </div>
 </div>
 <p>As expected, inequality increases as returns on financial income rise.</p>
@@ -1211,11 +1223,12 @@ Wall time: 6.63 s
 <div class="cell_output docutils container">
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;&gt;:12: SyntaxWarning: invalid escape sequence &#39;\p&#39;
 &lt;&gt;:12: SyntaxWarning: invalid escape sequence &#39;\p&#39;
-/tmp/ipykernel_6981/3870011077.py:12: SyntaxWarning: invalid escape sequence &#39;\p&#39;
+/tmp/ipykernel_49189/3870011077.py:12: SyntaxWarning: invalid escape sequence &#39;\p&#39;
   ax.plot(x, y, label=f&#39;$\psi^*$ at $\sigma_r = {σ_r:0.2}$&#39;)
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="_images/550803ca4acc7fa9fb52dff739e3ef0f6ec2e2f173b76cf107b2608f1d9a6923.png"><img alt="_images/550803ca4acc7fa9fb52dff739e3ef0f6ec2e2f173b76cf107b2608f1d9a6923.png" src="_images/550803ca4acc7fa9fb52dff739e3ef0f6ec2e2f173b76cf107b2608f1d9a6923.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/09ddd19bb7048ef63bd66dafa204a68a34c74c8b98ab376db25f24d3be8dcadb.png"><img alt="_images/09ddd19bb7048ef63bd66dafa204a68a34c74c8b98ab376db25f24d3be8dcadb.png" src="_images/09ddd19bb7048ef63bd66dafa204a68a34c74c8b98ab376db25f24d3be8dcadb.png" style="width: 80%;" />
+</a>
 </div>
 </div>
 <div class="cell docutils container">
@@ -1231,11 +1244,12 @@ Wall time: 6.63 s
 <div class="cell_output docutils container">
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;&gt;:3: SyntaxWarning: invalid escape sequence &#39;\s&#39;
 &lt;&gt;:3: SyntaxWarning: invalid escape sequence &#39;\s&#39;
-/tmp/ipykernel_6981/693578165.py:3: SyntaxWarning: invalid escape sequence &#39;\s&#39;
+/tmp/ipykernel_49189/693578165.py:3: SyntaxWarning: invalid escape sequence &#39;\s&#39;
   ax.set_xlabel(&quot;$\sigma_r$&quot;)
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="_images/eb509ae9bcfc2f77e1eb171ca82901bd7afecc9763b248948b0f02fd08efa298.png"><img alt="_images/eb509ae9bcfc2f77e1eb171ca82901bd7afecc9763b248948b0f02fd08efa298.png" src="_images/eb509ae9bcfc2f77e1eb171ca82901bd7afecc9763b248948b0f02fd08efa298.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/b2fc35cd29cdd8f5081ac737aea96bf6f8d58d3d9fcaa8103166cf2f2f58403f.png"><img alt="_images/b2fc35cd29cdd8f5081ac737aea96bf6f8d58d3d9fcaa8103166cf2f2f58403f.png" src="_images/b2fc35cd29cdd8f5081ac737aea96bf6f8d58d3d9fcaa8103166cf2f2f58403f.png" style="width: 80%;" />
+</a>
 </div>
 </div>
 </section>
@@ -1298,7 +1312,8 @@ Wall time: 6.63 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/e4ff409fe7890080d1d724c95c646260add6039fc5a767deeea2c8eca7c4547b.png"><img alt="_images/e4ff409fe7890080d1d724c95c646260add6039fc5a767deeea2c8eca7c4547b.png" src="_images/e4ff409fe7890080d1d724c95c646260add6039fc5a767deeea2c8eca7c4547b.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/2fd9dfa7690935e5019069473ae21e59f132dd79b28b7761476fd48b1989b467.png"><img alt="_images/2fd9dfa7690935e5019069473ae21e59f132dd79b28b7761476fd48b1989b467.png" src="_images/2fd9dfa7690935e5019069473ae21e59f132dd79b28b7761476fd48b1989b467.png" style="width: 80%;" />
+</a>
 </div>
 </div>
 </section>
@@ -1337,6 +1352,8 @@ Wall time: 6.63 s
                     <p><a href="https://creativecommons.org/licenses/by-sa/4.0/"><img src="https://licensebuttons.net/l/by-sa/4.0/80x15.png"></a></p>
 
                     <p>Creative Commons License &ndash; This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International.</p>
+
+                    <p>A theme by <a href="https://quantecon.org">QuantEcon</a></p>
 
                 </footer> <!-- .page__footer -->
 
@@ -1670,7 +1687,7 @@ Wall time: 6.63 s
                 function setLaunchServer() {
                   launchNotebookLink.removeAttribute("style")
                   if ( localStorage.launcherType == 'launcher-private' ) {
-                    let repoPrefix = "/jupyter/hub/user-redirect/git-pull?repo=" + repoURL + "&branch=" + branch + "&urlpath=" + urlPath;
+                    let repoPrefix = "/user-redirect/git-pull?repo=" + repoURL + "&branch=" + branch + "&urlpath=" + urlPath;
                     launcherPrivateValue = launcherPrivate.value
                     if (!launcherPrivateValue) {
                         launchNotebookLink.removeAttribute("href")

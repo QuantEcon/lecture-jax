@@ -1,13 +1,12 @@
 
-
 <!DOCTYPE html>
 
 
-<html lang="en" data-content_root="" >
+<html lang="en" data-content_root="./" >
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>9. An Asset Pricing Problem &#8212; Quantitative Economics with Python using JAX</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
@@ -70,14 +69,14 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=bd0785fbb14d8d2bd4d9ae501d79ed8d3bc089ec" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
-    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
-    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
-    <link rel="stylesheet" type="text/css" href="_static/exercise.css" />
-    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.5ea377869091fd0449014c60fc090103.min.css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="_static/exercise.css?v=982b99e0" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
@@ -85,22 +84,21 @@
   <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
 
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-    <script src="_static/jquery.js"></script>
-    <script src="_static/underscore.js"></script>
-    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="_static/doctools.js"></script>
-    <script src="_static/sphinx_highlight.js"></script>
-    <script src="_static/clipboard.min.js"></script>
-    <script src="_static/copybutton.js"></script>
+    <script src="_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
     <script src="_static/scripts/sphinx-book-theme.js"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="_static/togglebutton.js"></script>
-    <script src="_static/scripts/quantecon-book-theme.js?digest=d6d86bce9979111653c4c495e33499e1796e172a"></script>
+    <script src="_static/togglebutton.js?v=4a39c7ea"></script>
+    <script src="_static/scripts/quantecon-book-theme.js?digest=d9faaf6c4b57726f74ba012412af1f5681bdff87"></script>
+    <script src="_static/scripts/jquery.js?v=5d32c60e"></script>
+    <script src="_static/scripts/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script src="_static/design-tabs.js"></script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
     <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-K1NYBSC1CZ"></script>
     <script>
                 window.dataLayer = window.dataLayer || [];
@@ -109,12 +107,20 @@
                 gtag('config', 'G-K1NYBSC1CZ');
             </script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-K1NYBSC1CZ');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script>window.MathJax = {"tex": {"macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'markov_asset';</script>
     <link rel="canonical" href="https://jax.quantecon.org/markov_asset.html" />
-    <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
+    <link rel="icon" href="_static/lectures-favicon.ico"/>
     <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -146,6 +152,7 @@
   </head>
 <body>
 
+<!-- Override QuantEcon theme colors -->
 
     <span id="top"></span>
 
@@ -236,7 +243,7 @@
                     <div>
                         
   <section class="tex2jax_ignore mathjax_ignore" id="an-asset-pricing-problem">
-<h1><span class="section-number">9. </span>An Asset Pricing Problem<a class="headerlink" href="#an-asset-pricing-problem" title="Permalink to this heading">#</a></h1>
+<h1><span class="section-number">9. </span>An Asset Pricing Problem<a class="headerlink" href="#an-asset-pricing-problem" title="Link to this heading">#</a></h1>
 <div class="warning admonition">
 <p class="admonition-title">GPU</p>
 <p>This lecture was built using a machine with JAX installed and access to a GPU.</p>
@@ -244,7 +251,7 @@
 <p>To run this lecture on your own machine, you need to install <a class="reference external" href="https://github.com/google/jax">Google JAX</a>.</p>
 </div>
 <section id="overview">
-<h2><span class="section-number">9.1. </span>Overview<a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">9.1. </span>Overview<a class="headerlink" href="#overview" title="Link to this heading">#</a></h2>
 <p>In this lecture we consider some asset pricing problems and use them to
 illustrate some foundations of JAX programming.</p>
 <p>The main difference from the lecture <a class="reference internal" href="lucas_model.html"><span class="doc">Asset Pricing: The Lucas Asset Pricing Model</span></a>, which also considers
@@ -263,7 +270,7 @@ you can jump to <a class="reference internal" href="#equation-eq-ntecx2">(9.13)<
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Mon Jun 23 04:20:58 2025       
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Mon Aug  4 04:32:22 2025       
 +-----------------------------------------------------------------------------------------+
 | NVIDIA-SMI 575.51.03              Driver Version: 575.51.03      CUDA Version: 12.9     |
 |-----------------------------------------+------------------------+----------------------+
@@ -294,13 +301,13 @@ you can jump to <a class="reference internal" href="#equation-eq-ntecx2">(9.13)<
 </pre></div>
 </div>
 </div>
-<details class="hide below-input">
+<details class="admonition hide below-input">
 <summary aria-label="Toggle hidden content">
-<span class="collapsed">Show code cell output</span>
-<span class="expanded">Hide code cell output</span>
+<p class="collapsed admonition-title">Show code cell output</p>
+<p class="expanded admonition-title">Hide code cell output</p>
 </summary>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (0.8.1)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (0.8.2)
 Requirement already satisfied: numba&gt;=0.49.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from quantecon) (0.60.0)
 Requirement already satisfied: numpy&gt;=1.17.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from quantecon) (1.26.4)
 Requirement already satisfied: requests in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from quantecon) (2.32.3)
@@ -320,14 +327,14 @@ Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in /home/runner/minicond
 <p>Below we use the following imports</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">scipy</span>
-<span class="kn">import</span> <span class="nn">quantecon</span> <span class="k">as</span> <span class="nn">qe</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">jax</span>
-<span class="kn">import</span> <span class="nn">jax.numpy</span> <span class="k">as</span> <span class="nn">jnp</span>
-<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">namedtuple</span>
-<span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">time</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">scipy</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">quantecon</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">qe</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">jax</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">jax.numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">jnp</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">namedtuple</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">time</span><span class="w"> </span><span class="kn">import</span> <span class="n">time</span>
 </pre></div>
 </div>
 </div>
@@ -342,13 +349,13 @@ Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in /home/runner/minicond
 </div>
 </section>
 <section id="pricing-a-single-payoff">
-<h2><span class="section-number">9.2. </span>Pricing a single payoff<a class="headerlink" href="#pricing-a-single-payoff" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">9.2. </span>Pricing a single payoff<a class="headerlink" href="#pricing-a-single-payoff" title="Link to this heading">#</a></h2>
 <p>Suppose, at time <span class="math notranslate nohighlight">\(t\)</span>, we have an asset that pays a random amount <span class="math notranslate nohighlight">\(D_{t+1}\)</span> at
 time <span class="math notranslate nohighlight">\(t+1\)</span> and nothing after that.</p>
 <p>The simplest way to price this asset is to use “risk-neutral” asset pricing, which
 asserts that the price of the asset at time <span class="math notranslate nohighlight">\(t\)</span> should be</p>
 <div class="math notranslate nohighlight" id="equation-eq-rnp">
-<span class="eqno">(9.1)<a class="headerlink" href="#equation-eq-rnp" title="Permalink to this equation">#</a></span>\[
+<span class="eqno">(9.1)<a class="headerlink" href="#equation-eq-rnp" title="Link to this equation">#</a></span>\[
     P_t = \beta \, \mathbb E_t D_{t+1}
 \]</div>
 <p>Here <span class="math notranslate nohighlight">\(\beta\)</span> is a constant discount factor and <span class="math notranslate nohighlight">\(\mathbb E_t D_{t+1}\)</span> is the expectation
@@ -363,7 +370,7 @@ assets.</p>
 <p>This feature of asset prices cannot be captured by risk neutral pricing.</p>
 <p>Hence we modify <a class="reference internal" href="#equation-eq-rnp">(9.1)</a> to</p>
 <div class="math notranslate nohighlight" id="equation-eq-nrnp">
-<span class="eqno">(9.2)<a class="headerlink" href="#equation-eq-nrnp" title="Permalink to this equation">#</a></span>\[
+<span class="eqno">(9.2)<a class="headerlink" href="#equation-eq-nrnp" title="Link to this equation">#</a></span>\[
     P_t = \mathbb E_t M_{t+1} D_{t+1}
 \]</div>
 <p>In this expression, <span class="math notranslate nohighlight">\(M_{t+1}\)</span> replaces <span class="math notranslate nohighlight">\(\beta\)</span> and is called the <strong>stochastic discount factor</strong>.</p>
@@ -373,7 +380,7 @@ flexibility to combine temporal discounting and attitudes to risk.</p>
 because our aim is to move to the computational problem.</p>
 </section>
 <section id="pricing-a-cash-flow">
-<h2><span class="section-number">9.3. </span>Pricing a cash flow<a class="headerlink" href="#pricing-a-cash-flow" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">9.3. </span>Pricing a cash flow<a class="headerlink" href="#pricing-a-cash-flow" title="Link to this heading">#</a></h2>
 <p>Now let’s try to price an asset like a share, which delivers a cash flow <span class="math notranslate nohighlight">\(D_t,
 D_{t+1}, \ldots\)</span>.</p>
 <p>We will call these payoffs “dividends”.</p>
@@ -381,7 +388,7 @@ D_{t+1}, \ldots\)</span>.</p>
 dividend and our payoff is <span class="math notranslate nohighlight">\(D_{t+1} + P_{t+1}\)</span>.</p>
 <p>Therefore, by <a class="reference internal" href="#equation-eq-nrnp">(9.2)</a>, the price should be</p>
 <div class="math notranslate nohighlight" id="equation-lteeqs0">
-<span class="eqno">(9.3)<a class="headerlink" href="#equation-lteeqs0" title="Permalink to this equation">#</a></span>\[
+<span class="eqno">(9.3)<a class="headerlink" href="#equation-lteeqs0" title="Link to this equation">#</a></span>\[
     P_t = \mathbb E_t M_{t+1} [ D_{t+1} + P_{t+1} ]
 \]</div>
 <p>Because prices generally grow over time, which complicates analysis, it will be
@@ -389,10 +396,10 @@ easier for us to solve for the <strong>price-dividend ratio</strong> <span class
 <p>Let’s write down an expression that this ratio should satisfy.</p>
 <p>We can divide both sides of <a class="reference internal" href="#equation-lteeqs0">(9.3)</a> by <span class="math notranslate nohighlight">\(D_t\)</span> to get</p>
 <div class="math notranslate nohighlight" id="equation-pdex">
-<span class="eqno">(9.4)<a class="headerlink" href="#equation-pdex" title="Permalink to this equation">#</a></span>\[V_t = {\mathbb E}_t \left[ M_{t+1} \frac{D_{t+1}}{D_t} (1 + V_{t+1}) \right]\]</div>
+<span class="eqno">(9.4)<a class="headerlink" href="#equation-pdex" title="Link to this equation">#</a></span>\[V_t = {\mathbb E}_t \left[ M_{t+1} \frac{D_{t+1}}{D_t} (1 + V_{t+1}) \right]\]</div>
 <p>We can also write this as</p>
 <div class="math notranslate nohighlight" id="equation-pdex2">
-<span class="eqno">(9.5)<a class="headerlink" href="#equation-pdex2" title="Permalink to this equation">#</a></span>\[V_t = {\mathbb E}_t \left[ M_{t+1} \exp(G^d_{t+1}) (1 + V_{t+1}) \right]\]</div>
+<span class="eqno">(9.5)<a class="headerlink" href="#equation-pdex2" title="Link to this equation">#</a></span>\[V_t = {\mathbb E}_t \left[ M_{t+1} \exp(G^d_{t+1}) (1 + V_{t+1}) \right]\]</div>
 <p>where</p>
 <div class="math notranslate nohighlight">
 \[
@@ -406,14 +413,14 @@ easier for us to solve for the <strong>price-dividend ratio</strong> <span class
 </ol>
 </section>
 <section id="choosing-the-stochastic-discount-factor">
-<h2><span class="section-number">9.4. </span>Choosing the stochastic discount factor<a class="headerlink" href="#choosing-the-stochastic-discount-factor" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">9.4. </span>Choosing the stochastic discount factor<a class="headerlink" href="#choosing-the-stochastic-discount-factor" title="Link to this heading">#</a></h2>
 <p>We will adopt the stochastic discount factor described in <a class="reference internal" href="lucas_model.html"><span class="doc">Asset Pricing: The Lucas Asset Pricing Model</span></a>, which has the form</p>
 <div class="math notranslate nohighlight" id="equation-lucsdf">
-<span class="eqno">(9.6)<a class="headerlink" href="#equation-lucsdf" title="Permalink to this equation">#</a></span>\[    M_{t+1} = \beta \frac{u'(C_{t+1})}{u'(C_t)}\]</div>
+<span class="eqno">(9.6)<a class="headerlink" href="#equation-lucsdf" title="Link to this equation">#</a></span>\[    M_{t+1} = \beta \frac{u'(C_{t+1})}{u'(C_t)}\]</div>
 <p>where <span class="math notranslate nohighlight">\(u\)</span> is a utility function and <span class="math notranslate nohighlight">\(C_t\)</span> is time <span class="math notranslate nohighlight">\(t\)</span> consumption of a representative consumer.</p>
 <p>For utility, we’ll assume the <strong>constant relative risk aversion</strong> (CRRA) specification</p>
 <div class="math notranslate nohighlight" id="equation-eqcrra">
-<span class="eqno">(9.7)<a class="headerlink" href="#equation-eqcrra" title="Permalink to this equation">#</a></span>\[    u(c) = \frac{c^{1-\gamma}}{1 - \gamma}\]</div>
+<span class="eqno">(9.7)<a class="headerlink" href="#equation-eqcrra" title="Link to this equation">#</a></span>\[    u(c) = \frac{c^{1-\gamma}}{1 - \gamma}\]</div>
 <p>Inserting the CRRA specification into <a class="reference internal" href="#equation-lucsdf">(9.6)</a> and letting</p>
 <div class="math notranslate nohighlight">
 \[
@@ -421,17 +428,17 @@ easier for us to solve for the <strong>price-dividend ratio</strong> <span class
 \]</div>
 <p>the growth rate rate of consumption, we obtain</p>
 <div class="math notranslate nohighlight" id="equation-lucsdf2">
-<span class="eqno">(9.8)<a class="headerlink" href="#equation-lucsdf2" title="Permalink to this equation">#</a></span>\[    M_{t+1}
+<span class="eqno">(9.8)<a class="headerlink" href="#equation-lucsdf2" title="Link to this equation">#</a></span>\[    M_{t+1}
     = \beta \left(\frac{C_{t+1}}{C_t}\right)^{-\gamma}
     = \beta \exp( G^c_{t+1} )^{-\gamma}
     = \beta \exp(-\gamma G^c_{t+1})\]</div>
 </section>
 <section id="solving-for-the-price-dividend-ratio">
-<h2><span class="section-number">9.5. </span>Solving for the price-dividend ratio<a class="headerlink" href="#solving-for-the-price-dividend-ratio" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">9.5. </span>Solving for the price-dividend ratio<a class="headerlink" href="#solving-for-the-price-dividend-ratio" title="Link to this heading">#</a></h2>
 <p>Substituting <a class="reference internal" href="#equation-lucsdf2">(9.8)</a> into <a class="reference internal" href="#equation-pdex2">(9.5)</a> gives the price-dividend ratio
 formula</p>
 <div class="math notranslate nohighlight" id="equation-pdex3">
-<span class="eqno">(9.9)<a class="headerlink" href="#equation-pdex3" title="Permalink to this equation">#</a></span>\[
+<span class="eqno">(9.9)<a class="headerlink" href="#equation-pdex3" title="Link to this equation">#</a></span>\[
     V_t = \beta {\mathbb E}_t
     \left[ \exp(G^d_{t+1} - \gamma G^c_{t+1}) (1 + V_{t+1}) \right]
 \]</div>
@@ -454,7 +461,7 @@ out to be correct).</p>
 <p>This means that <span class="math notranslate nohighlight">\(V_t = v(X_t)\)</span> for some unknown function <span class="math notranslate nohighlight">\(v\)</span>.</p>
 <p>By <a class="reference internal" href="#equation-pdex3">(9.9)</a>, the unknown function <span class="math notranslate nohighlight">\(v\)</span> satisfies the equation</p>
 <div class="math notranslate nohighlight" id="equation-eq-neweqn101">
-<span class="eqno">(9.10)<a class="headerlink" href="#equation-eq-neweqn101" title="Permalink to this equation">#</a></span>\[
+<span class="eqno">(9.10)<a class="headerlink" href="#equation-eq-neweqn101" title="Link to this equation">#</a></span>\[
     v(X_t) = \beta {\mathbb E}_t
     \left\{
         \exp[
@@ -473,7 +480,7 @@ out to be correct).</p>
 \exp(c^2/2)\)</span>.</p>
 <p>This yields</p>
 <div class="math notranslate nohighlight" id="equation-eq-ntev">
-<span class="eqno">(9.11)<a class="headerlink" href="#equation-eq-ntev" title="Permalink to this equation">#</a></span>\[
+<span class="eqno">(9.11)<a class="headerlink" href="#equation-eq-ntev" title="Link to this equation">#</a></span>\[
     v(X_t) = \beta {\mathbb E}_t
     \left\{
         \exp \left[
@@ -485,7 +492,7 @@ out to be correct).</p>
 \]</div>
 <p>Conditioning on <span class="math notranslate nohighlight">\(X_t = x\)</span>, we can write this as</p>
 <div class="math notranslate nohighlight" id="equation-eq-ntecx">
-<span class="eqno">(9.12)<a class="headerlink" href="#equation-eq-ntecx" title="Permalink to this equation">#</a></span>\[
+<span class="eqno">(9.12)<a class="headerlink" href="#equation-eq-ntecx" title="Link to this equation">#</a></span>\[
     v(x) = \beta \sum_{y \in S}
     \left\{
         \exp \left[
@@ -500,7 +507,7 @@ out to be correct).</p>
 <p>Suppose <span class="math notranslate nohighlight">\(S = \{x_1, \ldots, x_N\}\)</span>.</p>
 <p>Then we can think of <span class="math notranslate nohighlight">\(v\)</span> as an <span class="math notranslate nohighlight">\(N\)</span>-vector and, using square brackets for indices on arrays, write</p>
 <div class="math notranslate nohighlight" id="equation-eq-ntecx2">
-<span class="eqno">(9.13)<a class="headerlink" href="#equation-eq-ntecx2" title="Permalink to this equation">#</a></span>\[
+<span class="eqno">(9.13)<a class="headerlink" href="#equation-eq-ntecx2" title="Link to this equation">#</a></span>\[
     v[i] = \beta \sum_{j=1}^N
     \left\{
         \exp \left[
@@ -514,12 +521,12 @@ out to be correct).</p>
 <p>for <span class="math notranslate nohighlight">\(i = 1, \ldots, N\)</span>.</p>
 <p>Equivalently, we can write</p>
 <div class="math notranslate nohighlight" id="equation-eq-ntecx2-2">
-<span class="eqno">(9.14)<a class="headerlink" href="#equation-eq-ntecx2-2" title="Permalink to this equation">#</a></span>\[
+<span class="eqno">(9.14)<a class="headerlink" href="#equation-eq-ntecx2-2" title="Link to this equation">#</a></span>\[
     v[i] = \sum_{j=1}^N K[i, j] (1 + v[j])
 \]</div>
 <p>where <span class="math notranslate nohighlight">\(K\)</span> is the matrix defined by</p>
 <div class="math notranslate nohighlight" id="equation-eq-ntecxdk">
-<span class="eqno">(9.15)<a class="headerlink" href="#equation-eq-ntecxdk" title="Permalink to this equation">#</a></span>\[
+<span class="eqno">(9.15)<a class="headerlink" href="#equation-eq-ntecxdk" title="Link to this equation">#</a></span>\[
     K[i, j]
     = \beta \left\{
         \exp \left[
@@ -530,14 +537,14 @@ out to be correct).</p>
 \]</div>
 <p>Rewriting <a class="reference internal" href="#equation-eq-ntecx2-2">(9.14)</a> in vector form yields</p>
 <div class="math notranslate nohighlight" id="equation-eq-ntecxv">
-<span class="eqno">(9.16)<a class="headerlink" href="#equation-eq-ntecxv" title="Permalink to this equation">#</a></span>\[
+<span class="eqno">(9.16)<a class="headerlink" href="#equation-eq-ntecxv" title="Link to this equation">#</a></span>\[
     v = K (\mathbb 1 + v)
 \]</div>
 <p>Notice that <a class="reference internal" href="#equation-eq-ntecxv">(9.16)</a> can be written as <span class="math notranslate nohighlight">\((I - K)v = K \mathbb 1\)</span>.</p>
 <p>The Neumann series lemma tells us that <span class="math notranslate nohighlight">\(I - K\)</span> is invertible and the solution
 is</p>
 <div class="math notranslate nohighlight" id="equation-eq-ntecxvv">
-<span class="eqno">(9.17)<a class="headerlink" href="#equation-eq-ntecxvv" title="Permalink to this equation">#</a></span>\[
+<span class="eqno">(9.17)<a class="headerlink" href="#equation-eq-ntecxvv" title="Link to this equation">#</a></span>\[
     v = (I - K)^{-1} K \mathbb 1
 \]</div>
 <p>whenever <span class="math notranslate nohighlight">\(r(K)\)</span>, the spectral radius of <span class="math notranslate nohighlight">\(K\)</span>, is strictly less than one.</p>
@@ -549,12 +556,12 @@ is</p>
 </ol>
 </section>
 <section id="code">
-<h2><span class="section-number">9.6. </span>Code<a class="headerlink" href="#code" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">9.6. </span>Code<a class="headerlink" href="#code" title="Link to this heading">#</a></h2>
 <p>We will use the <a class="reference external" href="https://en.wikipedia.org/wiki/Power_iteration">power iteration algorithm</a> to check the spectral radius condition.</p>
 <p>The function below computes the spectral radius of <code class="docutils literal notranslate"><span class="pre">A</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">power_iteration_sr</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">num_iterations</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">1234</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">power_iteration_sr</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">num_iterations</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">1234</span><span class="p">):</span>
     <span class="s2">&quot; Estimates the spectral radius of A via power iteration. &quot;</span>
 
     <span class="c1"># Initialize</span>
@@ -585,7 +592,7 @@ is</p>
 <p>The next function verifies that the spectral radius of a given matrix is <span class="math notranslate nohighlight">\(&lt; 1\)</span>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">test_stability</span><span class="p">(</span><span class="n">Q</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">test_stability</span><span class="p">(</span><span class="n">Q</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Assert that the spectral radius of matrix Q is &lt; 1.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -608,7 +615,7 @@ is</p>
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Model</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s1">&#39;Model&#39;</span><span class="p">,</span>
                    <span class="p">(</span><span class="s1">&#39;P&#39;</span><span class="p">,</span> <span class="s1">&#39;S&#39;</span><span class="p">,</span> <span class="s1">&#39;β&#39;</span><span class="p">,</span> <span class="s1">&#39;γ&#39;</span><span class="p">,</span> <span class="s1">&#39;μ_c&#39;</span><span class="p">,</span> <span class="s1">&#39;μ_d&#39;</span><span class="p">,</span> <span class="s1">&#39;σ_c&#39;</span><span class="p">,</span> <span class="s1">&#39;σ_d&#39;</span><span class="p">))</span>
 
-<span class="k">def</span> <span class="nf">create_model</span><span class="p">(</span><span class="n">N</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>         <span class="c1"># size of state space for Markov chain</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">create_model</span><span class="p">(</span><span class="n">N</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>         <span class="c1"># size of state space for Markov chain</span>
                  <span class="n">ρ</span><span class="o">=</span><span class="mf">0.9</span><span class="p">,</span>         <span class="c1"># persistence parameter for Markov chain</span>
                  <span class="n">σ</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span>        <span class="c1"># persistence parameter for Markov chain</span>
                  <span class="n">β</span><span class="o">=</span><span class="mf">0.98</span><span class="p">,</span>        <span class="c1"># discount factor</span>
@@ -633,7 +640,7 @@ is</p>
 <p>Here’s a function that does this using loops.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">compute_K_loop</span><span class="p">(</span><span class="n">model</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">compute_K_loop</span><span class="p">(</span><span class="n">model</span><span class="p">):</span>
     <span class="c1"># unpack</span>
     <span class="n">P</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="n">β</span><span class="p">,</span> <span class="n">γ</span><span class="p">,</span> <span class="n">μ_c</span><span class="p">,</span> <span class="n">μ_d</span><span class="p">,</span> <span class="n">σ_c</span><span class="p">,</span> <span class="n">σ_d</span> <span class="o">=</span> <span class="n">model</span>
     <span class="n">N</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">S</span><span class="p">)</span>
@@ -651,7 +658,7 @@ is</p>
 <p>To exploit the parallelization capabilities of JAX, let’s also write a vectorized (i.e., loop-free) implementation.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">compute_K</span><span class="p">(</span><span class="n">model</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">compute_K</span><span class="p">(</span><span class="n">model</span><span class="p">):</span>
     <span class="c1"># unpack</span>
     <span class="n">P</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="n">β</span><span class="p">,</span> <span class="n">γ</span><span class="p">,</span> <span class="n">μ_c</span><span class="p">,</span> <span class="n">μ_d</span><span class="p">,</span> <span class="n">σ_c</span><span class="p">,</span> <span class="n">σ_d</span> <span class="o">=</span> <span class="n">model</span>
     <span class="n">N</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">S</span><span class="p">)</span>
@@ -684,7 +691,7 @@ is</p>
 <p>Now we can compute the price-dividend ratio:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">price_dividend_ratio</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">test_stable</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">price_dividend_ratio</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">test_stable</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Computes the price-dividend ratio of the asset.</span>
 
@@ -737,7 +744,8 @@ is</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/86b592c5d9cc8f365398929de25f12e6a030d3625df89cc554de5fbd22e5cc83.png"><img alt="_images/86b592c5d9cc8f365398929de25f12e6a030d3625df89cc554de5fbd22e5cc83.png" src="_images/86b592c5d9cc8f365398929de25f12e6a030d3625df89cc554de5fbd22e5cc83.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/86b592c5d9cc8f365398929de25f12e6a030d3625df89cc554de5fbd22e5cc83.png"><img alt="_images/86b592c5d9cc8f365398929de25f12e6a030d3625df89cc554de5fbd22e5cc83.png" src="_images/86b592c5d9cc8f365398929de25f12e6a030d3625df89cc554de5fbd22e5cc83.png" style="width: 80%;" />
+</a>
 </div>
 </div>
 <p>Notice that <span class="math notranslate nohighlight">\(v\)</span> is decreasing in each case.</p>
@@ -746,7 +754,7 @@ is</p>
 discount factor, lowering the weight placed on future dividends.</p>
 </section>
 <section id="an-extended-example">
-<h2><span class="section-number">9.7. </span>An Extended Example<a class="headerlink" href="#an-extended-example" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">9.7. </span>An Extended Example<a class="headerlink" href="#an-extended-example" title="Link to this heading">#</a></h2>
 <p>One problem with the last set is that volatility is constant through time (i.e.,
 <span class="math notranslate nohighlight">\(\sigma_c\)</span> and <span class="math notranslate nohighlight">\(\sigma_d\)</span> are constants).</p>
 <p>In reality, financial markets and growth rates of macroeconomic variables
@@ -772,7 +780,7 @@ this state process, so that <span class="math notranslate nohighlight">\(V_t = v
 <p>Modifying <a class="reference internal" href="#equation-eq-neweqn101">(9.10)</a> to accommodate the new growth specifications,
 we find that <span class="math notranslate nohighlight">\(v\)</span> satisfies</p>
 <div class="math notranslate nohighlight" id="equation-eq-neweqn102">
-<span class="eqno">(9.18)<a class="headerlink" href="#equation-eq-neweqn102" title="Permalink to this equation">#</a></span>\[\begin{split}
+<span class="eqno">(9.18)<a class="headerlink" href="#equation-eq-neweqn102" title="Link to this equation">#</a></span>\[\begin{split}
 \begin{aligned}
     v(X_t) = &amp; \beta \times \\
              &amp; {\mathbb E}_t
@@ -789,7 +797,7 @@ we find that <span class="math notranslate nohighlight">\(v\)</span> satisfies</
 <p>where, as before, <span class="math notranslate nohighlight">\(a := \mu_d - \gamma \mu_c\)</span></p>
 <p>Conditioning on state <span class="math notranslate nohighlight">\(x = (h_c, h_d, z)\)</span>, this becomes</p>
 <div class="math notranslate nohighlight" id="equation-neweqn103-old">
-<span class="eqno">(9.19)<a class="headerlink" href="#equation-neweqn103-old" title="Permalink to this equation">#</a></span>\[    v(x) = \beta  {\mathbb E}_t
+<span class="eqno">(9.19)<a class="headerlink" href="#equation-neweqn103-old" title="Link to this equation">#</a></span>\[    v(x) = \beta  {\mathbb E}_t
         \exp[
             a + (1-\gamma) z +
                 \bar \sigma \exp(h_d) \epsilon_{d, t+1} -
@@ -799,7 +807,7 @@ we find that <span class="math notranslate nohighlight">\(v\)</span> satisfies</
 <p>As before, we integrate out the independent shocks and use the rules for
 expectations of lognormals to obtain</p>
 <div class="math notranslate nohighlight" id="equation-neweqn103-new">
-<span class="eqno">(9.20)<a class="headerlink" href="#equation-neweqn103-new" title="Permalink to this equation">#</a></span>\[    v(x) = \beta  {\mathbb E}_t
+<span class="eqno">(9.20)<a class="headerlink" href="#equation-neweqn103-new" title="Link to this equation">#</a></span>\[    v(x) = \beta  {\mathbb E}_t
         \exp \left[
             a + (1-\gamma) z +
                 \bar \sigma^2 \frac{\exp(2 h_d) + \gamma^2 \exp(2 h_c)}{2}
@@ -823,7 +831,7 @@ expectations of lognormals to obtain</p>
 <span class="math notranslate nohighlight">\(\{H^c_t\}\)</span>, discretized <span class="math notranslate nohighlight">\(\{H^d_t\}\)</span> and <span class="math notranslate nohighlight">\(\{Z_t\}\)</span>,</p>
 <p>With this notation, we can write <a class="reference internal" href="#equation-neweqn103-new">(9.20)</a> more explicitly as</p>
 <div class="math notranslate nohighlight" id="equation-neweqn104-new">
-<span class="eqno">(9.21)<a class="headerlink" href="#equation-neweqn104-new" title="Permalink to this equation">#</a></span>\[    v(h_c, h_d, z) =
+<span class="eqno">(9.21)<a class="headerlink" href="#equation-neweqn104-new" title="Link to this equation">#</a></span>\[    v(h_c, h_d, z) =
     \sum_{h_c', h_d', z'}
         (1 + v(h_c', h_d', z'))
         A(h_c, h_d, z, h_c', h_d', z')\]</div>
@@ -831,7 +839,7 @@ expectations of lognormals to obtain</p>
 indices for <span class="math notranslate nohighlight">\((h_c, h_d, z)\)</span>.</p>
 <p>Then <a class="reference internal" href="#equation-neweqn104-new">(9.21)</a> becomes</p>
 <div class="math notranslate nohighlight" id="equation-eq-neweqn105">
-<span class="eqno">(9.22)<a class="headerlink" href="#equation-eq-neweqn105" title="Permalink to this equation">#</a></span>\[
+<span class="eqno">(9.22)<a class="headerlink" href="#equation-eq-neweqn105" title="Link to this equation">#</a></span>\[
     v[i, j, k] =
     \sum_{i', j', k'}
         A[i, j, k, i', j', k'] (1 + v[i', j', k'])
@@ -850,7 +858,7 @@ and <span class="math notranslate nohighlight">\(A\)</span> into an <span class=
 \]</div>
 </section>
 <section id="numpy-version">
-<h2><span class="section-number">9.8. </span>Numpy Version<a class="headerlink" href="#numpy-version" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">9.8. </span>Numpy Version<a class="headerlink" href="#numpy-version" title="Link to this heading">#</a></h2>
 <p>Our first implementation will be in NumPy.</p>
 <p>Once we have a NumPy version working, we will convert it to JAX and check the difference in the run times.</p>
 <p>The code block below provides a function called <code class="docutils literal notranslate"><span class="pre">create_sv_model()</span></code> that returns a namedtuple containing arrays and other data that form the primitives of the problem.</p>
@@ -867,7 +875,7 @@ and <span class="math notranslate nohighlight">\(A\)</span> into an <span class=
                          <span class="s1">&#39;R&#39;</span><span class="p">,</span> <span class="s1">&#39;z_grid&#39;</span><span class="p">,</span>
                          <span class="s1">&#39;β&#39;</span><span class="p">,</span> <span class="s1">&#39;γ&#39;</span><span class="p">,</span> <span class="s1">&#39;bar_σ&#39;</span><span class="p">,</span> <span class="s1">&#39;μ_c&#39;</span><span class="p">,</span> <span class="s1">&#39;μ_d&#39;</span><span class="p">))</span>
 
-<span class="k">def</span> <span class="nf">create_sv_model</span><span class="p">(</span><span class="n">β</span><span class="o">=</span><span class="mf">0.98</span><span class="p">,</span>        <span class="c1"># discount factor</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">create_sv_model</span><span class="p">(</span><span class="n">β</span><span class="o">=</span><span class="mf">0.98</span><span class="p">,</span>        <span class="c1"># discount factor</span>
                     <span class="n">γ</span><span class="o">=</span><span class="mf">2.5</span><span class="p">,</span>         <span class="c1"># coefficient of risk aversion</span>
                     <span class="n">I</span><span class="o">=</span><span class="mi">14</span><span class="p">,</span>          <span class="c1"># size of state space for h_c</span>
                     <span class="n">ρ_c</span><span class="o">=</span><span class="mf">0.9</span><span class="p">,</span>       <span class="c1"># persistence parameter for h_c</span>
@@ -903,7 +911,7 @@ and <span class="math notranslate nohighlight">\(A\)</span> into an <span class=
 <p>Now we provide a function to compute the matrix <span class="math notranslate nohighlight">\(A\)</span>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">compute_A</span><span class="p">(</span><span class="n">sv_model</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">compute_A</span><span class="p">(</span><span class="n">sv_model</span><span class="p">):</span>
     <span class="c1"># Set up</span>
     <span class="n">P</span><span class="p">,</span> <span class="n">hc_grid</span><span class="p">,</span> <span class="n">Q</span><span class="p">,</span> <span class="n">hd_grid</span><span class="p">,</span> <span class="n">R</span><span class="p">,</span> <span class="n">z_grid</span><span class="p">,</span> <span class="n">β</span><span class="p">,</span> <span class="n">γ</span><span class="p">,</span> <span class="n">bar_σ</span><span class="p">,</span> <span class="n">μ_c</span><span class="p">,</span> <span class="n">μ_d</span> <span class="o">=</span> <span class="n">sv_model</span>
     <span class="n">I</span><span class="p">,</span> <span class="n">J</span><span class="p">,</span> <span class="n">K</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">hc_grid</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">hd_grid</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">z_grid</span><span class="p">)</span>
@@ -929,7 +937,7 @@ and <span class="math notranslate nohighlight">\(A\)</span> into an <span class=
 <p>Here’s our function to compute the price-dividend ratio for the stochastic volatility model.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">sv_pd_ratio</span><span class="p">(</span><span class="n">sv_model</span><span class="p">,</span> <span class="n">test_stable</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">sv_pd_ratio</span><span class="p">(</span><span class="n">sv_model</span><span class="p">,</span> <span class="n">test_stable</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Computes the price-dividend ratio of the asset for the stochastic volatility</span>
 <span class="sd">    model.</span>
@@ -986,7 +994,7 @@ and <span class="math notranslate nohighlight">\(A\)</span> into an <span class=
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Numpy compile plus execution time =  0.9441366195678711
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Numpy compile plus execution time =  0.810471773147583
 </pre></div>
 </div>
 </div>
@@ -1002,7 +1010,7 @@ and <span class="math notranslate nohighlight">\(A\)</span> into an <span class=
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Numpy execution time =  0.2771322727203369
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Numpy execution time =  0.2908480167388916
 </pre></div>
 </div>
 </div>
@@ -1020,7 +1028,8 @@ and <span class="math notranslate nohighlight">\(A\)</span> into an <span class=
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/3b78df7898613ae244c683483b4f1cf5d72e5061ac258f248b40dce02621d5f7.png"><img alt="_images/3b78df7898613ae244c683483b4f1cf5d72e5061ac258f248b40dce02621d5f7.png" src="_images/3b78df7898613ae244c683483b4f1cf5d72e5061ac258f248b40dce02621d5f7.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/3b78df7898613ae244c683483b4f1cf5d72e5061ac258f248b40dce02621d5f7.png"><img alt="_images/3b78df7898613ae244c683483b4f1cf5d72e5061ac258f248b40dce02621d5f7.png" src="_images/3b78df7898613ae244c683483b4f1cf5d72e5061ac258f248b40dce02621d5f7.png" style="width: 80%;" />
+</a>
 </div>
 </div>
 <div class="cell docutils container">
@@ -1035,7 +1044,8 @@ and <span class="math notranslate nohighlight">\(A\)</span> into an <span class=
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/f7a2e60d48822a4dbcafd147697b1769d38f4643f9b15baca60210a0c1f95c96.png"><img alt="_images/f7a2e60d48822a4dbcafd147697b1769d38f4643f9b15baca60210a0c1f95c96.png" src="_images/f7a2e60d48822a4dbcafd147697b1769d38f4643f9b15baca60210a0c1f95c96.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/f7a2e60d48822a4dbcafd147697b1769d38f4643f9b15baca60210a0c1f95c96.png"><img alt="_images/f7a2e60d48822a4dbcafd147697b1769d38f4643f9b15baca60210a0c1f95c96.png" src="_images/f7a2e60d48822a4dbcafd147697b1769d38f4643f9b15baca60210a0c1f95c96.png" style="width: 80%;" />
+</a>
 </div>
 </div>
 <div class="cell docutils container">
@@ -1050,17 +1060,18 @@ and <span class="math notranslate nohighlight">\(A\)</span> into an <span class=
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/69a4c8317a0e2e961525df7ea1bb62ef131f99022d804683c1a59e486622a3fd.png"><img alt="_images/69a4c8317a0e2e961525df7ea1bb62ef131f99022d804683c1a59e486622a3fd.png" src="_images/69a4c8317a0e2e961525df7ea1bb62ef131f99022d804683c1a59e486622a3fd.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/69a4c8317a0e2e961525df7ea1bb62ef131f99022d804683c1a59e486622a3fd.png"><img alt="_images/69a4c8317a0e2e961525df7ea1bb62ef131f99022d804683c1a59e486622a3fd.png" src="_images/69a4c8317a0e2e961525df7ea1bb62ef131f99022d804683c1a59e486622a3fd.png" style="width: 80%;" />
+</a>
 </div>
 </div>
 </section>
 <section id="jax-version">
-<h2><span class="section-number">9.9. </span>JAX Version<a class="headerlink" href="#jax-version" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">9.9. </span>JAX Version<a class="headerlink" href="#jax-version" title="Link to this heading">#</a></h2>
 <p>Now let’s write a JAX version that is a simple transformation of the NumPy version.</p>
 <p>(Below we will write a more efficient version using JAX’s ability to work with linear operators.)</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">create_sv_model_jax</span><span class="p">(</span><span class="n">sv_model</span><span class="p">):</span>    <span class="c1"># mean growth of dividends</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">create_sv_model_jax</span><span class="p">(</span><span class="n">sv_model</span><span class="p">):</span>    <span class="c1"># mean growth of dividends</span>
 
     <span class="c1"># Take the contents of a NumPy sv_model instance</span>
     <span class="n">P</span><span class="p">,</span> <span class="n">hc_grid</span><span class="p">,</span> <span class="n">Q</span><span class="p">,</span> <span class="n">hd_grid</span><span class="p">,</span> <span class="n">R</span><span class="p">,</span> <span class="n">z_grid</span><span class="p">,</span> <span class="n">β</span><span class="p">,</span> <span class="n">γ</span><span class="p">,</span> <span class="n">bar_σ</span><span class="p">,</span> <span class="n">μ_c</span><span class="p">,</span> <span class="n">μ_d</span> <span class="o">=</span> <span class="n">sv_model</span>
@@ -1083,7 +1094,7 @@ and <span class="math notranslate nohighlight">\(A\)</span> into an <span class=
 <p>This is important when we JIT-compile the function below.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">compute_A_jax</span><span class="p">(</span><span class="n">sv_model</span><span class="p">,</span> <span class="n">shapes</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">compute_A_jax</span><span class="p">(</span><span class="n">sv_model</span><span class="p">,</span> <span class="n">shapes</span><span class="p">):</span>
     <span class="c1"># Set up</span>
     <span class="n">P</span><span class="p">,</span> <span class="n">hc_grid</span><span class="p">,</span> <span class="n">Q</span><span class="p">,</span> <span class="n">hd_grid</span><span class="p">,</span> <span class="n">R</span><span class="p">,</span> <span class="n">z_grid</span><span class="p">,</span> <span class="n">β</span><span class="p">,</span> <span class="n">γ</span><span class="p">,</span> <span class="n">bar_σ</span><span class="p">,</span> <span class="n">μ_c</span><span class="p">,</span> <span class="n">μ_d</span> <span class="o">=</span> <span class="n">sv_model</span>
     <span class="n">I</span><span class="p">,</span> <span class="n">J</span><span class="p">,</span> <span class="n">K</span> <span class="o">=</span> <span class="n">shapes</span>
@@ -1109,7 +1120,7 @@ and <span class="math notranslate nohighlight">\(A\)</span> into an <span class=
 <p>Here’s the function that computes the solution.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">sv_pd_ratio_jax</span><span class="p">(</span><span class="n">sv_model</span><span class="p">,</span> <span class="n">shapes</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">sv_pd_ratio_jax</span><span class="p">(</span><span class="n">sv_model</span><span class="p">,</span> <span class="n">shapes</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Computes the price-dividend ratio of the asset for the stochastic volatility</span>
 <span class="sd">    model.</span>
@@ -1172,7 +1183,7 @@ and <span class="math notranslate nohighlight">\(A\)</span> into an <span class=
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>JAX compile plus execution time =  0.5232353210449219
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>JAX compile plus execution time =  0.5186030864715576
 </pre></div>
 </div>
 </div>
@@ -1188,7 +1199,7 @@ and <span class="math notranslate nohighlight">\(A\)</span> into an <span class=
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>JAX execution time =  0.1387336254119873
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>JAX execution time =  0.1312241554260254
 </pre></div>
 </div>
 </div>
@@ -1201,7 +1212,7 @@ and <span class="math notranslate nohighlight">\(A\)</span> into an <span class=
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.5006043650209872
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.45117775564490675
 </pre></div>
 </div>
 </div>
@@ -1223,14 +1234,14 @@ and <span class="math notranslate nohighlight">\(A\)</span> into an <span class=
 </div>
 </section>
 <section id="a-memory-efficient-jax-version">
-<h2><span class="section-number">9.10. </span>A memory-efficient JAX version<a class="headerlink" href="#a-memory-efficient-jax-version" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">9.10. </span>A memory-efficient JAX version<a class="headerlink" href="#a-memory-efficient-jax-version" title="Link to this heading">#</a></h2>
 <p>One problem with the code above is that we instantiate a matrix of size <span class="math notranslate nohighlight">\(N = I \times J \times K\)</span>.</p>
 <p>This quickly becomes impossible as <span class="math notranslate nohighlight">\(I, J, K\)</span> increase.</p>
 <p>Fortunately, JAX makes it possible to solve for the price-dividend ratio without instantiating this large matrix.</p>
 <p>The first step is to think of <span class="math notranslate nohighlight">\(A\)</span> not as a matrix, but rather as the linear operator that transforms <span class="math notranslate nohighlight">\(g\)</span> into <span class="math notranslate nohighlight">\(Ag\)</span>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">A</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">sv_model</span><span class="p">,</span> <span class="n">shapes</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">A</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">sv_model</span><span class="p">,</span> <span class="n">shapes</span><span class="p">):</span>
     <span class="c1"># Set up</span>
     <span class="n">P</span><span class="p">,</span> <span class="n">hc_grid</span><span class="p">,</span> <span class="n">Q</span><span class="p">,</span> <span class="n">hd_grid</span><span class="p">,</span> <span class="n">R</span><span class="p">,</span> <span class="n">z_grid</span><span class="p">,</span> <span class="n">β</span><span class="p">,</span> <span class="n">γ</span><span class="p">,</span> <span class="n">bar_σ</span><span class="p">,</span> <span class="n">μ_c</span><span class="p">,</span> <span class="n">μ_d</span> <span class="o">=</span> <span class="n">sv_model</span>
     <span class="n">I</span><span class="p">,</span> <span class="n">J</span><span class="p">,</span> <span class="n">K</span> <span class="o">=</span> <span class="n">shapes</span>
@@ -1256,7 +1267,7 @@ and <span class="math notranslate nohighlight">\(A\)</span> into an <span class=
 that acts directly on the linear operator <code class="docutils literal notranslate"><span class="pre">A</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">sv_pd_ratio_linop</span><span class="p">(</span><span class="n">sv_model</span><span class="p">,</span> <span class="n">shapes</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">sv_pd_ratio_linop</span><span class="p">(</span><span class="n">sv_model</span><span class="p">,</span> <span class="n">shapes</span><span class="p">):</span>
     <span class="n">P</span><span class="p">,</span> <span class="n">hc_grid</span><span class="p">,</span> <span class="n">Q</span><span class="p">,</span> <span class="n">hd_grid</span><span class="p">,</span> <span class="n">R</span><span class="p">,</span> <span class="n">z_grid</span><span class="p">,</span> <span class="n">β</span><span class="p">,</span> <span class="n">γ</span><span class="p">,</span> <span class="n">bar_σ</span><span class="p">,</span> <span class="n">μ_c</span><span class="p">,</span> <span class="n">μ_d</span> <span class="o">=</span> <span class="n">sv_model</span>
     <span class="n">I</span><span class="p">,</span> <span class="n">J</span><span class="p">,</span> <span class="n">K</span> <span class="o">=</span> <span class="n">shapes</span>
 
@@ -1292,7 +1303,7 @@ that acts directly on the linear operator <code class="docutils literal notransl
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>JAX compile plus execution time =  0.5403728485107422
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>JAX compile plus execution time =  0.48966145515441895
 </pre></div>
 </div>
 </div>
@@ -1308,7 +1319,7 @@ that acts directly on the linear operator <code class="docutils literal notransl
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>JAX execution time =  0.0059604644775390625
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>JAX execution time =  0.005946159362792969
 </pre></div>
 </div>
 </div>
@@ -1334,7 +1345,7 @@ that acts directly on the linear operator <code class="docutils literal notransl
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.04296337286536482
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.04531299396432374
 </pre></div>
 </div>
 </div>
@@ -1354,10 +1365,10 @@ that acts directly on the linear operator <code class="docutils literal notransl
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 603 ms, sys: 12 ms, total: 615 ms
-Wall time: 718 ms
-CPU times: user 166 ms, sys: 0 ns, total: 166 ms
-Wall time: 166 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 572 ms, sys: 9.85 ms, total: 582 ms
+Wall time: 669 ms
+CPU times: user 165 ms, sys: 0 ns, total: 165 ms
+Wall time: 164 ms
 </pre></div>
 </div>
 </div>
@@ -1399,6 +1410,8 @@ from doing so here.</p>
                     <p><a href="https://creativecommons.org/licenses/by-sa/4.0/"><img src="https://licensebuttons.net/l/by-sa/4.0/80x15.png"></a></p>
 
                     <p>Creative Commons License &ndash; This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International.</p>
+
+                    <p>A theme by <a href="https://quantecon.org">QuantEcon</a></p>
 
                 </footer> <!-- .page__footer -->
 
@@ -1732,7 +1745,7 @@ from doing so here.</p>
                 function setLaunchServer() {
                   launchNotebookLink.removeAttribute("style")
                   if ( localStorage.launcherType == 'launcher-private' ) {
-                    let repoPrefix = "/jupyter/hub/user-redirect/git-pull?repo=" + repoURL + "&branch=" + branch + "&urlpath=" + urlPath;
+                    let repoPrefix = "/user-redirect/git-pull?repo=" + repoURL + "&branch=" + branch + "&urlpath=" + urlPath;
                     launcherPrivateValue = launcherPrivate.value
                     if (!launcherPrivateValue) {
                         launchNotebookLink.removeAttribute("href")

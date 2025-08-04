@@ -1,13 +1,12 @@
 
-
 <!DOCTYPE html>
 
 
-<html lang="en" data-content_root="" >
+<html lang="en" data-content_root="./" >
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>13. Shortest Paths &#8212; Quantitative Economics with Python using JAX</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
@@ -70,14 +69,14 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=bd0785fbb14d8d2bd4d9ae501d79ed8d3bc089ec" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
-    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
-    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
-    <link rel="stylesheet" type="text/css" href="_static/exercise.css" />
-    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.5ea377869091fd0449014c60fc090103.min.css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="_static/exercise.css?v=982b99e0" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
@@ -85,22 +84,21 @@
   <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
 
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-    <script src="_static/jquery.js"></script>
-    <script src="_static/underscore.js"></script>
-    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="_static/doctools.js"></script>
-    <script src="_static/sphinx_highlight.js"></script>
-    <script src="_static/clipboard.min.js"></script>
-    <script src="_static/copybutton.js"></script>
+    <script src="_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
     <script src="_static/scripts/sphinx-book-theme.js"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="_static/togglebutton.js"></script>
-    <script src="_static/scripts/quantecon-book-theme.js?digest=d6d86bce9979111653c4c495e33499e1796e172a"></script>
+    <script src="_static/togglebutton.js?v=4a39c7ea"></script>
+    <script src="_static/scripts/quantecon-book-theme.js?digest=d9faaf6c4b57726f74ba012412af1f5681bdff87"></script>
+    <script src="_static/scripts/jquery.js?v=5d32c60e"></script>
+    <script src="_static/scripts/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script src="_static/design-tabs.js"></script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
     <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-K1NYBSC1CZ"></script>
     <script>
                 window.dataLayer = window.dataLayer || [];
@@ -109,12 +107,20 @@
                 gtag('config', 'G-K1NYBSC1CZ');
             </script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-K1NYBSC1CZ');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script>window.MathJax = {"tex": {"macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'short_path';</script>
     <link rel="canonical" href="https://jax.quantecon.org/short_path.html" />
-    <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
+    <link rel="icon" href="_static/lectures-favicon.ico"/>
     <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -146,6 +152,7 @@
   </head>
 <body>
 
+<!-- Override QuantEcon theme colors -->
 
     <span id="top"></span>
 
@@ -232,7 +239,7 @@
                     <div>
                         
   <section class="tex2jax_ignore mathjax_ignore" id="shortest-paths">
-<h1><span class="section-number">13. </span>Shortest Paths<a class="headerlink" href="#shortest-paths" title="Permalink to this heading">#</a></h1>
+<h1><span class="section-number">13. </span>Shortest Paths<a class="headerlink" href="#shortest-paths" title="Link to this heading">#</a></h1>
 <div class="warning admonition">
 <p class="admonition-title">GPU</p>
 <p>This lecture was built using a machine with JAX installed and access to a GPU.</p>
@@ -240,14 +247,14 @@
 <p>To run this lecture on your own machine, you need to install <a class="reference external" href="https://github.com/google/jax">Google JAX</a>.</p>
 </div>
 <section id="overview">
-<h2><span class="section-number">13.1. </span>Overview<a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">13.1. </span>Overview<a class="headerlink" href="#overview" title="Link to this heading">#</a></h2>
 <p>This lecture is the extended version of the <a class="reference external" href="https://python.quantecon.org/short_path.html">shortest path lecture</a> using JAX. Please see that lecture for all background and notation.</p>
 <p>Let’s start by importing the libraries.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">jax.numpy</span> <span class="k">as</span> <span class="nn">jnp</span>
-<span class="kn">import</span> <span class="nn">jax</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">jax.numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">jnp</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">jax</span>
 </pre></div>
 </div>
 </div>
@@ -260,7 +267,7 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Mon Jun 23 04:26:20 2025       
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Mon Aug  4 04:37:43 2025       
 +-----------------------------------------------------------------------------------------+
 | NVIDIA-SMI 575.51.03              Driver Version: 575.51.03      CUDA Version: 12.9     |
 |-----------------------------------------+------------------------+----------------------+
@@ -269,7 +276,7 @@
 |                                         |                        |               MIG M. |
 |=========================================+========================+======================|
 |   0  Tesla T4                       Off |   00000000:00:1E.0 Off |                    0 |
-| N/A   36C    P0             33W /   70W |       0MiB /  15360MiB |      0%      Default |
+| N/A   37C    P0             33W /   70W |       0MiB /  15360MiB |      0%      Default |
 |                                         |                        |                  N/A |
 +-----------------------------------------+------------------------+----------------------+
                                                                                          
@@ -286,19 +293,19 @@
 </div>
 </section>
 <section id="solving-for-minimum-cost-to-go">
-<h2><span class="section-number">13.2. </span>Solving for Minimum Cost-to-Go<a class="headerlink" href="#solving-for-minimum-cost-to-go" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">13.2. </span>Solving for Minimum Cost-to-Go<a class="headerlink" href="#solving-for-minimum-cost-to-go" title="Link to this heading">#</a></h2>
 <p>Let <span class="math notranslate nohighlight">\(J(v)\)</span> denote the minimum cost-to-go from node <span class="math notranslate nohighlight">\(v\)</span>,
 understood as the total cost from <span class="math notranslate nohighlight">\(v\)</span> if we take the best route.</p>
 <p>Let’s look at an algorithm for computing <span class="math notranslate nohighlight">\(J\)</span> and then think about how to
 implement it.</p>
 <section id="the-algorithm">
-<h3><span class="section-number">13.2.1. </span>The Algorithm<a class="headerlink" href="#the-algorithm" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">13.2.1. </span>The Algorithm<a class="headerlink" href="#the-algorithm" title="Link to this heading">#</a></h3>
 <p>The standard algorithm for finding <span class="math notranslate nohighlight">\(J\)</span> is to start an initial guess and then iterate.</p>
 <p>This is a standard approach to solving nonlinear equations, often called
 the method of <strong>successive approximations</strong>.</p>
 <p>Our initial guess will be</p>
 <div class="math notranslate nohighlight" id="equation-spguess">
-<span class="eqno">(13.1)<a class="headerlink" href="#equation-spguess" title="Permalink to this equation">#</a></span>\[J_0(v) = 0 \text{ for all } v\]</div>
+<span class="eqno">(13.1)<a class="headerlink" href="#equation-spguess" title="Link to this equation">#</a></span>\[J_0(v) = 0 \text{ for all } v\]</div>
 <p>Now</p>
 <ol class="arabic simple">
 <li><p>Set <span class="math notranslate nohighlight">\(n = 0\)</span></p></li>
@@ -351,8 +358,8 @@ the method of <strong>successive approximations</strong>.</p>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The cost-to-go function is [ 8. 10.  3.  5.  4.  1.  0.]
-CPU times: user 145 ms, sys: 67.1 ms, total: 213 ms
-Wall time: 261 ms
+CPU times: user 151 ms, sys: 66.2 ms, total: 217 ms
+Wall time: 264 ms
 </pre></div>
 </div>
 </div>
@@ -369,7 +376,7 @@ Wall time: 261 ms
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">body_fun</span><span class="p">(</span><span class="n">values</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">body_fun</span><span class="p">(</span><span class="n">values</span><span class="p">):</span>
     <span class="c1"># Define the body function of while loop</span>
     <span class="n">i</span><span class="p">,</span> <span class="n">J</span><span class="p">,</span> <span class="n">break_cond</span> <span class="o">=</span> <span class="n">values</span>
 
@@ -385,7 +392,7 @@ Wall time: 261 ms
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">cond_fun</span><span class="p">(</span><span class="n">values</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">cond_fun</span><span class="p">(</span><span class="n">values</span><span class="p">):</span>
     <span class="n">i</span><span class="p">,</span> <span class="n">J</span><span class="p">,</span> <span class="n">break_condition</span> <span class="o">=</span> <span class="n">values</span>
     <span class="k">return</span> <span class="o">~</span><span class="n">break_condition</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">i</span> <span class="o">&lt;</span> <span class="n">max_iter</span><span class="p">)</span>
 </pre></div>
@@ -401,8 +408,8 @@ Wall time: 261 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 72.7 ms, sys: 2.76 ms, total: 75.5 ms
-Wall time: 89.3 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 73.5 ms, sys: 5.3 ms, total: 78.8 ms
+Wall time: 91.8 ms
 </pre></div>
 </div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Array([ 8., 10.,  3.,  5.,  4.,  1.,  0.], dtype=float32)
@@ -419,8 +426,8 @@ Wall time: 89.3 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 410 μs, sys: 1.23 ms, total: 1.64 ms
-Wall time: 1.06 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1.56 ms, sys: 300 μs, total: 1.86 ms
+Wall time: 1.07 ms
 </pre></div>
 </div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Array([ 8., 10.,  3.,  5.,  4.,  1.,  0.], dtype=float32)
@@ -435,7 +442,7 @@ Wall time: 1.06 ms
 </section>
 </section>
 <section id="exercises">
-<h2><span class="section-number">13.3. </span>Exercises<a class="headerlink" href="#exercises" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">13.3. </span>Exercises<a class="headerlink" href="#exercises" title="Link to this heading">#</a></h2>
 <div class="exercise admonition" id="short_path_ex1">
 
 <p class="admonition-title"><span class="caption-number">Exercise 13.1 </span></p>
@@ -573,7 +580,7 @@ Wall time: 1.06 ms
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">num_nodes</span> <span class="o">=</span> <span class="mi">100</span>
 <span class="n">destination_node</span> <span class="o">=</span> <span class="mi">99</span>
-<span class="k">def</span> <span class="nf">map_graph_to_distance_matrix</span><span class="p">(</span><span class="n">in_file</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">map_graph_to_distance_matrix</span><span class="p">(</span><span class="n">in_file</span><span class="p">):</span>
 
     <span class="c1"># First let&#39;s set of the distance matrix Q with inf everywhere</span>
     <span class="n">Q</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">((</span><span class="n">num_nodes</span><span class="p">,</span> <span class="n">num_nodes</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">)</span>
@@ -599,13 +606,13 @@ Wall time: 1.06 ms
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jax</span><span class="o">.</span><span class="n">jit</span>
-<span class="k">def</span> <span class="nf">compute_cost_to_go</span><span class="p">(</span><span class="n">Q</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">compute_cost_to_go</span><span class="p">(</span><span class="n">Q</span><span class="p">):</span>
     <span class="n">num_nodes</span> <span class="o">=</span> <span class="n">Q</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
     <span class="n">J</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">num_nodes</span><span class="p">)</span>      <span class="c1"># Initial guess</span>
     <span class="n">max_iter</span> <span class="o">=</span> <span class="mi">500</span>
     <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
 
-    <span class="k">def</span> <span class="nf">body_fun</span><span class="p">(</span><span class="n">values</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">body_fun</span><span class="p">(</span><span class="n">values</span><span class="p">):</span>
         <span class="c1"># Define the body function of while loop</span>
         <span class="n">i</span><span class="p">,</span> <span class="n">J</span><span class="p">,</span> <span class="n">break_cond</span> <span class="o">=</span> <span class="n">values</span>
 
@@ -616,7 +623,7 @@ Wall time: 1.06 ms
         <span class="c1"># Return next iteration values</span>
         <span class="k">return</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">next_J</span><span class="p">,</span> <span class="n">break_condition</span>
 
-    <span class="k">def</span> <span class="nf">cond_fun</span><span class="p">(</span><span class="n">values</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">cond_fun</span><span class="p">(</span><span class="n">values</span><span class="p">):</span>
         <span class="n">i</span><span class="p">,</span> <span class="n">J</span><span class="p">,</span> <span class="n">break_condition</span> <span class="o">=</span> <span class="n">values</span>
         <span class="k">return</span> <span class="o">~</span><span class="n">break_condition</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">i</span> <span class="o">&lt;</span> <span class="n">max_iter</span><span class="p">)</span>
 
@@ -630,7 +637,7 @@ Wall time: 1.06 ms
 optimal path (and its cost).</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">print_best_path</span><span class="p">(</span><span class="n">J</span><span class="p">,</span> <span class="n">Q</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">print_best_path</span><span class="p">(</span><span class="n">J</span><span class="p">,</span> <span class="n">Q</span><span class="p">):</span>
     <span class="n">sum_costs</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="n">current_node</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="k">while</span> <span class="n">current_node</span> <span class="o">!=</span> <span class="n">destination_node</span><span class="p">:</span>
@@ -662,8 +669,8 @@ optimal path (and its cost).</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 88.1 ms, sys: 4.73 ms, total: 92.8 ms
-Wall time: 112 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 90.7 ms, sys: 10.1 ms, total: 101 ms
+Wall time: 120 ms
 </pre></div>
 </div>
 </div>
@@ -677,8 +684,8 @@ Wall time: 112 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1.3 ms, sys: 148 μs, total: 1.45 ms
-Wall time: 1.1 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1.4 ms, sys: 0 ns, total: 1.4 ms
+Wall time: 1.07 ms
 </pre></div>
 </div>
 </div>
@@ -770,6 +777,8 @@ Cost:  160.55
                     <p><a href="https://creativecommons.org/licenses/by-sa/4.0/"><img src="https://licensebuttons.net/l/by-sa/4.0/80x15.png"></a></p>
 
                     <p>Creative Commons License &ndash; This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International.</p>
+
+                    <p>A theme by <a href="https://quantecon.org">QuantEcon</a></p>
 
                 </footer> <!-- .page__footer -->
 
@@ -1103,7 +1112,7 @@ Cost:  160.55
                 function setLaunchServer() {
                   launchNotebookLink.removeAttribute("style")
                   if ( localStorage.launcherType == 'launcher-private' ) {
-                    let repoPrefix = "/jupyter/hub/user-redirect/git-pull?repo=" + repoURL + "&branch=" + branch + "&urlpath=" + urlPath;
+                    let repoPrefix = "/user-redirect/git-pull?repo=" + repoURL + "&branch=" + branch + "&urlpath=" + urlPath;
                     launcherPrivateValue = launcherPrivate.value
                     if (!launcherPrivateValue) {
                         launchNotebookLink.removeAttribute("href")

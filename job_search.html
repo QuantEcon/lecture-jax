@@ -1,13 +1,12 @@
 
-
 <!DOCTYPE html>
 
 
-<html lang="en" data-content_root="" >
+<html lang="en" data-content_root="./" >
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>10. Job Search &#8212; Quantitative Economics with Python using JAX</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
@@ -70,14 +69,14 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=bd0785fbb14d8d2bd4d9ae501d79ed8d3bc089ec" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
-    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
-    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
-    <link rel="stylesheet" type="text/css" href="_static/exercise.css" />
-    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.5ea377869091fd0449014c60fc090103.min.css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="_static/exercise.css?v=982b99e0" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
@@ -85,22 +84,21 @@
   <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
 
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-    <script src="_static/jquery.js"></script>
-    <script src="_static/underscore.js"></script>
-    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="_static/doctools.js"></script>
-    <script src="_static/sphinx_highlight.js"></script>
-    <script src="_static/clipboard.min.js"></script>
-    <script src="_static/copybutton.js"></script>
+    <script src="_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
     <script src="_static/scripts/sphinx-book-theme.js"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="_static/togglebutton.js"></script>
-    <script src="_static/scripts/quantecon-book-theme.js?digest=d6d86bce9979111653c4c495e33499e1796e172a"></script>
+    <script src="_static/togglebutton.js?v=4a39c7ea"></script>
+    <script src="_static/scripts/quantecon-book-theme.js?digest=d9faaf6c4b57726f74ba012412af1f5681bdff87"></script>
+    <script src="_static/scripts/jquery.js?v=5d32c60e"></script>
+    <script src="_static/scripts/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script src="_static/design-tabs.js"></script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
     <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-K1NYBSC1CZ"></script>
     <script>
                 window.dataLayer = window.dataLayer || [];
@@ -109,12 +107,20 @@
                 gtag('config', 'G-K1NYBSC1CZ');
             </script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-K1NYBSC1CZ');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script>window.MathJax = {"tex": {"macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'job_search';</script>
     <link rel="canonical" href="https://jax.quantecon.org/job_search.html" />
-    <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
+    <link rel="icon" href="_static/lectures-favicon.ico"/>
     <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -146,6 +152,7 @@
   </head>
 <body>
 
+<!-- Override QuantEcon theme colors -->
 
     <span id="top"></span>
 
@@ -234,7 +241,7 @@
                     <div>
                         
   <section class="tex2jax_ignore mathjax_ignore" id="job-search">
-<h1><span class="section-number">10. </span>Job Search<a class="headerlink" href="#job-search" title="Permalink to this heading">#</a></h1>
+<h1><span class="section-number">10. </span>Job Search<a class="headerlink" href="#job-search" title="Link to this heading">#</a></h1>
 <div class="warning admonition">
 <p class="admonition-title">GPU</p>
 <p>This lecture was built using a machine with JAX installed and access to a GPU.</p>
@@ -256,26 +263,26 @@ the main results change.</p>
 </pre></div>
 </div>
 </div>
-<details class="hide below-input">
+<details class="admonition hide below-input">
 <summary aria-label="Toggle hidden content">
-<span class="collapsed">Show code cell output</span>
-<span class="expanded">Hide code cell output</span>
+<p class="collapsed admonition-title">Show code cell output</p>
+<p class="expanded admonition-title">Hide code cell output</p>
 </summary>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (0.8.1)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (0.8.2)
 Requirement already satisfied: numba&gt;=0.49.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from quantecon) (0.60.0)
 Requirement already satisfied: numpy&gt;=1.17.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from quantecon) (1.26.4)
 Requirement already satisfied: requests in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from quantecon) (2.32.3)
 Requirement already satisfied: scipy&gt;=1.5.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from quantecon) (1.13.1)
 Requirement already satisfied: sympy in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from quantecon) (1.13.2)
 Requirement already satisfied: llvmlite&lt;0.44,&gt;=0.43.0dev0 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from numba&gt;=0.49.0-&gt;quantecon) (0.43.0)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: charset-normalizer&lt;4,&gt;=2 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from requests-&gt;quantecon) (3.3.2)
+Requirement already satisfied: charset-normalizer&lt;4,&gt;=2 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from requests-&gt;quantecon) (3.3.2)
 Requirement already satisfied: idna&lt;4,&gt;=2.5 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from requests-&gt;quantecon) (3.7)
 Requirement already satisfied: urllib3&lt;3,&gt;=1.21.1 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from requests-&gt;quantecon) (2.2.3)
 Requirement already satisfied: certifi&gt;=2017.4.17 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from requests-&gt;quantecon) (2024.8.30)
-Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from sympy-&gt;quantecon) (1.3.0)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from sympy-&gt;quantecon) (1.3.0)
 </pre></div>
 </div>
 </div>
@@ -284,11 +291,11 @@ Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in /home/runner/minicond
 <p>We use the following imports.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">import</span> <span class="nn">quantecon</span> <span class="k">as</span> <span class="nn">qe</span>
-<span class="kn">import</span> <span class="nn">jax</span>
-<span class="kn">import</span> <span class="nn">jax.numpy</span> <span class="k">as</span> <span class="nn">jnp</span>
-<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">namedtuple</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">quantecon</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">qe</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">jax</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">jax.numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">jnp</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">namedtuple</span>
 
 <span class="n">jax</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="s2">&quot;jax_enable_x64&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
 </pre></div>
@@ -296,7 +303,7 @@ Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in /home/runner/minicond
 </div>
 </div>
 <section id="model">
-<h2><span class="section-number">10.1. </span>Model<a class="headerlink" href="#model" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">10.1. </span>Model<a class="headerlink" href="#model" title="Link to this heading">#</a></h2>
 <p>We study an elementary model where</p>
 <ul class="simple">
 <li><p>jobs are permanent</p></li>
@@ -305,7 +312,7 @@ Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in /home/runner/minicond
 <li><p>an unemployment agent discounts the future via discount factor <span class="math notranslate nohighlight">\(\beta \in (0,1)\)</span></p></li>
 </ul>
 <section id="set-up">
-<h3><span class="section-number">10.1.1. </span>Set up<a class="headerlink" href="#set-up" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">10.1.1. </span>Set up<a class="headerlink" href="#set-up" title="Link to this heading">#</a></h3>
 <p>At the start of each period, an unemployed worker receives wage offer <span class="math notranslate nohighlight">\(W_t\)</span>.</p>
 <p>To build a wage offer process we consider the dynamics</p>
 <div class="math notranslate nohighlight">
@@ -317,7 +324,7 @@ Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in /home/runner/minicond
 <p>Successive wage offers are drawn from <span class="math notranslate nohighlight">\(P\)</span>.</p>
 </section>
 <section id="rewards">
-<h3><span class="section-number">10.1.2. </span>Rewards<a class="headerlink" href="#rewards" title="Permalink to this heading">#</a></h3>
+<h3><span class="section-number">10.1.2. </span>Rewards<a class="headerlink" href="#rewards" title="Link to this heading">#</a></h3>
 <p>Since jobs are permanent, the return to accepting wage offer <span class="math notranslate nohighlight">\(w\)</span> today is</p>
 <div class="math notranslate nohighlight">
 \[
@@ -336,7 +343,7 @@ Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in /home/runner/minicond
 </section>
 </section>
 <section id="code">
-<h2><span class="section-number">10.2. </span>Code<a class="headerlink" href="#code" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">10.2. </span>Code<a class="headerlink" href="#code" title="Link to this heading">#</a></h2>
 <p>Let’s set up a <code class="docutils literal notranslate"><span class="pre">namedtuple</span></code> to store information needed to solve the model.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -348,7 +355,7 @@ Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in /home/runner/minicond
 <p>The function below holds default values and populates the <code class="docutils literal notranslate"><span class="pre">namedtuple</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">create_js_model</span><span class="p">(</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">create_js_model</span><span class="p">(</span>
         <span class="n">n</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span>       <span class="c1"># wage grid size</span>
         <span class="n">ρ</span><span class="o">=</span><span class="mf">0.9</span><span class="p">,</span>       <span class="c1"># wage persistence</span>
         <span class="n">ν</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span>       <span class="c1"># wage volatility</span>
@@ -411,7 +418,7 @@ Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in /home/runner/minicond
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jax</span><span class="o">.</span><span class="n">jit</span>
-<span class="k">def</span> <span class="nf">T</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">T</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    The Bellman operator Tv = max{e, c + β E v} with </span>
 
@@ -445,7 +452,7 @@ the value function.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jax</span><span class="o">.</span><span class="n">jit</span>
-<span class="k">def</span> <span class="nf">get_greedy</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_greedy</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
     <span class="s2">&quot;Get a v-greedy policy.&quot;</span>
     <span class="n">n</span><span class="p">,</span> <span class="n">w_vals</span><span class="p">,</span> <span class="n">P</span><span class="p">,</span> <span class="n">β</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="n">model</span>
     <span class="n">e</span> <span class="o">=</span> <span class="n">w_vals</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">β</span><span class="p">)</span>
@@ -459,7 +466,7 @@ the value function.</p>
 <p>Here’s a routine for value function iteration.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">vfi</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">10_000</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">vfi</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">10_000</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">):</span>
     <span class="s2">&quot;Solve the infinite-horizon Markov job search model by VFI.&quot;</span>
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Starting VFI iteration.&quot;</span><span class="p">)</span>
     <span class="n">v</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">w_vals</span><span class="p">)</span>    <span class="c1"># Initial guess</span>
@@ -481,7 +488,7 @@ the value function.</p>
 </div>
 </section>
 <section id="computing-the-solution">
-<h2><span class="section-number">10.3. </span>Computing the solution<a class="headerlink" href="#computing-the-solution" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">10.3. </span>Computing the solution<a class="headerlink" href="#computing-the-solution" title="Link to this heading">#</a></h2>
 <p>Let’s set up and solve the model.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -510,7 +517,8 @@ the value function.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/37f92b538d37a0b6693cccc0cd2e7cd0db6a2f95f771c4b9c52d3216c2d2ec10.png"><img alt="_images/37f92b538d37a0b6693cccc0cd2e7cd0db6a2f95f771c4b9c52d3216c2d2ec10.png" src="_images/37f92b538d37a0b6693cccc0cd2e7cd0db6a2f95f771c4b9c52d3216c2d2ec10.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/37f92b538d37a0b6693cccc0cd2e7cd0db6a2f95f771c4b9c52d3216c2d2ec10.png"><img alt="_images/37f92b538d37a0b6693cccc0cd2e7cd0db6a2f95f771c4b9c52d3216c2d2ec10.png" src="_images/37f92b538d37a0b6693cccc0cd2e7cd0db6a2f95f771c4b9c52d3216c2d2ec10.png" style="width: 80%;" />
+</a>
 </div>
 </div>
 <p>We compute the reservation wage as the first <span class="math notranslate nohighlight">\(w\)</span> such that <span class="math notranslate nohighlight">\(\sigma(w)=1\)</span>.</p>
@@ -562,12 +570,13 @@ the value function.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/72b5dbe7759fc42dc33eb063f29db1473fd7b3a472279e651707faee1acb3239.png"><img alt="_images/72b5dbe7759fc42dc33eb063f29db1473fd7b3a472279e651707faee1acb3239.png" src="_images/72b5dbe7759fc42dc33eb063f29db1473fd7b3a472279e651707faee1acb3239.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/72b5dbe7759fc42dc33eb063f29db1473fd7b3a472279e651707faee1acb3239.png"><img alt="_images/72b5dbe7759fc42dc33eb063f29db1473fd7b3a472279e651707faee1acb3239.png" src="_images/72b5dbe7759fc42dc33eb063f29db1473fd7b3a472279e651707faee1acb3239.png" style="width: 80%;" />
+</a>
 </div>
 </div>
 </section>
 <section id="exercise">
-<h2><span class="section-number">10.4. </span>Exercise<a class="headerlink" href="#exercise" title="Permalink to this heading">#</a></h2>
+<h2><span class="section-number">10.4. </span>Exercise<a class="headerlink" href="#exercise" title="Link to this heading">#</a></h2>
 <div class="exercise admonition" id="job_search_1">
 
 <p class="admonition-title"><span class="caption-number">Exercise 10.1 </span></p>
@@ -596,7 +605,7 @@ case.</p>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">RiskModel</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s1">&#39;Model&#39;</span><span class="p">,</span> <span class="p">(</span><span class="s1">&#39;n&#39;</span><span class="p">,</span> <span class="s1">&#39;w_vals&#39;</span><span class="p">,</span> <span class="s1">&#39;P&#39;</span><span class="p">,</span> <span class="s1">&#39;β&#39;</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="s1">&#39;θ&#39;</span><span class="p">))</span>
 
-<span class="k">def</span> <span class="nf">create_risk_sensitive_js_model</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">create_risk_sensitive_js_model</span><span class="p">(</span>
         <span class="n">n</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span>       <span class="c1"># wage grid size</span>
         <span class="n">ρ</span><span class="o">=</span><span class="mf">0.9</span><span class="p">,</span>       <span class="c1"># wage persistence</span>
         <span class="n">ν</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span>       <span class="c1"># wage volatility</span>
@@ -624,7 +633,7 @@ case.</p>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">RiskModel</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s1">&#39;Model&#39;</span><span class="p">,</span> <span class="p">(</span><span class="s1">&#39;n&#39;</span><span class="p">,</span> <span class="s1">&#39;w_vals&#39;</span><span class="p">,</span> <span class="s1">&#39;P&#39;</span><span class="p">,</span> <span class="s1">&#39;β&#39;</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="s1">&#39;θ&#39;</span><span class="p">))</span>
 
-<span class="k">def</span> <span class="nf">create_risk_sensitive_js_model</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">create_risk_sensitive_js_model</span><span class="p">(</span>
         <span class="n">n</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span>       <span class="c1"># wage grid size</span>
         <span class="n">ρ</span><span class="o">=</span><span class="mf">0.9</span><span class="p">,</span>       <span class="c1"># wage persistence</span>
         <span class="n">ν</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span>       <span class="c1"># wage volatility</span>
@@ -640,7 +649,7 @@ case.</p>
 
 
 <span class="nd">@jax</span><span class="o">.</span><span class="n">jit</span>
-<span class="k">def</span> <span class="nf">T_rs</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">T_rs</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    The Bellman operator Tv = max{e, c + β R v} with </span>
 
@@ -657,7 +666,7 @@ case.</p>
 
 
 <span class="nd">@jax</span><span class="o">.</span><span class="n">jit</span>
-<span class="k">def</span> <span class="nf">get_greedy_rs</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_greedy_rs</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
     <span class="s2">&quot; Get a v-greedy policy.&quot;</span>
     <span class="n">n</span><span class="p">,</span> <span class="n">w_vals</span><span class="p">,</span> <span class="n">P</span><span class="p">,</span> <span class="n">β</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">θ</span> <span class="o">=</span> <span class="n">model</span>
     <span class="n">e</span> <span class="o">=</span> <span class="n">w_vals</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">β</span><span class="p">)</span>
@@ -667,7 +676,7 @@ case.</p>
 
 
 
-<span class="k">def</span> <span class="nf">vfi</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">10_000</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">vfi</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">10_000</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">):</span>
     <span class="s2">&quot;Solve the infinite-horizon Markov job search model by VFI.&quot;</span>
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Starting VFI iteration.&quot;</span><span class="p">)</span>
     <span class="n">v</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">w_vals</span><span class="p">)</span>    <span class="c1"># Initial guess</span>
@@ -726,7 +735,8 @@ case.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/e9783e98f9243d0eacfd26651a9967a32632a0196b5280c4c558de33b37e7622.png"><img alt="_images/e9783e98f9243d0eacfd26651a9967a32632a0196b5280c4c558de33b37e7622.png" src="_images/e9783e98f9243d0eacfd26651a9967a32632a0196b5280c4c558de33b37e7622.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/e9783e98f9243d0eacfd26651a9967a32632a0196b5280c4c558de33b37e7622.png"><img alt="_images/e9783e98f9243d0eacfd26651a9967a32632a0196b5280c4c558de33b37e7622.png" src="_images/e9783e98f9243d0eacfd26651a9967a32632a0196b5280c4c558de33b37e7622.png" style="width: 80%;" />
+</a>
 </div>
 </div>
 <p>The figure shows that the reservation wage under risk sensitive preferences (RS <span class="math notranslate nohighlight">\(\bar w\)</span>) shifts down.</p>
@@ -768,6 +778,8 @@ accept the current offer, even when it’s lower.</p>
                     <p><a href="https://creativecommons.org/licenses/by-sa/4.0/"><img src="https://licensebuttons.net/l/by-sa/4.0/80x15.png"></a></p>
 
                     <p>Creative Commons License &ndash; This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International.</p>
+
+                    <p>A theme by <a href="https://quantecon.org">QuantEcon</a></p>
 
                 </footer> <!-- .page__footer -->
 
@@ -1101,7 +1113,7 @@ accept the current offer, even when it’s lower.</p>
                 function setLaunchServer() {
                   launchNotebookLink.removeAttribute("style")
                   if ( localStorage.launcherType == 'launcher-private' ) {
-                    let repoPrefix = "/jupyter/hub/user-redirect/git-pull?repo=" + repoURL + "&branch=" + branch + "&urlpath=" + urlPath;
+                    let repoPrefix = "/user-redirect/git-pull?repo=" + repoURL + "&branch=" + branch + "&urlpath=" + urlPath;
                     launcherPrivateValue = launcherPrivate.value
                     if (!launcherPrivateValue) {
                         launchNotebookLink.removeAttribute("href")

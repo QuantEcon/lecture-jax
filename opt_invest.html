@@ -1,13 +1,12 @@
 
-
 <!DOCTYPE html>
 
 
-<html lang="en" data-content_root="" >
+<html lang="en" data-content_root="./" >
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>14. Optimal Investment &#8212; Quantitative Economics with Python using JAX</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
@@ -70,14 +69,14 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=bd0785fbb14d8d2bd4d9ae501d79ed8d3bc089ec" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
-    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
-    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
-    <link rel="stylesheet" type="text/css" href="_static/exercise.css" />
-    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.5ea377869091fd0449014c60fc090103.min.css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="_static/exercise.css?v=982b99e0" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
@@ -85,22 +84,21 @@
   <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
 
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-    <script src="_static/jquery.js"></script>
-    <script src="_static/underscore.js"></script>
-    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="_static/doctools.js"></script>
-    <script src="_static/sphinx_highlight.js"></script>
-    <script src="_static/clipboard.min.js"></script>
-    <script src="_static/copybutton.js"></script>
+    <script src="_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
     <script src="_static/scripts/sphinx-book-theme.js"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="_static/togglebutton.js"></script>
-    <script src="_static/scripts/quantecon-book-theme.js?digest=d6d86bce9979111653c4c495e33499e1796e172a"></script>
+    <script src="_static/togglebutton.js?v=4a39c7ea"></script>
+    <script src="_static/scripts/quantecon-book-theme.js?digest=d9faaf6c4b57726f74ba012412af1f5681bdff87"></script>
+    <script src="_static/scripts/jquery.js?v=5d32c60e"></script>
+    <script src="_static/scripts/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script src="_static/design-tabs.js"></script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
     <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-K1NYBSC1CZ"></script>
     <script>
                 window.dataLayer = window.dataLayer || [];
@@ -109,12 +107,20 @@
                 gtag('config', 'G-K1NYBSC1CZ');
             </script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-K1NYBSC1CZ');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script>window.MathJax = {"tex": {"macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'opt_invest';</script>
     <link rel="canonical" href="https://jax.quantecon.org/opt_invest.html" />
-    <link rel="shortcut icon" href="_static/lectures-favicon.ico"/>
+    <link rel="icon" href="_static/lectures-favicon.ico"/>
     <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -146,6 +152,7 @@
   </head>
 <body>
 
+<!-- Override QuantEcon theme colors -->
 
     <span id="top"></span>
 
@@ -222,7 +229,7 @@
                     <div>
                         
   <section class="tex2jax_ignore mathjax_ignore" id="optimal-investment">
-<h1><span class="section-number">14. </span>Optimal Investment<a class="headerlink" href="#optimal-investment" title="Permalink to this heading">#</a></h1>
+<h1><span class="section-number">14. </span>Optimal Investment<a class="headerlink" href="#optimal-investment" title="Link to this heading">#</a></h1>
 <div class="warning admonition">
 <p class="admonition-title">GPU</p>
 <p>This lecture was built using a machine with JAX installed and access to a GPU.</p>
@@ -236,13 +243,13 @@
 </pre></div>
 </div>
 </div>
-<details class="hide below-input">
+<details class="admonition hide below-input">
 <summary aria-label="Toggle hidden content">
-<span class="collapsed">Show code cell output</span>
-<span class="expanded">Hide code cell output</span>
+<p class="collapsed admonition-title">Show code cell output</p>
+<p class="expanded admonition-title">Hide code cell output</p>
 </summary>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (0.8.1)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (0.8.2)
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: numba&gt;=0.49.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from quantecon) (0.60.0)
@@ -287,11 +294,11 @@ P_t = a_0 - a_1 Y_t + Z_t,
 <p>Let’s begin with the following imports</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">quantecon</span> <span class="k">as</span> <span class="nn">qe</span>
-<span class="kn">import</span> <span class="nn">jax</span>
-<span class="kn">import</span> <span class="nn">jax.numpy</span> <span class="k">as</span> <span class="nn">jnp</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">time</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">quantecon</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">qe</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">jax</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">jax.numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">jnp</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">time</span><span class="w"> </span><span class="kn">import</span> <span class="n">time</span>
 </pre></div>
 </div>
 </div>
@@ -304,7 +311,7 @@ P_t = a_0 - a_1 Y_t + Z_t,
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Mon Jun 23 04:24:31 2025       
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Mon Aug  4 04:35:54 2025       
 +-----------------------------------------------------------------------------------------+
 | NVIDIA-SMI 575.51.03              Driver Version: 575.51.03      CUDA Version: 12.9     |
 |-----------------------------------------+------------------------+----------------------+
@@ -313,7 +320,7 @@ P_t = a_0 - a_1 Y_t + Z_t,
 |                                         |                        |               MIG M. |
 |=========================================+========================+======================|
 |   0  Tesla T4                       Off |   00000000:00:1E.0 Off |                    0 |
-| N/A   32C    P8              9W /   70W |       0MiB /  15360MiB |      0%      Default |
+| N/A   34C    P8             14W /   70W |       0MiB /  15360MiB |      0%      Default |
 |                                         |                        |                  N/A |
 +-----------------------------------------+------------------------+----------------------+
                                                                                          
@@ -339,7 +346,7 @@ P_t = a_0 - a_1 Y_t + Z_t,
 <p>Let’s define a function to create an investment model using the given parameters.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">create_investment_model</span><span class="p">(</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">create_investment_model</span><span class="p">(</span>
         <span class="n">r</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span>                              <span class="c1"># Interest rate</span>
         <span class="n">a_0</span><span class="o">=</span><span class="mf">10.0</span><span class="p">,</span> <span class="n">a_1</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>                   <span class="c1"># Demand parameters</span>
         <span class="n">γ</span><span class="o">=</span><span class="mf">25.0</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>                       <span class="c1"># Adjustment and unit cost</span>
@@ -376,7 +383,7 @@ Bellman equation (before maximization), which is a 3D array representing</p>
 <p>for all <span class="math notranslate nohighlight">\((y, z, y')\)</span>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">B</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">constants</span><span class="p">,</span> <span class="n">sizes</span><span class="p">,</span> <span class="n">arrays</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">B</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">constants</span><span class="p">,</span> <span class="n">sizes</span><span class="p">,</span> <span class="n">arrays</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A vectorized version of the right-hand side of the Bellman equation</span>
 <span class="sd">    (before maximization)</span>
@@ -413,7 +420,7 @@ which is defined as the vector</p>
 \[ r_\sigma(y, z) := r(y, z, \sigma(y, z)) \]</div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">compute_r_σ</span><span class="p">(</span><span class="n">σ</span><span class="p">,</span> <span class="n">constants</span><span class="p">,</span> <span class="n">sizes</span><span class="p">,</span> <span class="n">arrays</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">compute_r_σ</span><span class="p">(</span><span class="n">σ</span><span class="p">,</span> <span class="n">constants</span><span class="p">,</span> <span class="n">sizes</span><span class="p">,</span> <span class="n">arrays</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Compute the array r_σ[i, j] = r[i, j, σ[i, j]], which gives current</span>
 <span class="sd">    rewards given policy σ.</span>
@@ -442,7 +449,7 @@ which is defined as the vector</p>
 <p>Define the Bellman operator.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">T</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">constants</span><span class="p">,</span> <span class="n">sizes</span><span class="p">,</span> <span class="n">arrays</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">T</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">constants</span><span class="p">,</span> <span class="n">sizes</span><span class="p">,</span> <span class="n">arrays</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;The Bellman operator.&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">jnp</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">B</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">constants</span><span class="p">,</span> <span class="n">sizes</span><span class="p">,</span> <span class="n">arrays</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 
@@ -454,7 +461,7 @@ which is defined as the vector</p>
 <p>The following function computes a v-greedy policy.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_greedy</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">constants</span><span class="p">,</span> <span class="n">sizes</span><span class="p">,</span> <span class="n">arrays</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">get_greedy</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">constants</span><span class="p">,</span> <span class="n">sizes</span><span class="p">,</span> <span class="n">arrays</span><span class="p">):</span>
     <span class="s2">&quot;Computes a v-greedy policy, returned as a set of indices.&quot;</span>
     <span class="k">return</span> <span class="n">jnp</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">B</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">constants</span><span class="p">,</span> <span class="n">sizes</span><span class="p">,</span> <span class="n">arrays</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 
@@ -466,7 +473,7 @@ which is defined as the vector</p>
 <p>Define the <span class="math notranslate nohighlight">\(\sigma\)</span>-policy operator.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">T_σ</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">σ</span><span class="p">,</span> <span class="n">constants</span><span class="p">,</span> <span class="n">sizes</span><span class="p">,</span> <span class="n">arrays</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">T_σ</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">σ</span><span class="p">,</span> <span class="n">constants</span><span class="p">,</span> <span class="n">sizes</span><span class="p">,</span> <span class="n">arrays</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;The σ-policy operator.&quot;&quot;&quot;</span>
 
     <span class="c1"># Unpack model</span>
@@ -516,7 +523,7 @@ we seek is</p>
 step is to define the function <span class="math notranslate nohighlight">\(L_{\sigma}\)</span>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">L_σ</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">σ</span><span class="p">,</span> <span class="n">constants</span><span class="p">,</span> <span class="n">sizes</span><span class="p">,</span> <span class="n">arrays</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">L_σ</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">σ</span><span class="p">,</span> <span class="n">constants</span><span class="p">,</span> <span class="n">sizes</span><span class="p">,</span> <span class="n">arrays</span><span class="p">):</span>
 
     <span class="n">β</span><span class="p">,</span> <span class="n">a_0</span><span class="p">,</span> <span class="n">a_1</span><span class="p">,</span> <span class="n">γ</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="n">constants</span>
     <span class="n">y_size</span><span class="p">,</span> <span class="n">z_size</span> <span class="o">=</span> <span class="n">sizes</span>
@@ -542,7 +549,7 @@ step is to define the function <span class="math notranslate nohighlight">\(L_{\
 <p>Now we can define a function to compute <span class="math notranslate nohighlight">\(v_{\sigma}\)</span></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_value</span><span class="p">(</span><span class="n">σ</span><span class="p">,</span> <span class="n">constants</span><span class="p">,</span> <span class="n">sizes</span><span class="p">,</span> <span class="n">arrays</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">get_value</span><span class="p">(</span><span class="n">σ</span><span class="p">,</span> <span class="n">constants</span><span class="p">,</span> <span class="n">sizes</span><span class="p">,</span> <span class="n">arrays</span><span class="p">):</span>
 
     <span class="c1"># Unpack</span>
     <span class="n">β</span><span class="p">,</span> <span class="n">a_0</span><span class="p">,</span> <span class="n">a_1</span><span class="p">,</span> <span class="n">γ</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="n">constants</span>
@@ -564,17 +571,17 @@ step is to define the function <span class="math notranslate nohighlight">\(L_{\
 <p>We use successive approximation for VFI.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">successive_approx_jax</span><span class="p">(</span><span class="n">T</span><span class="p">,</span>                     <span class="c1"># Operator (callable)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">successive_approx_jax</span><span class="p">(</span><span class="n">T</span><span class="p">,</span>                     <span class="c1"># Operator (callable)</span>
                           <span class="n">x_0</span><span class="p">,</span>                   <span class="c1"># Initial condition                </span>
                           <span class="n">tol</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">,</span>              <span class="c1"># Error tolerance</span>
                           <span class="n">max_iter</span><span class="o">=</span><span class="mi">10_000</span><span class="p">):</span>      <span class="c1"># Max iteration bound</span>
-    <span class="k">def</span> <span class="nf">body_fun</span><span class="p">(</span><span class="n">k_x_err</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">body_fun</span><span class="p">(</span><span class="n">k_x_err</span><span class="p">):</span>
         <span class="n">k</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">error</span> <span class="o">=</span> <span class="n">k_x_err</span>
         <span class="n">x_new</span> <span class="o">=</span> <span class="n">T</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
         <span class="n">error</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">x_new</span> <span class="o">-</span> <span class="n">x</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">x_new</span><span class="p">,</span> <span class="n">error</span>
 
-    <span class="k">def</span> <span class="nf">cond_fun</span><span class="p">(</span><span class="n">k_x_err</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">cond_fun</span><span class="p">(</span><span class="n">k_x_err</span><span class="p">):</span>
         <span class="n">k</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">error</span> <span class="o">=</span> <span class="n">k_x_err</span>
         <span class="k">return</span> <span class="n">jnp</span><span class="o">.</span><span class="n">logical_and</span><span class="p">(</span><span class="n">error</span> <span class="o">&gt;</span> <span class="n">tol</span><span class="p">,</span> <span class="n">k</span> <span class="o">&lt;</span> <span class="n">max_iter</span><span class="p">)</span>
 
@@ -589,9 +596,9 @@ step is to define the function <span class="math notranslate nohighlight">\(L_{\
 <p>For OPI we’ll add a compiled routine that computes <span class="math notranslate nohighlight">\(T_σ^m v\)</span>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">iterate_policy_operator</span><span class="p">(</span><span class="n">σ</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">sizes</span><span class="p">,</span> <span class="n">arrays</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">iterate_policy_operator</span><span class="p">(</span><span class="n">σ</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">sizes</span><span class="p">,</span> <span class="n">arrays</span><span class="p">):</span>
 
-    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">update</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
         <span class="n">v</span> <span class="o">=</span> <span class="n">T_σ</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">σ</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">sizes</span><span class="p">,</span> <span class="n">arrays</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">v</span>
     
@@ -607,7 +614,7 @@ step is to define the function <span class="math notranslate nohighlight">\(L_{\
 <p>Finally, we introduce the solvers that implement VFI, HPI and OPI.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">value_function_iteration</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">value_function_iteration</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Implements value function iteration.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -623,7 +630,7 @@ step is to define the function <span class="math notranslate nohighlight">\(L_{\
 <p>For OPI we will use a compiled JAX <code class="docutils literal notranslate"><span class="pre">lax.while_loop</span></code> operation to speed execution.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">opi_loop</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">sizes</span><span class="p">,</span> <span class="n">arrays</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">tol</span><span class="p">,</span> <span class="n">max_iter</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">opi_loop</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">sizes</span><span class="p">,</span> <span class="n">arrays</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">tol</span><span class="p">,</span> <span class="n">max_iter</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Implements optimistic policy iteration (see dp.quantecon.org) with </span>
 <span class="sd">    step size m.</span>
@@ -631,11 +638,11 @@ step is to define the function <span class="math notranslate nohighlight">\(L_{\
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">v_init</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">sizes</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">condition_function</span><span class="p">(</span><span class="n">inputs</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">condition_function</span><span class="p">(</span><span class="n">inputs</span><span class="p">):</span>
         <span class="n">i</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">error</span> <span class="o">=</span> <span class="n">inputs</span>
         <span class="k">return</span> <span class="n">jnp</span><span class="o">.</span><span class="n">logical_and</span><span class="p">(</span><span class="n">error</span> <span class="o">&gt;</span> <span class="n">tol</span><span class="p">,</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">max_iter</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="n">inputs</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">update</span><span class="p">(</span><span class="n">inputs</span><span class="p">):</span>
         <span class="n">i</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">error</span> <span class="o">=</span> <span class="n">inputs</span>
         <span class="n">last_v</span> <span class="o">=</span> <span class="n">v</span>
         <span class="n">σ</span> <span class="o">=</span> <span class="n">get_greedy</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">sizes</span><span class="p">,</span> <span class="n">arrays</span><span class="p">)</span>
@@ -658,7 +665,7 @@ step is to define the function <span class="math notranslate nohighlight">\(L_{\
 <p>Here’s a friendly interface to OPI</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">optimistic_policy_iteration</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">10_000</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">optimistic_policy_iteration</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">10_000</span><span class="p">):</span>
     <span class="n">params</span><span class="p">,</span> <span class="n">sizes</span><span class="p">,</span> <span class="n">arrays</span> <span class="o">=</span> <span class="n">model</span>
     <span class="n">σ_star</span> <span class="o">=</span> <span class="n">opi_loop</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">sizes</span><span class="p">,</span> <span class="n">arrays</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">tol</span><span class="p">,</span> <span class="n">max_iter</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">σ_star</span>
@@ -669,7 +676,7 @@ step is to define the function <span class="math notranslate nohighlight">\(L_{\
 <p>Here’s HPI</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">howard_policy_iteration</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">maxiter</span><span class="o">=</span><span class="mi">250</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">howard_policy_iteration</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">maxiter</span><span class="o">=</span><span class="mi">250</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Implements Howard policy iteration (see dp.quantecon.org)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -706,10 +713,10 @@ step is to define the function <span class="math notranslate nohighlight">\(L_{\
 </pre></div>
 </div>
 </div>
-<details class="hide below-input">
+<details class="admonition hide below-input">
 <summary aria-label="Toggle hidden content">
-<span class="collapsed">Show code cell output</span>
-<span class="expanded">Hide code cell output</span>
+<p class="collapsed admonition-title">Show code cell output</p>
+<p class="expanded admonition-title">Hide code cell output</p>
 </summary>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Starting HPI.
@@ -726,11 +733,9 @@ Concluded loop 8 with error 1.
 Concluded loop 9 with error 1.
 Concluded loop 10 with error 1.
 Concluded loop 11 with error 1.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Concluded loop 12 with error 0.
-CPU times: user 821 ms, sys: 94.6 ms, total: 916 ms
-Wall time: 1.07 s
+Concluded loop 12 with error 0.
+CPU times: user 760 ms, sys: 94.3 ms, total: 855 ms
+Wall time: 987 ms
 </pre></div>
 </div>
 </div>
@@ -751,7 +756,9 @@ Wall time: 1.07 s
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Concluded loop 1 with error 50.
 Concluded loop 2 with error 26.
 Concluded loop 3 with error 17.
-Concluded loop 4 with error 10.
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Concluded loop 4 with error 10.
 Concluded loop 5 with error 7.
 Concluded loop 6 with error 4.
 Concluded loop 7 with error 3.
@@ -767,7 +774,7 @@ Concluded loop 12 with error 0.
  [82 82 82 ... 86 86 86]
  [83 83 83 ... 86 86 86]
  [84 84 84 ... 87 87 87]]
-HPI completed in 0.15286850929260254 seconds.
+HPI completed in 0.12793374061584473 seconds.
 </pre></div>
 </div>
 </div>
@@ -789,13 +796,14 @@ HPI completed in 0.15286850929260254 seconds.
 &lt;&gt;:4: SyntaxWarning: invalid escape sequence &#39;\c&#39;
 &lt;&gt;:3: SyntaxWarning: invalid escape sequence &#39;\c&#39;
 &lt;&gt;:4: SyntaxWarning: invalid escape sequence &#39;\c&#39;
-/tmp/ipykernel_6099/2467401157.py:3: SyntaxWarning: invalid escape sequence &#39;\c&#39;
+/tmp/ipykernel_48293/2467401157.py:3: SyntaxWarning: invalid escape sequence &#39;\c&#39;
   ax.plot(y_grid, y_grid[σ_star_hpi[:, 1]], label=&quot;$\\sigma^{*}_{HPI}(\cdot, z_1)$&quot;)
-/tmp/ipykernel_6099/2467401157.py:4: SyntaxWarning: invalid escape sequence &#39;\c&#39;
+/tmp/ipykernel_48293/2467401157.py:4: SyntaxWarning: invalid escape sequence &#39;\c&#39;
   ax.plot(y_grid, y_grid[σ_star_hpi[:, -1]], label=&quot;$\\sigma^{*}_{HPI}(\cdot, z_N)$&quot;)
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="_images/6848b2edbadd317c88e9cbcb9258d3c0d5df6c9d2e54ab5fac6d6029f88e6013.png"><img alt="_images/6848b2edbadd317c88e9cbcb9258d3c0d5df6c9d2e54ab5fac6d6029f88e6013.png" src="_images/6848b2edbadd317c88e9cbcb9258d3c0d5df6c9d2e54ab5fac6d6029f88e6013.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/6848b2edbadd317c88e9cbcb9258d3c0d5df6c9d2e54ab5fac6d6029f88e6013.png"><img alt="_images/6848b2edbadd317c88e9cbcb9258d3c0d5df6c9d2e54ab5fac6d6029f88e6013.png" src="_images/6848b2edbadd317c88e9cbcb9258d3c0d5df6c9d2e54ab5fac6d6029f88e6013.png" style="width: 80%;" />
+</a>
 </div>
 </div>
 <div class="cell tag_hide-output docutils container">
@@ -805,17 +813,17 @@ HPI completed in 0.15286850929260254 seconds.
 </pre></div>
 </div>
 </div>
-<details class="hide below-input">
+<details class="admonition hide below-input">
 <summary aria-label="Toggle hidden content">
-<span class="collapsed">Show code cell output</span>
-<span class="expanded">Hide code cell output</span>
+<p class="collapsed admonition-title">Show code cell output</p>
+<p class="expanded admonition-title">Hide code cell output</p>
 </summary>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Starting VFI.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 565 ms, sys: 3.95 ms, total: 569 ms
-Wall time: 634 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 573 ms, sys: 9.92 ms, total: 583 ms
+Wall time: 647 ms
 </pre></div>
 </div>
 </div>
@@ -840,7 +848,7 @@ Wall time: 634 ms
  [82 82 82 ... 86 86 86]
  [83 83 83 ... 86 86 86]
  [84 84 84 ... 87 87 87]]
-VFI completed in 0.5748927593231201 seconds.
+VFI completed in 0.5886328220367432 seconds.
 </pre></div>
 </div>
 </div>
@@ -862,13 +870,14 @@ VFI completed in 0.5748927593231201 seconds.
 &lt;&gt;:4: SyntaxWarning: invalid escape sequence &#39;\c&#39;
 &lt;&gt;:3: SyntaxWarning: invalid escape sequence &#39;\c&#39;
 &lt;&gt;:4: SyntaxWarning: invalid escape sequence &#39;\c&#39;
-/tmp/ipykernel_6099/2642608191.py:3: SyntaxWarning: invalid escape sequence &#39;\c&#39;
+/tmp/ipykernel_48293/2642608191.py:3: SyntaxWarning: invalid escape sequence &#39;\c&#39;
   ax.plot(y_grid, y_grid[σ_star_vfi[:, 1]], label=&quot;$\\sigma^{*}_{VFI}(\cdot, z_1)$&quot;)
-/tmp/ipykernel_6099/2642608191.py:4: SyntaxWarning: invalid escape sequence &#39;\c&#39;
+/tmp/ipykernel_48293/2642608191.py:4: SyntaxWarning: invalid escape sequence &#39;\c&#39;
   ax.plot(y_grid, y_grid[σ_star_vfi[:, -1]], label=&quot;$\\sigma^{*}_{VFI}(\cdot, z_N)$&quot;)
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="_images/4050a83e012f3ebb79b933310e4e28976575e79714e11f9ac1def7dd8115906f.png"><img alt="_images/4050a83e012f3ebb79b933310e4e28976575e79714e11f9ac1def7dd8115906f.png" src="_images/4050a83e012f3ebb79b933310e4e28976575e79714e11f9ac1def7dd8115906f.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/4050a83e012f3ebb79b933310e4e28976575e79714e11f9ac1def7dd8115906f.png"><img alt="_images/4050a83e012f3ebb79b933310e4e28976575e79714e11f9ac1def7dd8115906f.png" src="_images/4050a83e012f3ebb79b933310e4e28976575e79714e11f9ac1def7dd8115906f.png" style="width: 80%;" />
+</a>
 </div>
 </div>
 <div class="cell tag_hide-output docutils container">
@@ -878,17 +887,17 @@ VFI completed in 0.5748927593231201 seconds.
 </pre></div>
 </div>
 </div>
-<details class="hide below-input">
+<details class="admonition hide below-input">
 <summary aria-label="Toggle hidden content">
-<span class="collapsed">Show code cell output</span>
-<span class="expanded">Hide code cell output</span>
+<p class="collapsed admonition-title">Show code cell output</p>
+<p class="expanded admonition-title">Hide code cell output</p>
 </summary>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Starting OPI.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 489 ms, sys: 17.5 ms, total: 507 ms
-Wall time: 550 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 500 ms, sys: 18.2 ms, total: 519 ms
+Wall time: 561 ms
 </pre></div>
 </div>
 </div>
@@ -913,7 +922,7 @@ Wall time: 550 ms
  [82 82 82 ... 86 86 86]
  [83 83 83 ... 86 86 86]
  [84 84 84 ... 87 87 87]]
-OPI completed in 0.20335054397583008 seconds.
+OPI completed in 0.2048783302307129 seconds.
 </pre></div>
 </div>
 </div>
@@ -935,13 +944,14 @@ OPI completed in 0.20335054397583008 seconds.
 &lt;&gt;:4: SyntaxWarning: invalid escape sequence &#39;\c&#39;
 &lt;&gt;:3: SyntaxWarning: invalid escape sequence &#39;\c&#39;
 &lt;&gt;:4: SyntaxWarning: invalid escape sequence &#39;\c&#39;
-/tmp/ipykernel_6099/3367176246.py:3: SyntaxWarning: invalid escape sequence &#39;\c&#39;
+/tmp/ipykernel_48293/3367176246.py:3: SyntaxWarning: invalid escape sequence &#39;\c&#39;
   ax.plot(y_grid, y_grid[σ_star_opi[:, 1]], label=&quot;$\\sigma^{*}_{OPI}(\cdot, z_1)$&quot;)
-/tmp/ipykernel_6099/3367176246.py:4: SyntaxWarning: invalid escape sequence &#39;\c&#39;
+/tmp/ipykernel_48293/3367176246.py:4: SyntaxWarning: invalid escape sequence &#39;\c&#39;
   ax.plot(y_grid, y_grid[σ_star_opi[:, -1]], label=&quot;$\\sigma^{*}_{OPI}(\cdot, z_N)$&quot;)
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="_images/30d79d533cdfd0fcd9e61a09ac98e40303c33d2d41670171fc386bc91f6faa17.png"><img alt="_images/30d79d533cdfd0fcd9e61a09ac98e40303c33d2d41670171fc386bc91f6faa17.png" src="_images/30d79d533cdfd0fcd9e61a09ac98e40303c33d2d41670171fc386bc91f6faa17.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/30d79d533cdfd0fcd9e61a09ac98e40303c33d2d41670171fc386bc91f6faa17.png"><img alt="_images/30d79d533cdfd0fcd9e61a09ac98e40303c33d2d41670171fc386bc91f6faa17.png" src="_images/30d79d533cdfd0fcd9e61a09ac98e40303c33d2d41670171fc386bc91f6faa17.png" style="width: 80%;" />
+</a>
 </div>
 </div>
 <p>We observe that all the solvers produce the same output from the above three plots.</p>
@@ -965,10 +975,10 @@ OPI completed in 0.20335054397583008 seconds.
 Concluded loop 1 with error 50.
 Concluded loop 2 with error 26.
 Concluded loop 3 with error 17.
-Concluded loop 4 with error 10.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Concluded loop 5 with error 7.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Concluded loop 4 with error 10.
+Concluded loop 5 with error 7.
 Concluded loop 6 with error 4.
 Concluded loop 7 with error 3.
 Concluded loop 8 with error 1.
@@ -976,8 +986,8 @@ Concluded loop 9 with error 1.
 Concluded loop 10 with error 1.
 Concluded loop 11 with error 1.
 Concluded loop 12 with error 0.
-CPU times: user 123 ms, sys: 5.23 ms, total: 128 ms
-Wall time: 110 ms
+CPU times: user 109 ms, sys: 6.45 ms, total: 116 ms
+Wall time: 97.2 ms
 </pre></div>
 </div>
 </div>
@@ -1002,12 +1012,10 @@ Concluded loop 6 with error 4.
 Concluded loop 7 with error 3.
 Concluded loop 8 with error 1.
 Concluded loop 9 with error 1.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Concluded loop 10 with error 1.
+Concluded loop 10 with error 1.
 Concluded loop 11 with error 1.
 Concluded loop 12 with error 0.
-HPI completed in 0.10975003242492676 seconds.
+HPI completed in 0.09655499458312988 seconds.
 </pre></div>
 </div>
 </div>
@@ -1023,8 +1031,8 @@ HPI completed in 0.10975003242492676 seconds.
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Running value function iteration.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 517 ms, sys: 5.81 ms, total: 523 ms
-Wall time: 575 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 534 ms, sys: 7.69 ms, total: 542 ms
+Wall time: 595 ms
 </pre></div>
 </div>
 </div>
@@ -1040,7 +1048,7 @@ Wall time: 575 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>VFI completed in 0.5742273330688477 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>VFI completed in 0.5928523540496826 seconds.
 </pre></div>
 </div>
 </div>
@@ -1061,72 +1069,72 @@ Wall time: 575 ms
 </pre></div>
 </div>
 </div>
-<details class="hide below-input">
+<details class="admonition hide below-input">
 <summary aria-label="Toggle hidden content">
-<span class="collapsed">Show code cell output</span>
-<span class="expanded">Hide code cell output</span>
+<p class="collapsed admonition-title">Show code cell output</p>
+<p class="expanded admonition-title">Hide code cell output</p>
 </summary>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Running optimistic policy iteration with m=5.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OPI with m=5 completed in 0.24304604530334473 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OPI with m=5 completed in 0.2444136142730713 seconds.
 Running optimistic policy iteration with m=45.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OPI with m=45 completed in 0.18910646438598633 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OPI with m=45 completed in 0.18993306159973145 seconds.
 Running optimistic policy iteration with m=85.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OPI with m=85 completed in 0.19819855690002441 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OPI with m=85 completed in 0.19892525672912598 seconds.
 Running optimistic policy iteration with m=125.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OPI with m=125 completed in 0.20413756370544434 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OPI with m=125 completed in 0.2049868106842041 seconds.
 Running optimistic policy iteration with m=165.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OPI with m=165 completed in 0.22079682350158691 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OPI with m=165 completed in 0.2216043472290039 seconds.
 Running optimistic policy iteration with m=205.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OPI with m=205 completed in 0.2535562515258789 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OPI with m=205 completed in 0.25429439544677734 seconds.
 Running optimistic policy iteration with m=245.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OPI with m=245 completed in 0.2787160873413086 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OPI with m=245 completed in 0.2799994945526123 seconds.
 Running optimistic policy iteration with m=285.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OPI with m=285 completed in 0.29689764976501465 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OPI with m=285 completed in 0.2979261875152588 seconds.
 Running optimistic policy iteration with m=325.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OPI with m=325 completed in 0.33789706230163574 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OPI with m=325 completed in 0.33911776542663574 seconds.
 Running optimistic policy iteration with m=365.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OPI with m=365 completed in 0.3797309398651123 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OPI with m=365 completed in 0.3821980953216553 seconds.
 Running optimistic policy iteration with m=405.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OPI with m=405 completed in 0.42128539085388184 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OPI with m=405 completed in 0.42177367210388184 seconds.
 Running optimistic policy iteration with m=445.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OPI with m=445 completed in 0.46169424057006836 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OPI with m=445 completed in 0.4631619453430176 seconds.
 Running optimistic policy iteration with m=485.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OPI with m=485 completed in 0.5030300617218018 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OPI with m=485 completed in 0.5041661262512207 seconds.
 Running optimistic policy iteration with m=525.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OPI with m=525 completed in 0.5441901683807373 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OPI with m=525 completed in 0.5473690032958984 seconds.
 Running optimistic policy iteration with m=565.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OPI with m=565 completed in 0.5845201015472412 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OPI with m=565 completed in 0.5887265205383301 seconds.
 </pre></div>
 </div>
 </div>
@@ -1148,7 +1156,8 @@ Running optimistic policy iteration with m=565.
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/9a0442d27cc41337d0e692e956397a81484896f5a0354b309834e0a9d0a1761d.png"><img alt="_images/9a0442d27cc41337d0e692e956397a81484896f5a0354b309834e0a9d0a1761d.png" src="_images/9a0442d27cc41337d0e692e956397a81484896f5a0354b309834e0a9d0a1761d.png" style="width: 80%;" /></a>
+<a class="reference internal image-reference" href="_images/430040200486ec47fb1b1f4f4837f73e4fe68b57ec09656c343ad126ea97eed5.png"><img alt="_images/430040200486ec47fb1b1f4f4837f73e4fe68b57ec09656c343ad126ea97eed5.png" src="_images/430040200486ec47fb1b1f4f4837f73e4fe68b57ec09656c343ad126ea97eed5.png" style="width: 80%;" />
+</a>
 </div>
 </div>
 </section>
@@ -1184,6 +1193,8 @@ Running optimistic policy iteration with m=565.
                     <p><a href="https://creativecommons.org/licenses/by-sa/4.0/"><img src="https://licensebuttons.net/l/by-sa/4.0/80x15.png"></a></p>
 
                     <p>Creative Commons License &ndash; This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International.</p>
+
+                    <p>A theme by <a href="https://quantecon.org">QuantEcon</a></p>
 
                 </footer> <!-- .page__footer -->
 
@@ -1517,7 +1528,7 @@ Running optimistic policy iteration with m=565.
                 function setLaunchServer() {
                   launchNotebookLink.removeAttribute("style")
                   if ( localStorage.launcherType == 'launcher-private' ) {
-                    let repoPrefix = "/jupyter/hub/user-redirect/git-pull?repo=" + repoURL + "&branch=" + branch + "&urlpath=" + urlPath;
+                    let repoPrefix = "/user-redirect/git-pull?repo=" + repoURL + "&branch=" + branch + "&urlpath=" + urlPath;
                     launcherPrivateValue = launcherPrivate.value
                     if (!launcherPrivateValue) {
                         launchNotebookLink.removeAttribute("href")
