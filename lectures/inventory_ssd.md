@@ -4,7 +4,8 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.17.2
+    jupytext_version: 1.17.1
+  formats: md:myst,ipynb
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -208,22 +209,27 @@ class Model(NamedTuple):
 def create_sdd_inventory_model(
         ρ: float = 0.98,     # Exogenous state autocorrelation parameter
         ν: float = 0.002,    # Exogenous state volatility parameter
-        n_z: int = 10,      # Exogenous state discretization size
+        n_z: int = 10,       # Exogenous state discretization size
         b: float = 0.97,     # Exogenous state offset
         K: int = 100,        # Max inventory
         D_MAX: int = 101,    # Demand upper bound for summation
         p: float = 0.6       
     ) -> Model:
+    
     # Demand
     def demand_pdf(p, d):
         return (1 - p)**d * p
+        
     d_values = jnp.arange(D_MAX)
     ϕ_values = demand_pdf(p, d_values)
+    
     # Exogenous state process
     mc = qe.tauchen(n_z, ρ, ν)
     z_values, Q = map(jnp.array, (mc.state_values + b, mc.P))
+    
     # Endogenous state
     x_values = jnp.arange(K + 1)   # 0, 1, ..., K
+    
     return Model(
         z_values=z_values, Q=Q, 
         x_values=x_values, d_values=d_values, ϕ_values=ϕ_values,
@@ -242,15 +248,14 @@ def B(x, z_idx, v, model):
         B(x, z, a, v) = r(x, a) + β(z) Σ_x′ v(x′) P(x, a, x′)
 
     for all possible choices of a.
-
     """
+    
     z_values, Q, x_values, d_values, ϕ_values, p, c, κ = model
     z = z_values[z_idx]
 
     def _B(a):
         """
         Returns r(x, a) + β(z) Σ_x′ v(x′) P(x, a, x′) for each a.
-
         """
         revenue = jnp.sum(jnp.minimum(x, d_values) * ϕ_values)
         profit = revenue - c * a - κ * (a > 0)
@@ -261,6 +266,7 @@ def B(x, z_idx, v, model):
     a_values = x_values   # Set of possible order sizes
     B_values = jax.vmap(_B)(a_values)
     max_x = len(x_values) - 1
+    
     return jnp.where(a_values <= max_x - x, B_values, -jnp.inf)
 ```
 
@@ -268,10 +274,6 @@ We need to vectorize this function so that we can use it efficiently in JAX.
 
 We apply a sequence of `vmap` operations to vectorize appropriately in each
 argument.
-
-```{code-cell} ipython3
-
-```
 
 ```{code-cell} ipython3
 B = jax.vmap(B, in_axes=(None, 0, None, None))
@@ -341,9 +343,12 @@ v_init = jnp.zeros((n_x, n_z), dtype=float)
 ```{code-cell} ipython3
 start = time()
 v_star, σ_star = solve_inventory_model(v_init, model)
-v_star.block_until_ready()  # Pause until execution finishes
+
+# Pause until execution finishes
+jax.tree_util.tree_map(lambda x: x.block_until_ready(), (v_star, σ_star))
+
 jax_time_with_compile = time() - start
-print("Jax compile plus execution time = ", jax_time_with_compile)
+print(f"compile plus execution time = {jax_time_with_compile * 1000:.6f} ms")
 ```
 
 Let's run again to get rid of the compile time.
@@ -351,9 +356,12 @@ Let's run again to get rid of the compile time.
 ```{code-cell} ipython3
 start = time()
 v_star, σ_star = solve_inventory_model(v_init, model)
-v_star.block_until_ready()  # Pause until execution finishes
+
+# Pause until execution finishes
+jax.tree_util.tree_map(lambda x: x.block_until_ready(), (v_star, σ_star))
+
 jax_time_without_compile = time() - start
-print("Jax execution time = ", jax_time_without_compile)
+print(f"execution time = {jax_time_without_compile * 1000:.6f} ms")
 ```
 
 Now let's do a simulation.
@@ -372,12 +380,15 @@ Here's code to simulate inventories
 def sim_inventories(ts_length, X_init=0):
     """Simulate given the optimal policy."""
     global p, z_mc
+    
     z_idx = z_mc.simulate_indices(ts_length, init=1)
     X = np.zeros(ts_length, dtype=np.int32)
     X[0] = X_init
     rand = np.random.default_rng().geometric(p=p, size=ts_length-1) - 1
+    
     for t in range(ts_length-1):
         X[t+1] = np.maximum(X[t] - rand[t], 0) + σ_star[X[t], z_idx[t]]
+        
     return X, z_values[z_idx]
 ```
 
