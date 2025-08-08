@@ -21,6 +21,19 @@ This table contains the latest execution statistics.
 These lectures are built on `linux` instances through `github actions` that has 
 access to a `gpu`. These lectures make use of the nvidia `T4` card.
 
+These lectures are using the following python version
+
+```{code-cell} ipython
+!python --version
+```
+
+and the following package versions
+
+```{code-cell} ipython
+:tags: [hide-output]
+!conda list
+```
+
 You can check the backend used by JAX using:
 
 ```{code-cell} ipython3
