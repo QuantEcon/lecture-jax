@@ -146,7 +146,7 @@ where
         \sum_{d, \, z'} v(f(y, a, d), z') \phi(d) Q(z, z').
 ```
 
-We set
+We set $\beta(z) := z$ and 
 
 $$
     R(y, a, y')
