@@ -9,7 +9,7 @@ jobs:
     runs-on: "runs-on=${{ github.run_id }}/family=g4dn.2xlarge/image=quantecon-ubuntu24/disk=large"
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Upgrade CUDANN
         shell: bash -l {0}
         run: |
