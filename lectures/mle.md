@@ -20,9 +20,9 @@ kernelspec:
 
 This lecture is the JAX implementation of {doc}`intermediate:mle`.
 
-Please refer that lecture for all background and notation.
+Please refer to that lecture for all background and notation.
 
-Here we will exploit the automatic differentiation capabilities of JAX rather than calculating derivatives by hand.
+Here, we will exploit the automatic differentiation capabilities of JAX rather than calculating derivatives by hand.
 
 We'll require the following imports:
 
@@ -35,13 +35,13 @@ from jax.scipy.special import factorial
 from statsmodels.api import Poisson
 ```
 
-Let's check the GPU we are running
+Let's check the GPU we are running on
 
 ```{code-cell} ipython3
 !nvidia-smi
 ```
 
-We will use 64 bit floats with JAX in order to increase the precision.
+We will use 64-bit floats with JAX in order to increase the precision.
 
 ```{code-cell} ipython3
 jax.config.update("jax_enable_x64", True)
@@ -66,7 +66,7 @@ function will be equal to 0.
 Let's illustrate this by supposing
 
 $$
-\log \mathcal{L(\beta)} = - (\beta - 10) ^2 - 10
+\log \mathcal{L}(\beta) = - (\beta - 10) ^2 - 10
 $$
 
 Define the function `logL`.
@@ -77,9 +77,9 @@ def logL(β):
     return -((β - 10) ** 2) - 10
 ```
 
-To find the value of $\frac{d \log \mathcal{L(\boldsymbol{\beta})}}{d \boldsymbol{\beta}}$, we can use [jax.grad](https://jax.readthedocs.io/en/latest/_autosummary/jax.grad.html) which auto-differentiates the given function.
+To find the value of $\frac{d \log \mathcal{L}(\boldsymbol{\beta})}{d \boldsymbol{\beta}}$, we can use [jax.grad](https://jax.readthedocs.io/en/latest/_autosummary/jax.grad.html), which auto-differentiates the given function.
 
-We further use [jax.vmap](https://jax.readthedocs.io/en/latest/_autosummary/jax.vmap.html) which vectorizes the given function i.e. the function acting upon scalar inputs can now be used with vector inputs.
+We further use [jax.vmap](https://jax.readthedocs.io/en/latest/_autosummary/jax.vmap.html), which vectorizes the given function, i.e., the function acting upon scalar inputs can now be used with vector inputs.
 
 ```{code-cell} ipython3
 dlogL = jax.vmap(jax.grad(logL))
@@ -105,7 +105,7 @@ plt.show()
 ```
 
 The plot shows that the maximum likelihood value (the top plot) occurs
-when $\frac{d \log \mathcal{L(\boldsymbol{\beta})}}{d \boldsymbol{\beta}} = 0$ (the bottom
+when $\frac{d \log \mathcal{L}(\boldsymbol{\beta})}{d \boldsymbol{\beta}} = 0$ (the bottom
 plot).
 
 Therefore, the likelihood is maximized when $\beta = 10$.
@@ -127,7 +127,7 @@ Please refer to [this section](https://python.quantecon.org/mle.html#mle-with-nu
 
 ### A Poisson model
 
-Let's have a go at implementing the Newton-Raphson algorithm to calculate the maximum likelihood estimations of a Poisson regression.
+Let's have a go at implementing the Newton-Raphson algorithm to calculate the maximum likelihood estimators of a Poisson regression.
 
 The Poisson regression has a joint pmf:
 
@@ -142,7 +142,7 @@ $$
      = \exp(\beta_0 + \beta_1 x_{i1} + \ldots + \beta_k x_{ik})
 $$
 
-We create a `RegressionModel` to store the observed values
+We create a `RegressionModel` to store the observed values.
 
 ```{code-cell} ipython3
 class RegressionModel(NamedTuple):
@@ -150,18 +150,18 @@ class RegressionModel(NamedTuple):
     y: jnp.ndarray
 ```
 
-The log likelihood function of the Poisson regression is
+The log-likelihood function of the Poisson regression is
 
 $$
 \underset{\beta}{\max} \Big(
 \sum_{i=1}^{n} y_i \log{\mu_i} -
 \sum_{i=1}^{n} \mu_i -
-\sum_{i=1}^{n} \log y! \Big)
+\sum_{i=1}^{n} \log y_i! \Big)
 $$
 
 The full derivation can be found [here](https://python.quantecon.org/mle.html#id2).
 
-Now we can define the log likelihood function
+Now we can define the log-likelihood function.
 
 ```{code-cell} ipython3
 @jax.jit
@@ -171,14 +171,14 @@ def poisson_logL(β, model):
     return jnp.sum(model.y * jnp.log(μ) - μ - jnp.log(factorial(y)))
 ```
 
-To find the gradient of the `poisson_logL`, we again use [jax.grad](https://jax.readthedocs.io/en/latest/_autosummary/jax.grad.html).
+To find the gradient of `poisson_logL`, we again use [jax.grad](https://jax.readthedocs.io/en/latest/_autosummary/jax.grad.html).
 
-According to [the documentation](https://jax.readthedocs.io/en/latest/notebooks/autodiff_cookbook.html#jacobians-and-hessians-using-jacfwd-and-jacrev),
+According to [the documentation](https://jax.readthedocs.io/en/latest/notebooks/autodiff_cookbook.html#jacobians-and-hessians-using-jacfwd-and-jacrev):
 
 * `jax.jacfwd` uses forward-mode automatic differentiation, which is more efficient for “tall” Jacobian matrices, while
 * `jax.jacrev` uses reverse-mode, which is more efficient for “wide” Jacobian matrices.
 
-(The documentation also states that when matrices that are near-square, `jax.jacfwd` probably has an edge over `jax.jacrev`.)
+(The documentation also states that when matrices are near-square, `jax.jacfwd` probably has an edge over `jax.jacrev`.)
 
 Therefore, to find the Hessian, we can directly use `jax.jacfwd`.
 
@@ -248,7 +248,7 @@ poi = RegressionModel(X=X, y=y)
 As this was a simple model with few observations, the algorithm achieved
 convergence in only 7 iterations.
 
-The gradient vector should be close to 0 at $\hat{\boldsymbol{\beta}}$
+The gradient vector should be close to 0 at $\hat{\boldsymbol{\beta}}$.
 
 ```{code-cell} ipython3
 G_poisson_logL(β_hat, poi)
@@ -263,7 +263,7 @@ obtained using JAX.
 likelihood estimates.
 
 Now, as `statsmodels` accepts only NumPy arrays, we can use the `__array__` method
-of JAX arrays to convert it to NumPy arrays.
+of JAX arrays to convert them to NumPy arrays.
 
 ```{code-cell} ipython3
 X_numpy = X.__array__()
@@ -275,9 +275,9 @@ stats_poisson = Poisson(y_numpy, X_numpy).fit()
 print(stats_poisson.summary())
 ```
 
-The benefit of writing our own procedure, relative to statsmodels is that
+The benefit of writing our own procedure, relative to statsmodels, is that
 
-* we can exploit the power of the GPU and
+* we can exploit the power of the GPU, and
 * we learn the underlying methodology, which can be extended to complex situations where no existing routines are available.
 
 ```{exercise-start}
@@ -307,7 +307,7 @@ $$
     \beta_2 = 0.5
 $$
 
-Try to obtain the approximate values of $\beta_0,\beta_1,\beta_2$, by simulating a Poisson Regression Model such that
+Try to obtain the approximate values of $\beta_0,\beta_1,\beta_2$ by simulating a Poisson Regression Model such that
 
 $$
       y_t \sim {\rm Poisson}(\lambda_t)
@@ -317,9 +317,8 @@ $$
 Using our `newton_raphson` function on the data set $X = [1, x_t, x_t^{2}]$ and
 $y$, obtain the maximum likelihood estimates of $\beta_0,\beta_1,\beta_2$.
 
-With a sufficient large sample size, you should approximately
-recover the true values of of these parameters.
-
+With a sufficiently large sample size, you should approximately
+recover the true values of these parameters.
 
 ```{exercise-end}
 ```
@@ -328,7 +327,7 @@ recover the true values of of these parameters.
 :class: dropdown
 ```
 
-Let's start by defining "true" parameter values.
+Let's start by defining the "true" parameter values.
 
 ```{code-cell} ipython3
 β_0 = -2.5
@@ -345,13 +344,13 @@ key = jax.random.PRNGKey(seed)
 x = jax.random.normal(key, shape)
 ```
 
-We compute $\lambda$ using {eq}`lambda_mle`
+We compute $\lambda$ using {eq}`lambda_mle`.
 
 ```{code-cell} ipython3
 λ = jnp.exp(β_0 + β_1 * x + β_2 * x**2)
 ```
 
-Let's define $y_t$ by sampling from a Poisson distribution with mean as $\lambda_t$.
+Let's define $y_t$ by sampling from a Poisson distribution with mean $\lambda_t$.
 
 ```{code-cell} ipython3
 y = jax.random.poisson(key, λ, shape)
