@@ -4,7 +4,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.16.1
+    jupytext_version: 1.16.7
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -152,13 +152,13 @@ In JAX this fails:
 
 ```{code-cell} ipython3
 a = jnp.linspace(0, 1, 3)
-a
+a[0] = 1
 ```
 
 ```{code-cell} ipython3
 :tags: [raises-exception]
 
-# a[0] = 1   # uncommenting produces a TypeError
+a
 ```
 
 The designers of JAX chose to make arrays immutable because JAX uses a
@@ -166,7 +166,6 @@ functional programming style.  More on this below.
 
 However, JAX provides a functionally pure equivalent of in-place array modification
 using the [`at` method](https://docs.jax.dev/en/latest/_autosummary/jax.numpy.ndarray.at.html).
-
 
 ```{code-cell} ipython3
 a = jnp.linspace(0, 1, 3)
@@ -270,7 +269,7 @@ random.normal(key, (5,))   # not random.normal(key, 5)
 
 The JAX just-in-time (JIT) compiler accelerates logic within functions by fusing linear
 algebra operations into a single optimized kernel that the host can
-launch on the GPU / TPU (or CPU if no accelerator is detected).
+launch on the GPU / TPU (or CPU if no accelerator is detected.)
 
 ### A first example
 
@@ -308,10 +307,6 @@ But if we run it a second time it becomes much faster:
 
 ```{code-cell} ipython3
 %time f(x).block_until_ready()
-```
-
-```{code-cell} ipython3
-%timeit f(x).block_until_ready()
 ```
 
 This is because the built in functions like `jnp.cos` are JIT compiled and the
@@ -425,6 +420,7 @@ def g_jit_2(x):
 ```{code-cell} ipython3
 %time g_jit_2(x).block_until_ready()
 ```
+
 ```{code-cell} ipython3
 %time g_jit_2(x).block_until_ready()
 ```
@@ -824,58 +820,16 @@ Let's check we produce the correct answer:
 jnp.allclose(z_vmap, z_mesh)
 ```
 
-**Exercise**
+## Exercises
 
-In a previous notebook we used Monte Carlo to price a European call option and
-constructed a solution using Numba.
 
-The code looked like this:
-
-```{code-cell} ipython3
-import numba
-from numpy.random import randn
-M = 10_000_000
-
-n, β, K = 20, 0.99, 100
-μ, ρ, ν, S0, h0 = 0.0001, 0.1, 0.001, 10, 0
-
-@numba.jit(parallel=True)
-def compute_call_price_parallel(β=β,
-                                μ=μ,
-                                S0=S0,
-                                h0=h0,
-                                K=K,
-                                n=n,
-                                ρ=ρ,
-                                ν=ν,
-                                M=M):
-    current_sum = 0.0
-    # For each sample path
-    for m in numba.prange(M):
-        s = np.log(S0)
-        h = h0
-        # Simulate forward in time
-        for t in range(n):
-            s = s + μ + np.exp(h) * randn()
-            h = ρ * h + ν * randn()
-        # And add the value max{S_n - K, 0} to current_sum
-        current_sum += np.maximum(np.exp(s) - K, 0)
-        
-    return β**n * current_sum / M
+```{exercise-start}
+:label: jax_intro_ex2
 ```
 
-Let's run it once to compile it:
+In the Exercise section of [a lecture on Numba and parallelization](https://python-programming.quantecon.org/parallelization.html), we used Monte Carlo to price a European call option.
 
-```{code-cell} ipython3
-compute_call_price_parallel()
-```
-
-And now let's time it:
-
-```{code-cell} ipython3
-%%time 
-compute_call_price_parallel()
-```
+The code was accelerated by Numba-based multithreading.
 
 Try writing a version of this operation for JAX, using all the same
 parameters.
@@ -883,13 +837,14 @@ parameters.
 If you are running your code on a GPU, you should be able to achieve
 significantly faster execution.
 
-```{code-cell} ipython3
-for i in range(12):
-    print("Solution below.")
+
+```{exercise-end}
 ```
 
-**Solution**
 
+```{solution-start} jax_intro_ex2
+:class: dropdown
+```
 Here is one solution:
 
 ```{code-cell} ipython3
@@ -934,4 +889,7 @@ And now let's time it:
 ```{code-cell} ipython3
 %%time 
 compute_call_price_jax().block_until_ready()
+```
+
+```{solution-end}
 ```
