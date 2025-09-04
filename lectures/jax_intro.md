@@ -16,7 +16,7 @@ kernelspec:
 
 This lecture provides a short introduction to [Google JAX](https://github.com/google/jax).
 
-What GPUs do we have access to?
+Let's see if we have an active GPU:
 
 ```{code-cell} ipython3
 !nvidia-smi
@@ -164,7 +164,9 @@ a
 The designers of JAX chose to make arrays immutable because JAX uses a
 functional programming style.  More on this below.  
 
-Note that, while mutation is discouraged, it is in fact possible with `at`, as in
+However, JAX provides a functionally pure equivalent of in-place array modification
+using the [`at` method](https://docs.jax.dev/en/latest/_autosummary/jax.numpy.ndarray.at.html).
+
 
 ```{code-cell} ipython3
 a = jnp.linspace(0, 1, 3)
@@ -175,11 +177,14 @@ id(a)
 a
 ```
 
+Applying `at[0].set(1)` returns a new copy of `a` with the first element set to 1
+
 ```{code-cell} ipython3
-a.at[0].set(1)
+a = a.at[0].set(1)
+a
 ```
 
-We can check that the array is mutated by verifying its identity is unchanged:
+Inspecting the identifier of `a` shows that it has been reassigned
 
 ```{code-cell} ipython3
 id(a)
@@ -406,8 +411,7 @@ This is because
 2. the array operations are fused and no intermediate arrays are created.
 
 
-Incidentally, a more common syntax when targetting a function for the JIT
-compiler is
+Incidentally, a more common syntax when targetting a function for the JIT compiler is
 
 ```{code-cell} ipython3
 @jax.jit
@@ -421,7 +425,6 @@ def g_jit_2(x):
 ```{code-cell} ipython3
 %time g_jit_2(x).block_until_ready()
 ```
-
 ```{code-cell} ipython3
 %time g_jit_2(x).block_until_ready()
 ```
@@ -606,6 +609,8 @@ ax.legend(loc='upper center')
 plt.show()
 ```
 
+We defer further exploration of automatic differentiation with JAX until {doc}`autodiff`.
+
 ## Writing vectorized code
 
 Writing fast JAX code requires shifting repetitive tasks from loops to array processing operations, so that the JAX compiler can easily understand the whole operation and generate more efficient machine code.
@@ -687,12 +692,14 @@ Now we get what we want and the execution time is very fast.
 
 ```{code-cell} ipython3
 %%time
-z_mesh = f(x_mesh, y_mesh) 
+z_mesh = f(x_mesh, y_mesh).block_until_ready()
 ```
+
+Let's run again to eliminate compile time.
 
 ```{code-cell} ipython3
 %%time
-z_mesh = f(x_mesh, y_mesh) 
+z_mesh = f(x_mesh, y_mesh).block_until_ready()
 ```
 
 Let's confirm that we got the right answer.
@@ -712,12 +719,14 @@ x_mesh, y_mesh = jnp.meshgrid(x, y)
 
 ```{code-cell} ipython3
 %%time
-z_mesh = f(x_mesh, y_mesh) 
+z_mesh = f(x_mesh, y_mesh).block_until_ready()
 ```
+
+Let's run again to get rid of compile time.
 
 ```{code-cell} ipython3
 %%time
-z_mesh = f(x_mesh, y_mesh) 
+z_mesh = f(x_mesh, y_mesh).block_until_ready()
 ```
 
 But there is one problem here: the mesh grids use a lot of memory.
@@ -799,12 +808,14 @@ With this construction, we can now call the function $f$ on flat (low memory) ar
 
 ```{code-cell} ipython3
 %%time
-z_vmap = f_vec(x, y)
+z_vmap = f_vec(x, y).block_until_ready()
 ```
+
+We run it again to eliminate compile time.
 
 ```{code-cell} ipython3
 %%time
-z_vmap = f_vec(x, y)
+z_vmap = f_vec(x, y).block_until_ready()
 ```
 
 Let's check we produce the correct answer:
@@ -914,7 +925,8 @@ def compute_call_price_jax(β=β,
 Let's run it once to compile it:
 
 ```{code-cell} ipython3
-compute_call_price_jax()
+%%time 
+compute_call_price_jax().block_until_ready()
 ```
 
 And now let's time it:

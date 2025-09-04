@@ -29,30 +29,31 @@ Here we focus on providing an efficient JAX implementation.
 
 In addition to JAX and Anaconda, this lecture will need the following libraries:
 
-```{code-cell}
+```{code-cell} ipython3
 :tags: [hide-output]
 
 !pip install --upgrade quantecon
 ```
 
-```{code-cell}
+```{code-cell} ipython3
 import quantecon as qe
 import matplotlib.pyplot as plt
 import numpy as np
 import jax
 import jax.numpy as jnp
 import numba
+from time import time
 ```
 
 Let's check the GPU we are running
 
-```{code-cell}
+```{code-cell} ipython3
 !nvidia-smi
 ```
 
 We use 64 bit floating point numbers for extra precision.
 
-```{code-cell}
+```{code-cell} ipython3
 jax.config.update("jax_enable_x64", True)
 ```
 
@@ -96,7 +97,7 @@ $$
 The following function stores default parameter values for the income
 fluctuation problem and creates suitable arrays.
 
-```{code-cell}
+```{code-cell} ipython3
 def ifp(R=1.01,             # gross interest rate
         β=0.99,             # discount factor
         γ=1.5,              # CRRA preference parameter
@@ -307,7 +308,7 @@ Notice in the code below that
 * we avoid all loops and any mutation of arrays
 * the function is pure (no globals, no mutation of inputs)
 
-```{code-cell}
+```{code-cell} ipython3
 def K_egm(a_in, σ_in, constants, sizes, arrays):
     """
     The vectorized operator K using EGM.
@@ -360,13 +361,13 @@ Then we use `jax.jit` to compile $K$.
 
 We use `static_argnums` to allow a recompile whenever `sizes` changes, since the compiler likes to specialize on shapes.
 
-```{code-cell}
+```{code-cell} ipython3
 K_egm_jax = jax.jit(K_egm, static_argnums=(3,))
 ```
 
 Next we define a successive approximator that repeatedly applies $K$.
 
-```{code-cell}
+```{code-cell} ipython3
 def successive_approx_jax(model,        
             tol=1e-5,
             max_iter=100_000,
@@ -414,7 +415,7 @@ well as to do a runtime comparison.
 Most readers will want to skip ahead to the next section, where we solve the
 model and run the cross-check.
 
-```{code-cell}
+```{code-cell} ipython3
 @numba.jit
 def K_egm_nb(a_in, σ_in, constants, sizes, arrays):
     """
@@ -455,7 +456,7 @@ def K_egm_nb(a_in, σ_in, constants, sizes, arrays):
     return a_out, σ_out
 ```
 
-```{code-cell}
+```{code-cell} ipython3
 def successive_approx_numba(model,        # Class with model information
                               tol=1e-5,
                               max_iter=100_000,
@@ -502,29 +503,29 @@ We will compare both the outputs and the execution time.
 
 ### Outputs
 
-```{code-cell}
+```{code-cell} ipython3
 model = ifp()
 ```
 
 Here's a first run of the JAX code.
 
-```{code-cell}
+```{code-cell} ipython3
+%%time
 a_star_egm_jax, σ_star_egm_jax = successive_approx_jax(model,
-                                                       print_skip=100)
+                                        print_skip=1000)
 ```
 
 Next let's solve the same IFP with Numba.
 
-```{code-cell}
-qe.tic()
+```{code-cell} ipython3
+%%time
 a_star_egm_nb, σ_star_egm_nb = successive_approx_numba(model,
-                                                        print_skip=100)
-qe.toc()
+                                    print_skip=1000)
 ```
 
 Now let's check the outputs in a plot to make sure they are the same.
 
-```{code-cell}
+```{code-cell} ipython3
 constants, sizes, arrays = model
 β, R, γ = constants
 s_size, y_size = sizes
@@ -549,24 +550,26 @@ plt.show()
 
 ### Timing
 
-Now let's compare execution time of the two methods
+Now let's compare execution time of the two methods.
 
-```{code-cell}
-qe.tic()
+```{code-cell} ipython3
+start = time()
 a_star_egm_jax, σ_star_egm_jax = successive_approx_jax(model,
                                          print_skip=1000)
-jax_time = qe.toc()
+jax_time_without_compile = time() - start
+print("Jax execution time = ", jax_time_without_compile)
 ```
 
-```{code-cell}
-qe.tic()
+```{code-cell} ipython3
+start = time()
 a_star_egm_nb, σ_star_egm_nb = successive_approx_numba(model,
                                          print_skip=1000)
-numba_time = qe.toc()
+numba_time_without_compile = time() - start
+print("Numba execution time = ", numba_time_without_compile)
 ```
 
-```{code-cell}
-jax_time / numba_time
+```{code-cell} ipython3
+jax_time_without_compile / numba_time_without_compile
 ```
 
 The JAX code is significantly faster, as expected.

@@ -3,8 +3,10 @@ jupytext:
   text_representation:
     extension: .md
     format_name: myst
+    format_version: 0.13
+    jupytext_version: 1.16.1
 kernelspec:
-  display_name: Python 3
+  display_name: Python 3 (ipykernel)
   language: python
   name: python3
 ---
@@ -26,13 +28,6 @@ kernelspec:
 
 ```{index} single: Models; Lucas Asset Pricing
 ```
-
-```{contents} Contents
-:depth: 2
-```
-
-
-
 
 ## Overview
 
@@ -58,14 +53,14 @@ Nonetheless, the gain is nontrivial.
 
 Let's start with some imports:
 
-```{code-cell} ipython
+```{code-cell} ipython3
 import jax.numpy as jnp
 import jax
-import time
 import numpy as np
 import numba
 from scipy.stats import lognorm
 import matplotlib.pyplot as plt
+from time import time
 ```
 
 ## The Lucas Model
@@ -427,7 +422,7 @@ JAX).
 We create a function that returns tuples containing parameters and arrays needed
 for computation.
 
-```{code-cell} python3
+```{code-cell} ipython3
 def create_lucas_tree_model(γ=2,            # CRRA utility parameter
                             β=0.95,         # Discount factor
                             α=0.90,         # Correlation coefficient
@@ -452,12 +447,11 @@ def create_lucas_tree_model(γ=2,            # CRRA utility parameter
         params = γ, β, α, σ
         arrays = grid, draws, h
         return params, arrays
-
 ```
 
 Here's a Numba-jitted version of the Lucas operator
 
-```{code-cell} python3
+```{code-cell} ipython3
 @numba.jit
 def T(params, arrays, f):
     """
@@ -480,7 +474,7 @@ def T(params, arrays, f):
 To solve the model, we write a function that iterates using the Lucas operator
 to find the fixed point.
 
-```{code-cell} python3
+```{code-cell} ipython3
 def solve_model(params, arrays, tol=1e-6, max_iter=500):
     """
     Compute the equilibrium price function.
@@ -504,24 +498,27 @@ def solve_model(params, arrays, tol=1e-6, max_iter=500):
 
 Let's solve the model and plot the resulting price function
 
-```{code-cell} python3
+```{code-cell} ipython3
 params, arrays = create_lucas_tree_model()
 γ, β, α, σ = params
 grid, draws, h = arrays
 
 # Solve once to compile
+start = time()
 price_vals = solve_model(params, arrays)
-
-# Now time execution without compile time
-in_time = time.time()
-price_vals = solve_model(params, arrays)
-out_time = time.time()
-numba_elapsed = out_time - in_time
-print("Numba execution time = ", numba_elapsed)
-
+numba_with_compile_time = time() - start
+print("Numba compile plus execution time = ", numba_with_compile_time)
 ```
 
-```{code-cell} python3
+```{code-cell} ipython3
+# Now time execution without compile time
+start = time()
+price_vals = solve_model(params, arrays)
+numba_without_compile_time = time() - start
+print("Numba execution time = ", numba_without_compile_time)
+```
+
+```{code-cell} ipython3
 fig, ax = plt.subplots(figsize=(10, 6))
 ax.plot(grid, price_vals, label='$p*(y)$')
 ax.set_xlabel('$y$')
@@ -543,7 +540,7 @@ The price must therefore rise to induce the household to consume the entire endo
 
 Here's a JAX version of the same problem.
 
-```{code-cell} python3
+```{code-cell} ipython3
 def create_lucas_tree_model(γ=2,            # CRRA utility parameter
                             β=0.95,         # Discount factor
                             α=0.90,         # Correlation coefficient
@@ -576,7 +573,7 @@ $$
 
 over all $y$ in the grid, under the current specifications.
 
-```{code-cell} python3
+```{code-cell} ipython3
 @jax.jit 
 def compute_expectation(y, α, draws, grid, f):
     return jnp.mean(jnp.interp(y**α * draws, grid, f))
@@ -588,7 +585,7 @@ compute_expectation = jax.vmap(compute_expectation,
 
 Here's the Lucas operator
 
-```{code-cell} python3
+```{code-cell} ipython3
 @jax.jit
 def T(params, arrays, f):
     """
@@ -626,10 +623,9 @@ successive_approx_jax = \
     jax.jit(successive_approx_jax, static_argnums=(0,))
 ```
 
-
 Here's a function that solves the model
 
-```{code-cell} python3
+```{code-cell} ipython3
 def solve_model(params, arrays, tol=1e-6, max_iter=500):
     """
     Compute the equilibrium price function.
@@ -650,27 +646,30 @@ def solve_model(params, arrays, tol=1e-6, max_iter=500):
 
 Now let's solve the model again and compare timing
 
-```{code-cell} python3
+```{code-cell} ipython3
 params, arrays = create_lucas_tree_model()
 grid, draws, h = arrays
 γ, β, α, σ = params
 
 # Solve once to compile
-price_vals = solve_model(params, arrays)
+start = time()
+price_vals = solve_model(params, arrays).block_until_ready()
+jax_with_compile_time = time() - start
+print("JAX compile plus execution time = ", jax_with_compile_time)
+```
 
+```{code-cell} ipython3
 # Now time execution without compile time
-in_time = time.time()
-price_vals = solve_model(params, arrays)
-out_time = time.time()
-jax_elapsed = out_time - in_time
-print("JAX execution time = ", jax_elapsed)
-print("Speedup factor = ", numba_elapsed / jax_elapsed)
+start = time()
+price_vals = solve_model(params, arrays).block_until_ready()
+jax_without_compile_time = time() - start
+print("JAX execution time = ", jax_without_compile_time)
+print("Speedup factor = ", numba_without_compile_time/jax_without_compile_time)
 ```
 
 Let's check the solutions are similar
 
-
-```{code-cell} python3
+```{code-cell} ipython3
 fig, ax = plt.subplots(figsize=(10, 6))
 ax.plot(grid, price_vals, label='$p*(y)$')
 ax.set_xlabel('$y$')
@@ -678,7 +677,6 @@ ax.set_ylabel('price')
 ax.legend()
 plt.show()
 ```
-
 
 ## Exercises
 
@@ -698,7 +696,8 @@ Show this by plotting the price function for the Lucas tree when $\beta = 0.95$ 
 ```{solution-start} lucas_ex1
 :class: dropdown
 ```
-```{code-cell} python3
+
+```{code-cell} ipython3
 fig, ax = plt.subplots(figsize=(10, 6))
 
 for β in (.95, 0.98):
