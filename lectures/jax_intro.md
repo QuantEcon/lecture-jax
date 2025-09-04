@@ -151,13 +151,13 @@ a
 In JAX this fails:
 
 ```{code-cell} ipython3
+:tags: [raises-exception]
+
 a = jnp.linspace(0, 1, 3)
 a[0] = 1
 ```
 
 ```{code-cell} ipython3
-:tags: [raises-exception]
-
 a
 ```
 
