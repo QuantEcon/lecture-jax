@@ -256,7 +256,7 @@ plt.show()
 The plot produces a straight line, consistent with a Pareto tail.
 
 
-#### Alternative implementation with `lax.fori_loop`
+#### Alternative implementation with `jax.lax.fori_loop`
 
 Although we JIT-compiled some of the code above,
 we did not JIT-compile the `for` loop.
@@ -264,10 +264,10 @@ we did not JIT-compile the `for` loop.
 Let's try squeezing out a bit more speed
 by 
 
-* replacing the `for` loop with [`lax.fori_loop`](https://jax.readthedocs.io/en/latest/_autosummary/jax.lax.fori_loop.html) and
+* replacing the `for` loop with [`jax.lax.fori_loop`](https://jax.readthedocs.io/en/latest/_autosummary/jax.lax.fori_loop.html) and
 * JIT-compiling the whole function.
 
-Here a the `lax.fori_loop` version:
+Here a the `jax.lax.fori_loop` version:
 
 ```{code-cell} ipython3
 @jax.jit
