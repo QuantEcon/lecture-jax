@@ -4,7 +4,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.17.2
+    jupytext_version: 1.16.7
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -32,7 +32,7 @@ In addition to JAX and Anaconda, this lecture will need the following libraries:
 ```{code-cell} ipython3
 :tags: [hide-output]
 
-!pip install quantecon
+!pip install --upgrade quantecon
 ```
 
 ## Overview
@@ -40,8 +40,7 @@ In addition to JAX and Anaconda, this lecture will need the following libraries:
 This lecture describes Kesten processes, which are an important class of
 stochastic processes, and an application of firm dynamics.
 
-The lecture draws on [an earlier QuantEcon lecture](https://python.quantecon.org/kesten_processes.html), 
-which uses Numba to accelerate the computations.
+The lecture draws on {doc}`intermediate:kesten_processes`.
 
 In that earlier lecture you can find a more detailed discussion of the concepts involved.
 
@@ -55,8 +54,6 @@ import quantecon as qe
 import jax
 import jax.numpy as jnp
 from jax import random
-from jax import lax
-from quantecon import tic, toc
 from typing import NamedTuple
 from functools import partial
 ```
@@ -136,7 +133,7 @@ We now study the implications of this specification.
 
 #### Heavy tails
 
-If the conditions of the [Kesten--Goldie Theorem](https://python.quantecon.org/kesten_processes.html#the-kestengoldie-theorem)
+If the conditions of the  {doc}`intermediate:kesten_processes#the-kestengoldie-theorem`
 are satisfied, then {eq}`firm_dynam` implies that the firm size distribution will have Pareto tails.
 
 This matches empirical findings across many data sets.
@@ -154,8 +151,7 @@ In this setting, firm dynamics can be expressed as
     (a_{t+1} s_t + b_{t+1}) \mathbb{1}\{s_t \geq \bar s\}
 ```
 
-The motivation behind and interpretation of [](firm_dynam_ee) can be found in 
-[our earlier Kesten process lecture](https://python.quantecon.org/kesten_processes.html).
+The motivation behind and interpretation of [](firm_dynam_ee) can be found in {doc}`intermediate:kesten_processes`.
 
 What can we say about dynamics?
 
@@ -180,12 +176,12 @@ Here's a class to store parameters:
 
 ```{code-cell} ipython3
 class Firm(NamedTuple):
-    μ_a:   float = -0.5
-    σ_a:   float = 0.1
-    μ_b:   float = 0.0
-    σ_b:   float = 0.5
-    μ_e:   float = 0.0
-    σ_e:   float = 0.5
+    μ_a: float = -0.5
+    σ_a: float = 0.1
+    μ_b: float = 0.0
+    σ_b: float = 0.5
+    μ_e: float = 0.0
+    σ_e: float = 0.5
     s_bar: float = 1.0
 ```
 
@@ -207,15 +203,13 @@ For sufficiently large `T`, the cross-section it returns (the cross-section at
 time `T`) corresponds to firm size distribution in (approximate) equilibrium.
 
 ```{code-cell} ipython3
-def generate_cross_section(
-        firm, M=500_000, T=500, s_init=1.0, seed=123
-    ):
+def generate_cross_section(firm, M=500_000, T=500, s_init=1.0, seed=123):
 
     μ_a, σ_a, μ_b, σ_b, μ_e, σ_e, s_bar = firm
     key = random.PRNGKey(seed)
 
     # Initialize the cross-section to a common value
-    s = jnp.full((M, ), s_init)
+    s = jnp.full((M,), s_init)
 
     # Perform updates on s for time t
     for t in range(T):
@@ -235,17 +229,15 @@ Let's try running the code and generating a cross-section.
 
 ```{code-cell} ipython3
 firm = Firm()
-tic()
-data = generate_cross_section(firm).block_until_ready()
-toc()
+with qe.Timer():
+    data = generate_cross_section(firm).block_until_ready()
 ```
 
 We run the function again so we can see the speed without compile time.
 
 ```{code-cell} ipython3
-tic()
-data = generate_cross_section(firm).block_until_ready()
-toc()
+with qe.Timer():
+    data = generate_cross_section(firm).block_until_ready()
 ```
 
 Let's produce the rank-size plot and check the distribution:
@@ -254,7 +246,7 @@ Let's produce the rank-size plot and check the distribution:
 fig, ax = plt.subplots()
 
 rank_data, size_data = qe.rank_size(data, c=0.01)
-ax.loglog(rank_data, size_data, 'o', markersize=3.0, alpha=0.5)
+ax.loglog(rank_data, size_data, "o", markersize=3.0, alpha=0.5)
 ax.set_xlabel("log rank")
 ax.set_ylabel("log size")
 
@@ -279,20 +271,18 @@ Here a the `lax.fori_loop` version:
 
 ```{code-cell} ipython3
 @jax.jit
-def generate_cross_section_lax(
-        firm, T=500, M=500_000, s_init=1.0, seed=123
-    ):
+def generate_cross_section_lax(firm, T=500, M=500_000, s_init=1.0, seed=123):
 
     μ_a, σ_a, μ_b, σ_b, μ_e, σ_e, s_bar = firm
     key = random.PRNGKey(seed)
-    
+
     # Initial cross section
-    s = jnp.full((M, ), s_init)
+    s = jnp.full((M,), s_init)
 
     def update_cross_section(t, state):
         s, key = state
         key, *subkeys = jax.random.split(key, 4)
-        # Generate current random draws 
+        # Generate current random draws
         a = μ_a + σ_a * random.normal(subkeys[0], (M,))
         b = μ_b + σ_b * random.normal(subkeys[1], (M,))
         e = μ_e + σ_e * random.normal(subkeys[2], (M,))
@@ -303,26 +293,22 @@ def generate_cross_section_lax(
         new_state = s, key
         return new_state
 
-    # Use fori_loop 
+    # Use fori_loop
     initial_state = s, key
-    final_s, final_key = lax.fori_loop(
-        0, T, update_cross_section, initial_state
-    )
+    final_s, final_key = jax.lax.fori_loop(0, T, update_cross_section, initial_state)
     return final_s
 ```
 
 Let's see if we get any speed gain
 
 ```{code-cell} ipython3
-tic()
-data = generate_cross_section_lax(firm).block_until_ready()
-toc()
+with qe.Timer():
+    data = generate_cross_section_lax(firm).block_until_ready()
 ```
 
 ```{code-cell} ipython3
-tic()
-data = generate_cross_section_lax(firm).block_until_ready()
-toc()
+with qe.Timer():
+    data = generate_cross_section_lax(firm).block_until_ready()
 ```
 
 Here we produce the same rank-size plot:
@@ -331,12 +317,11 @@ Here we produce the same rank-size plot:
 fig, ax = plt.subplots()
 
 rank_data, size_data = qe.rank_size(data, c=0.01)
-ax.loglog(rank_data, size_data, 'o', markersize=3.0, alpha=0.5)
+ax.loglog(rank_data, size_data, "o", markersize=3.0, alpha=0.5)
 ax.set_xlabel("log rank")
 ax.set_ylabel("log size")
 
 plt.show()
-
 ```
 
 ## Exercises
@@ -362,22 +347,20 @@ What are the pros and cons of this approach?
 
 ```{code-cell} ipython3
 @jax.jit
-def generate_cross_section_lax(
-        firm, T=500, M=500_000, s_init=1.0, seed=123
-    ):
+def generate_cross_section_lax(firm, T=500, M=500_000, s_init=1.0, seed=123):
 
     μ_a, σ_a, μ_b, σ_b, μ_e, σ_e, s_bar = firm
     key = random.PRNGKey(seed)
     subkey_1, subkey_2, subkey_3 = random.split(key, 3)
-    
-    # Generate entire sequence of random draws 
+
+    # Generate entire sequence of random draws
     a = μ_a + σ_a * random.normal(subkey_1, (T, M))
     b = μ_b + σ_b * random.normal(subkey_2, (T, M))
     e = μ_e + σ_e * random.normal(subkey_3, (T, M))
     # Exponentiate them
     a, b, e = jax.tree.map(jnp.exp, (a, b, e))
     # Initial cross section
-    s = jnp.full((M, ), s_init)
+    s = jnp.full((M,), s_init)
 
     def update_cross_section(t, s):
         # Pull out the t-th cross-section of shocks
@@ -385,23 +368,21 @@ def generate_cross_section_lax(
         s = jnp.where(s < s_bar, e_t, a_t * s + b_t)
         return s
 
-    # Use lax.scan to perform the calculations on all states
-    s_final = lax.fori_loop(0, T, update_cross_section, s)
+    # Use lax.fori_loop to perform the calculations on all states
+    s_final = jax.lax.fori_loop(0, T, update_cross_section, s)
     return s_final
 ```
 
 Here are the run times.
 
 ```{code-cell} ipython3
-tic()
-data = generate_cross_section_lax(firm).block_until_ready()
-toc()
+with qe.Timer():
+    data = generate_cross_section_lax(firm).block_until_ready()
 ```
 
 ```{code-cell} ipython3
-tic()
-data = generate_cross_section_lax(firm).block_until_ready()
-toc()
+with qe.Timer():
+    data = generate_cross_section_lax(firm).block_until_ready()
 ```
 
 This method might or might not be faster.
