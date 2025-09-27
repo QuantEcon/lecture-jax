@@ -34,13 +34,13 @@ This lecture explores the inventory dynamics of a firm using so-called s-S inven
 Loosely speaking, this means that the firm 
 
 * waits until inventory falls below some value $s$
-* and then restocks with a bulk order of $S$ units (or, in some models, restocks up to level $S$).
+* then restocks with a bulk order of $S$ units (or, in some models, restocks up to level $S$).
 
 We will be interested in the distribution of the associated Markov process,
-which can be thought of as cross-sectional distributions of inventory levels
+which can be thought of as the cross-sectional distribution of inventory levels
 across a large number of firms, all of which 
 
-1. evolve independently and
+1. evolve independently, and
 2. have the same dynamics.
 
 Note that we also studied this model in a [separate
@@ -92,7 +92,7 @@ $$
 $$
 
 where $\mu$ and $\sigma$ are parameters and $\{Z_t\}$ is IID
-and standard normal.
+standard normal.
 
 Here's a `NamedTuple` that stores parameters.
 
@@ -115,10 +115,10 @@ We will approximate this distribution by
 
 1. fixing $n$ to be some large number, indicating the number of firms in the
    simulation,
-1. fixing $T$, the time period we are interested in,
-1. generating $n$ independent draws from some fixed distribution $\psi_0$ that gives the
+2. fixing $T$, the time period we are interested in,
+3. generating $n$ independent draws from some fixed distribution $\psi_0$ that gives the
    initial cross-section of inventories for the $n$ firms, and
-1. shifting this distribution forward in time $T$ periods, updating each firm
+4. shifting this distribution forward in time $T$ periods, updating each firm
     $T$ times via the dynamics described above (independent of other firms).
 
 We will then visualize $\psi_T$ by histogramming the cross-section.
@@ -148,7 +148,7 @@ def update_cross_section(
 Now we provide code to compute the cross-sectional distribution $\psi_T$ given some
 initial distribution $\psi_0$ and a positive integer $T$.
 
-In this code we use an ordinary Python `for` loop to step forward through time
+In this code, we use an ordinary Python `for` loop to step forward through time.
 
 (Below we will squeeze out more speed by compiling the outer loop as well as the
 update rule.)
@@ -282,14 +282,11 @@ with qe.Timer():
 Compared to the original version with a pure Python outer loop, we have 
 produced a nontrivial speed gain.
 
-
 This is due to the fact that we have compiled the entire sequence of operations.
-
-
 
 ## Distribution dynamics
 
-Next let's take a look at how the distribution sequence evolves over time.
+Next, let's take a look at how the distribution sequence evolves over time.
 
 We will go back to using ordinary Python `for` loops.
 
@@ -364,22 +361,17 @@ By $t=500$ or $t=750$ the distributions are barely changing.
 
 If you test a few different initial conditions, you will see that they do not affect long-run outcomes.
 
-
-
-
-
 ## Restock frequency
 
 As an exercise, let's study the probability that firms need to restock over a given time period.
 
 In the exercise, we will
 
-* set the starting stock level to $X_0 = 70$ and
+* set the starting stock level to $X_0 = 70$, and
 * calculate the proportion of firms that need to order twice or more in the first 50 periods.
 
 This proportion approximates the probability of the event when the sample size
 is large.
-
 
 ### For loop version
 
@@ -437,7 +429,7 @@ print(f"Frequency of at least two stock outs = {freq}")
 :label: inventory_dynamics_ex1
 ```
 
-Write a `fori_loop` version of the last function.  See if you can increase the 
+Write a `fori_loop` version of the last function. See if you can increase the 
 speed while generating a similar answer.
 
 ```{exercise-end}
