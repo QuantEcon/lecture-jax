@@ -62,13 +62,13 @@ jobs:
         run: |
           jb build lectures --path-output ./ -n -W --keep-going
       - name: Upload build folder
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         if: failure()
         with:
           name: _build
           path: _build/
       - name: Upload Execution Reports
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         if: failure()
         with:
           name: execution-reports
