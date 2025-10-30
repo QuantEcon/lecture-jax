@@ -176,7 +176,6 @@
                             <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-model-with-constant-discounting">15.1. A model with constant discounting</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#time-varing-discount-rates">15.2. Time varing discount rates</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#numba-implementation">15.3. Numba implementation</a></li>
 </ul>
                             <p class="logo">
                                 
@@ -257,20 +256,20 @@
 <p class="expanded admonition-title">Hide code cell output</p>
 </summary>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (0.8.2)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (0.10.1)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: numba&gt;=0.49.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from quantecon) (0.60.0)
-Requirement already satisfied: numpy&gt;=1.17.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from quantecon) (1.26.4)
-Requirement already satisfied: requests in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from quantecon) (2.32.3)
-Requirement already satisfied: scipy&gt;=1.5.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from quantecon) (1.13.1)
-Requirement already satisfied: sympy in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from quantecon) (1.13.2)
-Requirement already satisfied: llvmlite&lt;0.44,&gt;=0.43.0dev0 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from numba&gt;=0.49.0-&gt;quantecon) (0.43.0)
-Requirement already satisfied: charset-normalizer&lt;4,&gt;=2 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from requests-&gt;quantecon) (3.3.2)
-Requirement already satisfied: idna&lt;4,&gt;=2.5 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from requests-&gt;quantecon) (3.7)
-Requirement already satisfied: urllib3&lt;3,&gt;=1.21.1 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from requests-&gt;quantecon) (2.2.3)
-Requirement already satisfied: certifi&gt;=2017.4.17 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from requests-&gt;quantecon) (2024.8.30)
-Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.12/site-packages (from sympy-&gt;quantecon) (1.3.0)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: numba&gt;=0.49.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from quantecon) (0.61.0)
+Requirement already satisfied: numpy&gt;=1.17.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from quantecon) (2.1.3)
+Requirement already satisfied: requests in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from quantecon) (2.32.3)
+Requirement already satisfied: scipy&gt;=1.5.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from quantecon) (1.15.3)
+Requirement already satisfied: sympy in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from quantecon) (1.13.3)
+Requirement already satisfied: llvmlite&lt;0.45,&gt;=0.44.0dev0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from numba&gt;=0.49.0-&gt;quantecon) (0.44.0)
+Requirement already satisfied: charset-normalizer&lt;4,&gt;=2 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from requests-&gt;quantecon) (3.3.2)
+Requirement already satisfied: idna&lt;4,&gt;=2.5 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from requests-&gt;quantecon) (3.7)
+Requirement already satisfied: urllib3&lt;3,&gt;=1.21.1 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from requests-&gt;quantecon) (2.3.0)
+Requirement already satisfied: certifi&gt;=2017.4.17 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from requests-&gt;quantecon) (2025.4.26)
+Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from sympy-&gt;quantecon) (1.3.0)
 </pre></div>
 </div>
 </div>
@@ -365,7 +364,7 @@ on <span class="math notranslate nohighlight">\(Z\)</span> with Markov matrix <s
         r(y, a)
         + \beta(z)
         \sum_{d, \, z'} v(f(y, a, d), z') \phi(d) Q(z, z').\]</div>
-<p>We set</p>
+<p>We set <span class="math notranslate nohighlight">\(\beta(z) := z\)</span> and</p>
 <div class="math notranslate nohighlight">
 \[
     R(y, a, y')
@@ -389,10 +388,9 @@ on <span class="math notranslate nohighlight">\(Z\)</span> with Markov matrix <s
 <span class="kn">import</span><span class="w"> </span><span class="nn">jax.numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">jnp</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">namedtuple</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">numba</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">numba</span><span class="w"> </span><span class="kn">import</span> <span class="n">prange</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">time</span><span class="w"> </span><span class="kn">import</span> <span class="n">time</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">partial</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">NamedTuple</span>
 </pre></div>
 </div>
 </div>
@@ -405,7 +403,7 @@ on <span class="math notranslate nohighlight">\(Z\)</span> with Markov matrix <s
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Mon Aug  4 03:51:17 2025       
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Mon Oct 27 03:42:07 2025       
 +-----------------------------------------------------------------------------------------+
 | NVIDIA-SMI 575.51.03              Driver Version: 575.51.03      CUDA Version: 12.9     |
 |-----------------------------------------+------------------------+----------------------+
@@ -414,7 +412,7 @@ on <span class="math notranslate nohighlight">\(Z\)</span> with Markov matrix <s
 |                                         |                        |               MIG M. |
 |=========================================+========================+======================|
 |   0  Tesla T4                       Off |   00000000:00:1E.0 Off |                    0 |
-| N/A   35C    P8             14W /   70W |       0MiB /  15360MiB |      0%      Default |
+| N/A   33C    P8             16W /   70W |       0MiB /  15360MiB |      0%      Default |
 |                                         |                        |                  N/A |
 +-----------------------------------------+------------------------+----------------------+
                                                                                          
@@ -441,68 +439,50 @@ on <span class="math notranslate nohighlight">\(Z\)</span> with Markov matrix <s
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># NamedTuple Model</span>
-<span class="n">Model</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s2">&quot;Model&quot;</span><span class="p">,</span> <span class="p">(</span><span class="s2">&quot;c&quot;</span><span class="p">,</span> <span class="s2">&quot;κ&quot;</span><span class="p">,</span> <span class="s2">&quot;p&quot;</span><span class="p">,</span> <span class="s2">&quot;z_vals&quot;</span><span class="p">,</span> <span class="s2">&quot;Q&quot;</span><span class="p">))</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Model</span><span class="p">(</span><span class="n">NamedTuple</span><span class="p">):</span>
+    <span class="n">z_values</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span>        <span class="c1"># Exogenous shock values</span>
+    <span class="n">Q</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span>               <span class="c1"># Exogenous shock probabilities</span>
+    <span class="n">x_values</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span>        <span class="c1"># Inventory values</span>
+    <span class="n">d_values</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span>        <span class="c1"># Demand values for summation</span>
+    <span class="n">ϕ_values</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span>        <span class="c1"># Demand probabilities</span>
+    <span class="n">p</span><span class="p">:</span> <span class="nb">float</span>                     <span class="c1"># Demand parameter</span>
+    <span class="n">c</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.2</span>               <span class="c1"># Unit cost</span>
+    <span class="n">κ</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.8</span>               <span class="c1"># Fixed cost</span>
 </pre></div>
 </div>
 </div>
 </div>
-<p>We need the following successive approximation function.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">successive_approx</span><span class="p">(</span><span class="n">T</span><span class="p">,</span>                     <span class="c1"># Operator (callable)</span>
-                      <span class="n">x_0</span><span class="p">,</span>                   <span class="c1"># Initial condition</span>
-                      <span class="n">tolerance</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">,</span>        <span class="c1"># Error tolerance</span>
-                      <span class="n">max_iter</span><span class="o">=</span><span class="mi">10_000</span><span class="p">,</span>       <span class="c1"># Max iteration bound</span>
-                      <span class="n">print_step</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span>         <span class="c1"># Print at multiples</span>
-                      <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-    <span class="n">x</span> <span class="o">=</span> <span class="n">x_0</span>
-    <span class="n">error</span> <span class="o">=</span> <span class="n">tolerance</span> <span class="o">+</span> <span class="mi">1</span>
-    <span class="n">k</span> <span class="o">=</span> <span class="mi">1</span>
-    <span class="k">while</span> <span class="n">error</span> <span class="o">&gt;</span> <span class="n">tolerance</span> <span class="ow">and</span> <span class="n">k</span> <span class="o">&lt;=</span> <span class="n">max_iter</span><span class="p">:</span>
-        <span class="n">x_new</span> <span class="o">=</span> <span class="n">T</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-        <span class="n">error</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">x_new</span> <span class="o">-</span> <span class="n">x</span><span class="p">))</span>
-        <span class="k">if</span> <span class="n">verbose</span> <span class="ow">and</span> <span class="n">k</span> <span class="o">%</span> <span class="n">print_step</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Completed iteration </span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2"> with error </span><span class="si">{</span><span class="n">error</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
-        <span class="n">x</span> <span class="o">=</span> <span class="n">x_new</span>
-        <span class="n">k</span> <span class="o">+=</span> <span class="mi">1</span>
-    <span class="k">if</span> <span class="n">error</span> <span class="o">&gt;</span> <span class="n">tolerance</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Warning: Iteration hit upper bound </span><span class="si">{</span><span class="n">max_iter</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="n">verbose</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Terminated successfully in </span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2"> iterations.&quot;</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">x</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jax</span><span class="o">.</span><span class="n">jit</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">demand_pdf</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span>
-    <span class="k">return</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">p</span><span class="p">)</span><span class="o">**</span><span class="n">d</span> <span class="o">*</span> <span class="n">p</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">K</span> <span class="o">=</span> <span class="mi">100</span>
-<span class="n">D_MAX</span> <span class="o">=</span> <span class="mi">101</span>
-</pre></div>
-</div>
-</div>
-</div>
-<p>Let’s define a function to create an inventory model using the given parameters.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">create_sdd_inventory_model</span><span class="p">(</span>
-        <span class="n">ρ</span><span class="o">=</span><span class="mf">0.98</span><span class="p">,</span> <span class="n">ν</span><span class="o">=</span><span class="mf">0.002</span><span class="p">,</span> <span class="n">n_z</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mf">0.97</span><span class="p">,</span>          <span class="c1"># Z state parameters</span>
-        <span class="n">c</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">κ</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span>                       <span class="c1"># firm and demand parameters</span>
-        <span class="n">use_jax</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="n">ρ</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.98</span><span class="p">,</span>     <span class="c1"># Exogenous state autocorrelation parameter</span>
+        <span class="n">ν</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.002</span><span class="p">,</span>    <span class="c1"># Exogenous state volatility parameter</span>
+        <span class="n">n_z</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>       <span class="c1"># Exogenous state discretization size</span>
+        <span class="n">b</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.97</span><span class="p">,</span>     <span class="c1"># Exogenous state offset</span>
+        <span class="n">K</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span>        <span class="c1"># Max inventory</span>
+        <span class="n">D_MAX</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">101</span><span class="p">,</span>    <span class="c1"># Demand upper bound for summation</span>
+        <span class="n">p</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.6</span>       
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Model</span><span class="p">:</span>
+    
+    <span class="c1"># Demand</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">demand_pdf</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">p</span><span class="p">)</span><span class="o">**</span><span class="n">d</span> <span class="o">*</span> <span class="n">p</span>
+        
+    <span class="n">d_values</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">D_MAX</span><span class="p">)</span>
+    <span class="n">ϕ_values</span> <span class="o">=</span> <span class="n">demand_pdf</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">d_values</span><span class="p">)</span>
+    
+    <span class="c1"># Exogenous state process</span>
     <span class="n">mc</span> <span class="o">=</span> <span class="n">qe</span><span class="o">.</span><span class="n">tauchen</span><span class="p">(</span><span class="n">n_z</span><span class="p">,</span> <span class="n">ρ</span><span class="p">,</span> <span class="n">ν</span><span class="p">)</span>
-    <span class="n">z_vals</span><span class="p">,</span> <span class="n">Q</span> <span class="o">=</span> <span class="n">mc</span><span class="o">.</span><span class="n">state_values</span> <span class="o">+</span> <span class="n">b</span><span class="p">,</span> <span class="n">mc</span><span class="o">.</span><span class="n">P</span>
-    <span class="k">if</span> <span class="n">use_jax</span><span class="p">:</span>
-        <span class="n">z_vals</span><span class="p">,</span> <span class="n">Q</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="p">(</span><span class="n">z_vals</span><span class="p">,</span> <span class="n">Q</span><span class="p">))</span>
-    <span class="k">return</span> <span class="n">Model</span><span class="p">(</span><span class="n">c</span><span class="o">=</span><span class="n">c</span><span class="p">,</span> <span class="n">κ</span><span class="o">=</span><span class="n">κ</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="n">p</span><span class="p">,</span> <span class="n">z_vals</span><span class="o">=</span><span class="n">z_vals</span><span class="p">,</span> <span class="n">Q</span><span class="o">=</span><span class="n">Q</span><span class="p">)</span>
+    <span class="n">z_values</span><span class="p">,</span> <span class="n">Q</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">array</span><span class="p">,</span> <span class="p">(</span><span class="n">mc</span><span class="o">.</span><span class="n">state_values</span> <span class="o">+</span> <span class="n">b</span><span class="p">,</span> <span class="n">mc</span><span class="o">.</span><span class="n">P</span><span class="p">))</span>
+    
+    <span class="c1"># Endogenous state</span>
+    <span class="n">x_values</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">K</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>   <span class="c1"># 0, 1, ..., K</span>
+    
+    <span class="k">return</span> <span class="n">Model</span><span class="p">(</span>
+        <span class="n">z_values</span><span class="o">=</span><span class="n">z_values</span><span class="p">,</span> <span class="n">Q</span><span class="o">=</span><span class="n">Q</span><span class="p">,</span> 
+        <span class="n">x_values</span><span class="o">=</span><span class="n">x_values</span><span class="p">,</span> <span class="n">d_values</span><span class="o">=</span><span class="n">d_values</span><span class="p">,</span> <span class="n">ϕ_values</span><span class="o">=</span><span class="n">ϕ_values</span><span class="p">,</span>
+        <span class="n">p</span><span class="o">=</span><span class="n">p</span>
+    <span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -511,19 +491,33 @@ on <span class="math notranslate nohighlight">\(Z\)</span> with Markov matrix <s
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jax</span><span class="o">.</span><span class="n">jit</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">B</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">i_z</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">B</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">z_idx</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    The function B(x, z, a, v) = r(x, a) + β(z) Σ_x′ v(x′) P(x, a, x′).</span>
+<span class="sd">    Take z_idx and convert it to z.  Then compute</span>
+
+<span class="sd">        B(x, z, a, v) = r(x, a) + β(z) Σ_x′ v(x′) P(x, a, x′)</span>
+
+<span class="sd">    for all possible choices of a.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">c</span><span class="p">,</span> <span class="n">κ</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">z_vals</span><span class="p">,</span> <span class="n">Q</span> <span class="o">=</span> <span class="n">model</span>
-    <span class="n">z</span> <span class="o">=</span> <span class="n">z_vals</span><span class="p">[</span><span class="n">i_z</span><span class="p">]</span>
-    <span class="n">d_vals</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">D_MAX</span><span class="p">)</span>
-    <span class="n">ϕ_vals</span> <span class="o">=</span> <span class="n">demand_pdf</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">d_vals</span><span class="p">)</span>
-    <span class="n">revenue</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">minimum</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">d_vals</span><span class="p">)</span><span class="o">*</span><span class="n">ϕ_vals</span><span class="p">)</span>
-    <span class="n">profit</span> <span class="o">=</span> <span class="n">revenue</span> <span class="o">-</span> <span class="n">c</span> <span class="o">*</span> <span class="n">a</span> <span class="o">-</span> <span class="n">κ</span> <span class="o">*</span> <span class="p">(</span><span class="n">a</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
-    <span class="n">v_R</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="n">jnp</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">d_vals</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="n">a</span><span class="p">]</span><span class="o">.</span><span class="n">T</span> <span class="o">*</span> <span class="n">ϕ_vals</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-    <span class="n">cv</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">v_R</span><span class="o">*</span><span class="n">Q</span><span class="p">[</span><span class="n">i_z</span><span class="p">])</span>
-    <span class="k">return</span> <span class="n">profit</span> <span class="o">+</span> <span class="n">z</span> <span class="o">*</span> <span class="n">cv</span>
+    
+    <span class="n">z_values</span><span class="p">,</span> <span class="n">Q</span><span class="p">,</span> <span class="n">x_values</span><span class="p">,</span> <span class="n">d_values</span><span class="p">,</span> <span class="n">ϕ_values</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">κ</span> <span class="o">=</span> <span class="n">model</span>
+    <span class="n">z</span> <span class="o">=</span> <span class="n">z_values</span><span class="p">[</span><span class="n">z_idx</span><span class="p">]</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_B</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns r(x, a) + β(z) Σ_x′ v(x′) P(x, a, x′) for each a.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">revenue</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">minimum</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">d_values</span><span class="p">)</span> <span class="o">*</span> <span class="n">ϕ_values</span><span class="p">)</span>
+        <span class="n">profit</span> <span class="o">=</span> <span class="n">revenue</span> <span class="o">-</span> <span class="n">c</span> <span class="o">*</span> <span class="n">a</span> <span class="o">-</span> <span class="n">κ</span> <span class="o">*</span> <span class="p">(</span><span class="n">a</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">v_R</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="n">jnp</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">d_values</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="n">a</span><span class="p">]</span><span class="o">.</span><span class="n">T</span> <span class="o">*</span> <span class="n">ϕ_values</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">cv</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">v_R</span> <span class="o">*</span> <span class="n">Q</span><span class="p">[</span><span class="n">z_idx</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">profit</span> <span class="o">+</span> <span class="n">z</span> <span class="o">*</span> <span class="n">cv</span>
+
+    <span class="n">a_values</span> <span class="o">=</span> <span class="n">x_values</span>   <span class="c1"># Set of possible order sizes</span>
+    <span class="n">B_values</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">vmap</span><span class="p">(</span><span class="n">_B</span><span class="p">)(</span><span class="n">a_values</span><span class="p">)</span>
+    <span class="n">max_x</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">x_values</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+    
+    <span class="k">return</span> <span class="n">jnp</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">a_values</span> <span class="o">&lt;=</span> <span class="n">max_x</span> <span class="o">-</span> <span class="n">x</span><span class="p">,</span> <span class="n">B_values</span><span class="p">,</span> <span class="o">-</span><span class="n">jnp</span><span class="o">.</span><span class="n">inf</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -533,30 +527,8 @@ on <span class="math notranslate nohighlight">\(Z\)</span> with Markov matrix <s
 argument.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">B_vec_a</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">vmap</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="n">in_axes</span><span class="o">=</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jax</span><span class="o">.</span><span class="n">jit</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">B2</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">i_z</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    The function B(x, z, a, v) = r(x, a) + β(z) Σ_x′ v(x′) P(x, a, x′).</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">c</span><span class="p">,</span> <span class="n">κ</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">z_vals</span><span class="p">,</span> <span class="n">Q</span> <span class="o">=</span> <span class="n">model</span>
-    <span class="n">a_vals</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">K</span><span class="p">)</span>
-    <span class="n">res</span> <span class="o">=</span> <span class="n">B_vec_a</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">i_z</span><span class="p">,</span> <span class="n">a_vals</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">model</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">jnp</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">a_vals</span> <span class="o">&lt;</span> <span class="n">K</span> <span class="o">-</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">res</span><span class="p">,</span> <span class="o">-</span><span class="n">jnp</span><span class="o">.</span><span class="n">inf</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">B2_vec_z</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">vmap</span><span class="p">(</span><span class="n">B2</span><span class="p">,</span> <span class="n">in_axes</span><span class="o">=</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
-<span class="n">B2_vec_z_x</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">vmap</span><span class="p">(</span><span class="n">B2_vec_z</span><span class="p">,</span> <span class="n">in_axes</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">B</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">vmap</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="n">in_axes</span><span class="o">=</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
+<span class="n">B</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">vmap</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="n">in_axes</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
@@ -567,10 +539,9 @@ argument.</p>
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jax</span><span class="o">.</span><span class="n">jit</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">T</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;The Bellman operator.&quot;&quot;&quot;</span>
-    <span class="n">c</span><span class="p">,</span> <span class="n">κ</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">z_vals</span><span class="p">,</span> <span class="n">Q</span> <span class="o">=</span> <span class="n">model</span>
-    <span class="n">i_z_range</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">z_vals</span><span class="p">))</span>
-    <span class="n">x_range</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">K</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
-    <span class="n">res</span> <span class="o">=</span> <span class="n">B2_vec_z_x</span><span class="p">(</span><span class="n">x_range</span><span class="p">,</span> <span class="n">i_z_range</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">model</span><span class="p">)</span>
+    <span class="n">z_values</span><span class="p">,</span> <span class="n">Q</span><span class="p">,</span> <span class="n">x_values</span><span class="p">,</span> <span class="n">d_values</span><span class="p">,</span> <span class="n">ϕ_values</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">κ</span> <span class="o">=</span> <span class="n">model</span>
+    <span class="n">z_indices</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">z_values</span><span class="p">))</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">B</span><span class="p">(</span><span class="n">x_values</span><span class="p">,</span> <span class="n">z_indices</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">model</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">jnp</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -582,10 +553,9 @@ argument.</p>
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jax</span><span class="o">.</span><span class="n">jit</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">get_greedy</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Get a v-greedy policy.  Returns a zero-based array.&quot;&quot;&quot;</span>
-    <span class="n">c</span><span class="p">,</span> <span class="n">κ</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">z_vals</span><span class="p">,</span> <span class="n">Q</span>  <span class="o">=</span> <span class="n">model</span>
-    <span class="n">i_z_range</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">z_vals</span><span class="p">))</span>
-    <span class="n">x_range</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">K</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
-    <span class="n">res</span> <span class="o">=</span> <span class="n">B2_vec_z_x</span><span class="p">(</span><span class="n">x_range</span><span class="p">,</span> <span class="n">i_z_range</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">model</span><span class="p">)</span>
+    <span class="n">z_values</span><span class="p">,</span> <span class="n">Q</span><span class="p">,</span> <span class="n">x_values</span><span class="p">,</span> <span class="n">d_values</span><span class="p">,</span> <span class="n">ϕ_values</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">κ</span> <span class="o">=</span> <span class="n">model</span>
+    <span class="n">z_indices</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">z_values</span><span class="p">))</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">B</span><span class="p">(</span><span class="n">x_values</span><span class="p">,</span> <span class="n">z_indices</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">model</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">jnp</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -594,9 +564,25 @@ argument.</p>
 <p>Here’s code to solve the model using value function iteration.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">solve_inventory_model</span><span class="p">(</span><span class="n">v_init</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jax</span><span class="o">.</span><span class="n">jit</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">solve_inventory_model</span><span class="p">(</span><span class="n">v_init</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">10_000</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Use successive_approx to get v_star and then compute greedy.&quot;&quot;&quot;</span>
-    <span class="n">v_star</span> <span class="o">=</span> <span class="n">successive_approx</span><span class="p">(</span><span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">T</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">model</span><span class="p">),</span> <span class="n">v_init</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">update</span><span class="p">(</span><span class="n">state</span><span class="p">):</span>
+        <span class="n">error</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">state</span>
+        <span class="n">new_v</span> <span class="o">=</span> <span class="n">T</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">model</span><span class="p">)</span>
+        <span class="n">new_error</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">new_v</span> <span class="o">-</span> <span class="n">v</span><span class="p">))</span>
+        <span class="n">new_i</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="k">return</span> <span class="n">new_error</span><span class="p">,</span> <span class="n">new_i</span><span class="p">,</span> <span class="n">new_v</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">test</span><span class="p">(</span><span class="n">state</span><span class="p">):</span>
+        <span class="n">error</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">state</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">i</span> <span class="o">&lt;</span> <span class="n">max_iter</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">error</span> <span class="o">&gt;</span> <span class="n">tol</span><span class="p">)</span>
+
+    <span class="n">i</span><span class="p">,</span> <span class="n">error</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">tol</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="n">initial_state</span> <span class="o">=</span> <span class="n">error</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">v_init</span>
+    <span class="n">final_state</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">lax</span><span class="o">.</span><span class="n">while_loop</span><span class="p">(</span><span class="n">test</span><span class="p">,</span> <span class="n">update</span><span class="p">,</span> <span class="n">initial_state</span><span class="p">)</span>
+    <span class="n">error</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">v_star</span> <span class="o">=</span> <span class="n">final_state</span>
     <span class="n">σ_star</span> <span class="o">=</span> <span class="n">get_greedy</span><span class="p">(</span><span class="n">v_star</span><span class="p">,</span> <span class="n">model</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">v_star</span><span class="p">,</span> <span class="n">σ_star</span>
 </pre></div>
@@ -607,9 +593,10 @@ argument.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">create_sdd_inventory_model</span><span class="p">()</span>
-<span class="n">c</span><span class="p">,</span> <span class="n">κ</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">z_vals</span><span class="p">,</span> <span class="n">Q</span> <span class="o">=</span> <span class="n">model</span>
-<span class="n">n_z</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">z_vals</span><span class="p">)</span>
-<span class="n">v_init</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">K</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">n_z</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+<span class="n">z_values</span><span class="p">,</span> <span class="n">Q</span><span class="p">,</span> <span class="n">x_values</span><span class="p">,</span> <span class="n">d_values</span><span class="p">,</span> <span class="n">ϕ_values</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">κ</span> <span class="o">=</span> <span class="n">model</span>
+<span class="n">n_z</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">z_values</span><span class="p">)</span>
+<span class="n">n_x</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">x_values</span><span class="p">)</span>
+<span class="n">v_init</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n_x</span><span class="p">,</span> <span class="n">n_z</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -618,79 +605,17 @@ argument.</p>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
 <span class="n">v_star</span><span class="p">,</span> <span class="n">σ_star</span> <span class="o">=</span> <span class="n">solve_inventory_model</span><span class="p">(</span><span class="n">v_init</span><span class="p">,</span> <span class="n">model</span><span class="p">)</span>
+
+<span class="c1"># Pause until execution finishes</span>
+<span class="n">jax</span><span class="o">.</span><span class="n">tree_util</span><span class="o">.</span><span class="n">tree_map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">block_until_ready</span><span class="p">(),</span> <span class="p">(</span><span class="n">v_star</span><span class="p">,</span> <span class="n">σ_star</span><span class="p">))</span>
+
 <span class="n">jax_time_with_compile</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Jax compile plus execution time = &quot;</span><span class="p">,</span> <span class="n">jax_time_with_compile</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;compile plus execution time = </span><span class="si">{</span><span class="n">jax_time_with_compile</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">1000</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2"> ms&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Completed iteration 25 with error 0.5613828428334706.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Completed iteration 50 with error 0.3776464347688062.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Completed iteration 75 with error 0.2272706235969011.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Completed iteration 100 with error 0.12872204940708798.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Completed iteration 125 with error 0.06744149371262154.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Completed iteration 150 with error 0.030374639547666504.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Completed iteration 175 with error 0.01423099032950148.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Completed iteration 200 with error 0.007396776219316337.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Completed iteration 225 with error 0.003912238304586424.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Completed iteration 250 with error 0.0020680914166604225.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Completed iteration 275 with error 0.001092307533355097.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Completed iteration 300 with error 0.0005766427105982075.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Completed iteration 325 with error 0.0003043321707139057.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Completed iteration 350 with error 0.0001605907367547843.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Completed iteration 375 with error 8.473334524694565e-05.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Completed iteration 400 with error 4.4706045166265085e-05.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Completed iteration 425 with error 2.3586619946058818e-05.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Completed iteration 450 with error 1.2443945941242873e-05.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Completed iteration 475 with error 6.565178331641164e-06.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Completed iteration 500 with error 3.463639430378862e-06.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Completed iteration 525 with error 1.827332347659194e-06.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Terminated successfully in 550 iterations.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Jax compile plus execution time =  6.0396788120269775
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>compile plus execution time = 1396.150827 ms
 </pre></div>
 </div>
 </div>
@@ -700,104 +625,53 @@ argument.</p>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
 <span class="n">v_star</span><span class="p">,</span> <span class="n">σ_star</span> <span class="o">=</span> <span class="n">solve_inventory_model</span><span class="p">(</span><span class="n">v_init</span><span class="p">,</span> <span class="n">model</span><span class="p">)</span>
+
+<span class="c1"># Pause until execution finishes</span>
+<span class="n">jax</span><span class="o">.</span><span class="n">tree_util</span><span class="o">.</span><span class="n">tree_map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">block_until_ready</span><span class="p">(),</span> <span class="p">(</span><span class="n">v_star</span><span class="p">,</span> <span class="n">σ_star</span><span class="p">))</span>
+
 <span class="n">jax_time_without_compile</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Jax execution time = &quot;</span><span class="p">,</span> <span class="n">jax_time_without_compile</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;execution time = </span><span class="si">{</span><span class="n">jax_time_without_compile</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">1000</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2"> ms&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Completed iteration 25 with error 0.5613828428334706.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Completed iteration 50 with error 0.3776464347688062.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Completed iteration 75 with error 0.2272706235969011.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Completed iteration 100 with error 0.12872204940708798.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Completed iteration 125 with error 0.06744149371262154.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Completed iteration 150 with error 0.030374639547666504.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Completed iteration 175 with error 0.01423099032950148.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Completed iteration 200 with error 0.007396776219316337.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Completed iteration 225 with error 0.003912238304586424.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Completed iteration 250 with error 0.0020680914166604225.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Completed iteration 275 with error 0.001092307533355097.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Completed iteration 300 with error 0.0005766427105982075.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Completed iteration 325 with error 0.0003043321707139057.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Completed iteration 350 with error 0.0001605907367547843.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Completed iteration 375 with error 8.473334524694565e-05.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Completed iteration 400 with error 4.4706045166265085e-05.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Completed iteration 425 with error 2.3586619946058818e-05.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Completed iteration 450 with error 1.2443945941242873e-05.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Completed iteration 475 with error 6.565178331641164e-06.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Completed iteration 500 with error 3.463639430378862e-06.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Completed iteration 525 with error 1.827332347659194e-06.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Terminated successfully in 550 iterations.
-Jax execution time =  5.098019123077393
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>execution time = 809.312820 ms
 </pre></div>
 </div>
 </div>
 </div>
+<p>Now let’s do a simulation.</p>
+<p>We’ll begin by converting back to NumPy arrays for convenience</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">z_mc</span> <span class="o">=</span> <span class="n">qe</span><span class="o">.</span><span class="n">MarkovChain</span><span class="p">(</span><span class="n">Q</span><span class="p">,</span> <span class="n">z_vals</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Q</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">Q</span><span class="p">)</span>
+<span class="n">z_values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">z_values</span><span class="p">)</span>
+<span class="n">z_mc</span> <span class="o">=</span> <span class="n">qe</span><span class="o">.</span><span class="n">MarkovChain</span><span class="p">(</span><span class="n">Q</span><span class="p">,</span> <span class="n">z_values</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
+<p>Here’s code to simulate inventories</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">sim_inventories</span><span class="p">(</span><span class="n">ts_length</span><span class="p">,</span> <span class="n">X_init</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Simulate given the optimal policy.&quot;&quot;&quot;</span>
     <span class="k">global</span> <span class="n">p</span><span class="p">,</span> <span class="n">z_mc</span>
-    <span class="n">i_z</span> <span class="o">=</span> <span class="n">z_mc</span><span class="o">.</span><span class="n">simulate_indices</span><span class="p">(</span><span class="n">ts_length</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    
+    <span class="n">z_idx</span> <span class="o">=</span> <span class="n">z_mc</span><span class="o">.</span><span class="n">simulate_indices</span><span class="p">(</span><span class="n">ts_length</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
     <span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">ts_length</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
     <span class="n">X</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">X_init</span>
     <span class="n">rand</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">()</span><span class="o">.</span><span class="n">geometric</span><span class="p">(</span><span class="n">p</span><span class="o">=</span><span class="n">p</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">ts_length</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+    
     <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ts_length</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
-        <span class="n">X</span><span class="p">[</span><span class="n">t</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">-</span> <span class="n">rand</span><span class="p">[</span><span class="n">t</span><span class="p">],</span> <span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="n">σ_star</span><span class="p">[</span><span class="n">X</span><span class="p">[</span><span class="n">t</span><span class="p">],</span> <span class="n">i_z</span><span class="p">[</span><span class="n">t</span><span class="p">]]</span>
-    <span class="k">return</span> <span class="n">X</span><span class="p">,</span> <span class="n">z_vals</span><span class="p">[</span><span class="n">i_z</span><span class="p">]</span>
+        <span class="n">X</span><span class="p">[</span><span class="n">t</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">-</span> <span class="n">rand</span><span class="p">[</span><span class="n">t</span><span class="p">],</span> <span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="n">σ_star</span><span class="p">[</span><span class="n">X</span><span class="p">[</span><span class="n">t</span><span class="p">],</span> <span class="n">z_idx</span><span class="p">[</span><span class="n">t</span><span class="p">]]</span>
+        
+    <span class="k">return</span> <span class="n">X</span><span class="p">,</span> <span class="n">z_values</span><span class="p">[</span><span class="n">z_idx</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
 </div>
+<p>Here’s code to generate a plot.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">plot_ts</span><span class="p">(</span><span class="n">ts_length</span><span class="o">=</span><span class="mi">400</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
@@ -826,6 +700,7 @@ Jax execution time =  5.098019123077393
 </div>
 </div>
 </div>
+<p>Let’s take a look.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_ts</span><span class="p">()</span>
@@ -833,272 +708,8 @@ Jax execution time =  5.098019123077393
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/61161895d8ed70d7a068d1445af48012445ff88d7d2d60070c28addd44cc5677.png"><img alt="_images/61161895d8ed70d7a068d1445af48012445ff88d7d2d60070c28addd44cc5677.png" src="_images/61161895d8ed70d7a068d1445af48012445ff88d7d2d60070c28addd44cc5677.png" style="width: 80%;" />
+<a class="reference internal image-reference" href="_images/8b0a0719ae6ce9c62f91b761d45bb99d0dbb103d890c4f457c69a9a1a849d481.png"><img alt="_images/8b0a0719ae6ce9c62f91b761d45bb99d0dbb103d890c4f457c69a9a1a849d481.png" src="_images/8b0a0719ae6ce9c62f91b761d45bb99d0dbb103d890c4f457c69a9a1a849d481.png" style="width: 80%;" />
 </a>
-</div>
-</div>
-</section>
-<section id="numba-implementation">
-<h2><span class="section-number">15.3. </span>Numba implementation<a class="headerlink" href="#numba-implementation" title="Link to this heading">#</a></h2>
-<p>Let’s try the same operations in Numba in order to compare the speed.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@numba</span><span class="o">.</span><span class="n">njit</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">demand_pdf_numba</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span>
-    <span class="k">return</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">p</span><span class="p">)</span><span class="o">**</span><span class="n">d</span> <span class="o">*</span> <span class="n">p</span>
-
-<span class="nd">@numba</span><span class="o">.</span><span class="n">njit</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">B_numba</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">i_z</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    The function B(x, z, a, v) = r(x, a) + β(z) Σ_x′ v(x′) P(x, a, x′).</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">c</span><span class="p">,</span> <span class="n">κ</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">z_vals</span><span class="p">,</span> <span class="n">Q</span> <span class="o">=</span> <span class="n">model</span>
-    <span class="n">z</span> <span class="o">=</span> <span class="n">z_vals</span><span class="p">[</span><span class="n">i_z</span><span class="p">]</span>
-    <span class="n">d_vals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">D_MAX</span><span class="p">)</span>
-    <span class="n">ϕ_vals</span> <span class="o">=</span> <span class="n">demand_pdf_numba</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">d_vals</span><span class="p">)</span>
-    <span class="n">revenue</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">minimum</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">d_vals</span><span class="p">)</span><span class="o">*</span><span class="n">ϕ_vals</span><span class="p">)</span>
-    <span class="n">profit</span> <span class="o">=</span> <span class="n">revenue</span> <span class="o">-</span> <span class="n">c</span> <span class="o">*</span> <span class="n">a</span> <span class="o">-</span> <span class="n">κ</span> <span class="o">*</span> <span class="p">(</span><span class="n">a</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
-    <span class="n">v_R</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">d_vals</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="n">a</span><span class="p">]</span><span class="o">.</span><span class="n">T</span> <span class="o">*</span> <span class="n">ϕ_vals</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-    <span class="n">cv</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">v_R</span><span class="o">*</span><span class="n">Q</span><span class="p">[</span><span class="n">i_z</span><span class="p">])</span>
-    <span class="k">return</span> <span class="n">profit</span> <span class="o">+</span> <span class="n">z</span> <span class="o">*</span> <span class="n">cv</span>
-
-
-<span class="nd">@numba</span><span class="o">.</span><span class="n">njit</span><span class="p">(</span><span class="n">parallel</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">T_numba</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;The Bellman operator.&quot;&quot;&quot;</span>
-    <span class="n">c</span><span class="p">,</span> <span class="n">κ</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">z_vals</span><span class="p">,</span> <span class="n">Q</span> <span class="o">=</span> <span class="n">model</span>
-    <span class="n">new_v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty_like</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">i_z</span> <span class="ow">in</span> <span class="n">prange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">z_vals</span><span class="p">)):</span>
-        <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">prange</span><span class="p">(</span><span class="n">K</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
-            <span class="n">v_1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">B_numba</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">i_z</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">model</span><span class="p">)</span>
-                             <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">K</span><span class="o">-</span><span class="n">x</span><span class="o">+</span><span class="mi">1</span><span class="p">)])</span>
-            <span class="n">new_v</span><span class="p">[</span><span class="n">x</span><span class="p">,</span> <span class="n">i_z</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">v_1</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">new_v</span>
-
-
-<span class="nd">@numba</span><span class="o">.</span><span class="n">njit</span><span class="p">(</span><span class="n">parallel</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">get_greedy_numba</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get a v-greedy policy.  Returns a zero-based array.&quot;&quot;&quot;</span>
-    <span class="n">c</span><span class="p">,</span> <span class="n">κ</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">z_vals</span><span class="p">,</span> <span class="n">Q</span> <span class="o">=</span> <span class="n">model</span>
-    <span class="n">n_z</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">z_vals</span><span class="p">)</span>
-    <span class="n">σ_star</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">K</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">n_z</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">i_z</span> <span class="ow">in</span> <span class="n">prange</span><span class="p">(</span><span class="n">n_z</span><span class="p">):</span>
-        <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">K</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
-            <span class="n">v_1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">B_numba</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">i_z</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">model</span><span class="p">)</span>
-                             <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">K</span><span class="o">-</span><span class="n">x</span><span class="o">+</span><span class="mi">1</span><span class="p">)])</span>
-            <span class="n">σ_star</span><span class="p">[</span><span class="n">x</span><span class="p">,</span> <span class="n">i_z</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">v_1</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">σ_star</span>
-
-
-
-<span class="k">def</span><span class="w"> </span><span class="nf">solve_inventory_model_numba</span><span class="p">(</span><span class="n">v_init</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Use successive_approx to get v_star and then compute greedy.&quot;&quot;&quot;</span>
-    <span class="n">v_star</span> <span class="o">=</span> <span class="n">successive_approx</span><span class="p">(</span><span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">T_numba</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">model</span><span class="p">),</span> <span class="n">v_init</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="n">σ_star</span> <span class="o">=</span> <span class="n">get_greedy_numba</span><span class="p">(</span><span class="n">v_star</span><span class="p">,</span> <span class="n">model</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">v_star</span><span class="p">,</span> <span class="n">σ_star</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">create_sdd_inventory_model</span><span class="p">(</span><span class="n">use_jax</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<span class="n">c</span><span class="p">,</span> <span class="n">κ</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">z_vals</span><span class="p">,</span> <span class="n">Q</span>  <span class="o">=</span> <span class="n">model</span>
-<span class="n">n_z</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">z_vals</span><span class="p">)</span>
-<span class="n">v_init</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">K</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">n_z</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
-<span class="n">v_star_numba</span><span class="p">,</span> <span class="n">σ_star_numba</span> <span class="o">=</span> <span class="n">solve_inventory_model_numba</span><span class="p">(</span><span class="n">v_init</span><span class="p">,</span> <span class="n">model</span><span class="p">)</span>
-<span class="n">numba_time_with_compile</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Numba compile plus execution time = &quot;</span><span class="p">,</span> <span class="n">numba_time_with_compile</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Completed iteration 25 with error 0.5613828428334706.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Completed iteration 50 with error 0.37764643476879556.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Completed iteration 75 with error 0.22727062359689398.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Completed iteration 100 with error 0.12872204940708798.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Completed iteration 125 with error 0.06744149371262864.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Completed iteration 150 with error 0.030374639547666504.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Completed iteration 175 with error 0.01423099032948727.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Completed iteration 200 with error 0.007396776219316337.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Completed iteration 225 with error 0.003912238304593529.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Completed iteration 250 with error 0.002068091416653317.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Completed iteration 275 with error 0.0010923075333622023.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Completed iteration 300 with error 0.0005766427105911021.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Completed iteration 325 with error 0.0003043321707281166.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Completed iteration 350 with error 0.00016059073676188973.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Completed iteration 375 with error 8.473334525405107e-05.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Completed iteration 400 with error 4.470604518047594e-05.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Completed iteration 425 with error 2.3586619960269672e-05.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Completed iteration 450 with error 1.2443945934137446e-05.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Completed iteration 475 with error 6.565178331641164e-06.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Completed iteration 500 with error 3.4636394445897167e-06.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Completed iteration 525 with error 1.827332347659194e-06.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Terminated successfully in 550 iterations.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Numba compile plus execution time =  1187.2455887794495
-</pre></div>
-</div>
-</div>
-</div>
-<p>Let’s run again to eliminate the compile time.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
-<span class="n">v_star_numba</span><span class="p">,</span> <span class="n">σ_star_numba</span> <span class="o">=</span> <span class="n">solve_inventory_model_numba</span><span class="p">(</span><span class="n">v_init</span><span class="p">,</span> <span class="n">model</span><span class="p">)</span>
-<span class="n">numba_time_without_compile</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Numba execution time = &quot;</span><span class="p">,</span> <span class="n">numba_time_without_compile</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Completed iteration 25 with error 0.5613828428334706.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Completed iteration 50 with error 0.37764643476879556.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Completed iteration 75 with error 0.22727062359689398.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Completed iteration 100 with error 0.12872204940708798.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Completed iteration 125 with error 0.06744149371262864.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Completed iteration 150 with error 0.030374639547666504.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Completed iteration 175 with error 0.01423099032948727.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Completed iteration 200 with error 0.007396776219316337.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Completed iteration 225 with error 0.003912238304593529.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Completed iteration 250 with error 0.002068091416653317.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Completed iteration 275 with error 0.0010923075333622023.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Completed iteration 300 with error 0.0005766427105911021.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Completed iteration 325 with error 0.0003043321707281166.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Completed iteration 350 with error 0.00016059073676188973.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Completed iteration 375 with error 8.473334525405107e-05.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Completed iteration 400 with error 4.470604518047594e-05.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Completed iteration 425 with error 2.3586619960269672e-05.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Completed iteration 450 with error 1.2443945934137446e-05.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Completed iteration 475 with error 6.565178331641164e-06.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Completed iteration 500 with error 3.4636394445897167e-06.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Completed iteration 525 with error 1.827332347659194e-06.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Terminated successfully in 550 iterations.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Numba execution time =  1064.3727688789368
-</pre></div>
-</div>
-</div>
-</div>
-<p>Let’s verify that the Numba and JAX implementations converge to the same solution.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">v_star_numba</span><span class="p">,</span> <span class="n">v_star</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>True
-</pre></div>
-</div>
-</div>
-</div>
-<p>Here’s the speed comparison.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;JAX vectorized implementation is &quot;</span>
-      <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">numba_time_without_compile</span><span class="o">/</span><span class="n">jax_time_without_compile</span><span class="si">}</span><span class="s2"> faster &quot;</span>
-       <span class="s2">&quot;than Numba&#39;s parallel implementation&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>JAX vectorized implementation is 208.78163521607854 faster than Numba&#39;s parallel implementation
-</pre></div>
-</div>
 </div>
 </div>
 </section>
