@@ -103,7 +103,12 @@ linalg.inv(B)   # Inverse of identity is identity
 ```
 
 ```{code-cell} ipython3
-linalg.eigh(B)  # Computes eigenvalues and eigenvectors
+out = linalg.eigh(B)  # Computes eigenvalues and eigenvectors
+out.eigenvalues
+```
+
+```{code-cell} ipython3
+out.eigenvectors
 ```
 
 ### Differences
@@ -233,7 +238,7 @@ If we use the same key again, we initialize at the same seed, so the random numb
 random.normal(key, (3, 3))
 ```
 
-To produce a (quasi-) independent draw, best practice is to "split" the existing key:
+To produce a (quasi-) independent draw, we can `split` the existing key.
 
 ```{code-cell} ipython3
 key, subkey = random.split(key)
@@ -247,14 +252,22 @@ random.normal(key, (3, 3))
 random.normal(subkey, (3, 3))
 ```
 
+As we will see, the `split` operation is particularly useful for parallel
+computing, where independent sequences or simulations can be given their own
+key.
+
+Another option is `fold_in`, which produces new "independent" keys from a base
+key.
+
 The function below produces `k` (quasi-) independent random `n x n` matrices using this procedure.
 
 ```{code-cell} ipython3
+base_key = random.PRNGKey(42)
 def gen_random_matrices(key, n, k):
     matrices = []
-    for _ in range(k):
-        key, subkey = random.split(key)
-        matrices.append(random.uniform(subkey, (n, n)))
+    for i in range(k):
+        key = random.fold_in(base_key, i)  # generate a fresh key
+        matrices.append(random.uniform(key, (n, n)))
     return matrices
 ```
 
