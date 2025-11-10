@@ -262,7 +262,6 @@ key.
 The function below produces `k` (quasi-) independent random `n x n` matrices using this procedure.
 
 ```{code-cell} ipython3
-base_key = random.PRNGKey(42)
 def gen_random_matrices(key, n, k):
     matrices = []
     for i in range(k):
@@ -271,10 +270,15 @@ def gen_random_matrices(key, n, k):
     return matrices
 ```
 
+Let's try it.
+
 ```{code-cell} ipython3
-matrices = gen_random_matrices(key, 2, 2)
+base_key = random.PRNGKey(42)
+
+matrices = gen_random_matrices(base_key, 2, 3)
 for A in matrices:
     print(A)
+    print()
 ```
 
 To get a one-dimensional array of normal random draws, we can either use `(len, )` for the shape, as in
@@ -472,6 +476,23 @@ f(x)
 ```
 
 Moral of the story: write pure functions when using JAX!
+
+In the case of `f`, we can easily make a pure version as follows:
+
+
+```{code-cell} ipython3
+
+@jax.jit
+def f_pure(a, x):
+    return a + x
+
+
+a = 1  
+x = jnp.ones(3)
+f_pure(a, x)
+```
+
+Now `a` is passed into the function explicitly.
 
 
 ## Gradients
