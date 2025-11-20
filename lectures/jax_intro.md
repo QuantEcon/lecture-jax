@@ -674,7 +674,7 @@ jnp.allclose(z_vmap, z_mesh)
 :label: jax_intro_ex2
 ```
 
-In the Exercise section of [a lecture on Numba and parallelization](https://python-programming.quantecon.org/parallelization.html), we used Monte Carlo to price a European call option.
+In the Exercise section of [a lecture on Numba](https://python-programming.quantecon.org/numba.html), we used Monte Carlo to price a European call option.
 
 The code was accelerated by Numba-based multithreading.
 
