@@ -7,7 +7,7 @@ jobs:
       image: docker://us-docker.pkg.dev/colab-images/public/runtime
       options: --gpus all
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
         with:
           ref: ${{ github.event.pull_request.head.sha }}
       - name: Check nvidia drivers
