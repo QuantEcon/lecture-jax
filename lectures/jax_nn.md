@@ -44,6 +44,8 @@ from time import time
 ```
 
 ```{code-cell} ipython3
+:tags: [hide-output]
+
 !pip install keras optax
 ```
 
@@ -657,22 +659,22 @@ results = {
         'JAX + Optax SGD',
         'JAX + Optax ADAM'
     ],
-    'Runtime (seconds)': [
-        f"{keras_runtime:.2f}",
-        f"{jax_runtime:.2f}",
-        f"{optax_sgd_runtime:.2f}",
-        f"{optax_adam_runtime:.2f}"
+    'Runtime (s)': [
+        keras_runtime,
+        jax_runtime,
+        optax_sgd_runtime,
+        optax_adam_runtime
     ],
     'Validation MSE': [
-        f"{keras_mse:.6f}",
-        f"{jax_mse:.6f}",
-        f"{optax_sgd_mse:.6f}",
-        f"{optax_adam_mse:.6f}"
+        keras_mse,
+        jax_mse,
+        optax_sgd_mse,
+        optax_adam_mse
     ]
 }
 
 df = pd.DataFrame(results)
-print(df.to_string(index=False))
+df
 ```
 
 
