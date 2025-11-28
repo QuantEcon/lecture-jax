@@ -316,9 +316,7 @@ Requirement already satisfied: requests in /home/runner/miniconda3/envs/quanteco
 Requirement already satisfied: scipy&gt;=1.5.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from quantecon) (1.15.3)
 Requirement already satisfied: sympy in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from quantecon) (1.13.3)
 Requirement already satisfied: llvmlite&lt;0.45,&gt;=0.44.0dev0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from numba&gt;=0.49.0-&gt;quantecon) (0.44.0)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: charset-normalizer&lt;4,&gt;=2 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from requests-&gt;quantecon) (3.3.2)
+Requirement already satisfied: charset-normalizer&lt;4,&gt;=2 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from requests-&gt;quantecon) (3.3.2)
 Requirement already satisfied: idna&lt;4,&gt;=2.5 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from requests-&gt;quantecon) (3.7)
 Requirement already satisfied: urllib3&lt;3,&gt;=1.21.1 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from requests-&gt;quantecon) (2.3.0)
 Requirement already satisfied: certifi&gt;=2017.4.17 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from requests-&gt;quantecon) (2025.4.26)
@@ -401,15 +399,15 @@ distribution over <span class="math notranslate nohighlight">\(\mathbb R_+\)</sp
 </ol>
 <p>Scrap value is set to zero and the discount rate is <span class="math notranslate nohighlight">\(\beta \in (0, 1)\)</span>.</p>
 <p>The firm makes their stop-continue choice by first solving for the value function, which is the unique solution in a class of continuous functions <span class="math notranslate nohighlight">\(\mathscr C\)</span> (details omitted) to</p>
-<div class="amsmath math notranslate nohighlight" id="equation-d1693e4a-2b1b-4dec-9d34-d86b7e1854ab">
-<span class="eqno">(19.1)<a class="headerlink" href="#equation-d1693e4a-2b1b-4dec-9d34-d86b7e1854ab" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-7cc9b87d-9e33-49c1-8691-22686d07d30e">
+<span class="eqno">(19.1)<a class="headerlink" href="#equation-7cc9b87d-9e33-49c1-8691-22686d07d30e" title="Permalink to this equation">#</a></span>\[\begin{equation}
     v(\varphi, p) = \pi(\varphi, p) + \beta 
         \max \left\{ 0, \int v(\varphi', p) \Gamma(\varphi, d \varphi') \right\}.
 \end{equation}\]</div>
 <p>Let <span class="math notranslate nohighlight">\(\bar v\)</span> be the unique solution to this functional equation.</p>
 <p>Given <span class="math notranslate nohighlight">\(\bar v\)</span>, we let <span class="math notranslate nohighlight">\(\bar \varphi\)</span> be the exit threshold function defined by</p>
-<div class="amsmath math notranslate nohighlight" id="equation-7dd46e2a-07de-4cca-9e6a-174795f87d45">
-<span class="eqno">(19.2)<a class="headerlink" href="#equation-7dd46e2a-07de-4cca-9e6a-174795f87d45" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-985b2860-b573-4397-bc54-fcd8a2da6c6a">
+<span class="eqno">(19.2)<a class="headerlink" href="#equation-985b2860-b573-4397-bc54-fcd8a2da6c6a" title="Permalink to this equation">#</a></span>\[\begin{equation}
     \bar \varphi(p) := 
     \min
     \left\{ 
@@ -444,13 +442,13 @@ section, a <strong>stationary recursive equilibrium</strong>  is a triple</p>
 \end{equation*}\]</div>
 <p>with <span class="math notranslate nohighlight">\(p\)</span> understood as price, <span class="math notranslate nohighlight">\(M\)</span> as mass of entrants, and <span class="math notranslate nohighlight">\(\mu\)</span> as a
 distribution of firms over productivity levels, such that the goods market clears, or</p>
-<div class="amsmath math notranslate nohighlight" id="equation-2023388f-db57-44bf-b3d7-766f62ad37f9">
-<span class="eqno">(19.3)<a class="headerlink" href="#equation-2023388f-db57-44bf-b3d7-766f62ad37f9" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-5f40b527-234d-4085-b0c4-749628da9850">
+<span class="eqno">(19.3)<a class="headerlink" href="#equation-5f40b527-234d-4085-b0c4-749628da9850" title="Permalink to this equation">#</a></span>\[\begin{equation}
     \int q( \varphi, p) \mu(d \varphi) = D(p),
 \end{equation}\]</div>
 <p>the <em>invariance condition</em> over the firm distribution</p>
-<div class="amsmath math notranslate nohighlight" id="equation-923381bd-3c7e-471b-ac0a-5162f1db52ad">
-<span class="eqno">(19.4)<a class="headerlink" href="#equation-923381bd-3c7e-471b-ac0a-5162f1db52ad" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-09672389-96d1-4f5d-ac3a-9de6a476dc00">
+<span class="eqno">(19.4)<a class="headerlink" href="#equation-09672389-96d1-4f5d-ac3a-9de6a476dc00" title="Permalink to this equation">#</a></span>\[\begin{equation}
     \mu (B) 
     = \int \Gamma(\varphi, B) \, \mathbf{1}  \{\varphi \geq \bar \varphi(p)\} \,
     \mu(d \varphi)
@@ -458,13 +456,13 @@ distribution of firms over productivity levels, such that the goods market clear
     \text{ for all } B \in \mathscr B,
 \end{equation}\]</div>
 <p>holds (see below for intuition), the <em>equilibrium entry condition</em></p>
-<div class="amsmath math notranslate nohighlight" id="equation-b681ecb2-2b78-486d-a06d-5bdd90964e1a">
-<span class="eqno">(19.5)<a class="headerlink" href="#equation-b681ecb2-2b78-486d-a06d-5bdd90964e1a" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-ea0d3a44-f921-4f5f-bbd4-e8dcc1bcc8d3">
+<span class="eqno">(19.5)<a class="headerlink" href="#equation-ea0d3a44-f921-4f5f-bbd4-e8dcc1bcc8d3" title="Permalink to this equation">#</a></span>\[\begin{equation}
     \int \bar v( \varphi, p) \, \gamma(d \varphi) = c_e
 \end{equation}\]</div>
 <p>holds, and the <em>balanced entry and exit condition</em></p>
-<div class="amsmath math notranslate nohighlight" id="equation-080c2383-456f-4b42-83b1-8bc715fe2db7">
-<span class="eqno">(19.6)<a class="headerlink" href="#equation-080c2383-456f-4b42-83b1-8bc715fe2db7" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-ad0443c8-8e8f-4d86-8e5e-dafc88379440">
+<span class="eqno">(19.6)<a class="headerlink" href="#equation-ad0443c8-8e8f-4d86-8e5e-dafc88379440" title="Permalink to this equation">#</a></span>\[\begin{equation}
     M = \mu \{ \varphi &lt; \bar \varphi(p) \}
 \end{equation}\]</div>
 <p>is verified.</p>
@@ -475,15 +473,15 @@ distribution of firms over productivity levels, such that the goods market clear
 <p>We compute the equilibrium as follows:</p>
 <p>For the purposes of this section, we insert balanced entry and
 exit into the time invariance condition, yielding</p>
-<div class="amsmath math notranslate nohighlight" id="equation-6567e934-de0d-4efe-8fe6-852d55506c81">
-<span class="eqno">(19.7)<a class="headerlink" href="#equation-6567e934-de0d-4efe-8fe6-852d55506c81" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-2d96add2-6486-4af5-972b-f07b1648efdd">
+<span class="eqno">(19.7)<a class="headerlink" href="#equation-2d96add2-6486-4af5-972b-f07b1648efdd" title="Permalink to this equation">#</a></span>\[\begin{equation}
     \mu (B) 
     = \int \Pi(\varphi, B) \mu (d \varphi)
     \quad \text{for all } B \in \mathscr B,
 \end{equation}\]</div>
 <p>where <span class="math notranslate nohighlight">\(\Pi\)</span> is the transition kernel on <span class="math notranslate nohighlight">\(\mathbb R_+\)</span> defined by</p>
-<div class="amsmath math notranslate nohighlight" id="equation-9f2376dd-6cfc-411c-af1a-8e31b7e859f9">
-<span class="eqno">(19.8)<a class="headerlink" href="#equation-9f2376dd-6cfc-411c-af1a-8e31b7e859f9" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-27b8e2ab-1d96-45ae-9fef-c0d5039d83f5">
+<span class="eqno">(19.8)<a class="headerlink" href="#equation-27b8e2ab-1d96-45ae-9fef-c0d5039d83f5" title="Permalink to this equation">#</a></span>\[\begin{equation}
     \Pi(\varphi, B) 
     = \Gamma(\varphi, B) \mathbf{1} \{\varphi \geq \bar \varphi(p) \} + 
     \mathbf{1} \{\varphi &lt; \bar \varphi(p)\} \gamma(B).
@@ -1226,33 +1224,15 @@ Wall time: 776 ms
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Equilibrium price when c = 2.5 is 1.0
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Equilibrium price when c = 2.8 is 1.1
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Equilibrium price when c = 3.1 is 1.1
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Equilibrium price when c = 3.3 is 1.2
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Equilibrium price when c = 3.6 is 1.3
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Equilibrium price when c = 3.9 is 1.3
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Equilibrium price when c = 4.2 is 1.4
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Equilibrium price when c = 4.4 is 1.5
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Equilibrium price when c = 4.7 is 1.5
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Equilibrium price when c = 5.0 is 1.6
+Equilibrium price when c = 2.8 is 1.1
+Equilibrium price when c = 3.1 is 1.1
+Equilibrium price when c = 3.3 is 1.2
+Equilibrium price when c = 3.6 is 1.3
+Equilibrium price when c = 3.9 is 1.3
+Equilibrium price when c = 4.2 is 1.4
+Equilibrium price when c = 4.4 is 1.5
+Equilibrium price when c = 4.7 is 1.5
+Equilibrium price when c = 5.0 is 1.6
 </pre></div>
 </div>
 <a class="reference internal image-reference" href="_images/22d5614328bbd9c368e7fd8762eb099ab78e4813db8972194dd8b2d47ec5edd4.png"><img alt="_images/22d5614328bbd9c368e7fd8762eb099ab78e4813db8972194dd8b2d47ec5edd4.png" src="_images/22d5614328bbd9c368e7fd8762eb099ab78e4813db8972194dd8b2d47ec5edd4.png" style="width: 80%;" />

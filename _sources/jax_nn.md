@@ -18,12 +18,17 @@ kernelspec:
 
 ## Outline
 
-In a {doc}`previous lecture <keras>`, we showed how to implement regression using a neural network via the popular deep learning library [Keras](https://keras.io/).
+In a {doc}`previous lecture <keras>`, we showed how to implement regression
+using a neural network via the deep learning library [Keras](https://keras.io/).
 
 In this lecture, we solve the same problem directly, using JAX operations rather than relying on the Keras frontend.
 
-The objective is to understand the nuts and bolts of the exercise better, as
-well as to explore more features of JAX.
+
+The objectives are
+
+* Understand the nuts and bolts of the exercise better
+* Explore more features of JAX
+* Observe how using JAX directly allows us to greatly improve performance.
 
 The lecture proceeds in three stages:
 
@@ -458,7 +463,7 @@ param_key = jax.random.PRNGKey(1234)
 
 ```{code-cell} ipython3
 # Warmup run to trigger JIT compilation
-θ_warmup, _, _ = train_jax_model(θ, x, y, x_validate, y_validate, config)
+train_jax_model(θ, x, y, x_validate, y_validate, config)
 
 # Reset and time the actual run
 θ = initialize_params(param_key, config)
@@ -474,6 +479,8 @@ print(f"Trained model with JAX in {jax_runtime:.2f} seconds.")
 print(f"Final MSE on validation data = {jax_mse:.6f}")
 ```
 
+Despite the simplicity of our implementation, we actually perform slightly better than Keras.
+
 This figure shows MSE across iterations:
 
 ```{code-cell} ipython3
@@ -482,18 +489,6 @@ ax.plot(range(len(validation_loss)), validation_loss, label='validation loss')
 ax.legend()
 plt.show()
 ```
-
-Let’s check the final MSE on the validation data, at the estimated parameters.
-
-```{code-cell} ipython3
-print(f"""
-Final MSE on test data set = {loss_fn(θ, x_validate, y_validate)}.
-"""
-)
-```
-
-This MSE is not as low as we got for Keras, but we did quite well given how
-simple our implementation is.
 
 Here’s a visualization of the quality of our fit.
 
@@ -514,8 +509,6 @@ we might wish to use an optimization library written for JAX.
 
 One such library is [Optax](https://optax.readthedocs.io/en/latest/).
 
-+++
-
 ### Optax with SGD
 
 Here’s a training routine using Optax’s stochastic gradient descent solver.
@@ -530,19 +523,19 @@ def train_jax_optax(
     ):
     """
     Train model using Optax SGD optimizer.
-    Pure functional version using jax.lax.scan.
+    Pure functional version using jax.lax.fori_loop.
     """
     solver = optax.sgd(learning_rate)
     opt_state = solver.init(θ)
 
-    def train_step(carry, _):
+    def train_step(i, carry):
         θ, opt_state = carry
         grad = loss_gradient(θ, x, y)
         updates, opt_state_new = solver.update(grad, opt_state, θ)
         θ_new = optax.apply_updates(θ, updates)
-        return (θ_new, opt_state_new), None
+        return (θ_new, opt_state_new)
 
-    (θ_final, _), _ = jax.lax.scan(train_step, (θ, opt_state), None, length=epochs)
+    θ_final, _ = jax.lax.fori_loop(0, epochs, train_step, (θ, opt_state))
     return θ_final
 ```
 
@@ -553,7 +546,7 @@ Let’s try running it.
 θ = initialize_params(param_key, config)
 
 # Warmup run to trigger JIT compilation
-θ_warmup = train_jax_optax(θ, x, y)
+train_jax_optax(θ, x, y)
 
 # Reset and time the actual run
 θ = initialize_params(param_key, config)
@@ -595,19 +588,19 @@ def train_jax_optax_adam(
     ):
     """
     Train model using Optax ADAM optimizer.
-    Pure functional version using jax.lax.scan.
+    Pure functional version using jax.lax.fori_loop.
     """
     solver = optax.adam(learning_rate)
     opt_state = solver.init(θ)
 
-    def train_step(carry, _):
+    def train_step(i, carry):
         θ, opt_state = carry
         grad = loss_gradient(θ, x, y)
         updates, opt_state_new = solver.update(grad, opt_state, θ)
         θ_new = optax.apply_updates(θ, updates)
-        return (θ_new, opt_state_new), None
+        return (θ_new, opt_state_new)
 
-    (θ_final, _), _ = jax.lax.scan(train_step, (θ, opt_state), None, length=epochs)
+    θ_final, _ = jax.lax.fori_loop(0, epochs, train_step, (θ, opt_state))
     return θ_final
 ```
 
@@ -616,7 +609,7 @@ def train_jax_optax_adam(
 θ = initialize_params(param_key, config)
 
 # Warmup run to trigger JIT compilation
-θ_warmup = train_jax_optax_adam(θ, x, y)
+train_jax_optax_adam(θ, x, y)
 
 # Reset and time the actual run
 θ = initialize_params(param_key, config)
