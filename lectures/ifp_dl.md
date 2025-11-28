@@ -123,7 +123,7 @@ class Config:
     """
     seed = 42                           # Seed for network initialization
     epochs = 400                        # No of training epochs
-    path_length = 500                   # Length of each consumption path
+    path_length = 320                   # Length of each consumption path
     layer_sizes = 1, 6, 6, 6, 6, 6, 1   # Network layer sizes
     learning_rate = 0.001               # Constant learning rate
 ```
@@ -651,7 +651,8 @@ The key is to simulate paths with IID normal income shocks.
 @partial(jax.jit, static_argnames=('path_length', 'num_paths'))
 def compute_lifetime_value_ifp(params, ifp, path_length, num_paths, key):
     """
-    Compute expected lifetime value by averaging over multiple simulated paths.
+    Compute expected lifetime value by averaging over multiple 
+    simulated paths.
 
     Args:
         params: Neural network parameters
@@ -679,7 +680,7 @@ def compute_lifetime_value_ifp(params, ifp, path_length, num_paths, key):
             next_discount = discount * β
             return next_a, next_value, next_discount
 
-        initial_a = 5.0
+        initial_a = 10.0
         initial_value = 0.0
         initial_discount = 1.0
         initial_state = (initial_a, initial_value, initial_discount)
@@ -714,16 +715,15 @@ We use the same `ifp` instance that was created for the EGM solution above.
 stochastic_config = {
     'seed': 1234,
     'epochs': 400,
-    'path_length': 500,
-    'num_paths': 1000,  # Number of paths to average over
+    'path_length': 320,
+    'num_paths': 500,  # Number of paths to average over
     'learning_rate': 0.001
 }
 ```
 
-We use the trained parameters from the deterministic case as a warm start.
+We initialize parameters.
 
 ```{code-cell} ipython3
-#ifp_params = params  # Already trained on deterministic case
 key = random.PRNGKey(seed)
 ifp_params = initialize_network(key, layer_sizes)
 ```
@@ -800,21 +800,13 @@ policy_vmap = jax.vmap(lambda a: forward(ifp_params, a))
 consumption_rate_dl = policy_vmap(a_grid_dl)
 c_dl = consumption_rate_dl * a_grid_dl
 
-fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 5))
-
-# Left plot: EGM solution
-ax1.plot(a_egm, c_egm, 'b-', lw=2)
-ax1.set_xlabel('assets', fontsize=12)
-ax1.set_ylabel('consumption', fontsize=12)
-ax1.set_title('EGM solution', fontsize=14)
-
-# Right plot: DL solution
-ax2.plot(a_grid_dl, c_dl, 'r-', lw=2)
-ax2.set_xlabel('assets', fontsize=12)
-ax2.set_ylabel('consumption', fontsize=12)
-ax2.set_title('DL solution', fontsize=14)
-
-plt.tight_layout()
+fig, ax = plt.subplots()
+ax.plot(a_egm, c_egm, lw=2, label='EGM solution')
+ax.plot(a_grid_dl, c_dl, lw=2, label='DL solution')
+ax.set_xlabel('assets', fontsize=12)
+ax.set_ylabel('consumption', fontsize=12)
+ax.set_xlim(0, min(a_grid_dl[-1], a_egm[-1]))
+ax.legend()
 plt.show()
 ```
 
