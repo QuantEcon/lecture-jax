@@ -119,7 +119,6 @@ def generate_data(
     ):
     """
     Generate synthetic regression data.
-    Pure functional version using JAX random keys.
     """
     x = jnp.linspace(x_min, x_max, num=config.data_size)
     ϵ = 0.2 * jax.random.normal(key, shape=(config.data_size,))
@@ -283,7 +282,6 @@ def initialize_params(
     ):
     """
     Generate an initial parameterization for a feed forward neural network.
-    Pure functional version using JAX random keys.
     """
     k = config.output_dim
     shapes = (
@@ -435,14 +433,12 @@ def train_jax_model(
 
     """
     def update(θ, _):
-        # Record losses
         train_loss = loss_fn(θ, x, y)
         val_loss = loss_fn(θ, x_validate, y_validate)
-        # Update parameters
         θ_new = update_parameters(θ, x, y, config)
-        return θ_new, (train_loss, val_loss)
+        accumulate = train_loss, val_loss
+        return θ_new, accumulate
 
-    # Initialize with empty arrays
     θ_final, (training_losses, validation_losses) = jax.lax.scan(
         update, θ, None, length=config.epochs
     )
@@ -521,21 +517,21 @@ def train_jax_optax(
         epochs: int = 4000,         # Number of training epochs
         learning_rate: float = 0.001  # Learning rate for optimizer
     ):
-    """
-    Train model using Optax SGD optimizer.
-    Pure functional version using jax.lax.fori_loop.
-    """
+    " Train model using Optax SGD optimizer. "
     solver = optax.sgd(learning_rate)
     opt_state = solver.init(θ)
 
-    def train_step(i, carry):
-        θ, opt_state = carry
+    def update(_, loop_state):
+        θ, opt_state = loop_state
         grad = loss_gradient(θ, x, y)
-        updates, opt_state_new = solver.update(grad, opt_state, θ)
+        updates, new_opt_state = solver.update(grad, opt_state, θ)
         θ_new = optax.apply_updates(θ, updates)
-        return (θ_new, opt_state_new)
+        new_loop_state = θ_new, new_opt_state
+        return new_loop_state
 
-    θ_final, _ = jax.lax.fori_loop(0, epochs, train_step, (θ, opt_state))
+    initial_loop_state = θ, opt_state
+    final_loop_state = jax.lax.fori_loop(0, epochs, update, initial_loop_state)
+    θ_final, _ = final_loop_state
     return θ_final
 ```
 
@@ -586,23 +582,23 @@ def train_jax_optax_adam(
         epochs: int = 4000,         # Number of training epochs
         learning_rate: float = 0.001  # Learning rate for optimizer
     ):
-    """
-    Train model using Optax ADAM optimizer.
-    Pure functional version using jax.lax.fori_loop.
-    """
+    " Train model using Optax ADAM optimizer. "
+
     solver = optax.adam(learning_rate)
     opt_state = solver.init(θ)
 
-    def train_step(i, carry):
-        θ, opt_state = carry
+    def update(_, loop_state):
+        θ, opt_state = loop_state
         grad = loss_gradient(θ, x, y)
-        updates, opt_state_new = solver.update(grad, opt_state, θ)
+        updates, new_opt_state = solver.update(grad, opt_state, θ)
         θ_new = optax.apply_updates(θ, updates)
-        return (θ_new, opt_state_new)
+        return (θ_new, new_opt_state)
 
-    θ_final, _ = jax.lax.fori_loop(0, epochs, train_step, (θ, opt_state))
+    initial_loop_state = θ, opt_state
+    θ_final, _ = jax.lax.fori_loop(0, epochs, update, initial_loop_state)
     return θ_final
 ```
+
 
 ```{code-cell} ipython3
 # Reset parameter vector
@@ -684,3 +680,330 @@ Note also that the pure JAX implementations are significantly faster than Keras.
 This is because JAX can JIT-compile the entire training loop.
 
 Not surprisingly, Keras has more overhead from its abstraction layers.
+
+
+## Exercises
+
+```{exercise}
+:label: jax_nn_ex1
+
+Try to reduce the MSE on the validation data without significantly increasing the computational load.
+
+You should hold constant both the number of epochs and the total number of parameters in the network.
+
+Currently, the network has 4 layers with output dimension $k=10$, giving a total of:
+- Layer 0: $1 \times 10 + 10 = 20$ parameters (weights + biases)
+- Layer 1: $10 \times 10 + 10 = 110$ parameters
+- Layer 2: $10 \times 10 + 10 = 110$ parameters
+- Layer 3: $10 \times 1 + 1 = 11$ parameters
+- Total: $251$ parameters
+
+You can experiment with:
+- Changing the network architecture 
+- Trying different activation functions (e.g., `jax.nn.relu`, `jax.nn.gelu`, `jax.nn.sigmoid`, `jax.nn.elu`)
+- Modifying the optimizer (e.g., different learning rates, learning rate schedules, momentum, other Optax optimizers)
+- Experimenting with different weight initialization strategies
+
+
+Which combination gives you the lowest validation MSE?
+```
+
+
+```{solution-start} jax_nn_ex1
+:class: dropdown
+```
+
+Let's implement and test several strategies. 
+
+**Strategy 1: Deeper Network Architecture**
+
+Let's try a deeper network with 6 layers instead of 4, keeping total parameters ≤ 251:
+
+```{code-cell} ipython3
+# Strategy 1: Deeper network (6 layers with k=6)
+# Layer sizes: 1→6→6→6→6→6→1
+# Parameters: (1×6+6) + 4×(6×6+6) + (6×1+1) = 12 + 4×42 + 7 = 187 < 251
+θ = initialize_params(param_key, config)
+
+def initialize_deep_params(key, k=6, num_hidden=5):
+    " Initialize parameters for deeper network with k=6. "
+    shapes = [(1, k)] + [(k, k)] * (num_hidden - 1) + [(k, 1)]
+
+    def w_init(key, m, n):
+        return jax.random.normal(key, shape=(m, n)) * jnp.sqrt(2 / m)
+
+    θ = []
+    for w_shape in shapes:
+        m, n = w_shape
+        key, subkey = jax.random.split(key)
+        layer_params = dict(W=w_init(subkey, m, n), b=jnp.ones((1, n)))
+        θ.append(layer_params)
+    return θ
+
+θ_deep = initialize_deep_params(param_key)
+
+# Warmup
+train_jax_optax_adam(θ_deep, x, y)
+
+# Actual run
+θ_deep = initialize_deep_params(param_key)
+start_time = time()
+θ_deep = train_jax_optax_adam(θ_deep, x, y)
+θ_deep[0]['W'].block_until_ready()
+deep_runtime = time() - start_time
+
+deep_mse = loss_fn(θ_deep, x_validate, y_validate)
+print(f"Strategy 1 - Deeper network (6 layers, k=6)")
+print(f"  Total parameters: 187")
+print(f"  Runtime: {deep_runtime:.2f}s")
+print(f"  Validation MSE: {deep_mse:.6f}")
+print(f"  Improvement over ADAM: {optax_adam_mse - deep_mse:.6f}")
+```
+
+**Strategy 2: Deeper Network + Learning Rate Schedule**
+
+Since the deeper network performed best, let's combine it with the learning rate schedule:
+
+```{code-cell} ipython3
+# Strategy 2: Deeper network + LR schedule
+θ_deep = initialize_deep_params(param_key)
+
+def train_deep_with_schedule(
+        θ: list,
+        x: jnp.ndarray,
+        y: jnp.ndarray,
+        epochs: int = 4000
+    ):
+    " Train deeper network with learning rate schedule. "
+
+    schedule = optax.exponential_decay(
+        init_value=0.003,
+        transition_steps=1000,
+        decay_rate=0.5
+    )
+
+    solver = optax.adam(schedule)
+    opt_state = solver.init(θ)
+
+    def update(_, loop_state):
+        θ, opt_state = loop_state
+        grad = loss_gradient(θ, x, y)
+        updates, new_opt_state = solver.update(grad, opt_state, θ)
+        θ_new = optax.apply_updates(θ, updates)
+        return (θ_new, new_opt_state)
+
+    initial_loop_state = θ, opt_state
+    θ_final, _ = jax.lax.fori_loop(0, epochs, update, initial_loop_state)
+    return θ_final
+
+# Warmup
+train_deep_with_schedule(θ_deep, x, y)
+
+# Actual run
+θ_deep = initialize_deep_params(param_key)
+start_time = time()
+θ_deep_schedule = train_deep_with_schedule(θ_deep, x, y)
+θ_deep_schedule[0]['W'].block_until_ready()
+deep_schedule_runtime = time() - start_time
+
+deep_schedule_mse = loss_fn(θ_deep_schedule, x_validate, y_validate)
+print(f"Strategy 2 - Deeper network + LR schedule")
+print(f"  Runtime: {deep_schedule_runtime:.2f}s")
+print(f"  Validation MSE: {deep_schedule_mse:.6f}")
+print(f"  Improvement over ADAM: {optax_adam_mse - deep_schedule_mse:.6f}")
+```
+
+**Strategy 3: ELU Activation**
+
+Let's try ELU (Exponential Linear Unit), a modern activation function:
+
+```{code-cell} ipython3
+# Strategy 3: ELU activation
+θ = initialize_params(param_key, config)
+
+def train_with_elu(
+        θ: list,
+        x: jnp.ndarray,
+        y: jnp.ndarray,
+        epochs: int = 4000,
+        learning_rate: float = 0.001
+    ):
+    " Train model using ELU activation and Optax ADAM optimizer. "
+
+    # Modified forward pass with ELU
+    @jax.jit
+    def f_elu(θ, x):
+        *hidden, last = θ
+        for layer in hidden:
+            W, b = layer['W'], layer['b']
+            x = jax.nn.elu(x @ W + b)
+        W, b = last['W'], last['b']
+        x = x @ W + b
+        return x
+
+    # Modified loss function
+    @jax.jit
+    def loss_fn_elu(θ, x, y):
+        return jnp.mean((f_elu(θ, x) - y)**2)
+
+    loss_gradient_elu = jax.jit(jax.grad(loss_fn_elu))
+
+    solver = optax.adam(learning_rate)
+    opt_state = solver.init(θ)
+
+    def update(_, loop_state):
+        θ, opt_state = loop_state
+        grad = loss_gradient_elu(θ, x, y)
+        updates, new_opt_state = solver.update(grad, opt_state, θ)
+        θ_new = optax.apply_updates(θ, updates)
+        return (θ_new, new_opt_state)
+
+    initial_loop_state = θ, opt_state
+    θ_final, _ = jax.lax.fori_loop(0, epochs, update, initial_loop_state)
+    return θ_final, f_elu, loss_fn_elu
+
+# Warmup run
+θ_elu, f_elu, loss_fn_elu = train_with_elu(θ, x, y)
+
+# Actual run
+θ = initialize_params(param_key, config)
+start_time = time()
+θ_elu, f_elu, loss_fn_elu = train_with_elu(θ, x, y)
+θ_elu[0]['W'].block_until_ready()
+elu_runtime = time() - start_time
+
+elu_mse = loss_fn_elu(θ_elu, x_validate, y_validate)
+print(f"Strategy 3 - ELU activation")
+print(f"  Runtime: {elu_runtime:.2f}s")
+print(f"  Validation MSE: {elu_mse:.6f}")
+print(f"  Improvement over ADAM: {optax_adam_mse - elu_mse:.6f}")
+```
+
+**Strategy 4: SELU Activation**
+
+Let's try SELU (Scaled Exponential Linear Unit), another modern activation function:
+
+```{code-cell} ipython3
+# Strategy 4: SELU activation
+θ = initialize_params(param_key, config)
+
+def train_with_selu(
+        θ: list,
+        x: jnp.ndarray,
+        y: jnp.ndarray,
+        epochs: int = 4000,
+        learning_rate: float = 0.001
+    ):
+    " Train model using SELU activation and Optax ADAM optimizer. "
+
+    # Modified forward pass with SELU
+    @jax.jit
+    def f_selu(θ, x):
+        *hidden, last = θ
+        for layer in hidden:
+            W, b = layer['W'], layer['b']
+            x = jax.nn.selu(x @ W + b)
+        W, b = last['W'], last['b']
+        x = x @ W + b
+        return x
+
+    # Modified loss function
+    @jax.jit
+    def loss_fn_selu(θ, x, y):
+        return jnp.mean((f_selu(θ, x) - y)**2)
+
+    loss_gradient_selu = jax.jit(jax.grad(loss_fn_selu))
+
+    solver = optax.adam(learning_rate)
+    opt_state = solver.init(θ)
+
+    def update(_, loop_state):
+        θ, opt_state = loop_state
+        grad = loss_gradient_selu(θ, x, y)
+        updates, new_opt_state = solver.update(grad, opt_state, θ)
+        θ_new = optax.apply_updates(θ, updates)
+        return (θ_new, new_opt_state)
+
+    initial_loop_state = θ, opt_state
+    θ_final, _ = jax.lax.fori_loop(0, epochs, update, initial_loop_state)
+    return θ_final, f_selu, loss_fn_selu
+
+# Warmup run
+θ_selu, f_selu, loss_fn_selu = train_with_selu(θ, x, y)
+
+# Actual run
+θ = initialize_params(param_key, config)
+start_time = time()
+θ_selu, f_selu, loss_fn_selu = train_with_selu(θ, x, y)
+θ_selu[0]['W'].block_until_ready()
+selu_runtime = time() - start_time
+
+selu_mse = loss_fn_selu(θ_selu, x_validate, y_validate)
+print(f"Strategy 4 - SELU activation")
+print(f"  Runtime: {selu_runtime:.2f}s")
+print(f"  Validation MSE: {selu_mse:.6f}")
+print(f"  Improvement over ADAM: {optax_adam_mse - selu_mse:.6f}")
+```
+
+**Results Summary**
+
+Let's compare all strategies:
+
+```{code-cell} ipython3
+:tags: [hide-input]
+
+# Summary of all strategies
+strategies_results = {
+    'Strategy': [
+        'Baseline (ADAM + tanh)',
+        '1. Deeper network (6 layers)',
+        '2. Deeper network + LR schedule',
+        '3. ELU activation',
+        '4. SELU activation'
+    ],
+    'Runtime (s)': [
+        optax_adam_runtime,
+        deep_runtime,
+        deep_schedule_runtime,
+        elu_runtime,
+        selu_runtime
+    ],
+    'Validation MSE': [
+        optax_adam_mse,
+        deep_mse,
+        deep_schedule_mse,
+        elu_mse,
+        selu_mse
+    ],
+    'Improvement': [
+        0.0,
+        float(optax_adam_mse - deep_mse),
+        float(optax_adam_mse - deep_schedule_mse),
+        float(optax_adam_mse - elu_mse),
+        float(optax_adam_mse - selu_mse)
+    ]
+}
+
+df_strategies = pd.DataFrame(strategies_results)
+df_strategies.style.format({
+    'Runtime (s)': '{:.2f}',
+    'Validation MSE': '{:.6f}',
+    'Improvement': '{:.6f}'
+})
+```
+
+
+The experimental results reveal several lessons:
+
+1. Architecture matters: A deeper, narrower network outperformed the
+   baseline network, despite using fewer parameters (187 vs 251).
+
+2. Combining strategies: Combining the deeper architecture with a learning
+   rate schedule yielded the best results, showing that synergistic improvements
+   are possible.
+
+
+
+```{solution-end}
+```
+
