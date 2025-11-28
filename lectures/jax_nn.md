@@ -546,7 +546,7 @@ Let’s try running it.
 θ = initialize_params(param_key, config)
 
 # Warmup run to trigger JIT compilation
-θ_warmup = train_jax_optax(θ, x, y)
+train_jax_optax(θ, x, y)
 
 # Reset and time the actual run
 θ = initialize_params(param_key, config)
