@@ -243,7 +243,7 @@
                                 <a href="https://github.com/QuantEcon/lecture-jax/commit/478aa4d" class="changelog-hash">478aa4d</a>
                                 
                                 <span class="changelog-author">Matt McKay</span>
-                                <span class="changelog-time">7 minutes ago</span>
+                                <span class="changelog-time">34 minutes ago</span>
                                 <span class="changelog-message">MAINT: Update sphinx dependencies to latest versions (#248)</span>
                             </li>
                             
@@ -288,19 +288,19 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Mon Nov 17 03:47:34 2025       
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Fri Nov 28 06:09:07 2025       
 +-----------------------------------------------------------------------------------------+
-| NVIDIA-SMI 575.51.03              Driver Version: 575.51.03      CUDA Version: 12.9     |
-|-----------------------------------------+------------------------+----------------------+
+| NVIDIA-SMI 580.105.08             Driver Version: 580.105.08     CUDA Version: 13.0     |
++-----------------------------------------+------------------------+----------------------+
 | GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |
 | Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |
 |                                         |                        |               MIG M. |
 |=========================================+========================+======================|
-|   0  Tesla T4                       Off |   00000000:00:1E.0 Off |                    0 |
-| N/A   34C    P0             26W /   70W |       0MiB /  15360MiB |      0%      Default |
+|   0  Tesla T4                       On  |   00000000:00:1E.0 Off |                    0 |
+| N/A   36C    P0             32W /   70W |       0MiB /  15360MiB |      0%      Default |
 |                                         |                        |                  N/A |
 +-----------------------------------------+------------------------+----------------------+
-                                                                                         
+
 +-----------------------------------------------------------------------------------------+
 | Processes:                                                                              |
 |  GPU   GI   CI              PID   Type   Process name                        GPU Memory |
@@ -348,6 +348,12 @@ the method of <strong>successive approximations</strong>.</p>
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>W1128 06:09:08.028564    7698 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn&#39;t support extracting fabric info or NVLink is not used by the device.
+W1128 06:09:08.031928    7657 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn&#39;t support extracting fabric info or NVLink is not used by the device.
+</pre></div>
+</div>
+</div>
 </div>
 <p>Notice that the cost of staying still (on the principle diagonal) is set to</p>
 <ul class="simple">
@@ -379,8 +385,8 @@ the method of <strong>successive approximations</strong>.</p>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The cost-to-go function is [ 8. 10.  3.  5.  4.  1.  0.]
-CPU times: user 146 ms, sys: 75.3 ms, total: 221 ms
-Wall time: 268 ms
+CPU times: user 172 ms, sys: 75.7 ms, total: 248 ms
+Wall time: 320 ms
 </pre></div>
 </div>
 </div>
@@ -429,8 +435,8 @@ Wall time: 268 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 74.8 ms, sys: 6.17 ms, total: 81 ms
-Wall time: 92.9 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 86.3 ms, sys: 8.62 ms, total: 94.9 ms
+Wall time: 119 ms
 </pre></div>
 </div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Array([ 8., 10.,  3.,  5.,  4.,  1.,  0.], dtype=float32)
@@ -447,8 +453,8 @@ Wall time: 92.9 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1.32 ms, sys: 594 μs, total: 1.91 ms
-Wall time: 1.06 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1.37 ms, sys: 672 μs, total: 2.04 ms
+Wall time: 1.18 ms
 </pre></div>
 </div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Array([ 8., 10.,  3.,  5.,  4.,  1.,  0.], dtype=float32)
@@ -690,8 +696,8 @@ optimal path (and its cost).</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 94.8 ms, sys: 6.16 ms, total: 101 ms
-Wall time: 118 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 137 ms, sys: 10.2 ms, total: 148 ms
+Wall time: 197 ms
 </pre></div>
 </div>
 </div>
@@ -705,8 +711,8 @@ Wall time: 118 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1.47 ms, sys: 0 ns, total: 1.47 ms
-Wall time: 952 μs
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1.28 ms, sys: 129 μs, total: 1.4 ms
+Wall time: 1.03 ms
 </pre></div>
 </div>
 </div>

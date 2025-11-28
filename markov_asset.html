@@ -247,7 +247,7 @@
                                 <a href="https://github.com/QuantEcon/lecture-jax/commit/478aa4d" class="changelog-hash">478aa4d</a>
                                 
                                 <span class="changelog-author">Matt McKay</span>
-                                <span class="changelog-time">7 minutes ago</span>
+                                <span class="changelog-time">34 minutes ago</span>
                                 <span class="changelog-message">MAINT: Update sphinx dependencies to latest versions (#248)</span>
                             </li>
                             
@@ -291,19 +291,19 @@ you can jump to <a class="reference internal" href="#equation-eq-ntecx2">(9.13)<
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Mon Nov 17 03:42:10 2025       
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Fri Nov 28 06:03:43 2025       
 +-----------------------------------------------------------------------------------------+
-| NVIDIA-SMI 575.51.03              Driver Version: 575.51.03      CUDA Version: 12.9     |
-|-----------------------------------------+------------------------+----------------------+
+| NVIDIA-SMI 580.105.08             Driver Version: 580.105.08     CUDA Version: 13.0     |
++-----------------------------------------+------------------------+----------------------+
 | GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |
 | Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |
 |                                         |                        |               MIG M. |
 |=========================================+========================+======================|
-|   0  Tesla T4                       Off |   00000000:00:1E.0 Off |                    0 |
-| N/A   33C    P0             32W /   70W |       0MiB /  15360MiB |      0%      Default |
+|   0  Tesla T4                       On  |   00000000:00:1E.0 Off |                    0 |
+| N/A   33C    P0             31W /   70W |       0MiB /  15360MiB |      0%      Default |
 |                                         |                        |                  N/A |
 +-----------------------------------------+------------------------+----------------------+
-                                                                                         
+
 +-----------------------------------------------------------------------------------------+
 | Processes:                                                                              |
 |  GPU   GI   CI              PID   Type   Process name                        GPU Memory |
@@ -339,7 +339,9 @@ Requirement already satisfied: charset-normalizer&lt;4,&gt;=2 in /home/runner/mi
 Requirement already satisfied: idna&lt;4,&gt;=2.5 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from requests-&gt;quantecon) (3.7)
 Requirement already satisfied: urllib3&lt;3,&gt;=1.21.1 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from requests-&gt;quantecon) (2.3.0)
 Requirement already satisfied: certifi&gt;=2017.4.17 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from requests-&gt;quantecon) (2025.4.26)
-Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from sympy-&gt;quantecon) (1.3.0)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from sympy-&gt;quantecon) (1.3.0)
 </pre></div>
 </div>
 </div>
@@ -704,6 +706,10 @@ is</p>
 </div>
 </div>
 <div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>W1128 06:03:46.690095    6471 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn&#39;t support extracting fabric info or NVLink is not used by the device.
+W1128 06:03:46.693660    6405 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn&#39;t support extracting fabric info or NVLink is not used by the device.
+</pre></div>
+</div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>True
 </pre></div>
 </div>
@@ -1015,7 +1021,7 @@ and <span class="math notranslate nohighlight">\(A\)</span> into an <span class=
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Numpy compile plus execution time =  0.817737340927124
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Numpy compile plus execution time =  1.020909070968628
 </pre></div>
 </div>
 </div>
@@ -1031,7 +1037,7 @@ and <span class="math notranslate nohighlight">\(A\)</span> into an <span class=
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Numpy execution time =  0.28633832931518555
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Numpy execution time =  0.25105977058410645
 </pre></div>
 </div>
 </div>
@@ -1204,7 +1210,7 @@ and <span class="math notranslate nohighlight">\(A\)</span> into an <span class=
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>JAX compile plus execution time =  0.637775182723999
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>JAX compile plus execution time =  0.891646146774292
 </pre></div>
 </div>
 </div>
@@ -1220,7 +1226,7 @@ and <span class="math notranslate nohighlight">\(A\)</span> into an <span class=
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>JAX execution time =  0.1344161033630371
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>JAX execution time =  0.11742067337036133
 </pre></div>
 </div>
 </div>
@@ -1233,7 +1239,7 @@ and <span class="math notranslate nohighlight">\(A\)</span> into an <span class=
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.4694310527148436
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.46770007435749145
 </pre></div>
 </div>
 </div>
@@ -1324,7 +1330,7 @@ that acts directly on the linear operator <code class="docutils literal notransl
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>JAX compile plus execution time =  0.4898037910461426
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>JAX compile plus execution time =  0.6833975315093994
 </pre></div>
 </div>
 </div>
@@ -1340,7 +1346,7 @@ that acts directly on the linear operator <code class="docutils literal notransl
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>JAX execution time =  0.0063250064849853516
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>JAX execution time =  0.006548881530761719
 </pre></div>
 </div>
 </div>
@@ -1366,7 +1372,7 @@ that acts directly on the linear operator <code class="docutils literal notransl
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.04705542213124931
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.055772815321077446
 </pre></div>
 </div>
 </div>
@@ -1386,10 +1392,10 @@ that acts directly on the linear operator <code class="docutils literal notransl
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 578 ms, sys: 13.4 ms, total: 592 ms
-Wall time: 679 ms
-CPU times: user 165 ms, sys: 831 μs, total: 166 ms
-Wall time: 165 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 711 ms, sys: 18.7 ms, total: 730 ms
+Wall time: 900 ms
+CPU times: user 164 ms, sys: 812 μs, total: 164 ms
+Wall time: 163 ms
 </pre></div>
 </div>
 </div>

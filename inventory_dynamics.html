@@ -249,7 +249,7 @@
                                 <a href="https://github.com/QuantEcon/lecture-jax/commit/478aa4d" class="changelog-hash">478aa4d</a>
                                 
                                 <span class="changelog-author">Matt McKay</span>
-                                <span class="changelog-time">6 minutes ago</span>
+                                <span class="changelog-time">34 minutes ago</span>
                                 <span class="changelog-message">MAINT: Update sphinx dependencies to latest versions (#248)</span>
                             </li>
                             
@@ -317,19 +317,19 @@ lecture</a>, using Numba.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Mon Nov 17 03:38:35 2025       
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Fri Nov 28 06:01:23 2025       
 +-----------------------------------------------------------------------------------------+
-| NVIDIA-SMI 575.51.03              Driver Version: 575.51.03      CUDA Version: 12.9     |
-|-----------------------------------------+------------------------+----------------------+
+| NVIDIA-SMI 580.105.08             Driver Version: 580.105.08     CUDA Version: 13.0     |
++-----------------------------------------+------------------------+----------------------+
 | GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |
 | Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |
 |                                         |                        |               MIG M. |
 |=========================================+========================+======================|
-|   0  Tesla T4                       Off |   00000000:00:1E.0 Off |                    0 |
-| N/A   32C    P0             26W /   70W |       0MiB /  15360MiB |      0%      Default |
+|   0  Tesla T4                       On  |   00000000:00:1E.0 Off |                    0 |
+| N/A   33C    P0             25W /   70W |       0MiB /  15360MiB |      0%      Default |
 |                                         |                        |                  N/A |
 +-----------------------------------------+------------------------+----------------------+
-                                                                                         
+
 +-----------------------------------------------------------------------------------------+
 | Processes:                                                                              |
 |  GPU   GI   CI              PID   Type   Process name                        GPU Memory |
@@ -460,6 +460,12 @@ initial inventory <code class="docutils literal notranslate"><span class="pre">x
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>W1128 06:01:24.422284    5101 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn&#39;t support extracting fabric info or NVLink is not used by the device.
+W1128 06:01:24.425799    5060 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn&#39;t support extracting fabric info or NVLink is not used by the device.
+</pre></div>
+</div>
+</div>
 </div>
 <p>Let’s look at the timing.</p>
 <div class="cell docutils container">
@@ -473,7 +479,7 @@ initial inventory <code class="docutils literal notranslate"><span class="pre">x
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Elapsed time: 1271.273851 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Elapsed time: 1171.959162 ms
 </pre></div>
 </div>
 </div>
@@ -490,7 +496,7 @@ initial inventory <code class="docutils literal notranslate"><span class="pre">x
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Elapsed time: 441.443920 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Elapsed time: 436.758041 ms
 </pre></div>
 </div>
 </div>
@@ -573,7 +579,7 @@ through the time dimension.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Elapsed time: 496.559143 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Elapsed time: 471.029520 ms
 </pre></div>
 </div>
 </div>
@@ -590,7 +596,7 @@ through the time dimension.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Elapsed time: 9.976864 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Elapsed time: 9.879827 ms
 </pre></div>
 </div>
 </div>
@@ -738,7 +744,7 @@ is large.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Elapsed time: 991.355658 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Elapsed time: 1014.826536 ms
 </pre></div>
 </div>
 </div>
@@ -754,7 +760,7 @@ is large.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Elapsed time: 58.091164 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Elapsed time: 50.455093 ms
 </pre></div>
 </div>
 </div>
@@ -835,7 +841,7 @@ speed while generating a similar answer.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Elapsed time: 449.187279 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Elapsed time: 475.302458 ms
 </pre></div>
 </div>
 </div>
@@ -851,7 +857,7 @@ speed while generating a similar answer.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Elapsed time: 8.187771 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Elapsed time: 8.234978 ms
 </pre></div>
 </div>
 </div>

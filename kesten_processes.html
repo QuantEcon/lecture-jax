@@ -248,7 +248,7 @@
                                 <a href="https://github.com/QuantEcon/lecture-jax/commit/478aa4d" class="changelog-hash">478aa4d</a>
                                 
                                 <span class="changelog-author">Matt McKay</span>
-                                <span class="changelog-time">7 minutes ago</span>
+                                <span class="changelog-time">34 minutes ago</span>
                                 <span class="changelog-message">MAINT: Update sphinx dependencies to latest versions (#248)</span>
                             </li>
                             
@@ -300,7 +300,9 @@ Requirement already satisfied: charset-normalizer&lt;4,&gt;=2 in /home/runner/mi
 Requirement already satisfied: idna&lt;4,&gt;=2.5 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from requests-&gt;quantecon) (3.7)
 Requirement already satisfied: urllib3&lt;3,&gt;=1.21.1 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from requests-&gt;quantecon) (2.3.0)
 Requirement already satisfied: certifi&gt;=2017.4.17 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from requests-&gt;quantecon) (2025.4.26)
-Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from sympy-&gt;quantecon) (1.3.0)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from sympy-&gt;quantecon) (1.3.0)
 </pre></div>
 </div>
 </div>
@@ -338,19 +340,19 @@ which uses Numba to accelerate the computations.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Mon Nov 17 03:41:42 2025       
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Fri Nov 28 06:03:16 2025       
 +-----------------------------------------------------------------------------------------+
-| NVIDIA-SMI 575.51.03              Driver Version: 575.51.03      CUDA Version: 12.9     |
-|-----------------------------------------+------------------------+----------------------+
+| NVIDIA-SMI 580.105.08             Driver Version: 580.105.08     CUDA Version: 13.0     |
++-----------------------------------------+------------------------+----------------------+
 | GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |
 | Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |
 |                                         |                        |               MIG M. |
 |=========================================+========================+======================|
-|   0  Tesla T4                       Off |   00000000:00:1E.0 Off |                    0 |
-| N/A   31C    P8             13W /   70W |       0MiB /  15360MiB |      0%      Default |
+|   0  Tesla T4                       On  |   00000000:00:1E.0 Off |                    0 |
+| N/A   32C    P8              9W /   70W |       0MiB /  15360MiB |      0%      Default |
 |                                         |                        |                  N/A |
 +-----------------------------------------+------------------------+----------------------+
-                                                                                         
+
 +-----------------------------------------------------------------------------------------+
 | Processes:                                                                              |
 |  GPU   GI   CI              PID   Type   Process name                        GPU Memory |
@@ -499,10 +501,14 @@ time <code class="docutils literal notranslate"><span class="pre">T</span></code
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:2.43
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>W1128 06:03:17.658338    6188 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn&#39;t support extracting fabric info or NVLink is not used by the device.
+W1128 06:03:17.661837    6122 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn&#39;t support extracting fabric info or NVLink is not used by the device.
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2.4374115467071533
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:2.18
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2.1893327236175537
 </pre></div>
 </div>
 </div>
@@ -517,10 +523,10 @@ time <code class="docutils literal notranslate"><span class="pre">T</span></code
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:0.87
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:0.76
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.8796219825744629
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.7616367340087891
 </pre></div>
 </div>
 </div>
@@ -607,7 +613,7 @@ by</p>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:1.04
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1.0461056232452393
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1.042062759399414
 </pre></div>
 </div>
 </div>
@@ -621,10 +627,10 @@ by</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:0.06
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:0.05
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.061226844787597656
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.058182477951049805
 </pre></div>
 </div>
 </div>
@@ -710,10 +716,10 @@ by</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:1.00
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:0.96
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1.0009338855743408
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.9681379795074463
 </pre></div>
 </div>
 </div>
@@ -727,10 +733,10 @@ by</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:0.05
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:0.06
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.058072805404663086
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.06386876106262207
 </pre></div>
 </div>
 </div>

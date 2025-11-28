@@ -254,7 +254,7 @@
                                 <a href="https://github.com/QuantEcon/lecture-jax/commit/478aa4d" class="changelog-hash">478aa4d</a>
                                 
                                 <span class="changelog-author">Matt McKay</span>
-                                <span class="changelog-time">6 minutes ago</span>
+                                <span class="changelog-time">34 minutes ago</span>
                                 <span class="changelog-message">MAINT: Update sphinx dependencies to latest versions (#248)</span>
                             </li>
                             
@@ -324,19 +324,19 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Mon Nov 17 03:34:01 2025       
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Fri Nov 28 05:56:58 2025       
 +-----------------------------------------------------------------------------------------+
-| NVIDIA-SMI 575.51.03              Driver Version: 575.51.03      CUDA Version: 12.9     |
-|-----------------------------------------+------------------------+----------------------+
+| NVIDIA-SMI 580.105.08             Driver Version: 580.105.08     CUDA Version: 13.0     |
++-----------------------------------------+------------------------+----------------------+
 | GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |
 | Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |
 |                                         |                        |               MIG M. |
 |=========================================+========================+======================|
-|   0  Tesla T4                       Off |   00000000:00:1E.0 Off |                    0 |
-| N/A   25C    P8             10W /   70W |       0MiB /  15360MiB |      0%      Default |
+|   0  Tesla T4                       On  |   00000000:00:1E.0 Off |                    0 |
+| N/A   28C    P8             13W /   70W |       0MiB /  15360MiB |      0%      Default |
 |                                         |                        |                  N/A |
 +-----------------------------------------+------------------------+----------------------+
-                                                                                         
+
 +-----------------------------------------------------------------------------------------+
 | Processes:                                                                              |
 |  GPU   GI   CI              PID   Type   Process name                        GPU Memory |
@@ -703,6 +703,12 @@ rewards given policy <span class="math notranslate nohighlight">\(\sigma\)</span
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>W1128 05:56:58.813670    2008 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn&#39;t support extracting fabric info or NVLink is not used by the device.
+W1128 05:56:58.817067    1961 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn&#39;t support extracting fabric info or NVLink is not used by the device.
+</pre></div>
+</div>
+</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -743,8 +749,8 @@ Concluded loop 10 with error 0.002863165320343697.
 Concluded loop 11 with error 0.0016657175376657563.
 Concluded loop 12 with error 0.0004143776102245589.
 Concluded loop 13 with error 0.0.
-CPU times: user 722 ms, sys: 98.7 ms, total: 821 ms
-Wall time: 1 s
+CPU times: user 984 ms, sys: 100 ms, total: 1.08 s
+Wall time: 1.47 s
 </pre></div>
 </div>
 </div>
@@ -1027,7 +1033,7 @@ K_{n+1} = \alpha K_n + (1-\alpha) G(K_n)
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>At iteration 170 with error 0.00013938615349395889
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium 8.0918 in 176 iterations and 40.9494206905365 seconds
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium 8.0918 in 176 iterations and 36.95418119430542 seconds
 </pre></div>
 </div>
 </div>
@@ -1089,7 +1095,7 @@ K_{n+1} = \alpha K_n + (1-\alpha) G(K_n)
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computing equilibrium capital stock
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium capital stock 8.0938 in 0.9296066761016846 seconds
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computed equilibrium capital stock 8.0938 in 0.8324759006500244 seconds
 </pre></div>
 </div>
 </div>

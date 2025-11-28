@@ -250,7 +250,7 @@
                                 <a href="https://github.com/QuantEcon/lecture-jax/commit/478aa4d" class="changelog-hash">478aa4d</a>
                                 
                                 <span class="changelog-author">Matt McKay</span>
-                                <span class="changelog-time">7 minutes ago</span>
+                                <span class="changelog-time">34 minutes ago</span>
                                 <span class="changelog-message">MAINT: Update sphinx dependencies to latest versions (#248)</span>
                             </li>
                             
@@ -311,7 +311,9 @@ Requirement already satisfied: charset-normalizer&lt;4,&gt;=2 in /home/runner/mi
 Requirement already satisfied: idna&lt;4,&gt;=2.5 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from requests-&gt;quantecon) (3.7)
 Requirement already satisfied: urllib3&lt;3,&gt;=1.21.1 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from requests-&gt;quantecon) (2.3.0)
 Requirement already satisfied: certifi&gt;=2017.4.17 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from requests-&gt;quantecon) (2025.4.26)
-Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from sympy-&gt;quantecon) (1.3.0)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from sympy-&gt;quantecon) (1.3.0)
 </pre></div>
 </div>
 </div>
@@ -340,19 +342,19 @@ Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in /home/runner/minicond
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Mon Nov 17 03:47:48 2025       
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Fri Nov 28 06:09:21 2025       
 +-----------------------------------------------------------------------------------------+
-| NVIDIA-SMI 575.51.03              Driver Version: 575.51.03      CUDA Version: 12.9     |
-|-----------------------------------------+------------------------+----------------------+
+| NVIDIA-SMI 580.105.08             Driver Version: 580.105.08     CUDA Version: 13.0     |
++-----------------------------------------+------------------------+----------------------+
 | GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |
 | Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |
 |                                         |                        |               MIG M. |
 |=========================================+========================+======================|
-|   0  Tesla T4                       Off |   00000000:00:1E.0 Off |                    0 |
-| N/A   31C    P8             11W /   70W |       0MiB /  15360MiB |      0%      Default |
+|   0  Tesla T4                       On  |   00000000:00:1E.0 Off |                    0 |
+| N/A   33C    P8              9W /   70W |       0MiB /  15360MiB |      0%      Default |
 |                                         |                        |                  N/A |
 +-----------------------------------------+------------------------+----------------------+
-                                                                                         
+
 +-----------------------------------------------------------------------------------------+
 | Processes:                                                                              |
 |  GPU   GI   CI              PID   Type   Process name                        GPU Memory |
@@ -535,7 +537,7 @@ current value of the aggregate shock</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/7e9bc3bf9ca1b78280b53f5fd8c0d25aaeff905c5c683619f5bb3f2d6c3b5a0c.png"><img alt="_images/7e9bc3bf9ca1b78280b53f5fd8c0d25aaeff905c5c683619f5bb3f2d6c3b5a0c.png" src="_images/7e9bc3bf9ca1b78280b53f5fd8c0d25aaeff905c5c683619f5bb3f2d6c3b5a0c.png" style="width: 80%;" />
+<a class="reference internal image-reference" href="_images/a56b09c50eb74d1e75f7d3fefd463a088706f05716e9d673cf861e4ed4629eb2.png"><img alt="_images/a56b09c50eb74d1e75f7d3fefd463a088706f05716e9d673cf861e4ed4629eb2.png" src="_images/a56b09c50eb74d1e75f7d3fefd463a088706f05716e9d673cf861e4ed4629eb2.png" style="width: 80%;" />
 </a>
 </div>
 </div>
@@ -604,7 +606,7 @@ is known.</p>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Generating cross-section using Numba
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Generated cross-section in 35.55163264274597 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Generated cross-section in 34.38186764717102 seconds.
 </pre></div>
 </div>
 </div>
@@ -620,7 +622,7 @@ is known.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Generated cross-section in 35.16262412071228 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Generated cross-section in 34.00202965736389 seconds.
 </pre></div>
 </div>
 </div>
@@ -679,6 +681,12 @@ using JAX</p>
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>W1128 06:10:31.593238    7909 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn&#39;t support extracting fabric info or NVLink is not used by the device.
+W1128 06:10:31.596739    7817 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn&#39;t support extracting fabric info or NVLink is not used by the device.
+</pre></div>
+</div>
+</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -695,7 +703,7 @@ using JAX</p>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Generating cross-section using JAX
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Generated cross-section in 3.142720937728882 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Generated cross-section in 3.073214530944824 seconds.
 </pre></div>
 </div>
 </div>
@@ -715,7 +723,7 @@ using JAX</p>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Repeating without compile time.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Generated cross-section in 1.3275635242462158 seconds
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Generated cross-section in 1.3290233612060547 seconds
 </pre></div>
 </div>
 </div>
@@ -791,7 +799,7 @@ using JAX</p>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Generating cross-section using JAX with compiled loop
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Generated cross-section in 0.8325793743133545 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Generated cross-section in 0.8099634647369385 seconds.
 </pre></div>
 </div>
 </div>
@@ -811,7 +819,7 @@ using JAX</p>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Repeating without compile time
-Generated cross-section in 0.16804742813110352 seconds
+Generated cross-section in 0.16996073722839355 seconds
 </pre></div>
 </div>
 </div>
@@ -823,7 +831,7 @@ Generated cross-section in 0.16804742813110352 seconds
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>JAX is 209.2423 times faster.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>JAX is 200.0581 times faster.
 </pre></div>
 </div>
 </div>
@@ -856,7 +864,7 @@ that generates a cross-section of wealth and generating a suitable rank-size plo
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/e232410ef189b35e268fb3d09e5be378f34c333eb794de6863960d639d2bcabe.png"><img alt="_images/e232410ef189b35e268fb3d09e5be378f34c333eb794de6863960d639d2bcabe.png" src="_images/e232410ef189b35e268fb3d09e5be378f34c333eb794de6863960d639d2bcabe.png" style="width: 80%;" />
+<a class="reference internal image-reference" href="_images/b43dd2f327b7e823cccbe654bf7c977bfe987bd492e8d3869fd7d79d994d6673.png"><img alt="_images/b43dd2f327b7e823cccbe654bf7c977bfe987bd492e8d3869fd7d79d994d6673.png" src="_images/b43dd2f327b7e823cccbe654bf7c977bfe987bd492e8d3869fd7d79d994d6673.png" style="width: 80%;" />
 </a>
 </div>
 </div>
@@ -925,8 +933,8 @@ generates data points <span class="math notranslate nohighlight">\((x_i, y_i)_{i
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 227 ms, sys: 13 ms, total: 240 ms
-Wall time: 276 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 238 ms, sys: 9.02 ms, total: 247 ms
+Wall time: 281 ms
 </pre></div>
 </div>
 </div>
@@ -939,8 +947,8 @@ Wall time: 276 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 461 μs, sys: 0 ns, total: 461 μs
-Wall time: 301 μs
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 508 μs, sys: 0 ns, total: 508 μs
+Wall time: 268 μs
 </pre></div>
 </div>
 </div>
@@ -956,7 +964,7 @@ Wall time: 301 μs
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/781daccea3c880f0c7e9034a92978019f95f204072e46aacb63eb31f8b477c77.png"><img alt="_images/781daccea3c880f0c7e9034a92978019f95f204072e46aacb63eb31f8b477c77.png" src="_images/781daccea3c880f0c7e9034a92978019f95f204072e46aacb63eb31f8b477c77.png" style="width: 80%;" />
+<a class="reference internal image-reference" href="_images/e5d22f3dfb64bae7d2bbb95fe222ca169439a91869dff8bb0453195dde45ee40.png"><img alt="_images/e5d22f3dfb64bae7d2bbb95fe222ca169439a91869dff8bb0453195dde45ee40.png" src="_images/e5d22f3dfb64bae7d2bbb95fe222ca169439a91869dff8bb0453195dde45ee40.png" style="width: 80%;" />
 </a>
 </div>
 </div>
@@ -992,8 +1000,8 @@ G :=
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 134 ms, sys: 4.01 ms, total: 138 ms
-Wall time: 6.73 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 261 ms, sys: 8 ms, total: 269 ms
+Wall time: 6.93 s
 </pre></div>
 </div>
 </div>
@@ -1006,8 +1014,8 @@ Wall time: 6.73 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1.25 ms, sys: 3 ms, total: 4.25 ms
-Wall time: 6.46 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 2.76 ms, sys: 1 ms, total: 3.77 ms
+Wall time: 6.42 s
 </pre></div>
 </div>
 </div>
@@ -1019,7 +1027,7 @@ Wall time: 6.46 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Array(0.7709376, dtype=float32)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Array(0.7711268, dtype=float32)
 </pre></div>
 </div>
 </div>
@@ -1065,8 +1073,8 @@ Wall time: 6.46 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 131 ms, sys: 6.93 ms, total: 138 ms
-Wall time: 6.67 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 130 ms, sys: 2.01 ms, total: 132 ms
+Wall time: 6.6 s
 </pre></div>
 </div>
 </div>
@@ -1079,8 +1087,8 @@ Wall time: 6.67 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 3.27 ms, sys: 951 μs, total: 4.22 ms
-Wall time: 6.5 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 702 μs, sys: 2.99 ms, total: 3.7 ms
+Wall time: 6.45 s
 </pre></div>
 </div>
 </div>
@@ -1092,7 +1100,7 @@ Wall time: 6.5 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Array(0.7709376, dtype=float32)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Array(0.7711268, dtype=float32)
 </pre></div>
 </div>
 </div>
@@ -1162,7 +1170,7 @@ Wall time: 6.5 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/81f067eb32cb62741bcf344dd03e4eb3444fdc4131e942325c266323d3f3b829.png"><img alt="_images/81f067eb32cb62741bcf344dd03e4eb3444fdc4131e942325c266323d3f3b829.png" src="_images/81f067eb32cb62741bcf344dd03e4eb3444fdc4131e942325c266323d3f3b829.png" style="width: 80%;" />
+<a class="reference internal image-reference" href="_images/b36bddef883fa1d43e3f7e95a834fe9c1a33fc3d4fb57fe46a08ceef985af96e.png"><img alt="_images/b36bddef883fa1d43e3f7e95a834fe9c1a33fc3d4fb57fe46a08ceef985af96e.png" src="_images/b36bddef883fa1d43e3f7e95a834fe9c1a33fc3d4fb57fe46a08ceef985af96e.png" style="width: 80%;" />
 </a>
 </div>
 </div>
@@ -1179,7 +1187,7 @@ Wall time: 6.5 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/577f1cdba5515563545a920b5d2c6ef5ff74261863d934e57bf056fc21f0f6f3.png"><img alt="_images/577f1cdba5515563545a920b5d2c6ef5ff74261863d934e57bf056fc21f0f6f3.png" src="_images/577f1cdba5515563545a920b5d2c6ef5ff74261863d934e57bf056fc21f0f6f3.png" style="width: 80%;" />
+<a class="reference internal image-reference" href="_images/b7d5e1f583a7c25a533d5f40b79d91fe0275806fa3b41b8b4058ac0856d0ddfc.png"><img alt="_images/b7d5e1f583a7c25a533d5f40b79d91fe0275806fa3b41b8b4058ac0856d0ddfc.png" src="_images/b7d5e1f583a7c25a533d5f40b79d91fe0275806fa3b41b8b4058ac0856d0ddfc.png" style="width: 80%;" />
 </a>
 </div>
 </div>
@@ -1230,7 +1238,7 @@ Wall time: 6.5 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/92506f8051c416ce79ec98439130600072517c024849550ed6471dadbe063fee.png"><img alt="_images/92506f8051c416ce79ec98439130600072517c024849550ed6471dadbe063fee.png" src="_images/92506f8051c416ce79ec98439130600072517c024849550ed6471dadbe063fee.png" style="width: 80%;" />
+<a class="reference internal image-reference" href="_images/4166ed18613719c9bb73f7dbb19e229ec4d97eff2cac2c2e26abcbfb7ba9f8d3.png"><img alt="_images/4166ed18613719c9bb73f7dbb19e229ec4d97eff2cac2c2e26abcbfb7ba9f8d3.png" src="_images/4166ed18613719c9bb73f7dbb19e229ec4d97eff2cac2c2e26abcbfb7ba9f8d3.png" style="width: 80%;" />
 </a>
 </div>
 </div>
@@ -1245,7 +1253,7 @@ Wall time: 6.5 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/8bcd5efe955e70d16f8f8a0eddfc8eef45e62a1bc733e5858128a157405d01c4.png"><img alt="_images/8bcd5efe955e70d16f8f8a0eddfc8eef45e62a1bc733e5858128a157405d01c4.png" src="_images/8bcd5efe955e70d16f8f8a0eddfc8eef45e62a1bc733e5858128a157405d01c4.png" style="width: 80%;" />
+<a class="reference internal image-reference" href="_images/4018e2dadc5fe5e538d6b181fa9a0295d10684f9281f6cb486ce0ee23abc2e66.png"><img alt="_images/4018e2dadc5fe5e538d6b181fa9a0295d10684f9281f6cb486ce0ee23abc2e66.png" src="_images/4018e2dadc5fe5e538d6b181fa9a0295d10684f9281f6cb486ce0ee23abc2e66.png" style="width: 80%;" />
 </a>
 </div>
 </div>
@@ -1309,7 +1317,7 @@ Wall time: 6.5 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/f036d7ec0d975b7e890b163a4d4c1a04f8dd4a5fe49d7fcf16aaa87ecc1fe1e8.png"><img alt="_images/f036d7ec0d975b7e890b163a4d4c1a04f8dd4a5fe49d7fcf16aaa87ecc1fe1e8.png" src="_images/f036d7ec0d975b7e890b163a4d4c1a04f8dd4a5fe49d7fcf16aaa87ecc1fe1e8.png" style="width: 80%;" />
+<a class="reference internal image-reference" href="_images/a4042e9e72144becd390a5918a32360cabe9e51bb3f1eefa488fec35b32d6957.png"><img alt="_images/a4042e9e72144becd390a5918a32360cabe9e51bb3f1eefa488fec35b32d6957.png" src="_images/a4042e9e72144becd390a5918a32360cabe9e51bb3f1eefa488fec35b32d6957.png" style="width: 80%;" />
 </a>
 </div>
 </div>

@@ -244,7 +244,7 @@
                                 <a href="https://github.com/QuantEcon/lecture-jax/commit/478aa4d" class="changelog-hash">478aa4d</a>
                                 
                                 <span class="changelog-author">Matt McKay</span>
-                                <span class="changelog-time">7 minutes ago</span>
+                                <span class="changelog-time">34 minutes ago</span>
                                 <span class="changelog-message">MAINT: Update sphinx dependencies to latest versions (#248)</span>
                             </li>
                             
@@ -293,19 +293,19 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Mon Nov 17 03:42:23 2025       
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Fri Nov 28 06:03:56 2025       
 +-----------------------------------------------------------------------------------------+
-| NVIDIA-SMI 575.51.03              Driver Version: 575.51.03      CUDA Version: 12.9     |
-|-----------------------------------------+------------------------+----------------------+
+| NVIDIA-SMI 580.105.08             Driver Version: 580.105.08     CUDA Version: 13.0     |
++-----------------------------------------+------------------------+----------------------+
 | GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |
 | Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |
 |                                         |                        |               MIG M. |
 |=========================================+========================+======================|
-|   0  Tesla T4                       Off |   00000000:00:1E.0 Off |                    0 |
-| N/A   32C    P0             26W /   70W |       0MiB /  15360MiB |      0%      Default |
+|   0  Tesla T4                       On  |   00000000:00:1E.0 Off |                    0 |
+| N/A   33C    P0             25W /   70W |       0MiB /  15360MiB |      0%      Default |
 |                                         |                        |                  N/A |
 +-----------------------------------------+------------------------+----------------------+
-                                                                                         
+
 +-----------------------------------------------------------------------------------------+
 | Processes:                                                                              |
 |  GPU   GI   CI              PID   Type   Process name                        GPU Memory |
@@ -387,6 +387,10 @@ function will be equal to 0.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>W1128 06:03:57.577916    6630 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn&#39;t support extracting fabric info or NVLink is not used by the device.
+W1128 06:03:57.581576    6578 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn&#39;t support extracting fabric info or NVLink is not used by the device.
+</pre></div>
+</div>
 <a class="reference internal image-reference" href="_images/2d8e8aef2c2b0f4d2e3c7a7c384537419fbbe026931c9835e5d588e0ccdd18b4.png"><img alt="_images/2d8e8aef2c2b0f4d2e3c7a7c384537419fbbe026931c9835e5d588e0ccdd18b4.png" src="_images/2d8e8aef2c2b0f4d2e3c7a7c384537419fbbe026931c9835e5d588e0ccdd18b4.png" style="width: 80%;" />
 </a>
 </div>
@@ -625,8 +629,8 @@ of JAX arrays to convert it to NumPy arrays.</p>
 Dep. Variable:                      y   No. Observations:                    5
 Model:                        Poisson   Df Residuals:                        2
 Method:                           MLE   Df Model:                            2
-Date:                Mon, 17 Nov 2025   Pseudo R-squ.:                  0.2546
-Time:                        03:42:26   Log-Likelihood:                -3.3784
+Date:                Fri, 28 Nov 2025   Pseudo R-squ.:                  0.2546
+Time:                        06:04:00   Log-Likelihood:                -3.3784
 converged:                       True   LL-Null:                       -4.5325
 Covariance Type:            nonrobust   LLR p-value:                    0.3153
 ==============================================================================
