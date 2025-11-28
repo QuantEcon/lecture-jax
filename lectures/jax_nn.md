@@ -674,7 +674,7 @@ results = {
 }
 
 df = pd.DataFrame(results)
-df.style.format({'Runtime (s)': '{:.2f}', 'Validation MSE': '{:.2f}'})
+df.style.format({'Runtime (s)': '{:.2f}', 'Validation MSE': '{:.4f}'})
 ```
 
 
