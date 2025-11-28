@@ -709,13 +709,13 @@ Which combination gives you the lowest validation MSE?
 ```
 
 
-```{solution-start} jn_ex1
+```{solution-start} jax_nn_ex1
 :class: dropdown
 ```
 
 Let's implement and test several strategies. 
 
-### Strategy 1: Deeper Network Architecture
+**Strategy 1: Deeper Network Architecture**
 
 Let's try a deeper network with 6 layers instead of 4, keeping total parameters ≤ 251:
 
@@ -760,7 +760,7 @@ print(f"  Validation MSE: {deep_mse:.6f}")
 print(f"  Improvement over ADAM: {optax_adam_mse - deep_mse:.6f}")
 ```
 
-### Strategy 2: Deeper Network + Learning Rate Schedule
+**Strategy 2: Deeper Network + Learning Rate Schedule**
 
 Since the deeper network performed best, let's combine it with the learning rate schedule:
 
@@ -813,7 +813,7 @@ print(f"  Validation MSE: {deep_schedule_mse:.6f}")
 print(f"  Improvement over ADAM: {optax_adam_mse - deep_schedule_mse:.6f}")
 ```
 
-### Strategy 3: ELU Activation
+**Strategy 3: ELU Activation**
 
 Let's try ELU (Exponential Linear Unit), a modern activation function:
 
@@ -879,7 +879,7 @@ print(f"  Validation MSE: {elu_mse:.6f}")
 print(f"  Improvement over ADAM: {optax_adam_mse - elu_mse:.6f}")
 ```
 
-### Strategy 4: SELU Activation
+**Strategy 4: SELU Activation**
 
 Let's try SELU (Scaled Exponential Linear Unit), another modern activation function:
 
@@ -945,7 +945,7 @@ print(f"  Validation MSE: {selu_mse:.6f}")
 print(f"  Improvement over ADAM: {optax_adam_mse - selu_mse:.6f}")
 ```
 
-### Results Summary
+**Results Summary**
 
 Let's compare all strategies:
 
@@ -992,14 +992,13 @@ df_strategies.style.format({
 })
 ```
 
-### Key Insights
 
-The experimental results reveal several important lessons:
+The experimental results reveal several lessons:
 
-1. **Architecture matters**: A deeper, narrower network outperformed the
+1. Architecture matters: A deeper, narrower network outperformed the
    baseline network, despite using fewer parameters (187 vs 251).
 
-2. **Combining strategies**: Combining the deeper architecture with a learning
+2. Combining strategies: Combining the deeper architecture with a learning
    rate schedule yielded the best results, showing that synergistic improvements
    are possible.
 
