@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>23. Neural Network Regression with JAX and Optax &#8212; Quantitative Economics with Python using JAX</title>
+    <title>23. Neural Network Regression with JAX &#8212; Quantitative Economics with Python using JAX</title>
     <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
@@ -70,7 +70,7 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
-    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=4890ae55f4d5f196460e99a17085458eb1f4c2f0" type="text/css" />
+    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=10af625e9e6eb695015491be7f888e42a03bc430" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
@@ -94,7 +94,7 @@
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="_static/togglebutton.js?v=4a39c7ea"></script>
-    <script src="_static/scripts/quantecon-book-theme.js?digest=06ebc90d5139b434c2742937a4ef3b185cb93e2f"></script>
+    <script src="_static/scripts/quantecon-book-theme.js?digest=ceefa0362b71a389a50c4058a117a949b54259bd"></script>
     <script src="_static/scripts/jquery.js?v=5d32c60e"></script>
     <script src="_static/scripts/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
@@ -135,13 +135,13 @@
 <!-- Twitter tags -->
 <meta name="twitter:card" content="summary" />
 <meta name="twitter:site" content="@quantecon" />
-<meta name="twitter:title" content="Neural Network Regression with JAX and Optax"/>
+<meta name="twitter:title" content="Neural Network Regression with JAX"/>
 <meta name="twitter:description" content="This website presents a set of lectures on quantitative economic modeling using JAX, designed and written by Thomas J. Sargent and John Stachurski.">
 <meta name="twitter:creator" content="@quantecon">
 <meta name="twitter:image" content="https://assets.quantecon.org/img/qe-twitter-logo.png">
 
 <!-- Opengraph tags -->
-<meta property="og:title" content="Neural Network Regression with JAX and Optax" />
+<meta property="og:title" content="Neural Network Regression with JAX" />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://jax.quantecon.org/jax_nn.html" />
 <meta property="og:image" content="https://assets.quantecon.org/img/qe-og-logo.png" />
@@ -174,20 +174,26 @@
 
                         <nav id="bd-toc-nav" class="qe-page__toc-nav">
                             <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#set-up">23.1. Set Up</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#training-with-keras">23.2. Training with Keras</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#training-with-jax">23.3. Training with JAX</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#background-and-set-up">23.3.1. Background and set up</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#coding-the-network">23.3.2. Coding the network</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gradient-descent">23.3.3. Gradient descent</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#execution">23.3.4. Execution</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#outline">23.1. Outline</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#set-up">23.2. Set Up</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#flow">23.2.1. Flow</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#data">23.2.2. Data</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#jax-plus-optax">23.4. JAX plus Optax</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#optax-with-sgd">23.4.1. Optax with SGD</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#optax-with-adam">23.4.2. Optax with ADAM</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#training-with-keras">23.3. Training with Keras</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#training-with-jax">23.4. Training with JAX</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#background-and-set-up">23.4.1. Background and set up</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#coding-the-network">23.4.2. Coding the network</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gradient-descent">23.4.3. Gradient descent</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#execution">23.4.4. Execution</a></li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#jax-plus-optax">23.5. JAX plus Optax</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#optax-with-sgd">23.5.1. Optax with SGD</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#optax-with-adam">23.5.2. Optax with ADAM</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#summary">23.6. Summary</a></li>
 </ul>
                             <p class="logo">
                                 
@@ -200,7 +206,7 @@
                                 
                             </p>
 
-                            <p class="powered">Powered by <a href="https://jupyterbook.org/en/stable/">Jupyter Book</a></p>
+                            <p class="powered">Powered by <a href="https://jupyterbook.org/v1/">Jupyter Book</a></p>
 
                         </nav>
 
@@ -220,10 +226,9 @@
 
                         <p class="qe-page__header-heading"><a href="intro.html">Quantitative Economics with Python using JAX</a></p>
 
-                        <p class="qe-page__header-subheading">Neural Network Regression with JAX and Optax</p>
-
                     </div>
-                    <!-- length 2, since its a string and empty dict has length 2 - {} -->
+
+                    <!-- Authors section -->
                         <p class="qe-page__header-authors" font-size="18">
                             
                                 
@@ -236,6 +241,28 @@
                             
                         </p>
 
+                    <!-- Last modified / Changelog dropdown -->
+                        <button class="qe-page__header-changed" id="changelog-toggle" aria-expanded="false">
+                            Last changed: Nov 28, 2025
+                            <span class="changelog-icon">▼</span>
+                        </button>
+
+                    <!-- Changelog dropdown content -->
+                    <div class="qe-page__header-changelog" id="changelog-content" aria-hidden="true">
+                        <h4>Changelog (<a href="https://github.com/QuantEcon/lecture-jax/commits/main/jax_nn.md">full history</a>)</h4>
+                        <ul class="changelog-list">
+                            
+                            <li class="changelog-entry">
+                                
+                                <a href="https://github.com/QuantEcon/lecture-jax/commit/478aa4d" class="changelog-hash">478aa4d</a>
+                                
+                                <span class="changelog-author">Matt McKay</span>
+                                <span class="changelog-time">7 minutes ago</span>
+                                <span class="changelog-message">MAINT: Update sphinx dependencies to latest versions (#248)</span>
+                            </li>
+                            
+                        </ul>
+                    </div>
 
                 </div> <!-- .page__header -->
 
@@ -246,23 +273,25 @@
                     
                     <div>
                         
-  <section class="tex2jax_ignore mathjax_ignore" id="neural-network-regression-with-jax-and-optax">
-<h1><span class="section-number">23. </span>Neural Network Regression with JAX and Optax<a class="headerlink" href="#neural-network-regression-with-jax-and-optax" title="Link to this heading">#</a></h1>
+  <section class="tex2jax_ignore mathjax_ignore" id="neural-network-regression-with-jax">
+<h1><span class="section-number">23. </span>Neural Network Regression with JAX<a class="headerlink" href="#neural-network-regression-with-jax" title="Link to this heading">#</a></h1>
 <div class="warning admonition">
 <p class="admonition-title">GPU</p>
 <p>This lecture was built using a machine with JAX installed and access to a GPU.</p>
 <p>To run this lecture on <a class="reference external" href="https://colab.research.google.com/">Google Colab</a>, click on the “play” icon top right, select Colab, and set the runtime environment to include a GPU.</p>
 <p>To run this lecture on your own machine, you need to install <a class="reference external" href="https://github.com/google/jax">Google JAX</a>.</p>
 </div>
+<section id="outline">
+<h2><span class="section-number">23.1. </span>Outline<a class="headerlink" href="#outline" title="Link to this heading">#</a></h2>
 <p>In a <a class="reference internal" href="keras.html"><span class="doc">previous lecture</span></a>, we showed how to implement regression using a neural network via the popular deep learning library <a class="reference external" href="https://keras.io/">Keras</a>.</p>
 <p>In this lecture, we solve the same problem directly, using JAX operations rather than relying on the Keras frontend.</p>
 <p>The objective is to understand the nuts and bolts of the exercise better, as
 well as to explore more features of JAX.</p>
 <p>The lecture proceeds in three stages:</p>
 <ol class="arabic simple">
-<li><p>We repeat the Keras exercise, to give ourselves a benchmark.</p></li>
+<li><p>We solve the problem using Keras, to give ourselves a benchmark.</p></li>
 <li><p>We solve the same problem in pure JAX, using pytree operations and gradient descent.</p></li>
-<li><p>We solve the same problem using a combination of JAX and <a class="reference external" href="https://optax.readthedocs.io/en/latest/index.html">Optax</a>, an optimization library build for JAX.</p></li>
+<li><p>We solve the same problem using a combination of JAX and <a class="reference external" href="https://optax.readthedocs.io/en/latest/index.html">Optax</a>, an optimization library built for JAX.</p></li>
 </ol>
 <p>We begin with imports and installs.</p>
 <div class="cell docutils container">
@@ -279,7 +308,7 @@ well as to explore more features of JAX.</p>
 </div>
 <div class="cell tag_hide-output docutils container">
 <div class="cell_input above-output-prompt docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>keras
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>keras<span class="w"> </span>optax
 </pre></div>
 </div>
 </div>
@@ -293,38 +322,61 @@ well as to explore more features of JAX.</p>
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Downloading keras-3.12.0-py3-none-any.whl.metadata (5.9 kB)
-Collecting absl-py (from keras)
-  Downloading absl_py-2.3.1-py3-none-any.whl.metadata (3.3 kB)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: numpy in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from keras) (2.1.3)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting optax
+  Downloading optax-0.2.6-py3-none-any.whl.metadata (7.6 kB)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting absl-py (from keras)
+  Downloading absl_py-2.3.1-py3-none-any.whl.metadata (3.3 kB)
+Requirement already satisfied: numpy in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from keras) (2.1.3)
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting rich (from keras)
-  Downloading rich-14.2.0-py3-none-any.whl.metadata (18 kB)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting namex (from keras)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Downloading rich-14.2.0-py3-none-any.whl.metadata (18 kB)
+Collecting namex (from keras)
   Downloading namex-0.1.0-py3-none-any.whl.metadata (322 bytes)
-Requirement already satisfied: h5py in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from keras) (3.12.1)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: h5py in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from keras) (3.12.1)
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting optree (from keras)
   Downloading optree-0.18.0-cp313-cp313-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl.metadata (34 kB)
+Requirement already satisfied: ml-dtypes in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from keras) (0.5.4)
+Requirement already satisfied: packaging in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from keras) (24.2)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: ml-dtypes in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from keras) (0.5.3)
-Requirement already satisfied: packaging in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from keras) (24.2)
-Requirement already satisfied: typing-extensions&gt;=4.6.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from optree-&gt;keras) (4.12.2)
-Requirement already satisfied: markdown-it-py&gt;=2.2.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from rich-&gt;keras) (3.0.0)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting chex&gt;=0.1.87 (from optax)
+  Downloading chex-0.1.91-py3-none-any.whl.metadata (18 kB)
+Requirement already satisfied: jax&gt;=0.5.3 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from optax) (0.8.1)
+Requirement already satisfied: jaxlib&gt;=0.5.3 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from optax) (0.8.1)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting typing_extensions&gt;=4.15.0 (from chex&gt;=0.1.87-&gt;optax)
+  Downloading typing_extensions-4.15.0-py3-none-any.whl.metadata (3.3 kB)
+Requirement already satisfied: toolz&gt;=1.0.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from chex&gt;=0.1.87-&gt;optax) (1.0.0)
+Requirement already satisfied: opt_einsum in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from jax&gt;=0.5.3-&gt;optax) (3.4.0)
+Requirement already satisfied: scipy&gt;=1.13 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from jax&gt;=0.5.3-&gt;optax) (1.15.3)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: markdown-it-py&gt;=2.2.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from rich-&gt;keras) (3.0.0)
 Requirement already satisfied: pygments&lt;3.0.0,&gt;=2.13.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from rich-&gt;keras) (2.19.1)
 Requirement already satisfied: mdurl~=0.1 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from markdown-it-py&gt;=2.2.0-&gt;rich-&gt;keras) (0.1.0)
 Downloading keras-3.12.0-py3-none-any.whl (1.5 MB)
 ?25l   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">0.0/1.5 MB</span> <span class=" -Color -Color-Red">?</span> eta <span class=" -Color -Color-Cyan">-:--:--</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">1.5/1.5 MB</span> <span class=" -Color -Color-Red">45.4 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
-?25hDownloading absl_py-2.3.1-py3-none-any.whl (135 kB)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">1.5/1.5 MB</span> <span class=" -Color -Color-Red">41.4 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
+?25hDownloading optax-0.2.6-py3-none-any.whl (367 kB)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Downloading absl_py-2.3.1-py3-none-any.whl (135 kB)
+Downloading chex-0.1.91-py3-none-any.whl (100 kB)
+Downloading typing_extensions-4.15.0-py3-none-any.whl (44 kB)
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Downloading namex-0.1.0-py3-none-any.whl (5.9 kB)
@@ -334,109 +386,59 @@ Downloading optree-0.18.0-cp313-cp313-manylinux_2_27_x86_64.manylinux_2_28_x86_6
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Downloading rich-14.2.0-py3-none-any.whl (243 kB)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Installing collected packages: namex, optree, absl-py, rich, keras
-?25l
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">3/5</span> [rich]
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━ <span class=" -Color -Color-Green">4/5</span> [keras]
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━ <span class=" -Color -Color-Green">4/5</span> [keras]
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━ <span class=" -Color -Color-Green">4/5</span> [keras]
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━ <span class=" -Color -Color-Green">4/5</span> [keras]
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━ <span class=" -Color -Color-Green">4/5</span> [keras]
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━ <span class=" -Color -Color-Green">4/5</span> [keras]
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━ <span class=" -Color -Color-Green">4/5</span> [keras]
-   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">5/5</span> [keras]
-?25h
-Successfully installed absl-py-2.3.1 keras-3.12.0 namex-0.1.0 optree-0.18.0 rich-14.2.0
-</pre></div>
-</div>
-</div>
-</details>
-</div>
-<div class="cell tag_hide-output docutils container">
-<div class="cell_input above-output-prompt docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>optax
-</pre></div>
-</div>
-</div>
-<details class="admonition hide below-input">
-<summary aria-label="Toggle hidden content">
-<p class="collapsed admonition-title">Show code cell output</p>
-<p class="expanded admonition-title">Hide code cell output</p>
-</summary>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting optax
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Downloading optax-0.2.6-py3-none-any.whl.metadata (7.6 kB)
-Requirement already satisfied: absl-py&gt;=0.7.1 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from optax) (2.3.1)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting chex&gt;=0.1.87 (from optax)
-  Downloading chex-0.1.91-py3-none-any.whl.metadata (18 kB)
-Requirement already satisfied: jax&gt;=0.5.3 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from optax) (0.8.0)
-Requirement already satisfied: jaxlib&gt;=0.5.3 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from optax) (0.8.0)
-Requirement already satisfied: numpy&gt;=1.18.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from optax) (2.1.3)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting typing_extensions&gt;=4.15.0 (from chex&gt;=0.1.87-&gt;optax)
-  Downloading typing_extensions-4.15.0-py3-none-any.whl.metadata (3.3 kB)
-Requirement already satisfied: toolz&gt;=1.0.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from chex&gt;=0.1.87-&gt;optax) (1.0.0)
-Requirement already satisfied: ml_dtypes&gt;=0.5.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from jax&gt;=0.5.3-&gt;optax) (0.5.3)
-Requirement already satisfied: opt_einsum in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from jax&gt;=0.5.3-&gt;optax) (3.4.0)
-Requirement already satisfied: scipy&gt;=1.13 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from jax&gt;=0.5.3-&gt;optax) (1.15.3)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Downloading optax-0.2.6-py3-none-any.whl (367 kB)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Downloading chex-0.1.91-py3-none-any.whl (100 kB)
-Downloading typing_extensions-4.15.0-py3-none-any.whl (44 kB)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Installing collected packages: typing_extensions, chex, optax
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Installing collected packages: namex, typing_extensions, absl-py, rich, optree, keras, chex, optax
 ?25l
   Attempting uninstall: typing_extensions
-
-    Found existing installation: typing_extensions 4.12.2
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    Found existing installation: typing_extensions 4.12.2
 
     Uninstalling typing_extensions-4.12.2:
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">0/3</span> [typing_extensions]
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">1/8</span> [typing_extensions]
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">0/3</span> [typing_extensions]
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">1/8</span> [typing_extensions]
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>      Successfully uninstalled typing_extensions-4.12.2
-   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">0/3</span> [typing_extensions]
+   ━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">1/8</span> [typing_extensions]
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">1/3</span> [chex]
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">2/8</span> [absl-py]
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━ <span class=" -Color -Color-Green">2/3</span> [optax]
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">3/8</span> [rich]
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">3/3</span> [optax]
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">5/8</span> [keras]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">5/8</span> [keras]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">5/8</span> [keras]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">5/8</span> [keras]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">5/8</span> [keras]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━ <span class=" -Color -Color-Green">6/8</span> [chex]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━ <span class=" -Color -Color-Green">7/8</span> [optax]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">8/8</span> [optax]
 ?25h
-Successfully installed chex-0.1.91 optax-0.2.6 typing_extensions-4.15.0
+
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Successfully installed absl-py-2.3.1 chex-0.1.91 keras-3.12.0 namex-0.1.0 optax-0.2.6 optree-0.18.0 rich-14.2.0 typing_extensions-4.15.0
 </pre></div>
 </div>
 </div>
@@ -449,6 +451,16 @@ Successfully installed chex-0.1.91 optax-0.2.6 typing_extensions-4.15.0
 </div>
 </div>
 </div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Without setting the backend to JAX, the imports below might fail.</p>
+<p>If you have problems running the next cell in Jupyter, try</p>
+<ol class="arabic simple">
+<li><p>quitting</p></li>
+<li><p>running <code class="docutils literal notranslate"><span class="pre">export</span> <span class="pre">KERAS_BACKEND=&quot;jax&quot;</span></code></p></li>
+<li><p>starting Jupyter on the command line from the same terminal.</p></li>
+</ol>
+</div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">keras</span>
@@ -459,63 +471,111 @@ Successfully installed chex-0.1.91 optax-0.2.6 typing_extensions-4.15.0
 </div>
 </div>
 </div>
+</section>
 <section id="set-up">
-<h2><span class="section-number">23.1. </span>Set Up<a class="headerlink" href="#set-up" title="Link to this heading">#</a></h2>
-<p>Let’s hardcode some of the learning-related constants we’ll use across all
-implementations.</p>
+<h2><span class="section-number">23.2. </span>Set Up<a class="headerlink" href="#set-up" title="Link to this heading">#</a></h2>
+<p>Here we briefly describe the problem and generate synthetic data.</p>
+<section id="flow">
+<h3><span class="section-number">23.2.1. </span>Flow<a class="headerlink" href="#flow" title="Link to this heading">#</a></h3>
+<p>We use the routine from <a class="reference internal" href="keras.html"><span class="doc">Simple Neural Network Regression with Keras and JAX</span></a> to generate data for one-dimensional
+nonlinear regression.</p>
+<p>Then we will create a dense (i.e., fully connected) neural network with
+4 layers, where the input and hidden layers map to <span class="math notranslate nohighlight">\(k\)</span>-dimensional output space.</p>
+<p>The inputs and outputs are scalar (for one-dimensional nonlinear regression), so
+the overall mapping is</p>
+<div class="math notranslate nohighlight">
+\[ \mathbb R \to \mathbb R^k \to \mathbb R^k \to \mathbb R^k \to \mathbb R \]</div>
+<p>Here’s a class to store the learning-related constants we’ll use across all implementations.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">EPOCHS</span> <span class="o">=</span> <span class="mi">4000</span>           <span class="c1"># Number of passes through the data set</span>
-<span class="n">DATA_SIZE</span> <span class="o">=</span> <span class="mi">400</span>         <span class="c1"># Sample size</span>
-<span class="n">NUM_LAYERS</span> <span class="o">=</span> <span class="mi">4</span>          <span class="c1"># Depth of the network</span>
-<span class="n">OUTPUT_DIM</span> <span class="o">=</span> <span class="mi">10</span>         <span class="c1"># Output dimension of input and hidden layers</span>
-<span class="n">LEARNING_RATE</span> <span class="o">=</span> <span class="mf">0.001</span>   <span class="c1"># Learning rate for gradient descent</span>
-</pre></div>
-</div>
-</div>
-</div>
-<p>The next piece of code is repeated from <a class="reference internal" href="keras.html"><span class="doc">our Keras lecture</span></a> and generates
-the data.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">generate_data</span><span class="p">(</span><span class="n">x_min</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>           
-                  <span class="n">x_max</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>          
-                  <span class="n">data_size</span><span class="o">=</span><span class="n">DATA_SIZE</span><span class="p">,</span>
-                  <span class="n">seed</span><span class="o">=</span><span class="mi">1234</span><span class="p">):</span> <span class="c1"># Default size for dataset</span>
-    <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
-    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">x_min</span><span class="p">,</span> <span class="n">x_max</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="n">data_size</span><span class="p">)</span>
-    <span class="n">ϵ</span> <span class="o">=</span> <span class="mf">0.2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">data_size</span><span class="p">)</span>
-    <span class="n">y</span> <span class="o">=</span> <span class="n">x</span><span class="o">**</span><span class="mf">0.5</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">+</span> <span class="n">ϵ</span>
-    <span class="c1"># Return observations as column vectors </span>
-    <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="p">(</span><span class="n">data_size</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span> <span class="k">for</span> <span class="n">z</span> <span class="ow">in</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)]</span>
-    <span class="k">return</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">NamedTuple</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">Config</span><span class="p">(</span><span class="n">NamedTuple</span><span class="p">):</span>
+    <span class="n">epochs</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">4000</span>             <span class="c1"># Number of passes through the data set</span>
+    <span class="n">data_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">400</span>           <span class="c1"># Sample size</span>
+    <span class="n">num_layers</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">4</span>            <span class="c1"># Depth of the network</span>
+    <span class="n">output_dim</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span>           <span class="c1"># Output dimension k of input and hidden layers</span>
+    <span class="n">learning_rate</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.001</span>   <span class="c1"># Learning rate for gradient descent</span>
 </pre></div>
 </div>
 </div>
 </div>
 </section>
-<section id="training-with-keras">
-<h2><span class="section-number">23.2. </span>Training with Keras<a class="headerlink" href="#training-with-keras" title="Link to this heading">#</a></h2>
-<p>We repeat the Keras training exercise from <a class="reference internal" href="keras.html"><span class="doc">our Keras lecture</span></a> as a
-benchmark.</p>
-<p>The code is essentially the same, although written slightly more succinctly.</p>
-<p>Here is a function to build the model.</p>
+<section id="data">
+<h3><span class="section-number">23.2.2. </span>Data<a class="headerlink" href="#data" title="Link to this heading">#</a></h3>
+<p>Here’s the function to generate the data for our regression analysis.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">build_keras_model</span><span class="p">(</span><span class="n">num_layers</span><span class="o">=</span><span class="n">NUM_LAYERS</span><span class="p">,</span> 
-                      <span class="n">activation_function</span><span class="o">=</span><span class="s1">&#39;tanh&#39;</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">generate_data</span><span class="p">(</span>
+        <span class="n">key</span><span class="p">:</span> <span class="n">jax</span><span class="o">.</span><span class="n">Array</span><span class="p">,</span>         <span class="c1"># JAX random key</span>
+        <span class="n">config</span><span class="p">:</span> <span class="n">Config</span><span class="p">,</span>         <span class="c1"># contains configuration data</span>
+        <span class="n">x_min</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>     <span class="c1"># Minimum x value</span>
+        <span class="n">x_max</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">5.0</span>      <span class="c1"># Maximum x value</span>
+    <span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generate synthetic regression data.</span>
+<span class="sd">    Pure functional version using JAX random keys.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">x_min</span><span class="p">,</span> <span class="n">x_max</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">data_size</span><span class="p">)</span>
+    <span class="n">ϵ</span> <span class="o">=</span> <span class="mf">0.2</span> <span class="o">*</span> <span class="n">jax</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">data_size</span><span class="p">,))</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">x</span><span class="o">**</span><span class="mf">0.5</span> <span class="o">+</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">+</span> <span class="n">ϵ</span>
+    <span class="c1"># Return observations as column vectors</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">data_size</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">data_size</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Here’s a plot of the data.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">config</span> <span class="o">=</span> <span class="n">Config</span><span class="p">()</span>
+<span class="n">key</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">PRNGKey</span><span class="p">(</span><span class="mi">1234</span><span class="p">)</span>
+<span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">generate_data</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">config</span><span class="p">)</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>W1128 05:49:32.967457    2222 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn&#39;t support extracting fabric info or NVLink is not used by the device.
+W1128 05:49:32.970847    2154 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn&#39;t support extracting fabric info or NVLink is not used by the device.
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="_images/102d7a05d7d798a7f3ec70bff64fff96ce9741aeb25ee54796e6bbd49d89b1d1.png"><img alt="_images/102d7a05d7d798a7f3ec70bff64fff96ce9741aeb25ee54796e6bbd49d89b1d1.png" src="_images/102d7a05d7d798a7f3ec70bff64fff96ce9741aeb25ee54796e6bbd49d89b1d1.png" style="width: 80%;" />
+</a>
+</div>
+</div>
+</section>
+</section>
+<section id="training-with-keras">
+<h2><span class="section-number">23.3. </span>Training with Keras<a class="headerlink" href="#training-with-keras" title="Link to this heading">#</a></h2>
+<p>We build a Keras model that can fit a nonlinear function to the generated data
+using an ANN.</p>
+<p>We will use this fit as a benchmark to test our JAX code.</p>
+<p>Since its role is only a benchmark, we refer readers to the <a class="reference internal" href="keras.html"><span class="doc">previous lecture</span></a> for details on the Keras interface.</p>
+<p>We start with a function to build the model.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">build_keras_model</span><span class="p">(</span>
+        <span class="n">config</span><span class="p">:</span> <span class="n">Config</span><span class="p">,</span>                     <span class="c1"># contains configuration data</span>
+        <span class="n">activation_function</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;tanh&#39;</span>   <span class="c1"># activation with default</span>
+    <span class="p">):</span>
     <span class="n">model</span> <span class="o">=</span> <span class="n">Sequential</span><span class="p">()</span>
     <span class="c1"># Add layers to the network sequentially, from inputs towards outputs</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">NUM_LAYERS</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">num_layers</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
         <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
-           <span class="n">Dense</span><span class="p">(</span><span class="n">units</span><span class="o">=</span><span class="n">OUTPUT_DIM</span><span class="p">,</span> 
-                 <span class="n">activation</span><span class="o">=</span><span class="n">activation_function</span><span class="p">)</span>
+           <span class="n">Dense</span><span class="p">(</span><span class="n">units</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">output_dim</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="n">activation_function</span><span class="p">)</span>
            <span class="p">)</span>
     <span class="c1"># Add a final layer that maps to a scalar value, for regression.</span>
     <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Dense</span><span class="p">(</span><span class="n">units</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
     <span class="c1"># Embed training configurations</span>
     <span class="n">model</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span>
-        <span class="n">optimizer</span><span class="o">=</span><span class="n">keras</span><span class="o">.</span><span class="n">optimizers</span><span class="o">.</span><span class="n">SGD</span><span class="p">(),</span> 
+        <span class="n">optimizer</span><span class="o">=</span><span class="n">keras</span><span class="o">.</span><span class="n">optimizers</span><span class="o">.</span><span class="n">SGD</span><span class="p">(),</span>  
         <span class="n">loss</span><span class="o">=</span><span class="s1">&#39;mean_squared_error&#39;</span>
     <span class="p">)</span>
     <span class="k">return</span> <span class="n">model</span>
@@ -523,28 +583,37 @@ benchmark.</p>
 </div>
 </div>
 </div>
+<p>Notice that we’ve set the optimizer to use stochastic gradient descent and a
+mean square loss.</p>
 <p>Here is a function to train the model.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">train_keras_model</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">x_validate</span><span class="p">,</span> <span class="n">y_validate</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">train_keras_model</span><span class="p">(</span>
+        <span class="n">model</span><span class="p">,</span>          <span class="c1"># Instance of Keras Sequential model</span>
+        <span class="n">x</span><span class="p">,</span>              <span class="c1"># Training data, inputs </span>
+        <span class="n">y</span><span class="p">,</span>              <span class="c1"># Training data, outputs </span>
+        <span class="n">x_validate</span><span class="p">,</span>     <span class="c1"># Validation data, inputs</span>
+        <span class="n">y_validate</span><span class="p">,</span>     <span class="c1"># Validation data, outputs</span>
+        <span class="n">config</span><span class="p">:</span> <span class="n">Config</span>  <span class="c1"># contains configuration data</span>
+    <span class="p">):</span>
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Training NN using Keras.&quot;</span><span class="p">)</span>
     <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
     <span class="n">training_history</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span>
-        <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> 
-        <span class="n">batch_size</span><span class="o">=</span><span class="nb">max</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">),</span> 
+        <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span>
+        <span class="n">batch_size</span><span class="o">=</span><span class="nb">max</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">),</span>
         <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-        <span class="n">epochs</span><span class="o">=</span><span class="n">EPOCHS</span><span class="p">,</span> 
+        <span class="n">epochs</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">epochs</span><span class="p">,</span>
         <span class="n">validation_data</span><span class="o">=</span><span class="p">(</span><span class="n">x_validate</span><span class="p">,</span> <span class="n">y_validate</span><span class="p">)</span>
     <span class="p">)</span>
     <span class="n">elapsed</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span>
     <span class="n">mse</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">x_validate</span><span class="p">,</span> <span class="n">y_validate</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Trained Keras model in </span><span class="si">{</span><span class="n">elapsed</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> seconds with final MSE on validation data = </span><span class="si">{</span><span class="n">mse</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">model</span><span class="p">,</span> <span class="n">training_history</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Trained in </span><span class="si">{</span><span class="n">elapsed</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> seconds, validation data MSE = </span><span class="si">{</span><span class="n">mse</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">model</span><span class="p">,</span> <span class="n">training_history</span><span class="p">,</span> <span class="n">elapsed</span><span class="p">,</span> <span class="n">mse</span>
 </pre></div>
 </div>
 </div>
 </div>
-<p>The next function visualizes the prediction.</p>
+<p>The next function extracts and visualizes a prediction from the trained model.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">plot_keras_output</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">x_validate</span><span class="p">,</span> <span class="n">y_validate</span><span class="p">):</span>
@@ -559,25 +628,19 @@ benchmark.</p>
 </div>
 </div>
 </div>
-<p>Here’s a function to run all the routines above.</p>
+<p>Let’s run the Keras training:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">keras_run_all</span><span class="p">():</span>
-    <span class="n">model</span> <span class="o">=</span> <span class="n">build_keras_model</span><span class="p">()</span>
-    <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">generate_data</span><span class="p">()</span>
-    <span class="n">x_validate</span><span class="p">,</span> <span class="n">y_validate</span> <span class="o">=</span> <span class="n">generate_data</span><span class="p">()</span>
-    <span class="n">model</span><span class="p">,</span> <span class="n">training_history</span> <span class="o">=</span> <span class="n">train_keras_model</span><span class="p">(</span>
-            <span class="n">model</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">x_validate</span><span class="p">,</span> <span class="n">y_validate</span>
-    <span class="p">)</span>
-    <span class="n">plot_keras_output</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">x_validate</span><span class="p">,</span> <span class="n">y_validate</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<p>Let’s put it to work:</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">keras_run_all</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">config</span> <span class="o">=</span> <span class="n">Config</span><span class="p">()</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">build_keras_model</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+<span class="n">key</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">PRNGKey</span><span class="p">(</span><span class="mi">1234</span><span class="p">)</span>
+<span class="n">key</span><span class="p">,</span> <span class="n">subkey1</span><span class="p">,</span> <span class="n">subkey2</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">generate_data</span><span class="p">(</span><span class="n">subkey1</span><span class="p">,</span> <span class="n">config</span><span class="p">)</span>
+<span class="n">x_validate</span><span class="p">,</span> <span class="n">y_validate</span> <span class="o">=</span> <span class="n">generate_data</span><span class="p">(</span><span class="n">subkey2</span><span class="p">,</span> <span class="n">config</span><span class="p">)</span>
+<span class="n">model</span><span class="p">,</span> <span class="n">training_history</span><span class="p">,</span> <span class="n">keras_runtime</span><span class="p">,</span> <span class="n">keras_mse</span> <span class="o">=</span> <span class="n">train_keras_model</span><span class="p">(</span>
+    <span class="n">model</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">x_validate</span><span class="p">,</span> <span class="n">y_validate</span><span class="p">,</span> <span class="n">config</span>
+<span class="p">)</span>
+<span class="n">plot_keras_output</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">x_validate</span><span class="p">,</span> <span class="n">y_validate</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -585,99 +648,104 @@ benchmark.</p>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Training NN using Keras.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>13/13 - 0s - 27ms/step - loss: 0.0416
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>13/13 - 0s - 34ms/step - loss: 0.0462
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Trained Keras model in 19.20 seconds with final MSE on validation data = 0.041571244597435
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Trained in 18.29 seconds, validation data MSE = 0.04615657776594162
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>13/13 - 0s - 16ms/step
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>13/13 - 0s - 23ms/step
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="_images/f848b5c9c9f6d879a4ff6e5cabc2e48586d982571a19a7a5272cbd34559a3a94.png"><img alt="_images/f848b5c9c9f6d879a4ff6e5cabc2e48586d982571a19a7a5272cbd34559a3a94.png" src="_images/f848b5c9c9f6d879a4ff6e5cabc2e48586d982571a19a7a5272cbd34559a3a94.png" style="width: 80%;" />
+<a class="reference internal image-reference" href="_images/79ef2c65036d80687ce950068c3e00a38b3432d9b17724a249068c799210134f.png"><img alt="_images/79ef2c65036d80687ce950068c3e00a38b3432d9b17724a249068c799210134f.png" src="_images/79ef2c65036d80687ce950068c3e00a38b3432d9b17724a249068c799210134f.png" style="width: 80%;" />
 </a>
 </div>
 </div>
-<p>We’ve seen this figure before and we note the relatively low final MSE.</p>
+<p>The fit is good and we note the relatively low final MSE.</p>
 </section>
 <section id="training-with-jax">
-<h2><span class="section-number">23.3. </span>Training with JAX<a class="headerlink" href="#training-with-jax" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">23.4. </span>Training with JAX<a class="headerlink" href="#training-with-jax" title="Link to this heading">#</a></h2>
 <p>For the JAX implementation, we need to construct the network ourselves, as a map
 from inputs to outputs.</p>
 <p>We’ll use the same network structure we used for the Keras implementation.</p>
 <section id="background-and-set-up">
-<h3><span class="section-number">23.3.1. </span>Background and set up<a class="headerlink" href="#background-and-set-up" title="Link to this heading">#</a></h3>
-<p>The neural network as the form</p>
+<h3><span class="section-number">23.4.1. </span>Background and set up<a class="headerlink" href="#background-and-set-up" title="Link to this heading">#</a></h3>
+<p>The neural network has the form</p>
 <div class="math notranslate nohighlight">
 \[
-    f(\theta, x) 
+f(\theta, x) 
     = (A_3 \circ \sigma \circ A_2 \circ \sigma \circ A_1 \circ \sigma \circ A_0)(x)
 \]</div>
 <p>Here</p>
 <ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(x\)</span> is a scalar input – a point on the horizontal axis in the Keras estimation above,</p></li>
-<li><p><span class="math notranslate nohighlight">\(\circ\)</span> means composition of maps,</p></li>
-<li><p><span class="math notranslate nohighlight">\(\sigma\)</span> is the activation function – in our case, <span class="math notranslate nohighlight">\(\tanh\)</span>, and</p></li>
-<li><p><span class="math notranslate nohighlight">\(A_i\)</span> represents the affine map <span class="math notranslate nohighlight">\(A_i x = W_i x + b_i\)</span>.</p></li>
+<li><p><span class="math notranslate nohighlight">\( x \)</span> is a scalar input – a point on the horizontal axis in the Keras estimation above,</p></li>
+<li><p><span class="math notranslate nohighlight">\( \circ \)</span> means composition of maps,</p></li>
+<li><p><span class="math notranslate nohighlight">\( \sigma \)</span> is the activation function – in our case, <span class="math notranslate nohighlight">\( \tanh \)</span>, and</p></li>
+<li><p><span class="math notranslate nohighlight">\( A_i \)</span> represents the affine map <span class="math notranslate nohighlight">\( A_i x = W_i x + b_i \)</span>.</p></li>
 </ul>
-<p>Each matrix <span class="math notranslate nohighlight">\(W_i\)</span> is called a <strong>weight matrix</strong> and each vector <span class="math notranslate nohighlight">\(b_i\)</span> is called <strong>bias</strong> term.</p>
-<p>The symbol <span class="math notranslate nohighlight">\(\theta\)</span> represents the entire collection of parameters:</p>
+<p>Each matrix <span class="math notranslate nohighlight">\( W_i \)</span> is called a <strong>weight matrix</strong> and each vector <span class="math notranslate nohighlight">\( b_i \)</span> is called a <strong>bias</strong> term.</p>
+<p>The symbol <span class="math notranslate nohighlight">\( \theta \)</span> represents the entire collection of parameters:</p>
 <div class="math notranslate nohighlight">
 \[
-    \theta = (W_0, b_0, W_1, b_1, W_2, b_2, W_3, b_3)
+\theta = (W_0, b_0, W_1, b_1, W_2, b_2, W_3, b_3)
 \]</div>
-<p>In fact, when we implement the affine map <span class="math notranslate nohighlight">\(A_i x = W_i x + b_i\)</span>, we will work
+<p>In fact, when we implement the affine map <span class="math notranslate nohighlight">\( A_i x = W_i x + b_i \)</span>, we will work
 with row vectors rather than column vectors, so that</p>
 <ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(x\)</span> and <span class="math notranslate nohighlight">\(b_i\)</span> are stored as row vectors, and</p></li>
+<li><p><span class="math notranslate nohighlight">\( x \)</span> and <span class="math notranslate nohighlight">\( b_i \)</span> are stored as row vectors, and</p></li>
 <li><p>the mapping is executed by JAX via the expression <code class="docutils literal notranslate"><span class="pre">x</span> <span class="pre">&#64;</span> <span class="pre">W</span> <span class="pre">+</span> <span class="pre">b</span></code>.</p></li>
 </ul>
-<p>We work with row vectors because Python numerical operations are row-major rather than column-major, so that row-based operations tend to be more efficient.</p>
 <p>Here’s a function to initialize parameters.</p>
 <p>The parameter “vector” <code class="docutils literal notranslate"><span class="pre">θ</span></code>  will be stored as a list of dicts.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">initialize_params</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="mi">1234</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">initialize_params</span><span class="p">(</span>
+        <span class="n">key</span><span class="p">:</span> <span class="n">jax</span><span class="o">.</span><span class="n">Array</span><span class="p">,</span>     <span class="c1"># JAX random key</span>
+        <span class="n">config</span><span class="p">:</span> <span class="n">Config</span>      <span class="c1"># contains configuration data</span>
+    <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Generate an initial parameterization for a feed forward neural network with</span>
-<span class="sd">    number of layers = NUM_LAYERS.  Each of the hidden layers have OUTPUT_DIM</span>
-<span class="sd">    units.</span>
+<span class="sd">    Generate an initial parameterization for a feed forward neural network.</span>
+<span class="sd">    Pure functional version using JAX random keys.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">k</span> <span class="o">=</span> <span class="n">OUTPUT_DIM</span>
+    <span class="n">k</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">output_dim</span>
     <span class="n">shapes</span> <span class="o">=</span> <span class="p">(</span>
         <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">k</span><span class="p">),</span>  <span class="c1"># W_0.shape</span>
         <span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">k</span><span class="p">),</span>  <span class="c1"># W_1.shape</span>
         <span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">k</span><span class="p">),</span>  <span class="c1"># W_2.shape</span>
         <span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>   <span class="c1"># W_3.shape</span>
-    <span class="p">)</span>   
-    <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
-    <span class="c1"># A function to generate weight matrices</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">w_init</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">))</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span> <span class="o">/</span> <span class="n">m</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="c1"># A function to generate weight matrices using JAX random</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">w_init</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">jax</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">))</span> <span class="o">*</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span> <span class="o">/</span> <span class="n">m</span><span class="p">)</span>
     <span class="c1"># Build list of dicts, each containing a (weight, bias) pair</span>
     <span class="n">θ</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">w_shape</span> <span class="ow">in</span> <span class="n">shapes</span><span class="p">:</span>
         <span class="n">m</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="n">w_shape</span>
-        <span class="n">θ</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="n">W</span><span class="o">=</span><span class="n">w_init</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">),</span> <span class="n">b</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="p">)))</span> <span class="p">)</span>
+        <span class="n">key</span><span class="p">,</span> <span class="n">subkey</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+        <span class="n">layer_params</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">W</span><span class="o">=</span><span class="n">w_init</span><span class="p">(</span><span class="n">subkey</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">),</span> <span class="n">b</span><span class="o">=</span><span class="n">jnp</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="p">)))</span>
+        <span class="n">θ</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">layer_params</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">θ</span>
 </pre></div>
 </div>
 </div>
 </div>
 <p>Wait, you say!</p>
-<p>Shouldn’t we concatenate the elements of <span class="math notranslate nohighlight">\(\theta\)</span> into some kind of big array, so that we can do autodiff with respect to this array?</p>
-<p>Actually we don’t need to, as will become clear below.</p>
+<p>Shouldn’t we concatenate the elements of <span class="math notranslate nohighlight">\( \theta \)</span> into some kind of big array, so that we can do autodiff with respect to this array?</p>
+<p>Actually we don’t need to — we use the JAX PyTree approach discussed below.</p>
 </section>
 <section id="coding-the-network">
-<h3><span class="section-number">23.3.2. </span>Coding the network<a class="headerlink" href="#coding-the-network" title="Link to this heading">#</a></h3>
-<p>Here’s our implementation of <span class="math notranslate nohighlight">\(f\)</span>:</p>
+<h3><span class="section-number">23.4.2. </span>Coding the network<a class="headerlink" href="#coding-the-network" title="Link to this heading">#</a></h3>
+<p>Here’s our implementation of the ANN <span class="math notranslate nohighlight">\(f\)</span>:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jax</span><span class="o">.</span><span class="n">jit</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">f</span><span class="p">(</span><span class="n">θ</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">σ</span><span class="o">=</span><span class="n">jnp</span><span class="o">.</span><span class="n">tanh</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">f</span><span class="p">(</span>
+        <span class="n">θ</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span>                        <span class="c1"># Network parameters (pytree)</span>
+        <span class="n">x</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>                 <span class="c1"># Input data (row vector)</span>
+        <span class="n">σ</span><span class="p">:</span> <span class="nb">callable</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">tanh</span>          <span class="c1"># Activation function</span>
+    <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Perform a forward pass over the network to evaluate f(θ, x).</span>
-<span class="sd">    The state x is stored and iterated on as a row vector.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="o">*</span><span class="n">hidden</span><span class="p">,</span> <span class="n">last</span> <span class="o">=</span> <span class="n">θ</span>
     <span class="k">for</span> <span class="n">layer</span> <span class="ow">in</span> <span class="n">hidden</span><span class="p">:</span>
@@ -690,15 +758,18 @@ with row vectors rather than column vectors, so that</p>
 </div>
 </div>
 </div>
-<p>The function <span class="math notranslate nohighlight">\(f\)</span> is appropriately vectorized, so that we can pass in the entire
+<p>The function <span class="math notranslate nohighlight">\( f \)</span> is appropriately vectorized, so that we can pass in the entire
 set of input observations as <code class="docutils literal notranslate"><span class="pre">x</span></code> and return the predicted vector of outputs <code class="docutils literal notranslate"><span class="pre">y_hat</span> <span class="pre">=</span> <span class="pre">f(θ,</span> <span class="pre">x)</span></code>
 corresponding  to each data point.</p>
 <p>The loss function is mean squared error, the same as the Keras case.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jax</span><span class="o">.</span><span class="n">jit</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">loss_fn</span><span class="p">(</span><span class="n">θ</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
-    <span class="s2">&quot;Loss is mean squared error.&quot;</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">loss_fn</span><span class="p">(</span>
+        <span class="n">θ</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span>            <span class="c1"># Network parameters (pytree)</span>
+        <span class="n">x</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>     <span class="c1"># Input data</span>
+        <span class="n">y</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span>      <span class="c1"># Target data</span>
+    <span class="p">):</span>
     <span class="k">return</span> <span class="n">jnp</span><span class="o">.</span><span class="n">mean</span><span class="p">((</span><span class="n">f</span><span class="p">(</span><span class="n">θ</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span> <span class="o">-</span> <span class="n">y</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -708,7 +779,6 @@ corresponding  to each data point.</p>
 <p>(Technically, we will be doing gradient descent, rather than stochastic
 gradient descent, since will not randomize over sample points when we
 evaluate the gradient.)</p>
-<p>The gradient below is with respect to the first argument <code class="docutils literal notranslate"><span class="pre">θ</span></code>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">loss_gradient</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">jit</span><span class="p">(</span><span class="n">jax</span><span class="o">.</span><span class="n">grad</span><span class="p">(</span><span class="n">loss_fn</span><span class="p">))</span>
@@ -716,91 +786,127 @@ evaluate the gradient.)</p>
 </div>
 </div>
 </div>
-<p>The line above seems kind of magical, since we are differentiating with respect
+<p>The gradient of <code class="docutils literal notranslate"><span class="pre">loss_fn</span></code> is with respect to the first argument <code class="docutils literal notranslate"><span class="pre">θ</span></code>.</p>
+<p>The code above seems kind of magical, since we are differentiating with respect
 to a parameter “vector” stored as a list of dictionaries containing arrays.</p>
 <p>How can we differentiate with respect to such a complex object?</p>
 <p>The answer is that the list of dictionaries is treated internally as a
 <a class="reference external" href="https://docs.jax.dev/en/latest/pytrees.html">pytree</a>.</p>
 <p>The JAX function <code class="docutils literal notranslate"><span class="pre">grad</span></code> understands how to</p>
 <ol class="arabic simple">
-<li><p>extract the individual arrays (the ``leaves’’ of the tree),</p></li>
+<li><p>extract the individual arrays (the “leaves” of the tree),</p></li>
 <li><p>compute derivatives with respect to each one, and</p></li>
 <li><p>pack the resulting derivatives into a pytree with the same structure as the parameter vector.</p></li>
 </ol>
 </section>
 <section id="gradient-descent">
-<h3><span class="section-number">23.3.3. </span>Gradient descent<a class="headerlink" href="#gradient-descent" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">23.4.3. </span>Gradient descent<a class="headerlink" href="#gradient-descent" title="Link to this heading">#</a></h3>
 <p>Using the above code, we can now write our rule for updating the parameters via gradient descent, which is the
-algorithm we covered in our <a class="reference internal" href="autodiff.html"><span class="doc std std-doc">lecture on autodiff</span></a>.</p>
-<p>In this case, however, to keep things as simple as possible, we’ll use a fixed learning rate for every iteration.</p>
+algorithm we covered in our <a class="reference external" href="https://jax.quantecon.org/autodiff.html">lecture on autodiff</a>.</p>
+<p>In this case, to keep things as simple as possible, we’ll use a fixed learning rate for every iteration.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jax</span><span class="o">.</span><span class="n">jit</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">update_parameters</span><span class="p">(</span><span class="n">θ</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
-    <span class="n">λ</span> <span class="o">=</span> <span class="n">LEARNING_RATE</span> 
+<span class="k">def</span><span class="w"> </span><span class="nf">update_parameters</span><span class="p">(</span>
+        <span class="n">θ</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span>            <span class="c1"># Current parameters (pytree)</span>
+        <span class="n">x</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>     <span class="c1"># Input data</span>
+        <span class="n">y</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>     <span class="c1"># Target data</span>
+        <span class="n">config</span><span class="p">:</span> <span class="n">Config</span>      <span class="c1"># contains configuration data</span>
+    <span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Update the parameter pytree using gradient descent.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">λ</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">learning_rate</span>
+    <span class="c1"># Specify the update rule</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">gradient_descent_step</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">g</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A rule for updating parameter vector p given gradient vector g.</span>
+<span class="sd">        It will be applied to each leaf of the pytree of parameters.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">p</span> <span class="o">-</span> <span class="n">λ</span> <span class="o">*</span> <span class="n">g</span>
     <span class="n">gradient</span> <span class="o">=</span> <span class="n">loss_gradient</span><span class="p">(</span><span class="n">θ</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
-    <span class="n">θ</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">tree</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">p</span><span class="p">,</span> <span class="n">g</span><span class="p">:</span> <span class="n">p</span> <span class="o">-</span> <span class="n">λ</span> <span class="o">*</span> <span class="n">g</span><span class="p">,</span> <span class="n">θ</span><span class="p">,</span> <span class="n">gradient</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">θ</span>
+    <span class="c1"># Use tree.map to apply the update rule to the parameter vectors</span>
+    <span class="n">θ_new</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">tree</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">gradient_descent_step</span><span class="p">,</span> <span class="n">θ</span><span class="p">,</span> <span class="n">gradient</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">θ_new</span>
 </pre></div>
 </div>
 </div>
 </div>
-<p>We are implementing the gradient descent update</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">new_params</span> <span class="o">=</span> <span class="n">current_params</span> <span class="o">-</span> <span class="n">learning_rate</span> <span class="o">*</span> <span class="n">gradient_of_loss_function</span>
-</pre></div>
-</div>
-<p>This is nontrivial for a complex structure such as a neural network, so how is
-it done?</p>
-<p>The key line in the function above is <code class="docutils literal notranslate"><span class="pre">Θ</span> <span class="pre">=</span> <span class="pre">jax.tree.map(lambda</span> <span class="pre">p,</span> <span class="pre">g:</span> <span class="pre">p</span> <span class="pre">-</span> <span class="pre">λ</span> <span class="pre">*</span> <span class="pre">g,</span> <span class="pre">θ,</span> <span class="pre">gradient)</span></code>.</p>
-<p>The <code class="docutils literal notranslate"><span class="pre">jax.tree.map</span></code> function understands <code class="docutils literal notranslate"><span class="pre">θ</span></code> and <code class="docutils literal notranslate"><span class="pre">gradient</span></code> as pytrees of the
+<p>Here <code class="docutils literal notranslate"><span class="pre">jax.tree.map</span></code> understands <code class="docutils literal notranslate"><span class="pre">θ</span></code> and <code class="docutils literal notranslate"><span class="pre">gradient</span></code> as pytrees of the
 same structure and executes <code class="docutils literal notranslate"><span class="pre">p</span> <span class="pre">-</span> <span class="pre">λ</span> <span class="pre">*</span> <span class="pre">g</span></code> on the corresponding leaves of the pair
 of trees.</p>
-<p>This means that each weight matrix and bias vector is updated by gradient
+<p>Each weight matrix and bias vector is updated by gradient
 descent, exactly as required.</p>
 <p>Here’s code that puts this all together.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">train_jax_model</span><span class="p">(</span><span class="n">θ</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">x_validate</span><span class="p">,</span> <span class="n">y_validate</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">train_jax_model</span><span class="p">(</span>
+        <span class="n">θ</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span>                    <span class="c1"># Initial parameters (pytree)</span>
+        <span class="n">x</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>             <span class="c1"># Training input data</span>
+        <span class="n">y</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>             <span class="c1"># Training target data</span>
+        <span class="n">x_validate</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>    <span class="c1"># Validation input data</span>
+        <span class="n">y_validate</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>    <span class="c1"># Validation target data</span>
+        <span class="n">config</span><span class="p">:</span> <span class="n">Config</span>              <span class="c1"># contains configuration data</span>
+    <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Train model using gradient descent via JAX autodiff.</span>
+<span class="sd">    Train model using gradient descent.</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">training_loss</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">EPOCHS</span><span class="p">)</span>
-    <span class="n">validation_loss</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">EPOCHS</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">EPOCHS</span><span class="p">):</span>
-        <span class="n">training_loss</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">loss_fn</span><span class="p">(</span><span class="n">θ</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
-        <span class="n">validation_loss</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">loss_fn</span><span class="p">(</span><span class="n">θ</span><span class="p">,</span> <span class="n">x_validate</span><span class="p">,</span> <span class="n">y_validate</span><span class="p">)</span>
-        <span class="n">θ</span> <span class="o">=</span> <span class="n">update_parameters</span><span class="p">(</span><span class="n">θ</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">θ</span><span class="p">,</span> <span class="n">training_loss</span><span class="p">,</span> <span class="n">validation_loss</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">update</span><span class="p">(</span><span class="n">θ</span><span class="p">,</span> <span class="n">_</span><span class="p">):</span>
+        <span class="c1"># Record losses</span>
+        <span class="n">train_loss</span> <span class="o">=</span> <span class="n">loss_fn</span><span class="p">(</span><span class="n">θ</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+        <span class="n">val_loss</span> <span class="o">=</span> <span class="n">loss_fn</span><span class="p">(</span><span class="n">θ</span><span class="p">,</span> <span class="n">x_validate</span><span class="p">,</span> <span class="n">y_validate</span><span class="p">)</span>
+        <span class="c1"># Update parameters</span>
+        <span class="n">θ_new</span> <span class="o">=</span> <span class="n">update_parameters</span><span class="p">(</span><span class="n">θ</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">config</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">θ_new</span><span class="p">,</span> <span class="p">(</span><span class="n">train_loss</span><span class="p">,</span> <span class="n">val_loss</span><span class="p">)</span>
+
+    <span class="c1"># Initialize with empty arrays</span>
+    <span class="n">θ_final</span><span class="p">,</span> <span class="p">(</span><span class="n">training_losses</span><span class="p">,</span> <span class="n">validation_losses</span><span class="p">)</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">lax</span><span class="o">.</span><span class="n">scan</span><span class="p">(</span>
+        <span class="n">update</span><span class="p">,</span> <span class="n">θ</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">epochs</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">θ_final</span><span class="p">,</span> <span class="n">training_losses</span><span class="p">,</span> <span class="n">validation_losses</span>
 </pre></div>
 </div>
 </div>
 </div>
 </section>
 <section id="execution">
-<h3><span class="section-number">23.3.4. </span>Execution<a class="headerlink" href="#execution" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">23.4.4. </span>Execution<a class="headerlink" href="#execution" title="Link to this heading">#</a></h3>
 <p>Let’s run our code and see how it goes.</p>
+<p>We’ll reuse the data we generated for the Keras experiment.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">θ</span> <span class="o">=</span> <span class="n">initialize_params</span><span class="p">()</span>
-<span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">generate_data</span><span class="p">()</span>
-<span class="n">x_validate</span><span class="p">,</span> <span class="n">y_validate</span> <span class="o">=</span> <span class="n">generate_data</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">config</span> <span class="o">=</span> <span class="n">Config</span><span class="p">()</span>
+<span class="n">param_key</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">PRNGKey</span><span class="p">(</span><span class="mi">1234</span><span class="p">)</span>
+<span class="n">θ</span> <span class="o">=</span> <span class="n">initialize_params</span><span class="p">(</span><span class="n">param_key</span><span class="p">,</span> <span class="n">config</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%time</span> 
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Warmup run to trigger JIT compilation</span>
+<span class="n">θ_warmup</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">train_jax_model</span><span class="p">(</span><span class="n">θ</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">x_validate</span><span class="p">,</span> <span class="n">y_validate</span><span class="p">,</span> <span class="n">config</span><span class="p">)</span>
 
+<span class="c1"># Reset and time the actual run</span>
+<span class="n">θ</span> <span class="o">=</span> <span class="n">initialize_params</span><span class="p">(</span><span class="n">param_key</span><span class="p">,</span> <span class="n">config</span><span class="p">)</span>
+<span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
 <span class="n">θ</span><span class="p">,</span> <span class="n">training_loss</span><span class="p">,</span> <span class="n">validation_loss</span> <span class="o">=</span> <span class="n">train_jax_model</span><span class="p">(</span>
-    <span class="n">θ</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">x_validate</span><span class="p">,</span> <span class="n">y_validate</span>
+    <span class="n">θ</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">x_validate</span><span class="p">,</span> <span class="n">y_validate</span><span class="p">,</span> <span class="n">config</span>
 <span class="p">)</span>
+<span class="n">θ</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;W&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">block_until_ready</span><span class="p">()</span>  <span class="c1"># Ensure computation completes</span>
+<span class="n">jax_runtime</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span>
+
+<span class="n">jax_mse</span> <span class="o">=</span> <span class="n">loss_fn</span><span class="p">(</span><span class="n">θ</span><span class="p">,</span> <span class="n">x_validate</span><span class="p">,</span> <span class="n">y_validate</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Trained model with JAX in </span><span class="si">{</span><span class="n">jax_runtime</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> seconds.&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Final MSE on validation data = </span><span class="si">{</span><span class="n">jax_mse</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 5.49 s, sys: 1.56 s, total: 7.05 s
-Wall time: 3.66 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Trained model with JAX in 0.78 seconds.
+Final MSE on validation data = 0.043001
 </pre></div>
 </div>
 </div>
@@ -809,14 +915,14 @@ Wall time: 3.66 s
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">EPOCHS</span><span class="p">),</span> <span class="n">validation_loss</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;validation loss&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">validation_loss</span><span class="p">)),</span> <span class="n">validation_loss</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;validation loss&#39;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/e1b848512db7f117cbd38618992f8eba891e430d576cd71d39766958ae0a1531.png"><img alt="_images/e1b848512db7f117cbd38618992f8eba891e430d576cd71d39766958ae0a1531.png" src="_images/e1b848512db7f117cbd38618992f8eba891e430d576cd71d39766958ae0a1531.png" style="width: 80%;" />
+<a class="reference internal image-reference" href="_images/77c3c8a9366fe87d6e693c7980891538d2c116b1184148f50161a5552bb821e3.png"><img alt="_images/77c3c8a9366fe87d6e693c7980891538d2c116b1184148f50161a5552bb821e3.png" src="_images/77c3c8a9366fe87d6e693c7980891538d2c116b1184148f50161a5552bb821e3.png" style="width: 80%;" />
 </a>
 </div>
 </div>
@@ -831,7 +937,7 @@ Wall time: 3.66 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Final MSE on test data set = 0.0528988242149353.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Final MSE on test data set = 0.043000753968954086.
 </pre></div>
 </div>
 </div>
@@ -852,30 +958,45 @@ simple our implementation is.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/9e4e821b9f0ed014eadef037069c25136356171a35b5ab3fe0e0315b24508d90.png"><img alt="_images/9e4e821b9f0ed014eadef037069c25136356171a35b5ab3fe0e0315b24508d90.png" src="_images/9e4e821b9f0ed014eadef037069c25136356171a35b5ab3fe0e0315b24508d90.png" style="width: 80%;" />
+<a class="reference internal image-reference" href="_images/51226f61140e8d457cc78cbcaa7e4d792423e6cf798c3918163857ca43168a33.png"><img alt="_images/51226f61140e8d457cc78cbcaa7e4d792423e6cf798c3918163857ca43168a33.png" src="_images/51226f61140e8d457cc78cbcaa7e4d792423e6cf798c3918163857ca43168a33.png" style="width: 80%;" />
 </a>
 </div>
 </div>
 </section>
 </section>
 <section id="jax-plus-optax">
-<h2><span class="section-number">23.4. </span>JAX plus Optax<a class="headerlink" href="#jax-plus-optax" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">23.5. </span>JAX plus Optax<a class="headerlink" href="#jax-plus-optax" title="Link to this heading">#</a></h2>
 <p>Our hand-coded optimization routine above was quite effective, but in practice
 we might wish to use an optimization library written for JAX.</p>
 <p>One such library is <a class="reference external" href="https://optax.readthedocs.io/en/latest/">Optax</a>.</p>
 <section id="optax-with-sgd">
-<h3><span class="section-number">23.4.1. </span>Optax with SGD<a class="headerlink" href="#optax-with-sgd" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">23.5.1. </span>Optax with SGD<a class="headerlink" href="#optax-with-sgd" title="Link to this heading">#</a></h3>
 <p>Here’s a training routine using Optax’s stochastic gradient descent solver.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">train_jax_optax</span><span class="p">(</span><span class="n">θ</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
-    <span class="n">solver</span> <span class="o">=</span> <span class="n">optax</span><span class="o">.</span><span class="n">sgd</span><span class="p">(</span><span class="n">learning_rate</span><span class="o">=</span><span class="n">LEARNING_RATE</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">train_jax_optax</span><span class="p">(</span>
+        <span class="n">θ</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span>                    <span class="c1"># Initial parameters (pytree)</span>
+        <span class="n">x</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>             <span class="c1"># Training input data</span>
+        <span class="n">y</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>             <span class="c1"># Training target data</span>
+        <span class="n">epochs</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">4000</span><span class="p">,</span>         <span class="c1"># Number of training epochs</span>
+        <span class="n">learning_rate</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.001</span>  <span class="c1"># Learning rate for optimizer</span>
+    <span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Train model using Optax SGD optimizer.</span>
+<span class="sd">    Pure functional version using jax.lax.scan.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">solver</span> <span class="o">=</span> <span class="n">optax</span><span class="o">.</span><span class="n">sgd</span><span class="p">(</span><span class="n">learning_rate</span><span class="p">)</span>
     <span class="n">opt_state</span> <span class="o">=</span> <span class="n">solver</span><span class="o">.</span><span class="n">init</span><span class="p">(</span><span class="n">θ</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">EPOCHS</span><span class="p">):</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">train_step</span><span class="p">(</span><span class="n">carry</span><span class="p">,</span> <span class="n">_</span><span class="p">):</span>
+        <span class="n">θ</span><span class="p">,</span> <span class="n">opt_state</span> <span class="o">=</span> <span class="n">carry</span>
         <span class="n">grad</span> <span class="o">=</span> <span class="n">loss_gradient</span><span class="p">(</span><span class="n">θ</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
-        <span class="n">updates</span><span class="p">,</span> <span class="n">opt_state</span> <span class="o">=</span> <span class="n">solver</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">grad</span><span class="p">,</span> <span class="n">opt_state</span><span class="p">,</span> <span class="n">θ</span><span class="p">)</span>
-        <span class="n">θ</span> <span class="o">=</span> <span class="n">optax</span><span class="o">.</span><span class="n">apply_updates</span><span class="p">(</span><span class="n">θ</span><span class="p">,</span> <span class="n">updates</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">θ</span>
+        <span class="n">updates</span><span class="p">,</span> <span class="n">opt_state_new</span> <span class="o">=</span> <span class="n">solver</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">grad</span><span class="p">,</span> <span class="n">opt_state</span><span class="p">,</span> <span class="n">θ</span><span class="p">)</span>
+        <span class="n">θ_new</span> <span class="o">=</span> <span class="n">optax</span><span class="o">.</span><span class="n">apply_updates</span><span class="p">(</span><span class="n">θ</span><span class="p">,</span> <span class="n">updates</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">θ_new</span><span class="p">,</span> <span class="n">opt_state_new</span><span class="p">),</span> <span class="kc">None</span>
+
+    <span class="p">(</span><span class="n">θ_final</span><span class="p">,</span> <span class="n">_</span><span class="p">),</span> <span class="n">_</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">lax</span><span class="o">.</span><span class="n">scan</span><span class="p">(</span><span class="n">train_step</span><span class="p">,</span> <span class="p">(</span><span class="n">θ</span><span class="p">,</span> <span class="n">opt_state</span><span class="p">),</span> <span class="kc">None</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="n">epochs</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">θ_final</span>
 </pre></div>
 </div>
 </div>
@@ -884,33 +1005,27 @@ we might wish to use an optimization library written for JAX.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Reset parameter vector</span>
-<span class="n">θ</span> <span class="o">=</span> <span class="n">initialize_params</span><span class="p">()</span>
-<span class="c1"># Train network</span>
-<span class="o">%</span><span class="k">time</span> θ = train_jax_optax(θ, x, y)
+<span class="n">θ</span> <span class="o">=</span> <span class="n">initialize_params</span><span class="p">(</span><span class="n">param_key</span><span class="p">,</span> <span class="n">config</span><span class="p">)</span>
+
+<span class="c1"># Warmup run to trigger JIT compilation</span>
+<span class="n">θ_warmup</span> <span class="o">=</span> <span class="n">train_jax_optax</span><span class="p">(</span><span class="n">θ</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+
+<span class="c1"># Reset and time the actual run</span>
+<span class="n">θ</span> <span class="o">=</span> <span class="n">initialize_params</span><span class="p">(</span><span class="n">param_key</span><span class="p">,</span> <span class="n">config</span><span class="p">)</span>
+<span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
+<span class="n">θ</span> <span class="o">=</span> <span class="n">train_jax_optax</span><span class="p">(</span><span class="n">θ</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="n">θ</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;W&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">block_until_ready</span><span class="p">()</span>  <span class="c1"># Ensure computation completes</span>
+<span class="n">optax_sgd_runtime</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span>
+
+<span class="n">optax_sgd_mse</span> <span class="o">=</span> <span class="n">loss_fn</span><span class="p">(</span><span class="n">θ</span><span class="p">,</span> <span class="n">x_validate</span><span class="p">,</span> <span class="n">y_validate</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Trained model with JAX and Optax SGD in </span><span class="si">{</span><span class="n">optax_sgd_runtime</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> seconds.&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Final MSE on validation data = </span><span class="si">{</span><span class="n">optax_sgd_mse</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 11.7 s, sys: 3.37 s, total: 15 s
-Wall time: 8.46 s
-</pre></div>
-</div>
-</div>
-</div>
-<p>The resulting MSE is the same as our hand-coded routine.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">Completed training JAX model using Optax with SGD.</span>
-<span class="s2">Final MSE on test data set = </span><span class="si">{</span><span class="n">loss_fn</span><span class="p">(</span><span class="n">θ</span><span class="p">,</span><span class="w"> </span><span class="n">x_validate</span><span class="p">,</span><span class="w"> </span><span class="n">y_validate</span><span class="p">)</span><span class="si">}</span><span class="s2">.</span>
-<span class="s2">&quot;&quot;&quot;</span>
-<span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Completed training JAX model using Optax with SGD.
-Final MSE on test data set = 0.0528988242149353.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Trained model with JAX and Optax SGD in 0.59 seconds.
+Final MSE on validation data = 0.043001
 </pre></div>
 </div>
 </div>
@@ -928,26 +1043,42 @@ Final MSE on test data set = 0.0528988242149353.
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/9e4e821b9f0ed014eadef037069c25136356171a35b5ab3fe0e0315b24508d90.png"><img alt="_images/9e4e821b9f0ed014eadef037069c25136356171a35b5ab3fe0e0315b24508d90.png" src="_images/9e4e821b9f0ed014eadef037069c25136356171a35b5ab3fe0e0315b24508d90.png" style="width: 80%;" />
+<a class="reference internal image-reference" href="_images/51226f61140e8d457cc78cbcaa7e4d792423e6cf798c3918163857ca43168a33.png"><img alt="_images/51226f61140e8d457cc78cbcaa7e4d792423e6cf798c3918163857ca43168a33.png" src="_images/51226f61140e8d457cc78cbcaa7e4d792423e6cf798c3918163857ca43168a33.png" style="width: 80%;" />
 </a>
 </div>
 </div>
 </section>
 <section id="optax-with-adam">
-<h3><span class="section-number">23.4.2. </span>Optax with ADAM<a class="headerlink" href="#optax-with-adam" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">23.5.2. </span>Optax with ADAM<a class="headerlink" href="#optax-with-adam" title="Link to this heading">#</a></h3>
 <p>We can also consider using a slightly more sophisticated gradient-based method,
 such as <a class="reference external" href="https://arxiv.org/pdf/1412.6980">ADAM</a>.</p>
-<p>You will notice that the syntax for using this alternative optimizer is very similar.</p>
+<p>You will notice that the syntax for using this alternative optimizer is very
+similar.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">train_jax_optax</span><span class="p">(</span><span class="n">θ</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
-    <span class="n">solver</span> <span class="o">=</span> <span class="n">optax</span><span class="o">.</span><span class="n">adam</span><span class="p">(</span><span class="n">learning_rate</span><span class="o">=</span><span class="n">LEARNING_RATE</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">train_jax_optax_adam</span><span class="p">(</span>
+        <span class="n">θ</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span>                    <span class="c1"># Initial parameters (pytree)</span>
+        <span class="n">x</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>             <span class="c1"># Training input data</span>
+        <span class="n">y</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>             <span class="c1"># Training target data</span>
+        <span class="n">epochs</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">4000</span><span class="p">,</span>         <span class="c1"># Number of training epochs</span>
+        <span class="n">learning_rate</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.001</span>  <span class="c1"># Learning rate for optimizer</span>
+    <span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Train model using Optax ADAM optimizer.</span>
+<span class="sd">    Pure functional version using jax.lax.scan.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">solver</span> <span class="o">=</span> <span class="n">optax</span><span class="o">.</span><span class="n">adam</span><span class="p">(</span><span class="n">learning_rate</span><span class="p">)</span>
     <span class="n">opt_state</span> <span class="o">=</span> <span class="n">solver</span><span class="o">.</span><span class="n">init</span><span class="p">(</span><span class="n">θ</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">EPOCHS</span><span class="p">):</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">train_step</span><span class="p">(</span><span class="n">carry</span><span class="p">,</span> <span class="n">_</span><span class="p">):</span>
+        <span class="n">θ</span><span class="p">,</span> <span class="n">opt_state</span> <span class="o">=</span> <span class="n">carry</span>
         <span class="n">grad</span> <span class="o">=</span> <span class="n">loss_gradient</span><span class="p">(</span><span class="n">θ</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
-        <span class="n">updates</span><span class="p">,</span> <span class="n">opt_state</span> <span class="o">=</span> <span class="n">solver</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">grad</span><span class="p">,</span> <span class="n">opt_state</span><span class="p">,</span> <span class="n">θ</span><span class="p">)</span>
-        <span class="n">θ</span> <span class="o">=</span> <span class="n">optax</span><span class="o">.</span><span class="n">apply_updates</span><span class="p">(</span><span class="n">θ</span><span class="p">,</span> <span class="n">updates</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">θ</span>
+        <span class="n">updates</span><span class="p">,</span> <span class="n">opt_state_new</span> <span class="o">=</span> <span class="n">solver</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">grad</span><span class="p">,</span> <span class="n">opt_state</span><span class="p">,</span> <span class="n">θ</span><span class="p">)</span>
+        <span class="n">θ_new</span> <span class="o">=</span> <span class="n">optax</span><span class="o">.</span><span class="n">apply_updates</span><span class="p">(</span><span class="n">θ</span><span class="p">,</span> <span class="n">updates</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">θ_new</span><span class="p">,</span> <span class="n">opt_state_new</span><span class="p">),</span> <span class="kc">None</span>
+
+    <span class="p">(</span><span class="n">θ_final</span><span class="p">,</span> <span class="n">_</span><span class="p">),</span> <span class="n">_</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">lax</span><span class="o">.</span><span class="n">scan</span><span class="p">(</span><span class="n">train_step</span><span class="p">,</span> <span class="p">(</span><span class="n">θ</span><span class="p">,</span> <span class="n">opt_state</span><span class="p">),</span> <span class="kc">None</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="n">epochs</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">θ_final</span>
 </pre></div>
 </div>
 </div>
@@ -955,33 +1086,27 @@ such as <a class="reference external" href="https://arxiv.org/pdf/1412.6980">ADA
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Reset parameter vector</span>
-<span class="n">θ</span> <span class="o">=</span> <span class="n">initialize_params</span><span class="p">()</span>
-<span class="c1"># Train network</span>
-<span class="o">%</span><span class="k">time</span> θ = train_jax_optax(θ, x, y)
+<span class="n">θ</span> <span class="o">=</span> <span class="n">initialize_params</span><span class="p">(</span><span class="n">param_key</span><span class="p">,</span> <span class="n">config</span><span class="p">)</span>
+
+<span class="c1"># Warmup run to trigger JIT compilation</span>
+<span class="n">θ_warmup</span> <span class="o">=</span> <span class="n">train_jax_optax_adam</span><span class="p">(</span><span class="n">θ</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+
+<span class="c1"># Reset and time the actual run</span>
+<span class="n">θ</span> <span class="o">=</span> <span class="n">initialize_params</span><span class="p">(</span><span class="n">param_key</span><span class="p">,</span> <span class="n">config</span><span class="p">)</span>
+<span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
+<span class="n">θ</span> <span class="o">=</span> <span class="n">train_jax_optax_adam</span><span class="p">(</span><span class="n">θ</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="n">θ</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;W&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">block_until_ready</span><span class="p">()</span>  <span class="c1"># Ensure computation completes</span>
+<span class="n">optax_adam_runtime</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span>
+
+<span class="n">optax_adam_mse</span> <span class="o">=</span> <span class="n">loss_fn</span><span class="p">(</span><span class="n">θ</span><span class="p">,</span> <span class="n">x_validate</span><span class="p">,</span> <span class="n">y_validate</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Trained model with JAX and Optax ADAM in </span><span class="si">{</span><span class="n">optax_adam_runtime</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> seconds.&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Final MSE on validation data = </span><span class="si">{</span><span class="n">optax_adam_mse</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 1min 9s, sys: 23.3 s, total: 1min 33s
-Wall time: 48.1 s
-</pre></div>
-</div>
-</div>
-</div>
-<p>Here’s the MSE.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">Completed training JAX model using Optax with ADAM.</span>
-<span class="s2">Final MSE on test data set = </span><span class="si">{</span><span class="n">loss_fn</span><span class="p">(</span><span class="n">θ</span><span class="p">,</span><span class="w"> </span><span class="n">x_validate</span><span class="p">,</span><span class="w"> </span><span class="n">y_validate</span><span class="p">)</span><span class="si">}</span><span class="s2">.</span>
-<span class="s2">&quot;&quot;&quot;</span>
-<span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Completed training JAX model using Optax with ADAM.
-Final MSE on test data set = 0.037389274686574936.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Trained model with JAX and Optax ADAM in 0.72 seconds.
+Final MSE on validation data = 0.041074
 </pre></div>
 </div>
 </div>
@@ -991,7 +1116,7 @@ Final MSE on test data set = 0.037389274686574936.
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span> <span class="n">f</span><span class="p">(</span><span class="n">θ</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span> 
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span> <span class="n">f</span><span class="p">(</span><span class="n">θ</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span>
         <span class="n">label</span><span class="o">=</span><span class="s2">&quot;fitted model&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">)</span>
@@ -1000,11 +1125,100 @@ Final MSE on test data set = 0.037389274686574936.
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/ed28f3ea8886cbbf19a45bf94dea22302683abd5f4b734a26060e12ff0401016.png"><img alt="_images/ed28f3ea8886cbbf19a45bf94dea22302683abd5f4b734a26060e12ff0401016.png" src="_images/ed28f3ea8886cbbf19a45bf94dea22302683abd5f4b734a26060e12ff0401016.png" style="width: 80%;" />
+<a class="reference internal image-reference" href="_images/3f1fca7d48da149f69acb296c77328b63d4c8678a73d82a3d84c3ad082dcdeed.png"><img alt="_images/3f1fca7d48da149f69acb296c77328b63d4c8678a73d82a3d84c3ad082dcdeed.png" src="_images/3f1fca7d48da149f69acb296c77328b63d4c8678a73d82a3d84c3ad082dcdeed.png" style="width: 80%;" />
 </a>
 </div>
 </div>
 </section>
+</section>
+<section id="summary">
+<h2><span class="section-number">23.6. </span>Summary<a class="headerlink" href="#summary" title="Link to this heading">#</a></h2>
+<p>Here we compare the performance of the four different training approaches we explored in this lecture.</p>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+
+<span class="c1"># Create summary table</span>
+<span class="n">results</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;Method&#39;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="s1">&#39;Keras&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;Pure JAX (hand-coded GD)&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;JAX + Optax SGD&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;JAX + Optax ADAM&#39;</span>
+    <span class="p">],</span>
+    <span class="s1">&#39;Runtime (s)&#39;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="n">keras_runtime</span><span class="p">,</span>
+        <span class="n">jax_runtime</span><span class="p">,</span>
+        <span class="n">optax_sgd_runtime</span><span class="p">,</span>
+        <span class="n">optax_adam_runtime</span>
+    <span class="p">],</span>
+    <span class="s1">&#39;Validation MSE&#39;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="n">keras_mse</span><span class="p">,</span>
+        <span class="n">jax_mse</span><span class="p">,</span>
+        <span class="n">optax_sgd_mse</span><span class="p">,</span>
+        <span class="n">optax_adam_mse</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">format</span><span class="p">({</span><span class="s1">&#39;Runtime (s)&#39;</span><span class="p">:</span> <span class="s1">&#39;</span><span class="si">{:.2f}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39;Validation MSE&#39;</span><span class="p">:</span> <span class="s1">&#39;</span><span class="si">{:.4f}</span><span class="s1">&#39;</span><span class="p">})</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<div class="output text_html"><style type="text/css">
+</style>
+<table id="T_f1e67">
+  <thead>
+    <tr>
+      <th class="blank level0" >&nbsp;</th>
+      <th id="T_f1e67_level0_col0" class="col_heading level0 col0" >Method</th>
+      <th id="T_f1e67_level0_col1" class="col_heading level0 col1" >Runtime (s)</th>
+      <th id="T_f1e67_level0_col2" class="col_heading level0 col2" >Validation MSE</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th id="T_f1e67_level0_row0" class="row_heading level0 row0" >0</th>
+      <td id="T_f1e67_row0_col0" class="data row0 col0" >Keras</td>
+      <td id="T_f1e67_row0_col1" class="data row0 col1" >18.29</td>
+      <td id="T_f1e67_row0_col2" class="data row0 col2" >0.0462</td>
+    </tr>
+    <tr>
+      <th id="T_f1e67_level0_row1" class="row_heading level0 row1" >1</th>
+      <td id="T_f1e67_row1_col0" class="data row1 col0" >Pure JAX (hand-coded GD)</td>
+      <td id="T_f1e67_row1_col1" class="data row1 col1" >0.78</td>
+      <td id="T_f1e67_row1_col2" class="data row1 col2" >0.0430</td>
+    </tr>
+    <tr>
+      <th id="T_f1e67_level0_row2" class="row_heading level0 row2" >2</th>
+      <td id="T_f1e67_row2_col0" class="data row2 col0" >JAX + Optax SGD</td>
+      <td id="T_f1e67_row2_col1" class="data row2 col1" >0.59</td>
+      <td id="T_f1e67_row2_col2" class="data row2 col2" >0.0430</td>
+    </tr>
+    <tr>
+      <th id="T_f1e67_level0_row3" class="row_heading level0 row3" >3</th>
+      <td id="T_f1e67_row3_col0" class="data row3 col0" >JAX + Optax ADAM</td>
+      <td id="T_f1e67_row3_col1" class="data row3 col1" >0.72</td>
+      <td id="T_f1e67_row3_col2" class="data row3 col2" >0.0411</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<p>All methods achieve similar validation MSE values (around 0.043-0.045).</p>
+<p>At the time of writing, the MSEs from plain vanilla Optax and our own hand-coded SGD routine are identical.</p>
+<p>The ADAM optimizer achieves slightly better MSE by using adaptive learning rates.</p>
+<p>Still, our hand-coded algorithm does very well compared to this high-quality optimizer.</p>
+<p>Note also that the pure JAX implementations are significantly faster than Keras.</p>
+<p>This is because JAX can JIT-compile the entire training loop.</p>
+<p>Not surprisingly, Keras has more overhead from its abstraction layers.</p>
 </section>
 </section>
 
@@ -1212,7 +1426,7 @@ Final MSE on test data set = 0.037389274686574936.
  </li>
  <li class="toctree-l1 current active active">
   <a class="current reference internal" href="#">
-   23. Neural Network Regression with JAX and Optax
+   23. Neural Network Regression with JAX
   </a>
  </li>
 </ul>
