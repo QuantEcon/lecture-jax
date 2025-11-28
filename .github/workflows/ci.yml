@@ -26,7 +26,7 @@ jobs:
       - name: Install jax (and install checks for GPU)
         shell: bash -l {0}
         run: |
-          pip install -U "jax[cuda12-local]"
+          pip install -U "jax[cuda13]"
           python --version
           python scripts/test-jax-install.py
           nvidia-smi
