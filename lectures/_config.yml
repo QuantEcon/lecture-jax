@@ -36,6 +36,8 @@ sphinx:
   extra_extensions: [sphinx_multitoc_numbering, sphinxext.rediraffe, sphinxcontrib.youtube, sphinx.ext.todo, sphinx_exercise, sphinx_togglebutton, sphinx_tojupyter]
   config:
     bibtex_reference_style: author_year
+    suppress_warnings: ["mystnb.unknown_mime_type"]
+    nb_merge_streams: true
     # myst-nb config
     nb_render_image_options:
       width: 80%
