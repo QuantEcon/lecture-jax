@@ -222,29 +222,7 @@ Here
 * $v_\sigma(a)$ is the lifetime value of following stationary policy $\sigma$, given initial assets $a$.
 
 
-### Set up
-
-We use a class called `CakeEatingModel` to store model parameters.
-
-```{code-cell} ipython3
-class CakeEatingModel(NamedTuple):
-    """
-    Stores parameters for the model.
-
-    """
-    γ: float = 1.5
-    β: float = 0.96
-    R: float = 1.01
-```
-
-We use CRRA utility.
-
-```{code-cell} ipython3
-def u(c, γ):
-    """ Utility function. """
-    c = jnp.maximum(c, 1e-10)
-    return c**(1 - γ) / (1 - γ)
-```
+### Network
 
 We store some fixed values that form part of the network training configuration.
 
@@ -321,112 +299,23 @@ def initialize_network(key, layer_sizes):
     return params
 ```
 
-Now we provide a function to do a forward pass through the network, given the
-parameters.
 
-```{code-cell} ipython3
-def forward(params, a):
-    """
-    Evaluate neural network policy: maps a given asset level a to
-    consumption rate c/a by running a forward pass through the network.
-
-    """
-    σ = jax.nn.selu          # Activation function
-    x = jnp.array((a,))      # Make state a 1D array
-    # Forward pass through network, without the last step
-    for W, b in params[:-1]:
-        x = σ(x @ W + b)
-    # Complete with sigmoid activation for consumption rate
-    W, b = params[-1]
-    # Direct output in [0, 0.99] range for stability
-    x = jax.nn.sigmoid(x @ W + b) * 0.99 
-    # Extract and return consumption rate
-    consumption_rate = x[0]
-    return consumption_rate
-```
-
-The next function approximates lifetime value associated with a given policy, as
-represented by the parameters of a neural network.
-
-```{code-cell} ipython3
-@partial(jax.jit, static_argnames=('path_length'))
-def compute_lifetime_value(params, model, path_length):
-    """
-    Compute the lifetime value of a path generated from
-    the policy embedded in params and the initial condition a_0 = 1.
-
-    """
-    γ, β, R = model.γ, model.β, model.R
-    initial_a = 1.0
-
-    def update(t, state):
-        # Unpack and compute consumption given current assets
-        a, value, discount = state
-        consumption_rate = forward(params, a)
-        c = consumption_rate * a
-        # Update loop state and return it
-        a = R * (a - c)
-        value = value + discount * u(c, γ)
-        discount = discount * β
-        new_state = a, value, discount
-        return new_state
-
-    initial_value, initial_discount = 0.0, 1.0
-    initial_state = initial_a, initial_value, initial_discount
-    final_a, final_value, discount = jax.lax.fori_loop(
-        0, path_length, update, initial_state
-    )
-    return final_value
-```
-
-Here's the loss function we will minimize.
-
-```{code-cell} ipython3
-def loss_function(params, model, path_length):
-    """
-    Loss is the negation of the lifetime value of the policy 
-    identified by `params`.
-
-    """
-    return -compute_lifetime_value(params, model, path_length)
-```
-
-
-### Train and solve 
-
-First we create an instance of the model and unpack names
-
-```{code-cell} ipython3
-model = CakeEatingModel()
-γ, β, R = model.γ, model.β, model.R
-```
-
-We test stability.
-
-```{code-cell} ipython3
-assert β * R**(1 - γ) < 1, "Parameters fail stability test."
-```
-
-We compute the optimal consumption rate and lifetime value from the analytical
-expressions.
-
-```{code-cell} ipython3
-
-κ = 1 - (β * R**(1 - γ))**(1/γ)
-print(f"Optimal consumption rate = {κ:.4f}.\n")
-v_max = κ**(-γ) * u(1.0, γ)
-print(f"Theoretical maximum lifetime value = {v_max:.4f}.\n")
-```
-
-Here's a function to solve the problem by gradient ascent.
+Here's a function to train the network by gradient ascent, given a generic loss
+function.
 
 ```{code-cell} ipython3
 def train_network(
-        config: Config,              # Configuration object with training parameters
+        config: Config,               # Configuration object with training parameters
         loss_fn: callable,            # Loss function taking params and returning loss
         print_interval: int = 100     # How often to print progress
     ):
-    """Train a neural network using policy gradient ascent."""
+    """
+    Train a neural network using policy gradient ascent.
+
+    This is a generic training function that can be applied to different
+    models by providing an appropriate loss function.
+
+    """
 
     # Initialize network parameters
     key = random.PRNGKey(config.seed)
@@ -463,6 +352,130 @@ def train_network(
     params = best_params
     return params, value_history, best_value
 ```
+
+
+### Cake eating loss function
+
+We use a class called `CakeEatingModel` to store model parameters.
+
+```{code-cell} ipython3
+class CakeEatingModel(NamedTuple):
+    """
+    Stores parameters for the model.
+
+    """
+    γ: float = 1.5
+    β: float = 0.96
+    R: float = 1.01
+```
+
+We use CRRA utility.
+
+```{code-cell} ipython3
+def u(c, γ):
+    """ Utility function. """
+    c = jnp.maximum(c, 1e-10)
+    return c**(1 - γ) / (1 - γ)
+```
+
+Now we provide a function that implements a consumption policy as a neural network, given the
+parameters of the network.
+
+```{code-cell} ipython3
+def forward(params, a):
+    """
+    Evaluate neural network policy: maps a given asset level a to
+    consumption rate c/a by running a forward pass through the network.
+
+    """
+    σ = jax.nn.selu          # Activation function
+    x = jnp.array((a,))      # Make state a 1D array
+    # Forward pass through network, without the last step
+    for W, b in params[:-1]:
+        x = σ(x @ W + b)
+    # Complete with sigmoid activation for consumption rate
+    W, b = params[-1]
+    # Direct output in [0, 0.99] range for stability
+    x = jax.nn.sigmoid(x @ W + b) * 0.99 
+    # Extract and return consumption rate
+    consumption_rate = x[0]
+    return consumption_rate
+```
+
+The next function approximates lifetime value for the cake eating agent
+associated with a given policy, as represented by the parameters of a neural
+network.
+
+```{code-cell} ipython3
+@partial(jax.jit, static_argnames=('path_length'))
+def compute_lifetime_value(params, cake_eating_model, path_length):
+    """
+    Compute the lifetime value of a path generated from
+    the policy embedded in params and the initial condition a_0 = 1.
+
+    """
+    γ, β, R = cake_eating_model
+    initial_a = 1.0
+
+    def update(t, state):
+        # Unpack and compute consumption given current assets
+        a, value, discount = state
+        consumption_rate = forward(params, a)
+        c = consumption_rate * a
+        # Update loop state and return it
+        a = R * (a - c)
+        value = value + discount * u(c, γ)
+        discount = discount * β
+        new_state = a, value, discount
+        return new_state
+
+    initial_value, initial_discount = 0.0, 1.0
+    initial_state = initial_a, initial_value, initial_discount
+    final_a, final_value, discount = jax.lax.fori_loop(
+        0, path_length, update, initial_state
+    )
+    return final_value
+```
+
+Here's the loss function we will minimize.
+
+```{code-cell} ipython3
+def loss_function(params, cake_eating_model, path_length):
+    """
+    Loss is the negation of the lifetime value of the policy 
+    identified by `params`.
+
+    """
+    return -compute_lifetime_value(params, cake_eating_model, path_length)
+```
+
+
+### Train and solve 
+
+First we create an instance of the model and unpack names
+
+```{code-cell} ipython3
+model = CakeEatingModel()
+γ, β, R = model.γ, model.β, model.R
+```
+
+We test stability.
+
+```{code-cell} ipython3
+assert β * R**(1 - γ) < 1, "Parameters fail stability test."
+```
+
+We compute the optimal consumption rate and lifetime value from the analytical
+expressions.
+
+```{code-cell} ipython3
+
+κ = 1 - (β * R**(1 - γ))**(1/γ)
+print(f"Optimal consumption rate = {κ:.4f}.\n")
+v_max = κ**(-γ) * u(1.0, γ)
+print(f"Theoretical maximum lifetime value = {v_max:.4f}.\n")
+```
+
 
 Now let's train the network.
 
@@ -549,12 +562,11 @@ def simulate_consumption_path(
     return a_sim, c_sim, a_opt, c_opt
 ```
 
-```{code-cell} ipython3
-# Simulate and plot path
-a_sim, c_sim, a_opt, c_opt = simulate_consumption_path(params, a_0=1.0)
-```
+Let's simulate and plot path
 
 ```{code-cell} ipython3
+a_sim, c_sim, a_opt, c_opt = simulate_consumption_path(params, a_0=1.0)
+
 fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 5))
 
 ax1.plot(a_sim, lw=4, linestyle='--', label='learned policy')
@@ -576,7 +588,7 @@ plt.show()
 ```
 
 
-## Stochastic labor income 
+## IFP Model
 
 Now let's solve a model with IID stochastic labor income using deep learning.
 
