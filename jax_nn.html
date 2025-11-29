@@ -124,7 +124,7 @@
     <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="24. Troubleshooting" href="troubleshooting.html" />
+    <link rel="next" title="24. Policy Gradient-Based Optimal Savings" href="ifp_dl.html" />
     <link rel="prev" title="22. Simple Neural Network Regression with Keras and JAX" href="keras.html" />
 
 <!-- Normal Meta Tags -->
@@ -194,6 +194,7 @@
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#summary">23.6. Summary</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercises">23.7. Exercises</a></li>
 </ul>
                             <p class="logo">
                                 
@@ -254,10 +255,19 @@
                             
                             <li class="changelog-entry">
                                 
+                                <a href="https://github.com/QuantEcon/lecture-jax/commit/69d51f2" class="changelog-hash">69d51f2</a>
+                                
+                                <span class="changelog-author">John Stachurski</span>
+                                <span class="changelog-time">5 hours ago</span>
+                                <span class="changelog-message">Add exercise and solution to JAX neural network lecture (#254)</span>
+                            </li>
+                            
+                            <li class="changelog-entry">
+                                
                                 <a href="https://github.com/QuantEcon/lecture-jax/commit/e98e55d" class="changelog-hash">e98e55d</a>
                                 
                                 <span class="changelog-author">John Stachurski</span>
-                                <span class="changelog-time">6 minutes ago</span>
+                                <span class="changelog-time">15 hours ago</span>
                                 <span class="changelog-message">Simplify Optax training functions with lax.fori_loop (#253)</span>
                             </li>
                             
@@ -266,7 +276,7 @@
                                 <a href="https://github.com/QuantEcon/lecture-jax/commit/5576b14" class="changelog-hash">5576b14</a>
                                 
                                 <span class="changelog-author">John Stachurski</span>
-                                <span class="changelog-time">4 hours ago</span>
+                                <span class="changelog-time">19 hours ago</span>
                                 <span class="changelog-message">Improve jax_nn.md: fix errors and accurate JAX timing (#247)</span>
                             </li>
                             
@@ -328,11 +338,6 @@ using a neural network via the deep learning library <a class="reference externa
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Matplotlib is building the font cache; this may take a moment.
-</pre></div>
-</div>
-</div>
 </div>
 <div class="cell tag_hide-output docutils container">
 <div class="cell_input above-output-prompt docutils container">
@@ -348,10 +353,8 @@ using a neural network via the deep learning library <a class="reference externa
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting keras
   Downloading keras-3.12.0-py3-none-any.whl.metadata (5.9 kB)
-Collecting optax
-  Downloading optax-0.2.6-py3-none-any.whl.metadata (7.6 kB)
-Collecting absl-py (from keras)
-  Downloading absl_py-2.3.1-py3-none-any.whl.metadata (3.3 kB)
+Requirement already satisfied: optax in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (0.2.6)
+Requirement already satisfied: absl-py in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from keras) (2.3.1)
 Requirement already satisfied: numpy in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from keras) (2.1.3)
 Collecting rich (from keras)
   Downloading rich-14.2.0-py3-none-any.whl.metadata (18 kB)
@@ -362,12 +365,10 @@ Collecting optree (from keras)
   Downloading optree-0.18.0-cp313-cp313-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl.metadata (34 kB)
 Requirement already satisfied: ml-dtypes in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from keras) (0.5.4)
 Requirement already satisfied: packaging in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from keras) (24.2)
-Collecting chex&gt;=0.1.87 (from optax)
-  Downloading chex-0.1.91-py3-none-any.whl.metadata (18 kB)
+Requirement already satisfied: chex&gt;=0.1.87 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from optax) (0.1.91)
 Requirement already satisfied: jax&gt;=0.5.3 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from optax) (0.8.1)
 Requirement already satisfied: jaxlib&gt;=0.5.3 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from optax) (0.8.1)
-Collecting typing_extensions&gt;=4.15.0 (from chex&gt;=0.1.87-&gt;optax)
-  Downloading typing_extensions-4.15.0-py3-none-any.whl.metadata (3.3 kB)
+Requirement already satisfied: typing_extensions&gt;=4.15.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from chex&gt;=0.1.87-&gt;optax) (4.15.0)
 Requirement already satisfied: toolz&gt;=1.0.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from chex&gt;=0.1.87-&gt;optax) (1.0.0)
 Requirement already satisfied: opt_einsum in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from jax&gt;=0.5.3-&gt;optax) (3.4.0)
 Requirement already satisfied: scipy&gt;=1.13 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from jax&gt;=0.5.3-&gt;optax) (1.15.3)
@@ -375,36 +376,23 @@ Requirement already satisfied: markdown-it-py&gt;=2.2.0 in /home/runner/minicond
 Requirement already satisfied: pygments&lt;3.0.0,&gt;=2.13.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from rich-&gt;keras) (2.19.1)
 Requirement already satisfied: mdurl~=0.1 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from markdown-it-py&gt;=2.2.0-&gt;rich-&gt;keras) (0.1.0)
 Downloading keras-3.12.0-py3-none-any.whl (1.5 MB)
-?25l   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">0.0/1.5 MB</span> <span class=" -Color -Color-Red">?</span> eta <span class=" -Color -Color-Cyan">-:--:--</span>
-   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">1.5/1.5 MB</span> <span class=" -Color -Color-Red">42.6 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
-?25hDownloading optax-0.2.6-py3-none-any.whl (367 kB)
-Downloading absl_py-2.3.1-py3-none-any.whl (135 kB)
-Downloading chex-0.1.91-py3-none-any.whl (100 kB)
-Downloading typing_extensions-4.15.0-py3-none-any.whl (44 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">1.5/1.5 MB</span> <span class=" -Color -Color-Red">43.8 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
+?25h
 Downloading namex-0.1.0-py3-none-any.whl (5.9 kB)
 Downloading optree-0.18.0-cp313-cp313-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (414 kB)
 Downloading rich-14.2.0-py3-none-any.whl (243 kB)
-Installing collected packages: namex, typing_extensions, absl-py, rich, optree, keras, chex, optax
-  Attempting uninstall: typing_extensions
-    Found existing installation: typing_extensions 4.12.2
-    Uninstalling typing_extensions-4.12.2:
-   ━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">1/8</span> [typing_extensions]
-   ━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">1/8</span> [typing_extensions]
-      Successfully uninstalled typing_extensions-4.12.2
-   ━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">1/8</span> [typing_extensions]
-   ━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">2/8</span> [absl-py]
-   ━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">3/8</span> [rich]
-   ━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">5/8</span> [keras]
-   ━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">5/8</span> [keras]
-   ━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">5/8</span> [keras]
-   ━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">5/8</span> [keras]
-   ━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">5/8</span> [keras]
-   ━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">5/8</span> [keras]
-   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━ <span class=" -Color -Color-Green">7/8</span> [optax]
-   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━ <span class=" -Color -Color-Green">7/8</span> [optax]
-   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">8/8</span> [optax]
+Installing collected packages: namex, optree, rich, keras
+?25l
+   ━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">2/4</span> [rich]
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━ <span class=" -Color -Color-Green">3/4</span> [keras]
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━ <span class=" -Color -Color-Green">3/4</span> [keras]
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━ <span class=" -Color -Color-Green">3/4</span> [keras]
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━ <span class=" -Color -Color-Green">3/4</span> [keras]
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━ <span class=" -Color -Color-Green">3/4</span> [keras]
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━ <span class=" -Color -Color-Green">3/4</span> [keras]
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">4/4</span> [keras]
 
-Successfully installed absl-py-2.3.1 chex-0.1.91 keras-3.12.0 namex-0.1.0 optax-0.2.6 optree-0.18.0 rich-14.2.0 typing_extensions-4.15.0
+Successfully installed keras-3.12.0 namex-0.1.0 optree-0.18.0 rich-14.2.0
 </pre></div>
 </div>
 </div>
@@ -480,7 +468,6 @@ the overall mapping is</p>
     <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Generate synthetic regression data.</span>
-<span class="sd">    Pure functional version using JAX random keys.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">x</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">x_min</span><span class="p">,</span> <span class="n">x_max</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">data_size</span><span class="p">)</span>
     <span class="n">ϵ</span> <span class="o">=</span> <span class="mf">0.2</span> <span class="o">*</span> <span class="n">jax</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">data_size</span><span class="p">,))</span>
@@ -508,8 +495,8 @@ the overall mapping is</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>W1128 09:12:58.354286    2035 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn&#39;t support extracting fabric info or NVLink is not used by the device.
-W1128 09:12:58.357738    1962 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn&#39;t support extracting fabric info or NVLink is not used by the device.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>W1129 00:50:20.286672    2401 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn&#39;t support extracting fabric info or NVLink is not used by the device.
+W1129 00:50:20.290175    2332 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn&#39;t support extracting fabric info or NVLink is not used by the device.
 </pre></div>
 </div>
 <a class="reference internal image-reference" href="_images/102d7a05d7d798a7f3ec70bff64fff96ce9741aeb25ee54796e6bbd49d89b1d1.png"><img alt="_images/102d7a05d7d798a7f3ec70bff64fff96ce9741aeb25ee54796e6bbd49d89b1d1.png" src="_images/102d7a05d7d798a7f3ec70bff64fff96ce9741aeb25ee54796e6bbd49d89b1d1.png" style="width: 80%;" />
@@ -612,12 +599,12 @@ mean square loss.</p>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Training NN using Keras.
-13/13 - 1s - 43ms/step - loss: 0.0472
-Trained in 18.52 seconds, validation data MSE = 0.04716601222753525
-13/13 - 0s - 23ms/step
+13/13 - 0s - 35ms/step - loss: 0.0461
+Trained in 19.29 seconds, validation data MSE = 0.04612968862056732
+13/13 - 0s - 24ms/step
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="_images/6dbe4b041b189cb875e7b4736d7ae2d59efeb5edd88ca768c80d964f2e91d00b.png"><img alt="_images/6dbe4b041b189cb875e7b4736d7ae2d59efeb5edd88ca768c80d964f2e91d00b.png" src="_images/6dbe4b041b189cb875e7b4736d7ae2d59efeb5edd88ca768c80d964f2e91d00b.png" style="width: 80%;" />
+<a class="reference internal image-reference" href="_images/280b2b472d164e5d5cb15b81345ce157adffe5051d7b9d793ca4ce57a40d12d8.png"><img alt="_images/280b2b472d164e5d5cb15b81345ce157adffe5051d7b9d793ca4ce57a40d12d8.png" src="_images/280b2b472d164e5d5cb15b81345ce157adffe5051d7b9d793ca4ce57a40d12d8.png" style="width: 80%;" />
 </a>
 </div>
 </div>
@@ -665,7 +652,6 @@ with row vectors rather than column vectors, so that</p>
     <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Generate an initial parameterization for a feed forward neural network.</span>
-<span class="sd">    Pure functional version using JAX random keys.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">k</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">output_dim</span>
     <span class="n">shapes</span> <span class="o">=</span> <span class="p">(</span>
@@ -814,14 +800,12 @@ descent, exactly as required.</p>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">update</span><span class="p">(</span><span class="n">θ</span><span class="p">,</span> <span class="n">_</span><span class="p">):</span>
-        <span class="c1"># Record losses</span>
         <span class="n">train_loss</span> <span class="o">=</span> <span class="n">loss_fn</span><span class="p">(</span><span class="n">θ</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
         <span class="n">val_loss</span> <span class="o">=</span> <span class="n">loss_fn</span><span class="p">(</span><span class="n">θ</span><span class="p">,</span> <span class="n">x_validate</span><span class="p">,</span> <span class="n">y_validate</span><span class="p">)</span>
-        <span class="c1"># Update parameters</span>
         <span class="n">θ_new</span> <span class="o">=</span> <span class="n">update_parameters</span><span class="p">(</span><span class="n">θ</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">config</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">θ_new</span><span class="p">,</span> <span class="p">(</span><span class="n">train_loss</span><span class="p">,</span> <span class="n">val_loss</span><span class="p">)</span>
+        <span class="n">accumulate</span> <span class="o">=</span> <span class="n">train_loss</span><span class="p">,</span> <span class="n">val_loss</span>
+        <span class="k">return</span> <span class="n">θ_new</span><span class="p">,</span> <span class="n">accumulate</span>
 
-    <span class="c1"># Initialize with empty arrays</span>
     <span class="n">θ_final</span><span class="p">,</span> <span class="p">(</span><span class="n">training_losses</span><span class="p">,</span> <span class="n">validation_losses</span><span class="p">)</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">lax</span><span class="o">.</span><span class="n">scan</span><span class="p">(</span>
         <span class="n">update</span><span class="p">,</span> <span class="n">θ</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">epochs</span>
     <span class="p">)</span>
@@ -865,7 +849,7 @@ descent, exactly as required.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Trained model with JAX in 0.78 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Trained model with JAX in 0.79 seconds.
 Final MSE on validation data = 0.043001
 </pre></div>
 </div>
@@ -924,21 +908,21 @@ we might wish to use an optimization library written for JAX.</p>
         <span class="n">epochs</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">4000</span><span class="p">,</span>         <span class="c1"># Number of training epochs</span>
         <span class="n">learning_rate</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.001</span>  <span class="c1"># Learning rate for optimizer</span>
     <span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Train model using Optax SGD optimizer.</span>
-<span class="sd">    Pure functional version using jax.lax.fori_loop.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="s2">&quot; Train model using Optax SGD optimizer. &quot;</span>
     <span class="n">solver</span> <span class="o">=</span> <span class="n">optax</span><span class="o">.</span><span class="n">sgd</span><span class="p">(</span><span class="n">learning_rate</span><span class="p">)</span>
     <span class="n">opt_state</span> <span class="o">=</span> <span class="n">solver</span><span class="o">.</span><span class="n">init</span><span class="p">(</span><span class="n">θ</span><span class="p">)</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">train_step</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">carry</span><span class="p">):</span>
-        <span class="n">θ</span><span class="p">,</span> <span class="n">opt_state</span> <span class="o">=</span> <span class="n">carry</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">update</span><span class="p">(</span><span class="n">_</span><span class="p">,</span> <span class="n">loop_state</span><span class="p">):</span>
+        <span class="n">θ</span><span class="p">,</span> <span class="n">opt_state</span> <span class="o">=</span> <span class="n">loop_state</span>
         <span class="n">grad</span> <span class="o">=</span> <span class="n">loss_gradient</span><span class="p">(</span><span class="n">θ</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
-        <span class="n">updates</span><span class="p">,</span> <span class="n">opt_state_new</span> <span class="o">=</span> <span class="n">solver</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">grad</span><span class="p">,</span> <span class="n">opt_state</span><span class="p">,</span> <span class="n">θ</span><span class="p">)</span>
+        <span class="n">updates</span><span class="p">,</span> <span class="n">new_opt_state</span> <span class="o">=</span> <span class="n">solver</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">grad</span><span class="p">,</span> <span class="n">opt_state</span><span class="p">,</span> <span class="n">θ</span><span class="p">)</span>
         <span class="n">θ_new</span> <span class="o">=</span> <span class="n">optax</span><span class="o">.</span><span class="n">apply_updates</span><span class="p">(</span><span class="n">θ</span><span class="p">,</span> <span class="n">updates</span><span class="p">)</span>
-        <span class="k">return</span> <span class="p">(</span><span class="n">θ_new</span><span class="p">,</span> <span class="n">opt_state_new</span><span class="p">)</span>
+        <span class="n">new_loop_state</span> <span class="o">=</span> <span class="n">θ_new</span><span class="p">,</span> <span class="n">new_opt_state</span>
+        <span class="k">return</span> <span class="n">new_loop_state</span>
 
-    <span class="n">θ_final</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">lax</span><span class="o">.</span><span class="n">fori_loop</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">epochs</span><span class="p">,</span> <span class="n">train_step</span><span class="p">,</span> <span class="p">(</span><span class="n">θ</span><span class="p">,</span> <span class="n">opt_state</span><span class="p">))</span>
+    <span class="n">initial_loop_state</span> <span class="o">=</span> <span class="n">θ</span><span class="p">,</span> <span class="n">opt_state</span>
+    <span class="n">final_loop_state</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">lax</span><span class="o">.</span><span class="n">fori_loop</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">epochs</span><span class="p">,</span> <span class="n">update</span><span class="p">,</span> <span class="n">initial_loop_state</span><span class="p">)</span>
+    <span class="n">θ_final</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">final_loop_state</span>
     <span class="k">return</span> <span class="n">θ_final</span>
 </pre></div>
 </div>
@@ -967,7 +951,7 @@ we might wish to use an optimization library written for JAX.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Trained model with JAX and Optax SGD in 0.60 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Trained model with JAX and Optax SGD in 0.61 seconds.
 Final MSE on validation data = 0.043001
 </pre></div>
 </div>
@@ -1006,21 +990,20 @@ similar.</p>
         <span class="n">epochs</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">4000</span><span class="p">,</span>         <span class="c1"># Number of training epochs</span>
         <span class="n">learning_rate</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.001</span>  <span class="c1"># Learning rate for optimizer</span>
     <span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Train model using Optax ADAM optimizer.</span>
-<span class="sd">    Pure functional version using jax.lax.fori_loop.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="s2">&quot; Train model using Optax ADAM optimizer. &quot;</span>
+
     <span class="n">solver</span> <span class="o">=</span> <span class="n">optax</span><span class="o">.</span><span class="n">adam</span><span class="p">(</span><span class="n">learning_rate</span><span class="p">)</span>
     <span class="n">opt_state</span> <span class="o">=</span> <span class="n">solver</span><span class="o">.</span><span class="n">init</span><span class="p">(</span><span class="n">θ</span><span class="p">)</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">train_step</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">carry</span><span class="p">):</span>
-        <span class="n">θ</span><span class="p">,</span> <span class="n">opt_state</span> <span class="o">=</span> <span class="n">carry</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">update</span><span class="p">(</span><span class="n">_</span><span class="p">,</span> <span class="n">loop_state</span><span class="p">):</span>
+        <span class="n">θ</span><span class="p">,</span> <span class="n">opt_state</span> <span class="o">=</span> <span class="n">loop_state</span>
         <span class="n">grad</span> <span class="o">=</span> <span class="n">loss_gradient</span><span class="p">(</span><span class="n">θ</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
-        <span class="n">updates</span><span class="p">,</span> <span class="n">opt_state_new</span> <span class="o">=</span> <span class="n">solver</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">grad</span><span class="p">,</span> <span class="n">opt_state</span><span class="p">,</span> <span class="n">θ</span><span class="p">)</span>
+        <span class="n">updates</span><span class="p">,</span> <span class="n">new_opt_state</span> <span class="o">=</span> <span class="n">solver</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">grad</span><span class="p">,</span> <span class="n">opt_state</span><span class="p">,</span> <span class="n">θ</span><span class="p">)</span>
         <span class="n">θ_new</span> <span class="o">=</span> <span class="n">optax</span><span class="o">.</span><span class="n">apply_updates</span><span class="p">(</span><span class="n">θ</span><span class="p">,</span> <span class="n">updates</span><span class="p">)</span>
-        <span class="k">return</span> <span class="p">(</span><span class="n">θ_new</span><span class="p">,</span> <span class="n">opt_state_new</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">θ_new</span><span class="p">,</span> <span class="n">new_opt_state</span><span class="p">)</span>
 
-    <span class="n">θ_final</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">lax</span><span class="o">.</span><span class="n">fori_loop</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">epochs</span><span class="p">,</span> <span class="n">train_step</span><span class="p">,</span> <span class="p">(</span><span class="n">θ</span><span class="p">,</span> <span class="n">opt_state</span><span class="p">))</span>
+    <span class="n">initial_loop_state</span> <span class="o">=</span> <span class="n">θ</span><span class="p">,</span> <span class="n">opt_state</span>
+    <span class="n">θ_final</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">lax</span><span class="o">.</span><span class="n">fori_loop</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">epochs</span><span class="p">,</span> <span class="n">update</span><span class="p">,</span> <span class="n">initial_loop_state</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">θ_final</span>
 </pre></div>
 </div>
@@ -1117,39 +1100,39 @@ Final MSE on validation data = 0.041074
 <div class="cell_output docutils container">
 <div class="output text_html"><style type="text/css">
 </style>
-<table id="T_13047">
+<table id="T_8c467">
   <thead>
     <tr>
       <th class="blank level0" >&nbsp;</th>
-      <th id="T_13047_level0_col0" class="col_heading level0 col0" >Method</th>
-      <th id="T_13047_level0_col1" class="col_heading level0 col1" >Runtime (s)</th>
-      <th id="T_13047_level0_col2" class="col_heading level0 col2" >Validation MSE</th>
+      <th id="T_8c467_level0_col0" class="col_heading level0 col0" >Method</th>
+      <th id="T_8c467_level0_col1" class="col_heading level0 col1" >Runtime (s)</th>
+      <th id="T_8c467_level0_col2" class="col_heading level0 col2" >Validation MSE</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th id="T_13047_level0_row0" class="row_heading level0 row0" >0</th>
-      <td id="T_13047_row0_col0" class="data row0 col0" >Keras</td>
-      <td id="T_13047_row0_col1" class="data row0 col1" >18.52</td>
-      <td id="T_13047_row0_col2" class="data row0 col2" >0.0472</td>
+      <th id="T_8c467_level0_row0" class="row_heading level0 row0" >0</th>
+      <td id="T_8c467_row0_col0" class="data row0 col0" >Keras</td>
+      <td id="T_8c467_row0_col1" class="data row0 col1" >19.29</td>
+      <td id="T_8c467_row0_col2" class="data row0 col2" >0.0461</td>
     </tr>
     <tr>
-      <th id="T_13047_level0_row1" class="row_heading level0 row1" >1</th>
-      <td id="T_13047_row1_col0" class="data row1 col0" >Pure JAX (hand-coded GD)</td>
-      <td id="T_13047_row1_col1" class="data row1 col1" >0.78</td>
-      <td id="T_13047_row1_col2" class="data row1 col2" >0.0430</td>
+      <th id="T_8c467_level0_row1" class="row_heading level0 row1" >1</th>
+      <td id="T_8c467_row1_col0" class="data row1 col0" >Pure JAX (hand-coded GD)</td>
+      <td id="T_8c467_row1_col1" class="data row1 col1" >0.79</td>
+      <td id="T_8c467_row1_col2" class="data row1 col2" >0.0430</td>
     </tr>
     <tr>
-      <th id="T_13047_level0_row2" class="row_heading level0 row2" >2</th>
-      <td id="T_13047_row2_col0" class="data row2 col0" >JAX + Optax SGD</td>
-      <td id="T_13047_row2_col1" class="data row2 col1" >0.60</td>
-      <td id="T_13047_row2_col2" class="data row2 col2" >0.0430</td>
+      <th id="T_8c467_level0_row2" class="row_heading level0 row2" >2</th>
+      <td id="T_8c467_row2_col0" class="data row2 col0" >JAX + Optax SGD</td>
+      <td id="T_8c467_row2_col1" class="data row2 col1" >0.61</td>
+      <td id="T_8c467_row2_col2" class="data row2 col2" >0.0430</td>
     </tr>
     <tr>
-      <th id="T_13047_level0_row3" class="row_heading level0 row3" >3</th>
-      <td id="T_13047_row3_col0" class="data row3 col0" >JAX + Optax ADAM</td>
-      <td id="T_13047_row3_col1" class="data row3 col1" >0.74</td>
-      <td id="T_13047_row3_col2" class="data row3 col2" >0.0411</td>
+      <th id="T_8c467_level0_row3" class="row_heading level0 row3" >3</th>
+      <td id="T_8c467_row3_col0" class="data row3 col0" >JAX + Optax ADAM</td>
+      <td id="T_8c467_row3_col1" class="data row3 col1" >0.74</td>
+      <td id="T_8c467_row3_col2" class="data row3 col2" >0.0411</td>
     </tr>
   </tbody>
 </table>
@@ -1162,6 +1145,419 @@ Final MSE on validation data = 0.041074
 <p>Note also that the pure JAX implementations are significantly faster than Keras.</p>
 <p>This is because JAX can JIT-compile the entire training loop.</p>
 <p>Not surprisingly, Keras has more overhead from its abstraction layers.</p>
+</section>
+<section id="exercises">
+<h2><span class="section-number">23.7. </span>Exercises<a class="headerlink" href="#exercises" title="Link to this heading">#</a></h2>
+<div class="exercise admonition" id="jax_nn_ex1">
+
+<p class="admonition-title"><span class="caption-number">Exercise 23.1 </span></p>
+<section id="exercise-content">
+<p>Try to reduce the MSE on the validation data without significantly increasing the computational load.</p>
+<p>You should hold constant both the number of epochs and the total number of parameters in the network.</p>
+<p>Currently, the network has 4 layers with output dimension <span class="math notranslate nohighlight">\(k=10\)</span>, giving a total of:</p>
+<ul class="simple">
+<li><p>Layer 0: <span class="math notranslate nohighlight">\(1 \times 10 + 10 = 20\)</span> parameters (weights + biases)</p></li>
+<li><p>Layer 1: <span class="math notranslate nohighlight">\(10 \times 10 + 10 = 110\)</span> parameters</p></li>
+<li><p>Layer 2: <span class="math notranslate nohighlight">\(10 \times 10 + 10 = 110\)</span> parameters</p></li>
+<li><p>Layer 3: <span class="math notranslate nohighlight">\(10 \times 1 + 1 = 11\)</span> parameters</p></li>
+<li><p>Total: <span class="math notranslate nohighlight">\(251\)</span> parameters</p></li>
+</ul>
+<p>You can experiment with:</p>
+<ul class="simple">
+<li><p>Changing the network architecture</p></li>
+<li><p>Trying different activation functions (e.g., <code class="docutils literal notranslate"><span class="pre">jax.nn.relu</span></code>, <code class="docutils literal notranslate"><span class="pre">jax.nn.gelu</span></code>, <code class="docutils literal notranslate"><span class="pre">jax.nn.sigmoid</span></code>, <code class="docutils literal notranslate"><span class="pre">jax.nn.elu</span></code>)</p></li>
+<li><p>Modifying the optimizer (e.g., different learning rates, learning rate schedules, momentum, other Optax optimizers)</p></li>
+<li><p>Experimenting with different weight initialization strategies</p></li>
+</ul>
+<p>Which combination gives you the lowest validation MSE?</p>
+</section>
+</div>
+<div class="solution dropdown admonition" id="jax_nn-solution-1">
+
+<p class="admonition-title">Solution to<a class="reference internal" href="#jax_nn_ex1"> Exercise 23.1</a></p>
+<section id="solution-content">
+<p>Let’s implement and test several strategies.</p>
+<p><strong>Strategy 1: Deeper Network Architecture</strong></p>
+<p>Let’s try a deeper network with 6 layers instead of 4, keeping total parameters ≤ 251:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Strategy 1: Deeper network (6 layers with k=6)</span>
+<span class="c1"># Layer sizes: 1→6→6→6→6→6→1</span>
+<span class="c1"># Parameters: (1×6+6) + 4×(6×6+6) + (6×1+1) = 12 + 4×42 + 7 = 187 &lt; 251</span>
+<span class="n">θ</span> <span class="o">=</span> <span class="n">initialize_params</span><span class="p">(</span><span class="n">param_key</span><span class="p">,</span> <span class="n">config</span><span class="p">)</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">initialize_deep_params</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">num_hidden</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
+    <span class="s2">&quot; Initialize parameters for deeper network with k=6. &quot;</span>
+    <span class="n">shapes</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="n">k</span><span class="p">)]</span> <span class="o">+</span> <span class="p">[(</span><span class="n">k</span><span class="p">,</span> <span class="n">k</span><span class="p">)]</span> <span class="o">*</span> <span class="p">(</span><span class="n">num_hidden</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="p">[(</span><span class="n">k</span><span class="p">,</span> <span class="mi">1</span><span class="p">)]</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">w_init</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">jax</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">))</span> <span class="o">*</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span> <span class="o">/</span> <span class="n">m</span><span class="p">)</span>
+
+    <span class="n">θ</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">w_shape</span> <span class="ow">in</span> <span class="n">shapes</span><span class="p">:</span>
+        <span class="n">m</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="n">w_shape</span>
+        <span class="n">key</span><span class="p">,</span> <span class="n">subkey</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+        <span class="n">layer_params</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">W</span><span class="o">=</span><span class="n">w_init</span><span class="p">(</span><span class="n">subkey</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">),</span> <span class="n">b</span><span class="o">=</span><span class="n">jnp</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="p">)))</span>
+        <span class="n">θ</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">layer_params</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">θ</span>
+
+<span class="n">θ_deep</span> <span class="o">=</span> <span class="n">initialize_deep_params</span><span class="p">(</span><span class="n">param_key</span><span class="p">)</span>
+
+<span class="c1"># Warmup</span>
+<span class="n">train_jax_optax_adam</span><span class="p">(</span><span class="n">θ_deep</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+
+<span class="c1"># Actual run</span>
+<span class="n">θ_deep</span> <span class="o">=</span> <span class="n">initialize_deep_params</span><span class="p">(</span><span class="n">param_key</span><span class="p">)</span>
+<span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
+<span class="n">θ_deep</span> <span class="o">=</span> <span class="n">train_jax_optax_adam</span><span class="p">(</span><span class="n">θ_deep</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="n">θ_deep</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;W&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">block_until_ready</span><span class="p">()</span>
+<span class="n">deep_runtime</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span>
+
+<span class="n">deep_mse</span> <span class="o">=</span> <span class="n">loss_fn</span><span class="p">(</span><span class="n">θ_deep</span><span class="p">,</span> <span class="n">x_validate</span><span class="p">,</span> <span class="n">y_validate</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Strategy 1 - Deeper network (6 layers, k=6)&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Total parameters: 187&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Runtime: </span><span class="si">{</span><span class="n">deep_runtime</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">s&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Validation MSE: </span><span class="si">{</span><span class="n">deep_mse</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Improvement over ADAM: </span><span class="si">{</span><span class="n">optax_adam_mse</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">deep_mse</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Strategy 1 - Deeper network (6 layers, k=6)
+  Total parameters: 187
+  Runtime: 0.96s
+  Validation MSE: 0.040882
+  Improvement over ADAM: 0.000192
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Strategy 2: Deeper Network + Learning Rate Schedule</strong></p>
+<p>Since the deeper network performed best, let’s combine it with the learning rate schedule:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Strategy 2: Deeper network + LR schedule</span>
+<span class="n">θ_deep</span> <span class="o">=</span> <span class="n">initialize_deep_params</span><span class="p">(</span><span class="n">param_key</span><span class="p">)</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">train_deep_with_schedule</span><span class="p">(</span>
+        <span class="n">θ</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span>
+        <span class="n">x</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+        <span class="n">y</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+        <span class="n">epochs</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">4000</span>
+    <span class="p">):</span>
+    <span class="s2">&quot; Train deeper network with learning rate schedule. &quot;</span>
+
+    <span class="n">schedule</span> <span class="o">=</span> <span class="n">optax</span><span class="o">.</span><span class="n">exponential_decay</span><span class="p">(</span>
+        <span class="n">init_value</span><span class="o">=</span><span class="mf">0.003</span><span class="p">,</span>
+        <span class="n">transition_steps</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
+        <span class="n">decay_rate</span><span class="o">=</span><span class="mf">0.5</span>
+    <span class="p">)</span>
+
+    <span class="n">solver</span> <span class="o">=</span> <span class="n">optax</span><span class="o">.</span><span class="n">adam</span><span class="p">(</span><span class="n">schedule</span><span class="p">)</span>
+    <span class="n">opt_state</span> <span class="o">=</span> <span class="n">solver</span><span class="o">.</span><span class="n">init</span><span class="p">(</span><span class="n">θ</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">update</span><span class="p">(</span><span class="n">_</span><span class="p">,</span> <span class="n">loop_state</span><span class="p">):</span>
+        <span class="n">θ</span><span class="p">,</span> <span class="n">opt_state</span> <span class="o">=</span> <span class="n">loop_state</span>
+        <span class="n">grad</span> <span class="o">=</span> <span class="n">loss_gradient</span><span class="p">(</span><span class="n">θ</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+        <span class="n">updates</span><span class="p">,</span> <span class="n">new_opt_state</span> <span class="o">=</span> <span class="n">solver</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">grad</span><span class="p">,</span> <span class="n">opt_state</span><span class="p">,</span> <span class="n">θ</span><span class="p">)</span>
+        <span class="n">θ_new</span> <span class="o">=</span> <span class="n">optax</span><span class="o">.</span><span class="n">apply_updates</span><span class="p">(</span><span class="n">θ</span><span class="p">,</span> <span class="n">updates</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">θ_new</span><span class="p">,</span> <span class="n">new_opt_state</span><span class="p">)</span>
+
+    <span class="n">initial_loop_state</span> <span class="o">=</span> <span class="n">θ</span><span class="p">,</span> <span class="n">opt_state</span>
+    <span class="n">θ_final</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">lax</span><span class="o">.</span><span class="n">fori_loop</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">epochs</span><span class="p">,</span> <span class="n">update</span><span class="p">,</span> <span class="n">initial_loop_state</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">θ_final</span>
+
+<span class="c1"># Warmup</span>
+<span class="n">train_deep_with_schedule</span><span class="p">(</span><span class="n">θ_deep</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+
+<span class="c1"># Actual run</span>
+<span class="n">θ_deep</span> <span class="o">=</span> <span class="n">initialize_deep_params</span><span class="p">(</span><span class="n">param_key</span><span class="p">)</span>
+<span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
+<span class="n">θ_deep_schedule</span> <span class="o">=</span> <span class="n">train_deep_with_schedule</span><span class="p">(</span><span class="n">θ_deep</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="n">θ_deep_schedule</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;W&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">block_until_ready</span><span class="p">()</span>
+<span class="n">deep_schedule_runtime</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span>
+
+<span class="n">deep_schedule_mse</span> <span class="o">=</span> <span class="n">loss_fn</span><span class="p">(</span><span class="n">θ_deep_schedule</span><span class="p">,</span> <span class="n">x_validate</span><span class="p">,</span> <span class="n">y_validate</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Strategy 2 - Deeper network + LR schedule&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Runtime: </span><span class="si">{</span><span class="n">deep_schedule_runtime</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">s&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Validation MSE: </span><span class="si">{</span><span class="n">deep_schedule_mse</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Improvement over ADAM: </span><span class="si">{</span><span class="n">optax_adam_mse</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">deep_schedule_mse</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Strategy 2 - Deeper network + LR schedule
+  Runtime: 0.99s
+  Validation MSE: 0.040878
+  Improvement over ADAM: 0.000196
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Strategy 3: ELU Activation</strong></p>
+<p>Let’s try ELU (Exponential Linear Unit), a modern activation function:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Strategy 3: ELU activation</span>
+<span class="n">θ</span> <span class="o">=</span> <span class="n">initialize_params</span><span class="p">(</span><span class="n">param_key</span><span class="p">,</span> <span class="n">config</span><span class="p">)</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">train_with_elu</span><span class="p">(</span>
+        <span class="n">θ</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span>
+        <span class="n">x</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+        <span class="n">y</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+        <span class="n">epochs</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">4000</span><span class="p">,</span>
+        <span class="n">learning_rate</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.001</span>
+    <span class="p">):</span>
+    <span class="s2">&quot; Train model using ELU activation and Optax ADAM optimizer. &quot;</span>
+
+    <span class="c1"># Modified forward pass with ELU</span>
+    <span class="nd">@jax</span><span class="o">.</span><span class="n">jit</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">f_elu</span><span class="p">(</span><span class="n">θ</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="o">*</span><span class="n">hidden</span><span class="p">,</span> <span class="n">last</span> <span class="o">=</span> <span class="n">θ</span>
+        <span class="k">for</span> <span class="n">layer</span> <span class="ow">in</span> <span class="n">hidden</span><span class="p">:</span>
+            <span class="n">W</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">layer</span><span class="p">[</span><span class="s1">&#39;W&#39;</span><span class="p">],</span> <span class="n">layer</span><span class="p">[</span><span class="s1">&#39;b&#39;</span><span class="p">]</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">elu</span><span class="p">(</span><span class="n">x</span> <span class="o">@</span> <span class="n">W</span> <span class="o">+</span> <span class="n">b</span><span class="p">)</span>
+        <span class="n">W</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">last</span><span class="p">[</span><span class="s1">&#39;W&#39;</span><span class="p">],</span> <span class="n">last</span><span class="p">[</span><span class="s1">&#39;b&#39;</span><span class="p">]</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">x</span> <span class="o">@</span> <span class="n">W</span> <span class="o">+</span> <span class="n">b</span>
+        <span class="k">return</span> <span class="n">x</span>
+
+    <span class="c1"># Modified loss function</span>
+    <span class="nd">@jax</span><span class="o">.</span><span class="n">jit</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">loss_fn_elu</span><span class="p">(</span><span class="n">θ</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">jnp</span><span class="o">.</span><span class="n">mean</span><span class="p">((</span><span class="n">f_elu</span><span class="p">(</span><span class="n">θ</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span> <span class="o">-</span> <span class="n">y</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+
+    <span class="n">loss_gradient_elu</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">jit</span><span class="p">(</span><span class="n">jax</span><span class="o">.</span><span class="n">grad</span><span class="p">(</span><span class="n">loss_fn_elu</span><span class="p">))</span>
+
+    <span class="n">solver</span> <span class="o">=</span> <span class="n">optax</span><span class="o">.</span><span class="n">adam</span><span class="p">(</span><span class="n">learning_rate</span><span class="p">)</span>
+    <span class="n">opt_state</span> <span class="o">=</span> <span class="n">solver</span><span class="o">.</span><span class="n">init</span><span class="p">(</span><span class="n">θ</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">update</span><span class="p">(</span><span class="n">_</span><span class="p">,</span> <span class="n">loop_state</span><span class="p">):</span>
+        <span class="n">θ</span><span class="p">,</span> <span class="n">opt_state</span> <span class="o">=</span> <span class="n">loop_state</span>
+        <span class="n">grad</span> <span class="o">=</span> <span class="n">loss_gradient_elu</span><span class="p">(</span><span class="n">θ</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+        <span class="n">updates</span><span class="p">,</span> <span class="n">new_opt_state</span> <span class="o">=</span> <span class="n">solver</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">grad</span><span class="p">,</span> <span class="n">opt_state</span><span class="p">,</span> <span class="n">θ</span><span class="p">)</span>
+        <span class="n">θ_new</span> <span class="o">=</span> <span class="n">optax</span><span class="o">.</span><span class="n">apply_updates</span><span class="p">(</span><span class="n">θ</span><span class="p">,</span> <span class="n">updates</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">θ_new</span><span class="p">,</span> <span class="n">new_opt_state</span><span class="p">)</span>
+
+    <span class="n">initial_loop_state</span> <span class="o">=</span> <span class="n">θ</span><span class="p">,</span> <span class="n">opt_state</span>
+    <span class="n">θ_final</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">lax</span><span class="o">.</span><span class="n">fori_loop</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">epochs</span><span class="p">,</span> <span class="n">update</span><span class="p">,</span> <span class="n">initial_loop_state</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">θ_final</span><span class="p">,</span> <span class="n">f_elu</span><span class="p">,</span> <span class="n">loss_fn_elu</span>
+
+<span class="c1"># Warmup run</span>
+<span class="n">θ_elu</span><span class="p">,</span> <span class="n">f_elu</span><span class="p">,</span> <span class="n">loss_fn_elu</span> <span class="o">=</span> <span class="n">train_with_elu</span><span class="p">(</span><span class="n">θ</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+
+<span class="c1"># Actual run</span>
+<span class="n">θ</span> <span class="o">=</span> <span class="n">initialize_params</span><span class="p">(</span><span class="n">param_key</span><span class="p">,</span> <span class="n">config</span><span class="p">)</span>
+<span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
+<span class="n">θ_elu</span><span class="p">,</span> <span class="n">f_elu</span><span class="p">,</span> <span class="n">loss_fn_elu</span> <span class="o">=</span> <span class="n">train_with_elu</span><span class="p">(</span><span class="n">θ</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="n">θ_elu</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;W&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">block_until_ready</span><span class="p">()</span>
+<span class="n">elu_runtime</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span>
+
+<span class="n">elu_mse</span> <span class="o">=</span> <span class="n">loss_fn_elu</span><span class="p">(</span><span class="n">θ_elu</span><span class="p">,</span> <span class="n">x_validate</span><span class="p">,</span> <span class="n">y_validate</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Strategy 3 - ELU activation&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Runtime: </span><span class="si">{</span><span class="n">elu_runtime</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">s&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Validation MSE: </span><span class="si">{</span><span class="n">elu_mse</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Improvement over ADAM: </span><span class="si">{</span><span class="n">optax_adam_mse</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">elu_mse</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Strategy 3 - ELU activation
+  Runtime: 0.81s
+  Validation MSE: 0.040994
+  Improvement over ADAM: 0.000081
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Strategy 4: SELU Activation</strong></p>
+<p>Let’s try SELU (Scaled Exponential Linear Unit), another modern activation function:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Strategy 4: SELU activation</span>
+<span class="n">θ</span> <span class="o">=</span> <span class="n">initialize_params</span><span class="p">(</span><span class="n">param_key</span><span class="p">,</span> <span class="n">config</span><span class="p">)</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">train_with_selu</span><span class="p">(</span>
+        <span class="n">θ</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span>
+        <span class="n">x</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+        <span class="n">y</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+        <span class="n">epochs</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">4000</span><span class="p">,</span>
+        <span class="n">learning_rate</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.001</span>
+    <span class="p">):</span>
+    <span class="s2">&quot; Train model using SELU activation and Optax ADAM optimizer. &quot;</span>
+
+    <span class="c1"># Modified forward pass with SELU</span>
+    <span class="nd">@jax</span><span class="o">.</span><span class="n">jit</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">f_selu</span><span class="p">(</span><span class="n">θ</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="o">*</span><span class="n">hidden</span><span class="p">,</span> <span class="n">last</span> <span class="o">=</span> <span class="n">θ</span>
+        <span class="k">for</span> <span class="n">layer</span> <span class="ow">in</span> <span class="n">hidden</span><span class="p">:</span>
+            <span class="n">W</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">layer</span><span class="p">[</span><span class="s1">&#39;W&#39;</span><span class="p">],</span> <span class="n">layer</span><span class="p">[</span><span class="s1">&#39;b&#39;</span><span class="p">]</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">selu</span><span class="p">(</span><span class="n">x</span> <span class="o">@</span> <span class="n">W</span> <span class="o">+</span> <span class="n">b</span><span class="p">)</span>
+        <span class="n">W</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">last</span><span class="p">[</span><span class="s1">&#39;W&#39;</span><span class="p">],</span> <span class="n">last</span><span class="p">[</span><span class="s1">&#39;b&#39;</span><span class="p">]</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">x</span> <span class="o">@</span> <span class="n">W</span> <span class="o">+</span> <span class="n">b</span>
+        <span class="k">return</span> <span class="n">x</span>
+
+    <span class="c1"># Modified loss function</span>
+    <span class="nd">@jax</span><span class="o">.</span><span class="n">jit</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">loss_fn_selu</span><span class="p">(</span><span class="n">θ</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">jnp</span><span class="o">.</span><span class="n">mean</span><span class="p">((</span><span class="n">f_selu</span><span class="p">(</span><span class="n">θ</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span> <span class="o">-</span> <span class="n">y</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+
+    <span class="n">loss_gradient_selu</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">jit</span><span class="p">(</span><span class="n">jax</span><span class="o">.</span><span class="n">grad</span><span class="p">(</span><span class="n">loss_fn_selu</span><span class="p">))</span>
+
+    <span class="n">solver</span> <span class="o">=</span> <span class="n">optax</span><span class="o">.</span><span class="n">adam</span><span class="p">(</span><span class="n">learning_rate</span><span class="p">)</span>
+    <span class="n">opt_state</span> <span class="o">=</span> <span class="n">solver</span><span class="o">.</span><span class="n">init</span><span class="p">(</span><span class="n">θ</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">update</span><span class="p">(</span><span class="n">_</span><span class="p">,</span> <span class="n">loop_state</span><span class="p">):</span>
+        <span class="n">θ</span><span class="p">,</span> <span class="n">opt_state</span> <span class="o">=</span> <span class="n">loop_state</span>
+        <span class="n">grad</span> <span class="o">=</span> <span class="n">loss_gradient_selu</span><span class="p">(</span><span class="n">θ</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+        <span class="n">updates</span><span class="p">,</span> <span class="n">new_opt_state</span> <span class="o">=</span> <span class="n">solver</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">grad</span><span class="p">,</span> <span class="n">opt_state</span><span class="p">,</span> <span class="n">θ</span><span class="p">)</span>
+        <span class="n">θ_new</span> <span class="o">=</span> <span class="n">optax</span><span class="o">.</span><span class="n">apply_updates</span><span class="p">(</span><span class="n">θ</span><span class="p">,</span> <span class="n">updates</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">θ_new</span><span class="p">,</span> <span class="n">new_opt_state</span><span class="p">)</span>
+
+    <span class="n">initial_loop_state</span> <span class="o">=</span> <span class="n">θ</span><span class="p">,</span> <span class="n">opt_state</span>
+    <span class="n">θ_final</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">lax</span><span class="o">.</span><span class="n">fori_loop</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">epochs</span><span class="p">,</span> <span class="n">update</span><span class="p">,</span> <span class="n">initial_loop_state</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">θ_final</span><span class="p">,</span> <span class="n">f_selu</span><span class="p">,</span> <span class="n">loss_fn_selu</span>
+
+<span class="c1"># Warmup run</span>
+<span class="n">θ_selu</span><span class="p">,</span> <span class="n">f_selu</span><span class="p">,</span> <span class="n">loss_fn_selu</span> <span class="o">=</span> <span class="n">train_with_selu</span><span class="p">(</span><span class="n">θ</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+
+<span class="c1"># Actual run</span>
+<span class="n">θ</span> <span class="o">=</span> <span class="n">initialize_params</span><span class="p">(</span><span class="n">param_key</span><span class="p">,</span> <span class="n">config</span><span class="p">)</span>
+<span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
+<span class="n">θ_selu</span><span class="p">,</span> <span class="n">f_selu</span><span class="p">,</span> <span class="n">loss_fn_selu</span> <span class="o">=</span> <span class="n">train_with_selu</span><span class="p">(</span><span class="n">θ</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="n">θ_selu</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;W&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">block_until_ready</span><span class="p">()</span>
+<span class="n">selu_runtime</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span>
+
+<span class="n">selu_mse</span> <span class="o">=</span> <span class="n">loss_fn_selu</span><span class="p">(</span><span class="n">θ_selu</span><span class="p">,</span> <span class="n">x_validate</span><span class="p">,</span> <span class="n">y_validate</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Strategy 4 - SELU activation&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Runtime: </span><span class="si">{</span><span class="n">selu_runtime</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">s&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Validation MSE: </span><span class="si">{</span><span class="n">selu_mse</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Improvement over ADAM: </span><span class="si">{</span><span class="n">optax_adam_mse</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">selu_mse</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Strategy 4 - SELU activation
+  Runtime: 0.84s
+  Validation MSE: 0.041209
+  Improvement over ADAM: -0.000135
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Results Summary</strong></p>
+<p>Let’s compare all strategies:</p>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Summary of all strategies</span>
+<span class="n">strategies_results</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;Strategy&#39;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="s1">&#39;Baseline (ADAM + tanh)&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;1. Deeper network (6 layers)&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;2. Deeper network + LR schedule&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;3. ELU activation&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;4. SELU activation&#39;</span>
+    <span class="p">],</span>
+    <span class="s1">&#39;Runtime (s)&#39;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="n">optax_adam_runtime</span><span class="p">,</span>
+        <span class="n">deep_runtime</span><span class="p">,</span>
+        <span class="n">deep_schedule_runtime</span><span class="p">,</span>
+        <span class="n">elu_runtime</span><span class="p">,</span>
+        <span class="n">selu_runtime</span>
+    <span class="p">],</span>
+    <span class="s1">&#39;Validation MSE&#39;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="n">optax_adam_mse</span><span class="p">,</span>
+        <span class="n">deep_mse</span><span class="p">,</span>
+        <span class="n">deep_schedule_mse</span><span class="p">,</span>
+        <span class="n">elu_mse</span><span class="p">,</span>
+        <span class="n">selu_mse</span>
+    <span class="p">],</span>
+    <span class="s1">&#39;Improvement&#39;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="mf">0.0</span><span class="p">,</span>
+        <span class="nb">float</span><span class="p">(</span><span class="n">optax_adam_mse</span> <span class="o">-</span> <span class="n">deep_mse</span><span class="p">),</span>
+        <span class="nb">float</span><span class="p">(</span><span class="n">optax_adam_mse</span> <span class="o">-</span> <span class="n">deep_schedule_mse</span><span class="p">),</span>
+        <span class="nb">float</span><span class="p">(</span><span class="n">optax_adam_mse</span> <span class="o">-</span> <span class="n">elu_mse</span><span class="p">),</span>
+        <span class="nb">float</span><span class="p">(</span><span class="n">optax_adam_mse</span> <span class="o">-</span> <span class="n">selu_mse</span><span class="p">)</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+
+<span class="n">df_strategies</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">strategies_results</span><span class="p">)</span>
+<span class="n">df_strategies</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">format</span><span class="p">({</span>
+    <span class="s1">&#39;Runtime (s)&#39;</span><span class="p">:</span> <span class="s1">&#39;</span><span class="si">{:.2f}</span><span class="s1">&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Validation MSE&#39;</span><span class="p">:</span> <span class="s1">&#39;</span><span class="si">{:.6f}</span><span class="s1">&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Improvement&#39;</span><span class="p">:</span> <span class="s1">&#39;</span><span class="si">{:.6f}</span><span class="s1">&#39;</span>
+<span class="p">})</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<div class="output text_html"><style type="text/css">
+</style>
+<table id="T_0a42e">
+  <thead>
+    <tr>
+      <th class="blank level0" >&nbsp;</th>
+      <th id="T_0a42e_level0_col0" class="col_heading level0 col0" >Strategy</th>
+      <th id="T_0a42e_level0_col1" class="col_heading level0 col1" >Runtime (s)</th>
+      <th id="T_0a42e_level0_col2" class="col_heading level0 col2" >Validation MSE</th>
+      <th id="T_0a42e_level0_col3" class="col_heading level0 col3" >Improvement</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th id="T_0a42e_level0_row0" class="row_heading level0 row0" >0</th>
+      <td id="T_0a42e_row0_col0" class="data row0 col0" >Baseline (ADAM + tanh)</td>
+      <td id="T_0a42e_row0_col1" class="data row0 col1" >0.74</td>
+      <td id="T_0a42e_row0_col2" class="data row0 col2" >0.041074</td>
+      <td id="T_0a42e_row0_col3" class="data row0 col3" >0.000000</td>
+    </tr>
+    <tr>
+      <th id="T_0a42e_level0_row1" class="row_heading level0 row1" >1</th>
+      <td id="T_0a42e_row1_col0" class="data row1 col0" >1. Deeper network (6 layers)</td>
+      <td id="T_0a42e_row1_col1" class="data row1 col1" >0.96</td>
+      <td id="T_0a42e_row1_col2" class="data row1 col2" >0.040882</td>
+      <td id="T_0a42e_row1_col3" class="data row1 col3" >0.000192</td>
+    </tr>
+    <tr>
+      <th id="T_0a42e_level0_row2" class="row_heading level0 row2" >2</th>
+      <td id="T_0a42e_row2_col0" class="data row2 col0" >2. Deeper network + LR schedule</td>
+      <td id="T_0a42e_row2_col1" class="data row2 col1" >0.99</td>
+      <td id="T_0a42e_row2_col2" class="data row2 col2" >0.040878</td>
+      <td id="T_0a42e_row2_col3" class="data row2 col3" >0.000196</td>
+    </tr>
+    <tr>
+      <th id="T_0a42e_level0_row3" class="row_heading level0 row3" >3</th>
+      <td id="T_0a42e_row3_col0" class="data row3 col0" >3. ELU activation</td>
+      <td id="T_0a42e_row3_col1" class="data row3 col1" >0.81</td>
+      <td id="T_0a42e_row3_col2" class="data row3 col2" >0.040994</td>
+      <td id="T_0a42e_row3_col3" class="data row3 col3" >0.000081</td>
+    </tr>
+    <tr>
+      <th id="T_0a42e_level0_row4" class="row_heading level0 row4" >4</th>
+      <td id="T_0a42e_row4_col0" class="data row4 col0" >4. SELU activation</td>
+      <td id="T_0a42e_row4_col1" class="data row4 col1" >0.84</td>
+      <td id="T_0a42e_row4_col2" class="data row4 col2" >0.041209</td>
+      <td id="T_0a42e_row4_col3" class="data row4 col3" >-0.000135</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<p>The experimental results reveal several lessons:</p>
+<ol class="arabic simple">
+<li><p>Architecture matters: A deeper, narrower network outperformed the
+baseline network, despite using fewer parameters (187 vs 251).</p></li>
+<li><p>Combining strategies: Combining the deeper architecture with a learning
+rate schedule yielded the best results, showing that synergistic improvements
+are possible.</p></li>
+</ol>
+</section>
+</div>
 </section>
 </section>
 
@@ -1372,6 +1768,11 @@ Final MSE on validation data = 0.041074
    23. Neural Network Regression with JAX
   </a>
  </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ifp_dl.html">
+   24. Policy Gradient-Based Optimal Savings
+  </a>
+ </li>
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
@@ -1381,17 +1782,17 @@ Final MSE on validation data = 0.041074
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   24. Troubleshooting
+   25. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   25. References
+   26. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   26. Execution Statistics
+   27. Execution Statistics
   </a>
  </li>
 </ul>
