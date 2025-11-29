@@ -438,14 +438,41 @@ def initialize_training(config: Config):
 ```
 
 ```{code-cell} ipython3
-def train_network(config, params, opt_state, optimizer):
+def train_network(config, params, opt_state, optimizer, loss_fn, print_interval=100):
+    """
+    Train a neural network using policy gradient ascent.
+
+    Parameters:
+    -----------
+    config : Config
+        Configuration object with training parameters
+    params : pytree
+        Initial network parameters
+    opt_state : pytree
+        Initial optimizer state
+    optimizer : optax optimizer
+        The optimizer to use
+    loss_fn : callable
+        Loss function that takes params as first argument and returns loss
+    print_interval : int
+        How often to print progress (default: 100)
+
+    Returns:
+    --------
+    params : pytree
+        Best parameters found during training
+    value_history : list
+        History of lifetime values during training
+    best_value : float
+        Best lifetime value achieved
+    """
     value_history = []
     best_value = -jnp.inf
     best_params = params
 
     for i in range(config.epochs):
         # Compute value and gradients at existing parameterization
-        loss, grads = jax.value_and_grad(loss_function)(params, model, config.path_length)
+        loss, grads = jax.value_and_grad(loss_fn)(params)
         lifetime_value = - loss
         value_history.append(lifetime_value)
         # Track best parameters
@@ -455,7 +482,7 @@ def train_network(config, params, opt_state, optimizer):
         # Update parameters using optimizer
         updates, opt_state = optimizer.update(grads, opt_state)
         params = optax.apply_updates(params, updates)
-        if i % 100 == 0:
+        if i % print_interval == 0:
             print(f"Iteration {i}: Value = {lifetime_value:.4f}")
 
     # Use best parameters instead of final
@@ -468,7 +495,13 @@ Now let's train the network.
 ```{code-cell} ipython3
 config = Config()
 initial_params, opt_state, optimizer = initialize_training(config)
-params, value_history, best_value = train_network(config, initial_params, opt_state, optimizer)
+
+# Create a loss function that has params as the only argument
+loss_fn = lambda params: loss_function(params, model, config.path_length)
+
+params, value_history, best_value = train_network(
+    config, initial_params, opt_state, optimizer, loss_fn
+)
 print(f"\nBest value: {best_value:.4f}")
 print(f"Final value: {value_history[-1]:.4f}")
 ```
@@ -843,39 +876,17 @@ Train the network using policy gradient ascent.
 We use a fixed random key at each epoch for variance reduction.
 
 ```{code-cell} ipython3
-ifp_value_history = []
-best_ifp_value = -jnp.inf
-best_ifp_params = ifp_params
-fixed_key = random.PRNGKey(config.seed)
-
 print("Training IFP model with deep learning...\n")
 
-for i in range(config.epochs):
+# Create a loss function that has params as the only argument
+fixed_key = random.PRNGKey(config.seed)
+ifp_loss_fn = lambda params: loss_function_ifp(
+    params, ifp, config.path_length, config.num_paths, fixed_key
+)
 
-    # Compute loss and gradients
-    loss, grads = jax.value_and_grad(loss_function_ifp)(
-        ifp_params, ifp,
-        config.path_length,
-        config.num_paths,
-        fixed_key
-    )
-    lifetime_value = -loss
-    ifp_value_history.append(lifetime_value)
-
-    # Track best parameters
-    if lifetime_value > best_ifp_value:
-        best_ifp_value = lifetime_value
-        best_ifp_params = ifp_params
-
-    # Update parameters
-    updates, ifp_opt_state = ifp_optimizer.update(grads, ifp_opt_state)
-    ifp_params = optax.apply_updates(ifp_params, updates)
-
-    if i % 50 == 0:
-        print(f"Iteration {i}: Value = {lifetime_value:.4f}")
-
-# Use best parameters
-ifp_params = best_ifp_params
+ifp_params, ifp_value_history, best_ifp_value = train_network(
+    config, ifp_params, ifp_opt_state, ifp_optimizer, ifp_loss_fn, print_interval=50
+)
 print(f"\nBest value: {best_ifp_value:.4f}")
 print(f"Final value: {ifp_value_history[-1]:.4f}")
 ```
