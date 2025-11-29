@@ -259,6 +259,7 @@ class Config(NamedTuple):
     path_length: int = 320                   # Length of each consumption path
     layer_sizes: tuple = (1, 6, 6, 6, 6, 6, 1)   # Network layer sizes
     learning_rate: float = 0.001             # Constant learning rate
+    num_paths: int = 1                       # Number of paths to average over (for stochastic case)
 ```
 
 We use a class called `LayerParams` to store parameters representing a single
@@ -424,15 +425,13 @@ We use the Optax minimizer with [Adam](https://en.wikipedia.org/wiki/Stochastic_
 ```{code-cell} ipython3
 def initialize_training(config: Config):
 
-    seed, epochs, path_length, layer_sizes, learning_rate = config 
-
     optimizer = optax.chain(
         optax.clip_by_global_norm(1.0),  # Gradient clipping for stability
-        optax.adam(learning_rate=learning_rate)
+        optax.adam(learning_rate=config.learning_rate)
     )
 
-    key = random.PRNGKey(seed)
-    params = initialize_network(key, layer_sizes)
+    key = random.PRNGKey(config.seed)
+    params = initialize_network(key, config.layer_sizes)
     opt_state = optimizer.init(params)
 
     return params, opt_state, optimizer
@@ -443,11 +442,10 @@ def train_network(config, params, opt_state, optimizer):
     value_history = []
     best_value = -jnp.inf
     best_params = params
-    seed, epochs, path_length, layer_sizes, learning_rate = config 
 
-    for i in range(epochs):
+    for i in range(config.epochs):
         # Compute value and gradients at existing parameterization
-        loss, grads = jax.value_and_grad(loss_function)(params, model, path_length)
+        loss, grads = jax.value_and_grad(loss_function)(params, model, config.path_length)
         lifetime_value = - loss
         value_history.append(lifetime_value)
         # Track best parameters
@@ -820,22 +818,14 @@ Now let's set up and train the network.
 We use the same `ifp` instance that was created for the EGM solution above.
 
 ```{code-cell} ipython3
-stochastic_config = {
-    'seed': 1234,
-    'epochs': 400,
-    'path_length': 320,
-    'num_paths': 500,  # Number of paths to average over
-    'learning_rate': 0.001
-}
+config = Config(seed=1234, num_paths=500)
 ```
 
 We initialize parameters.
 
 ```{code-cell} ipython3
-seed = stochastic_config['seed']
-layer_sizes = (1, 6, 6, 6, 6, 6, 1)
-key = random.PRNGKey(seed)
-ifp_params = initialize_network(key, layer_sizes)
+key = random.PRNGKey(config.seed)
+ifp_params = initialize_network(key, config.layer_sizes)
 ```
 
 Let's set up the optimizer.
@@ -843,7 +833,7 @@ Let's set up the optimizer.
 ```{code-cell} ipython3
 ifp_optimizer = optax.chain(
     optax.clip_by_global_norm(1.0),  # Gradient clipping for stability
-    optax.adam(learning_rate=stochastic_config['learning_rate'])
+    optax.adam(learning_rate=config.learning_rate)
 )
 ifp_opt_state = ifp_optimizer.init(ifp_params)
 ```
@@ -856,17 +846,17 @@ We use a fixed random key at each epoch for variance reduction.
 ifp_value_history = []
 best_ifp_value = -jnp.inf
 best_ifp_params = ifp_params
-fixed_key = random.PRNGKey(stochastic_config['seed'])
+fixed_key = random.PRNGKey(config.seed)
 
 print("Training IFP model with deep learning...\n")
 
-for i in range(stochastic_config['epochs']):
+for i in range(config.epochs):
 
     # Compute loss and gradients
     loss, grads = jax.value_and_grad(loss_function_ifp)(
         ifp_params, ifp,
-        stochastic_config['path_length'],
-        stochastic_config['num_paths'],
+        config.path_length,
+        config.num_paths,
         fixed_key
     )
     lifetime_value = -loss
