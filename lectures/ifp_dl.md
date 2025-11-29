@@ -26,11 +26,21 @@ Each policy is represented as a fully connected feed forward neural network.
 We begin with a cake eating problem with a known analytical solution.
 
 Then we shift to an income fluctuation problem where we can compute an optimal
-policy easily with the endogenous grid method.
+policy easily with the endogenous grid method (EGM).
 
 We do this first and then try to learn the same policy with deep learning.
 
-Throughout, utility takes the CRRA form $u(c) = c^{1-\gamma} / (1-\gamma)$ and the discount factor is $\beta$.
+The technique we will use is called [policy gradient
+ascent](https://en.wikipedia.org/wiki/Policy_gradient_method).
+
+This method is popular in the machine learning community for solving
+high-dimensional dynamic programming problems.
+
+Since the income fluctuation problem is low-dimensional, the policy gradient
+method will not be superior to EGM.
+
+However, by working through this lecture, we can learn the basic principles of
+policy gradient methods and seem them work in practice.
 
 We'll use the following libraries
 
@@ -52,18 +62,146 @@ from functools import partial
 from typing import NamedTuple
 ```
 
+## Theory
+
+Let's describe the income fluctuation problem and the ideas behind policy
+gradient ascent.
+
+
+### Household problem
+
+A household chooses a consumption plan $\{c_t\}_{t \geq 0}$ to maximize
+
+$$
+    \mathbb{E} \, \sum_{t=0}^{\infty} \beta^t u(c_t)
+$$
+
+subject to
+
+$$
+    a_{t+1} = R (a_t - c_t) + Y_{t+1},
+    \quad c_t \geq 0, \quad a_t \geq 0, \quad t = 0, 1, \ldots
+$$
+
+Here $Y_t$ is labor income, which is IID and normally distributed:
+
+$$
+Z_t \sim N(m, v), \quad Y_t = \exp(Z_t)
+$$
+
+We assume:
+
+1. $\beta R < 1$
+1. $u$ is CRRA with parameter $\gamma$
+
+We will be interested in the value of alternative policy functions for this
+household.
+
+Since the shocks are IID, and hence offer no predictive content for future shocks, 
+optimal policies will depend only on current assets.
+
+The next section discusses policies and their values in more detail.
+
+
+### Lifetime Value and Optimization
+
+A **policy** is a function $\sigma$ from $\mathbb{R}_+$ to itself,
+where $\sigma(a)$ is understood as the amount consumed under policy $\sigma$
+given current state $a$.
+
+
+A **feasible policy** is a
+([measurable](https://en.wikipedia.org/wiki/Measurable_function)) policy
+satisfying $0 \leq \sigma(a) \leq a$ for all $a$ (no borrowing).
+
+We let $\Sigma$ denote the set of all feasible policies.
+
+We let $v_\sigma(a)$ be the lifetime value of following policy
+$\sigma$, given initial assets $a$.
+
+That is,
+
+$$
+    v_\sigma(a) = \mathbb{E} \sum_{t \geq 0} \beta^t u(c_t)
+$$
+
+where 
+
+* $c_t = \sigma(a_t)$
+* $a_0 = a$
+* $a_{t+1} = R (a_t - \sigma(a_t)) + Y_{t+1}$ for $t = 0, 1,\ldots$
+
+
+A policy $\sigma$ is called **optimal** if $v_s(a) \leq v_\sigma(a)$ for all
+asset levels $a$ and all alternative policies $s \in \Sigma$.
+
+The function $v^*$ defined by $v^*(a) := \sup_{\sigma \in \Sigma} v_\sigma(a)$
+is called the **value function**.
+
+Using this defintion, we can alternatively say that a policy $\sigma$ is optimal
+if and only if $v_\sigma = v^*$.
+
+We know that we can find an optimal policy using dynamic programming and, in
+particular, the endogenous grid method (EGM).
+
+Now let's look at another method.
+
+
+### The policy gradient approach
+
+The policy gradient approach starts by fixing an initial distribution $F$ and
+trying to solve
+
+$$
+    \max_{\sigma \in \Sigma} \int v_\sigma(a) F(d a)
+$$
+
+Working with this alternative objective transforms a dynamic programming problem
+into a regular optimization with a real-valued objective (the right-hand side of
+the last display).
+
+Here we'll focus on the case where $F$ concentrates on a single point $a_0$, so
+the objective becomes
+
+$$
+    \max_{\sigma \in \Sigma} M(a_0)
+    \quad \text{where} \quad
+    M(a) := v_\sigma(a)
+$$
+
+From here the approach is
+
+1. Replace $\Sigma$ with $\{\sigma(\cdot, \theta) \,:\, \theta \in \Theta\}$
+    where $\sigma(\cdot, \theta)$ is an ANN
+2. Replace the objective function with $M(\theta) := \int v_{\sigma(\cdot, \theta)} (a)$
+3. Replace $M$ with a Monte Carlo aproximation $\hat M$
+4. Use gradient ascent to maximize $\hat M(\theta)$ over $\theta$.
+
+In the last step we do
+
+$$
+    \theta_{n+1} = \theta_n + \lambda_n \nabla \hat M(\theta_n)
+$$
+
+We compute $\hat M$ via
+
+$$
+    \hat M(\theta)
+    = \frac{1}{N}\sum_{i=1}^N \sum_{t=0}^{T-1} \beta^t u(\sigma(a^i_t, \theta)) 
+$$
+
+Here $a^i_0$ is fixed at the given value $a_0$ for all $i$ and
+
+$$
+    a^i_{t+1} = R (a^i_t - \sigma(a^i_t, \theta)) + Y^i_{t+1}
+$$
 
 ## Cake Eating Case
 
-With $R$ as the gross interest rate, assets evolve according to
+We will start by tackling the simple case without labor income, so that $Y_t$ is
+always zero and $a_{t+1} = R(a_t - c_t)$
 
-$$
-    a' = R (a - c)
-$$
-
-To ensure stability we need $\beta R^{1-\gamma} < 1$.
-
-For this model, it is known that the optimal policy is $c = \kappa a$, where
+For this ``cake-eating'' model, it is known that the optimal policy is $c = \kappa a$, where
 
 $$
     \kappa := 1 - [\beta R^{1-\gamma}]^{1/\gamma}
@@ -71,7 +209,7 @@ $$
 
 We use this known exact solution to check our numerical methods.
 
-Initial assets $a_0$ is fixed at 1.0, so the objective function is
+For the policy gradient problem, initial assets $a_0$ is fixed at 1.0, so the objective function is
 
 $$
     \max_{\sigma \in \Sigma} v_\sigma(a_0)
@@ -84,7 +222,7 @@ Here
 * $v_\sigma(a)$ is the lifetime value of following stationary policy $\sigma$, given initial assets $a$.
 
 
-## Set up
+### Set up
 
 We use a class called `CakeEatingModel` to store model parameters.
 
@@ -97,6 +235,30 @@ class CakeEatingModel(NamedTuple):
     γ: float = 1.5
     β: float = 0.96
     R: float = 1.01
+```
+
+We use CRRA utility.
+
+```{code-cell} ipython3
+def u(c, γ):
+    """ Utility function. """
+    c = jnp.maximum(c, 1e-10)
+    return c**(1 - γ) / (1 - γ)
+```
+
+We store some fixed values that form part of the network training configuration.
+
+```{code-cell} ipython3
+class Config(NamedTuple):
+    """
+    Configuration and parameters for training the neural network.
+
+    """
+    seed: int = 42                           # Seed for network initialization
+    epochs: int = 400                        # No of training epochs
+    path_length: int = 320                   # Length of each consumption path
+    layer_sizes: tuple = (1, 6, 6, 6, 6, 6, 1)   # Network layer sizes
+    learning_rate: float = 0.001             # Constant learning rate
 ```
 
 We use a class called `LayerParams` to store parameters representing a single
@@ -112,21 +274,6 @@ class LayerParams(NamedTuple):
     b: jnp.ndarray     # biases
 ```
 
-The next class stores some fixed values that form part of the network training
-configuration.
-
-```{code-cell} ipython3
-class Config:
-    """
-    Configuration and parameters for training the neural network.
-
-    """
-    seed = 42                           # Seed for network initialization
-    epochs = 400                        # No of training epochs
-    path_length = 320                   # Length of each consumption path
-    layer_sizes = 1, 6, 6, 6, 6, 6, 1   # Network layer sizes
-    learning_rate = 0.001               # Constant learning rate
-```
 
 The following function initializes a single layer of the network using Le Cun
 initialization.
@@ -197,15 +344,6 @@ def forward(params, a):
     return consumption_rate
 ```
 
-We use CRRA utility.
-
-```{code-cell} ipython3
-def u(c, γ):
-    """ Utility function. """
-    c = jnp.maximum(c, 1e-10)
-    return c**(1 - γ) / (1 - γ)
-```
-
 The next function approximates lifetime value associated with a given policy, as
 represented by the parameters of a neural network.
 
@@ -253,16 +391,13 @@ def loss_function(params, model, path_length):
 ```
 
 
-## Train and solve 
+### Train and solve 
 
 First we create an instance of the model and unpack names
 
 ```{code-cell} ipython3
 model = CakeEatingModel()
 γ, β, R = model.γ, model.β, model.R
-seed, epochs = Config.seed, Config.epochs
-path_length = Config.path_length
-layer_sizes = Config.layer_sizes
 ```
 
 We test stability.
@@ -277,57 +412,65 @@ expressions.
 ```{code-cell} ipython3
 
 κ = 1 - (β * R**(1 - γ))**(1/γ)
-print(f"Optimal consumption rate = {κ}.\n")
+print(f"Optimal consumption rate = {κ:.4f}.\n")
 v_max = κ**(-γ) * u(1.0, γ)
-print(f"Theoretical maximum lifetime value = {v_max}.\n")
+print(f"Theoretical maximum lifetime value = {v_max:.4f}.\n")
 ```
 
-Let's now set up the Optax minimizer, using
-[Adam](https://en.wikipedia.org/wiki/Stochastic_gradient_descent#Adam) with a constant learning rate.
+We initialize the parameters in the neural network and the state of the optimizer.
+
+We use the Optax minimizer with [Adam](https://en.wikipedia.org/wiki/Stochastic_gradient_descent#Adam) with a constant learning rate.
 
 ```{code-cell} ipython3
-optimizer = optax.chain(
-    optax.clip_by_global_norm(1.0),  # Gradient clipping for stability
-    optax.adam(learning_rate=Config.learning_rate)
-)
+def initialize_training(config: Config):
+
+    seed, epochs, path_length, layer_sizes, learning_rate = config 
+
+    optimizer = optax.chain(
+        optax.clip_by_global_norm(1.0),  # Gradient clipping for stability
+        optax.adam(learning_rate=learning_rate)
+    )
+
+    key = random.PRNGKey(seed)
+    params = initialize_network(key, layer_sizes)
+    opt_state = optimizer.init(params)
+
+    return params, opt_state, optimizer
 ```
 
-We initialize the parameters in the neural network and the state of the
-optimizer.
-
 ```{code-cell} ipython3
-key = random.PRNGKey(seed)
-params = initialize_network(key, layer_sizes)
-opt_state = optimizer.init(params)
+def train_network(config, params, opt_state, optimizer):
+    value_history = []
+    best_value = -jnp.inf
+    best_params = params
+    seed, epochs, path_length, layer_sizes, learning_rate = config 
+
+    for i in range(epochs):
+        # Compute value and gradients at existing parameterization
+        loss, grads = jax.value_and_grad(loss_function)(params, model, path_length)
+        lifetime_value = - loss
+        value_history.append(lifetime_value)
+        # Track best parameters
+        if lifetime_value > best_value:
+            best_value = lifetime_value
+            best_params = params
+        # Update parameters using optimizer
+        updates, opt_state = optimizer.update(grads, opt_state)
+        params = optax.apply_updates(params, updates)
+        if i % 100 == 0:
+            print(f"Iteration {i}: Value = {lifetime_value:.4f}")
+
+    # Use best parameters instead of final
+    params = best_params
+    return params, value_history, best_value
 ```
 
 Now let's train the network.
 
 ```{code-cell} ipython3
-value_history = []
-best_value = -jnp.inf
-best_params = params
-for i in range(epochs):
-
-    # Compute value and gradients at existing parameterization
-    loss, grads = jax.value_and_grad(loss_function)(params, model, path_length)
-    lifetime_value = - loss
-    value_history.append(lifetime_value)
-
-    # Track best parameters
-    if lifetime_value > best_value:
-        best_value = lifetime_value
-        best_params = params
-
-    # Update parameters using optimizer
-    updates, opt_state = optimizer.update(grads, opt_state)
-    params = optax.apply_updates(params, updates)
-
-    if i % 100 == 0:
-        print(f"Iteration {i}: Value = {lifetime_value:.4f}")
-
-# Use best parameters instead of final
-params = best_params
+config = Config()
+initial_params, opt_state, optimizer = initialize_training(config)
+params, value_history, best_value = train_network(config, initial_params, opt_state, optimizer)
 print(f"\nBest value: {best_value:.4f}")
 print(f"Final value: {value_history[-1]:.4f}")
 ```
@@ -364,45 +507,40 @@ ax.legend()
 plt.show()
 ```
 
+### Simulation
+
 Let's have a look at paths for consumption and assets under the learned and
 optimal policies.
-
-+++
 
 The figures below show that the learned policies are close to optimal.
 
 ```{code-cell} ipython3
-def simulate_consumption_path(params, T=120):
-    """
-    Compute consumption path using neural network policy identified by params.
-
-    """
-    a_sim = [1.0]   # 1.0 is the initial assets
-    c_sim = []
-    a_opt = [1.0]
-    c_opt = []
-
-    a = 1.0
+def simulate_consumption_path(
+        params,   # ANN-based policy identified by params
+        a_0,      # Initial condition
+        T=120     # Simulation length
+    ):
+    # Simulate consumption and asset paths using ANN
+    a = a_0
+    a_sim, c_sim = [a], [] 
     for t in range(T):
-
-        # Update policy path - forward returns consumption rate
+        # Update policy path 
         c = forward(params, a) * a
         c_sim.append(float(c))
         a = R * (a - c)
         a_sim.append(float(a))
-
         if a <= 1e-10:
             break
 
-    a = 1.0
+    # Simulate consumption and asset paths using optimal policy
+    a = a_0
+    a_opt, c_opt = [a], [] 
     for t in range(T):
-
         # Update optimal path
         c = κ * a
         c_opt.append(c)
         a = R * (a - c)
         a_opt.append(a)
-
         if a <= 1e-10:
             break
 
@@ -411,7 +549,7 @@ def simulate_consumption_path(params, T=120):
 
 ```{code-cell} ipython3
 # Simulate and plot path
-a_sim, c_sim, a_opt, c_opt = simulate_consumption_path(params)
+a_sim, c_sim, a_opt, c_opt = simulate_consumption_path(params, a_0=1.0)
 ```
 
 ```{code-cell} ipython3
@@ -435,42 +573,12 @@ plt.tight_layout()
 plt.show()
 ```
 
-```{code-cell} ipython3
 
-```
-
-
-## Extension: stochastic labor income with IID shocks
+## Stochastic labor income 
 
 Now let's solve a model with IID stochastic labor income using deep learning.
 
-### Set-Up
-
-A household chooses a consumption plan $\{c_t\}_{t \geq 0}$ to maximize
-
-$$
-\mathbb{E} \, \sum_{t=0}^{\infty} \beta^t u(c_t)
-$$
-
-subject to
-
-$$
-a_{t+1} = R (a_t - c_t) + Y_{t+1}, \quad c_t \geq 0, \quad a_t \geq 0, \quad t = 0, 1, \ldots
-$$
-
-Here $Y_t$ is labor income, which is IID and normally distributed:
-
-$$
-Z_t \sim N(m, v), \quad Y_t = \exp(Z_t)
-$$
-
-Since the shocks are IID, the optimal policy depends only on current assets $a$, not on the shock history.
-
-We assume:
-
-1. $\beta R < 1$
-1. $u$ is CRRA with parameter $\gamma$
-
+The set up was described at the start of this lecture.
 
 ### JAX Implementation
 
@@ -724,6 +832,8 @@ stochastic_config = {
 We initialize parameters.
 
 ```{code-cell} ipython3
+seed = stochastic_config['seed']
+layer_sizes = (1, 6, 6, 6, 6, 6, 1)
 key = random.PRNGKey(seed)
 ifp_params = initialize_network(key, layer_sizes)
 ```
