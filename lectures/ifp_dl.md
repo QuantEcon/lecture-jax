@@ -254,12 +254,12 @@ class Config(NamedTuple):
     Configuration and parameters for training the neural network.
 
     """
-    seed: int = 42                           # Seed for network initialization
+    seed: int = 1234                         # Seed for network initialization
     epochs: int = 400                        # No of training epochs
     path_length: int = 320                   # Length of each consumption path
-    layer_sizes: tuple = (1, 6, 6, 6, 6, 6, 1)   # Network layer sizes
+    layer_sizes: tuple = (1, 6, 6, 6, 1)     # Network layer sizes
     learning_rate: float = 0.001             # Constant learning rate
-    num_paths: int = 1                       # Number of paths to average over (for stochastic case)
+    num_paths: int = 500                     # Number of paths to average over 
 ```
 
 We use a class called `LayerParams` to store parameters representing a single
@@ -418,54 +418,28 @@ v_max = κ**(-γ) * u(1.0, γ)
 print(f"Theoretical maximum lifetime value = {v_max:.4f}.\n")
 ```
 
-We initialize the parameters in the neural network and the state of the optimizer.
-
-We use the Optax minimizer with [Adam](https://en.wikipedia.org/wiki/Stochastic_gradient_descent#Adam) with a constant learning rate.
+Here's a function to solve the problem by gradient ascent.
 
 ```{code-cell} ipython3
-def initialize_training(config: Config):
+def train_network(
+        config: Config,              # Configuration object with training parameters
+        loss_fn: callable,            # Loss function taking params and returning loss
+        print_interval: int = 100     # How often to print progress
+    ):
+    """Train a neural network using policy gradient ascent."""
 
+    # Initialize network parameters
+    key = random.PRNGKey(config.seed)
+    params = initialize_network(key, config.layer_sizes)
+
+    # Set up optimizer
     optimizer = optax.chain(
         optax.clip_by_global_norm(1.0),  # Gradient clipping for stability
         optax.adam(learning_rate=config.learning_rate)
     )
-
-    key = random.PRNGKey(config.seed)
-    params = initialize_network(key, config.layer_sizes)
     opt_state = optimizer.init(params)
 
-    return params, opt_state, optimizer
-```
-
-```{code-cell} ipython3
-def train_network(config, params, opt_state, optimizer, loss_fn, print_interval=100):
-    """
-    Train a neural network using policy gradient ascent.
-
-    Parameters:
-    -----------
-    config : Config
-        Configuration object with training parameters
-    params : pytree
-        Initial network parameters
-    opt_state : pytree
-        Initial optimizer state
-    optimizer : optax optimizer
-        The optimizer to use
-    loss_fn : callable
-        Loss function that takes params as first argument and returns loss
-    print_interval : int
-        How often to print progress (default: 100)
-
-    Returns:
-    --------
-    params : pytree
-        Best parameters found during training
-    value_history : list
-        History of lifetime values during training
-    best_value : float
-        Best lifetime value achieved
-    """
+    # Training loop
     value_history = []
     best_value = -jnp.inf
     best_params = params
@@ -493,15 +467,12 @@ def train_network(config, params, opt_state, optimizer, loss_fn, print_interval=
 Now let's train the network.
 
 ```{code-cell} ipython3
-config = Config()
-initial_params, opt_state, optimizer = initialize_training(config)
+config = Config(num_paths=1)
 
 # Create a loss function that has params as the only argument
 loss_fn = lambda params: loss_function(params, model, config.path_length)
 
-params, value_history, best_value = train_network(
-    config, initial_params, opt_state, optimizer, loss_fn
-)
+params, value_history, best_value = train_network(config, loss_fn)
 print(f"\nBest value: {best_value:.4f}")
 print(f"Final value: {value_history[-1]:.4f}")
 ```
@@ -529,8 +500,8 @@ c_learned = consumption_rate * a_grid
 c_optimal = κ * a_grid
 
 fig, ax = plt.subplots()
-ax.plot(a_grid, c_learned, linestyle='--', lw=4, label='learned policy')
 ax.plot(a_grid, c_optimal, lw=2, label='optimal')
+ax.plot(a_grid, c_learned, linestyle='--', lw=4, alpha=0.6, label='DL policy')
 ax.set_xlabel('assets')
 ax.set_ylabel('consumption')
 ax.set_title('Consumption policy')
@@ -764,7 +735,7 @@ Plot the optimal consumption policy:
 
 ```{code-cell} ipython3
 fig, ax = plt.subplots()
-ax.plot(a_egm, c_egm, 'b-', lw=2, label='EGM solution')
+ax.plot(a_egm, c_egm, lw=2, label='EGM solution')
 ax.set_xlabel('assets')
 ax.set_ylabel('consumption')
 ax.set_title('Optimal consumption policy (IFP model, EGM)')
@@ -851,41 +822,18 @@ Now let's set up and train the network.
 We use the same `ifp` instance that was created for the EGM solution above.
 
 ```{code-cell} ipython3
-config = Config(seed=1234, num_paths=500)
-```
-
-We initialize parameters.
-
-```{code-cell} ipython3
+config = Config()
 key = random.PRNGKey(config.seed)
-ifp_params = initialize_network(key, config.layer_sizes)
-```
 
-Let's set up the optimizer.
-
-```{code-cell} ipython3
-ifp_optimizer = optax.chain(
-    optax.clip_by_global_norm(1.0),  # Gradient clipping for stability
-    optax.adam(learning_rate=config.learning_rate)
-)
-ifp_opt_state = ifp_optimizer.init(ifp_params)
-```
-
-Train the network using policy gradient ascent.
-
-We use a fixed random key at each epoch for variance reduction.
-
-```{code-cell} ipython3
 print("Training IFP model with deep learning...\n")
 
-# Create a loss function that has params as the only argument
-fixed_key = random.PRNGKey(config.seed)
+# Set up loss function to pass to train_network
 ifp_loss_fn = lambda params: loss_function_ifp(
-    params, ifp, config.path_length, config.num_paths, fixed_key
+    params, ifp, config.path_length, config.num_paths, key
 )
 
 ifp_params, ifp_value_history, best_ifp_value = train_network(
-    config, ifp_params, ifp_opt_state, ifp_optimizer, ifp_loss_fn, print_interval=50
+    config, ifp_loss_fn, print_interval=50
 )
 print(f"\nBest value: {best_ifp_value:.4f}")
 print(f"Final value: {ifp_value_history[-1]:.4f}")
@@ -895,7 +843,7 @@ Plot the learning progress.
 
 ```{code-cell} ipython3
 fig, ax = plt.subplots()
-ax.plot(ifp_value_history, 'b-', linewidth=2)
+ax.plot(ifp_value_history, linewidth=2)
 ax.set_xlabel('iteration')
 ax.set_ylabel('policy value')
 ax.set_title('Learning progress')
@@ -913,7 +861,7 @@ c_dl = consumption_rate_dl * a_grid_dl
 
 fig, ax = plt.subplots()
 ax.plot(a_egm, c_egm, lw=2, label='EGM solution')
-ax.plot(a_grid_dl, c_dl, lw=2, label='DL solution')
+ax.plot(a_grid_dl, c_dl, linestyle='--', lw=4, alpha=0.6, label='DL solution')
 ax.set_xlabel('assets', fontsize=12)
 ax.set_ylabel('consumption', fontsize=12)
 ax.set_xlim(0, min(a_grid_dl[-1], a_egm[-1]))
@@ -921,3 +869,4 @@ ax.legend()
 plt.show()
 ```
 
+The fit is quite good.
