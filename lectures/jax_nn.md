@@ -47,6 +47,8 @@ import matplotlib.pyplot as plt
 import os
 from time import time
 from typing import NamedTuple
+from functools import partial
+
 ```
 
 ```{code-cell} ipython3
@@ -95,6 +97,8 @@ the overall mapping is
 $$ \mathbb R \to \mathbb R^k \to \mathbb R^k \to \mathbb R^k \to \mathbb R $$
 
 Here's a class to store the learning-related constants we’ll use across all implementations.
+
+Our default value of $k$ will be 10.
 
 ```{code-cell} ipython3
 class Config(NamedTuple):
@@ -162,7 +166,7 @@ def build_keras_model(
     for i in range(config.num_layers-1):
         model.add(
            Dense(units=config.output_dim, activation=activation_function)
-           )
+        )
     # Add a final layer that maps to a scalar value, for regression.
     model.add(Dense(units=1))
     # Embed training configurations
@@ -439,8 +443,6 @@ descent, exactly as required.
 Here’s code that puts this all together.
 
 ```{code-cell} ipython3
-from functools import partial
-
 @partial(jax.jit, static_argnames=['config'])
 def train_jax_model(
         θ: list,                    # Initial parameters (pytree)
