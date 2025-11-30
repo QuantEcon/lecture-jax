@@ -761,14 +761,15 @@ def initialize_deep_params(
     return initialize_network(key, config_deep)
 
 θ_deep = initialize_deep_params(param_key)
+config_deep = Config(layer_sizes=(1, 6, 6, 6, 6, 6, 1))
 
 # Warmup
-train_jax_optax_adam(θ_deep, x, y)
+train_jax_optax_adam(θ_deep, x, y, config_deep)
 
 # Actual run
 θ_deep = initialize_deep_params(param_key)
 start_time = time()
-θ_deep = train_jax_optax_adam(θ_deep, x, y)
+θ_deep = train_jax_optax_adam(θ_deep, x, y, config_deep)
 θ_deep[0].W.block_until_ready()
 deep_runtime = time() - start_time
 
@@ -792,10 +793,10 @@ def train_deep_with_schedule(
         θ: list,
         x: jnp.ndarray,
         y: jnp.ndarray,
-        epochs: int = 4000
+        config: Config
     ):
     " Train deeper network with learning rate schedule. "
-
+    epochs = config.epochs
     schedule = optax.exponential_decay(
         init_value=0.003,
         transition_steps=1000,
@@ -817,12 +818,12 @@ def train_deep_with_schedule(
     return θ_final
 
 # Warmup
-train_deep_with_schedule(θ_deep, x, y)
+train_deep_with_schedule(θ_deep, x, y, config_deep)
 
 # Actual run
 θ_deep = initialize_deep_params(param_key)
 start_time = time()
-θ_deep_schedule = train_deep_with_schedule(θ_deep, x, y)
+θ_deep_schedule = train_deep_with_schedule(θ_deep, x, y, config_deep)
 θ_deep_schedule[0].W.block_until_ready()
 deep_schedule_runtime = time() - start_time
 
@@ -845,10 +846,11 @@ def train_with_elu(
         θ: list,
         x: jnp.ndarray,
         y: jnp.ndarray,
-        epochs: int = 4000,
-        learning_rate: float = 0.001
+        config: Config
     ):
     " Train model using ELU activation and Optax ADAM optimizer. "
+    epochs = config.epochs
+    learning_rate = config.learning_rate
 
     # Modified forward pass with ELU
     @jax.jit
@@ -881,12 +883,12 @@ def train_with_elu(
     return θ_final, f_elu, loss_fn_elu
 
 # Warmup run
-θ_elu, f_elu, loss_fn_elu = train_with_elu(θ, x, y)
+θ_elu, f_elu, loss_fn_elu = train_with_elu(θ, x, y, config)
 
 # Actual run
 θ = initialize_network(param_key, config)
 start_time = time()
-θ_elu, f_elu, loss_fn_elu = train_with_elu(θ, x, y)
+θ_elu, f_elu, loss_fn_elu = train_with_elu(θ, x, y, config)
 θ_elu[0].W.block_until_ready()
 elu_runtime = time() - start_time
 
@@ -909,10 +911,11 @@ def train_with_selu(
         θ: list,
         x: jnp.ndarray,
         y: jnp.ndarray,
-        epochs: int = 4000,
-        learning_rate: float = 0.001
+        config: Config
     ):
     " Train model using SELU activation and Optax ADAM optimizer. "
+    epochs = config.epochs
+    learning_rate = config.learning_rate
 
     # Modified forward pass with SELU
     @jax.jit
@@ -945,12 +948,12 @@ def train_with_selu(
     return θ_final, f_selu, loss_fn_selu
 
 # Warmup run
-θ_selu, f_selu, loss_fn_selu = train_with_selu(θ, x, y)
+θ_selu, f_selu, loss_fn_selu = train_with_selu(θ, x, y, config)
 
 # Actual run
 θ = initialize_network(param_key, config)
 start_time = time()
-θ_selu, f_selu, loss_fn_selu = train_with_selu(θ, x, y)
+θ_selu, f_selu, loss_fn_selu = train_with_selu(θ, x, y, config)
 θ_selu[0].W.block_until_ready()
 selu_runtime = time() - start_time
 
