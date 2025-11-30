@@ -40,7 +40,7 @@ Since the income fluctuation problem is low-dimensional, the policy gradient
 method will not be superior to EGM.
 
 However, by working through this lecture, we can learn the basic principles of
-policy gradient methods and seem them work in practice.
+policy gradient methods and see them work in practice.
 
 We'll use the following libraries
 
@@ -138,7 +138,7 @@ asset levels $a$ and all alternative policies $s \in \Sigma$.
 The function $v^*$ defined by $v^*(a) := \sup_{\sigma \in \Sigma} v_\sigma(a)$
 is called the **value function**.
 
-Using this defintion, we can alternatively say that a policy $\sigma$ is optimal
+Using this definition, we can alternatively say that a policy $\sigma$ is optimal
 if and only if $v_\sigma = v^*$.
 
 We know that we can find an optimal policy using dynamic programming and, in
@@ -174,7 +174,7 @@ From here the approach is
 1. Replace $\Sigma$ with $\{\sigma(\cdot, \theta) \,:\, \theta \in \Theta\}$
     where $\sigma(\cdot, \theta)$ is an ANN
 2. Replace the objective function with $M(\theta) := \int v_{\sigma(\cdot, \theta)} (a)$
-3. Replace $M$ with a Monte Carlo aproximation $\hat M$
+3. Replace $M$ with a Monte Carlo approximation $\hat M$
 4. Use gradient ascent to maximize $\hat M(\theta)$ over $\theta$.
 
 In the last step we do
