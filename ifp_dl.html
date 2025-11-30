@@ -257,7 +257,7 @@
                                 <a href="https://github.com/QuantEcon/lecture-jax/commit/3ed6353" class="changelog-hash">3ed6353</a>
                                 
                                 <span class="changelog-author">John Stachurski</span>
-                                <span class="changelog-time">6 hours ago</span>
+                                <span class="changelog-time">21 hours ago</span>
                                 <span class="changelog-message">Refactor ifp_dl.md: simplify architecture and improve code quality (#256)</span>
                             </li>
                             
@@ -286,9 +286,7 @@
 <h1><span class="section-number">24. </span>Policy Gradient-Based Optimal Savings<a class="headerlink" href="#policy-gradient-based-optimal-savings" title="Link to this heading">#</a></h1>
 <div class="warning admonition">
 <p class="admonition-title">GPU</p>
-<p>This lecture was built using a machine with JAX installed and access to a GPU.</p>
-<p>To run this lecture on <a class="reference external" href="https://colab.research.google.com/">Google Colab</a>, click on the “play” icon top right, select Colab, and set the runtime environment to include a GPU.</p>
-<p>To run this lecture on your own machine, you need to install <a class="reference external" href="https://github.com/google/jax">Google JAX</a>.</p>
+<p>This lecture is designed to run on a GPU. To use Google Colab’s free GPUs, click the play icon top right, select Colab, and set the runtime to include a GPU. For local GPU setup, see the <a class="reference external" href="https://github.com/google/jax">JAX installation guide</a>.</p>
 </div>
 <section id="introduction">
 <h2><span class="section-number">24.1. </span>Introduction<a class="headerlink" href="#introduction" title="Link to this heading">#</a></h2>
@@ -791,8 +789,8 @@ expressions.</p>
 Theoretical maximum lifetime value = -383.5558.
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>W1130 07:53:35.936462    2032 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn&#39;t support extracting fabric info or NVLink is not used by the device.
-W1130 07:53:35.939933    1972 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn&#39;t support extracting fabric info or NVLink is not used by the device.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>W1130 22:09:06.256026    2016 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn&#39;t support extracting fabric info or NVLink is not used by the device.
+W1130 22:09:06.259449    1955 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn&#39;t support extracting fabric info or NVLink is not used by the device.
 </pre></div>
 </div>
 </div>
@@ -825,7 +823,7 @@ Iteration 300: Value = -383.5503
 
 Best value: -383.5341
 Final value: -383.6208
-Training time: 16.44 seconds
+Training time: 16.37 seconds
 </pre></div>
 </div>
 </div>
@@ -1244,7 +1242,7 @@ Iteration 350: Value = -42.9796
 
 Best value: -42.9761
 Final value: -42.9761
-Training time: 20.28 seconds
+Training time: 20.36 seconds
 </pre></div>
 </div>
 </div>
