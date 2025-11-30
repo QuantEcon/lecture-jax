@@ -46,6 +46,7 @@ import jax.numpy as jnp
 import matplotlib.pyplot as plt
 import os
 from time import time
+from typing import NamedTuple
 ```
 
 ```{code-cell} ipython3
@@ -96,14 +97,12 @@ $$ \mathbb R \to \mathbb R^k \to \mathbb R^k \to \mathbb R^k \to \mathbb R $$
 Here's a class to store the learning-related constants we’ll use across all implementations.
 
 ```{code-cell} ipython3
-from typing import NamedTuple
-
 class Config(NamedTuple):
     epochs: int = 4000             # Number of passes through the data set
-    data_size: int = 400           # Sample size
     num_layers: int = 4            # Depth of the network
-    output_dim: int = 10           # Output dimension k of input and hidden layers
+    output_dim: int = 10           # Output dimension of input and hidden layers
     learning_rate: float = 0.001   # Learning rate for gradient descent
+    layer_sizes: tuple = (1, 10, 10, 10, 1)  # Sizes of each layer in the network
 ```
 
 ### Data
@@ -113,19 +112,19 @@ Here's the function to generate the data for our regression analysis.
 ```{code-cell} ipython3
 def generate_data(
         key: jax.Array,         # JAX random key
-        config: Config,         # contains configuration data
+        data_size: int = 400,   # Sample size
         x_min: float = 0.0,     # Minimum x value
         x_max: float = 5.0      # Maximum x value
     ):
     """
     Generate synthetic regression data.
     """
-    x = jnp.linspace(x_min, x_max, num=config.data_size)
-    ϵ = 0.2 * jax.random.normal(key, shape=(config.data_size,))
+    x = jnp.linspace(x_min, x_max, num=data_size)
+    ϵ = 0.2 * jax.random.normal(key, shape=(data_size,))
     y = x**0.5 + jnp.sin(x) + ϵ
     # Return observations as column vectors
-    x = jnp.reshape(x, (config.data_size, 1))
-    y = jnp.reshape(y, (config.data_size, 1))
+    x = jnp.reshape(x, (data_size, 1))
+    y = jnp.reshape(y, (data_size, 1))
     return x, y
 ```
 
@@ -134,7 +133,7 @@ Here's a plot of the data.
 ```{code-cell} ipython3
 config = Config()
 key = jax.random.PRNGKey(1234)
-x, y = generate_data(key, config)
+x, y = generate_data(key)
 fig, ax = plt.subplots()
 ax.scatter(x, y)
 ax.set_xlabel('x')
@@ -223,8 +222,8 @@ config = Config()
 model = build_keras_model(config)
 key = jax.random.PRNGKey(1234)
 key, subkey1, subkey2 = jax.random.split(key, 3)
-x, y = generate_data(subkey1, config)
-x_validate, y_validate = generate_data(subkey2, config)
+x, y = generate_data(subkey1)
+x_validate, y_validate = generate_data(subkey2)
 model, training_history, keras_runtime, keras_mse = train_keras_model(
     model, x, y, x_validate, y_validate, config
 )
@@ -268,39 +267,61 @@ $$
 In fact, when we implement the affine map $ A_i x = W_i x + b_i $, we will work
 with row vectors rather than column vectors, so that
 
-- $ x $ and $ b_i $ are stored as row vectors, and  
-- the mapping is executed by JAX via the expression `x @ W + b`.  
+- $ x $ and $ b_i $ are stored as row vectors, and
+- the mapping is executed by JAX via the expression `x @ W + b`.
 
-Here’s a function to initialize parameters.
-
-The parameter “vector” `θ`  will be stored as a list of dicts.
+Here's a class to store parameters for one layer of the network.
 
 ```{code-cell} ipython3
-def initialize_params(
+class LayerParams(NamedTuple):
+    """
+    Stores parameters for one layer of the neural network.
+
+    """
+    W: jnp.ndarray     # weights
+    b: jnp.ndarray     # biases
+```
+
+The following function initializes a single layer of the network using He
+initialization for weights and ones for biases.
+
+```{code-cell} ipython3
+def initialize_layer(in_dim, out_dim, key):
+    """
+    Initialize weights and biases for a single layer of a the network.
+    Use He initialization for weights and ones for biases.
+
+    """
+    W = jax.random.normal(key, shape=(in_dim, out_dim)) * jnp.sqrt(2 / in_dim)
+    b = jnp.ones((1, out_dim))
+    return LayerParams(W, b)
+```
+
+The next function builds an entire network, as represented by its parameters, by
+initializing layers and stacking them into a list.
+
+```{code-cell} ipython3
+def initialize_network(
         key: jax.Array,     # JAX random key
         config: Config      # contains configuration data
     ):
     """
-    Generate an initial parameterization for a feed forward neural network.
+    Build a network by initializing all of the parameters.
+    A network is a list of LayerParams instances, each
+    containing a weight-bias pair (W, b).
+
     """
-    k = config.output_dim
-    shapes = (
-        (1, k),  # W_0.shape
-        (k, k),  # W_1.shape
-        (k, k),  # W_2.shape
-        (k, 1)   # W_3.shape
-    )
-    # A function to generate weight matrices using JAX random
-    def w_init(key, m, n):
-        return jax.random.normal(key, shape=(m, n)) * jnp.sqrt(2 / m)
-    # Build list of dicts, each containing a (weight, bias) pair
-    θ = []
-    for w_shape in shapes:
-        m, n = w_shape
+    layer_sizes = config.layer_sizes
+    params = []
+    for i in range(len(layer_sizes) - 1):
         key, subkey = jax.random.split(key)
-        layer_params = dict(W=w_init(subkey, m, n), b=jnp.ones((1, n)))
-        θ.append(layer_params)
-    return θ
+        layer = initialize_layer(
+            layer_sizes[i],      # in dimension for layer
+            layer_sizes[i + 1],  # out dimension for layer
+            subkey
+        )
+        params.append(layer)
+    return params
 ```
 
 Wait, you say!
@@ -326,10 +347,8 @@ def f(
     """
     *hidden, last = θ
     for layer in hidden:
-        W, b = layer['W'], layer['b']
-        x = σ(x @ W + b)
-    W, b = last['W'], last['b']
-    x = x @ W + b
+        x = σ(x @ layer.W + layer.b)
+    x = x @ last.W + last.b
     return x 
 ```
 
@@ -454,7 +473,7 @@ We'll reuse the data we generated for the Keras experiment.
 ```{code-cell} ipython3
 config = Config()
 param_key = jax.random.PRNGKey(1234)
-θ = initialize_params(param_key, config)
+θ = initialize_network(param_key, config)
 ```
 
 ```{code-cell} ipython3
@@ -462,12 +481,12 @@ param_key = jax.random.PRNGKey(1234)
 train_jax_model(θ, x, y, x_validate, y_validate, config)
 
 # Reset and time the actual run
-θ = initialize_params(param_key, config)
+θ = initialize_network(param_key, config)
 start_time = time()
 θ, training_loss, validation_loss = train_jax_model(
     θ, x, y, x_validate, y_validate, config
 )
-θ[0]['W'].block_until_ready()  # Ensure computation completes
+θ[0].W.block_until_ready()  # Ensure computation completes
 jax_runtime = time() - start_time
 
 jax_mse = loss_fn(θ, x_validate, y_validate)
@@ -539,16 +558,16 @@ Let’s try running it.
 
 ```{code-cell} ipython3
 # Reset parameter vector
-θ = initialize_params(param_key, config)
+θ = initialize_network(param_key, config)
 
 # Warmup run to trigger JIT compilation
 train_jax_optax(θ, x, y)
 
 # Reset and time the actual run
-θ = initialize_params(param_key, config)
+θ = initialize_network(param_key, config)
 start_time = time()
 θ = train_jax_optax(θ, x, y)
-θ[0]['W'].block_until_ready()  # Ensure computation completes
+θ[0].W.block_until_ready()  # Ensure computation completes
 optax_sgd_runtime = time() - start_time
 
 optax_sgd_mse = loss_fn(θ, x_validate, y_validate)
@@ -602,16 +621,16 @@ def train_jax_optax_adam(
 
 ```{code-cell} ipython3
 # Reset parameter vector
-θ = initialize_params(param_key, config)
+θ = initialize_network(param_key, config)
 
 # Warmup run to trigger JIT compilation
 train_jax_optax_adam(θ, x, y)
 
 # Reset and time the actual run
-θ = initialize_params(param_key, config)
+θ = initialize_network(param_key, config)
 start_time = time()
 θ = train_jax_optax_adam(θ, x, y)
-θ[0]['W'].block_until_ready()  # Ensure computation completes
+θ[0].W.block_until_ready()  # Ensure computation completes
 optax_adam_runtime = time() - start_time
 
 optax_adam_mse = loss_fn(θ, x_validate, y_validate)
@@ -723,22 +742,17 @@ Let's try a deeper network with 6 layers instead of 4, keeping total parameters 
 # Strategy 1: Deeper network (6 layers with k=6)
 # Layer sizes: 1→6→6→6→6→6→1
 # Parameters: (1×6+6) + 4×(6×6+6) + (6×1+1) = 12 + 4×42 + 7 = 187 < 251
-θ = initialize_params(param_key, config)
+θ = initialize_network(param_key, config)
 
-def initialize_deep_params(key, k=6, num_hidden=5):
+def initialize_deep_params(
+        key: jax.Array,     # JAX random key
+        k: int = 6,         # Layer width
+        num_hidden: int = 5 # Number of hidden layers
+    ):
     " Initialize parameters for deeper network with k=6. "
-    shapes = [(1, k)] + [(k, k)] * (num_hidden - 1) + [(k, 1)]
-
-    def w_init(key, m, n):
-        return jax.random.normal(key, shape=(m, n)) * jnp.sqrt(2 / m)
-
-    θ = []
-    for w_shape in shapes:
-        m, n = w_shape
-        key, subkey = jax.random.split(key)
-        layer_params = dict(W=w_init(subkey, m, n), b=jnp.ones((1, n)))
-        θ.append(layer_params)
-    return θ
+    layer_sizes = tuple([1] + [k] * num_hidden + [1])
+    config_deep = Config(layer_sizes=layer_sizes)
+    return initialize_network(key, config_deep)
 
 θ_deep = initialize_deep_params(param_key)
 
@@ -749,7 +763,7 @@ train_jax_optax_adam(θ_deep, x, y)
 θ_deep = initialize_deep_params(param_key)
 start_time = time()
 θ_deep = train_jax_optax_adam(θ_deep, x, y)
-θ_deep[0]['W'].block_until_ready()
+θ_deep[0].W.block_until_ready()
 deep_runtime = time() - start_time
 
 deep_mse = loss_fn(θ_deep, x_validate, y_validate)
@@ -803,7 +817,7 @@ train_deep_with_schedule(θ_deep, x, y)
 θ_deep = initialize_deep_params(param_key)
 start_time = time()
 θ_deep_schedule = train_deep_with_schedule(θ_deep, x, y)
-θ_deep_schedule[0]['W'].block_until_ready()
+θ_deep_schedule[0].W.block_until_ready()
 deep_schedule_runtime = time() - start_time
 
 deep_schedule_mse = loss_fn(θ_deep_schedule, x_validate, y_validate)
@@ -819,7 +833,7 @@ Let's try ELU (Exponential Linear Unit), a modern activation function:
 
 ```{code-cell} ipython3
 # Strategy 3: ELU activation
-θ = initialize_params(param_key, config)
+θ = initialize_network(param_key, config)
 
 def train_with_elu(
         θ: list,
@@ -835,10 +849,8 @@ def train_with_elu(
     def f_elu(θ, x):
         *hidden, last = θ
         for layer in hidden:
-            W, b = layer['W'], layer['b']
-            x = jax.nn.elu(x @ W + b)
-        W, b = last['W'], last['b']
-        x = x @ W + b
+            x = jax.nn.elu(x @ layer.W + layer.b)
+        x = x @ last.W + last.b
         return x
 
     # Modified loss function
@@ -866,10 +878,10 @@ def train_with_elu(
 θ_elu, f_elu, loss_fn_elu = train_with_elu(θ, x, y)
 
 # Actual run
-θ = initialize_params(param_key, config)
+θ = initialize_network(param_key, config)
 start_time = time()
 θ_elu, f_elu, loss_fn_elu = train_with_elu(θ, x, y)
-θ_elu[0]['W'].block_until_ready()
+θ_elu[0].W.block_until_ready()
 elu_runtime = time() - start_time
 
 elu_mse = loss_fn_elu(θ_elu, x_validate, y_validate)
@@ -885,7 +897,7 @@ Let's try SELU (Scaled Exponential Linear Unit), another modern activation funct
 
 ```{code-cell} ipython3
 # Strategy 4: SELU activation
-θ = initialize_params(param_key, config)
+θ = initialize_network(param_key, config)
 
 def train_with_selu(
         θ: list,
@@ -901,10 +913,8 @@ def train_with_selu(
     def f_selu(θ, x):
         *hidden, last = θ
         for layer in hidden:
-            W, b = layer['W'], layer['b']
-            x = jax.nn.selu(x @ W + b)
-        W, b = last['W'], last['b']
-        x = x @ W + b
+            x = jax.nn.selu(x @ layer.W + layer.b)
+        x = x @ last.W + last.b
         return x
 
     # Modified loss function
@@ -932,10 +942,10 @@ def train_with_selu(
 θ_selu, f_selu, loss_fn_selu = train_with_selu(θ, x, y)
 
 # Actual run
-θ = initialize_params(param_key, config)
+θ = initialize_network(param_key, config)
 start_time = time()
 θ_selu, f_selu, loss_fn_selu = train_with_selu(θ, x, y)
-θ_selu[0]['W'].block_until_ready()
+θ_selu[0].W.block_until_ready()
 selu_runtime = time() - start_time
 
 selu_mse = loss_fn_selu(θ_selu, x_validate, y_validate)
