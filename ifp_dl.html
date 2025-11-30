@@ -175,14 +175,23 @@
                         <nav id="bd-toc-nav" class="qe-page__toc-nav">
                             <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">24.1. Introduction</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cake-eating-case">24.2. Cake Eating Case</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#set-up">24.3. Set up</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#train-and-solve">24.4. Train and solve</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#extension-stochastic-labor-income-with-iid-shocks">24.5. Extension: stochastic labor income with IID shocks</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">24.5.1. Set-Up</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#jax-implementation">24.5.2. JAX Implementation</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#solving-the-iid-model-using-the-egm">24.5.3. Solving the IID model using the EGM</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#solving-the-iid-model-with-dl">24.5.4. Solving the IID model with DL</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#theory">24.2. Theory</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#household-problem">24.2.1. Household problem</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lifetime-value-and-optimization">24.2.2. Lifetime Value and Optimization</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-policy-gradient-approach">24.2.3. The policy gradient approach</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#network">24.3. Network</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cake-eating-case">24.4. Cake Eating Case</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cake-eating-loss-function">24.4.1. Cake eating loss function</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#train-and-solve">24.4.2. Train and solve</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#simulation">24.4.3. Simulation</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ifp-model">24.5. IFP Model</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#jax-implementation">24.5.1. JAX Implementation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#solving-the-iid-model-using-the-egm">24.5.2. Solving the IID model using the EGM</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#solving-the-iid-model-with-dl">24.5.3. Solving the IID model with DL</a></li>
 </ul>
 </li>
 </ul>
@@ -234,7 +243,7 @@
 
                     <!-- Last modified / Changelog dropdown -->
                         <button class="qe-page__header-changed" id="changelog-toggle" aria-expanded="false">
-                            Last changed: Nov 29, 2025
+                            Last changed: Nov 30, 2025
                             <span class="changelog-icon">▼</span>
                         </button>
 
@@ -245,10 +254,19 @@
                             
                             <li class="changelog-entry">
                                 
+                                <a href="https://github.com/QuantEcon/lecture-jax/commit/3ed6353" class="changelog-hash">3ed6353</a>
+                                
+                                <span class="changelog-author">John Stachurski</span>
+                                <span class="changelog-time">6 hours ago</span>
+                                <span class="changelog-message">Refactor ifp_dl.md: simplify architecture and improve code quality (#256)</span>
+                            </li>
+                            
+                            <li class="changelog-entry">
+                                
                                 <a href="https://github.com/QuantEcon/lecture-jax/commit/1bc1c4b" class="changelog-hash">1bc1c4b</a>
                                 
                                 <span class="changelog-author">John Stachurski</span>
-                                <span class="changelog-time">9 minutes ago</span>
+                                <span class="changelog-time">1 day ago</span>
                                 <span class="changelog-message">Adding new lecture ifp dl first pass. (#255)</span>
                             </li>
                             
@@ -279,9 +297,16 @@ learning and policy gradient ascent with JAX.</p>
 <p>Each policy is represented as a fully connected feed forward neural network.</p>
 <p>We begin with a cake eating problem with a known analytical solution.</p>
 <p>Then we shift to an income fluctuation problem where we can compute an optimal
-policy easily with the endogenous grid method.</p>
+policy easily with the endogenous grid method (EGM).</p>
 <p>We do this first and then try to learn the same policy with deep learning.</p>
-<p>Throughout, utility takes the CRRA form <span class="math notranslate nohighlight">\(u(c) = c^{1-\gamma} / (1-\gamma)\)</span> and the discount factor is <span class="math notranslate nohighlight">\(\beta\)</span>.</p>
+<p>The technique we will use is called <a class="reference external" href="https://en.wikipedia.org/wiki/Policy_gradient_method">policy gradient
+ascent</a>.</p>
+<p>This method is popular in the machine learning community for solving
+high-dimensional dynamic programming problems.</p>
+<p>Since the income fluctuation problem is low-dimensional, the policy gradient
+method will not be superior to EGM.</p>
+<p>However, by working through this lecture, we can learn the basic principles of
+policy gradient methods and see them work in practice.</p>
 <p>We’ll use the following libraries</p>
 <div class="cell tag_hide-output docutils container">
 <div class="cell_input above-output-prompt docutils container">
@@ -325,6 +350,7 @@ Installing collected packages: typing_extensions, absl-py, chex, optax
    ━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">1/4</span> [absl-py]
    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━ <span class=" -Color -Color-Green">3/4</span> [optax]
    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">4/4</span> [optax]
+
 Successfully installed absl-py-2.3.1 chex-0.1.91 optax-0.2.6 typing_extensions-4.15.0
 </pre></div>
 </div>
@@ -346,45 +372,146 @@ Successfully installed absl-py-2.3.1 chex-0.1.91 optax-0.2.6 typing_extensions-4
 </div>
 </div>
 </section>
-<section id="cake-eating-case">
-<h2><span class="section-number">24.2. </span>Cake Eating Case<a class="headerlink" href="#cake-eating-case" title="Link to this heading">#</a></h2>
-<p>With <span class="math notranslate nohighlight">\(R\)</span> as the gross interest rate, assets evolve according to</p>
+<section id="theory">
+<h2><span class="section-number">24.2. </span>Theory<a class="headerlink" href="#theory" title="Link to this heading">#</a></h2>
+<p>Let’s describe the income fluctuation problem and the ideas behind policy
+gradient ascent.</p>
+<section id="household-problem">
+<h3><span class="section-number">24.2.1. </span>Household problem<a class="headerlink" href="#household-problem" title="Link to this heading">#</a></h3>
+<p>A household chooses a consumption plan <span class="math notranslate nohighlight">\(\{c_t\}_{t \geq 0}\)</span> to maximize</p>
 <div class="math notranslate nohighlight">
 \[
-    a' = R (a - c)
+    \mathbb{E} \, \sum_{t=0}^{\infty} \beta^t u(c_t)
 \]</div>
-<p>To ensure stability we need <span class="math notranslate nohighlight">\(\beta R^{1-\gamma} &lt; 1\)</span>.</p>
-<p>For this model, it is known that the optimal policy is <span class="math notranslate nohighlight">\(c = \kappa a\)</span>, where</p>
+<p>subject to</p>
 <div class="math notranslate nohighlight">
 \[
-    \kappa := 1 - [\beta R^{1-\gamma}]^{1/\gamma}
+    a_{t+1} = R (a_t - c_t) + Y_{t+1},
+    \quad c_t \geq 0, \quad a_t \geq 0, \quad t = 0, 1, \ldots
 \]</div>
-<p>We use this known exact solution to check our numerical methods.</p>
-<p>Initial assets <span class="math notranslate nohighlight">\(a_0\)</span> is fixed at 1.0, so the objective function is</p>
+<p>Here <span class="math notranslate nohighlight">\(Y_t\)</span> is labor income, which is IID and normally distributed:</p>
 <div class="math notranslate nohighlight">
 \[
-    \max_{\sigma \in \Sigma} v_\sigma(a_0)
-    \quad \text{with} \quad a_0 := 1.0
+Z_t \sim N(m, v), \quad Y_t = \exp(Z_t)
 \]</div>
-<p>Here</p>
-<ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(\Sigma\)</span> is the set of all feasible policies and</p></li>
-<li><p><span class="math notranslate nohighlight">\(v_\sigma(a)\)</span> is the lifetime value of following stationary policy <span class="math notranslate nohighlight">\(\sigma\)</span>, given initial assets <span class="math notranslate nohighlight">\(a\)</span>.</p></li>
-</ul>
+<p>We assume:</p>
+<ol class="arabic simple">
+<li><p><span class="math notranslate nohighlight">\(\beta R &lt; 1\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(u\)</span> is CRRA with parameter <span class="math notranslate nohighlight">\(\gamma\)</span></p></li>
+</ol>
+<p>We will be interested in the value of alternative policy functions for this
+household.</p>
+<p>Since the shocks are IID, and hence offer no predictive content for future shocks,
+optimal policies will depend only on current assets.</p>
+<p>The next section discusses policies and their values in more detail.</p>
 </section>
-<section id="set-up">
-<h2><span class="section-number">24.3. </span>Set up<a class="headerlink" href="#set-up" title="Link to this heading">#</a></h2>
-<p>We use a class called <code class="docutils literal notranslate"><span class="pre">CakeEatingModel</span></code> to store model parameters.</p>
+<section id="lifetime-value-and-optimization">
+<h3><span class="section-number">24.2.2. </span>Lifetime Value and Optimization<a class="headerlink" href="#lifetime-value-and-optimization" title="Link to this heading">#</a></h3>
+<p>A <strong>policy</strong> is a function <span class="math notranslate nohighlight">\(\sigma\)</span> from <span class="math notranslate nohighlight">\(\mathbb{R}_+\)</span> to itself,
+where <span class="math notranslate nohighlight">\(\sigma(a)\)</span> is understood as the amount consumed under policy <span class="math notranslate nohighlight">\(\sigma\)</span>
+given current state <span class="math notranslate nohighlight">\(a\)</span>.</p>
+<p>A <strong>feasible policy</strong> is a
+(<a class="reference external" href="https://en.wikipedia.org/wiki/Measurable_function">measurable</a>) policy
+satisfying <span class="math notranslate nohighlight">\(0 \leq \sigma(a) \leq a\)</span> for all <span class="math notranslate nohighlight">\(a\)</span> (no borrowing).</p>
+<p>We let <span class="math notranslate nohighlight">\(\Sigma\)</span> denote the set of all feasible policies.</p>
+<p>We let <span class="math notranslate nohighlight">\(v_\sigma(a)\)</span> be the lifetime value of following policy
+<span class="math notranslate nohighlight">\(\sigma\)</span>, given initial assets <span class="math notranslate nohighlight">\(a\)</span>.</p>
+<p>That is,</p>
+<div class="math notranslate nohighlight">
+\[
+    v_\sigma(a) = \mathbb{E} \sum_{t \geq 0} \beta^t u(c_t)
+\]</div>
+<p>where</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(c_t = \sigma(a_t)\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(a_0 = a\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(a_{t+1} = R (a_t - \sigma(a_t)) + Y_{t+1}\)</span> for <span class="math notranslate nohighlight">\(t = 0, 1,\ldots\)</span></p></li>
+</ul>
+<p>A policy <span class="math notranslate nohighlight">\(\sigma\)</span> is called <strong>optimal</strong> if <span class="math notranslate nohighlight">\(v_s(a) \leq v_\sigma(a)\)</span> for all
+asset levels <span class="math notranslate nohighlight">\(a\)</span> and all alternative policies <span class="math notranslate nohighlight">\(s \in \Sigma\)</span>.</p>
+<p>The function <span class="math notranslate nohighlight">\(v^*\)</span> defined by <span class="math notranslate nohighlight">\(v^*(a) := \sup_{\sigma \in \Sigma} v_\sigma(a)\)</span>
+is called the <strong>value function</strong>.</p>
+<p>Using this definition, we can alternatively say that a policy <span class="math notranslate nohighlight">\(\sigma\)</span> is optimal
+if and only if <span class="math notranslate nohighlight">\(v_\sigma = v^*\)</span>.</p>
+<p>We know that we can find an optimal policy using dynamic programming and, in
+particular, the endogenous grid method (EGM).</p>
+<p>Now let’s look at another method.</p>
+</section>
+<section id="the-policy-gradient-approach">
+<h3><span class="section-number">24.2.3. </span>The policy gradient approach<a class="headerlink" href="#the-policy-gradient-approach" title="Link to this heading">#</a></h3>
+<p>The policy gradient approach starts by fixing an initial distribution <span class="math notranslate nohighlight">\(F\)</span> and
+trying to solve</p>
+<div class="math notranslate nohighlight">
+\[
+    \max_{\sigma \in \Sigma} \int v_\sigma(a) F(d a)
+\]</div>
+<p>Working with this alternative objective transforms a dynamic programming problem
+into a regular optimization with a real-valued objective (the last display).</p>
+<p>Here we’ll focus on the case where <span class="math notranslate nohighlight">\(F\)</span> concentrates on a single point <span class="math notranslate nohighlight">\(a_0\)</span>, so
+the objective becomes</p>
+<div class="math notranslate nohighlight">
+\[
+    \max_{\sigma \in \Sigma} M(\sigma)
+    \quad \text{where} \quad
+    M(\sigma) := v_\sigma(a_0)
+\]</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Does our choice of the initial condition <span class="math notranslate nohighlight">\(a_0\)</span> matter in terms of delivering an
+optimal policy?</p>
+<p>The answer is, in general, <a class="reference external" href="https://arxiv.org/html/2411.11062v2">yes</a>.</p>
+<p>Essentially, we want the state to explore as much of the state space as
+possible.</p>
+<p>We’ll try to engineer this outcome in our choice of <span class="math notranslate nohighlight">\(a_0\)</span>.</p>
+</div>
+<p>From here the approach is</p>
+<ol class="arabic simple">
+<li><p>Replace <span class="math notranslate nohighlight">\(\Sigma\)</span> with <span class="math notranslate nohighlight">\(\{\sigma(\cdot, \theta) \,:\, \theta \in \Theta\}\)</span>
+where <span class="math notranslate nohighlight">\(\sigma(\cdot, \theta)\)</span> is an ANN with parameter vector <span class="math notranslate nohighlight">\(\theta\)</span></p></li>
+<li><p>Replace the objective function with <span class="math notranslate nohighlight">\(M(\theta) := \int v_{\sigma(\cdot, \theta)} (a_0)\)</span></p></li>
+<li><p>Replace <span class="math notranslate nohighlight">\(M\)</span> with a Monte Carlo approximation <span class="math notranslate nohighlight">\(\hat M\)</span></p></li>
+<li><p>Use gradient ascent to maximize <span class="math notranslate nohighlight">\(\hat M(\theta)\)</span> over <span class="math notranslate nohighlight">\(\theta\)</span>.</p></li>
+</ol>
+<p>In the last step we do</p>
+<div class="math notranslate nohighlight">
+\[
+    \theta_{n+1} = \theta_n + \lambda_n \nabla \hat M(\theta_n)
+\]</div>
+<p>We compute <span class="math notranslate nohighlight">\(\hat M\)</span> via</p>
+<div class="math notranslate nohighlight">
+\[
+    \hat M(\theta)
+    = \frac{1}{N}\sum_{i=1}^N \sum_{t=0}^{T-1} \beta^t u(\sigma(a^i_t, \theta)) 
+\]</div>
+<p>Here <span class="math notranslate nohighlight">\(a^i_0\)</span> is fixed at the given value <span class="math notranslate nohighlight">\(a_0\)</span> for all <span class="math notranslate nohighlight">\(i\)</span> and</p>
+<div class="math notranslate nohighlight">
+\[
+    a^i_{t+1} = R (a^i_t - \sigma(a^i_t, \theta)) + Y^i_{t+1}
+\]</div>
+</section>
+</section>
+<section id="network">
+<h2><span class="section-number">24.3. </span>Network<a class="headerlink" href="#network" title="Link to this heading">#</a></h2>
+<p>Before we get to policy gradient ascent, let’s set up a generic deep learning
+environment.</p>
+<p>The environment will work with an arbitrary loss function.</p>
+<p>Below, in each optimal savings application, we will specify the loss function as
+<span class="math notranslate nohighlight">\(-\hat M\)</span>, where <span class="math notranslate nohighlight">\(\hat M\)</span> is the approximation to lifetime value defined above.</p>
+<p>Thus, minimizing loss in policy space means maximizing lifetime value (given fixed <span class="math notranslate nohighlight">\(a_0\)</span>).</p>
+<p>We store some fixed values that form part of the network training configuration.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">CakeEatingModel</span><span class="p">(</span><span class="n">NamedTuple</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">Config</span><span class="p">(</span><span class="n">NamedTuple</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Stores parameters for the model.</span>
+<span class="sd">    Configuration and parameters for training the neural network.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">γ</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.5</span>
-    <span class="n">β</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.96</span>
-    <span class="n">R</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.01</span>
+    <span class="n">seed</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1234</span>                         <span class="c1"># Seed for network initialization</span>
+    <span class="n">epochs</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">400</span>                        <span class="c1"># No of training epochs</span>
+    <span class="n">path_length</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">320</span>                   <span class="c1"># Length of each consumption path</span>
+    <span class="n">layer_sizes</span><span class="p">:</span> <span class="nb">tuple</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>     <span class="c1"># Network layer sizes</span>
+    <span class="n">learning_rate</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.001</span>             <span class="c1"># Constant learning rate</span>
+    <span class="n">num_paths</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">220</span>                     <span class="c1"># Number of paths to average over </span>
 </pre></div>
 </div>
 </div>
@@ -404,27 +531,8 @@ layer of the neural network.</p>
 </div>
 </div>
 </div>
-<p>The next class stores some fixed values that form part of the network training
-configuration.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">Config</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Configuration and parameters for training the neural network.</span>
-
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">seed</span> <span class="o">=</span> <span class="mi">42</span>                           <span class="c1"># Seed for network initialization</span>
-    <span class="n">epochs</span> <span class="o">=</span> <span class="mi">400</span>                        <span class="c1"># No of training epochs</span>
-    <span class="n">path_length</span> <span class="o">=</span> <span class="mi">320</span>                   <span class="c1"># Length of each consumption path</span>
-    <span class="n">layer_sizes</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">1</span>   <span class="c1"># Network layer sizes</span>
-    <span class="n">learning_rate</span> <span class="o">=</span> <span class="mf">0.001</span>               <span class="c1"># Constant learning rate</span>
-</pre></div>
-</div>
-</div>
-</div>
 <p>The following function initializes a single layer of the network using Le Cun
 initialization.</p>
-<p>(Le Cun initialization is thought to pair well with <code class="docutils literal notranslate"><span class="pre">selu</span></code> activation.)</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">initialize_layer</span><span class="p">(</span><span class="n">in_dim</span><span class="p">,</span> <span class="n">out_dim</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
@@ -470,8 +578,108 @@ initializing layers and stacking them into a list.</p>
 </div>
 </div>
 </div>
-<p>Now we provide a function to do a forward pass through the network, given the
-parameters.</p>
+<p>Here’s a function to train the network by gradient ascent, given a generic loss
+function.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">train_network</span><span class="p">(</span>
+        <span class="n">config</span><span class="p">:</span> <span class="n">Config</span><span class="p">,</span>               <span class="c1"># Configuration object with training parameters</span>
+        <span class="n">loss_fn</span><span class="p">:</span> <span class="nb">callable</span><span class="p">,</span>            <span class="c1"># Loss function taking params and returning loss</span>
+        <span class="n">print_interval</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">100</span>     <span class="c1"># How often to print progress</span>
+    <span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Train a neural network using policy gradient ascent.</span>
+
+<span class="sd">    This is a generic training function that can be applied to different</span>
+<span class="sd">    models by providing an appropriate loss function.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Initialize network parameters</span>
+    <span class="n">key</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">PRNGKey</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">seed</span><span class="p">)</span>
+    <span class="n">params</span> <span class="o">=</span> <span class="n">initialize_network</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">layer_sizes</span><span class="p">)</span>
+
+    <span class="c1"># Set up optimizer</span>
+    <span class="n">optimizer</span> <span class="o">=</span> <span class="n">optax</span><span class="o">.</span><span class="n">chain</span><span class="p">(</span>
+        <span class="n">optax</span><span class="o">.</span><span class="n">clip_by_global_norm</span><span class="p">(</span><span class="mf">1.0</span><span class="p">),</span>  <span class="c1"># Gradient clipping for stability</span>
+        <span class="n">optax</span><span class="o">.</span><span class="n">adam</span><span class="p">(</span><span class="n">learning_rate</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">learning_rate</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="n">opt_state</span> <span class="o">=</span> <span class="n">optimizer</span><span class="o">.</span><span class="n">init</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+
+    <span class="c1"># Training loop</span>
+    <span class="n">value_history</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">best_value</span> <span class="o">=</span> <span class="o">-</span><span class="n">jnp</span><span class="o">.</span><span class="n">inf</span>
+    <span class="n">best_params</span> <span class="o">=</span> <span class="n">params</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">epochs</span><span class="p">):</span>
+        <span class="c1"># Compute value and gradients at existing parameterization</span>
+        <span class="n">loss</span><span class="p">,</span> <span class="n">grads</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">value_and_grad</span><span class="p">(</span><span class="n">loss_fn</span><span class="p">)(</span><span class="n">params</span><span class="p">)</span>
+        <span class="n">lifetime_value</span> <span class="o">=</span> <span class="o">-</span> <span class="n">loss</span>
+        <span class="n">value_history</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">lifetime_value</span><span class="p">)</span>
+        <span class="c1"># Track best parameters</span>
+        <span class="k">if</span> <span class="n">lifetime_value</span> <span class="o">&gt;</span> <span class="n">best_value</span><span class="p">:</span>
+            <span class="n">best_value</span> <span class="o">=</span> <span class="n">lifetime_value</span>
+            <span class="n">best_params</span> <span class="o">=</span> <span class="n">params</span>
+        <span class="c1"># Update parameters using optimizer</span>
+        <span class="n">updates</span><span class="p">,</span> <span class="n">opt_state</span> <span class="o">=</span> <span class="n">optimizer</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">grads</span><span class="p">,</span> <span class="n">opt_state</span><span class="p">)</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="n">optax</span><span class="o">.</span><span class="n">apply_updates</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">updates</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">i</span> <span class="o">%</span> <span class="n">print_interval</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Iteration </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">: Value = </span><span class="si">{</span><span class="n">lifetime_value</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Use best parameters instead of final</span>
+    <span class="n">params</span> <span class="o">=</span> <span class="n">best_params</span>
+    <span class="k">return</span> <span class="n">params</span><span class="p">,</span> <span class="n">value_history</span><span class="p">,</span> <span class="n">best_value</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="cake-eating-case">
+<h2><span class="section-number">24.4. </span>Cake Eating Case<a class="headerlink" href="#cake-eating-case" title="Link to this heading">#</a></h2>
+<p>We will start by tackling a very simple case, without any labor income, so that <span class="math notranslate nohighlight">\(Y_t\)</span> is
+always zero and</p>
+<div class="math notranslate nohighlight">
+\[
+    a_{t+1} = R(a_t - c_t) \qquad \text{for all } t
+\]</div>
+<p>For this “cake-eating” model, the optimal policy is known to be</p>
+<div class="math notranslate nohighlight">
+\[
+    c = \kappa a, 
+    \quad \text{where} \quad
+    \kappa := 1 - [\beta R^{1-\gamma}]^{1/\gamma}
+\]</div>
+<p>We use this known exact solution to check our numerical methods.</p>
+<section id="cake-eating-loss-function">
+<h3><span class="section-number">24.4.1. </span>Cake eating loss function<a class="headerlink" href="#cake-eating-loss-function" title="Link to this heading">#</a></h3>
+<p>We use a class called <code class="docutils literal notranslate"><span class="pre">CakeEatingModel</span></code> to store model parameters.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">CakeEatingModel</span><span class="p">(</span><span class="n">NamedTuple</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Stores parameters for the model.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">γ</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.5</span>
+    <span class="n">β</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.96</span>
+    <span class="n">R</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.01</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>We use CRRA utility.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">u</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">γ</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Utility function. &quot;&quot;&quot;</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="mf">1e-10</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">c</span><span class="o">**</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">γ</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">γ</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now we provide a function that implements a consumption policy as a neural network, given the
+parameters of the network.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">a</span><span class="p">):</span>
@@ -496,29 +704,19 @@ parameters.</p>
 </div>
 </div>
 </div>
-<p>We use CRRA utility.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">u</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">γ</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot; Utility function. &quot;&quot;&quot;</span>
-    <span class="n">c</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="mf">1e-10</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">c</span><span class="o">**</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">γ</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">γ</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<p>The next function approximates lifetime value associated with a given policy, as
-represented by the parameters of a neural network.</p>
+<p>The next function approximates lifetime value for the cake eating agent
+associated with a given policy, as represented by the parameters of a neural
+network.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@partial</span><span class="p">(</span><span class="n">jax</span><span class="o">.</span><span class="n">jit</span><span class="p">,</span> <span class="n">static_argnames</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;path_length&#39;</span><span class="p">))</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">compute_lifetime_value</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">path_length</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">compute_lifetime_value</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">cake_eating_model</span><span class="p">,</span> <span class="n">path_length</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Compute the lifetime value of a path generated from</span>
 <span class="sd">    the policy embedded in params and the initial condition a_0 = 1.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">γ</span><span class="p">,</span> <span class="n">β</span><span class="p">,</span> <span class="n">R</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">γ</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">β</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">R</span>
+    <span class="n">γ</span><span class="p">,</span> <span class="n">β</span><span class="p">,</span> <span class="n">R</span> <span class="o">=</span> <span class="n">cake_eating_model</span>
     <span class="n">initial_a</span> <span class="o">=</span> <span class="mf">1.0</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">update</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
@@ -546,28 +744,25 @@ represented by the parameters of a neural network.</p>
 <p>Here’s the loss function we will minimize.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">loss_function</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">path_length</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">loss_function</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">cake_eating_model</span><span class="p">,</span> <span class="n">path_length</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Loss is the negation of the lifetime value of the policy </span>
 <span class="sd">    identified by `params`.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="o">-</span><span class="n">compute_lifetime_value</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">path_length</span><span class="p">)</span>
+    <span class="k">return</span> <span class="o">-</span><span class="n">compute_lifetime_value</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">cake_eating_model</span><span class="p">,</span> <span class="n">path_length</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
 </section>
 <section id="train-and-solve">
-<h2><span class="section-number">24.4. </span>Train and solve<a class="headerlink" href="#train-and-solve" title="Link to this heading">#</a></h2>
+<h3><span class="section-number">24.4.2. </span>Train and solve<a class="headerlink" href="#train-and-solve" title="Link to this heading">#</a></h3>
 <p>First we create an instance of the model and unpack names</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">CakeEatingModel</span><span class="p">()</span>
 <span class="n">γ</span><span class="p">,</span> <span class="n">β</span><span class="p">,</span> <span class="n">R</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">γ</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">β</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">R</span>
-<span class="n">seed</span><span class="p">,</span> <span class="n">epochs</span> <span class="o">=</span> <span class="n">Config</span><span class="o">.</span><span class="n">seed</span><span class="p">,</span> <span class="n">Config</span><span class="o">.</span><span class="n">epochs</span>
-<span class="n">path_length</span> <span class="o">=</span> <span class="n">Config</span><span class="o">.</span><span class="n">path_length</span>
-<span class="n">layer_sizes</span> <span class="o">=</span> <span class="n">Config</span><span class="o">.</span><span class="n">layer_sizes</span>
 </pre></div>
 </div>
 </div>
@@ -585,42 +780,19 @@ expressions.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">κ</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="p">(</span><span class="n">β</span> <span class="o">*</span> <span class="n">R</span><span class="o">**</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">γ</span><span class="p">))</span><span class="o">**</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">γ</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Optimal consumption rate = </span><span class="si">{</span><span class="n">κ</span><span class="si">}</span><span class="s2">.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Optimal consumption rate = </span><span class="si">{</span><span class="n">κ</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
 <span class="n">v_max</span> <span class="o">=</span> <span class="n">κ</span><span class="o">**</span><span class="p">(</span><span class="o">-</span><span class="n">γ</span><span class="p">)</span> <span class="o">*</span> <span class="n">u</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">γ</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Theoretical maximum lifetime value = </span><span class="si">{</span><span class="n">v_max</span><span class="si">}</span><span class="s2">.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Theoretical maximum lifetime value = </span><span class="si">{</span><span class="n">v_max</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Optimal consumption rate = 0.03007006297501369.
-Theoretical maximum lifetime value = -383.5557556152344.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Optimal consumption rate = 0.0301.
+Theoretical maximum lifetime value = -383.5558.
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>W1129 00:49:12.314425    2034 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn&#39;t support extracting fabric info or NVLink is not used by the device.
-W1129 00:49:12.318021    1973 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn&#39;t support extracting fabric info or NVLink is not used by the device.
-</pre></div>
-</div>
-</div>
-</div>
-<p>Let’s now set up the Optax minimizer, using
-<a class="reference external" href="https://en.wikipedia.org/wiki/Stochastic_gradient_descent#Adam">Adam</a> with a constant learning rate.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">optimizer</span> <span class="o">=</span> <span class="n">optax</span><span class="o">.</span><span class="n">chain</span><span class="p">(</span>
-    <span class="n">optax</span><span class="o">.</span><span class="n">clip_by_global_norm</span><span class="p">(</span><span class="mf">1.0</span><span class="p">),</span>  <span class="c1"># Gradient clipping for stability</span>
-    <span class="n">optax</span><span class="o">.</span><span class="n">adam</span><span class="p">(</span><span class="n">learning_rate</span><span class="o">=</span><span class="n">Config</span><span class="o">.</span><span class="n">learning_rate</span><span class="p">)</span>
-<span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<p>We initialize the parameters in the neural network and the state of the
-optimizer.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">key</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">PRNGKey</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
-<span class="n">params</span> <span class="o">=</span> <span class="n">initialize_network</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">layer_sizes</span><span class="p">)</span>
-<span class="n">opt_state</span> <span class="o">=</span> <span class="n">optimizer</span><span class="o">.</span><span class="n">init</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>W1130 07:53:35.936462    2032 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn&#39;t support extracting fabric info or NVLink is not used by the device.
+W1130 07:53:35.939933    1972 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn&#39;t support extracting fabric info or NVLink is not used by the device.
 </pre></div>
 </div>
 </div>
@@ -628,43 +800,32 @@ optimizer.</p>
 <p>Now let’s train the network.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">value_history</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="n">best_value</span> <span class="o">=</span> <span class="o">-</span><span class="n">jnp</span><span class="o">.</span><span class="n">inf</span>
-<span class="n">best_params</span> <span class="o">=</span> <span class="n">params</span>
-<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">epochs</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
 
-    <span class="c1"># Compute value and gradients at existing parameterization</span>
-    <span class="n">loss</span><span class="p">,</span> <span class="n">grads</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">value_and_grad</span><span class="p">(</span><span class="n">loss_function</span><span class="p">)(</span><span class="n">params</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">path_length</span><span class="p">)</span>
-    <span class="n">lifetime_value</span> <span class="o">=</span> <span class="o">-</span> <span class="n">loss</span>
-    <span class="n">value_history</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">lifetime_value</span><span class="p">)</span>
+<span class="n">config</span> <span class="o">=</span> <span class="n">Config</span><span class="p">(</span><span class="n">num_paths</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
-    <span class="c1"># Track best parameters</span>
-    <span class="k">if</span> <span class="n">lifetime_value</span> <span class="o">&gt;</span> <span class="n">best_value</span><span class="p">:</span>
-        <span class="n">best_value</span> <span class="o">=</span> <span class="n">lifetime_value</span>
-        <span class="n">best_params</span> <span class="o">=</span> <span class="n">params</span>
+<span class="c1"># Create a loss function that has params as the only argument</span>
+<span class="n">loss_fn</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">params</span><span class="p">:</span> <span class="n">loss_function</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">path_length</span><span class="p">)</span>
 
-    <span class="c1"># Update parameters using optimizer</span>
-    <span class="n">updates</span><span class="p">,</span> <span class="n">opt_state</span> <span class="o">=</span> <span class="n">optimizer</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">grads</span><span class="p">,</span> <span class="n">opt_state</span><span class="p">)</span>
-    <span class="n">params</span> <span class="o">=</span> <span class="n">optax</span><span class="o">.</span><span class="n">apply_updates</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">updates</span><span class="p">)</span>
+<span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="n">params</span><span class="p">,</span> <span class="n">value_history</span><span class="p">,</span> <span class="n">best_value</span> <span class="o">=</span> <span class="n">train_network</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">loss_fn</span><span class="p">)</span>
+<span class="n">elapsed</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span>
 
-    <span class="k">if</span> <span class="n">i</span> <span class="o">%</span> <span class="mi">100</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Iteration </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">: Value = </span><span class="si">{</span><span class="n">lifetime_value</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-
-<span class="c1"># Use best parameters instead of final</span>
-<span class="n">params</span> <span class="o">=</span> <span class="n">best_params</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Best value: </span><span class="si">{</span><span class="n">best_value</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Final value: </span><span class="si">{</span><span class="n">value_history</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Training time: </span><span class="si">{</span><span class="n">elapsed</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> seconds&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Iteration 0: Value = -1495089.7500
-Iteration 100: Value = -1252.4659
-Iteration 200: Value = -383.5421
-Iteration 300: Value = -383.5356
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Iteration 0: Value = -1558952.7500
+Iteration 100: Value = -534.6805
+Iteration 200: Value = -477.2722
+Iteration 300: Value = -383.5503
 
-Best value: -383.5334
-Final value: -383.5335
+Best value: -383.5341
+Final value: -383.6208
+Training time: 16.44 seconds
 </pre></div>
 </div>
 </div>
@@ -683,7 +844,7 @@ Final value: -383.5335
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/c662e49985393bbe3fce046b11c85cccc2b67ad06acdeaeedc9a57aa03b98b68.png"><img alt="_images/c662e49985393bbe3fce046b11c85cccc2b67ad06acdeaeedc9a57aa03b98b68.png" src="_images/c662e49985393bbe3fce046b11c85cccc2b67ad06acdeaeedc9a57aa03b98b68.png" style="width: 80%;" />
+<a class="reference internal image-reference" href="_images/83deb7da63c55ab3ed5f2989969d970f4a7739fab7af38a4ac7e3732d2cbfa5d.png"><img alt="_images/83deb7da63c55ab3ed5f2989969d970f4a7739fab7af38a4ac7e3732d2cbfa5d.png" src="_images/83deb7da63c55ab3ed5f2989969d970f4a7739fab7af38a4ac7e3732d2cbfa5d.png" style="width: 80%;" />
 </a>
 </div>
 </div>
@@ -698,8 +859,8 @@ Final value: -383.5335
 <span class="n">c_optimal</span> <span class="o">=</span> <span class="n">κ</span> <span class="o">*</span> <span class="n">a_grid</span>
 
 <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">a_grid</span><span class="p">,</span> <span class="n">c_learned</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;learned policy&#39;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">a_grid</span><span class="p">,</span> <span class="n">c_optimal</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;optimal&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">a_grid</span><span class="p">,</span> <span class="n">c_learned</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;DL policy&#39;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;assets&#39;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;consumption&#39;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Consumption policy&#39;</span><span class="p">)</span>
@@ -709,46 +870,44 @@ Final value: -383.5335
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/9f77daf21c2915abb1d5d80d5d046e5927844786a9426f096a90b8852ba85be8.png"><img alt="_images/9f77daf21c2915abb1d5d80d5d046e5927844786a9426f096a90b8852ba85be8.png" src="_images/9f77daf21c2915abb1d5d80d5d046e5927844786a9426f096a90b8852ba85be8.png" style="width: 80%;" />
+<a class="reference internal image-reference" href="_images/7acd67a42eca748d3fba3ed28d83cb2bf8a2859c577d7adfa3c9a863b48c2451.png"><img alt="_images/7acd67a42eca748d3fba3ed28d83cb2bf8a2859c577d7adfa3c9a863b48c2451.png" src="_images/7acd67a42eca748d3fba3ed28d83cb2bf8a2859c577d7adfa3c9a863b48c2451.png" style="width: 80%;" />
 </a>
 </div>
 </div>
+</section>
+<section id="simulation">
+<h3><span class="section-number">24.4.3. </span>Simulation<a class="headerlink" href="#simulation" title="Link to this heading">#</a></h3>
 <p>Let’s have a look at paths for consumption and assets under the learned and
 optimal policies.</p>
 <p>The figures below show that the learned policies are close to optimal.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">simulate_consumption_path</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="mi">120</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Compute consumption path using neural network policy identified by params.</span>
-
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">a_sim</span> <span class="o">=</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">]</span>   <span class="c1"># 1.0 is the initial assets</span>
-    <span class="n">c_sim</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">a_opt</span> <span class="o">=</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">]</span>
-    <span class="n">c_opt</span> <span class="o">=</span> <span class="p">[]</span>
-
-    <span class="n">a</span> <span class="o">=</span> <span class="mf">1.0</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">simulate_consumption_path</span><span class="p">(</span>
+        <span class="n">params</span><span class="p">,</span>   <span class="c1"># ANN-based policy identified by params</span>
+        <span class="n">a_0</span><span class="p">,</span>      <span class="c1"># Initial condition</span>
+        <span class="n">T</span><span class="o">=</span><span class="mi">120</span>     <span class="c1"># Simulation length</span>
+    <span class="p">):</span>
+    <span class="c1"># Simulate consumption and asset paths using ANN</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">a_0</span>
+    <span class="n">a_sim</span><span class="p">,</span> <span class="n">c_sim</span> <span class="o">=</span> <span class="p">[</span><span class="n">a</span><span class="p">],</span> <span class="p">[]</span> 
     <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">T</span><span class="p">):</span>
-
-        <span class="c1"># Update policy path - forward returns consumption rate</span>
+        <span class="c1"># Update policy path </span>
         <span class="n">c</span> <span class="o">=</span> <span class="n">forward</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span> <span class="o">*</span> <span class="n">a</span>
         <span class="n">c_sim</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">c</span><span class="p">))</span>
         <span class="n">a</span> <span class="o">=</span> <span class="n">R</span> <span class="o">*</span> <span class="p">(</span><span class="n">a</span> <span class="o">-</span> <span class="n">c</span><span class="p">)</span>
         <span class="n">a_sim</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">a</span><span class="p">))</span>
-
         <span class="k">if</span> <span class="n">a</span> <span class="o">&lt;=</span> <span class="mf">1e-10</span><span class="p">:</span>
             <span class="k">break</span>
 
-    <span class="n">a</span> <span class="o">=</span> <span class="mf">1.0</span>
+    <span class="c1"># Simulate consumption and asset paths using optimal policy</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">a_0</span>
+    <span class="n">a_opt</span><span class="p">,</span> <span class="n">c_opt</span> <span class="o">=</span> <span class="p">[</span><span class="n">a</span><span class="p">],</span> <span class="p">[]</span> 
     <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">T</span><span class="p">):</span>
-
         <span class="c1"># Update optimal path</span>
         <span class="n">c</span> <span class="o">=</span> <span class="n">κ</span> <span class="o">*</span> <span class="n">a</span>
         <span class="n">c_opt</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
         <span class="n">a</span> <span class="o">=</span> <span class="n">R</span> <span class="o">*</span> <span class="p">(</span><span class="n">a</span> <span class="o">-</span> <span class="n">c</span><span class="p">)</span>
         <span class="n">a_opt</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
-
         <span class="k">if</span> <span class="n">a</span> <span class="o">&lt;=</span> <span class="mf">1e-10</span><span class="p">:</span>
             <span class="k">break</span>
 
@@ -757,17 +916,12 @@ optimal policies.</p>
 </div>
 </div>
 </div>
+<p>Let’s simulate and plot path</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Simulate and plot path</span>
-<span class="n">a_sim</span><span class="p">,</span> <span class="n">c_sim</span><span class="p">,</span> <span class="n">a_opt</span><span class="p">,</span> <span class="n">c_opt</span> <span class="o">=</span> <span class="n">simulate_consumption_path</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="p">(</span><span class="n">ax1</span><span class="p">,</span> <span class="n">ax2</span><span class="p">)</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">a_sim</span><span class="p">,</span> <span class="n">c_sim</span><span class="p">,</span> <span class="n">a_opt</span><span class="p">,</span> <span class="n">c_opt</span> <span class="o">=</span> <span class="n">simulate_consumption_path</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">a_0</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="p">(</span><span class="n">ax1</span><span class="p">,</span> <span class="n">ax2</span><span class="p">)</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
 
 <span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">a_sim</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;learned policy&#39;</span><span class="p">)</span>
 <span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">a_opt</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;optimal&#39;</span><span class="p">)</span>
@@ -789,40 +943,18 @@ optimal policies.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/31cc5b71d5f2a28e10bdff6396d43478606becb55d702d88809ba2755f8954e6.png"><img alt="_images/31cc5b71d5f2a28e10bdff6396d43478606becb55d702d88809ba2755f8954e6.png" src="_images/31cc5b71d5f2a28e10bdff6396d43478606becb55d702d88809ba2755f8954e6.png" style="width: 80%;" />
+<a class="reference internal image-reference" href="_images/57f2d9ce4cd073580f53682d0eda2c4cb3705c4749457d5a199b125565647e79.png"><img alt="_images/57f2d9ce4cd073580f53682d0eda2c4cb3705c4749457d5a199b125565647e79.png" src="_images/57f2d9ce4cd073580f53682d0eda2c4cb3705c4749457d5a199b125565647e79.png" style="width: 80%;" />
 </a>
 </div>
 </div>
 </section>
-<section id="extension-stochastic-labor-income-with-iid-shocks">
-<h2><span class="section-number">24.5. </span>Extension: stochastic labor income with IID shocks<a class="headerlink" href="#extension-stochastic-labor-income-with-iid-shocks" title="Link to this heading">#</a></h2>
-<p>Now let’s solve a model with IID stochastic labor income using deep learning.</p>
-<section id="id1">
-<h3><span class="section-number">24.5.1. </span>Set-Up<a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
-<p>A household chooses a consumption plan <span class="math notranslate nohighlight">\(\{c_t\}_{t \geq 0}\)</span> to maximize</p>
-<div class="math notranslate nohighlight">
-\[
-\mathbb{E} \, \sum_{t=0}^{\infty} \beta^t u(c_t)
-\]</div>
-<p>subject to</p>
-<div class="math notranslate nohighlight">
-\[
-a_{t+1} = R (a_t - c_t) + Y_{t+1}, \quad c_t \geq 0, \quad a_t \geq 0, \quad t = 0, 1, \ldots
-\]</div>
-<p>Here <span class="math notranslate nohighlight">\(Y_t\)</span> is labor income, which is IID and normally distributed:</p>
-<div class="math notranslate nohighlight">
-\[
-Z_t \sim N(m, v), \quad Y_t = \exp(Z_t)
-\]</div>
-<p>Since the shocks are IID, the optimal policy depends only on current assets <span class="math notranslate nohighlight">\(a\)</span>, not on the shock history.</p>
-<p>We assume:</p>
-<ol class="arabic simple">
-<li><p><span class="math notranslate nohighlight">\(\beta R &lt; 1\)</span></p></li>
-<li><p><span class="math notranslate nohighlight">\(u\)</span> is CRRA with parameter <span class="math notranslate nohighlight">\(\gamma\)</span></p></li>
-</ol>
 </section>
+<section id="ifp-model">
+<h2><span class="section-number">24.5. </span>IFP Model<a class="headerlink" href="#ifp-model" title="Link to this heading">#</a></h2>
+<p>Now let’s solve a model with IID stochastic labor income using deep learning.</p>
+<p>The set up was described at the start of this lecture.</p>
 <section id="jax-implementation">
-<h3><span class="section-number">24.5.2. </span>JAX Implementation<a class="headerlink" href="#jax-implementation" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">24.5.1. </span>JAX Implementation<a class="headerlink" href="#jax-implementation" title="Link to this heading">#</a></h3>
 <p>We start with a class called <code class="docutils literal notranslate"><span class="pre">IFP</span></code> that stores the model primitives.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -855,7 +987,7 @@ Z_t \sim N(m, v), \quad Y_t = \exp(Z_t)
 </div>
 </section>
 <section id="solving-the-iid-model-using-the-egm">
-<h3><span class="section-number">24.5.3. </span>Solving the IID model using the EGM<a class="headerlink" href="#solving-the-iid-model-using-the-egm" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">24.5.2. </span>Solving the IID model using the EGM<a class="headerlink" href="#solving-the-iid-model-using-the-egm" title="Link to this heading">#</a></h3>
 <p>Since the shocks are IID, the optimal policy depends only on current assets <span class="math notranslate nohighlight">\(a\)</span>.</p>
 <p>For the IID normal case, we need to compute the expectation:</p>
 <div class="math notranslate nohighlight">
@@ -986,7 +1118,7 @@ Converged in 38 iterations, error = 6.79e-06
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">a_egm</span><span class="p">,</span> <span class="n">c_egm</span><span class="p">,</span> <span class="s1">&#39;b-&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;EGM solution&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">a_egm</span><span class="p">,</span> <span class="n">c_egm</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;EGM solution&#39;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;assets&#39;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;consumption&#39;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Optimal consumption policy (IFP model, EGM)&#39;</span><span class="p">)</span>
@@ -996,13 +1128,13 @@ Converged in 38 iterations, error = 6.79e-06
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/a7049e6fa762130988ce3af1087f1d73e3444e6bc519072f50eda9118b776209.png"><img alt="_images/a7049e6fa762130988ce3af1087f1d73e3444e6bc519072f50eda9118b776209.png" src="_images/a7049e6fa762130988ce3af1087f1d73e3444e6bc519072f50eda9118b776209.png" style="width: 80%;" />
+<a class="reference internal image-reference" href="_images/901814bb8bfdc76fbbaf2e36a744921bdd7e8f5b7c6820ae7267d7d760eb5729.png"><img alt="_images/901814bb8bfdc76fbbaf2e36a744921bdd7e8f5b7c6820ae7267d7d760eb5729.png" src="_images/901814bb8bfdc76fbbaf2e36a744921bdd7e8f5b7c6820ae7267d7d760eb5729.png" style="width: 80%;" />
 </a>
 </div>
 </div>
 </section>
 <section id="solving-the-iid-model-with-dl">
-<h3><span class="section-number">24.5.4. </span>Solving the IID model with DL<a class="headerlink" href="#solving-the-iid-model-with-dl" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">24.5.3. </span>Solving the IID model with DL<a class="headerlink" href="#solving-the-iid-model-with-dl" title="Link to this heading">#</a></h3>
 <p>Since the shocks are IID, the policy depends only on current assets <span class="math notranslate nohighlight">\(a\)</span>.</p>
 <p>We use the same network architecture as the deterministic case.</p>
 <p>The forward pass uses the <code class="docutils literal notranslate"><span class="pre">forward</span></code> function from the deterministic case.</p>
@@ -1077,93 +1209,42 @@ Converged in 38 iterations, error = 6.79e-06
 <p>We use the same <code class="docutils literal notranslate"><span class="pre">ifp</span></code> instance that was created for the EGM solution above.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">stochastic_config</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s1">&#39;seed&#39;</span><span class="p">:</span> <span class="mi">1234</span><span class="p">,</span>
-    <span class="s1">&#39;epochs&#39;</span><span class="p">:</span> <span class="mi">400</span><span class="p">,</span>
-    <span class="s1">&#39;path_length&#39;</span><span class="p">:</span> <span class="mi">320</span><span class="p">,</span>
-    <span class="s1">&#39;num_paths&#39;</span><span class="p">:</span> <span class="mi">500</span><span class="p">,</span>  <span class="c1"># Number of paths to average over</span>
-    <span class="s1">&#39;learning_rate&#39;</span><span class="p">:</span> <span class="mf">0.001</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-</div>
-</div>
-<p>We initialize parameters.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">key</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">PRNGKey</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
-<span class="n">ifp_params</span> <span class="o">=</span> <span class="n">initialize_network</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">layer_sizes</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<p>Let’s set up the optimizer.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ifp_optimizer</span> <span class="o">=</span> <span class="n">optax</span><span class="o">.</span><span class="n">chain</span><span class="p">(</span>
-    <span class="n">optax</span><span class="o">.</span><span class="n">clip_by_global_norm</span><span class="p">(</span><span class="mf">1.0</span><span class="p">),</span>  <span class="c1"># Gradient clipping for stability</span>
-    <span class="n">optax</span><span class="o">.</span><span class="n">adam</span><span class="p">(</span><span class="n">learning_rate</span><span class="o">=</span><span class="n">stochastic_config</span><span class="p">[</span><span class="s1">&#39;learning_rate&#39;</span><span class="p">])</span>
-<span class="p">)</span>
-<span class="n">ifp_opt_state</span> <span class="o">=</span> <span class="n">ifp_optimizer</span><span class="o">.</span><span class="n">init</span><span class="p">(</span><span class="n">ifp_params</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<p>Train the network using policy gradient ascent.</p>
-<p>We use a fixed random key at each epoch for variance reduction.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ifp_value_history</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="n">best_ifp_value</span> <span class="o">=</span> <span class="o">-</span><span class="n">jnp</span><span class="o">.</span><span class="n">inf</span>
-<span class="n">best_ifp_params</span> <span class="o">=</span> <span class="n">ifp_params</span>
-<span class="n">fixed_key</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">PRNGKey</span><span class="p">(</span><span class="n">stochastic_config</span><span class="p">[</span><span class="s1">&#39;seed&#39;</span><span class="p">])</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">config</span> <span class="o">=</span> <span class="n">Config</span><span class="p">()</span>
+<span class="n">key</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">PRNGKey</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">seed</span><span class="p">)</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Training IFP model with deep learning...</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
 
-<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">stochastic_config</span><span class="p">[</span><span class="s1">&#39;epochs&#39;</span><span class="p">]):</span>
+<span class="c1"># Set up loss function to pass to train_network</span>
+<span class="n">ifp_loss_fn</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">params</span><span class="p">:</span> <span class="n">loss_function_ifp</span><span class="p">(</span>
+    <span class="n">params</span><span class="p">,</span> <span class="n">ifp</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">path_length</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">num_paths</span><span class="p">,</span> <span class="n">key</span>
+<span class="p">)</span>
 
-    <span class="c1"># Compute loss and gradients</span>
-    <span class="n">loss</span><span class="p">,</span> <span class="n">grads</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">value_and_grad</span><span class="p">(</span><span class="n">loss_function_ifp</span><span class="p">)(</span>
-        <span class="n">ifp_params</span><span class="p">,</span> <span class="n">ifp</span><span class="p">,</span>
-        <span class="n">stochastic_config</span><span class="p">[</span><span class="s1">&#39;path_length&#39;</span><span class="p">],</span>
-        <span class="n">stochastic_config</span><span class="p">[</span><span class="s1">&#39;num_paths&#39;</span><span class="p">],</span>
-        <span class="n">fixed_key</span>
-    <span class="p">)</span>
-    <span class="n">lifetime_value</span> <span class="o">=</span> <span class="o">-</span><span class="n">loss</span>
-    <span class="n">ifp_value_history</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">lifetime_value</span><span class="p">)</span>
+<span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="n">ifp_params</span><span class="p">,</span> <span class="n">ifp_value_history</span><span class="p">,</span> <span class="n">best_ifp_value</span> <span class="o">=</span> <span class="n">train_network</span><span class="p">(</span>
+    <span class="n">config</span><span class="p">,</span> <span class="n">ifp_loss_fn</span><span class="p">,</span> <span class="n">print_interval</span><span class="o">=</span><span class="mi">50</span>
+<span class="p">)</span>
+<span class="n">elapsed</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span>
 
-    <span class="c1"># Track best parameters</span>
-    <span class="k">if</span> <span class="n">lifetime_value</span> <span class="o">&gt;</span> <span class="n">best_ifp_value</span><span class="p">:</span>
-        <span class="n">best_ifp_value</span> <span class="o">=</span> <span class="n">lifetime_value</span>
-        <span class="n">best_ifp_params</span> <span class="o">=</span> <span class="n">ifp_params</span>
-
-    <span class="c1"># Update parameters</span>
-    <span class="n">updates</span><span class="p">,</span> <span class="n">ifp_opt_state</span> <span class="o">=</span> <span class="n">ifp_optimizer</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">grads</span><span class="p">,</span> <span class="n">ifp_opt_state</span><span class="p">)</span>
-    <span class="n">ifp_params</span> <span class="o">=</span> <span class="n">optax</span><span class="o">.</span><span class="n">apply_updates</span><span class="p">(</span><span class="n">ifp_params</span><span class="p">,</span> <span class="n">updates</span><span class="p">)</span>
-
-    <span class="k">if</span> <span class="n">i</span> <span class="o">%</span> <span class="mi">50</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Iteration </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">: Value = </span><span class="si">{</span><span class="n">lifetime_value</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-
-<span class="c1"># Use best parameters</span>
-<span class="n">ifp_params</span> <span class="o">=</span> <span class="n">best_ifp_params</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Best value: </span><span class="si">{</span><span class="n">best_ifp_value</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Final value: </span><span class="si">{</span><span class="n">ifp_value_history</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Training time: </span><span class="si">{</span><span class="n">elapsed</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> seconds&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Training IFP model with deep learning...
-Iteration 0: Value = -46.4904
-Iteration 50: Value = -44.8104
-Iteration 100: Value = -43.0656
-Iteration 150: Value = -43.0144
-Iteration 200: Value = -42.9911
-Iteration 250: Value = -42.9793
-Iteration 300: Value = -42.9777
-Iteration 350: Value = -42.9733
+Iteration 0: Value = -43.9485
+Iteration 50: Value = -43.0668
+Iteration 100: Value = -43.0282
+Iteration 150: Value = -43.0113
+Iteration 200: Value = -42.9999
+Iteration 250: Value = -42.9914
+Iteration 300: Value = -42.9845
+Iteration 350: Value = -42.9796
 
-Best value: -42.9710
-Final value: -42.9713
+Best value: -42.9761
+Final value: -42.9761
+Training time: 20.28 seconds
 </pre></div>
 </div>
 </div>
@@ -1172,7 +1253,7 @@ Final value: -42.9713
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ifp_value_history</span><span class="p">,</span> <span class="s1">&#39;b-&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ifp_value_history</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;iteration&#39;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;policy value&#39;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Learning progress&#39;</span><span class="p">)</span>
@@ -1181,7 +1262,7 @@ Final value: -42.9713
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/53bdd43ce9caaf000836c28151510866bd81f09a420af63660bbfaed6de27128.png"><img alt="_images/53bdd43ce9caaf000836c28151510866bd81f09a420af63660bbfaed6de27128.png" src="_images/53bdd43ce9caaf000836c28151510866bd81f09a420af63660bbfaed6de27128.png" style="width: 80%;" />
+<a class="reference internal image-reference" href="_images/605bfed1def8387e4252c06c88f59a1198e0db942f9fe6ab016b7c2cd3c508fb.png"><img alt="_images/605bfed1def8387e4252c06c88f59a1198e0db942f9fe6ab016b7c2cd3c508fb.png" src="_images/605bfed1def8387e4252c06c88f59a1198e0db942f9fe6ab016b7c2cd3c508fb.png" style="width: 80%;" />
 </a>
 </div>
 </div>
@@ -1196,7 +1277,7 @@ Final value: -42.9713
 
 <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">a_egm</span><span class="p">,</span> <span class="n">c_egm</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;EGM solution&#39;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">a_grid_dl</span><span class="p">,</span> <span class="n">c_dl</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;DL solution&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">a_grid_dl</span><span class="p">,</span> <span class="n">c_dl</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;DL solution&#39;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;assets&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;consumption&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">min</span><span class="p">(</span><span class="n">a_grid_dl</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">a_egm</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
@@ -1206,10 +1287,11 @@ Final value: -42.9713
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/2ffefcb342f010e6181f0ea1bf004da2fa165ec979d7dea3992b4c644f92a88c.png"><img alt="_images/2ffefcb342f010e6181f0ea1bf004da2fa165ec979d7dea3992b4c644f92a88c.png" src="_images/2ffefcb342f010e6181f0ea1bf004da2fa165ec979d7dea3992b4c644f92a88c.png" style="width: 80%;" />
+<a class="reference internal image-reference" href="_images/ec66106d409080de4154134d0870c539447d29fbaa6903cabbb890356ec32ac3.png"><img alt="_images/ec66106d409080de4154134d0870c539447d29fbaa6903cabbb890356ec32ac3.png" src="_images/ec66106d409080de4154134d0870c539447d29fbaa6903cabbb890356ec32ac3.png" style="width: 80%;" />
 </a>
 </div>
 </div>
+<p>The fit is quite good.</p>
 </section>
 </section>
 </section>

@@ -399,15 +399,15 @@ distribution over <span class="math notranslate nohighlight">\(\mathbb R_+\)</sp
 </ol>
 <p>Scrap value is set to zero and the discount rate is <span class="math notranslate nohighlight">\(\beta \in (0, 1)\)</span>.</p>
 <p>The firm makes their stop-continue choice by first solving for the value function, which is the unique solution in a class of continuous functions <span class="math notranslate nohighlight">\(\mathscr C\)</span> (details omitted) to</p>
-<div class="amsmath math notranslate nohighlight" id="equation-8acafb95-05a8-4ef7-aafc-9cfd73eee1b1">
-<span class="eqno">(19.1)<a class="headerlink" href="#equation-8acafb95-05a8-4ef7-aafc-9cfd73eee1b1" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-b037adbe-5f50-4e15-9255-d4a12c2a0198">
+<span class="eqno">(19.1)<a class="headerlink" href="#equation-b037adbe-5f50-4e15-9255-d4a12c2a0198" title="Permalink to this equation">#</a></span>\[\begin{equation}
     v(\varphi, p) = \pi(\varphi, p) + \beta 
         \max \left\{ 0, \int v(\varphi', p) \Gamma(\varphi, d \varphi') \right\}.
 \end{equation}\]</div>
 <p>Let <span class="math notranslate nohighlight">\(\bar v\)</span> be the unique solution to this functional equation.</p>
 <p>Given <span class="math notranslate nohighlight">\(\bar v\)</span>, we let <span class="math notranslate nohighlight">\(\bar \varphi\)</span> be the exit threshold function defined by</p>
-<div class="amsmath math notranslate nohighlight" id="equation-a259b765-ab7c-4df8-af7c-0dd6118688ec">
-<span class="eqno">(19.2)<a class="headerlink" href="#equation-a259b765-ab7c-4df8-af7c-0dd6118688ec" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-7e14ae84-0c48-4d89-9667-f1a260acc86e">
+<span class="eqno">(19.2)<a class="headerlink" href="#equation-7e14ae84-0c48-4d89-9667-f1a260acc86e" title="Permalink to this equation">#</a></span>\[\begin{equation}
     \bar \varphi(p) := 
     \min
     \left\{ 
@@ -442,13 +442,13 @@ section, a <strong>stationary recursive equilibrium</strong>  is a triple</p>
 \end{equation*}\]</div>
 <p>with <span class="math notranslate nohighlight">\(p\)</span> understood as price, <span class="math notranslate nohighlight">\(M\)</span> as mass of entrants, and <span class="math notranslate nohighlight">\(\mu\)</span> as a
 distribution of firms over productivity levels, such that the goods market clears, or</p>
-<div class="amsmath math notranslate nohighlight" id="equation-72fd147e-f36f-4197-a6e6-49b0d66aff05">
-<span class="eqno">(19.3)<a class="headerlink" href="#equation-72fd147e-f36f-4197-a6e6-49b0d66aff05" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-d5de0e81-f47d-49dd-beb8-c3c07fcc7f96">
+<span class="eqno">(19.3)<a class="headerlink" href="#equation-d5de0e81-f47d-49dd-beb8-c3c07fcc7f96" title="Permalink to this equation">#</a></span>\[\begin{equation}
     \int q( \varphi, p) \mu(d \varphi) = D(p),
 \end{equation}\]</div>
 <p>the <em>invariance condition</em> over the firm distribution</p>
-<div class="amsmath math notranslate nohighlight" id="equation-f0871bbf-2703-44bb-85aa-9961f57daebb">
-<span class="eqno">(19.4)<a class="headerlink" href="#equation-f0871bbf-2703-44bb-85aa-9961f57daebb" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-bf7848be-ad2e-4986-8301-92b45cd8bb51">
+<span class="eqno">(19.4)<a class="headerlink" href="#equation-bf7848be-ad2e-4986-8301-92b45cd8bb51" title="Permalink to this equation">#</a></span>\[\begin{equation}
     \mu (B) 
     = \int \Gamma(\varphi, B) \, \mathbf{1}  \{\varphi \geq \bar \varphi(p)\} \,
     \mu(d \varphi)
@@ -456,13 +456,13 @@ distribution of firms over productivity levels, such that the goods market clear
     \text{ for all } B \in \mathscr B,
 \end{equation}\]</div>
 <p>holds (see below for intuition), the <em>equilibrium entry condition</em></p>
-<div class="amsmath math notranslate nohighlight" id="equation-47d5014c-a385-406a-ac39-a2d49989d65e">
-<span class="eqno">(19.5)<a class="headerlink" href="#equation-47d5014c-a385-406a-ac39-a2d49989d65e" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-e3f71a23-d5a3-43b0-9fe1-0ae9a5aad283">
+<span class="eqno">(19.5)<a class="headerlink" href="#equation-e3f71a23-d5a3-43b0-9fe1-0ae9a5aad283" title="Permalink to this equation">#</a></span>\[\begin{equation}
     \int \bar v( \varphi, p) \, \gamma(d \varphi) = c_e
 \end{equation}\]</div>
 <p>holds, and the <em>balanced entry and exit condition</em></p>
-<div class="amsmath math notranslate nohighlight" id="equation-446e989d-5973-4e12-952f-71993faa7d9b">
-<span class="eqno">(19.6)<a class="headerlink" href="#equation-446e989d-5973-4e12-952f-71993faa7d9b" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-eb41702f-5fef-4253-8307-9bf66c7e8788">
+<span class="eqno">(19.6)<a class="headerlink" href="#equation-eb41702f-5fef-4253-8307-9bf66c7e8788" title="Permalink to this equation">#</a></span>\[\begin{equation}
     M = \mu \{ \varphi &lt; \bar \varphi(p) \}
 \end{equation}\]</div>
 <p>is verified.</p>
@@ -473,15 +473,15 @@ distribution of firms over productivity levels, such that the goods market clear
 <p>We compute the equilibrium as follows:</p>
 <p>For the purposes of this section, we insert balanced entry and
 exit into the time invariance condition, yielding</p>
-<div class="amsmath math notranslate nohighlight" id="equation-520040c3-c582-4215-a276-2a479860fa0f">
-<span class="eqno">(19.7)<a class="headerlink" href="#equation-520040c3-c582-4215-a276-2a479860fa0f" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-fbbbf2d6-0c6e-43d0-9e04-6b121fb7a97c">
+<span class="eqno">(19.7)<a class="headerlink" href="#equation-fbbbf2d6-0c6e-43d0-9e04-6b121fb7a97c" title="Permalink to this equation">#</a></span>\[\begin{equation}
     \mu (B) 
     = \int \Pi(\varphi, B) \mu (d \varphi)
     \quad \text{for all } B \in \mathscr B,
 \end{equation}\]</div>
 <p>where <span class="math notranslate nohighlight">\(\Pi\)</span> is the transition kernel on <span class="math notranslate nohighlight">\(\mathbb R_+\)</span> defined by</p>
-<div class="amsmath math notranslate nohighlight" id="equation-5ef9f1cd-1879-4bbe-b02a-9f78e7d2886b">
-<span class="eqno">(19.8)<a class="headerlink" href="#equation-5ef9f1cd-1879-4bbe-b02a-9f78e7d2886b" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-5aadd08f-8dce-4ecb-99cb-026b9de743a1">
+<span class="eqno">(19.8)<a class="headerlink" href="#equation-5aadd08f-8dce-4ecb-99cb-026b9de743a1" title="Permalink to this equation">#</a></span>\[\begin{equation}
     \Pi(\varphi, B) 
     = \Gamma(\varphi, B) \mathbf{1} \{\varphi \geq \bar \varphi(p) \} + 
     \mathbf{1} \{\varphi &lt; \bar \varphi(p)\} \gamma(B).
