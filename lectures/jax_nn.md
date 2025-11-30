@@ -439,6 +439,9 @@ descent, exactly as required.
 Here’s code that puts this all together.
 
 ```{code-cell} ipython3
+from functools import partial
+
+@partial(jax.jit, static_argnames=['config'])
 def train_jax_model(
         θ: list,                    # Initial parameters (pytree)
         x: jnp.ndarray,             # Training input data
@@ -533,10 +536,11 @@ def train_jax_optax(
         θ: list,                    # Initial parameters (pytree)
         x: jnp.ndarray,             # Training input data
         y: jnp.ndarray,             # Training target data
-        epochs: int = 4000,         # Number of training epochs
-        learning_rate: float = 0.001  # Learning rate for optimizer
+        config: Config              # contains configuration data
     ):
     " Train model using Optax SGD optimizer. "
+    epochs = config.epochs
+    learning_rate = config.learning_rate
     solver = optax.sgd(learning_rate)
     opt_state = solver.init(θ)
 
@@ -561,12 +565,12 @@ Let’s try running it.
 θ = initialize_network(param_key, config)
 
 # Warmup run to trigger JIT compilation
-train_jax_optax(θ, x, y)
+train_jax_optax(θ, x, y, config)
 
 # Reset and time the actual run
 θ = initialize_network(param_key, config)
 start_time = time()
-θ = train_jax_optax(θ, x, y)
+θ = train_jax_optax(θ, x, y, config)
 θ[0].W.block_until_ready()  # Ensure computation completes
 optax_sgd_runtime = time() - start_time
 
@@ -598,11 +602,11 @@ def train_jax_optax_adam(
         θ: list,                    # Initial parameters (pytree)
         x: jnp.ndarray,             # Training input data
         y: jnp.ndarray,             # Training target data
-        epochs: int = 4000,         # Number of training epochs
-        learning_rate: float = 0.001  # Learning rate for optimizer
+        config: Config              # contains configuration data
     ):
     " Train model using Optax ADAM optimizer. "
-
+    epochs = config.epochs
+    learning_rate = config.learning_rate
     solver = optax.adam(learning_rate)
     opt_state = solver.init(θ)
 
@@ -624,12 +628,12 @@ def train_jax_optax_adam(
 θ = initialize_network(param_key, config)
 
 # Warmup run to trigger JIT compilation
-train_jax_optax_adam(θ, x, y)
+train_jax_optax_adam(θ, x, y, config)
 
 # Reset and time the actual run
 θ = initialize_network(param_key, config)
 start_time = time()
-θ = train_jax_optax_adam(θ, x, y)
+θ = train_jax_optax_adam(θ, x, y, config)
 θ[0].W.block_until_ready()  # Ensure computation completes
 optax_adam_runtime = time() - start_time
 
