@@ -157,23 +157,35 @@ $$
 $$
 
 Working with this alternative objective transforms a dynamic programming problem
-into a regular optimization with a real-valued objective (the right-hand side of
-the last display).
+into a regular optimization with a real-valued objective (the last display).
 
 Here we'll focus on the case where $F$ concentrates on a single point $a_0$, so
 the objective becomes
 
 $$
-    \max_{\sigma \in \Sigma} M(a_0)
+    \max_{\sigma \in \Sigma} M(\sigma)
     \quad \text{where} \quad
-    M(a) := v_\sigma(a)
+    M(\sigma) := v_\sigma(a_0)
 $$
+
+
+```{note}
+Does our choice of the initial condition $a_0$ matter in terms of delivering an
+optimal policy?
+
+The answer is, in general, [yes](https://arxiv.org/html/2411.11062v2).
+
+Essentially, we want the state to explore as much of the state space as
+possible.
+
+We'll try to engineer this outcome in our choice of $a_0$.
+```
 
 From here the approach is
 
 1. Replace $\Sigma$ with $\{\sigma(\cdot, \theta) \,:\, \theta \in \Theta\}$
-    where $\sigma(\cdot, \theta)$ is an ANN
-2. Replace the objective function with $M(\theta) := \int v_{\sigma(\cdot, \theta)} (a)$
+    where $\sigma(\cdot, \theta)$ is an ANN with parameter vector $\theta$
+2. Replace the objective function with $M(\theta) := \int v_{\sigma(\cdot, \theta)} (a_0)$
 3. Replace $M$ with a Monte Carlo approximation $\hat M$
 4. Use gradient ascent to maximize $\hat M(\theta)$ over $\theta$.
 
@@ -196,33 +208,18 @@ $$
     a^i_{t+1} = R (a^i_t - \sigma(a^i_t, \theta)) + Y^i_{t+1}
 $$
 
-## Cake Eating Case
 
-We will start by tackling the simple case without labor income, so that $Y_t$ is
-always zero and $a_{t+1} = R(a_t - c_t)$
+## Network
 
-For this ``cake-eating'' model, it is known that the optimal policy is $c = \kappa a$, where
+Before we get to policy gradient ascent, let's set up a generic deep learning
+environment.
 
-$$
-    \kappa := 1 - [\beta R^{1-\gamma}]^{1/\gamma}
-$$
+The environment will work with an arbitrary loss function.
 
-We use this known exact solution to check our numerical methods.
+Below, in each optimal savings application, we will specify the loss function as
+$-\hat M$, where $\hat M$ is the approximation to lifetime value defined above.
 
-For the policy gradient problem, initial assets $a_0$ is fixed at 1.0, so the objective function is
-
-$$
-    \max_{\sigma \in \Sigma} v_\sigma(a_0)
-    \quad \text{with} \quad a_0 := 1.0
-$$
-
-Here
-
-* $\Sigma$ is the set of all feasible policies and
-* $v_\sigma(a)$ is the lifetime value of following stationary policy $\sigma$, given initial assets $a$.
-
-
-### Network
+Thus, minimizing loss in policy space means maximizing lifetime value (given fixed $a_0$).
 
 We store some fixed values that form part of the network training configuration.
 
@@ -237,7 +234,7 @@ class Config(NamedTuple):
     path_length: int = 320                   # Length of each consumption path
     layer_sizes: tuple = (1, 6, 6, 6, 1)     # Network layer sizes
     learning_rate: float = 0.001             # Constant learning rate
-    num_paths: int = 500                     # Number of paths to average over 
+    num_paths: int = 220                     # Number of paths to average over 
 ```
 
 We use a class called `LayerParams` to store parameters representing a single
@@ -256,8 +253,6 @@ class LayerParams(NamedTuple):
 
 The following function initializes a single layer of the network using Le Cun
 initialization.
-
-(Le Cun initialization is thought to pair well with `selu` activation.)
 
 ```{code-cell} ipython3
 def initialize_layer(in_dim, out_dim, key):
@@ -352,6 +347,27 @@ def train_network(
     params = best_params
     return params, value_history, best_value
 ```
+
+
+
+## Cake Eating Case
+
+We will start by tackling a very simple case, without any labor income, so that $Y_t$ is
+always zero and 
+
+$$
+    a_{t+1} = R(a_t - c_t) \qquad \text{for all } t
+$$
+
+For this "cake-eating" model, the optimal policy is known to be 
+
+$$
+    c = \kappa a, 
+    \quad \text{where} \quad
+    \kappa := 1 - [\beta R^{1-\gamma}]^{1/\gamma}
+$$
+
+We use this known exact solution to check our numerical methods.
 
 
 ### Cake eating loss function
@@ -480,14 +496,20 @@ print(f"Theoretical maximum lifetime value = {v_max:.4f}.\n")
 Now let's train the network.
 
 ```{code-cell} ipython3
+import time
+
 config = Config(num_paths=1)
 
 # Create a loss function that has params as the only argument
 loss_fn = lambda params: loss_function(params, model, config.path_length)
 
+start_time = time.time()
 params, value_history, best_value = train_network(config, loss_fn)
+elapsed = time.time() - start_time
+
 print(f"\nBest value: {best_value:.4f}")
 print(f"Final value: {value_history[-1]:.4f}")
+print(f"Training time: {elapsed:.2f} seconds")
 ```
 
 First we plot the evolution of lifetime value over the epochs.
@@ -844,11 +866,15 @@ ifp_loss_fn = lambda params: loss_function_ifp(
     params, ifp, config.path_length, config.num_paths, key
 )
 
+start_time = time.time()
 ifp_params, ifp_value_history, best_ifp_value = train_network(
     config, ifp_loss_fn, print_interval=50
 )
+elapsed = time.time() - start_time
+
 print(f"\nBest value: {best_ifp_value:.4f}")
 print(f"Final value: {ifp_value_history[-1]:.4f}")
+print(f"Training time: {elapsed:.2f} seconds")
 ```
 
 Plot the learning progress.
