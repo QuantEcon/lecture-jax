@@ -70,7 +70,7 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
-    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=10af625e9e6eb695015491be7f888e42a03bc430" type="text/css" />
+    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=dbac30014ddb092b35ab80b3076a22a196655849" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
@@ -343,7 +343,7 @@ that you can access as follows:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Fri Nov 28 06:03:56 2025       
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Mon Dec  1 05:29:42 2025       
 +-----------------------------------------------------------------------------------------+
 | NVIDIA-SMI 580.105.08             Driver Version: 580.105.08     CUDA Version: 13.0     |
 +-----------------------------------------+------------------------+----------------------+
@@ -352,7 +352,7 @@ that you can access as follows:</p>
 |                                         |                        |               MIG M. |
 |=========================================+========================+======================|
 |   0  Tesla T4                       On  |   00000000:00:1E.0 Off |                    0 |
-| N/A   33C    P0             25W /   70W |       0MiB /  15360MiB |      0%      Default |
+| N/A   31C    P0             26W /   70W |       0MiB /  15360MiB |      0%      Default |
 |                                         |                        |                  N/A |
 +-----------------------------------------+------------------------+----------------------+
 
@@ -437,8 +437,8 @@ function will be equal to 0.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>W1128 06:03:57.577916    6630 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn&#39;t support extracting fabric info or NVLink is not used by the device.
-W1128 06:03:57.581576    6578 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn&#39;t support extracting fabric info or NVLink is not used by the device.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>W1201 05:29:42.679412    5368 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn&#39;t support extracting fabric info or NVLink is not used by the device.
+W1201 05:29:42.682896    5318 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn&#39;t support extracting fabric info or NVLink is not used by the device.
 </pre></div>
 </div>
 <a class="reference internal image-reference" href="_images/2d8e8aef2c2b0f4d2e3c7a7c384537419fbbe026931c9835e5d588e0ccdd18b4.png"><img alt="_images/2d8e8aef2c2b0f4d2e3c7a7c384537419fbbe026931c9835e5d588e0ccdd18b4.png" src="_images/2d8e8aef2c2b0f4d2e3c7a7c384537419fbbe026931c9835e5d588e0ccdd18b4.png" style="width: 80%;" />
@@ -636,9 +636,9 @@ convergence in only 7 iterations.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Array([[-2.55892529e-13],
-       [-6.50313137e-13],
-       [-5.01695907e-13]], dtype=float64)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Array([[-2.53297383e-13],
+       [-6.40432152e-13],
+       [-4.93882713e-13]], dtype=float64)
 </pre></div>
 </div>
 </div>
@@ -677,8 +677,8 @@ of JAX arrays to convert it to NumPy arrays.</p>
 Dep. Variable:                      y   No. Observations:                    5
 Model:                        Poisson   Df Residuals:                        2
 Method:                           MLE   Df Model:                            2
-Date:                Fri, 28 Nov 2025   Pseudo R-squ.:                  0.2546
-Time:                        06:04:00   Log-Likelihood:                -3.3784
+Date:                Mon, 01 Dec 2025   Pseudo R-squ.:                  0.2546
+Time:                        05:29:45   Log-Likelihood:                -3.3784
 converged:                       True   LL-Null:                       -4.5325
 Covariance Type:            nonrobust   LLR p-value:                    0.3153
 ==============================================================================
