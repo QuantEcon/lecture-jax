@@ -250,7 +250,7 @@
 
                     <!-- Changelog dropdown content -->
                     <div class="qe-page__header-changelog" id="changelog-content" aria-hidden="true">
-                        <h4>Changelog (<a href="https://github.com/QuantEcon/lecture-jax/commits/main/jax_nn.md">full history</a>)</h4>
+                        <h4>Changelog (<a href="https://github.com/QuantEcon/lecture-jax/commits/main/lectures/jax_nn.md">full history</a>)</h4>
                         <ul class="changelog-list">
                             
                             <li class="changelog-entry">
@@ -258,7 +258,7 @@
                                 <a href="https://github.com/QuantEcon/lecture-jax/commit/25d9551" class="changelog-hash">25d9551</a>
                                 
                                 <span class="changelog-author">John Stachurski</span>
-                                <span class="changelog-time">16 hours ago</span>
+                                <span class="changelog-time">18 hours ago</span>
                                 <span class="changelog-message">Refactor jax_nn.md to use LayerParams NamedTuple (#257)</span>
                             </li>
                             
@@ -392,8 +392,7 @@ Requirement already satisfied: markdown-it-py&gt;=2.2.0 in /home/runner/minicond
 Requirement already satisfied: pygments&lt;3.0.0,&gt;=2.13.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from rich-&gt;keras) (2.19.1)
 Requirement already satisfied: mdurl~=0.1 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from markdown-it-py&gt;=2.2.0-&gt;rich-&gt;keras) (0.1.0)
 Downloading keras-3.12.0-py3-none-any.whl (1.5 MB)
-?25l   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">0.0/1.5 MB</span> <span class=" -Color -Color-Red">?</span> eta <span class=" -Color -Color-Cyan">-:--:--</span>
-   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">1.5/1.5 MB</span> <span class=" -Color -Color-Red">48.9 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">1.5/1.5 MB</span> <span class=" -Color -Color-Red">51.5 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
 ?25hDownloading namex-0.1.0-py3-none-any.whl (5.9 kB)
 Downloading optree-0.18.0-cp313-cp313-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (414 kB)
 Downloading rich-14.2.0-py3-none-any.whl (243 kB)
@@ -510,8 +509,8 @@ the overall mapping is</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>W1130 23:49:44.985106    2380 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn&#39;t support extracting fabric info or NVLink is not used by the device.
-W1130 23:49:44.988637    2313 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn&#39;t support extracting fabric info or NVLink is not used by the device.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>W1201 02:29:03.394744    2370 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn&#39;t support extracting fabric info or NVLink is not used by the device.
+W1201 02:29:03.398387    2301 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn&#39;t support extracting fabric info or NVLink is not used by the device.
 </pre></div>
 </div>
 <a class="reference internal image-reference" href="_images/102d7a05d7d798a7f3ec70bff64fff96ce9741aeb25ee54796e6bbd49d89b1d1.png"><img alt="_images/102d7a05d7d798a7f3ec70bff64fff96ce9741aeb25ee54796e6bbd49d89b1d1.png" src="_images/102d7a05d7d798a7f3ec70bff64fff96ce9741aeb25ee54796e6bbd49d89b1d1.png" style="width: 80%;" />
@@ -614,12 +613,12 @@ mean square loss.</p>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Training NN using Keras.
-13/13 - 0s - 35ms/step - loss: 0.0467
-Trained in 19.07 seconds, validation data MSE = 0.046651795506477356
+13/13 - 0s - 36ms/step - loss: 0.0463
+Trained in 19.38 seconds, validation data MSE = 0.046266425400972366
 13/13 - 0s - 24ms/step
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="_images/4f33128bc054fb7158b8a20fac703c044ee4418474fbd432df09754f0d02eafe.png"><img alt="_images/4f33128bc054fb7158b8a20fac703c044ee4418474fbd432df09754f0d02eafe.png" src="_images/4f33128bc054fb7158b8a20fac703c044ee4418474fbd432df09754f0d02eafe.png" style="width: 80%;" />
+<a class="reference internal image-reference" href="_images/8819099c969fc5833ddc3fb7ae0aa8d7bc1fc8c3693f0abf1bf63a4b692c0a85.png"><img alt="_images/8819099c969fc5833ddc3fb7ae0aa8d7bc1fc8c3693f0abf1bf63a4b692c0a85.png" src="_images/8819099c969fc5833ddc3fb7ae0aa8d7bc1fc8c3693f0abf1bf63a4b692c0a85.png" style="width: 80%;" />
 </a>
 </div>
 </div>
@@ -1142,39 +1141,39 @@ Final MSE on validation data = 0.041074
 <div class="cell_output docutils container">
 <div class="output text_html"><style type="text/css">
 </style>
-<table id="T_fc72d">
+<table id="T_69004">
   <thead>
     <tr>
       <th class="blank level0" >&nbsp;</th>
-      <th id="T_fc72d_level0_col0" class="col_heading level0 col0" >Method</th>
-      <th id="T_fc72d_level0_col1" class="col_heading level0 col1" >Runtime (s)</th>
-      <th id="T_fc72d_level0_col2" class="col_heading level0 col2" >Validation MSE</th>
+      <th id="T_69004_level0_col0" class="col_heading level0 col0" >Method</th>
+      <th id="T_69004_level0_col1" class="col_heading level0 col1" >Runtime (s)</th>
+      <th id="T_69004_level0_col2" class="col_heading level0 col2" >Validation MSE</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th id="T_fc72d_level0_row0" class="row_heading level0 row0" >0</th>
-      <td id="T_fc72d_row0_col0" class="data row0 col0" >Keras</td>
-      <td id="T_fc72d_row0_col1" class="data row0 col1" >19.07</td>
-      <td id="T_fc72d_row0_col2" class="data row0 col2" >0.0467</td>
+      <th id="T_69004_level0_row0" class="row_heading level0 row0" >0</th>
+      <td id="T_69004_row0_col0" class="data row0 col0" >Keras</td>
+      <td id="T_69004_row0_col1" class="data row0 col1" >19.38</td>
+      <td id="T_69004_row0_col2" class="data row0 col2" >0.0463</td>
     </tr>
     <tr>
-      <th id="T_fc72d_level0_row1" class="row_heading level0 row1" >1</th>
-      <td id="T_fc72d_row1_col0" class="data row1 col0" >Pure JAX (hand-coded GD)</td>
-      <td id="T_fc72d_row1_col1" class="data row1 col1" >0.31</td>
-      <td id="T_fc72d_row1_col2" class="data row1 col2" >0.0430</td>
+      <th id="T_69004_level0_row1" class="row_heading level0 row1" >1</th>
+      <td id="T_69004_row1_col0" class="data row1 col0" >Pure JAX (hand-coded GD)</td>
+      <td id="T_69004_row1_col1" class="data row1 col1" >0.31</td>
+      <td id="T_69004_row1_col2" class="data row1 col2" >0.0430</td>
     </tr>
     <tr>
-      <th id="T_fc72d_level0_row2" class="row_heading level0 row2" >2</th>
-      <td id="T_fc72d_row2_col0" class="data row2 col0" >JAX + Optax SGD</td>
-      <td id="T_fc72d_row2_col1" class="data row2 col1" >0.61</td>
-      <td id="T_fc72d_row2_col2" class="data row2 col2" >0.0430</td>
+      <th id="T_69004_level0_row2" class="row_heading level0 row2" >2</th>
+      <td id="T_69004_row2_col0" class="data row2 col0" >JAX + Optax SGD</td>
+      <td id="T_69004_row2_col1" class="data row2 col1" >0.61</td>
+      <td id="T_69004_row2_col2" class="data row2 col2" >0.0430</td>
     </tr>
     <tr>
-      <th id="T_fc72d_level0_row3" class="row_heading level0 row3" >3</th>
-      <td id="T_fc72d_row3_col0" class="data row3 col0" >JAX + Optax ADAM</td>
-      <td id="T_fc72d_row3_col1" class="data row3 col1" >0.75</td>
-      <td id="T_fc72d_row3_col2" class="data row3 col2" >0.0411</td>
+      <th id="T_69004_level0_row3" class="row_heading level0 row3" >3</th>
+      <td id="T_69004_row3_col0" class="data row3 col0" >JAX + Optax ADAM</td>
+      <td id="T_69004_row3_col1" class="data row3 col1" >0.75</td>
+      <td id="T_69004_row3_col2" class="data row3 col2" >0.0411</td>
     </tr>
   </tbody>
 </table>
@@ -1399,7 +1398,7 @@ Final MSE on validation data = 0.041074
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Strategy 3 - ELU activation
-  Runtime: 0.83s
+  Runtime: 0.82s
   Validation MSE: 0.040994
   Improvement over ADAM: 0.000081
 </pre></div>
@@ -1534,51 +1533,51 @@ Final MSE on validation data = 0.041074
 <div class="cell_output docutils container">
 <div class="output text_html"><style type="text/css">
 </style>
-<table id="T_87df2">
+<table id="T_bca05">
   <thead>
     <tr>
       <th class="blank level0" >&nbsp;</th>
-      <th id="T_87df2_level0_col0" class="col_heading level0 col0" >Strategy</th>
-      <th id="T_87df2_level0_col1" class="col_heading level0 col1" >Runtime (s)</th>
-      <th id="T_87df2_level0_col2" class="col_heading level0 col2" >Validation MSE</th>
-      <th id="T_87df2_level0_col3" class="col_heading level0 col3" >Improvement</th>
+      <th id="T_bca05_level0_col0" class="col_heading level0 col0" >Strategy</th>
+      <th id="T_bca05_level0_col1" class="col_heading level0 col1" >Runtime (s)</th>
+      <th id="T_bca05_level0_col2" class="col_heading level0 col2" >Validation MSE</th>
+      <th id="T_bca05_level0_col3" class="col_heading level0 col3" >Improvement</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th id="T_87df2_level0_row0" class="row_heading level0 row0" >0</th>
-      <td id="T_87df2_row0_col0" class="data row0 col0" >Baseline (ADAM + tanh)</td>
-      <td id="T_87df2_row0_col1" class="data row0 col1" >0.75</td>
-      <td id="T_87df2_row0_col2" class="data row0 col2" >0.041074</td>
-      <td id="T_87df2_row0_col3" class="data row0 col3" >0.000000</td>
+      <th id="T_bca05_level0_row0" class="row_heading level0 row0" >0</th>
+      <td id="T_bca05_row0_col0" class="data row0 col0" >Baseline (ADAM + tanh)</td>
+      <td id="T_bca05_row0_col1" class="data row0 col1" >0.75</td>
+      <td id="T_bca05_row0_col2" class="data row0 col2" >0.041074</td>
+      <td id="T_bca05_row0_col3" class="data row0 col3" >0.000000</td>
     </tr>
     <tr>
-      <th id="T_87df2_level0_row1" class="row_heading level0 row1" >1</th>
-      <td id="T_87df2_row1_col0" class="data row1 col0" >1. Deeper network (6 layers)</td>
-      <td id="T_87df2_row1_col1" class="data row1 col1" >0.97</td>
-      <td id="T_87df2_row1_col2" class="data row1 col2" >0.040882</td>
-      <td id="T_87df2_row1_col3" class="data row1 col3" >0.000192</td>
+      <th id="T_bca05_level0_row1" class="row_heading level0 row1" >1</th>
+      <td id="T_bca05_row1_col0" class="data row1 col0" >1. Deeper network (6 layers)</td>
+      <td id="T_bca05_row1_col1" class="data row1 col1" >0.97</td>
+      <td id="T_bca05_row1_col2" class="data row1 col2" >0.040882</td>
+      <td id="T_bca05_row1_col3" class="data row1 col3" >0.000192</td>
     </tr>
     <tr>
-      <th id="T_87df2_level0_row2" class="row_heading level0 row2" >2</th>
-      <td id="T_87df2_row2_col0" class="data row2 col0" >2. Deeper network + LR schedule</td>
-      <td id="T_87df2_row2_col1" class="data row2 col1" >1.00</td>
-      <td id="T_87df2_row2_col2" class="data row2 col2" >0.040878</td>
-      <td id="T_87df2_row2_col3" class="data row2 col3" >0.000196</td>
+      <th id="T_bca05_level0_row2" class="row_heading level0 row2" >2</th>
+      <td id="T_bca05_row2_col0" class="data row2 col0" >2. Deeper network + LR schedule</td>
+      <td id="T_bca05_row2_col1" class="data row2 col1" >1.00</td>
+      <td id="T_bca05_row2_col2" class="data row2 col2" >0.040878</td>
+      <td id="T_bca05_row2_col3" class="data row2 col3" >0.000196</td>
     </tr>
     <tr>
-      <th id="T_87df2_level0_row3" class="row_heading level0 row3" >3</th>
-      <td id="T_87df2_row3_col0" class="data row3 col0" >3. ELU activation</td>
-      <td id="T_87df2_row3_col1" class="data row3 col1" >0.83</td>
-      <td id="T_87df2_row3_col2" class="data row3 col2" >0.040994</td>
-      <td id="T_87df2_row3_col3" class="data row3 col3" >0.000081</td>
+      <th id="T_bca05_level0_row3" class="row_heading level0 row3" >3</th>
+      <td id="T_bca05_row3_col0" class="data row3 col0" >3. ELU activation</td>
+      <td id="T_bca05_row3_col1" class="data row3 col1" >0.82</td>
+      <td id="T_bca05_row3_col2" class="data row3 col2" >0.040994</td>
+      <td id="T_bca05_row3_col3" class="data row3 col3" >0.000081</td>
     </tr>
     <tr>
-      <th id="T_87df2_level0_row4" class="row_heading level0 row4" >4</th>
-      <td id="T_87df2_row4_col0" class="data row4 col0" >4. SELU activation</td>
-      <td id="T_87df2_row4_col1" class="data row4 col1" >0.85</td>
-      <td id="T_87df2_row4_col2" class="data row4 col2" >0.041209</td>
-      <td id="T_87df2_row4_col3" class="data row4 col3" >-0.000135</td>
+      <th id="T_bca05_level0_row4" class="row_heading level0 row4" >4</th>
+      <td id="T_bca05_row4_col0" class="data row4 col0" >4. SELU activation</td>
+      <td id="T_bca05_row4_col1" class="data row4 col1" >0.85</td>
+      <td id="T_bca05_row4_col2" class="data row4 col2" >0.041209</td>
+      <td id="T_bca05_row4_col3" class="data row4 col3" >-0.000135</td>
     </tr>
   </tbody>
 </table>
