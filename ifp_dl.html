@@ -254,10 +254,19 @@
                             
                             <li class="changelog-entry">
                                 
+                                <a href="https://github.com/QuantEcon/lecture-jax/commit/9724c6c" class="changelog-hash">9724c6c</a>
+                                
+                                <span class="changelog-author">John Stachurski</span>
+                                <span class="changelog-time">9 minutes ago</span>
+                                <span class="changelog-message">Refactor train_jax_model to use fori_loop and simplify return value (#264)</span>
+                            </li>
+                            
+                            <li class="changelog-entry">
+                                
                                 <a href="https://github.com/QuantEcon/lecture-jax/commit/b99eb52" class="changelog-hash">b99eb52</a>
                                 
                                 <span class="changelog-author">John Stachurski</span>
-                                <span class="changelog-time">7 minutes ago</span>
+                                <span class="changelog-time">2 hours ago</span>
                                 <span class="changelog-message">JIT compile train_network and optimize performance (#263)</span>
                             </li>
                             
@@ -487,7 +496,7 @@ possible.</p>
 <ol class="arabic simple">
 <li><p>Replace <span class="math notranslate nohighlight">\(\Sigma\)</span> with <span class="math notranslate nohighlight">\(\{\sigma(\cdot, \theta) \,:\, \theta \in \Theta\}\)</span>
 where <span class="math notranslate nohighlight">\(\sigma(\cdot, \theta)\)</span> is an ANN with parameter vector <span class="math notranslate nohighlight">\(\theta\)</span></p></li>
-<li><p>Replace the objective function with <span class="math notranslate nohighlight">\(M(\theta) := \int v_{\sigma(\cdot, \theta)} (a_0)\)</span></p></li>
+<li><p>Replace the objective function with <span class="math notranslate nohighlight">\(M(\theta) := v_{\sigma(\cdot, \theta)} (a_0)\)</span></p></li>
 <li><p>Replace <span class="math notranslate nohighlight">\(M\)</span> with a Monte Carlo approximation <span class="math notranslate nohighlight">\(\hat M\)</span></p></li>
 <li><p>Use gradient ascent to maximize <span class="math notranslate nohighlight">\(\hat M(\theta)\)</span> over <span class="math notranslate nohighlight">\(\theta\)</span>.</p></li>
 </ol>
@@ -836,8 +845,8 @@ expressions.</p>
 Theoretical maximum lifetime value = -383.5558.
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>W1204 09:01:35.368272    2046 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn&#39;t support extracting fabric info or NVLink is not used by the device.
-W1204 09:01:35.372010    1985 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn&#39;t support extracting fabric info or NVLink is not used by the device.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>W1204 11:31:17.852313    2055 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn&#39;t support extracting fabric info or NVLink is not used by the device.
+W1204 11:31:17.855925    1995 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn&#39;t support extracting fabric info or NVLink is not used by the device.
 </pre></div>
 </div>
 </div>
@@ -872,7 +881,7 @@ W1204 09:01:35.372010    1985 cuda_executor.cc:1802] GPU interconnect informatio
 
 Best value: -382.5436
 Final value: -382.5453
-Training time: 2.79 seconds
+Training time: 2.80 seconds
 </pre></div>
 </div>
 </div>
@@ -1279,7 +1288,7 @@ Warming up JIT compilation...
 
 Best value: -42.9578
 Final value: -42.9578
-Training time: 6.21 seconds
+Training time: 6.19 seconds
 </pre></div>
 </div>
 </div>

@@ -255,10 +255,19 @@
                             
                             <li class="changelog-entry">
                                 
+                                <a href="https://github.com/QuantEcon/lecture-jax/commit/9724c6c" class="changelog-hash">9724c6c</a>
+                                
+                                <span class="changelog-author">John Stachurski</span>
+                                <span class="changelog-time">9 minutes ago</span>
+                                <span class="changelog-message">Refactor train_jax_model to use fori_loop and simplify return value (#264)</span>
+                            </li>
+                            
+                            <li class="changelog-entry">
+                                
                                 <a href="https://github.com/QuantEcon/lecture-jax/commit/d311b01" class="changelog-hash">d311b01</a>
                                 
                                 <span class="changelog-author">John Stachurski</span>
-                                <span class="changelog-time">1 hour ago</span>
+                                <span class="changelog-time">3 hours ago</span>
                                 <span class="changelog-message">Optimize JAX JIT compilation strategy in neural network lecture (#262)</span>
                             </li>
                             
@@ -267,7 +276,7 @@
                                 <a href="https://github.com/QuantEcon/lecture-jax/commit/e544012" class="changelog-hash">e544012</a>
                                 
                                 <span class="changelog-author">John Stachurski</span>
-                                <span class="changelog-time">7 hours ago</span>
+                                <span class="changelog-time">9 hours ago</span>
                                 <span class="changelog-message">Update jax_nn.md with improved data handling and exercise strategies (#261)</span>
                             </li>
                             
@@ -294,7 +303,7 @@
                                 <a href="https://github.com/QuantEcon/lecture-jax/commit/e98e55d" class="changelog-hash">e98e55d</a>
                                 
                                 <span class="changelog-author">John Stachurski</span>
-                                <span class="changelog-time">5 days ago</span>
+                                <span class="changelog-time">6 days ago</span>
                                 <span class="changelog-message">Simplify Optax training functions with lax.fori_loop (#253)</span>
                             </li>
                             
@@ -411,7 +420,7 @@ Requirement already satisfied: pygments&lt;3.0.0,&gt;=2.13.0 in /home/runner/min
 Requirement already satisfied: mdurl~=0.1 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from markdown-it-py&gt;=2.2.0-&gt;rich-&gt;keras) (0.1.0)
 Downloading keras-3.12.0-py3-none-any.whl (1.5 MB)
 ?25l   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">0.0/1.5 MB</span> <span class=" -Color -Color-Red">?</span> eta <span class=" -Color -Color-Cyan">-:--:--</span>
-   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">1.5/1.5 MB</span> <span class=" -Color -Color-Red">42.5 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">1.5/1.5 MB</span> <span class=" -Color -Color-Red">46.4 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
 ?25hDownloading namex-0.1.0-py3-none-any.whl (5.9 kB)
 Downloading optree-0.18.0-cp313-cp313-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (414 kB)
 Downloading rich-14.2.0-py3-none-any.whl (243 kB)
@@ -425,7 +434,6 @@ Installing collected packages: namex, optree, rich, keras
    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━ <span class=" -Color -Color-Green">3/4</span> [keras]
    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━ <span class=" -Color -Color-Green">3/4</span> [keras]
    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">4/4</span> [keras]
-
 Successfully installed keras-3.12.0 namex-0.1.0 optree-0.18.0 rich-14.2.0
 </pre></div>
 </div>
@@ -532,8 +540,8 @@ the overall mapping is</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>W1204 09:02:14.335558    2288 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn&#39;t support extracting fabric info or NVLink is not used by the device.
-W1204 09:02:14.339312    2220 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn&#39;t support extracting fabric info or NVLink is not used by the device.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>W1204 11:31:56.203976    4408 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn&#39;t support extracting fabric info or NVLink is not used by the device.
+W1204 11:31:56.207400    4340 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn&#39;t support extracting fabric info or NVLink is not used by the device.
 </pre></div>
 </div>
 <a class="reference internal image-reference" href="_images/7ea791230ffb7c122da8545186e7d132235964cf0fb995b056b881585a258fb8.png"><img alt="_images/7ea791230ffb7c122da8545186e7d132235964cf0fb995b056b881585a258fb8.png" src="_images/7ea791230ffb7c122da8545186e7d132235964cf0fb995b056b881585a258fb8.png" style="width: 80%;" />
@@ -632,12 +640,12 @@ mean square loss.</p>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Training NN using Keras.
-13/13 - 0s - 36ms/step - loss: 0.0460
-Trained in 19.52 seconds, validation data MSE = 0.046049512922763824
-13/13 - 0s - 25ms/step
+13/13 - 0s - 36ms/step - loss: 0.0467
+Trained in 19.25 seconds, validation data MSE = 0.046692799776792526
+13/13 - 0s - 24ms/step
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="_images/7265f60a7d05f2fbe4252ddc8712496b4134c27ab54f26b09dd23b7b897c6f0f.png"><img alt="_images/7265f60a7d05f2fbe4252ddc8712496b4134c27ab54f26b09dd23b7b897c6f0f.png" src="_images/7265f60a7d05f2fbe4252ddc8712496b4134c27ab54f26b09dd23b7b897c6f0f.png" style="width: 80%;" />
+<a class="reference internal image-reference" href="_images/9c25060c01abb8b2ee1a2faa1dedaa64644f3f18de26f92a5cfb4235d0d45679.png"><img alt="_images/9c25060c01abb8b2ee1a2faa1dedaa64644f3f18de26f92a5cfb4235d0d45679.png" src="_images/9c25060c01abb8b2ee1a2faa1dedaa64644f3f18de26f92a5cfb4235d0d45679.png" style="width: 80%;" />
 </a>
 </div>
 </div>
@@ -855,17 +863,12 @@ descent, exactly as required.</p>
 <span class="sd">    Train model using gradient descent.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">update</span><span class="p">(</span><span class="n">θ</span><span class="p">,</span> <span class="n">_</span><span class="p">):</span>
-        <span class="n">train_loss</span> <span class="o">=</span> <span class="n">loss_fn</span><span class="p">(</span><span class="n">θ</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
-        <span class="n">val_loss</span> <span class="o">=</span> <span class="n">loss_fn</span><span class="p">(</span><span class="n">θ</span><span class="p">,</span> <span class="n">x_validate</span><span class="p">,</span> <span class="n">y_validate</span><span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">update</span><span class="p">(</span><span class="n">_</span><span class="p">,</span> <span class="n">θ</span><span class="p">):</span>
         <span class="n">θ_new</span> <span class="o">=</span> <span class="n">update_parameters</span><span class="p">(</span><span class="n">θ</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">config</span><span class="p">)</span>
-        <span class="n">accumulate</span> <span class="o">=</span> <span class="n">train_loss</span><span class="p">,</span> <span class="n">val_loss</span>
-        <span class="k">return</span> <span class="n">θ_new</span><span class="p">,</span> <span class="n">accumulate</span>
+        <span class="k">return</span> <span class="n">θ_new</span>
 
-    <span class="n">θ_final</span><span class="p">,</span> <span class="p">(</span><span class="n">training_losses</span><span class="p">,</span> <span class="n">validation_losses</span><span class="p">)</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">lax</span><span class="o">.</span><span class="n">scan</span><span class="p">(</span>
-        <span class="n">update</span><span class="p">,</span> <span class="n">θ</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">epochs</span>
-    <span class="p">)</span>
-    <span class="k">return</span> <span class="n">θ_final</span><span class="p">,</span> <span class="n">training_losses</span><span class="p">,</span> <span class="n">validation_losses</span>
+    <span class="n">θ_final</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">lax</span><span class="o">.</span><span class="n">fori_loop</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">epochs</span><span class="p">,</span> <span class="n">update</span><span class="p">,</span> <span class="n">θ</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">θ_final</span>
 </pre></div>
 </div>
 </div>
@@ -877,24 +880,18 @@ descent, exactly as required.</p>
 <p>We’ll reuse the data we generated earlier.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">config</span> <span class="o">=</span> <span class="n">Config</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Reset parameter vector</span>
+<span class="n">config</span> <span class="o">=</span> <span class="n">Config</span><span class="p">()</span>
 <span class="n">param_key</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">PRNGKey</span><span class="p">(</span><span class="mi">1234</span><span class="p">)</span>
 <span class="n">θ</span> <span class="o">=</span> <span class="n">initialize_network</span><span class="p">(</span><span class="n">param_key</span><span class="p">,</span> <span class="n">config</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Warmup run to trigger JIT compilation</span>
+
+<span class="c1"># Warmup run to trigger JIT compilation</span>
 <span class="n">train_jax_model</span><span class="p">(</span><span class="n">θ</span><span class="p">,</span> <span class="n">x_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">x_validate</span><span class="p">,</span> <span class="n">y_validate</span><span class="p">,</span> <span class="n">config</span><span class="p">)</span>
 
 <span class="c1"># Reset and time the actual run</span>
 <span class="n">θ</span> <span class="o">=</span> <span class="n">initialize_network</span><span class="p">(</span><span class="n">param_key</span><span class="p">,</span> <span class="n">config</span><span class="p">)</span>
 <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
-<span class="n">θ</span><span class="p">,</span> <span class="n">training_loss</span><span class="p">,</span> <span class="n">validation_loss</span> <span class="o">=</span> <span class="n">train_jax_model</span><span class="p">(</span>
-    <span class="n">θ</span><span class="p">,</span> <span class="n">x_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">x_validate</span><span class="p">,</span> <span class="n">y_validate</span><span class="p">,</span> <span class="n">config</span>
-<span class="p">)</span>
+<span class="n">θ</span> <span class="o">=</span> <span class="n">train_jax_model</span><span class="p">(</span><span class="n">θ</span><span class="p">,</span> <span class="n">x_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">x_validate</span><span class="p">,</span> <span class="n">y_validate</span><span class="p">,</span> <span class="n">config</span><span class="p">)</span>
 <span class="n">θ</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">W</span><span class="o">.</span><span class="n">block_until_ready</span><span class="p">()</span>  <span class="c1"># Ensure computation completes</span>
 <span class="n">jax_runtime</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span>
 
@@ -906,28 +903,13 @@ descent, exactly as required.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Trained model with JAX in 0.31 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Trained model with JAX in 0.27 seconds.
 Final MSE on validation data = 0.042119
 </pre></div>
 </div>
 </div>
 </div>
 <p>Despite the simplicity of our implementation, we actually perform slightly better than Keras.</p>
-<p>This figure shows MSE across iterations:</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">validation_loss</span><span class="p">)),</span> <span class="n">validation_loss</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;validation loss&#39;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/97a9c9542d91728bdc5563565d2573bf567fd9e719d15cc319d85932b7e653f7.png"><img alt="_images/97a9c9542d91728bdc5563565d2573bf567fd9e719d15cc319d85932b7e653f7.png" src="_images/97a9c9542d91728bdc5563565d2573bf567fd9e719d15cc319d85932b7e653f7.png" style="width: 80%;" />
-</a>
-</div>
-</div>
 <p>Here’s a visualization of the quality of our fit.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1178,10 +1160,10 @@ Final MSE on validation data = 0.040869
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Summary of Training Methods:
                   Method  Runtime (s) Training MSE Validation MSE
-                   Keras    19.520362     0.040874        0.04605
-Pure JAX (hand-coded GD)     0.310571   0.03996341    0.042119425
-         JAX + Optax SGD     0.272411   0.03996341    0.042119425
-        JAX + Optax ADAM     0.277675   0.03587921      0.0408687
+                   Keras    19.253723     0.041236       0.046693
+Pure JAX (hand-coded GD)     0.274473   0.03996341    0.042119425
+         JAX + Optax SGD     0.273623   0.03996341    0.042119425
+        JAX + Optax ADAM     0.277498   0.03587921      0.0408687
 </pre></div>
 </div>
 </div>
@@ -1331,7 +1313,7 @@ Pure JAX (hand-coded GD)     0.310571   0.03996341    0.042119425
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Strategy 2 - Deeper network + LR schedule
-  Runtime: 1.01s
+  Runtime: 0.99s
   Validation MSE: 0.041633
   Improvement over ADAM: -0.000764
 </pre></div>
@@ -1407,7 +1389,7 @@ Pure JAX (hand-coded GD)     0.310571   0.03996341    0.042119425
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Strategy 3 - Deeper network + LR schedule + L2 regularization
-  Runtime: 1.11s
+  Runtime: 1.12s
   Validation MSE: 0.040845
   Improvement over ADAM: 0.000024
 </pre></div>
@@ -1537,11 +1519,11 @@ Pure JAX (hand-coded GD)     0.310571   0.03996341    0.042119425
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Summary of Exercise Strategies:
                          Strategy  Runtime (s) Validation MSE  Improvement
-           Baseline (ADAM + tanh)     0.277675      0.0408687     0.000000
-     1. Deeper network (6 layers)     0.452303    0.041686147    -0.000817
-  2. Deeper network + LR schedule     1.012384    0.041632924    -0.000764
-3. Strategy 2 + L2 regularization     1.113348    0.040844545     0.000024
-  4. Baseline + L2 regularization     0.842189     0.04095904    -0.000090
+           Baseline (ADAM + tanh)     0.277498      0.0408687     0.000000
+     1. Deeper network (6 layers)     0.452154    0.041686147    -0.000817
+  2. Deeper network + LR schedule     0.994958    0.041632924    -0.000764
+3. Strategy 2 + L2 regularization     1.119651    0.040844545     0.000024
+  4. Baseline + L2 regularization     0.836128     0.04095904    -0.000090
 </pre></div>
 </div>
 </div>

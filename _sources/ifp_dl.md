@@ -185,7 +185,7 @@ From here the approach is
 
 1. Replace $\Sigma$ with $\{\sigma(\cdot, \theta) \,:\, \theta \in \Theta\}$
     where $\sigma(\cdot, \theta)$ is an ANN with parameter vector $\theta$
-2. Replace the objective function with $M(\theta) := \int v_{\sigma(\cdot, \theta)} (a_0)$
+2. Replace the objective function with $M(\theta) := v_{\sigma(\cdot, \theta)} (a_0)$
 3. Replace $M$ with a Monte Carlo approximation $\hat M$
 4. Use gradient ascent to maximize $\hat M(\theta)$ over $\theta$.
 
