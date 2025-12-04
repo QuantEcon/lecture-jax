@@ -243,7 +243,7 @@
 
                     <!-- Last modified / Changelog dropdown -->
                         <button class="qe-page__header-changed" id="changelog-toggle" aria-expanded="false">
-                            Last changed: Nov 30, 2025
+                            Last changed: Dec 04, 2025
                             <span class="changelog-icon">▼</span>
                         </button>
 
@@ -251,6 +251,15 @@
                     <div class="qe-page__header-changelog" id="changelog-content" aria-hidden="true">
                         <h4>Changelog (<a href="https://github.com/QuantEcon/lecture-jax/commits/main/lectures/ifp_dl.md">full history</a>)</h4>
                         <ul class="changelog-list">
+                            
+                            <li class="changelog-entry">
+                                
+                                <a href="https://github.com/QuantEcon/lecture-jax/commit/b99eb52" class="changelog-hash">b99eb52</a>
+                                
+                                <span class="changelog-author">John Stachurski</span>
+                                <span class="changelog-time">7 minutes ago</span>
+                                <span class="changelog-message">JIT compile train_network and optimize performance (#263)</span>
+                            </li>
                             
                             <li class="changelog-entry">
                                 
@@ -354,6 +363,7 @@ Installing collected packages: typing_extensions, absl-py, chex, optax
    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">0/4</span> [typing_extensions]
    ━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">1/4</span> [absl-py]
    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━ <span class=" -Color -Color-Green">3/4</span> [optax]
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━ <span class=" -Color -Color-Green">3/4</span> [optax]
    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">4/4</span> [optax]
 Successfully installed absl-py-2.3.1 chex-0.1.91 optax-0.2.6 typing_extensions-4.15.0
 </pre></div>
@@ -371,6 +381,11 @@ Successfully installed absl-py-2.3.1 chex-0.1.91 optax-0.2.6 typing_extensions-4
 <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">partial</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">NamedTuple</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Matplotlib is building the font cache; this may take a moment.
 </pre></div>
 </div>
 </div>
@@ -512,10 +527,10 @@ environment.</p>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">seed</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1234</span>                         <span class="c1"># Seed for network initialization</span>
     <span class="n">epochs</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">400</span>                        <span class="c1"># No of training epochs</span>
-    <span class="n">path_length</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">320</span>                   <span class="c1"># Length of each consumption path</span>
+    <span class="n">path_length</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">200</span>                   <span class="c1"># Length of each consumption path</span>
     <span class="n">layer_sizes</span><span class="p">:</span> <span class="nb">tuple</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>     <span class="c1"># Network layer sizes</span>
     <span class="n">learning_rate</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.001</span>             <span class="c1"># Constant learning rate</span>
-    <span class="n">num_paths</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">220</span>                     <span class="c1"># Number of paths to average over </span>
+    <span class="n">num_paths</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">100</span>                     <span class="c1"># Number of paths to average over </span>
 </pre></div>
 </div>
 </div>
@@ -539,9 +554,13 @@ layer of the neural network.</p>
 initialization.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">initialize_layer</span><span class="p">(</span><span class="n">in_dim</span><span class="p">,</span> <span class="n">out_dim</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">initialize_layer</span><span class="p">(</span>
+        <span class="n">in_dim</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>                     <span class="c1"># Input dimension for the layer</span>
+        <span class="n">out_dim</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>                    <span class="c1"># Output dimension for the layer</span>
+        <span class="n">key</span><span class="p">:</span> <span class="n">jax</span><span class="o">.</span><span class="n">Array</span>                   <span class="c1"># Random key for initialization</span>
+    <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Initialize weights and biases for a single layer of a the network.</span>
+<span class="sd">    Initialize weights and biases for a single layer of the network.</span>
 <span class="sd">    Use LeCun initialization.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -557,10 +576,13 @@ initialization.</p>
 initializing layers and stacking them into a list.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">initialize_network</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">layer_sizes</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">initialize_network</span><span class="p">(</span>
+        <span class="n">key</span><span class="p">:</span> <span class="n">jax</span><span class="o">.</span><span class="n">Array</span><span class="p">,</span>                  <span class="c1"># Random key for initialization</span>
+        <span class="n">layer_sizes</span><span class="p">:</span> <span class="nb">tuple</span>               <span class="c1"># Layer sizes (input, hidden..., output)</span>
+    <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Build a network by initializing all of the parameters.</span>
-<span class="sd">    A network is a list of LayerParams instances, each </span>
+<span class="sd">    A network is a list of LayerParams instances, each</span>
 <span class="sd">    containing a weight-bias pair (W, b).</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -586,10 +608,10 @@ initializing layers and stacking them into a list.</p>
 function.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">train_network</span><span class="p">(</span>
-        <span class="n">config</span><span class="p">:</span> <span class="n">Config</span><span class="p">,</span>               <span class="c1"># Configuration object with training parameters</span>
-        <span class="n">loss_fn</span><span class="p">:</span> <span class="nb">callable</span><span class="p">,</span>            <span class="c1"># Loss function taking params and returning loss</span>
-        <span class="n">print_interval</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">100</span>     <span class="c1"># How often to print progress</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@partial</span><span class="p">(</span><span class="n">jax</span><span class="o">.</span><span class="n">jit</span><span class="p">,</span> <span class="n">static_argnames</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;config&#39;</span><span class="p">,</span> <span class="s1">&#39;loss_fn&#39;</span><span class="p">))</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">train_network</span><span class="p">(</span>
+        <span class="n">config</span><span class="p">:</span> <span class="n">Config</span><span class="p">,</span>            <span class="c1"># Configuration with training parameters</span>
+        <span class="n">loss_fn</span><span class="p">:</span> <span class="nb">callable</span>          <span class="c1"># Loss function taking params, returning loss</span>
     <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Train a neural network using policy gradient ascent.</span>
@@ -610,29 +632,41 @@ function.</p>
     <span class="p">)</span>
     <span class="n">opt_state</span> <span class="o">=</span> <span class="n">optimizer</span><span class="o">.</span><span class="n">init</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
 
-    <span class="c1"># Training loop</span>
-    <span class="n">value_history</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">best_value</span> <span class="o">=</span> <span class="o">-</span><span class="n">jnp</span><span class="o">.</span><span class="n">inf</span>
-    <span class="n">best_params</span> <span class="o">=</span> <span class="n">params</span>
+    <span class="c1"># Training loop state</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">step</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
+        <span class="n">params</span><span class="p">,</span> <span class="n">opt_state</span><span class="p">,</span> <span class="n">best_value</span><span class="p">,</span> <span class="n">best_params</span><span class="p">,</span> <span class="n">value_history</span> <span class="o">=</span> <span class="n">state</span>
 
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">epochs</span><span class="p">):</span>
         <span class="c1"># Compute value and gradients at existing parameterization</span>
         <span class="n">loss</span><span class="p">,</span> <span class="n">grads</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">value_and_grad</span><span class="p">(</span><span class="n">loss_fn</span><span class="p">)(</span><span class="n">params</span><span class="p">)</span>
-        <span class="n">lifetime_value</span> <span class="o">=</span> <span class="o">-</span> <span class="n">loss</span>
-        <span class="n">value_history</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">lifetime_value</span><span class="p">)</span>
+        <span class="n">lifetime_value</span> <span class="o">=</span> <span class="o">-</span><span class="n">loss</span>
+
+        <span class="c1"># Update value history</span>
+        <span class="n">value_history</span> <span class="o">=</span> <span class="n">value_history</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">lifetime_value</span><span class="p">)</span>
+
         <span class="c1"># Track best parameters</span>
-        <span class="k">if</span> <span class="n">lifetime_value</span> <span class="o">&gt;</span> <span class="n">best_value</span><span class="p">:</span>
-            <span class="n">best_value</span> <span class="o">=</span> <span class="n">lifetime_value</span>
-            <span class="n">best_params</span> <span class="o">=</span> <span class="n">params</span>
+        <span class="n">is_best</span> <span class="o">=</span> <span class="n">lifetime_value</span> <span class="o">&gt;</span> <span class="n">best_value</span>
+        <span class="n">best_value</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">is_best</span><span class="p">,</span> <span class="n">lifetime_value</span><span class="p">,</span> <span class="n">best_value</span><span class="p">)</span>
+        <span class="n">best_params</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">tree</span><span class="o">.</span><span class="n">map</span><span class="p">(</span>
+            <span class="k">lambda</span> <span class="n">new</span><span class="p">,</span> <span class="n">old</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">is_best</span><span class="p">,</span> <span class="n">new</span><span class="p">,</span> <span class="n">old</span><span class="p">),</span>
+            <span class="n">params</span><span class="p">,</span> <span class="n">best_params</span>
+        <span class="p">)</span>
+
         <span class="c1"># Update parameters using optimizer</span>
         <span class="n">updates</span><span class="p">,</span> <span class="n">opt_state</span> <span class="o">=</span> <span class="n">optimizer</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">grads</span><span class="p">,</span> <span class="n">opt_state</span><span class="p">)</span>
         <span class="n">params</span> <span class="o">=</span> <span class="n">optax</span><span class="o">.</span><span class="n">apply_updates</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">updates</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">i</span> <span class="o">%</span> <span class="n">print_interval</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Iteration </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">: Value = </span><span class="si">{</span><span class="n">lifetime_value</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-    <span class="c1"># Use best parameters instead of final</span>
-    <span class="n">params</span> <span class="o">=</span> <span class="n">best_params</span>
-    <span class="k">return</span> <span class="n">params</span><span class="p">,</span> <span class="n">value_history</span><span class="p">,</span> <span class="n">best_value</span>
+        <span class="k">return</span> <span class="n">params</span><span class="p">,</span> <span class="n">opt_state</span><span class="p">,</span> <span class="n">best_value</span><span class="p">,</span> <span class="n">best_params</span><span class="p">,</span> <span class="n">value_history</span>
+
+    <span class="c1"># Run training loop</span>
+    <span class="n">value_history</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">epochs</span><span class="p">)</span>
+    <span class="n">initial_state</span> <span class="o">=</span> <span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">opt_state</span><span class="p">,</span> <span class="o">-</span><span class="n">jnp</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">value_history</span><span class="p">)</span>
+    <span class="n">final_state</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">lax</span><span class="o">.</span><span class="n">fori_loop</span><span class="p">(</span>
+        <span class="mi">0</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">epochs</span><span class="p">,</span> <span class="n">step</span><span class="p">,</span> <span class="n">initial_state</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Extract results</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">best_value</span><span class="p">,</span> <span class="n">best_params</span><span class="p">,</span> <span class="n">value_history</span> <span class="o">=</span> <span class="n">final_state</span>
+    <span class="k">return</span> <span class="n">best_params</span><span class="p">,</span> <span class="n">value_history</span><span class="p">,</span> <span class="n">best_value</span>
 </pre></div>
 </div>
 </div>
@@ -686,7 +720,10 @@ always zero and</p>
 parameters of the network.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">a</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span>
+        <span class="n">params</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span>         <span class="c1"># Network parameters (LayerParams list)</span>
+        <span class="n">a</span><span class="p">:</span> <span class="nb">float</span>              <span class="c1"># Current asset level</span>
+    <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Evaluate neural network policy: maps a given asset level a to</span>
 <span class="sd">    consumption rate c/a by running a forward pass through the network.</span>
@@ -714,7 +751,11 @@ network.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@partial</span><span class="p">(</span><span class="n">jax</span><span class="o">.</span><span class="n">jit</span><span class="p">,</span> <span class="n">static_argnames</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;path_length&#39;</span><span class="p">))</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">compute_lifetime_value</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">cake_eating_model</span><span class="p">,</span> <span class="n">path_length</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">compute_lifetime_value</span><span class="p">(</span>
+        <span class="n">params</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span>                <span class="c1"># Network parameters</span>
+        <span class="n">cake_eating_model</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">,</span>    <span class="c1"># Model parameters (γ, β, R)</span>
+        <span class="n">path_length</span><span class="p">:</span> <span class="nb">int</span>             <span class="c1"># Length of simulation path</span>
+    <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Compute the lifetime value of a path generated from</span>
 <span class="sd">    the policy embedded in params and the initial condition a_0 = 1.</span>
@@ -795,8 +836,8 @@ expressions.</p>
 Theoretical maximum lifetime value = -383.5558.
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>W1201 05:23:55.354471    3253 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn&#39;t support extracting fabric info or NVLink is not used by the device.
-W1201 05:23:55.357856    3192 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn&#39;t support extracting fabric info or NVLink is not used by the device.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>W1204 09:01:35.368272    2046 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn&#39;t support extracting fabric info or NVLink is not used by the device.
+W1204 09:01:35.372010    1985 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn&#39;t support extracting fabric info or NVLink is not used by the device.
 </pre></div>
 </div>
 </div>
@@ -811,8 +852,13 @@ W1201 05:23:55.357856    3192 cuda_executor.cc:1802] GPU interconnect informatio
 <span class="c1"># Create a loss function that has params as the only argument</span>
 <span class="n">loss_fn</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">params</span><span class="p">:</span> <span class="n">loss_function</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">path_length</span><span class="p">)</span>
 
+<span class="c1"># Warmup to trigger JIT compilation</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Warming up JIT compilation...&quot;</span><span class="p">)</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">train_network</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">loss_fn</span><span class="p">)</span>
+
 <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
 <span class="n">params</span><span class="p">,</span> <span class="n">value_history</span><span class="p">,</span> <span class="n">best_value</span> <span class="o">=</span> <span class="n">train_network</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">loss_fn</span><span class="p">)</span>
+<span class="n">best_value</span><span class="o">.</span><span class="n">block_until_ready</span><span class="p">()</span>
 <span class="n">elapsed</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Best value: </span><span class="si">{</span><span class="n">best_value</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
@@ -822,14 +868,11 @@ W1201 05:23:55.357856    3192 cuda_executor.cc:1802] GPU interconnect informatio
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Iteration 0: Value = -1558952.7500
-Iteration 100: Value = -534.6805
-Iteration 200: Value = -477.2722
-Iteration 300: Value = -383.5503
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Warming up JIT compilation...
 
-Best value: -383.5341
-Final value: -383.6208
-Training time: 16.31 seconds
+Best value: -382.5436
+Final value: -382.5453
+Training time: 2.79 seconds
 </pre></div>
 </div>
 </div>
@@ -848,7 +891,7 @@ Training time: 16.31 seconds
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/83deb7da63c55ab3ed5f2989969d970f4a7739fab7af38a4ac7e3732d2cbfa5d.png"><img alt="_images/83deb7da63c55ab3ed5f2989969d970f4a7739fab7af38a4ac7e3732d2cbfa5d.png" src="_images/83deb7da63c55ab3ed5f2989969d970f4a7739fab7af38a4ac7e3732d2cbfa5d.png" style="width: 80%;" />
+<a class="reference internal image-reference" href="_images/c313396409af82d9f9bed771a0bb83a4c2eda03aad239880b8f195e42af4c308.png"><img alt="_images/c313396409af82d9f9bed771a0bb83a4c2eda03aad239880b8f195e42af4c308.png" src="_images/c313396409af82d9f9bed771a0bb83a4c2eda03aad239880b8f195e42af4c308.png" style="width: 80%;" />
 </a>
 </div>
 </div>
@@ -874,7 +917,7 @@ Training time: 16.31 seconds
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/7acd67a42eca748d3fba3ed28d83cb2bf8a2859c577d7adfa3c9a863b48c2451.png"><img alt="_images/7acd67a42eca748d3fba3ed28d83cb2bf8a2859c577d7adfa3c9a863b48c2451.png" src="_images/7acd67a42eca748d3fba3ed28d83cb2bf8a2859c577d7adfa3c9a863b48c2451.png" style="width: 80%;" />
+<a class="reference internal image-reference" href="_images/145431a9c9dc2c45a38642339db7ab8eb71d3c99ad25c9b6443076770e5671b4.png"><img alt="_images/145431a9c9dc2c45a38642339db7ab8eb71d3c99ad25c9b6443076770e5671b4.png" src="_images/145431a9c9dc2c45a38642339db7ab8eb71d3c99ad25c9b6443076770e5671b4.png" style="width: 80%;" />
 </a>
 </div>
 </div>
@@ -947,7 +990,7 @@ optimal policies.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/57f2d9ce4cd073580f53682d0eda2c4cb3705c4749457d5a199b125565647e79.png"><img alt="_images/57f2d9ce4cd073580f53682d0eda2c4cb3705c4749457d5a199b125565647e79.png" src="_images/57f2d9ce4cd073580f53682d0eda2c4cb3705c4749457d5a199b125565647e79.png" style="width: 80%;" />
+<a class="reference internal image-reference" href="_images/7a6609b3f6f4450617fe448a852fa0f3c9f0df49b16cb54e37f8ece30b8e6a62.png"><img alt="_images/7a6609b3f6f4450617fe448a852fa0f3c9f0df49b16cb54e37f8ece30b8e6a62.png" src="_images/7a6609b3f6f4450617fe448a852fa0f3c9f0df49b16cb54e37f8ece30b8e6a62.png" style="width: 80%;" />
 </a>
 </div>
 </div>
@@ -1003,20 +1046,16 @@ optimal policies.</p>
 <p>Here is the EGM operator <span class="math notranslate nohighlight">\(K\)</span> for the IID case:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">K</span><span class="p">(</span><span class="n">c_in</span><span class="p">,</span> <span class="n">a_in</span><span class="p">,</span> <span class="n">ifp</span><span class="p">,</span> <span class="n">s_grid</span><span class="p">,</span> <span class="n">n_shocks</span><span class="o">=</span><span class="mi">50</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">K</span><span class="p">(</span>
+        <span class="n">c_in</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>       <span class="c1"># Current consumption policy on endogenous grid</span>
+        <span class="n">a_in</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>       <span class="c1"># Current endogenous asset grid</span>
+        <span class="n">ifp</span><span class="p">:</span> <span class="n">IFP</span><span class="p">,</span>                <span class="c1"># IFP model instance</span>
+        <span class="n">s_grid</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>     <span class="c1"># Exogenous savings grid</span>
+        <span class="n">n_shocks</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">50</span>       <span class="c1"># Number of points for Monte Carlo integration</span>
+    <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    The Euler equation operator for the IFP model with IID shocks using EGM.</span>
 
-<span class="sd">    Args:</span>
-<span class="sd">        c_in: Current consumption policy on endogenous grid</span>
-<span class="sd">        a_in: Current endogenous asset grid</span>
-<span class="sd">        ifp: IFP model instance</span>
-<span class="sd">        s_grid: Exogenous savings grid</span>
-<span class="sd">        n_shocks: Number of points for Monte Carlo integration</span>
-
-<span class="sd">    Returns:</span>
-<span class="sd">        c_out: Updated consumption policy</span>
-<span class="sd">        a_out: Updated endogenous asset grid</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">R</span><span class="p">,</span> <span class="n">β</span><span class="p">,</span> <span class="n">γ</span><span class="p">,</span> <span class="n">z_mean</span><span class="p">,</span> <span class="n">z_std</span><span class="p">,</span> <span class="n">z_samples</span> <span class="o">=</span> <span class="n">ifp</span>
     <span class="n">y_samples</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">z_samples</span><span class="p">)</span>
@@ -1056,20 +1095,16 @@ optimal policies.</p>
 <p>Here’s the solver using time iteration:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">solve_model</span><span class="p">(</span><span class="n">ifp</span><span class="p">,</span> <span class="n">s_grid</span><span class="p">,</span> <span class="n">n_shocks</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">1000</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">solve_model</span><span class="p">(</span>
+        <span class="n">ifp</span><span class="p">:</span> <span class="n">IFP</span><span class="p">,</span>                <span class="c1"># IFP model instance</span>
+        <span class="n">s_grid</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>     <span class="c1"># Exogenous savings grid</span>
+        <span class="n">n_shocks</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">50</span><span class="p">,</span>      <span class="c1"># Number of income shock realizations</span>
+        <span class="n">tol</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-5</span><span class="p">,</span>       <span class="c1"># Convergence tolerance</span>
+        <span class="n">max_iter</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1000</span>     <span class="c1"># Maximum iterations</span>
+    <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Solve the IID model using time iteration with EGM.</span>
 
-<span class="sd">    Args:</span>
-<span class="sd">        ifp: IFP model instance</span>
-<span class="sd">        s_grid: Exogenous savings grid</span>
-<span class="sd">        n_shocks: Number of income shock realizations for integration</span>
-<span class="sd">        tol: Convergence tolerance</span>
-<span class="sd">        max_iter: Maximum iterations</span>
-
-<span class="sd">    Returns:</span>
-<span class="sd">        c_out: Optimal consumption policy on endogenous grid</span>
-<span class="sd">        a_out: Endogenous asset grid</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Initialize with consumption = assets (consume everything)</span>
     <span class="n">a_init</span> <span class="o">=</span> <span class="n">s_grid</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
@@ -1147,20 +1182,17 @@ Converged in 38 iterations, error = 6.79e-06
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@partial</span><span class="p">(</span><span class="n">jax</span><span class="o">.</span><span class="n">jit</span><span class="p">,</span> <span class="n">static_argnames</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;path_length&#39;</span><span class="p">,</span> <span class="s1">&#39;num_paths&#39;</span><span class="p">))</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">compute_lifetime_value_ifp</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">ifp</span><span class="p">,</span> <span class="n">path_length</span><span class="p">,</span> <span class="n">num_paths</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">compute_lifetime_value_ifp</span><span class="p">(</span>
+        <span class="n">params</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span>            <span class="c1"># Neural network parameters</span>
+        <span class="n">ifp</span><span class="p">:</span> <span class="n">IFP</span><span class="p">,</span>                <span class="c1"># IFP model instance</span>
+        <span class="n">path_length</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>        <span class="c1"># Length of each simulated path</span>
+        <span class="n">num_paths</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>          <span class="c1"># Number of paths to simulate for averaging</span>
+        <span class="n">key</span><span class="p">:</span> <span class="n">jax</span><span class="o">.</span><span class="n">Array</span>           <span class="c1"># JAX random key for generating income shocks</span>
+    <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Compute expected lifetime value by averaging over multiple </span>
+<span class="sd">    Compute expected lifetime value by averaging over multiple</span>
 <span class="sd">    simulated paths.</span>
 
-<span class="sd">    Args:</span>
-<span class="sd">        params: Neural network parameters</span>
-<span class="sd">        ifp: IFP model instance</span>
-<span class="sd">        path_length: Length of each simulated path</span>
-<span class="sd">        num_paths: Number of paths to simulate for averaging</span>
-<span class="sd">        key: JAX random key for generating income shocks</span>
-
-<span class="sd">    Returns:</span>
-<span class="sd">        Average lifetime value across all simulated paths</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">R</span><span class="p">,</span> <span class="n">β</span><span class="p">,</span> <span class="n">γ</span><span class="p">,</span> <span class="n">z_mean</span><span class="p">,</span> <span class="n">z_std</span><span class="p">,</span> <span class="n">z_samples</span> <span class="o">=</span> <span class="n">ifp</span>
 
@@ -1223,10 +1255,15 @@ Converged in 38 iterations, error = 6.79e-06
     <span class="n">params</span><span class="p">,</span> <span class="n">ifp</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">path_length</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">num_paths</span><span class="p">,</span> <span class="n">key</span>
 <span class="p">)</span>
 
+<span class="c1"># Warmup to trigger JIT compilation</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Warming up JIT compilation...&quot;</span><span class="p">)</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">train_network</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">ifp_loss_fn</span><span class="p">)</span>
+
 <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
 <span class="n">ifp_params</span><span class="p">,</span> <span class="n">ifp_value_history</span><span class="p">,</span> <span class="n">best_ifp_value</span> <span class="o">=</span> <span class="n">train_network</span><span class="p">(</span>
-    <span class="n">config</span><span class="p">,</span> <span class="n">ifp_loss_fn</span><span class="p">,</span> <span class="n">print_interval</span><span class="o">=</span><span class="mi">50</span>
+    <span class="n">config</span><span class="p">,</span> <span class="n">ifp_loss_fn</span>
 <span class="p">)</span>
+<span class="n">best_ifp_value</span><span class="o">.</span><span class="n">block_until_ready</span><span class="p">()</span>
 <span class="n">elapsed</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Best value: </span><span class="si">{</span><span class="n">best_ifp_value</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
@@ -1237,18 +1274,12 @@ Converged in 38 iterations, error = 6.79e-06
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Training IFP model with deep learning...
-Iteration 0: Value = -43.9485
-Iteration 50: Value = -43.0668
-Iteration 100: Value = -43.0282
-Iteration 150: Value = -43.0113
-Iteration 200: Value = -42.9999
-Iteration 250: Value = -42.9914
-Iteration 300: Value = -42.9845
-Iteration 350: Value = -42.9796
 
-Best value: -42.9761
-Final value: -42.9761
-Training time: 20.39 seconds
+Warming up JIT compilation...
+
+Best value: -42.9578
+Final value: -42.9578
+Training time: 6.21 seconds
 </pre></div>
 </div>
 </div>
@@ -1266,7 +1297,7 @@ Training time: 20.39 seconds
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/605bfed1def8387e4252c06c88f59a1198e0db942f9fe6ab016b7c2cd3c508fb.png"><img alt="_images/605bfed1def8387e4252c06c88f59a1198e0db942f9fe6ab016b7c2cd3c508fb.png" src="_images/605bfed1def8387e4252c06c88f59a1198e0db942f9fe6ab016b7c2cd3c508fb.png" style="width: 80%;" />
+<a class="reference internal image-reference" href="_images/abc2ed5a18b68947d012966ffb585edb706ac5245c9180178da4288a3361f35e.png"><img alt="_images/abc2ed5a18b68947d012966ffb585edb706ac5245c9180178da4288a3361f35e.png" src="_images/abc2ed5a18b68947d012966ffb585edb706ac5245c9180178da4288a3361f35e.png" style="width: 80%;" />
 </a>
 </div>
 </div>
@@ -1291,7 +1322,7 @@ Training time: 20.39 seconds
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/ec66106d409080de4154134d0870c539447d29fbaa6903cabbb890356ec32ac3.png"><img alt="_images/ec66106d409080de4154134d0870c539447d29fbaa6903cabbb890356ec32ac3.png" src="_images/ec66106d409080de4154134d0870c539447d29fbaa6903cabbb890356ec32ac3.png" style="width: 80%;" />
+<a class="reference internal image-reference" href="_images/24c55675d34e9ac50030acd744ef1f98c6a897283744f19cd0c7afdc16ca59d3.png"><img alt="_images/24c55675d34e9ac50030acd744ef1f98c6a897283744f19cd0c7afdc16ca59d3.png" src="_images/24c55675d34e9ac50030acd744ef1f98c6a897283744f19cd0c7afdc16ca59d3.png" style="width: 80%;" />
 </a>
 </div>
 </div>
