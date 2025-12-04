@@ -231,10 +231,10 @@ class Config(NamedTuple):
     """
     seed: int = 1234                         # Seed for network initialization
     epochs: int = 400                        # No of training epochs
-    path_length: int = 320                   # Length of each consumption path
+    path_length: int = 200                   # Length of each consumption path
     layer_sizes: tuple = (1, 6, 6, 6, 1)     # Network layer sizes
     learning_rate: float = 0.001             # Constant learning rate
-    num_paths: int = 220                     # Number of paths to average over 
+    num_paths: int = 100                     # Number of paths to average over 
 ```
 
 We use a class called `LayerParams` to store parameters representing a single
@@ -306,10 +306,10 @@ Here's a function to train the network by gradient ascent, given a generic loss
 function.
 
 ```{code-cell} ipython3
+@partial(jax.jit, static_argnames=('config', 'loss_fn'))
 def train_network(
-        config: Config,               # Configuration object with training parameters
-        loss_fn: callable,            # Loss function taking params and returning loss
-        print_interval: int = 100     # How often to print progress
+        config: Config,            # Configuration with training parameters
+        loss_fn: callable          # Loss function taking params, returning loss
     ):
     """
     Train a neural network using policy gradient ascent.
@@ -330,29 +330,41 @@ def train_network(
     )
     opt_state = optimizer.init(params)
 
-    # Training loop
-    value_history = []
-    best_value = -jnp.inf
-    best_params = params
+    # Training loop state
+    def step(i, state):
+        params, opt_state, best_value, best_params, value_history = state
 
-    for i in range(config.epochs):
         # Compute value and gradients at existing parameterization
         loss, grads = jax.value_and_grad(loss_fn)(params)
-        lifetime_value = - loss
-        value_history.append(lifetime_value)
+        lifetime_value = -loss
+
+        # Update value history
+        value_history = value_history.at[i].set(lifetime_value)
+
         # Track best parameters
-        if lifetime_value > best_value:
-            best_value = lifetime_value
-            best_params = params
+        is_best = lifetime_value > best_value
+        best_value = jnp.where(is_best, lifetime_value, best_value)
+        best_params = jax.tree.map(
+            lambda new, old: jnp.where(is_best, new, old),
+            params, best_params
+        )
+
         # Update parameters using optimizer
         updates, opt_state = optimizer.update(grads, opt_state)
         params = optax.apply_updates(params, updates)
-        if i % print_interval == 0:
-            print(f"Iteration {i}: Value = {lifetime_value:.4f}")
 
-    # Use best parameters instead of final
-    params = best_params
-    return params, value_history, best_value
+        return params, opt_state, best_value, best_params, value_history
+
+    # Run training loop
+    value_history = jnp.zeros(config.epochs)
+    initial_state = (params, opt_state, -jnp.inf, params, value_history)
+    final_state = jax.lax.fori_loop(
+        0, config.epochs, step, initial_state
+    )
+
+    # Extract results
+    _, _, best_value, best_params, value_history = final_state
+    return best_params, value_history, best_value
 ```
 
 
@@ -517,8 +529,13 @@ config = Config(num_paths=1)
 # Create a loss function that has params as the only argument
 loss_fn = lambda params: loss_function(params, model, config.path_length)
 
+# Warmup to trigger JIT compilation
+print("Warming up JIT compilation...")
+_ = train_network(config, loss_fn)
+
 start_time = time.time()
 params, value_history, best_value = train_network(config, loss_fn)
+best_value.block_until_ready()
 elapsed = time.time() - start_time
 
 print(f"\nBest value: {best_value:.4f}")
@@ -869,10 +886,15 @@ ifp_loss_fn = lambda params: loss_function_ifp(
     params, ifp, config.path_length, config.num_paths, key
 )
 
+# Warmup to trigger JIT compilation
+print("Warming up JIT compilation...")
+_ = train_network(config, ifp_loss_fn)
+
 start_time = time.time()
 ifp_params, ifp_value_history, best_ifp_value = train_network(
-    config, ifp_loss_fn, print_interval=50
+    config, ifp_loss_fn
 )
+best_ifp_value.block_until_ready()
 elapsed = time.time() - start_time
 
 print(f"\nBest value: {best_ifp_value:.4f}")
