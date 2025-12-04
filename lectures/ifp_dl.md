@@ -302,8 +302,17 @@ def initialize_network(
 ```
 
 
-Here's a function to train the network by gradient ascent, given a generic loss
+Next we write a function to train the network by gradient *descent*, given a generic loss
 function.
+
+```{note}
+We use gradient descent rather than ascent because we'll employ optax, which
+expects to be minimizing a loss function.
+
+To make this work, we'll set the loss to $- \hat M(\theta)$.
+```
+
+Here's the function.
 
 ```{code-cell} ipython3
 @partial(jax.jit, static_argnames=('config', 'loss_fn'))
@@ -318,7 +327,6 @@ def train_network(
     models by providing an appropriate loss function.
 
     """
-
     # Initialize network parameters
     key = random.PRNGKey(config.seed)
     params = initialize_network(key, config.layer_sizes)
