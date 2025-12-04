@@ -340,7 +340,6 @@ Actually we don’t need to --- we use the JAX PyTree approach discussed below.
 Here’s our implementation of the ANN $f$:
 
 ```{code-cell} ipython3
-@jax.jit
 def f(
         θ: list,                        # Network parameters (pytree)
         x: jnp.ndarray,                 # Input data (row vector)
@@ -363,7 +362,6 @@ corresponding  to each data point.
 The loss function is mean squared error, the same as the Keras case.
 
 ```{code-cell} ipython3
-@jax.jit
 def loss_fn(
         θ: list,            # Network parameters (pytree)
         x: jnp.ndarray,     # Input data
@@ -408,7 +406,6 @@ algorithm we covered in our [lecture on autodiff](https://jax.quantecon.org/auto
 In this case, to keep things as simple as possible, we’ll use a fixed learning rate for every iteration.
 
 ```{code-cell} ipython3
-@jax.jit
 def update_parameters(
         θ: list,            # Current parameters (pytree)
         x: jnp.ndarray,     # Input data
@@ -535,6 +532,7 @@ One such library is [Optax](https://optax.readthedocs.io/en/latest/).
 Here’s a training routine using Optax’s stochastic gradient descent solver.
 
 ```{code-cell} ipython3
+@partial(jax.jit, static_argnames=['config'])
 def train_jax_optax(
         θ: list,                    # Initial parameters (pytree)
         x: jnp.ndarray,             # Training input data
@@ -602,6 +600,7 @@ You will notice that the syntax for using this alternative optimizer is very
 similar.
 
 ```{code-cell} ipython3
+@partial(jax.jit, static_argnames=['config'])
 def train_jax_optax_adam(
         θ: list,                    # Initial parameters (pytree)
         x: jnp.ndarray,             # Training input data
