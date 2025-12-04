@@ -107,6 +107,7 @@ class Config(NamedTuple):
     output_dim: int = 10           # Output dimension of input and hidden layers
     learning_rate: float = 0.001   # Learning rate for gradient descent
     layer_sizes: tuple = (1, 10, 10, 10, 1)  # Sizes of each layer in the network
+    seed: int = 14                 # Random seed for data generation
 ```
 
 ### Data
@@ -136,10 +137,13 @@ Here's a plot of the data.
 
 ```{code-cell} ipython3
 config = Config()
-key = jax.random.PRNGKey(1234)
-x, y = generate_data(key)
+key = jax.random.PRNGKey(config.seed)
+key_train, key_validate = jax.random.split(key)
+x_train, y_train = generate_data(key_train)
+x_validate, y_validate = generate_data(key_validate)
 fig, ax = plt.subplots()
-ax.scatter(x, y)
+ax.scatter(x_train, y_train, alpha=0.5)
+ax.scatter(x_validate, y_validate, color='red', alpha=0.5)
 ax.set_xlabel('x')
 ax.set_ylabel('y')
 plt.show()
@@ -210,7 +214,7 @@ The next function extracts and visualizes a prediction from the trained model.
 
 ```{code-cell} ipython3
 def plot_keras_output(model, x, y, x_validate, y_validate):
-    y_predict = model.predict(x_validate, verbose=2)
+    y_predict = model.predict(x, verbose=2)
     fig, ax = plt.subplots()
     ax.scatter(x, y)
     ax.plot(x, y_predict, label="fitted model", color='black')
@@ -224,14 +228,10 @@ Let's run the Keras training:
 ```{code-cell} ipython3
 config = Config()
 model = build_keras_model(config)
-key = jax.random.PRNGKey(1234)
-key, subkey1, subkey2 = jax.random.split(key, 3)
-x, y = generate_data(subkey1)
-x_validate, y_validate = generate_data(subkey2)
 model, training_history, keras_runtime, keras_mse = train_keras_model(
-    model, x, y, x_validate, y_validate, config
+    model, x_train, y_train, x_validate, y_validate, config
 )
-plot_keras_output(model, x, y, x_validate, y_validate)
+plot_keras_output(model, x_train, y_train, x_validate, y_validate)
 ```
 
 The fit is good and we note the relatively low final MSE.
@@ -471,9 +471,9 @@ def train_jax_model(
 
 ### Execution
 
-Let’s run our code and see how it goes.
+Let's run our code and see how it goes.
 
-We'll reuse the data we generated for the Keras experiment.
+We'll reuse the data we generated earlier.
 
 ```{code-cell} ipython3
 config = Config()
@@ -483,18 +483,19 @@ param_key = jax.random.PRNGKey(1234)
 
 ```{code-cell} ipython3
 # Warmup run to trigger JIT compilation
-train_jax_model(θ, x, y, x_validate, y_validate, config)
+train_jax_model(θ, x_train, y_train, x_validate, y_validate, config)
 
 # Reset and time the actual run
 θ = initialize_network(param_key, config)
 start_time = time()
 θ, training_loss, validation_loss = train_jax_model(
-    θ, x, y, x_validate, y_validate, config
+    θ, x_train, y_train, x_validate, y_validate, config
 )
 θ[0].W.block_until_ready()  # Ensure computation completes
 jax_runtime = time() - start_time
 
 jax_mse = loss_fn(θ, x_validate, y_validate)
+jax_train_mse = loss_fn(θ, x_train, y_train)
 print(f"Trained model with JAX in {jax_runtime:.2f} seconds.")
 print(f"Final MSE on validation data = {jax_mse:.6f}")
 ```
@@ -514,8 +515,8 @@ Here’s a visualization of the quality of our fit.
 
 ```{code-cell} ipython3
 fig, ax = plt.subplots()
-ax.scatter(x, y)
-ax.plot(x.flatten(), f(θ, x).flatten(), 
+ax.scatter(x_train, y_train)
+ax.plot(x_train.flatten(), f(θ, x_train).flatten(),
         label="fitted model", color='black')
 ax.set_xlabel('x')
 ax.set_ylabel('y')
@@ -567,24 +568,25 @@ Let’s try running it.
 θ = initialize_network(param_key, config)
 
 # Warmup run to trigger JIT compilation
-train_jax_optax(θ, x, y, config)
+train_jax_optax(θ, x_train, y_train, config)
 
 # Reset and time the actual run
 θ = initialize_network(param_key, config)
 start_time = time()
-θ = train_jax_optax(θ, x, y, config)
+θ = train_jax_optax(θ, x_train, y_train, config)
 θ[0].W.block_until_ready()  # Ensure computation completes
 optax_sgd_runtime = time() - start_time
 
 optax_sgd_mse = loss_fn(θ, x_validate, y_validate)
+optax_sgd_train_mse = loss_fn(θ, x_train, y_train)
 print(f"Trained model with JAX and Optax SGD in {optax_sgd_runtime:.2f} seconds.")
 print(f"Final MSE on validation data = {optax_sgd_mse:.6f}")
 ```
 
 ```{code-cell} ipython3
 fig, ax = plt.subplots()
-ax.scatter(x, y)
-ax.plot(x.flatten(), f(θ, x).flatten(), 
+ax.scatter(x_train, y_train)
+ax.plot(x_train.flatten(), f(θ, x_train).flatten(),
         label="fitted model", color='black')
 ax.set_xlabel('x')
 ax.set_ylabel('y')
@@ -630,16 +632,17 @@ def train_jax_optax_adam(
 θ = initialize_network(param_key, config)
 
 # Warmup run to trigger JIT compilation
-train_jax_optax_adam(θ, x, y, config)
+train_jax_optax_adam(θ, x_train, y_train, config)
 
 # Reset and time the actual run
 θ = initialize_network(param_key, config)
 start_time = time()
-θ = train_jax_optax_adam(θ, x, y, config)
+θ = train_jax_optax_adam(θ, x_train, y_train, config)
 θ[0].W.block_until_ready()  # Ensure computation completes
 optax_adam_runtime = time() - start_time
 
 optax_adam_mse = loss_fn(θ, x_validate, y_validate)
+optax_adam_train_mse = loss_fn(θ, x_train, y_train)
 print(f"Trained model with JAX and Optax ADAM in {optax_adam_runtime:.2f} seconds.")
 print(f"Final MSE on validation data = {optax_adam_mse:.6f}")
 ```
@@ -648,8 +651,8 @@ Here's a visualization of the result.
 
 ```{code-cell} ipython3
 fig, ax = plt.subplots()
-ax.scatter(x, y)
-ax.plot(x.flatten(), f(θ, x).flatten(),
+ax.scatter(x_train, y_train)
+ax.plot(x_train.flatten(), f(θ, x_train).flatten(),
         label="fitted model", color='black')
 ax.set_xlabel('x')
 ax.set_ylabel('y')
@@ -665,6 +668,15 @@ Here we compare the performance of the four different training approaches we exp
 
 import pandas as pd
 
+# Compute training MSEs for each method
+# Need to retrieve the trained models and compute training MSE
+# For Keras, we already have the model
+keras_train_mse = model.evaluate(x_train, y_train, verbose=0)
+
+# For JAX methods, we need to compute using loss_fn with the final θ from each method
+# We need to re-train or save the θ from each method
+# For now, let's add these calculations after each training section
+
 # Create summary table
 results = {
     'Method': [
@@ -679,6 +691,12 @@ results = {
         optax_sgd_runtime,
         optax_adam_runtime
     ],
+    'Training MSE': [
+        keras_train_mse,
+        jax_train_mse,
+        optax_sgd_train_mse,
+        optax_adam_train_mse
+    ],
     'Validation MSE': [
         keras_mse,
         jax_mse,
@@ -688,7 +706,8 @@ results = {
 }
 
 df = pd.DataFrame(results)
-df.style.format({'Runtime (s)': '{:.2f}', 'Validation MSE': '{:.4f}'})
+print("\nSummary of Training Methods:")
+print(df.to_string(index=False))
 ```
 
 
@@ -764,12 +783,12 @@ def initialize_deep_params(
 config_deep = Config(layer_sizes=(1, 6, 6, 6, 6, 6, 1))
 
 # Warmup
-train_jax_optax_adam(θ_deep, x, y, config_deep)
+train_jax_optax_adam(θ_deep, x_train, y_train, config_deep)
 
 # Actual run
 θ_deep = initialize_deep_params(param_key)
 start_time = time()
-θ_deep = train_jax_optax_adam(θ_deep, x, y, config_deep)
+θ_deep = train_jax_optax_adam(θ_deep, x_train, y_train, config_deep)
 θ_deep[0].W.block_until_ready()
 deep_runtime = time() - start_time
 
@@ -818,12 +837,12 @@ def train_deep_with_schedule(
     return θ_final
 
 # Warmup
-train_deep_with_schedule(θ_deep, x, y, config_deep)
+train_deep_with_schedule(θ_deep, x_train, y_train, config_deep)
 
 # Actual run
 θ_deep = initialize_deep_params(param_key)
 start_time = time()
-θ_deep_schedule = train_deep_with_schedule(θ_deep, x, y, config_deep)
+θ_deep_schedule = train_deep_with_schedule(θ_deep, x_train, y_train, config_deep)
 θ_deep_schedule[0].W.block_until_ready()
 deep_schedule_runtime = time() - start_time
 
@@ -834,134 +853,134 @@ print(f"  Validation MSE: {deep_schedule_mse:.6f}")
 print(f"  Improvement over ADAM: {optax_adam_mse - deep_schedule_mse:.6f}")
 ```
 
-**Strategy 3: ELU Activation**
+**Strategy 3: Deeper Network + LR Schedule + L2 Regularization**
 
-Let's try ELU (Exponential Linear Unit), a modern activation function:
+Let's add L2 regularization (similar to ridge regression) to penalize complexity:
 
 ```{code-cell} ipython3
-# Strategy 3: ELU activation
-θ = initialize_network(param_key, config)
+# Strategy 3: Deeper network + LR schedule + L2 regularization
+θ_deep = initialize_deep_params(param_key)
 
-def train_with_elu(
+def train_deep_with_schedule_and_l2(
         θ: list,
         x: jnp.ndarray,
         y: jnp.ndarray,
-        config: Config
+        config: Config,
+        lambda_l2: float = 0.001
     ):
-    " Train model using ELU activation and Optax ADAM optimizer. "
+    " Train deeper network with learning rate schedule and L2 regularization. "
     epochs = config.epochs
-    learning_rate = config.learning_rate
+    schedule = optax.exponential_decay(
+        init_value=0.003,
+        transition_steps=1000,
+        decay_rate=0.5
+    )
 
-    # Modified forward pass with ELU
+    # Define regularized loss function
     @jax.jit
-    def f_elu(θ, x):
-        *hidden, last = θ
-        for layer in hidden:
-            x = jax.nn.elu(x @ layer.W + layer.b)
-        x = x @ last.W + last.b
-        return x
+    def loss_fn_l2(θ, x, y):
+        # Standard MSE loss
+        mse = jnp.mean((f(θ, x) - y)**2)
+        # L2 penalty on weights (not biases)
+        l2_penalty = 0.0
+        for W, b in θ:
+            l2_penalty += jnp.sum(W**2)
+        return mse + lambda_l2 * l2_penalty
 
-    # Modified loss function
-    @jax.jit
-    def loss_fn_elu(θ, x, y):
-        return jnp.mean((f_elu(θ, x) - y)**2)
+    loss_gradient_l2 = jax.jit(jax.grad(loss_fn_l2))
 
-    loss_gradient_elu = jax.jit(jax.grad(loss_fn_elu))
-
-    solver = optax.adam(learning_rate)
+    solver = optax.adam(schedule)
     opt_state = solver.init(θ)
 
     def update(_, loop_state):
         θ, opt_state = loop_state
-        grad = loss_gradient_elu(θ, x, y)
+        grad = loss_gradient_l2(θ, x, y)
         updates, new_opt_state = solver.update(grad, opt_state, θ)
         θ_new = optax.apply_updates(θ, updates)
         return (θ_new, new_opt_state)
 
     initial_loop_state = θ, opt_state
     θ_final, _ = jax.lax.fori_loop(0, epochs, update, initial_loop_state)
-    return θ_final, f_elu, loss_fn_elu
+    return θ_final
 
-# Warmup run
-θ_elu, f_elu, loss_fn_elu = train_with_elu(θ, x, y, config)
+# Warmup
+train_deep_with_schedule_and_l2(θ_deep, x_train, y_train, config_deep)
 
 # Actual run
-θ = initialize_network(param_key, config)
+θ_deep = initialize_deep_params(param_key)
 start_time = time()
-θ_elu, f_elu, loss_fn_elu = train_with_elu(θ, x, y, config)
-θ_elu[0].W.block_until_ready()
-elu_runtime = time() - start_time
+θ_deep_l2 = train_deep_with_schedule_and_l2(θ_deep, x_train, y_train, config_deep)
+θ_deep_l2[0].W.block_until_ready()
+deep_l2_runtime = time() - start_time
 
-elu_mse = loss_fn_elu(θ_elu, x_validate, y_validate)
-print(f"Strategy 3 - ELU activation")
-print(f"  Runtime: {elu_runtime:.2f}s")
-print(f"  Validation MSE: {elu_mse:.6f}")
-print(f"  Improvement over ADAM: {optax_adam_mse - elu_mse:.6f}")
+deep_l2_mse = loss_fn(θ_deep_l2, x_validate, y_validate)
+print(f"Strategy 3 - Deeper network + LR schedule + L2 regularization")
+print(f"  Runtime: {deep_l2_runtime:.2f}s")
+print(f"  Validation MSE: {deep_l2_mse:.6f}")
+print(f"  Improvement over ADAM: {optax_adam_mse - deep_l2_mse:.6f}")
 ```
 
-**Strategy 4: SELU Activation**
+**Strategy 4: Baseline + L2 Regularization**
 
-Let's try SELU (Scaled Exponential Linear Unit), another modern activation function:
+Let's see if L2 regularization helps the baseline architecture:
 
 ```{code-cell} ipython3
-# Strategy 4: SELU activation
+# Strategy 4: Baseline architecture + L2 regularization
 θ = initialize_network(param_key, config)
 
-def train_with_selu(
+def train_baseline_with_l2(
         θ: list,
         x: jnp.ndarray,
         y: jnp.ndarray,
-        config: Config
+        config: Config,
+        lambda_l2: float = 0.001
     ):
-    " Train model using SELU activation and Optax ADAM optimizer. "
+    " Train baseline model with L2 regularization. "
     epochs = config.epochs
     learning_rate = config.learning_rate
 
-    # Modified forward pass with SELU
+    # Define regularized loss function
     @jax.jit
-    def f_selu(θ, x):
-        *hidden, last = θ
-        for layer in hidden:
-            x = jax.nn.selu(x @ layer.W + layer.b)
-        x = x @ last.W + last.b
-        return x
+    def loss_fn_l2(θ, x, y):
+        # Standard MSE loss
+        mse = jnp.mean((f(θ, x) - y)**2)
+        # L2 penalty on weights (not biases)
+        l2_penalty = 0.0
+        for W, b in θ:
+            l2_penalty += jnp.sum(W**2)
+        return mse + lambda_l2 * l2_penalty
 
-    # Modified loss function
-    @jax.jit
-    def loss_fn_selu(θ, x, y):
-        return jnp.mean((f_selu(θ, x) - y)**2)
-
-    loss_gradient_selu = jax.jit(jax.grad(loss_fn_selu))
+    loss_gradient_l2 = jax.jit(jax.grad(loss_fn_l2))
 
     solver = optax.adam(learning_rate)
     opt_state = solver.init(θ)
 
     def update(_, loop_state):
         θ, opt_state = loop_state
-        grad = loss_gradient_selu(θ, x, y)
+        grad = loss_gradient_l2(θ, x, y)
         updates, new_opt_state = solver.update(grad, opt_state, θ)
         θ_new = optax.apply_updates(θ, updates)
         return (θ_new, new_opt_state)
 
     initial_loop_state = θ, opt_state
     θ_final, _ = jax.lax.fori_loop(0, epochs, update, initial_loop_state)
-    return θ_final, f_selu, loss_fn_selu
+    return θ_final
 
-# Warmup run
-θ_selu, f_selu, loss_fn_selu = train_with_selu(θ, x, y, config)
+# Warmup
+train_baseline_with_l2(θ, x_train, y_train, config)
 
 # Actual run
 θ = initialize_network(param_key, config)
 start_time = time()
-θ_selu, f_selu, loss_fn_selu = train_with_selu(θ, x, y, config)
-θ_selu[0].W.block_until_ready()
-selu_runtime = time() - start_time
+θ_baseline_l2 = train_baseline_with_l2(θ, x_train, y_train, config)
+θ_baseline_l2[0].W.block_until_ready()
+baseline_l2_runtime = time() - start_time
 
-selu_mse = loss_fn_selu(θ_selu, x_validate, y_validate)
-print(f"Strategy 4 - SELU activation")
-print(f"  Runtime: {selu_runtime:.2f}s")
-print(f"  Validation MSE: {selu_mse:.6f}")
-print(f"  Improvement over ADAM: {optax_adam_mse - selu_mse:.6f}")
+baseline_l2_mse = loss_fn(θ_baseline_l2, x_validate, y_validate)
+print(f"Strategy 4 - Baseline + L2 regularization")
+print(f"  Runtime: {baseline_l2_runtime:.2f}s")
+print(f"  Validation MSE: {baseline_l2_mse:.6f}")
+print(f"  Improvement over ADAM: {optax_adam_mse - baseline_l2_mse:.6f}")
 ```
 
 **Results Summary**
@@ -977,38 +996,35 @@ strategies_results = {
         'Baseline (ADAM + tanh)',
         '1. Deeper network (6 layers)',
         '2. Deeper network + LR schedule',
-        '3. ELU activation',
-        '4. SELU activation'
+        '3. Strategy 2 + L2 regularization',
+        '4. Baseline + L2 regularization'
     ],
     'Runtime (s)': [
         optax_adam_runtime,
         deep_runtime,
         deep_schedule_runtime,
-        elu_runtime,
-        selu_runtime
+        deep_l2_runtime,
+        baseline_l2_runtime
     ],
     'Validation MSE': [
         optax_adam_mse,
         deep_mse,
         deep_schedule_mse,
-        elu_mse,
-        selu_mse
+        deep_l2_mse,
+        baseline_l2_mse
     ],
     'Improvement': [
         0.0,
         float(optax_adam_mse - deep_mse),
         float(optax_adam_mse - deep_schedule_mse),
-        float(optax_adam_mse - elu_mse),
-        float(optax_adam_mse - selu_mse)
+        float(optax_adam_mse - deep_l2_mse),
+        float(optax_adam_mse - baseline_l2_mse)
     ]
 }
 
 df_strategies = pd.DataFrame(strategies_results)
-df_strategies.style.format({
-    'Runtime (s)': '{:.2f}',
-    'Validation MSE': '{:.6f}',
-    'Improvement': '{:.6f}'
-})
+print("\nSummary of Exercise Strategies:")
+print(df_strategies.to_string(index=False))
 ```
 
 
@@ -1018,8 +1034,13 @@ The experimental results reveal several lessons:
    baseline network, despite using fewer parameters (187 vs 251).
 
 2. Combining strategies: Combining the deeper architecture with a learning
-   rate schedule yielded the best results, showing that synergistic improvements
-   are possible.
+   rate schedule showed that synergistic improvements are possible.
+
+3. Regularization helps: Adding L2 regularization (ridge penalty) can
+   improve performance by penalizing model complexity and reducing overfitting.
+
+4. Regularization vs architecture: Comparing strategies 3 and 4 shows whether
+   regularization is more effective with deeper architectures or simpler ones.
 
 
 
