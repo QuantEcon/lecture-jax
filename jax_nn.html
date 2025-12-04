@@ -255,10 +255,19 @@
                             
                             <li class="changelog-entry">
                                 
+                                <a href="https://github.com/QuantEcon/lecture-jax/commit/102113e" class="changelog-hash">102113e</a>
+                                
+                                <span class="changelog-author">John Stachurski</span>
+                                <span class="changelog-time">7 minutes ago</span>
+                                <span class="changelog-message">Remove num_layers from Config and improve visualization (#265)</span>
+                            </li>
+                            
+                            <li class="changelog-entry">
+                                
                                 <a href="https://github.com/QuantEcon/lecture-jax/commit/9724c6c" class="changelog-hash">9724c6c</a>
                                 
                                 <span class="changelog-author">John Stachurski</span>
-                                <span class="changelog-time">9 minutes ago</span>
+                                <span class="changelog-time">1 hour ago</span>
                                 <span class="changelog-message">Refactor train_jax_model to use fori_loop and simplify return value (#264)</span>
                             </li>
                             
@@ -267,7 +276,7 @@
                                 <a href="https://github.com/QuantEcon/lecture-jax/commit/d311b01" class="changelog-hash">d311b01</a>
                                 
                                 <span class="changelog-author">John Stachurski</span>
-                                <span class="changelog-time">3 hours ago</span>
+                                <span class="changelog-time">5 hours ago</span>
                                 <span class="changelog-message">Optimize JAX JIT compilation strategy in neural network lecture (#262)</span>
                             </li>
                             
@@ -276,7 +285,7 @@
                                 <a href="https://github.com/QuantEcon/lecture-jax/commit/e544012" class="changelog-hash">e544012</a>
                                 
                                 <span class="changelog-author">John Stachurski</span>
-                                <span class="changelog-time">9 hours ago</span>
+                                <span class="changelog-time">11 hours ago</span>
                                 <span class="changelog-message">Update jax_nn.md with improved data handling and exercise strategies (#261)</span>
                             </li>
                             
@@ -419,8 +428,7 @@ Requirement already satisfied: markdown-it-py&gt;=2.2.0 in /home/runner/minicond
 Requirement already satisfied: pygments&lt;3.0.0,&gt;=2.13.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from rich-&gt;keras) (2.19.1)
 Requirement already satisfied: mdurl~=0.1 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from markdown-it-py&gt;=2.2.0-&gt;rich-&gt;keras) (0.1.0)
 Downloading keras-3.12.0-py3-none-any.whl (1.5 MB)
-?25l   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">0.0/1.5 MB</span> <span class=" -Color -Color-Red">?</span> eta <span class=" -Color -Color-Cyan">-:--:--</span>
-   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">1.5/1.5 MB</span> <span class=" -Color -Color-Red">46.4 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">1.5/1.5 MB</span> <span class=" -Color -Color-Red">48.1 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
 ?25hDownloading namex-0.1.0-py3-none-any.whl (5.9 kB)
 Downloading optree-0.18.0-cp313-cp313-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (414 kB)
 Downloading rich-14.2.0-py3-none-any.whl (243 kB)
@@ -434,6 +442,7 @@ Installing collected packages: namex, optree, rich, keras
    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━ <span class=" -Color -Color-Green">3/4</span> [keras]
    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━ <span class=" -Color -Color-Green">3/4</span> [keras]
    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">4/4</span> [keras]
+
 Successfully installed keras-3.12.0 namex-0.1.0 optree-0.18.0 rich-14.2.0
 </pre></div>
 </div>
@@ -487,7 +496,6 @@ the overall mapping is</p>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">Config</span><span class="p">(</span><span class="n">NamedTuple</span><span class="p">):</span>
     <span class="n">epochs</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">4000</span>             <span class="c1"># Number of passes through the data set</span>
-    <span class="n">num_layers</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">4</span>            <span class="c1"># Depth of the network</span>
     <span class="n">output_dim</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span>           <span class="c1"># Output dimension of input and hidden layers</span>
     <span class="n">learning_rate</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.001</span>   <span class="c1"># Learning rate for gradient descent</span>
     <span class="n">layer_sizes</span><span class="p">:</span> <span class="nb">tuple</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># Sizes of each layer in the network</span>
@@ -540,8 +548,8 @@ the overall mapping is</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>W1204 11:31:56.203976    4408 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn&#39;t support extracting fabric info or NVLink is not used by the device.
-W1204 11:31:56.207400    4340 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn&#39;t support extracting fabric info or NVLink is not used by the device.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>W1204 12:54:06.235191    2288 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn&#39;t support extracting fabric info or NVLink is not used by the device.
+W1204 12:54:06.238642    2219 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn&#39;t support extracting fabric info or NVLink is not used by the device.
 </pre></div>
 </div>
 <a class="reference internal image-reference" href="_images/7ea791230ffb7c122da8545186e7d132235964cf0fb995b056b881585a258fb8.png"><img alt="_images/7ea791230ffb7c122da8545186e7d132235964cf0fb995b056b881585a258fb8.png" src="_images/7ea791230ffb7c122da8545186e7d132235964cf0fb995b056b881585a258fb8.png" style="width: 80%;" />
@@ -565,7 +573,7 @@ using an ANN.</p>
     <span class="p">):</span>
     <span class="n">model</span> <span class="o">=</span> <span class="n">Sequential</span><span class="p">()</span>
     <span class="c1"># Add layers to the network sequentially, from inputs towards outputs</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">num_layers</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">layer_sizes</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
         <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
            <span class="n">Dense</span><span class="p">(</span><span class="n">units</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">output_dim</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="n">activation_function</span><span class="p">)</span>
         <span class="p">)</span>
@@ -573,7 +581,7 @@ using an ANN.</p>
     <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Dense</span><span class="p">(</span><span class="n">units</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
     <span class="c1"># Embed training configurations</span>
     <span class="n">model</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span>
-        <span class="n">optimizer</span><span class="o">=</span><span class="n">keras</span><span class="o">.</span><span class="n">optimizers</span><span class="o">.</span><span class="n">SGD</span><span class="p">(),</span>  
+        <span class="n">optimizer</span><span class="o">=</span><span class="n">keras</span><span class="o">.</span><span class="n">optimizers</span><span class="o">.</span><span class="n">SGD</span><span class="p">(),</span>
         <span class="n">loss</span><span class="o">=</span><span class="s1">&#39;mean_squared_error&#39;</span>
     <span class="p">)</span>
     <span class="k">return</span> <span class="n">model</span>
@@ -615,10 +623,10 @@ mean square loss.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">plot_keras_output</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">x_validate</span><span class="p">,</span> <span class="n">y_validate</span><span class="p">):</span>
-    <span class="n">y_predict</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">y_predict</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">x_validate</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
     <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y_predict</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;fitted model&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x_validate</span><span class="p">,</span> <span class="n">y_validate</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_validate</span><span class="p">,</span> <span class="n">y_predict</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;fitted model&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">)</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">)</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
@@ -640,12 +648,12 @@ mean square loss.</p>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Training NN using Keras.
-13/13 - 0s - 36ms/step - loss: 0.0467
-Trained in 19.25 seconds, validation data MSE = 0.046692799776792526
-13/13 - 0s - 24ms/step
+13/13 - 0s - 36ms/step - loss: 0.0432
+Trained in 19.45 seconds, validation data MSE = 0.04316386207938194
+13/13 - 0s - 25ms/step
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="_images/9c25060c01abb8b2ee1a2faa1dedaa64644f3f18de26f92a5cfb4235d0d45679.png"><img alt="_images/9c25060c01abb8b2ee1a2faa1dedaa64644f3f18de26f92a5cfb4235d0d45679.png" src="_images/9c25060c01abb8b2ee1a2faa1dedaa64644f3f18de26f92a5cfb4235d0d45679.png" style="width: 80%;" />
+<a class="reference internal image-reference" href="_images/ef928667daeb79347edbea720add39b6a28dfed9d17fc1d5c69ef2432837170f.png"><img alt="_images/ef928667daeb79347edbea720add39b6a28dfed9d17fc1d5c69ef2432837170f.png" src="_images/ef928667daeb79347edbea720add39b6a28dfed9d17fc1d5c69ef2432837170f.png" style="width: 80%;" />
 </a>
 </div>
 </div>
@@ -903,7 +911,7 @@ descent, exactly as required.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Trained model with JAX in 0.27 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Trained model with JAX in 0.28 seconds.
 Final MSE on validation data = 0.042119
 </pre></div>
 </div>
@@ -914,8 +922,8 @@ Final MSE on validation data = 0.042119
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_train</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span> <span class="n">f</span><span class="p">(</span><span class="n">θ</span><span class="p">,</span> <span class="n">x_train</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x_validate</span><span class="p">,</span> <span class="n">y_validate</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_validate</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span> <span class="n">f</span><span class="p">(</span><span class="n">θ</span><span class="p">,</span> <span class="n">x_validate</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span>
         <span class="n">label</span><span class="o">=</span><span class="s2">&quot;fitted model&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">)</span>
@@ -924,7 +932,7 @@ Final MSE on validation data = 0.042119
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/56ede79580b3bb804237e62c719901a52b87687d8ed8d06e8c4e2481239ca214.png"><img alt="_images/56ede79580b3bb804237e62c719901a52b87687d8ed8d06e8c4e2481239ca214.png" src="_images/56ede79580b3bb804237e62c719901a52b87687d8ed8d06e8c4e2481239ca214.png" style="width: 80%;" />
+<a class="reference internal image-reference" href="_images/c28005f1b4b80cb96a45acdc739fcdd4c00eec86f4ebee8d756c48e33f858cc8.png"><img alt="_images/c28005f1b4b80cb96a45acdc739fcdd4c00eec86f4ebee8d756c48e33f858cc8.png" src="_images/c28005f1b4b80cb96a45acdc739fcdd4c00eec86f4ebee8d756c48e33f858cc8.png" style="width: 80%;" />
 </a>
 </div>
 </div>
@@ -1002,8 +1010,8 @@ Final MSE on validation data = 0.042119
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_train</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span> <span class="n">f</span><span class="p">(</span><span class="n">θ</span><span class="p">,</span> <span class="n">x_train</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x_validate</span><span class="p">,</span> <span class="n">y_validate</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_validate</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span> <span class="n">f</span><span class="p">(</span><span class="n">θ</span><span class="p">,</span> <span class="n">x_validate</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span>
         <span class="n">label</span><span class="o">=</span><span class="s2">&quot;fitted model&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">)</span>
@@ -1012,7 +1020,7 @@ Final MSE on validation data = 0.042119
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/56ede79580b3bb804237e62c719901a52b87687d8ed8d06e8c4e2481239ca214.png"><img alt="_images/56ede79580b3bb804237e62c719901a52b87687d8ed8d06e8c4e2481239ca214.png" src="_images/56ede79580b3bb804237e62c719901a52b87687d8ed8d06e8c4e2481239ca214.png" style="width: 80%;" />
+<a class="reference internal image-reference" href="_images/c28005f1b4b80cb96a45acdc739fcdd4c00eec86f4ebee8d756c48e33f858cc8.png"><img alt="_images/c28005f1b4b80cb96a45acdc739fcdd4c00eec86f4ebee8d756c48e33f858cc8.png" src="_images/c28005f1b4b80cb96a45acdc739fcdd4c00eec86f4ebee8d756c48e33f858cc8.png" style="width: 80%;" />
 </a>
 </div>
 </div>
@@ -1085,8 +1093,8 @@ Final MSE on validation data = 0.040869
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_train</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span> <span class="n">f</span><span class="p">(</span><span class="n">θ</span><span class="p">,</span> <span class="n">x_train</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x_validate</span><span class="p">,</span> <span class="n">y_validate</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_validate</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span> <span class="n">f</span><span class="p">(</span><span class="n">θ</span><span class="p">,</span> <span class="n">x_validate</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span>
         <span class="n">label</span><span class="o">=</span><span class="s2">&quot;fitted model&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">)</span>
@@ -1095,7 +1103,7 @@ Final MSE on validation data = 0.040869
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/0e4e1aba1abdd7c25bf638709f60f5f2d0619323165c5d1c337823102be984a8.png"><img alt="_images/0e4e1aba1abdd7c25bf638709f60f5f2d0619323165c5d1c337823102be984a8.png" src="_images/0e4e1aba1abdd7c25bf638709f60f5f2d0619323165c5d1c337823102be984a8.png" style="width: 80%;" />
+<a class="reference internal image-reference" href="_images/42be15f65847e7c697998e244a911af951b7d918d842f6c324c2b9736eef847f.png"><img alt="_images/42be15f65847e7c697998e244a911af951b7d918d842f6c324c2b9736eef847f.png" src="_images/42be15f65847e7c697998e244a911af951b7d918d842f6c324c2b9736eef847f.png" style="width: 80%;" />
 </a>
 </div>
 </div>
@@ -1151,6 +1159,9 @@ Final MSE on validation data = 0.040869
 <span class="p">}</span>
 
 <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
+<span class="c1"># Format MSE columns to 6 decimal places</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">&#39;Training MSE&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;Training MSE&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">x</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">&#39;Validation MSE&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;Validation MSE&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">x</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Summary of Training Methods:&quot;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">to_string</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
 </pre></div>
@@ -1160,10 +1171,10 @@ Final MSE on validation data = 0.040869
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Summary of Training Methods:
                   Method  Runtime (s) Training MSE Validation MSE
-                   Keras    19.253723     0.041236       0.046693
-Pure JAX (hand-coded GD)     0.274473   0.03996341    0.042119425
-         JAX + Optax SGD     0.273623   0.03996341    0.042119425
-        JAX + Optax ADAM     0.277498   0.03587921      0.0408687
+                   Keras    19.450669     0.039233       0.043164
+Pure JAX (hand-coded GD)     0.276228     0.039963       0.042119
+         JAX + Optax SGD     0.274582     0.039963       0.042119
+        JAX + Optax ADAM     0.278942     0.035879       0.040869
 </pre></div>
 </div>
 </div>
@@ -1251,7 +1262,7 @@ Pure JAX (hand-coded GD)     0.274473   0.03996341    0.042119425
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Strategy 1 - Deeper network (6 layers, k=6)
   Total parameters: 187
-  Runtime: 0.45s
+  Runtime: 0.46s
   Validation MSE: 0.041686
   Improvement over ADAM: -0.000817
 </pre></div>
@@ -1389,7 +1400,7 @@ Pure JAX (hand-coded GD)     0.274473   0.03996341    0.042119425
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Strategy 3 - Deeper network + LR schedule + L2 regularization
-  Runtime: 1.12s
+  Runtime: 1.10s
   Validation MSE: 0.040845
   Improvement over ADAM: 0.000024
 </pre></div>
@@ -1461,7 +1472,7 @@ Pure JAX (hand-coded GD)     0.274473   0.03996341    0.042119425
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Strategy 4 - Baseline + L2 regularization
-  Runtime: 0.84s
+  Runtime: 0.82s
   Validation MSE: 0.040959
   Improvement over ADAM: -0.000090
 </pre></div>
@@ -1519,11 +1530,11 @@ Pure JAX (hand-coded GD)     0.274473   0.03996341    0.042119425
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Summary of Exercise Strategies:
                          Strategy  Runtime (s) Validation MSE  Improvement
-           Baseline (ADAM + tanh)     0.277498      0.0408687     0.000000
-     1. Deeper network (6 layers)     0.452154    0.041686147    -0.000817
-  2. Deeper network + LR schedule     0.994958    0.041632924    -0.000764
-3. Strategy 2 + L2 regularization     1.119651    0.040844545     0.000024
-  4. Baseline + L2 regularization     0.836128     0.04095904    -0.000090
+           Baseline (ADAM + tanh)     0.278942      0.0408687     0.000000
+     1. Deeper network (6 layers)     0.455076    0.041686147    -0.000817
+  2. Deeper network + LR schedule     0.993284    0.041632924    -0.000764
+3. Strategy 2 + L2 regularization     1.100365    0.040844545     0.000024
+  4. Baseline + L2 regularization     0.824462     0.04095904    -0.000090
 </pre></div>
 </div>
 </div>

@@ -254,10 +254,19 @@
                             
                             <li class="changelog-entry">
                                 
+                                <a href="https://github.com/QuantEcon/lecture-jax/commit/102113e" class="changelog-hash">102113e</a>
+                                
+                                <span class="changelog-author">John Stachurski</span>
+                                <span class="changelog-time">7 minutes ago</span>
+                                <span class="changelog-message">Remove num_layers from Config and improve visualization (#265)</span>
+                            </li>
+                            
+                            <li class="changelog-entry">
+                                
                                 <a href="https://github.com/QuantEcon/lecture-jax/commit/9724c6c" class="changelog-hash">9724c6c</a>
                                 
                                 <span class="changelog-author">John Stachurski</span>
-                                <span class="changelog-time">9 minutes ago</span>
+                                <span class="changelog-time">1 hour ago</span>
                                 <span class="changelog-message">Refactor train_jax_model to use fori_loop and simplify return value (#264)</span>
                             </li>
                             
@@ -266,7 +275,7 @@
                                 <a href="https://github.com/QuantEcon/lecture-jax/commit/b99eb52" class="changelog-hash">b99eb52</a>
                                 
                                 <span class="changelog-author">John Stachurski</span>
-                                <span class="changelog-time">2 hours ago</span>
+                                <span class="changelog-time">3 hours ago</span>
                                 <span class="changelog-message">JIT compile train_network and optimize performance (#263)</span>
                             </li>
                             
@@ -372,8 +381,8 @@ Installing collected packages: typing_extensions, absl-py, chex, optax
    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">0/4</span> [typing_extensions]
    ━━━━━━━━━━╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">1/4</span> [absl-py]
    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━ <span class=" -Color -Color-Green">3/4</span> [optax]
-   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━ <span class=" -Color -Color-Green">3/4</span> [optax]
    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">4/4</span> [optax]
+
 Successfully installed absl-py-2.3.1 chex-0.1.91 optax-0.2.6 typing_extensions-4.15.0
 </pre></div>
 </div>
@@ -390,11 +399,6 @@ Successfully installed absl-py-2.3.1 chex-0.1.91 optax-0.2.6 typing_extensions-4
 <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">partial</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">NamedTuple</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Matplotlib is building the font cache; this may take a moment.
 </pre></div>
 </div>
 </div>
@@ -613,8 +617,15 @@ initializing layers and stacking them into a list.</p>
 </div>
 </div>
 </div>
-<p>Here’s a function to train the network by gradient ascent, given a generic loss
+<p>Next we write a function to train the network by gradient <em>descent</em>, given a generic loss
 function.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>We use gradient descent rather than ascent because we’ll employ optax, which
+expects to be minimizing a loss function.</p>
+<p>To make this work, we’ll set the loss to <span class="math notranslate nohighlight">\(- \hat M(\theta)\)</span>.</p>
+</div>
+<p>Here’s the function.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@partial</span><span class="p">(</span><span class="n">jax</span><span class="o">.</span><span class="n">jit</span><span class="p">,</span> <span class="n">static_argnames</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;config&#39;</span><span class="p">,</span> <span class="s1">&#39;loss_fn&#39;</span><span class="p">))</span>
@@ -629,7 +640,6 @@ function.</p>
 <span class="sd">    models by providing an appropriate loss function.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-
     <span class="c1"># Initialize network parameters</span>
     <span class="n">key</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">PRNGKey</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">seed</span><span class="p">)</span>
     <span class="n">params</span> <span class="o">=</span> <span class="n">initialize_network</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">layer_sizes</span><span class="p">)</span>
@@ -845,8 +855,8 @@ expressions.</p>
 Theoretical maximum lifetime value = -383.5558.
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>W1204 11:31:17.852313    2055 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn&#39;t support extracting fabric info or NVLink is not used by the device.
-W1204 11:31:17.855925    1995 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn&#39;t support extracting fabric info or NVLink is not used by the device.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>W1204 12:53:28.550312    2048 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn&#39;t support extracting fabric info or NVLink is not used by the device.
+W1204 12:53:28.553732    1987 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn&#39;t support extracting fabric info or NVLink is not used by the device.
 </pre></div>
 </div>
 </div>
@@ -881,7 +891,7 @@ W1204 11:31:17.855925    1995 cuda_executor.cc:1802] GPU interconnect informatio
 
 Best value: -382.5436
 Final value: -382.5453
-Training time: 2.80 seconds
+Training time: 2.81 seconds
 </pre></div>
 </div>
 </div>
@@ -1288,7 +1298,7 @@ Warming up JIT compilation...
 
 Best value: -42.9578
 Final value: -42.9578
-Training time: 6.19 seconds
+Training time: 6.24 seconds
 </pre></div>
 </div>
 </div>

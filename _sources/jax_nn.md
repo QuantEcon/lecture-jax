@@ -103,7 +103,6 @@ Our default value of $k$ will be 10.
 ```{code-cell} ipython3
 class Config(NamedTuple):
     epochs: int = 4000             # Number of passes through the data set
-    num_layers: int = 4            # Depth of the network
     output_dim: int = 10           # Output dimension of input and hidden layers
     learning_rate: float = 0.001   # Learning rate for gradient descent
     layer_sizes: tuple = (1, 10, 10, 10, 1)  # Sizes of each layer in the network
@@ -167,7 +166,7 @@ def build_keras_model(
     ):
     model = Sequential()
     # Add layers to the network sequentially, from inputs towards outputs
-    for i in range(config.num_layers-1):
+    for i in range(len(config.layer_sizes) - 1):
         model.add(
            Dense(units=config.output_dim, activation=activation_function)
         )
@@ -175,7 +174,7 @@ def build_keras_model(
     model.add(Dense(units=1))
     # Embed training configurations
     model.compile(
-        optimizer=keras.optimizers.SGD(),  
+        optimizer=keras.optimizers.SGD(),
         loss='mean_squared_error'
     )
     return model
@@ -214,10 +213,10 @@ The next function extracts and visualizes a prediction from the trained model.
 
 ```{code-cell} ipython3
 def plot_keras_output(model, x, y, x_validate, y_validate):
-    y_predict = model.predict(x, verbose=2)
+    y_predict = model.predict(x_validate, verbose=2)
     fig, ax = plt.subplots()
-    ax.scatter(x, y)
-    ax.plot(x, y_predict, label="fitted model", color='black')
+    ax.scatter(x_validate, y_validate, color='red', alpha=0.5)
+    ax.plot(x_validate, y_predict, label="fitted model", color='black')
     ax.set_xlabel('x')
     ax.set_ylabel('y')
     plt.show()
@@ -495,8 +494,8 @@ Here's a visualization of the quality of our fit.
 
 ```{code-cell} ipython3
 fig, ax = plt.subplots()
-ax.scatter(x_train, y_train)
-ax.plot(x_train.flatten(), f(θ, x_train).flatten(),
+ax.scatter(x_validate, y_validate, color='red', alpha=0.5)
+ax.plot(x_validate.flatten(), f(θ, x_validate).flatten(),
         label="fitted model", color='black')
 ax.set_xlabel('x')
 ax.set_ylabel('y')
@@ -566,8 +565,8 @@ print(f"Final MSE on validation data = {optax_sgd_mse:.6f}")
 
 ```{code-cell} ipython3
 fig, ax = plt.subplots()
-ax.scatter(x_train, y_train)
-ax.plot(x_train.flatten(), f(θ, x_train).flatten(),
+ax.scatter(x_validate, y_validate, color='red', alpha=0.5)
+ax.plot(x_validate.flatten(), f(θ, x_validate).flatten(),
         label="fitted model", color='black')
 ax.set_xlabel('x')
 ax.set_ylabel('y')
@@ -633,8 +632,8 @@ Here's a visualization of the result.
 
 ```{code-cell} ipython3
 fig, ax = plt.subplots()
-ax.scatter(x_train, y_train)
-ax.plot(x_train.flatten(), f(θ, x_train).flatten(),
+ax.scatter(x_validate, y_validate, color='red', alpha=0.5)
+ax.plot(x_validate.flatten(), f(θ, x_validate).flatten(),
         label="fitted model", color='black')
 ax.set_xlabel('x')
 ax.set_ylabel('y')
@@ -688,6 +687,9 @@ results = {
 }
 
 df = pd.DataFrame(results)
+# Format MSE columns to 6 decimal places
+df['Training MSE'] = df['Training MSE'].apply(lambda x: f"{x:.6f}")
+df['Validation MSE'] = df['Validation MSE'].apply(lambda x: f"{x:.6f}")
 print("\nSummary of Training Methods:")
 print(df.to_string(index=False))
 ```
