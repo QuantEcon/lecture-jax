@@ -255,9 +255,13 @@ The following function initializes a single layer of the network using Le Cun
 initialization.
 
 ```{code-cell} ipython3
-def initialize_layer(in_dim, out_dim, key):
+def initialize_layer(
+        in_dim: int,                     # Input dimension for the layer
+        out_dim: int,                    # Output dimension for the layer
+        key: jax.Array                   # Random key for initialization
+    ):
     """
-    Initialize weights and biases for a single layer of a the network.
+    Initialize weights and biases for a single layer of the network.
     Use LeCun initialization.
 
     """
@@ -271,10 +275,13 @@ The next function builds an entire network, as represented by its parameters, by
 initializing layers and stacking them into a list.
 
 ```{code-cell} ipython3
-def initialize_network(key, layer_sizes):
+def initialize_network(
+        key: jax.Array,                  # Random key for initialization
+        layer_sizes: tuple               # Layer sizes (input, hidden..., output)
+    ):
     """
     Build a network by initializing all of the parameters.
-    A network is a list of LayerParams instances, each 
+    A network is a list of LayerParams instances, each
     containing a weight-bias pair (W, b).
 
     """
@@ -398,7 +405,10 @@ Now we provide a function that implements a consumption policy as a neural netwo
 parameters of the network.
 
 ```{code-cell} ipython3
-def forward(params, a):
+def forward(
+        params: list,         # Network parameters (LayerParams list)
+        a: float              # Current asset level
+    ):
     """
     Evaluate neural network policy: maps a given asset level a to
     consumption rate c/a by running a forward pass through the network.
@@ -424,7 +434,11 @@ network.
 
 ```{code-cell} ipython3
 @partial(jax.jit, static_argnames=('path_length'))
-def compute_lifetime_value(params, cake_eating_model, path_length):
+def compute_lifetime_value(
+        params: list,                # Network parameters
+        cake_eating_model: tuple,    # Model parameters (γ, β, R)
+        path_length: int             # Length of simulation path
+    ):
     """
     Compute the lifetime value of a path generated from
     the policy embedded in params and the initial condition a_0 = 1.
@@ -663,20 +677,16 @@ We approximate this expectation using Monte Carlo.
 Here is the EGM operator $K$ for the IID case:
 
 ```{code-cell} ipython3
-def K(c_in, a_in, ifp, s_grid, n_shocks=50):
+def K(
+        c_in: jnp.ndarray,       # Current consumption policy on endogenous grid
+        a_in: jnp.ndarray,       # Current endogenous asset grid
+        ifp: IFP,                # IFP model instance
+        s_grid: jnp.ndarray,     # Exogenous savings grid
+        n_shocks: int = 50       # Number of points for Monte Carlo integration
+    ):
     """
     The Euler equation operator for the IFP model with IID shocks using EGM.
 
-    Args:
-        c_in: Current consumption policy on endogenous grid
-        a_in: Current endogenous asset grid
-        ifp: IFP model instance
-        s_grid: Exogenous savings grid
-        n_shocks: Number of points for Monte Carlo integration
-
-    Returns:
-        c_out: Updated consumption policy
-        a_out: Updated endogenous asset grid
     """
     R, β, γ, z_mean, z_std, z_samples = ifp
     y_samples = jnp.exp(z_samples)
@@ -714,20 +724,16 @@ def K(c_in, a_in, ifp, s_grid, n_shocks=50):
 Here's the solver using time iteration:
 
 ```{code-cell} ipython3
-def solve_model(ifp, s_grid, n_shocks=50, tol=1e-5, max_iter=1000):
+def solve_model(
+        ifp: IFP,                # IFP model instance
+        s_grid: jnp.ndarray,     # Exogenous savings grid
+        n_shocks: int = 50,      # Number of income shock realizations
+        tol: float = 1e-5,       # Convergence tolerance
+        max_iter: int = 1000     # Maximum iterations
+    ):
     """
     Solve the IID model using time iteration with EGM.
 
-    Args:
-        ifp: IFP model instance
-        s_grid: Exogenous savings grid
-        n_shocks: Number of income shock realizations for integration
-        tol: Convergence tolerance
-        max_iter: Maximum iterations
-
-    Returns:
-        c_out: Optimal consumption policy on endogenous grid
-        a_out: Endogenous asset grid
     """
     # Initialize with consumption = assets (consume everything)
     a_init = s_grid.copy()
@@ -793,20 +799,17 @@ The key is to simulate paths with IID normal income shocks.
 
 ```{code-cell} ipython3
 @partial(jax.jit, static_argnames=('path_length', 'num_paths'))
-def compute_lifetime_value_ifp(params, ifp, path_length, num_paths, key):
+def compute_lifetime_value_ifp(
+        params: list,            # Neural network parameters
+        ifp: IFP,                # IFP model instance
+        path_length: int,        # Length of each simulated path
+        num_paths: int,          # Number of paths to simulate for averaging
+        key: jax.Array           # JAX random key for generating income shocks
+    ):
     """
-    Compute expected lifetime value by averaging over multiple 
+    Compute expected lifetime value by averaging over multiple
     simulated paths.
 
-    Args:
-        params: Neural network parameters
-        ifp: IFP model instance
-        path_length: Length of each simulated path
-        num_paths: Number of paths to simulate for averaging
-        key: JAX random key for generating income shocks
-
-    Returns:
-        Average lifetime value across all simulated paths
     """
     R, β, γ, z_mean, z_std, z_samples = ifp
 
