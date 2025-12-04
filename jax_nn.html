@@ -255,10 +255,19 @@
                             
                             <li class="changelog-entry">
                                 
+                                <a href="https://github.com/QuantEcon/lecture-jax/commit/d311b01" class="changelog-hash">d311b01</a>
+                                
+                                <span class="changelog-author">John Stachurski</span>
+                                <span class="changelog-time">30 minutes ago</span>
+                                <span class="changelog-message">Optimize JAX JIT compilation strategy in neural network lecture (#262)</span>
+                            </li>
+                            
+                            <li class="changelog-entry">
+                                
                                 <a href="https://github.com/QuantEcon/lecture-jax/commit/e544012" class="changelog-hash">e544012</a>
                                 
                                 <span class="changelog-author">John Stachurski</span>
-                                <span class="changelog-time">2 hours ago</span>
+                                <span class="changelog-time">6 hours ago</span>
                                 <span class="changelog-message">Update jax_nn.md with improved data handling and exercise strategies (#261)</span>
                             </li>
                             
@@ -267,7 +276,7 @@
                                 <a href="https://github.com/QuantEcon/lecture-jax/commit/25d9551" class="changelog-hash">25d9551</a>
                                 
                                 <span class="changelog-author">John Stachurski</span>
-                                <span class="changelog-time">3 days ago</span>
+                                <span class="changelog-time">4 days ago</span>
                                 <span class="changelog-message">Refactor jax_nn.md to use LayerParams NamedTuple (#257)</span>
                             </li>
                             
@@ -294,7 +303,7 @@
                                 <a href="https://github.com/QuantEcon/lecture-jax/commit/5576b14" class="changelog-hash">5576b14</a>
                                 
                                 <span class="changelog-author">John Stachurski</span>
-                                <span class="changelog-time">5 days ago</span>
+                                <span class="changelog-time">6 days ago</span>
                                 <span class="changelog-message">Improve jax_nn.md: fix errors and accurate JAX timing (#247)</span>
                             </li>
                             
@@ -363,6 +372,11 @@ using a neural network via the deep learning library <a class="reference externa
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Matplotlib is building the font cache; this may take a moment.
+</pre></div>
+</div>
+</div>
 </div>
 <div class="cell tag_hide-output docutils container">
 <div class="cell_input above-output-prompt docutils container">
@@ -406,7 +420,7 @@ Requirement already satisfied: pygments&lt;3.0.0,&gt;=2.13.0 in /home/runner/min
 Requirement already satisfied: mdurl~=0.1 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from markdown-it-py&gt;=2.2.0-&gt;rich-&gt;keras) (0.1.0)
 Downloading keras-3.12.0-py3-none-any.whl (1.5 MB)
 ?25l   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">0.0/1.5 MB</span> <span class=" -Color -Color-Red">?</span> eta <span class=" -Color -Color-Cyan">-:--:--</span>
-   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">1.5/1.5 MB</span> <span class=" -Color -Color-Red">48.3 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">1.5/1.5 MB</span> <span class=" -Color -Color-Red">51.3 MB/s</span> eta <span class=" -Color -Color-Cyan">0:00:00</span>
 ?25hDownloading optax-0.2.6-py3-none-any.whl (367 kB)
 Downloading absl_py-2.3.1-py3-none-any.whl (135 kB)
 Downloading chex-0.1.91-py3-none-any.whl (100 kB)
@@ -415,7 +429,6 @@ Downloading namex-0.1.0-py3-none-any.whl (5.9 kB)
 Downloading optree-0.18.0-cp313-cp313-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (414 kB)
 Downloading rich-14.2.0-py3-none-any.whl (243 kB)
 Installing collected packages: namex, typing_extensions, absl-py, rich, optree, keras, chex, optax
-?25l
   Attempting uninstall: typing_extensions
     Found existing installation: typing_extensions 4.12.2
     Uninstalling typing_extensions-4.12.2:
@@ -431,7 +444,6 @@ Installing collected packages: namex, typing_extensions, absl-py, rich, optree, 
    ━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">5/8</span> [keras]
    ━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">5/8</span> [keras]
    ━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">5/8</span> [keras]
-   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━ <span class=" -Color -Color-Green">6/8</span> [chex]
    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━ <span class=" -Color -Color-Green">7/8</span> [optax]
    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">8/8</span> [optax]
 
@@ -541,8 +553,8 @@ the overall mapping is</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>W1204 04:14:48.787302    2041 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn&#39;t support extracting fabric info or NVLink is not used by the device.
-W1204 04:14:48.790728    1970 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn&#39;t support extracting fabric info or NVLink is not used by the device.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>W1204 08:16:08.219082    2053 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn&#39;t support extracting fabric info or NVLink is not used by the device.
+W1204 08:16:08.222595    1980 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn&#39;t support extracting fabric info or NVLink is not used by the device.
 </pre></div>
 </div>
 <a class="reference internal image-reference" href="_images/7ea791230ffb7c122da8545186e7d132235964cf0fb995b056b881585a258fb8.png"><img alt="_images/7ea791230ffb7c122da8545186e7d132235964cf0fb995b056b881585a258fb8.png" src="_images/7ea791230ffb7c122da8545186e7d132235964cf0fb995b056b881585a258fb8.png" style="width: 80%;" />
@@ -641,12 +653,12 @@ mean square loss.</p>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Training NN using Keras.
-13/13 - 1s - 44ms/step - loss: 0.0460
-Trained in 18.92 seconds, validation data MSE = 0.04601820185780525
-13/13 - 0s - 24ms/step
+13/13 - 1s - 44ms/step - loss: 0.0464
+Trained in 18.56 seconds, validation data MSE = 0.04636271670460701
+13/13 - 0s - 23ms/step
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="_images/ce694ff500b26eb098b4269494aefc51cae8639ec97a3ee9ef9062622d0ef4c6.png"><img alt="_images/ce694ff500b26eb098b4269494aefc51cae8639ec97a3ee9ef9062622d0ef4c6.png" src="_images/ce694ff500b26eb098b4269494aefc51cae8639ec97a3ee9ef9062622d0ef4c6.png" style="width: 80%;" />
+<a class="reference internal image-reference" href="_images/b0773f2b8923358d3813928592c8883c987a7e57b9a3bfa508f2c7fa82dbdee7.png"><img alt="_images/b0773f2b8923358d3813928592c8883c987a7e57b9a3bfa508f2c7fa82dbdee7.png" src="_images/b0773f2b8923358d3813928592c8883c987a7e57b9a3bfa508f2c7fa82dbdee7.png" style="width: 80%;" />
 </a>
 </div>
 </div>
@@ -753,8 +765,7 @@ initializing layers and stacking them into a list.</p>
 <p>Here’s our implementation of the ANN <span class="math notranslate nohighlight">\(f\)</span>:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jax</span><span class="o">.</span><span class="n">jit</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">f</span><span class="p">(</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">f</span><span class="p">(</span>
         <span class="n">θ</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span>                        <span class="c1"># Network parameters (pytree)</span>
         <span class="n">x</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>                 <span class="c1"># Input data (row vector)</span>
         <span class="n">σ</span><span class="p">:</span> <span class="nb">callable</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">tanh</span>          <span class="c1"># Activation function</span>
@@ -777,8 +788,7 @@ corresponding  to each data point.</p>
 <p>The loss function is mean squared error, the same as the Keras case.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jax</span><span class="o">.</span><span class="n">jit</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">loss_fn</span><span class="p">(</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">loss_fn</span><span class="p">(</span>
         <span class="n">θ</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span>            <span class="c1"># Network parameters (pytree)</span>
         <span class="n">x</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>     <span class="c1"># Input data</span>
         <span class="n">y</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span>      <span class="c1"># Target data</span>
@@ -819,8 +829,7 @@ algorithm we covered in our <a class="reference external" href="https://jax.quan
 <p>In this case, to keep things as simple as possible, we’ll use a fixed learning rate for every iteration.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jax</span><span class="o">.</span><span class="n">jit</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">update_parameters</span><span class="p">(</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">update_parameters</span><span class="p">(</span>
         <span class="n">θ</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span>            <span class="c1"># Current parameters (pytree)</span>
         <span class="n">x</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>     <span class="c1"># Input data</span>
         <span class="n">y</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>     <span class="c1"># Target data</span>
@@ -970,7 +979,8 @@ we might wish to use an optimization library written for JAX.</p>
 <p>Here’s a training routine using Optax’s stochastic gradient descent solver.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">train_jax_optax</span><span class="p">(</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@partial</span><span class="p">(</span><span class="n">jax</span><span class="o">.</span><span class="n">jit</span><span class="p">,</span> <span class="n">static_argnames</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;config&#39;</span><span class="p">])</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">train_jax_optax</span><span class="p">(</span>
         <span class="n">θ</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span>                    <span class="c1"># Initial parameters (pytree)</span>
         <span class="n">x</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>             <span class="c1"># Training input data</span>
         <span class="n">y</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>             <span class="c1"># Training target data</span>
@@ -1022,7 +1032,7 @@ we might wish to use an optimization library written for JAX.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Trained model with JAX and Optax SGD in 0.61 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Trained model with JAX and Optax SGD in 0.27 seconds.
 Final MSE on validation data = 0.042119
 </pre></div>
 </div>
@@ -1054,7 +1064,8 @@ such as <a class="reference external" href="https://arxiv.org/pdf/1412.6980">ADA
 similar.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">train_jax_optax_adam</span><span class="p">(</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@partial</span><span class="p">(</span><span class="n">jax</span><span class="o">.</span><span class="n">jit</span><span class="p">,</span> <span class="n">static_argnames</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;config&#39;</span><span class="p">])</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">train_jax_optax_adam</span><span class="p">(</span>
         <span class="n">θ</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span>                    <span class="c1"># Initial parameters (pytree)</span>
         <span class="n">x</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>             <span class="c1"># Training input data</span>
         <span class="n">y</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>             <span class="c1"># Training target data</span>
@@ -1103,7 +1114,7 @@ similar.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Trained model with JAX and Optax ADAM in 0.75 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Trained model with JAX and Optax ADAM in 0.28 seconds.
 Final MSE on validation data = 0.040869
 </pre></div>
 </div>
@@ -1188,10 +1199,10 @@ Final MSE on validation data = 0.040869
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Summary of Training Methods:
                   Method  Runtime (s) Training MSE Validation MSE
-                   Keras    18.917511     0.041038       0.046018
-Pure JAX (hand-coded GD)     0.309387   0.03996341    0.042119425
-         JAX + Optax SGD     0.607271   0.03996341    0.042119425
-        JAX + Optax ADAM     0.748052   0.03587921      0.0408687
+                   Keras    18.563622     0.041124       0.046363
+Pure JAX (hand-coded GD)     0.314357   0.03996341    0.042119425
+         JAX + Optax SGD     0.274268   0.03996341    0.042119425
+        JAX + Optax ADAM     0.278926   0.03587921      0.0408687
 </pre></div>
 </div>
 </div>
@@ -1279,7 +1290,7 @@ Pure JAX (hand-coded GD)     0.309387   0.03996341    0.042119425
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Strategy 1 - Deeper network (6 layers, k=6)
   Total parameters: 187
-  Runtime: 0.97s
+  Runtime: 0.45s
   Validation MSE: 0.041686
   Improvement over ADAM: -0.000817
 </pre></div>
@@ -1341,7 +1352,7 @@ Pure JAX (hand-coded GD)     0.309387   0.03996341    0.042119425
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Strategy 2 - Deeper network + LR schedule
-  Runtime: 1.00s
+  Runtime: 0.98s
   Validation MSE: 0.041633
   Improvement over ADAM: -0.000764
 </pre></div>
@@ -1547,11 +1558,11 @@ Pure JAX (hand-coded GD)     0.309387   0.03996341    0.042119425
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Summary of Exercise Strategies:
                          Strategy  Runtime (s) Validation MSE  Improvement
-           Baseline (ADAM + tanh)     0.748052      0.0408687     0.000000
-     1. Deeper network (6 layers)     0.968460    0.041686147    -0.000817
-  2. Deeper network + LR schedule     0.998494    0.041632924    -0.000764
-3. Strategy 2 + L2 regularization     1.076747    0.040844545     0.000024
-  4. Baseline + L2 regularization     0.819040    0.040959038    -0.000090
+           Baseline (ADAM + tanh)     0.278926      0.0408687     0.000000
+     1. Deeper network (6 layers)     0.452886    0.041686147    -0.000817
+  2. Deeper network + LR schedule     0.975040    0.041632924    -0.000764
+3. Strategy 2 + L2 regularization     1.079426    0.040844545     0.000024
+  4. Baseline + L2 regularization     0.817986    0.040959038    -0.000090
 </pre></div>
 </div>
 </div>
