@@ -101,7 +101,6 @@ Our default value of $k$ will be 10.
 ```{code-cell} ipython3
 class Config(NamedTuple):
     epochs: int = 4000             # Number of passes through the data set
-    output_dim: int = 10           # Output dimension of input and hidden layers
     learning_rate: float = 0.001   # Learning rate for gradient descent
     layer_sizes: tuple = (1, 10, 10, 10, 1)  # Layer sizes
     seed: int = 14                 # Random seed for data generation
@@ -307,7 +306,6 @@ def initialize_layer(in_dim, out_dim, key):
     """
     Initialize weights and biases for a single layer of a the network.
     Use He initialization for weights and ones for biases.
-
     """
     W = jax.random.normal(key, shape=(in_dim, out_dim)) * jnp.sqrt(2 / in_dim)
     b = jnp.ones((1, out_dim))
@@ -326,7 +324,6 @@ def initialize_network(
     Build a network by initializing all of the parameters.
     A network is a list of LayerParams instances, each
     containing a weight-bias pair (W, b).
-
     """
     layer_sizes = config.layer_sizes
     params = []
@@ -343,7 +340,7 @@ def initialize_network(
 
 Wait, you say!
 
-Shouldn’t we concatenate the elements of $ \theta $ into some kind of big array, so that we can do autodiff with respect to this array?
+Shouldn’t we concatenate the elements of $\theta$ into some kind of big array, so that we can do autodiff with respect to this array?
 
 Actually we don’t need to --- we use the JAX PyTree approach discussed below.
 
@@ -368,7 +365,7 @@ def f(
     return x 
 ```
 
-The function $ f $ is appropriately vectorized, so that we can pass in the entire
+The function $f$ is appropriately vectorized, so that we can pass in the entire
 set of input observations as `x` and return the predicted vector of outputs `y_hat = f(θ, x)`
 corresponding  to each data point.
 
@@ -386,7 +383,7 @@ def loss_fn(
 We’ll use its gradient to do stochastic gradient descent.
 
 (Technically, we will be doing gradient descent, rather than stochastic
-gradient descent, since will not randomize over sample points when we
+gradient descent, since we will not randomize over sample points when we
 evaluate the gradient.)
 
 ```{code-cell} ipython3
@@ -409,7 +406,6 @@ The JAX function `grad` understands how to
 1. compute derivatives with respect to each one, and
 1. pack the resulting derivatives into a pytree with the same structure as the parameter vector.
 
-+++
 
 ### Gradient descent
 
@@ -430,6 +426,7 @@ def update_parameters(
 
     """
     λ = config.learning_rate
+
     # Specify the update rule
     def gradient_descent_step(p, g):
         """
@@ -437,7 +434,9 @@ def update_parameters(
         It will be applied to each leaf of the pytree of parameters.
         """
         return p - λ * g
+
     gradient = loss_gradient(θ, x, y)
+
     # Use tree.map to apply the update rule to the parameter vectors
     θ_new = jax.tree.map(gradient_descent_step, θ, gradient)
     return θ_new
@@ -462,7 +461,6 @@ def train_jax_model(
     ):
     """
     Train model using gradient descent.
-
     """
     def update(_, θ):
         θ_new = update_parameters(θ, x, y, config)
@@ -548,7 +546,8 @@ def train_jax_optax(
         return new_loop_state
 
     initial_loop_state = θ, opt_state
-    final_loop_state = jax.lax.fori_loop(0, epochs, update, initial_loop_state)
+    final_loop_state = jax.lax.fori_loop(0, 
+                     epochs, update, initial_loop_state)
     θ_final, _ = final_loop_state
     return θ_final
 ```
@@ -618,7 +617,8 @@ def train_jax_optax_adam(
         return (θ_new, new_opt_state)
 
     initial_loop_state = θ, opt_state
-    θ_final, _ = jax.lax.fori_loop(0, epochs, update, initial_loop_state)
+    θ_final, _ = jax.lax.fori_loop(0, 
+                        epochs, update, initial_loop_state)
     return θ_final
 ```
 
@@ -638,7 +638,7 @@ optax_adam_runtime = time() - start_time
 
 optax_adam_mse = loss_fn(θ, x_validate, y_validate)
 optax_adam_train_mse = loss_fn(θ, x_train, y_train)
-print("Trained model with JAX and Optax ADAM" 
+print("Trained model with JAX and Optax ADAM " 
      f"in {optax_adam_runtime:.2f} seconds.")
 print(f"Final MSE on validation data = {optax_adam_mse:.6f}")
 ```
@@ -756,6 +756,25 @@ Let's keep the baseline network architecture and add a learning rate schedule wi
 
 ```{code-cell} ipython3
 # Strategy 1: LR schedule and L2 regularization
+
+def loss_fn_l2(
+        θ: list,
+        x: jnp.ndarray,
+        y: jnp.ndarray,
+        λ_l2: float
+    ):
+    " L2-regularized MSE loss. "
+    mse = jnp.mean((f(θ, x) - y)**2)
+    l2_penalty = 0.0
+    for W, b in θ:
+        l2_penalty += jnp.sum(W**2)
+    return mse + λ_l2 * l2_penalty
+
+
+loss_gradient_l2 = jax.grad(loss_fn_l2)
+
+
+@partial(jax.jit, static_argnames=['config'])
 def train_with_schedule_and_l2(
         θ: list,
         x: jnp.ndarray,
@@ -774,31 +793,21 @@ def train_with_schedule_and_l2(
         decay_rate=0.5
     )
 
-    # Define regularized loss function
-    @jax.jit
-    def loss_fn_l2(θ, x, y):
-        # Standard MSE loss
-        mse = jnp.mean((f(θ, x) - y)**2)
-        # L2 penalty on weights (not biases)
-        l2_penalty = 0.0
-        for W, b in θ:
-            l2_penalty += jnp.sum(W**2)
-        return mse + λ_l2 * l2_penalty
-
-    loss_gradient_l2 = jax.jit(jax.grad(loss_fn_l2))
-
     solver = optax.adam(schedule)
     opt_state = solver.init(θ)
 
     def update(_, loop_state):
-        θ, opt_state = loop_state
-        grad = loss_gradient_l2(θ, x, y)
-        updates, new_opt_state = solver.update(grad, opt_state, θ)
-        θ_new = optax.apply_updates(θ, updates)
-        return (θ_new, new_opt_state)
+        θ_curr, opt_state_curr = loop_state
+        grad = loss_gradient_l2(θ_curr, x, y, λ_l2)
+        updates, opt_state_new = solver.update(
+                            grad, opt_state_curr, θ_curr)
+        θ_new = optax.apply_updates(θ_curr, updates)
+        return (θ_new, opt_state_new)
 
     initial_loop_state = θ, opt_state
-    θ_final, _ = jax.lax.fori_loop(0, epochs, update, initial_loop_state)
+    θ_final, _ = jax.lax.fori_loop(
+        0, epochs, update, initial_loop_state
+    )
     return θ_final
 
 # Warmup
@@ -856,7 +865,7 @@ def train_jax_armijo_ls(
         g = loss_gradient(θ_current, x_data, y_data)
 
         # Squared Euclidean norm of gradient for Armijo condition
-        g_norm_sq = jax.tree_util.tree_reduce(
+        g_norm_sq = jax.tree.reduce(
             lambda a, b: a + jnp.sum(b**2),
             g,
             initializer=0.0,
@@ -908,7 +917,8 @@ def train_jax_armijo_ls(
         loop_state = jax.lax.while_loop(
             cond_fn,
             body_fn,
-            (α_init, current_loss, g_norm_sq, θ_current, x_data, y_data, 0),
+            (α_init, current_loss, 
+                g_norm_sq, θ_current, x_data, y_data, 0),
         )
         α_final = loop_state[0]
 
@@ -981,7 +991,7 @@ print("\nSummary of Exercise Strategies:")
 print(df_strategies.to_string(index=False))
 ```
 
-In terms of reducing loss on the validation test data, the current winner is the
+In terms of reducing loss on the validation data, the current winner is the
 Armijo line search strategy. 
 
 The Armijo backtracking line search is an adaptive step size method that
@@ -991,9 +1001,7 @@ decrease in the loss function.
 Unlike fixed learning rates or predetermined schedules, it adapts to the local
 geometry of the loss landscape.
 
-This strategy and its code was contributed by [Matyas Farkas](https://www.matyasfarkas.eu/).
-
-
+This strategy and its code were contributed by [Matyas Farkas](https://www.matyasfarkas.eu/).
 
 ```{solution-end}
 ```
