@@ -58,7 +58,7 @@ import quantecon as qe
 import matplotlib.pyplot as plt
 ```
 
-## The Lucas Model
+## The Lucas model
 
 ```{index} single: Lucas Model
 ```
@@ -75,7 +75,7 @@ eradicate desires to trade.
 
 This makes it very easy to compute competitive equilibrium prices.
 
-### Basic Setup
+### Basic setup
 
 Let's review the setup.
 
@@ -123,7 +123,7 @@ Here
 * $u$ is a strictly increasing, strictly concave, continuously differentiable period utility function.
 * $\mathbb{E}$ is a mathematical expectation.
 
-### Pricing a Lucas Tree
+### Pricing a Lucas tree
 
 ```{index} single: Lucas Model; Pricing
 ```
@@ -156,7 +156,7 @@ The decision to hold share $\pi_t$ is actually made at time $t-1$.
 
 But this value is inherited as a state variable at time $t$, which explains the choice of subscript.
 
-#### The Dynamic Program
+#### The dynamic program
 
 ```{index} single: Lucas Model; Dynamic Program
 ```
@@ -170,7 +170,7 @@ information is the current state $y \in \mathbb R_+$ (dropping the time subscrip
 
 This leads us to guess an equilibrium where price is a function $p$ of $y$.
 
-Remarks on the solution method
+Remarks on the solution method:
 
 * Since this is a competitive (read: price taking) model, the consumer will take this function $p$ as given.
 * In this way, we determine consumer behavior given $p$ and then use equilibrium conditions to recover $p$.
@@ -208,7 +208,7 @@ The solution to this dynamic programming problem is an optimal policy expressing
 
 * Each one determines the other, since $c(\pi, y) = \pi (y + p(y))- \pi' (\pi, y) p(y)$
 
-#### Next Steps
+#### Next steps
 
 What we need to do now is determine equilibrium prices.
 
@@ -220,7 +220,7 @@ It seems that to obtain these, we will have to
 
 However, as Lucas showed, there is a related but more straightforward way to do this.
 
-#### Equilibrium Constraints
+#### Equilibrium constraints
 
 ```{index} single: Lucas Model; Equilibrium Constraints
 ```
@@ -234,7 +234,7 @@ In particular, the representative consumer owns the whole tree in every period, 
 
 Prices must adjust to satisfy these two constraints.
 
-#### The Equilibrium Price Function
+#### The equilibrium price function
 
 ```{index} single: Lucas Model; Equilibrium Price Function
 ```
@@ -275,7 +275,7 @@ This is the famous consumption-based asset pricing equation.
 
 Before discussing it further we want to solve out for prices.
 
-### Solving the Model
+### Solving the model
 
 ```{index} single: Lucas Model; Solving
 ```
@@ -286,7 +286,7 @@ The solution is an equilibrium price function $p^*$.
 
 Let's look at how to obtain it.
 
-#### Setting up the Problem
+#### Setting up the problem
 
 Instead of solving for it directly we'll follow Lucas' indirect approach, first setting
 
@@ -330,17 +330,17 @@ In other words, a solution is a *fixed point* of $T$.
 
 This means that we can use fixed point theory to obtain and compute the solution.
 
-#### A Little Fixed Point Theory
+#### A little fixed point theory
 
 ```{index} single: Fixed Point Theory
 ```
 
-Let $cb\mathbb{R}_+$ be the set of continuous bounded functions $f \colon \mathbb{R}_+ \to \mathbb{R}_+$.
+Let $C_b(\mathbb{R}_+)$ be the set of continuous bounded functions $f \colon \mathbb{R}_+ \to \mathbb{R}_+$.
 
 We now show that
 
-1. $T$ has exactly one fixed point $f^*$ in $cb\mathbb{R}_+$.
-1. For any $f \in cb\mathbb{R}_+$, the sequence $T^k f$ converges
+1. $T$ has exactly one fixed point $f^*$ in $C_b(\mathbb{R}_+)$.
+1. For any $f \in C_b(\mathbb{R}_+)$, the sequence $T^k f$ converges
    uniformly to $f^*$.
 
 ```{note}
@@ -356,12 +356,12 @@ $\alpha < 1$ such that
 :label: ltbc
 
 \| Tf - Tg \| \leq \alpha \| f - g \|,
-\qquad \forall \, f, g \in cb\mathbb{R}_+
+\qquad \forall \, f, g \in C_b(\mathbb{R}_+)
 ```
 
 Here $\|h\| := \sup_{x \in \mathbb{R}_+} |h(x)|$.
 
-To see that {eq}`ltbc` is valid, pick any $f,g \in cb\mathbb{R}_+$ and any $y \in \mathbb{R}_+$.
+To see that {eq}`ltbc` is valid, pick any $f,g \in C_b(\mathbb{R}_+)$ and any $y \in \mathbb{R}_+$.
 
 Observe that, since integrals get larger when absolute values are moved to the
 inside,
@@ -390,7 +390,7 @@ on the left-hand side gives {eq}`ltbc` with $\alpha := \beta$.
 ```
 
 
-The preceding discussion tells that we can compute $f^*$ by picking any arbitrary $f \in cb\mathbb{R}_+$ and then iterating with $T$.
+The preceding discussion tells us that we can compute $f^*$ by picking any arbitrary $f \in C_b(\mathbb{R}_+)$ and then iterating with $T$.
 
 The equilibrium price function $p^*$ can then be recovered by $p^*(y) = f^*(y) / u'(y)$.
 
@@ -409,7 +409,7 @@ Monte Carlo is not always the fastest method for computing low-dimensional
 integrals, but it is extremely flexible (for example, it's straightforward to
 change the underlying state process).
 
-### Numba Code
+### Numba code
 
 Let's start with code using NumPy / Numba (and then compare it to code using
 JAX).
@@ -527,7 +527,7 @@ The price must therefore rise to induce the household to consume the entire endo
 
 
 
-### JAX Code
+### JAX code
 
 Here's a JAX version of the same problem.
 
