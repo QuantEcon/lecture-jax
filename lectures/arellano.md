@@ -79,7 +79,7 @@ import jax.numpy as jnp
 from typing import NamedTuple
 ```
 
-Let's check the GPU we are running
+Let's check the GPU we are using
 
 ```{code-cell} ipython3
 !nvidia-smi
@@ -143,9 +143,9 @@ The bond market has the following features
 - The bond matures in one period and is not state contingent.
 - A purchase of a bond with face value $ B' $ is a claim to $ B' $ units of the
   consumption good next period.
-- To purchase $ B' $  next period costs $ q B' $ now, or, what is equivalent.
-- For selling $ -B' $ units of next period goods the seller earns $ - q B' $ of 
-  today’s goods.
+- To purchase $ B' $  next period costs $ q B' $ now, or equivalently, $ q $ per unit of next period's goods.
+- For selling $ -B' $ units of next period goods the seller earns $ - q B' $ of
+  today's goods.
   - If $ B' < 0 $, then $ -q B' $ units of the good are received in the current 
     period, for a promise to repay $ -B' $ units next period.
   - There is an equilibrium  price function $ q(B', y) $ that makes $ q $ depend 
@@ -364,7 +364,7 @@ We use simple discretization on a grid of asset holdings and income levels.
 
 The output process is discretized using a [quadrature method due to Tauchen](https://github.com/QuantEcon/QuantEcon.py/blob/master/quantecon/markov/approximation.py).
 
-As we have in other places, we accelerate our code using Numba.
+As we have in other places, we accelerate our code using JAX and JIT compilation.
 
 We define a namedtuple to store parameters, grids and transition
 probabilities.
@@ -591,12 +591,6 @@ def solve(model, tol=1e-8, max_iter=10_000):
     sizes = B_size, y_size
     arrays = P, B_grid, y_grid, def_y
 
-    β, γ, r, ρ, η, θ, B_size, y_size, P, B_grid, y_grid, def_y = model
-
-    params = β, γ, r, ρ, η, θ
-    sizes = B_size, y_size
-    arrays = P, B_grid, y_grid, def_y
-
     # Initial conditions for v_c and v_d
     v_c = jnp.zeros((B_size, y_size))
     v_d = jnp.zeros((y_size,))
@@ -687,7 +681,7 @@ def simulate(model, T, v_c, v_d, q, B_star, key):
             Bp_idx = B0_idx
             # Re-enter financial markets next period with prob θ
             in_default = False if jax.random.uniform(key) < model.θ else True
-            key, _ = random.split(key)  # Update the random key
+            key, _ = jax.random.split(key)  # Update the random key
         else:
             y_a_sim.append(y_sim[t])
             d_sim.append(0)
@@ -731,7 +725,7 @@ values of output $ y $.
 
 
 The grid used to compute this figure was relatively fine (`y_size, B_size = 51, 251`), 
-which explains the minor differences between this and Arrelano’s figure.
+which explains the minor differences between this and Arellano's figure.
 
 The figure shows that
 
