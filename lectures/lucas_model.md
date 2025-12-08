@@ -4,21 +4,13 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.16.1
+    jupytext_version: 1.16.7
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
   name: python3
 ---
 
-(lucas_asset)=
-```{raw} html
-<div id="qe-notebook-header" align="right" style="text-align:right;">
-        <a href="https://quantecon.org/" title="quantecon.org">
-                <img style="width:250px;display:inline;" width="250px" src="https://assets.quantecon.org/img/qe-menubar-logo.svg" alt="QuantEcon">
-        </a>
-</div>
-```
 
 # Asset Pricing: The Lucas Asset Pricing Model
 
@@ -51,16 +43,19 @@ large as it is in some other lectures.
 
 Nonetheless, the gain is nontrivial.
 
-Let's start with some imports:
+Let's start with installing `quantecon` package and some imports:
+
+```{code-cell} ipython3
+!pip install --upgrade quantecon
+```
 
 ```{code-cell} ipython3
 import jax.numpy as jnp
 import jax
 import numpy as np
 import numba
-from scipy.stats import lognorm
+import quantecon as qe
 import matplotlib.pyplot as plt
-from time import time
 ```
 
 ## The Lucas Model
@@ -423,30 +418,31 @@ We create a function that returns tuples containing parameters and arrays needed
 for computation.
 
 ```{code-cell} ipython3
-def create_lucas_tree_model(γ=2,            # CRRA utility parameter
-                            β=0.95,         # Discount factor
-                            α=0.90,         # Correlation coefficient
-                            σ=0.1,          # Volatility coefficient
-                            grid_size=500,
-                            draw_size=1_000,
-                            seed=11):
-        # Set the grid interval to contain most of the mass of the
-        # stationary distribution of the consumption endowment
-        ssd = σ / np.sqrt(1 - α**2)
-        grid_min, grid_max = np.exp(-4 * ssd), np.exp(4 * ssd)
-        grid = np.linspace(grid_min, grid_max, grid_size)
-        # Set up distribution for shocks
-        np.random.seed(seed)
-        ϕ = lognorm(σ)
-        draws = ϕ.rvs(500)
-        # And the vector h
-        h = np.empty(grid_size)
-        for i, y in enumerate(grid):
-            h[i] = β * np.mean((y**α * draws)**(1 - γ))
-        # Pack and return
-        params = γ, β, α, σ
-        arrays = grid, draws, h
-        return params, arrays
+def create_lucas_tree_model(
+    γ=2,     # CRRA utility parameter
+    β=0.95,  # Discount factor
+    α=0.90,  # Correlation coefficient
+    σ=0.1,   # Volatility coefficient
+    grid_size=500,
+    draw_size=1_000,
+    seed=11,
+):
+    # Set the grid interval to contain most of the mass of the
+    # stationary distribution of the consumption endowment
+    ssd = σ / np.sqrt(1 - α**2)
+    grid_min, grid_max = np.exp(-4 * ssd), np.exp(4 * ssd)
+    grid = np.linspace(grid_min, grid_max, grid_size)
+    # Set up distribution for shocks
+    np.random.seed(seed)
+    draws = np.random.lognormal(mean=0, sigma=σ, size=500)
+    # And the vector h
+    h = np.empty(grid_size)
+    for i, y in enumerate(grid):
+        h[i] = β * np.mean((y**α * draws) ** (1 - γ))
+    # Pack and return
+    params = γ, β, α, σ
+    arrays = grid, draws, h
+    return params, arrays
 ```
 
 Here's a Numba-jitted version of the Lucas operator
@@ -478,7 +474,6 @@ to find the fixed point.
 def solve_model(params, arrays, tol=1e-6, max_iter=500):
     """
     Compute the equilibrium price function.
-
     """
     # Unpack
     γ, β, α, σ = params
@@ -504,25 +499,21 @@ params, arrays = create_lucas_tree_model()
 grid, draws, h = arrays
 
 # Solve once to compile
-start = time()
-price_vals = solve_model(params, arrays)
-numba_with_compile_time = time() - start
-print("Numba compile plus execution time = ", numba_with_compile_time)
+with qe.Timer() as numba_with_compile_time:
+    price_vals = solve_model(params, arrays)
 ```
 
 ```{code-cell} ipython3
 # Now time execution without compile time
-start = time()
-price_vals = solve_model(params, arrays)
-numba_without_compile_time = time() - start
-print("Numba execution time = ", numba_without_compile_time)
+with qe.Timer() as numba_without_compile_time:
+    price_vals = solve_model(params, arrays)
 ```
 
 ```{code-cell} ipython3
 fig, ax = plt.subplots(figsize=(10, 6))
-ax.plot(grid, price_vals, label='$p*(y)$')
-ax.set_xlabel('$y$')
-ax.set_ylabel('price')
+ax.plot(grid, price_vals, label="$p*(y)$")
+ax.set_xlabel("$y$")
+ax.set_ylabel("price")
 ax.legend()
 plt.show()
 ```
@@ -541,28 +532,30 @@ The price must therefore rise to induce the household to consume the entire endo
 Here's a JAX version of the same problem.
 
 ```{code-cell} ipython3
-def create_lucas_tree_model(γ=2,            # CRRA utility parameter
-                            β=0.95,         # Discount factor
-                            α=0.90,         # Correlation coefficient
-                            σ=0.1,          # Volatility coefficient
-                            grid_size=500,
-                            draw_size=1_000,
-                            seed=11):
-        # Set the grid interval to contain most of the mass of the
-        # stationary distribution of the consumption endowment
-        ssd = σ / jnp.sqrt(1 - α**2)
-        grid_min, grid_max = jnp.exp(-4 * ssd), jnp.exp(4 * ssd)
-        grid = jnp.linspace(grid_min, grid_max, grid_size)
+def create_lucas_tree_model(
+    γ=2,     # CRRA utility parameter
+    β=0.95,  # Discount factor
+    α=0.90,  # Correlation coefficient
+    σ=0.1,   # Volatility coefficient
+    grid_size=500,
+    draw_size=1_000,
+    seed=11,
+):
+    # Set the grid interval to contain most of the mass of the
+    # stationary distribution of the consumption endowment
+    ssd = σ / jnp.sqrt(1 - α**2)
+    grid_min, grid_max = jnp.exp(-4 * ssd), jnp.exp(4 * ssd)
+    grid = jnp.linspace(grid_min, grid_max, grid_size)
 
-        # Set up distribution for shocks
-        key = jax.random.key(seed)
-        draws = jax.random.lognormal(key, σ, shape=(draw_size,))
-        grid_reshaped = grid.reshape((grid_size, 1))
-        draws_reshaped = draws.reshape((-1, draw_size))
-        h = β * jnp.mean((grid_reshaped**α * draws_reshaped) ** (1-γ), axis=1)
-        params = γ, β, α, σ
-        arrays = grid, draws, h
-        return params, arrays
+    # Set up distribution for shocks
+    key = jax.random.key(seed)
+    draws = jax.random.lognormal(key, σ, shape=(draw_size,))
+    grid_reshaped = grid.reshape((grid_size, 1))
+    draws_reshaped = draws.reshape((-1, draw_size))
+    h = β * jnp.mean((grid_reshaped**α * draws_reshaped) ** (1 - γ), axis=1)
+    params = γ, β, α, σ
+    arrays = grid, draws, h
+    return params, arrays
 ```
 
 We'll use the following function to simultaneously compute the expectation
@@ -574,13 +567,15 @@ $$
 over all $y$ in the grid, under the current specifications.
 
 ```{code-cell} ipython3
-@jax.jit 
+@jax.jit
 def compute_expectation(y, α, draws, grid, f):
     return jnp.mean(jnp.interp(y**α * draws, grid, f))
 
+
 # Vectorize over y
-compute_expectation = jax.vmap(compute_expectation,
-                               in_axes=(0, None, None, None, None))
+compute_expectation = jax.vmap(
+    compute_expectation, in_axes=(0, None, None, None, None)
+)
 ```
 
 Here's the Lucas operator
@@ -601,10 +596,12 @@ def T(params, arrays, f):
 We'll use successive approximation to compute the fixed point.
 
 ```{code-cell} ipython3
-def successive_approx_jax(T,                     # Operator (callable)
-                          x_0,                   # Initial condition                
-                          tol=1e-6      ,        # Error tolerance
-                          max_iter=10_000):      # Max iteration bound
+def successive_approx_jax(
+    T,         # Operator (callable)
+    x_0,       # Initial condition
+    tol=1e-6,  # Error tolerance
+    max_iter=10_000,
+):  # Max iteration bound
     def body_fun(k_x_err):
         k, x, error = k_x_err
         x_new = T(x)
@@ -615,12 +612,11 @@ def successive_approx_jax(T,                     # Operator (callable)
         k, x, error = k_x_err
         return jnp.logical_and(error > tol, k < max_iter)
 
-    k, x, error = jax.lax.while_loop(cond_fun, body_fun, 
-                                    (1, x_0, tol + 1))
+    k, x, error = jax.lax.while_loop(cond_fun, body_fun, (1, x_0, tol + 1))
     return x
 
-successive_approx_jax = \
-    jax.jit(successive_approx_jax, static_argnums=(0,))
+
+successive_approx_jax = jax.jit(successive_approx_jax, static_argnums=(0,))
 ```
 
 Here's a function that solves the model
@@ -629,7 +625,6 @@ Here's a function that solves the model
 def solve_model(params, arrays, tol=1e-6, max_iter=500):
     """
     Compute the equilibrium price function.
-
     """
     # Simplify notation
     grid, draws, h = arrays
@@ -652,28 +647,27 @@ grid, draws, h = arrays
 γ, β, α, σ = params
 
 # Solve once to compile
-start = time()
-price_vals = solve_model(params, arrays).block_until_ready()
-jax_with_compile_time = time() - start
-print("JAX compile plus execution time = ", jax_with_compile_time)
+with qe.Timer() as jax_with_compile_time:
+    price_vals = solve_model(params, arrays).block_until_ready()
 ```
 
 ```{code-cell} ipython3
 # Now time execution without compile time
-start = time()
-price_vals = solve_model(params, arrays).block_until_ready()
-jax_without_compile_time = time() - start
-print("JAX execution time = ", jax_without_compile_time)
-print("Speedup factor = ", numba_without_compile_time/jax_without_compile_time)
+with qe.Timer() as jax_without_compile_time:
+    price_vals = solve_model(params, arrays).block_until_ready()
+print(
+    "Speedup factor = ",
+    numba_without_compile_time.elapsed / jax_without_compile_time.elapsed,
+)
 ```
 
 Let's check the solutions are similar
 
 ```{code-cell} ipython3
 fig, ax = plt.subplots(figsize=(10, 6))
-ax.plot(grid, price_vals, label='$p*(y)$')
-ax.set_xlabel('$y$')
-ax.set_ylabel('price')
+ax.plot(grid, price_vals, label="$p*(y)$")
+ax.set_xlabel("$y$")
+ax.set_ylabel("price")
 ax.legend()
 plt.show()
 ```
@@ -700,16 +694,16 @@ Show this by plotting the price function for the Lucas tree when $\beta = 0.95$ 
 ```{code-cell} ipython3
 fig, ax = plt.subplots(figsize=(10, 6))
 
-for β in (.95, 0.98):
+for β in (0.95, 0.98):
     params, arrays = create_lucas_tree_model(β=β)
     grid, draws, h = arrays
     γ, beta, α, σ = params
     price_vals = solve_model(params, arrays)
-    label = rf'$\beta = {beta}$'
+    label = rf"$\beta = {beta}$"
     ax.plot(grid, price_vals, lw=2, alpha=0.7, label=label)
 
-ax.legend(loc='upper left')
-ax.set(xlabel='$y$', ylabel='price', xlim=(min(grid), max(grid)))
+ax.legend(loc="upper left")
+ax.set(xlabel="$y$", ylabel="price", xlim=(min(grid), max(grid)))
 plt.show()
 ```
 
