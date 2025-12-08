@@ -40,7 +40,6 @@ The lecture proceeds in three stages:
 We begin with imports and installs.
 
 ```{code-cell} ipython3
-import numpy as np
 import jax
 import jax.numpy as jnp
 import matplotlib.pyplot as plt
@@ -48,7 +47,6 @@ import os
 from time import time
 from typing import NamedTuple
 from functools import partial
-
 ```
 
 ```{code-cell} ipython3
@@ -78,7 +76,7 @@ from keras.layers import Dense
 import optax
 ```
 
-## Set Up
+## Set up
 
 Here we briefly describe the problem and generate synthetic data.
 
@@ -105,7 +103,7 @@ class Config(NamedTuple):
     epochs: int = 4000             # Number of passes through the data set
     output_dim: int = 10           # Output dimension of input and hidden layers
     learning_rate: float = 0.001   # Learning rate for gradient descent
-    layer_sizes: tuple = (1, 10, 10, 10, 1)  # Sizes of each layer in the network
+    layer_sizes: tuple = (1, 10, 10, 10, 1)  # Layer sizes
     seed: int = 14                 # Random seed for data generation
 ```
 
@@ -140,9 +138,10 @@ key = jax.random.PRNGKey(config.seed)
 key_train, key_validate = jax.random.split(key)
 x_train, y_train = generate_data(key_train)
 x_validate, y_validate = generate_data(key_validate)
+keras.utils.set_random_seed(config.seed)
 fig, ax = plt.subplots()
 ax.scatter(x_train, y_train, alpha=0.5)
-ax.scatter(x_validate, y_validate, color='red', alpha=0.5)
+ax.scatter(x_validate, y_validate, alpha=0.5)
 ax.set_xlabel('x')
 ax.set_ylabel('y')
 plt.show()
@@ -165,16 +164,31 @@ def build_keras_model(
         activation_function: str = 'tanh'   # activation with default
     ):
     model = Sequential()
+    layer_sizes = config.layer_sizes
+    
     # Add layers to the network sequentially, from inputs towards outputs
-    for i in range(len(config.layer_sizes) - 1):
+    for in_dim, out_dim in zip(layer_sizes[:-2], layer_sizes[1:-1]):
         model.add(
-           Dense(units=config.output_dim, activation=activation_function)
+           Dense(
+               units=out_dim,
+               activation=activation_function,
+               kernel_initializer=keras.initializers.HeNormal(),
+               bias_initializer='ones',
+           )
         )
     # Add a final layer that maps to a scalar value, for regression.
-    model.add(Dense(units=1))
+    model.add(
+        Dense(
+            units=layer_sizes[-1],
+            kernel_initializer=keras.initializers.HeNormal(),
+            bias_initializer='ones',
+        )
+    )
     # Embed training configurations
     model.compile(
-        optimizer=keras.optimizers.SGD(),
+        optimizer=keras.optimizers.SGD(
+            learning_rate=config.learning_rate
+        ),
         loss='mean_squared_error'
     )
     return model
@@ -215,7 +229,7 @@ The next function extracts and visualizes a prediction from the trained model.
 def plot_keras_output(model, x, y, x_validate, y_validate):
     y_predict = model.predict(x_validate, verbose=2)
     fig, ax = plt.subplots()
-    ax.scatter(x_validate, y_validate, color='red', alpha=0.5)
+    ax.scatter(x_validate, y_validate, alpha=0.5)
     ax.plot(x_validate, y_predict, label="fitted model", color='black')
     ax.set_xlabel('x')
     ax.set_ylabel('y')
@@ -376,17 +390,17 @@ gradient descent, since will not randomize over sample points when we
 evaluate the gradient.)
 
 ```{code-cell} ipython3
-loss_gradient = jax.jit(jax.grad(loss_fn))
+loss_gradient = jax.grad(loss_fn)
 ```
 
 The gradient of `loss_fn` is with respect to the first argument `θ`.
 
 The code above seems kind of magical, since we are differentiating with respect
-to a parameter “vector” stored as a list of dictionaries containing arrays.
+to a parameter “vector” stored as a list of namedtuples containing arrays.
 
 How can we differentiate with respect to such a complex object?
 
-The answer is that the list of dictionaries is treated internally as a
+The answer is that the list of namedtuples is treated internally as a
 [pytree](https://docs.jax.dev/en/latest/pytrees.html).
 
 The JAX function `grad` understands how to
@@ -492,7 +506,7 @@ Here's a visualization of the quality of our fit.
 
 ```{code-cell} ipython3
 fig, ax = plt.subplots()
-ax.scatter(x_validate, y_validate, color='red', alpha=0.5)
+ax.scatter(x_validate, y_validate, alpha=0.5)
 ax.plot(x_validate.flatten(), f(θ, x_validate).flatten(),
         label="fitted model", color='black')
 ax.set_xlabel('x')
@@ -557,13 +571,16 @@ optax_sgd_runtime = time() - start_time
 
 optax_sgd_mse = loss_fn(θ, x_validate, y_validate)
 optax_sgd_train_mse = loss_fn(θ, x_train, y_train)
-print(f"Trained model with JAX and Optax SGD in {optax_sgd_runtime:.2f} seconds.")
+print(
+    "Trained model with JAX and Optax SGD "
+    f"in {optax_sgd_runtime:.2f} seconds."
+)
 print(f"Final MSE on validation data = {optax_sgd_mse:.6f}")
 ```
 
 ```{code-cell} ipython3
 fig, ax = plt.subplots()
-ax.scatter(x_validate, y_validate, color='red', alpha=0.5)
+ax.scatter(x_validate, y_validate, alpha=0.5)
 ax.plot(x_validate.flatten(), f(θ, x_validate).flatten(),
         label="fitted model", color='black')
 ax.set_xlabel('x')
@@ -605,7 +622,6 @@ def train_jax_optax_adam(
     return θ_final
 ```
 
-
 ```{code-cell} ipython3
 # Reset parameter vector
 θ = initialize_network(param_key, config)
@@ -622,7 +638,8 @@ optax_adam_runtime = time() - start_time
 
 optax_adam_mse = loss_fn(θ, x_validate, y_validate)
 optax_adam_train_mse = loss_fn(θ, x_train, y_train)
-print(f"Trained model with JAX and Optax ADAM in {optax_adam_runtime:.2f} seconds.")
+print("Trained model with JAX and Optax ADAM" 
+     f"in {optax_adam_runtime:.2f} seconds.")
 print(f"Final MSE on validation data = {optax_adam_mse:.6f}")
 ```
 
@@ -630,7 +647,7 @@ Here's a visualization of the result.
 
 ```{code-cell} ipython3
 fig, ax = plt.subplots()
-ax.scatter(x_validate, y_validate, color='red', alpha=0.5)
+ax.scatter(x_validate, y_validate, alpha=0.5)
 ax.plot(x_validate.flatten(), f(θ, x_validate).flatten(),
         label="fitted model", color='black')
 ax.set_xlabel('x')
@@ -648,13 +665,7 @@ Here we compare the performance of the four different training approaches we exp
 import pandas as pd
 
 # Compute training MSEs for each method
-# Need to retrieve the trained models and compute training MSE
-# For Keras, we already have the model
 keras_train_mse = model.evaluate(x_train, y_train, verbose=0)
-
-# For JAX methods, we need to compute using loss_fn with the final θ from each method
-# We need to re-train or save the θ from each method
-# For now, let's add these calculations after each training section
 
 # Create summary table
 results = {
@@ -692,8 +703,7 @@ print("\nSummary of Training Methods:")
 print(df.to_string(index=False))
 ```
 
-
-All methods achieve similar validation MSE values (around 0.043-0.045).
+All methods achieve similar validation MSE values (around 0.040-0.046).
 
 At the time of writing, the MSEs from plain vanilla Optax and our own hand-coded SGD routine are identical.
 
@@ -740,34 +750,23 @@ Which combination gives you the lowest validation MSE?
 
 Let's implement and test several strategies. 
 
-**Strategy 1: Deeper Network + LR Schedule + L2 Regularization**
+**Strategy 1: LR schedule and L2 regularization**
 
-Let's try a deeper network (6 layers) combined with learning rate schedule and L2 regularization:
+Let's keep the baseline network architecture and add a learning rate schedule with L2 regularization:
 
 ```{code-cell} ipython3
-# Strategy 1: Deeper network + LR schedule + L2 regularization
-# Define deeper network architecture
-def initialize_deep_params(
-        key: jax.Array,
-        k: int = 6,
-        num_hidden: int = 5
-    ):
-    " Initialize parameters for deeper network with k=6. "
-    layer_sizes = tuple([1] + [k] * num_hidden + [1])
-    config_deep = Config(layer_sizes=layer_sizes)
-    return initialize_network(key, config_deep)
-
-config_deep = Config(layer_sizes=(1, 6, 6, 6, 6, 6, 1))
-θ_deep = initialize_deep_params(param_key)
-
-def train_deep_with_schedule_and_l2(
+# Strategy 1: LR schedule and L2 regularization
+def train_with_schedule_and_l2(
         θ: list,
         x: jnp.ndarray,
         y: jnp.ndarray,
         config: Config,
-        lambda_l2: float = 0.001
+        λ_l2: float = 0.001
     ):
-    " Train deeper network with learning rate schedule and L2 regularization. "
+    """
+    Train baseline network with learning rate schedule
+    and L2 regularization.
+    """
     epochs = config.epochs
     schedule = optax.exponential_decay(
         init_value=0.003,
@@ -784,7 +783,7 @@ def train_deep_with_schedule_and_l2(
         l2_penalty = 0.0
         for W, b in θ:
             l2_penalty += jnp.sum(W**2)
-        return mse + lambda_l2 * l2_penalty
+        return mse + λ_l2 * l2_penalty
 
     loss_gradient_l2 = jax.jit(jax.grad(loss_fn_l2))
 
@@ -803,17 +802,18 @@ def train_deep_with_schedule_and_l2(
     return θ_final
 
 # Warmup
-train_deep_with_schedule_and_l2(θ_deep, x_train, y_train, config_deep)
+θ_l2 = initialize_network(param_key, config)
+train_with_schedule_and_l2(θ_l2, x_train, y_train, config)
 
 # Actual run
-θ_deep = initialize_deep_params(param_key)
+θ_l2 = initialize_network(param_key, config)
 start_time = time()
-θ_deep_l2 = train_deep_with_schedule_and_l2(θ_deep, x_train, y_train, config_deep)
-θ_deep_l2[0].W.block_until_ready()
+θ_l2 = train_with_schedule_and_l2(θ_l2, x_train, y_train, config)
+θ_l2[0].W.block_until_ready()
 deep_l2_runtime = time() - start_time
 
-deep_l2_mse = loss_fn(θ_deep_l2, x_validate, y_validate)
-print(f"Strategy 1 - Deeper network + LR schedule + L2 regularization")
+deep_l2_mse = loss_fn(θ_l2, x_validate, y_validate)
+print(f"Strategy 1 - LR schedule and L2 regularization")
 print(f"  Runtime: {deep_l2_runtime:.2f}s")
 print(f"  Validation MSE: {deep_l2_mse:.6f}")
 print(f"  Improvement over ADAM: {optax_adam_mse - deep_l2_mse:.6f}")
@@ -847,47 +847,84 @@ def train_jax_armijo_ls(
     epochs = config.epochs
 
     # Line search parameters
-    init_alpha = line_search_init_value
+    α_init = line_search_init_value
     backtrack_factor = line_search_backtrack_factor
-    _armijo_constant = line_search_armijo_constant
+    armijo_c = line_search_armijo_constant
 
-    def update_step(current_theta, x_data, y_data):
-        current_loss = loss_fn(current_theta, x_data, y_data)
-        grad = loss_gradient(current_theta, x_data, y_data)
+    def update_step(θ_current, x_data, y_data):
+        current_loss = loss_fn(θ_current, x_data, y_data)
+        g = loss_gradient(θ_current, x_data, y_data)
 
-        # Calculate squared Euclidean norm of the gradient for Armijo condition
-        grad_norm_sq = jax.tree_util.tree_reduce(
-            lambda a, b: a + jnp.sum(b**2), grad, initializer=0.0
+        # Squared Euclidean norm of gradient for Armijo condition
+        g_norm_sq = jax.tree_util.tree_reduce(
+            lambda a, b: a + jnp.sum(b**2),
+            g,
+            initializer=0.0,
         )
 
         # Define the condition for the while_loop
         def cond_fn(loop_args):
-            alpha_val, current_loss_val, grad_sq_sum, theta_orig, x_in, y_in, step_count = loop_args
-            loss_threshold = current_loss_val - _armijo_constant * alpha_val * grad_sq_sum
-            theta_candidate = jax.tree.map(lambda p, g_leaf: p - alpha_val * g_leaf, theta_orig, grad)
-            loss_candidate = loss_fn(theta_candidate, x_in, y_in)
-            return (loss_candidate > loss_threshold) & (step_count < max_backtrack_steps)
+            (α_val,
+             current_loss_val,
+             g_sq_sum,
+             θ_orig,
+             x_in,
+             y_in,
+             step_count) = loop_args
+
+            loss_threshold = (
+                current_loss_val - armijo_c * α_val * g_sq_sum
+            )
+
+            θ_candidate = jax.tree.map(
+                lambda p, g_leaf: p - α_val * g_leaf,
+                θ_orig,
+                g,
+            )
+            loss_candidate = loss_fn(θ_candidate, x_in, y_in)
+            return ((loss_candidate > loss_threshold)
+                    & (step_count < max_backtrack_steps))
 
         # Define the body for the while_loop
         def body_fn(loop_args):
-            alpha_val, current_loss_val, grad_sq_sum, theta_orig, x_in, y_in, step_count = loop_args
-            new_alpha = alpha_val * backtrack_factor
-            new_step_count = step_count + 1
-            return (new_alpha, current_loss_val, grad_sq_sum, theta_orig, x_in, y_in, new_step_count)
+            (α_val,
+             current_loss_val,
+             g_sq_sum,
+             θ_orig,
+             x_in,
+             y_in,
+             step_count) = loop_args
+            α_new = α_val * backtrack_factor
+            step_count_new = step_count + 1
+            return (α_new,
+                    current_loss_val,
+                    g_sq_sum,
+                    θ_orig,
+                    x_in,
+                    y_in,
+                    step_count_new)
 
         # Execute the Armijo line search using jax.lax.while_loop
-        final_alpha, _, _, _, _, _, _ = jax.lax.while_loop(
+        loop_state = jax.lax.while_loop(
             cond_fn,
             body_fn,
-            (init_alpha, current_loss, grad_norm_sq, current_theta, x_data, y_data, 0)
+            (α_init, current_loss, g_norm_sq, θ_current, x_data, y_data, 0),
         )
+        α_final = loop_state[0]
 
         # Update parameters with the chosen step size
-        theta_new = jax.tree.map(lambda p, g_leaf: p - final_alpha * g_leaf, current_theta, grad)
-        return theta_new
+        θ_new = jax.tree.map(
+            lambda p, g_leaf: p - α_final * g_leaf,
+            θ_current,
+            g,
+        )
+        return θ_new
 
     # Main training loop (epochs)
-    θ_final = jax.lax.fori_loop(0, epochs, lambda i, current_theta: update_step(current_theta, x, y), θ)
+    def outer_update(_, θ_curr):
+        return update_step(θ_curr, x, y)
+
+    θ_final = jax.lax.fori_loop(0, epochs, outer_update, θ)
     return θ_final
 
 # Warmup
@@ -919,7 +956,7 @@ Let's compare all strategies:
 strategies_results = {
     'Strategy': [
         'Baseline (ADAM + tanh)',
-        '1. Deeper network + LR schedule + L2',
+        '1. LR schedule and L2 regularization',
         '2. Baseline + Armijo Line Search'
     ],
     'Runtime (s)': [
@@ -944,7 +981,6 @@ print("\nSummary of Exercise Strategies:")
 print(df_strategies.to_string(index=False))
 ```
 
-
 In terms of reducing loss on the validation test data, the current winner is the
 Armijo line search strategy. 
 
@@ -961,4 +997,3 @@ This strategy and its code was contributed by [Matyas Farkas](https://www.matyas
 
 ```{solution-end}
 ```
-
