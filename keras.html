@@ -9,9 +9,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>22. Simple Neural Network Regression with Keras and JAX &#8212; Quantitative Economics with Python using JAX</title>
-    <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-    <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    
+    <link rel="preconnect" href="https://unpkg.com" crossorigin>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js" integrity="sha384-bq5PNg/ZcfW7KMvFSmhjqCQJ/VFnec+6sZkctn/4ZLeubkn7U58Le4zFFSn3dhUu" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js" integrity="sha384-qEqAs1VsN9WH2myXDbiP2wGGIttL9bMRZBKCl54ZnzpDlVqbYANP9vMaoT/wvQcf" crossorigin="anonymous"></script>
     
         <script>
             MathJax = {
@@ -70,7 +77,7 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
-    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=dbac30014ddb092b35ab80b3076a22a196655849" type="text/css" />
+    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=22b71a9b445b7b2b6a277c0a48ea72bf6e7c90d9" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
@@ -94,7 +101,7 @@
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="_static/togglebutton.js?v=4a39c7ea"></script>
-    <script src="_static/scripts/quantecon-book-theme.js?digest=ceefa0362b71a389a50c4058a117a949b54259bd"></script>
+    <script src="_static/scripts/quantecon-book-theme.js?digest=65b86b9423025043228643fcfb616ce846cb91c1"></script>
     <script src="_static/scripts/jquery.js?v=5d32c60e"></script>
     <script src="_static/scripts/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
@@ -258,7 +265,7 @@
                                 <a href="https://github.com/QuantEcon/lecture-jax/commit/b970020" class="changelog-hash">b970020</a>
                                 
                                 <span class="changelog-author">John Stachurski</span>
-                                <span class="changelog-time">8 months ago</span>
+                                <span class="changelog-time">9 months ago</span>
                                 <span class="changelog-message">Misc edits to keras lecture (#204)</span>
                             </li>
                             
@@ -550,8 +557,8 @@ as the parameters are adjusted to better fit the data.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>W1201 05:28:36.277511    4751 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn&#39;t support extracting fabric info or NVLink is not used by the device.
-W1201 05:28:36.281023    4686 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn&#39;t support extracting fabric info or NVLink is not used by the device.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>W1208 03:43:53.659674    4273 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn&#39;t support extracting fabric info or NVLink is not used by the device.
+W1208 03:43:53.663359    4208 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn&#39;t support extracting fabric info or NVLink is not used by the device.
 </pre></div>
 </div>
 </div>
@@ -576,7 +583,7 @@ W1201 05:28:36.281023    4686 cuda_executor.cc:1802] GPU interconnect informatio
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/e1103eb0ab04bf6b50dbed55a84802d0ccab14bda74a2d5372b0caa21ef4961e.png"><img alt="_images/e1103eb0ab04bf6b50dbed55a84802d0ccab14bda74a2d5372b0caa21ef4961e.png" src="_images/e1103eb0ab04bf6b50dbed55a84802d0ccab14bda74a2d5372b0caa21ef4961e.png" style="width: 80%;" />
+<a class="reference internal image-reference" href="_images/6508342eaf065739fda2050cbbf3a2b4a7e06451a9d42c0ea5240659c57dbe82.png"><img alt="_images/6508342eaf065739fda2050cbbf3a2b4a7e06451a9d42c0ea5240659c57dbe82.png" src="_images/6508342eaf065739fda2050cbbf3a2b4a7e06451a9d42c0ea5240659c57dbe82.png" style="width: 80%;" />
 </a>
 </div>
 </div>
@@ -590,7 +597,7 @@ W1201 05:28:36.281023    4686 cuda_executor.cc:1802] GPU interconnect informatio
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Testing loss on the validation set.
-13/13 - 0s - 16ms/step - loss: 0.3016
+13/13 - 0s - 17ms/step - loss: 0.3016
 </pre></div>
 </div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.3015977442264557
@@ -633,7 +640,7 @@ W1201 05:28:36.281023    4686 cuda_executor.cc:1802] GPU interconnect informatio
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/7b57ff9764a57fd826846ddef35967dc9cc4b8baa9726638dff5876630872724.png"><img alt="_images/7b57ff9764a57fd826846ddef35967dc9cc4b8baa9726638dff5876630872724.png" src="_images/7b57ff9764a57fd826846ddef35967dc9cc4b8baa9726638dff5876630872724.png" style="width: 80%;" />
+<a class="reference internal image-reference" href="_images/9ef3baa8dfdf1b2efaa415fbf5a130d6c59a323e63622b79211449b09f3a505d.png"><img alt="_images/9ef3baa8dfdf1b2efaa415fbf5a130d6c59a323e63622b79211449b09f3a505d.png" src="_images/9ef3baa8dfdf1b2efaa415fbf5a130d6c59a323e63622b79211449b09f3a505d.png" style="width: 80%;" />
 </a>
 </div>
 </div>
@@ -667,7 +674,7 @@ W1201 05:28:36.281023    4686 cuda_executor.cc:1802] GPU interconnect informatio
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/2cea53d80c410806ac35522144c339429546b3d2f895024c5424fe42cce81d1b.png"><img alt="_images/2cea53d80c410806ac35522144c339429546b3d2f895024c5424fe42cce81d1b.png" src="_images/2cea53d80c410806ac35522144c339429546b3d2f895024c5424fe42cce81d1b.png" style="width: 80%;" />
+<a class="reference internal image-reference" href="_images/8956a31f8936f822c227373accf49f6de76856bec48e533c1c7bf1cd489124cd.png"><img alt="_images/8956a31f8936f822c227373accf49f6de76856bec48e533c1c7bf1cd489124cd.png" src="_images/8956a31f8936f822c227373accf49f6de76856bec48e533c1c7bf1cd489124cd.png" style="width: 80%;" />
 </a>
 </div>
 </div>
@@ -681,10 +688,10 @@ W1201 05:28:36.281023    4686 cuda_executor.cc:1802] GPU interconnect informatio
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Testing loss on the validation set.
-13/13 - 0s - 35ms/step - loss: 0.0425
+13/13 - 0s - 36ms/step - loss: 0.0425
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.04245897755026817
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.04248945042490959
 </pre></div>
 </div>
 </div>
@@ -699,7 +706,7 @@ linear regression, suggesting a better fit.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>13/13 - 0s - 24ms/step
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>13/13 - 0s - 25ms/step
 </pre></div>
 </div>
 </div>
@@ -724,7 +731,7 @@ linear regression, suggesting a better fit.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/c1eef1fe17a217bce223473c59690b2e22fde78caccdb8bc50fa34adf2433eb3.png"><img alt="_images/c1eef1fe17a217bce223473c59690b2e22fde78caccdb8bc50fa34adf2433eb3.png" src="_images/c1eef1fe17a217bce223473c59690b2e22fde78caccdb8bc50fa34adf2433eb3.png" style="width: 80%;" />
+<a class="reference internal image-reference" href="_images/5f53746aa22b87d6826eb6a2c2bd1f416c1f2c0d702c642bce94b2ef23e6d21e.png"><img alt="_images/5f53746aa22b87d6826eb6a2c2bd1f416c1f2c0d702c642bce94b2ef23e6d21e.png" src="_images/5f53746aa22b87d6826eb6a2c2bd1f416c1f2c0d702c642bce94b2ef23e6d21e.png" style="width: 80%;" />
 </a>
 </div>
 </div>

@@ -9,9 +9,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>7. Wealth Distribution Dynamics &#8212; Quantitative Economics with Python using JAX</title>
-    <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-    <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    
+    <link rel="preconnect" href="https://unpkg.com" crossorigin>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js" integrity="sha384-bq5PNg/ZcfW7KMvFSmhjqCQJ/VFnec+6sZkctn/4ZLeubkn7U58Le4zFFSn3dhUu" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js" integrity="sha384-qEqAs1VsN9WH2myXDbiP2wGGIttL9bMRZBKCl54ZnzpDlVqbYANP9vMaoT/wvQcf" crossorigin="anonymous"></script>
     
         <script>
             MathJax = {
@@ -70,7 +77,7 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
-    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=dbac30014ddb092b35ab80b3076a22a196655849" type="text/css" />
+    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=22b71a9b445b7b2b6a277c0a48ea72bf6e7c90d9" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
@@ -94,7 +101,7 @@
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="_static/togglebutton.js?v=4a39c7ea"></script>
-    <script src="_static/scripts/quantecon-book-theme.js?digest=ceefa0362b71a389a50c4058a117a949b54259bd"></script>
+    <script src="_static/scripts/quantecon-book-theme.js?digest=65b86b9423025043228643fcfb616ce846cb91c1"></script>
     <script src="_static/scripts/jquery.js?v=5d32c60e"></script>
     <script src="_static/scripts/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
@@ -426,7 +433,7 @@ Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in /home/runner/minicond
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Mon Dec  1 05:35:08 2025       
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Mon Dec  8 03:50:33 2025       
 +-----------------------------------------------------------------------------------------+
 | NVIDIA-SMI 580.105.08             Driver Version: 580.105.08     CUDA Version: 13.0     |
 +-----------------------------------------+------------------------+----------------------+
@@ -435,7 +442,7 @@ Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in /home/runner/minicond
 |                                         |                        |               MIG M. |
 |=========================================+========================+======================|
 |   0  Tesla T4                       On  |   00000000:00:1E.0 Off |                    0 |
-| N/A   30C    P8             13W /   70W |       0MiB /  15360MiB |      0%      Default |
+| N/A   29C    P8             13W /   70W |       0MiB /  15360MiB |      0%      Default |
 |                                         |                        |                  N/A |
 +-----------------------------------------+------------------------+----------------------+
 
@@ -621,7 +628,7 @@ current value of the aggregate shock</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/0b44c887ce8744843b5d6b14b2185c4c8c9ca50538b84c42030c3ea33dd6bd1f.png"><img alt="_images/0b44c887ce8744843b5d6b14b2185c4c8c9ca50538b84c42030c3ea33dd6bd1f.png" src="_images/0b44c887ce8744843b5d6b14b2185c4c8c9ca50538b84c42030c3ea33dd6bd1f.png" style="width: 80%;" />
+<a class="reference internal image-reference" href="_images/88109507993d69550611d4923c45590ac0d70bed8b90ad0883baee26af89a37e.png"><img alt="_images/88109507993d69550611d4923c45590ac0d70bed8b90ad0883baee26af89a37e.png" src="_images/88109507993d69550611d4923c45590ac0d70bed8b90ad0883baee26af89a37e.png" style="width: 80%;" />
 </a>
 </div>
 </div>
@@ -688,7 +695,7 @@ is known.</p>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Generating cross-section using Numba
-Generated cross-section in 34.28335452079773 seconds.
+Generated cross-section in 34.978322982788086 seconds.
 </pre></div>
 </div>
 </div>
@@ -704,7 +711,7 @@ Generated cross-section in 34.28335452079773 seconds.
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Generated cross-section in 33.914804220199585 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Generated cross-section in 34.50533175468445 seconds.
 </pre></div>
 </div>
 </div>
@@ -764,8 +771,8 @@ using JAX</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>W1201 05:36:18.281985    6647 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn&#39;t support extracting fabric info or NVLink is not used by the device.
-W1201 05:36:18.285528    6557 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn&#39;t support extracting fabric info or NVLink is not used by the device.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>W1208 03:51:44.931273    6164 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn&#39;t support extracting fabric info or NVLink is not used by the device.
+W1208 03:51:44.934808    6073 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn&#39;t support extracting fabric info or NVLink is not used by the device.
 </pre></div>
 </div>
 </div>
@@ -783,7 +790,7 @@ W1201 05:36:18.285528    6557 cuda_executor.cc:1802] GPU interconnect informatio
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Generating cross-section using JAX
-Generated cross-section in 3.046513795852661 seconds.
+Generated cross-section in 3.101090908050537 seconds.
 </pre></div>
 </div>
 </div>
@@ -801,7 +808,7 @@ Generated cross-section in 3.046513795852661 seconds.
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Repeating without compile time.
-Generated cross-section in 1.3287653923034668 seconds
+Generated cross-section in 1.3282020092010498 seconds
 </pre></div>
 </div>
 </div>
@@ -875,7 +882,7 @@ Generated cross-section in 1.3287653923034668 seconds
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Generating cross-section using JAX with compiled loop
-Generated cross-section in 0.8073046207427979 seconds.
+Generated cross-section in 0.8006713390350342 seconds.
 </pre></div>
 </div>
 </div>
@@ -895,7 +902,7 @@ Generated cross-section in 0.8073046207427979 seconds.
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Repeating without compile time
-Generated cross-section in 0.17447590827941895 seconds
+Generated cross-section in 0.16333913803100586 seconds
 </pre></div>
 </div>
 </div>
@@ -907,7 +914,7 @@ Generated cross-section in 0.17447590827941895 seconds
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>JAX is 194.3810 times faster.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>JAX is 211.2496 times faster.
 </pre></div>
 </div>
 </div>
@@ -940,7 +947,7 @@ that generates a cross-section of wealth and generating a suitable rank-size plo
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/e95210b87cc522418be02329b20edb24c6249b55e337d46846098b88faeb1d48.png"><img alt="_images/e95210b87cc522418be02329b20edb24c6249b55e337d46846098b88faeb1d48.png" src="_images/e95210b87cc522418be02329b20edb24c6249b55e337d46846098b88faeb1d48.png" style="width: 80%;" />
+<a class="reference internal image-reference" href="_images/afae66b088f63d06a1fc242f5b0720ce940ffe2f6b0374e29b0935cf3edb0f6b.png"><img alt="_images/afae66b088f63d06a1fc242f5b0720ce940ffe2f6b0374e29b0935cf3edb0f6b.png" src="_images/afae66b088f63d06a1fc242f5b0720ce940ffe2f6b0374e29b0935cf3edb0f6b.png" style="width: 80%;" />
 </a>
 </div>
 </div>
@@ -1009,8 +1016,8 @@ generates data points <span class="math notranslate nohighlight">\((x_i, y_i)_{i
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 237 ms, sys: 13 ms, total: 250 ms
-Wall time: 284 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 241 ms, sys: 8.01 ms, total: 249 ms
+Wall time: 286 ms
 </pre></div>
 </div>
 </div>
@@ -1023,8 +1030,8 @@ Wall time: 284 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 0 ns, sys: 548 μs, total: 548 μs
-Wall time: 299 μs
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 421 μs, sys: 2 μs, total: 423 μs
+Wall time: 232 μs
 </pre></div>
 </div>
 </div>
@@ -1040,7 +1047,7 @@ Wall time: 299 μs
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/cc9b87c02b0103e203878c0e2b029658bc2b713968ded0c4c960163d125010fd.png"><img alt="_images/cc9b87c02b0103e203878c0e2b029658bc2b713968ded0c4c960163d125010fd.png" src="_images/cc9b87c02b0103e203878c0e2b029658bc2b713968ded0c4c960163d125010fd.png" style="width: 80%;" />
+<a class="reference internal image-reference" href="_images/928273d691ff0ee733ddee6cfe418ee9fbbf7ce9ad04e5eff13bd2b13641c92c.png"><img alt="_images/928273d691ff0ee733ddee6cfe418ee9fbbf7ce9ad04e5eff13bd2b13641c92c.png" src="_images/928273d691ff0ee733ddee6cfe418ee9fbbf7ce9ad04e5eff13bd2b13641c92c.png" style="width: 80%;" />
 </a>
 </div>
 </div>
@@ -1076,8 +1083,8 @@ G :=
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 255 ms, sys: 13 ms, total: 268 ms
-Wall time: 7 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 260 ms, sys: 9 ms, total: 269 ms
+Wall time: 6.98 s
 </pre></div>
 </div>
 </div>
@@ -1090,8 +1097,8 @@ Wall time: 7 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 3.96 ms, sys: 12 μs, total: 3.97 ms
-Wall time: 6.45 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 2.62 ms, sys: 1.01 ms, total: 3.62 ms
+Wall time: 6.42 s
 </pre></div>
 </div>
 </div>
@@ -1103,7 +1110,7 @@ Wall time: 6.45 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Array(0.7573268, dtype=float32)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Array(0.7760384, dtype=float32)
 </pre></div>
 </div>
 </div>
@@ -1123,7 +1130,7 @@ Wall time: 6.45 s
 </div>
 <div class="solution dropdown admonition" id="wealth_dynamics-solution-1">
 
-<p class="admonition-title">Solution to<a class="reference internal" href="#wd_ex1"> Exercise 7.1</a></p>
+<p class="admonition-title">Solution</p>
 <section id="solution-content">
 <p>Here’s one solution:</p>
 <div class="cell docutils container">
@@ -1149,8 +1156,8 @@ Wall time: 6.45 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 132 ms, sys: 4 ms, total: 136 ms
-Wall time: 6.64 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 129 ms, sys: 4.01 ms, total: 133 ms
+Wall time: 6.61 s
 </pre></div>
 </div>
 </div>
@@ -1163,8 +1170,8 @@ Wall time: 6.64 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 2.66 ms, sys: 1 ms, total: 3.66 ms
-Wall time: 6.47 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 3.65 ms, sys: 8 μs, total: 3.66 ms
+Wall time: 6.45 s
 </pre></div>
 </div>
 </div>
@@ -1176,7 +1183,7 @@ Wall time: 6.47 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Array(0.7573268, dtype=float32)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Array(0.7760384, dtype=float32)
 </pre></div>
 </div>
 </div>
@@ -1222,7 +1229,7 @@ Wall time: 6.47 s
 </div>
 <div class="solution dropdown admonition" id="wealth_dynamics-solution-3">
 
-<p class="admonition-title">Solution to<a class="reference internal" href="#wd_ex2"> Exercise 7.2</a></p>
+<p class="admonition-title">Solution</p>
 <section id="solution-content">
 <p>Here is one solution</p>
 <div class="cell docutils container">
@@ -1246,7 +1253,7 @@ Wall time: 6.47 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/09f0d9456782d9a2d75c227ff0f8e5ef4b2eedc8ba5f074f7c1bcab161c1eeb1.png"><img alt="_images/09f0d9456782d9a2d75c227ff0f8e5ef4b2eedc8ba5f074f7c1bcab161c1eeb1.png" src="_images/09f0d9456782d9a2d75c227ff0f8e5ef4b2eedc8ba5f074f7c1bcab161c1eeb1.png" style="width: 80%;" />
+<a class="reference internal image-reference" href="_images/5701b60370ddd91c5532af953138f0ad3df983618077765f6aaa6a749db7bf17.png"><img alt="_images/5701b60370ddd91c5532af953138f0ad3df983618077765f6aaa6a749db7bf17.png" src="_images/5701b60370ddd91c5532af953138f0ad3df983618077765f6aaa6a749db7bf17.png" style="width: 80%;" />
 </a>
 </div>
 </div>
@@ -1263,7 +1270,7 @@ Wall time: 6.47 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/78022aab0d64f170a98a58db673e9f9f539fca16b6e88d178c20e2a5c78d5309.png"><img alt="_images/78022aab0d64f170a98a58db673e9f9f539fca16b6e88d178c20e2a5c78d5309.png" src="_images/78022aab0d64f170a98a58db673e9f9f539fca16b6e88d178c20e2a5c78d5309.png" style="width: 80%;" />
+<a class="reference internal image-reference" href="_images/403c1358f60c5e2c74454baf5a69fb915eb62f47eda3e5803eae4d93bde597b6.png"><img alt="_images/403c1358f60c5e2c74454baf5a69fb915eb62f47eda3e5803eae4d93bde597b6.png" src="_images/403c1358f60c5e2c74454baf5a69fb915eb62f47eda3e5803eae4d93bde597b6.png" style="width: 80%;" />
 </a>
 </div>
 </div>
@@ -1289,7 +1296,7 @@ Wall time: 6.47 s
 </div>
 <div class="solution dropdown admonition" id="wealth_dynamics-solution-5">
 
-<p class="admonition-title">Solution to<a class="reference internal" href="#wd_ex3"> Exercise 7.3</a></p>
+<p class="admonition-title">Solution</p>
 <section id="solution-content">
 <p>Here’s one solution</p>
 <div class="cell docutils container">
@@ -1314,7 +1321,7 @@ Wall time: 6.47 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/dd5e49d4c91125a8d2a3e84eb796e22be0e9d2f5c5bf4a680f5849d55e9caa81.png"><img alt="_images/dd5e49d4c91125a8d2a3e84eb796e22be0e9d2f5c5bf4a680f5849d55e9caa81.png" src="_images/dd5e49d4c91125a8d2a3e84eb796e22be0e9d2f5c5bf4a680f5849d55e9caa81.png" style="width: 80%;" />
+<a class="reference internal image-reference" href="_images/a59625e976906c23fe08a885c8166376c85a8af285daf080e167a3027ed58d6f.png"><img alt="_images/a59625e976906c23fe08a885c8166376c85a8af285daf080e167a3027ed58d6f.png" src="_images/a59625e976906c23fe08a885c8166376c85a8af285daf080e167a3027ed58d6f.png" style="width: 80%;" />
 </a>
 </div>
 </div>
@@ -1329,7 +1336,7 @@ Wall time: 6.47 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/35232048387ccc634560fd5b78449a937868264afb75c7dcd6d91f109ae9fe4c.png"><img alt="_images/35232048387ccc634560fd5b78449a937868264afb75c7dcd6d91f109ae9fe4c.png" src="_images/35232048387ccc634560fd5b78449a937868264afb75c7dcd6d91f109ae9fe4c.png" style="width: 80%;" />
+<a class="reference internal image-reference" href="_images/e2d17574a6347c6fbcddbdb87394cdc3c65410b6483fcc905a68ac1f5c47808d.png"><img alt="_images/e2d17574a6347c6fbcddbdb87394cdc3c65410b6483fcc905a68ac1f5c47808d.png" src="_images/e2d17574a6347c6fbcddbdb87394cdc3c65410b6483fcc905a68ac1f5c47808d.png" style="width: 80%;" />
 </a>
 </div>
 </div>
@@ -1354,7 +1361,7 @@ Wall time: 6.47 s
 </div>
 <div class="solution dropdown admonition" id="wealth_dynamics-solution-7">
 
-<p class="admonition-title">Solution to<a class="reference internal" href="#wd_ex4"> Exercise 7.4</a></p>
+<p class="admonition-title">Solution</p>
 <section id="solution-content">
 <p>Here’s one solution.</p>
 <p>It shows that increasing volatility in financial income has a greater effect</p>
@@ -1393,7 +1400,7 @@ Wall time: 6.47 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/6eb96dfabd2cafe28bccf6ee5c9b690c7462ed3ed9da980cb8f40136aaf48efe.png"><img alt="_images/6eb96dfabd2cafe28bccf6ee5c9b690c7462ed3ed9da980cb8f40136aaf48efe.png" src="_images/6eb96dfabd2cafe28bccf6ee5c9b690c7462ed3ed9da980cb8f40136aaf48efe.png" style="width: 80%;" />
+<a class="reference internal image-reference" href="_images/b93d2a68fd7bb2d9293dbf51093509b030fdf6936b7607a981486a9975f23213.png"><img alt="_images/b93d2a68fd7bb2d9293dbf51093509b030fdf6936b7607a981486a9975f23213.png" src="_images/b93d2a68fd7bb2d9293dbf51093509b030fdf6936b7607a981486a9975f23213.png" style="width: 80%;" />
 </a>
 </div>
 </div>

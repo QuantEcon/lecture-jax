@@ -9,9 +9,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>12. Optimal Savings II: Alternative Algorithms &#8212; Quantitative Economics with Python using JAX</title>
-    <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-    <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    
+    <link rel="preconnect" href="https://unpkg.com" crossorigin>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js" integrity="sha384-bq5PNg/ZcfW7KMvFSmhjqCQJ/VFnec+6sZkctn/4ZLeubkn7U58Le4zFFSn3dhUu" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js" integrity="sha384-qEqAs1VsN9WH2myXDbiP2wGGIttL9bMRZBKCl54ZnzpDlVqbYANP9vMaoT/wvQcf" crossorigin="anonymous"></script>
     
         <script>
             MathJax = {
@@ -70,7 +77,7 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
-    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=dbac30014ddb092b35ab80b3076a22a196655849" type="text/css" />
+    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=22b71a9b445b7b2b6a277c0a48ea72bf6e7c90d9" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
@@ -94,7 +101,7 @@
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="_static/togglebutton.js?v=4a39c7ea"></script>
-    <script src="_static/scripts/quantecon-book-theme.js?digest=ceefa0362b71a389a50c4058a117a949b54259bd"></script>
+    <script src="_static/scripts/quantecon-book-theme.js?digest=65b86b9423025043228643fcfb616ce846cb91c1"></script>
     <script src="_static/scripts/jquery.js?v=5d32c60e"></script>
     <script src="_static/scripts/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
@@ -425,7 +432,7 @@ Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in /home/runner/minicond
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Mon Dec  1 05:34:11 2025       
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Mon Dec  8 03:49:36 2025       
 +-----------------------------------------------------------------------------------------+
 | NVIDIA-SMI 580.105.08             Driver Version: 580.105.08     CUDA Version: 13.0     |
 +-----------------------------------------+------------------------+----------------------+
@@ -869,8 +876,8 @@ step is to define the function <span class="math notranslate nohighlight">\(L_{\
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>W1201 05:34:12.212445    6117 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn&#39;t support extracting fabric info or NVLink is not used by the device.
-W1201 05:34:12.216121    6051 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn&#39;t support extracting fabric info or NVLink is not used by the device.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>W1208 03:49:36.922157    5631 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn&#39;t support extracting fabric info or NVLink is not used by the device.
+W1208 03:49:36.925684    5563 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn&#39;t support extracting fabric info or NVLink is not used by the device.
 </pre></div>
 </div>
 </div>
@@ -897,7 +904,7 @@ Concluded loop 7 with error 1.
 Concluded loop 8 with error 1.
 Concluded loop 9 with error 1.
 Concluded loop 10 with error 0.
-HPI completed in 1.5836279392242432 seconds.
+HPI completed in 1.6295301914215088 seconds.
 </pre></div>
 </div>
 </div>
@@ -923,7 +930,7 @@ Concluded loop 7 with error 1.
 Concluded loop 8 with error 1.
 Concluded loop 9 with error 1.
 Concluded loop 10 with error 0.
-HPI completed in 0.14850902557373047 seconds.
+HPI completed in 0.12384676933288574 seconds.
 </pre></div>
 </div>
 </div>
@@ -961,7 +968,7 @@ HPI completed in 0.14850902557373047 seconds.
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Starting VFI.
-VFI completed in 0.6550707817077637 seconds.
+VFI completed in 0.7026360034942627 seconds.
 </pre></div>
 </div>
 </div>
@@ -977,7 +984,7 @@ VFI completed in 0.6550707817077637 seconds.
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>VFI completed in 0.4750254154205322 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>VFI completed in 0.47812795639038086 seconds.
 </pre></div>
 </div>
 </div>
@@ -1015,7 +1022,7 @@ VFI completed in 0.6550707817077637 seconds.
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Starting OPI.
-OPI completed in 0.613353967666626 seconds.
+OPI completed in 0.6190016269683838 seconds.
 </pre></div>
 </div>
 </div>
@@ -1031,7 +1038,7 @@ OPI completed in 0.613353967666626 seconds.
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OPI completed in 0.12537097930908203 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OPI completed in 0.12395548820495605 seconds.
 </pre></div>
 </div>
 </div>
@@ -1103,7 +1110,7 @@ Concluded loop 8 with error 1.
 Concluded loop 9 with error 1.
 Concluded loop 10 with error 0.
 howard_policy_iteration completed in 0.08 seconds.
-value_function_iteration completed in 0.46 seconds.
+value_function_iteration completed in 0.47 seconds.
 </pre></div>
 </div>
 </div>
@@ -1125,14 +1132,14 @@ optimistic_policy_iteration completed in 0.12 seconds.
 optimistic_policy_iteration completed in 0.12 seconds.
 optimistic_policy_iteration completed in 0.14 seconds.
 optimistic_policy_iteration completed in 0.17 seconds.
-optimistic_policy_iteration completed in 0.21 seconds.
+optimistic_policy_iteration completed in 0.20 seconds.
 optimistic_policy_iteration completed in 0.24 seconds.
-optimistic_policy_iteration completed in 0.28 seconds.
+optimistic_policy_iteration completed in 0.27 seconds.
 optimistic_policy_iteration completed in 0.31 seconds.
 optimistic_policy_iteration completed in 0.34 seconds.
 optimistic_policy_iteration completed in 0.38 seconds.
 optimistic_policy_iteration completed in 0.41 seconds.
-optimistic_policy_iteration completed in 0.45 seconds.
+optimistic_policy_iteration completed in 0.44 seconds.
 optimistic_policy_iteration completed in 0.48 seconds.
 optimistic_policy_iteration completed in 0.52 seconds.
 </pre></div>
@@ -1159,7 +1166,7 @@ optimistic_policy_iteration completed in 0.52 seconds.
 </div>
 <div class="cell_output docutils container">
 <figure class="align-default" id="howard-value-optimistic-solver-times">
-<a class="reference internal image-reference" href="_images/d892f06ec98e1edbba2d188b3377000755d92f8286a36b531b64b0b0b4b9230a.png"><img alt="_images/d892f06ec98e1edbba2d188b3377000755d92f8286a36b531b64b0b0b4b9230a.png" src="_images/d892f06ec98e1edbba2d188b3377000755d92f8286a36b531b64b0b0b4b9230a.png" style="width: 80%;" />
+<a class="reference internal image-reference" href="_images/04414872ee72e3dbff5a7d4719f3120d1bb73c8289ba6b2dbca0fa7955d7e6c5.png"><img alt="_images/04414872ee72e3dbff5a7d4719f3120d1bb73c8289ba6b2dbca0fa7955d7e6c5.png" src="_images/04414872ee72e3dbff5a7d4719f3120d1bb73c8289ba6b2dbca0fa7955d7e6c5.png" style="width: 80%;" />
 </a>
 <figcaption>
 <p><span class="caption-number">Fig. 12.4 </span><span class="caption-text">Solver times</span><a class="headerlink" href="#howard-value-optimistic-solver-times" title="Link to this image">#</a></p>

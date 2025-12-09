@@ -9,9 +9,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>17. Default Risk and Income Fluctuations &#8212; Quantitative Economics with Python using JAX</title>
-    <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-    <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    
+    <link rel="preconnect" href="https://unpkg.com" crossorigin>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js" integrity="sha384-bq5PNg/ZcfW7KMvFSmhjqCQJ/VFnec+6sZkctn/4ZLeubkn7U58Le4zFFSn3dhUu" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js" integrity="sha384-qEqAs1VsN9WH2myXDbiP2wGGIttL9bMRZBKCl54ZnzpDlVqbYANP9vMaoT/wvQcf" crossorigin="anonymous"></script>
     
         <script>
             MathJax = {
@@ -70,7 +77,7 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
-    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=dbac30014ddb092b35ab80b3076a22a196655849" type="text/css" />
+    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=22b71a9b445b7b2b6a277c0a48ea72bf6e7c90d9" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
@@ -94,7 +101,7 @@
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="_static/togglebutton.js?v=4a39c7ea"></script>
-    <script src="_static/scripts/quantecon-book-theme.js?digest=ceefa0362b71a389a50c4058a117a949b54259bd"></script>
+    <script src="_static/scripts/quantecon-book-theme.js?digest=65b86b9423025043228643fcfb616ce846cb91c1"></script>
     <script src="_static/scripts/jquery.js?v=5d32c60e"></script>
     <script src="_static/scripts/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
@@ -450,7 +457,7 @@ the government’s incentive to default.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Mon Dec  1 05:22:56 2025       
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Mon Dec  8 03:38:18 2025       
 +-----------------------------------------------------------------------------------------+
 | NVIDIA-SMI 580.105.08             Driver Version: 580.105.08     CUDA Version: 13.0     |
 +-----------------------------------------+------------------------+----------------------+
@@ -459,7 +466,7 @@ the government’s incentive to default.</p>
 |                                         |                        |               MIG M. |
 |=========================================+========================+======================|
 |   0  Tesla T4                       On  |   00000000:00:1E.0 Off |                    0 |
-| N/A   30C    P8             13W /   70W |       0MiB /  15360MiB |      0%      Default |
+| N/A   29C    P8             13W /   70W |       0MiB /  15360MiB |      0%      Default |
 |                                         |                        |                  N/A |
 +-----------------------------------------+------------------------+----------------------+
 
@@ -981,8 +988,8 @@ down to more basic objects, which are then passed out to jitted functions.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>W1201 05:22:57.043263    2197 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn&#39;t support extracting fabric info or NVLink is not used by the device.
-W1201 05:22:57.046875    2131 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn&#39;t support extracting fabric info or NVLink is not used by the device.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>W1208 03:38:19.516939    2154 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn&#39;t support extracting fabric info or NVLink is not used by the device.
+W1208 03:38:19.520490    2086 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn&#39;t support extracting fabric info or NVLink is not used by the device.
 </pre></div>
 </div>
 </div>
@@ -1000,8 +1007,8 @@ Entering iteration 100 with error 0.017499341639204857.
 Entering iteration 200 with error 0.00014189363558969603.
 Entering iteration 300 with error 1.151467966309383e-06.
 Terminating at iteration 399.
-CPU times: user 1.69 s, sys: 296 ms, total: 1.99 s
-Wall time: 3.49 s
+CPU times: user 1.76 s, sys: 291 ms, total: 2.05 s
+Wall time: 3.58 s
 </pre></div>
 </div>
 </div>
@@ -1020,7 +1027,7 @@ Entering iteration 100 with error 0.017499341639204857.
 Entering iteration 200 with error 0.00014189363558969603.
 Entering iteration 300 with error 1.151467966309383e-06.
 Terminating at iteration 399.
-CPU times: user 661 ms, sys: 193 ms, total: 854 ms
+CPU times: user 706 ms, sys: 165 ms, total: 871 ms
 Wall time: 1.55 s
 </pre></div>
 </div>
@@ -1159,7 +1166,7 @@ increases with indebtedness and falls with income.</p>
 </div>
 <div class="solution dropdown admonition" id="arellano-solution-1">
 
-<p class="admonition-title">Solution to<a class="reference internal" href="#arellano_ex1"> Exercise 17.1</a></p>
+<p class="admonition-title">Solution</p>
 <section id="solution-content">
 <p>Compute the value function, policy and equilibrium prices</p>
 <div class="cell docutils container">
@@ -1321,7 +1328,7 @@ Terminating at iteration 399.
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/c12853260bdc18011d909bfa3086289bf89e8f674cc7a62fb78f69bc29d3053d.png"><img alt="_images/c12853260bdc18011d909bfa3086289bf89e8f674cc7a62fb78f69bc29d3053d.png" src="_images/c12853260bdc18011d909bfa3086289bf89e8f674cc7a62fb78f69bc29d3053d.png" style="width: 80%;" />
+<a class="reference internal image-reference" href="_images/8014b290907d8bcbaabf2e1c05cfdf8def30e69395dcacfe1990d075d9e24c77.png"><img alt="_images/8014b290907d8bcbaabf2e1c05cfdf8def30e69395dcacfe1990d075d9e24c77.png" src="_images/8014b290907d8bcbaabf2e1c05cfdf8def30e69395dcacfe1990d075d9e24c77.png" style="width: 80%;" />
 </a>
 </div>
 </div>
