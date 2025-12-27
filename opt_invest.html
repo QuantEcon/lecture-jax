@@ -364,16 +364,16 @@ that you can access as follows:</p>
 </summary>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (0.10.1)
-Requirement already satisfied: numba&gt;=0.49.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from quantecon) (0.61.0)
-Requirement already satisfied: numpy&gt;=1.17.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from quantecon) (2.1.3)
-Requirement already satisfied: requests in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from quantecon) (2.32.3)
-Requirement already satisfied: scipy&gt;=1.5.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from quantecon) (1.15.3)
-Requirement already satisfied: sympy in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from quantecon) (1.13.3)
-Requirement already satisfied: llvmlite&lt;0.45,&gt;=0.44.0dev0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from numba&gt;=0.49.0-&gt;quantecon) (0.44.0)
-Requirement already satisfied: charset-normalizer&lt;4,&gt;=2 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from requests-&gt;quantecon) (3.3.2)
-Requirement already satisfied: idna&lt;4,&gt;=2.5 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from requests-&gt;quantecon) (3.7)
-Requirement already satisfied: urllib3&lt;3,&gt;=1.21.1 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from requests-&gt;quantecon) (2.3.0)
-Requirement already satisfied: certifi&gt;=2017.4.17 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from requests-&gt;quantecon) (2025.4.26)
+Requirement already satisfied: numba&gt;=0.49.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from quantecon) (0.62.1)
+Requirement already satisfied: numpy&gt;=1.17.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from quantecon) (2.3.5)
+Requirement already satisfied: requests in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from quantecon) (2.32.5)
+Requirement already satisfied: scipy&gt;=1.5.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from quantecon) (1.16.3)
+Requirement already satisfied: sympy in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from quantecon) (1.14.0)
+Requirement already satisfied: llvmlite&lt;0.46,&gt;=0.45.0dev0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from numba&gt;=0.49.0-&gt;quantecon) (0.45.1)
+Requirement already satisfied: charset_normalizer&lt;4,&gt;=2 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from requests-&gt;quantecon) (3.4.4)
+Requirement already satisfied: idna&lt;4,&gt;=2.5 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from requests-&gt;quantecon) (3.11)
+Requirement already satisfied: urllib3&lt;3,&gt;=1.21.1 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from requests-&gt;quantecon) (2.5.0)
+Requirement already satisfied: certifi&gt;=2017.4.17 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from requests-&gt;quantecon) (2025.11.12)
 Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from sympy-&gt;quantecon) (1.3.0)
 </pre></div>
 </div>
@@ -423,7 +423,7 @@ P_t = a_0 - a_1 Y_t + Z_t,
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Mon Dec 22 03:50:51 2025       
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Sat Dec 27 05:13:37 2025       
 +-----------------------------------------------------------------------------------------+
 | NVIDIA-SMI 580.105.08             Driver Version: 580.105.08     CUDA Version: 13.0     |
 +-----------------------------------------+------------------------+----------------------+
@@ -432,7 +432,7 @@ P_t = a_0 - a_1 Y_t + Z_t,
 |                                         |                        |               MIG M. |
 |=========================================+========================+======================|
 |   0  Tesla T4                       On  |   00000000:00:1E.0 Off |                    0 |
-| N/A   27C    P8              9W /   70W |       0MiB /  15360MiB |      0%      Default |
+| N/A   25C    P8              9W /   70W |       0MiB /  15360MiB |      0%      Default |
 |                                         |                        |                  N/A |
 +-----------------------------------------+------------------------+----------------------+
 
@@ -844,8 +844,8 @@ Concluded loop 9 with error 1.
 Concluded loop 10 with error 1.
 Concluded loop 11 with error 1.
 Concluded loop 12 with error 0.
-CPU times: user 994 ms, sys: 99.5 ms, total: 1.09 s
-Wall time: 1.36 s
+CPU times: user 979 ms, sys: 106 ms, total: 1.09 s
+Wall time: 1.35 s
 </pre></div>
 </div>
 </div>
@@ -882,7 +882,7 @@ Concluded loop 12 with error 0.
  [82 82 82 ... 86 86 86]
  [83 83 83 ... 86 86 86]
  [84 84 84 ... 87 87 87]]
-HPI completed in 0.11629986763000488 seconds.
+HPI completed in 0.12404179573059082 seconds.
 </pre></div>
 </div>
 </div>
@@ -900,7 +900,7 @@ HPI completed in 0.11629986763000488 seconds.
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/8932af588552744048d9b7d60fae101026ea7541a4d6605fc0ef34a84bc546da.png"><img alt="_images/8932af588552744048d9b7d60fae101026ea7541a4d6605fc0ef34a84bc546da.png" src="_images/8932af588552744048d9b7d60fae101026ea7541a4d6605fc0ef34a84bc546da.png" style="width: 80%;" />
+<a class="reference internal image-reference" href="_images/2b2feaa07be3345f4bf83c86dff66d68fb038ff9a0c6ab03b85285c9b03b005f.png"><img alt="_images/2b2feaa07be3345f4bf83c86dff66d68fb038ff9a0c6ab03b85285c9b03b005f.png" src="_images/2b2feaa07be3345f4bf83c86dff66d68fb038ff9a0c6ab03b85285c9b03b005f.png" style="width: 80%;" />
 </a>
 </div>
 </div>
@@ -918,8 +918,8 @@ HPI completed in 0.11629986763000488 seconds.
 </summary>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Starting VFI.
-CPU times: user 652 ms, sys: 10.1 ms, total: 662 ms
-Wall time: 808 ms
+CPU times: user 688 ms, sys: 11.3 ms, total: 699 ms
+Wall time: 843 ms
 </pre></div>
 </div>
 </div>
@@ -944,7 +944,7 @@ Wall time: 808 ms
  [82 82 82 ... 86 86 86]
  [83 83 83 ... 86 86 86]
  [84 84 84 ... 87 87 87]]
-VFI completed in 0.5921132564544678 seconds.
+VFI completed in 0.5929710865020752 seconds.
 </pre></div>
 </div>
 </div>
@@ -962,7 +962,7 @@ VFI completed in 0.5921132564544678 seconds.
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/a1d3b5ac804ddf6015c21996c7dee7be3ad2259ae278f09ee5fad3d1830b05a8.png"><img alt="_images/a1d3b5ac804ddf6015c21996c7dee7be3ad2259ae278f09ee5fad3d1830b05a8.png" src="_images/a1d3b5ac804ddf6015c21996c7dee7be3ad2259ae278f09ee5fad3d1830b05a8.png" style="width: 80%;" />
+<a class="reference internal image-reference" href="_images/dcd393e16565d1e499c5bd45c036df5c9651e8f469212ae8252e149087c1a9f5.png"><img alt="_images/dcd393e16565d1e499c5bd45c036df5c9651e8f469212ae8252e149087c1a9f5.png" src="_images/dcd393e16565d1e499c5bd45c036df5c9651e8f469212ae8252e149087c1a9f5.png" style="width: 80%;" />
 </a>
 </div>
 </div>
@@ -980,7 +980,7 @@ VFI completed in 0.5921132564544678 seconds.
 </summary>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Starting OPI.
-CPU times: user 521 ms, sys: 16.6 ms, total: 538 ms
+CPU times: user 526 ms, sys: 12.3 ms, total: 538 ms
 Wall time: 602 ms
 </pre></div>
 </div>
@@ -1006,7 +1006,7 @@ Wall time: 602 ms
  [82 82 82 ... 86 86 86]
  [83 83 83 ... 86 86 86]
  [84 84 84 ... 87 87 87]]
-OPI completed in 0.20345401763916016 seconds.
+OPI completed in 0.2042229175567627 seconds.
 </pre></div>
 </div>
 </div>
@@ -1024,7 +1024,7 @@ OPI completed in 0.20345401763916016 seconds.
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/a515171028b88635a12f6bbc01e267af73d23534ae56187ba5d50b5ac9aa1f4b.png"><img alt="_images/a515171028b88635a12f6bbc01e267af73d23534ae56187ba5d50b5ac9aa1f4b.png" src="_images/a515171028b88635a12f6bbc01e267af73d23534ae56187ba5d50b5ac9aa1f4b.png" style="width: 80%;" />
+<a class="reference internal image-reference" href="_images/b40546f981625abbf4369bb5912d395e245c38f61f04ba568297f3950457da9e.png"><img alt="_images/b40546f981625abbf4369bb5912d395e245c38f61f04ba568297f3950457da9e.png" src="_images/b40546f981625abbf4369bb5912d395e245c38f61f04ba568297f3950457da9e.png" style="width: 80%;" />
 </a>
 </div>
 </div>
@@ -1058,8 +1058,8 @@ Concluded loop 9 with error 1.
 Concluded loop 10 with error 1.
 Concluded loop 11 with error 1.
 Concluded loop 12 with error 0.
-CPU times: user 108 ms, sys: 8.24 ms, total: 116 ms
-Wall time: 99 ms
+CPU times: user 104 ms, sys: 14.4 ms, total: 118 ms
+Wall time: 99.1 ms
 </pre></div>
 </div>
 </div>
@@ -1087,7 +1087,7 @@ Concluded loop 9 with error 1.
 Concluded loop 10 with error 1.
 Concluded loop 11 with error 1.
 Concluded loop 12 with error 0.
-HPI completed in 0.09880948066711426 seconds.
+HPI completed in 0.09904837608337402 seconds.
 </pre></div>
 </div>
 </div>
@@ -1101,8 +1101,8 @@ HPI completed in 0.09880948066711426 seconds.
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Running value function iteration.
-CPU times: user 530 ms, sys: 5.76 ms, total: 536 ms
-Wall time: 589 ms
+CPU times: user 534 ms, sys: 474 μs, total: 534 ms
+Wall time: 588 ms
 </pre></div>
 </div>
 </div>
@@ -1118,7 +1118,7 @@ Wall time: 589 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>VFI completed in 0.5936672687530518 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>VFI completed in 0.5905454158782959 seconds.
 </pre></div>
 </div>
 </div>
@@ -1146,35 +1146,35 @@ Wall time: 589 ms
 </summary>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Running optimistic policy iteration with m=5.
-OPI with m=5 completed in 0.24480175971984863 seconds.
+OPI with m=5 completed in 0.2444443702697754 seconds.
 Running optimistic policy iteration with m=45.
-OPI with m=45 completed in 0.18940520286560059 seconds.
+OPI with m=45 completed in 0.18995904922485352 seconds.
 Running optimistic policy iteration with m=85.
-OPI with m=85 completed in 0.1985642910003662 seconds.
+OPI with m=85 completed in 0.1988534927368164 seconds.
 Running optimistic policy iteration with m=125.
-OPI with m=125 completed in 0.2047879695892334 seconds.
+OPI with m=125 completed in 0.20506834983825684 seconds.
 Running optimistic policy iteration with m=165.
-OPI with m=165 completed in 0.22153687477111816 seconds.
+OPI with m=165 completed in 0.22159147262573242 seconds.
 Running optimistic policy iteration with m=205.
-OPI with m=205 completed in 0.25461721420288086 seconds.
+OPI with m=205 completed in 0.2546072006225586 seconds.
 Running optimistic policy iteration with m=245.
-OPI with m=245 completed in 0.27977871894836426 seconds.
+OPI with m=245 completed in 0.28000688552856445 seconds.
 Running optimistic policy iteration with m=285.
-OPI with m=285 completed in 0.29782915115356445 seconds.
+OPI with m=285 completed in 0.2991456985473633 seconds.
 Running optimistic policy iteration with m=325.
-OPI with m=325 completed in 0.33878135681152344 seconds.
+OPI with m=325 completed in 0.3396134376525879 seconds.
 Running optimistic policy iteration with m=365.
-OPI with m=365 completed in 0.38020873069763184 seconds.
+OPI with m=365 completed in 0.38097572326660156 seconds.
 Running optimistic policy iteration with m=405.
-OPI with m=405 completed in 0.4215707778930664 seconds.
+OPI with m=405 completed in 0.4219968318939209 seconds.
 Running optimistic policy iteration with m=445.
-OPI with m=445 completed in 0.4629647731781006 seconds.
+OPI with m=445 completed in 0.4633064270019531 seconds.
 Running optimistic policy iteration with m=485.
-OPI with m=485 completed in 0.5041012763977051 seconds.
+OPI with m=485 completed in 0.5045156478881836 seconds.
 Running optimistic policy iteration with m=525.
-OPI with m=525 completed in 0.545177698135376 seconds.
+OPI with m=525 completed in 0.5450828075408936 seconds.
 Running optimistic policy iteration with m=565.
-OPI with m=565 completed in 0.586768627166748 seconds.
+OPI with m=565 completed in 0.586463451385498 seconds.
 </pre></div>
 </div>
 </div>
@@ -1196,7 +1196,7 @@ OPI with m=565 completed in 0.586768627166748 seconds.
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/42f7ed5eaaf889c216c4900e5a41a91aea563e67a51f34935cd2e41eb6476309.png"><img alt="_images/42f7ed5eaaf889c216c4900e5a41a91aea563e67a51f34935cd2e41eb6476309.png" src="_images/42f7ed5eaaf889c216c4900e5a41a91aea563e67a51f34935cd2e41eb6476309.png" style="width: 80%;" />
+<a class="reference internal image-reference" href="_images/5b86ee1592fcc514ac3d73f59a8d7a039eea064cf5fc48e29232b6d0c4841490.png"><img alt="_images/5b86ee1592fcc514ac3d73f59a8d7a039eea064cf5fc48e29232b6d0c4841490.png" src="_images/5b86ee1592fcc514ac3d73f59a8d7a039eea064cf5fc48e29232b6d0c4841490.png" style="width: 80%;" />
 </a>
 </div>
 </div>

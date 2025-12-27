@@ -322,16 +322,16 @@ that you can access as follows:</p>
 </summary>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (0.10.1)
-Requirement already satisfied: numba&gt;=0.49.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from quantecon) (0.61.0)
-Requirement already satisfied: numpy&gt;=1.17.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from quantecon) (2.1.3)
-Requirement already satisfied: requests in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from quantecon) (2.32.3)
-Requirement already satisfied: scipy&gt;=1.5.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from quantecon) (1.15.3)
-Requirement already satisfied: sympy in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from quantecon) (1.13.3)
-Requirement already satisfied: llvmlite&lt;0.45,&gt;=0.44.0dev0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from numba&gt;=0.49.0-&gt;quantecon) (0.44.0)
-Requirement already satisfied: charset-normalizer&lt;4,&gt;=2 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from requests-&gt;quantecon) (3.3.2)
-Requirement already satisfied: idna&lt;4,&gt;=2.5 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from requests-&gt;quantecon) (3.7)
-Requirement already satisfied: urllib3&lt;3,&gt;=1.21.1 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from requests-&gt;quantecon) (2.3.0)
-Requirement already satisfied: certifi&gt;=2017.4.17 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from requests-&gt;quantecon) (2025.4.26)
+Requirement already satisfied: numba&gt;=0.49.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from quantecon) (0.62.1)
+Requirement already satisfied: numpy&gt;=1.17.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from quantecon) (2.3.5)
+Requirement already satisfied: requests in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from quantecon) (2.32.5)
+Requirement already satisfied: scipy&gt;=1.5.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from quantecon) (1.16.3)
+Requirement already satisfied: sympy in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from quantecon) (1.14.0)
+Requirement already satisfied: llvmlite&lt;0.46,&gt;=0.45.0dev0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from numba&gt;=0.49.0-&gt;quantecon) (0.45.1)
+Requirement already satisfied: charset_normalizer&lt;4,&gt;=2 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from requests-&gt;quantecon) (3.4.4)
+Requirement already satisfied: idna&lt;4,&gt;=2.5 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from requests-&gt;quantecon) (3.11)
+Requirement already satisfied: urllib3&lt;3,&gt;=1.21.1 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from requests-&gt;quantecon) (2.5.0)
+Requirement already satisfied: certifi&gt;=2017.4.17 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from requests-&gt;quantecon) (2025.11.12)
 Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from sympy-&gt;quantecon) (1.3.0)
 </pre></div>
 </div>
@@ -411,15 +411,15 @@ distribution over <span class="math notranslate nohighlight">\(\mathbb R_+\)</sp
 </ol>
 <p>Scrap value is set to zero and the discount rate is <span class="math notranslate nohighlight">\(\beta \in (0, 1)\)</span>.</p>
 <p>The firm makes their stop-continue choice by first solving for the value function, which is the unique solution in a class of continuous functions <span class="math notranslate nohighlight">\(\mathscr C\)</span> (details omitted) to</p>
-<div class="amsmath math notranslate nohighlight" id="equation-9690fa6c-78a6-4178-aa46-11e93dc6e5d0">
-<span class="eqno">(19.1)<a class="headerlink" href="#equation-9690fa6c-78a6-4178-aa46-11e93dc6e5d0" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-3cbe9da0-ded4-466b-8b7b-4d6d67be256e">
+<span class="eqno">(19.1)<a class="headerlink" href="#equation-3cbe9da0-ded4-466b-8b7b-4d6d67be256e" title="Permalink to this equation">#</a></span>\[\begin{equation}
     v(\varphi, p) = \pi(\varphi, p) + \beta 
         \max \left\{ 0, \int v(\varphi', p) \Gamma(\varphi, d \varphi') \right\}.
 \end{equation}\]</div>
 <p>Let <span class="math notranslate nohighlight">\(\bar v\)</span> be the unique solution to this functional equation.</p>
 <p>Given <span class="math notranslate nohighlight">\(\bar v\)</span>, we let <span class="math notranslate nohighlight">\(\bar \varphi\)</span> be the exit threshold function defined by</p>
-<div class="amsmath math notranslate nohighlight" id="equation-e02efb59-1af9-4773-9aab-367e1b63c6b6">
-<span class="eqno">(19.2)<a class="headerlink" href="#equation-e02efb59-1af9-4773-9aab-367e1b63c6b6" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-8bbb0e6a-4457-4604-b46d-c37603b8753e">
+<span class="eqno">(19.2)<a class="headerlink" href="#equation-8bbb0e6a-4457-4604-b46d-c37603b8753e" title="Permalink to this equation">#</a></span>\[\begin{equation}
     \bar \varphi(p) := 
     \min
     \left\{ 
@@ -454,13 +454,13 @@ section, a <strong>stationary recursive equilibrium</strong>  is a triple</p>
 \end{equation*}\]</div>
 <p>with <span class="math notranslate nohighlight">\(p\)</span> understood as price, <span class="math notranslate nohighlight">\(M\)</span> as mass of entrants, and <span class="math notranslate nohighlight">\(\mu\)</span> as a
 distribution of firms over productivity levels, such that the goods market clears, or</p>
-<div class="amsmath math notranslate nohighlight" id="equation-757f7762-5993-48fe-92dc-2db201140060">
-<span class="eqno">(19.3)<a class="headerlink" href="#equation-757f7762-5993-48fe-92dc-2db201140060" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-4a0d120d-7d14-4e0b-bd23-bc75c78ecbe8">
+<span class="eqno">(19.3)<a class="headerlink" href="#equation-4a0d120d-7d14-4e0b-bd23-bc75c78ecbe8" title="Permalink to this equation">#</a></span>\[\begin{equation}
     \int q( \varphi, p) \mu(d \varphi) = D(p),
 \end{equation}\]</div>
 <p>the <em>invariance condition</em> over the firm distribution</p>
-<div class="amsmath math notranslate nohighlight" id="equation-7044d585-f6ed-4357-82d3-45d2098c6f0c">
-<span class="eqno">(19.4)<a class="headerlink" href="#equation-7044d585-f6ed-4357-82d3-45d2098c6f0c" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-8c7366db-2f5e-4661-8b15-49fe90e62205">
+<span class="eqno">(19.4)<a class="headerlink" href="#equation-8c7366db-2f5e-4661-8b15-49fe90e62205" title="Permalink to this equation">#</a></span>\[\begin{equation}
     \mu (B) 
     = \int \Gamma(\varphi, B) \, \mathbf{1}  \{\varphi \geq \bar \varphi(p)\} \,
     \mu(d \varphi)
@@ -468,13 +468,13 @@ distribution of firms over productivity levels, such that the goods market clear
     \text{ for all } B \in \mathscr B,
 \end{equation}\]</div>
 <p>holds (see below for intuition), the <em>equilibrium entry condition</em></p>
-<div class="amsmath math notranslate nohighlight" id="equation-98f34ba1-a265-4aba-8328-e63ce78f9a18">
-<span class="eqno">(19.5)<a class="headerlink" href="#equation-98f34ba1-a265-4aba-8328-e63ce78f9a18" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-7f0ebc00-8a4b-4fa8-aef5-7f178db9337b">
+<span class="eqno">(19.5)<a class="headerlink" href="#equation-7f0ebc00-8a4b-4fa8-aef5-7f178db9337b" title="Permalink to this equation">#</a></span>\[\begin{equation}
     \int \bar v( \varphi, p) \, \gamma(d \varphi) = c_e
 \end{equation}\]</div>
 <p>holds, and the <em>balanced entry and exit condition</em></p>
-<div class="amsmath math notranslate nohighlight" id="equation-7576d769-9b2b-4fa5-8f7e-e51307e5a70c">
-<span class="eqno">(19.6)<a class="headerlink" href="#equation-7576d769-9b2b-4fa5-8f7e-e51307e5a70c" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-bdaae53e-4599-43a2-8b67-990cb8dd2af0">
+<span class="eqno">(19.6)<a class="headerlink" href="#equation-bdaae53e-4599-43a2-8b67-990cb8dd2af0" title="Permalink to this equation">#</a></span>\[\begin{equation}
     M = \mu \{ \varphi &lt; \bar \varphi(p) \}
 \end{equation}\]</div>
 <p>is verified.</p>
@@ -485,15 +485,15 @@ distribution of firms over productivity levels, such that the goods market clear
 <p>We compute the equilibrium as follows:</p>
 <p>For the purposes of this section, we insert balanced entry and
 exit into the time invariance condition, yielding</p>
-<div class="amsmath math notranslate nohighlight" id="equation-90ff4be9-9ca6-4e9a-b3d9-6d32b7d74dd6">
-<span class="eqno">(19.7)<a class="headerlink" href="#equation-90ff4be9-9ca6-4e9a-b3d9-6d32b7d74dd6" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-fc368dbf-9e0e-4f5f-8f81-4c77cda2cc0a">
+<span class="eqno">(19.7)<a class="headerlink" href="#equation-fc368dbf-9e0e-4f5f-8f81-4c77cda2cc0a" title="Permalink to this equation">#</a></span>\[\begin{equation}
     \mu (B) 
     = \int \Pi(\varphi, B) \mu (d \varphi)
     \quad \text{for all } B \in \mathscr B,
 \end{equation}\]</div>
 <p>where <span class="math notranslate nohighlight">\(\Pi\)</span> is the transition kernel on <span class="math notranslate nohighlight">\(\mathbb R_+\)</span> defined by</p>
-<div class="amsmath math notranslate nohighlight" id="equation-3de31b16-d361-4560-9979-500ddce51076">
-<span class="eqno">(19.8)<a class="headerlink" href="#equation-3de31b16-d361-4560-9979-500ddce51076" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-9fa7fd5e-c0d6-462b-b662-f02380ac41ad">
+<span class="eqno">(19.8)<a class="headerlink" href="#equation-9fa7fd5e-c0d6-462b-b662-f02380ac41ad" title="Permalink to this equation">#</a></span>\[\begin{equation}
     \Pi(\varphi, B) 
     = \Gamma(\varphi, B) \mathbf{1} \{\varphi \geq \bar \varphi(p) \} + 
     \mathbf{1} \{\varphi &lt; \bar \varphi(p)\} \gamma(B).
@@ -929,8 +929,8 @@ from a cold start.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 454 ms, sys: 17.9 ms, total: 471 ms
-Wall time: 556 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 439 ms, sys: 15 ms, total: 454 ms
+Wall time: 536 ms
 </pre></div>
 </div>
 </div>
@@ -943,8 +943,8 @@ Wall time: 556 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 56.9 ms, sys: 539 μs, total: 57.5 ms
-Wall time: 55.9 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 55 ms, sys: 187 μs, total: 55.2 ms
+Wall time: 53.9 ms
 </pre></div>
 </div>
 </div>
@@ -971,7 +971,7 @@ Wall time: 55.9 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/cf49d9dd4463fbc58da28f4a1afcfda6d20b81e93395d19afd90b257ded5d703.png"><img alt="_images/cf49d9dd4463fbc58da28f4a1afcfda6d20b81e93395d19afd90b257ded5d703.png" src="_images/cf49d9dd4463fbc58da28f4a1afcfda6d20b81e93395d19afd90b257ded5d703.png" style="width: 80%;" />
+<a class="reference internal image-reference" href="_images/98198deb9f8f656ccccb39ae31731bfdc1c1824ef2990451c471ac188cfc4b38.png"><img alt="_images/98198deb9f8f656ccccb39ae31731bfdc1c1824ef2990451c471ac188cfc4b38.png" src="_images/98198deb9f8f656ccccb39ae31731bfdc1c1824ef2990451c471ac188cfc4b38.png" style="width: 80%;" />
 </a>
 </div>
 </div>
@@ -990,8 +990,8 @@ Wall time: 55.9 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 2.38 s, sys: 132 ms, total: 2.51 s
-Wall time: 3.14 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 2.4 s, sys: 109 ms, total: 2.51 s
+Wall time: 3.16 s
 </pre></div>
 </div>
 </div>
@@ -1006,8 +1006,8 @@ Wall time: 3.14 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 450 ms, sys: 32.7 ms, total: 483 ms
-Wall time: 784 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 473 ms, sys: 36.3 ms, total: 510 ms
+Wall time: 795 ms
 </pre></div>
 </div>
 </div>
@@ -1038,7 +1038,7 @@ Wall time: 784 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/dff3112949317a87db2424205963cf34688eb817726554b971cc480861e7987d.png"><img alt="_images/dff3112949317a87db2424205963cf34688eb817726554b971cc480861e7987d.png" src="_images/dff3112949317a87db2424205963cf34688eb817726554b971cc480861e7987d.png" style="width: 80%;" />
+<a class="reference internal image-reference" href="_images/c84297e531b7982cf40e4389c6e1e033c75dda1689c91ca01ede594e30b8478b.png"><img alt="_images/c84297e531b7982cf40e4389c6e1e033c75dda1689c91ca01ede594e30b8478b.png" src="_images/c84297e531b7982cf40e4389c6e1e033c75dda1689c91ca01ede594e30b8478b.png" style="width: 80%;" />
 </a>
 </div>
 </div>
@@ -1063,7 +1063,7 @@ Wall time: 784 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/779c43c9929f7951f8eb5108cd2f6e05c4225c5370721adff3b5777e442418ac.png"><img alt="_images/779c43c9929f7951f8eb5108cd2f6e05c4225c5370721adff3b5777e442418ac.png" src="_images/779c43c9929f7951f8eb5108cd2f6e05c4225c5370721adff3b5777e442418ac.png" style="width: 80%;" />
+<a class="reference internal image-reference" href="_images/d32ba5c50da6f2f188ab0c414af48c951321e2f3ee8f0bf9ea73b07e0114a882.png"><img alt="_images/d32ba5c50da6f2f188ab0c414af48c951321e2f3ee8f0bf9ea73b07e0114a882.png" src="_images/d32ba5c50da6f2f188ab0c414af48c951321e2f3ee8f0bf9ea73b07e0114a882.png" style="width: 80%;" />
 </a>
 </div>
 </div>
@@ -1131,7 +1131,7 @@ Wall time: 784 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/847c46080713869edff8ee9dae52e2188c250da16dd81f287ef65dbdf33c5739.png"><img alt="_images/847c46080713869edff8ee9dae52e2188c250da16dd81f287ef65dbdf33c5739.png" src="_images/847c46080713869edff8ee9dae52e2188c250da16dd81f287ef65dbdf33c5739.png" style="width: 80%;" />
+<a class="reference internal image-reference" href="_images/b24a450a1536c9ea0cc4afb12afec59697d1791d98ec0e0c8275882d450eaf91.png"><img alt="_images/b24a450a1536c9ea0cc4afb12afec59697d1791d98ec0e0c8275882d450eaf91.png" src="_images/b24a450a1536c9ea0cc4afb12afec59697d1791d98ec0e0c8275882d450eaf91.png" style="width: 80%;" />
 </a>
 </div>
 </div>
@@ -1158,7 +1158,7 @@ Wall time: 784 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/195737f5339d726686a9e36a9e7ba99715c63dd3a7a2b8a6402123bbcb08ea34.png"><img alt="_images/195737f5339d726686a9e36a9e7ba99715c63dd3a7a2b8a6402123bbcb08ea34.png" src="_images/195737f5339d726686a9e36a9e7ba99715c63dd3a7a2b8a6402123bbcb08ea34.png" style="width: 80%;" />
+<a class="reference internal image-reference" href="_images/ba26f2ce5e96be4ce8d2f74719b754e56bda0c5ca3a6a6bffdca22ee43bff3d5.png"><img alt="_images/ba26f2ce5e96be4ce8d2f74719b754e56bda0c5ca3a6a6bffdca22ee43bff3d5.png" src="_images/ba26f2ce5e96be4ce8d2f74719b754e56bda0c5ca3a6a6bffdca22ee43bff3d5.png" style="width: 80%;" />
 </a>
 </div>
 </div>
@@ -1181,7 +1181,7 @@ Wall time: 784 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/abf3378ddf90e10ce3a7b77beb22f3d4f9c6df7b1ed77dc13e2a6e080041c178.png"><img alt="_images/abf3378ddf90e10ce3a7b77beb22f3d4f9c6df7b1ed77dc13e2a6e080041c178.png" src="_images/abf3378ddf90e10ce3a7b77beb22f3d4f9c6df7b1ed77dc13e2a6e080041c178.png" style="width: 80%;" />
+<a class="reference internal image-reference" href="_images/e039321a3f2b56adb7eccd964e424b7448fefe13913adee535eded09a392d192.png"><img alt="_images/e039321a3f2b56adb7eccd964e424b7448fefe13913adee535eded09a392d192.png" src="_images/e039321a3f2b56adb7eccd964e424b7448fefe13913adee535eded09a392d192.png" style="width: 80%;" />
 </a>
 </div>
 </div>
@@ -1241,7 +1241,7 @@ Equilibrium price when c = 4.7 is 1.5
 Equilibrium price when c = 5.0 is 1.6
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="_images/22d5614328bbd9c368e7fd8762eb099ab78e4813db8972194dd8b2d47ec5edd4.png"><img alt="_images/22d5614328bbd9c368e7fd8762eb099ab78e4813db8972194dd8b2d47ec5edd4.png" src="_images/22d5614328bbd9c368e7fd8762eb099ab78e4813db8972194dd8b2d47ec5edd4.png" style="width: 80%;" />
+<a class="reference internal image-reference" href="_images/ed31f2ea97a1b02241eda703668ef763c0833358ba231699e4e6d39b2e8e04d8.png"><img alt="_images/ed31f2ea97a1b02241eda703668ef763c0833358ba231699e4e6d39b2e8e04d8.png" src="_images/ed31f2ea97a1b02241eda703668ef763c0833358ba231699e4e6d39b2e8e04d8.png" style="width: 80%;" />
 </a>
 </div>
 </div>
