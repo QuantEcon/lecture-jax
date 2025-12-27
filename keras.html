@@ -256,7 +256,7 @@
                                 <a href="https://github.com/QuantEcon/lecture-jax/commit/38889cb" class="changelog-hash">38889cb</a>
                                 
                                 <span class="changelog-author">John Stachurski</span>
-                                <span class="changelog-time">8 months ago</span>
+                                <span class="changelog-time">9 months ago</span>
                                 <span class="changelog-message">Add JAX NN training lecture (#205)</span>
                             </li>
                             
@@ -354,7 +354,7 @@ learning in a regression setting.</p>
 <p class="expanded admonition-title">Hide code cell output</p>
 </summary>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: keras in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (3.12.0)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: keras in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (3.13.0)
 Requirement already satisfied: absl-py in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from keras) (2.3.1)
 Requirement already satisfied: numpy in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from keras) (2.1.3)
 Requirement already satisfied: rich in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from keras) (14.2.0)
@@ -388,6 +388,12 @@ Requirement already satisfied: mdurl~=0.1 in /home/runner/miniconda3/envs/quante
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">keras</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">keras</span><span class="w"> </span><span class="kn">import</span> <span class="n">Sequential</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">keras.layers</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dense</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages/keras/src/export/tf2onnx_lib.py:8: FutureWarning: In the future `np.object` will be defined as the corresponding NumPy scalar.
+  if not hasattr(np, &quot;object&quot;):
 </pre></div>
 </div>
 </div>
@@ -556,12 +562,6 @@ as the parameters are adjusted to better fit the data.</p>
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>W1208 03:43:53.659674    4273 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn&#39;t support extracting fabric info or NVLink is not used by the device.
-W1208 03:43:53.663359    4208 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn&#39;t support extracting fabric info or NVLink is not used by the device.
-</pre></div>
-</div>
-</div>
 </div>
 <p>Now we train the model using the training data.</p>
 <div class="cell docutils container">
@@ -583,7 +583,7 @@ W1208 03:43:53.663359    4208 cuda_executor.cc:1802] GPU interconnect informatio
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/6508342eaf065739fda2050cbbf3a2b4a7e06451a9d42c0ea5240659c57dbe82.png"><img alt="_images/6508342eaf065739fda2050cbbf3a2b4a7e06451a9d42c0ea5240659c57dbe82.png" src="_images/6508342eaf065739fda2050cbbf3a2b4a7e06451a9d42c0ea5240659c57dbe82.png" style="width: 80%;" />
+<a class="reference internal image-reference" href="_images/7abdbf9c99671eb09d71d843d0a945df678024c518a50f1f08ef0715a771409c.png"><img alt="_images/7abdbf9c99671eb09d71d843d0a945df678024c518a50f1f08ef0715a771409c.png" src="_images/7abdbf9c99671eb09d71d843d0a945df678024c518a50f1f08ef0715a771409c.png" style="width: 80%;" />
 </a>
 </div>
 </div>
@@ -597,10 +597,10 @@ W1208 03:43:53.663359    4208 cuda_executor.cc:1802] GPU interconnect informatio
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Testing loss on the validation set.
-13/13 - 0s - 17ms/step - loss: 0.3016
+13/13 - 0s - 18ms/step - loss: 0.3016
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.3015977442264557
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.3015977740287781
 </pre></div>
 </div>
 </div>
@@ -613,7 +613,7 @@ W1208 03:43:53.663359    4208 cuda_executor.cc:1802] GPU interconnect informatio
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>13/13 - 0s - 7ms/step
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>13/13 - 0s - 8ms/step
 </pre></div>
 </div>
 </div>
@@ -640,7 +640,7 @@ W1208 03:43:53.663359    4208 cuda_executor.cc:1802] GPU interconnect informatio
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/9ef3baa8dfdf1b2efaa415fbf5a130d6c59a323e63622b79211449b09f3a505d.png"><img alt="_images/9ef3baa8dfdf1b2efaa415fbf5a130d6c59a323e63622b79211449b09f3a505d.png" src="_images/9ef3baa8dfdf1b2efaa415fbf5a130d6c59a323e63622b79211449b09f3a505d.png" style="width: 80%;" />
+<a class="reference internal image-reference" href="_images/446423836357ec4f04fdff54f114421fe323bffa8caaa8dd5c5f5c11fa29ef50.png"><img alt="_images/446423836357ec4f04fdff54f114421fe323bffa8caaa8dd5c5f5c11fa29ef50.png" src="_images/446423836357ec4f04fdff54f114421fe323bffa8caaa8dd5c5f5c11fa29ef50.png" style="width: 80%;" />
 </a>
 </div>
 </div>
@@ -674,7 +674,7 @@ W1208 03:43:53.663359    4208 cuda_executor.cc:1802] GPU interconnect informatio
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/8956a31f8936f822c227373accf49f6de76856bec48e533c1c7bf1cd489124cd.png"><img alt="_images/8956a31f8936f822c227373accf49f6de76856bec48e533c1c7bf1cd489124cd.png" src="_images/8956a31f8936f822c227373accf49f6de76856bec48e533c1c7bf1cd489124cd.png" style="width: 80%;" />
+<a class="reference internal image-reference" href="_images/0fdf1b06ef866a888f0c3aa6caa364b581fcbe85733edbb8e646fb360f18fcc5.png"><img alt="_images/0fdf1b06ef866a888f0c3aa6caa364b581fcbe85733edbb8e646fb360f18fcc5.png" src="_images/0fdf1b06ef866a888f0c3aa6caa364b581fcbe85733edbb8e646fb360f18fcc5.png" style="width: 80%;" />
 </a>
 </div>
 </div>
@@ -688,10 +688,10 @@ W1208 03:43:53.663359    4208 cuda_executor.cc:1802] GPU interconnect informatio
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Testing loss on the validation set.
-13/13 - 0s - 36ms/step - loss: 0.0425
+13/13 - 0s - 36ms/step - loss: 0.0413
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.04248945042490959
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.041292332112789154
 </pre></div>
 </div>
 </div>
@@ -731,7 +731,7 @@ linear regression, suggesting a better fit.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/5f53746aa22b87d6826eb6a2c2bd1f416c1f2c0d702c642bce94b2ef23e6d21e.png"><img alt="_images/5f53746aa22b87d6826eb6a2c2bd1f416c1f2c0d702c642bce94b2ef23e6d21e.png" src="_images/5f53746aa22b87d6826eb6a2c2bd1f416c1f2c0d702c642bce94b2ef23e6d21e.png" style="width: 80%;" />
+<a class="reference internal image-reference" href="_images/dec4fe722dbe0c849a0f213a61d98516eb8ae79aa5b5c2b53e7d492eaf87d4b6.png"><img alt="_images/dec4fe722dbe0c849a0f213a61d98516eb8ae79aa5b5c2b53e7d492eaf87d4b6.png" src="_images/dec4fe722dbe0c849a0f213a61d98516eb8ae79aa5b5c2b53e7d492eaf87d4b6.png" style="width: 80%;" />
 </a>
 </div>
 </div>

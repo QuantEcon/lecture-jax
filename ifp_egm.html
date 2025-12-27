@@ -407,7 +407,7 @@ Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in /home/runner/minicond
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Mon Dec  8 03:39:54 2025       
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Mon Dec 22 03:42:16 2025       
 +-----------------------------------------------------------------------------------------+
 | NVIDIA-SMI 580.105.08             Driver Version: 580.105.08     CUDA Version: 13.0     |
 +-----------------------------------------+------------------------+----------------------+
@@ -416,7 +416,7 @@ Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in /home/runner/minicond
 |                                         |                        |               MIG M. |
 |=========================================+========================+======================|
 |   0  Tesla T4                       On  |   00000000:00:1E.0 Off |                    0 |
-| N/A   31C    P8             13W /   70W |       0MiB /  15360MiB |      0%      Default |
+| N/A   28C    P8              8W /   70W |       0MiB /  15360MiB |      0%      Default |
 |                                         |                        |                  N/A |
 +-----------------------------------------+------------------------+----------------------+
 
@@ -865,12 +865,6 @@ model and run the cross-check.</p>
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>W1208 03:39:55.754438    3190 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn&#39;t support extracting fabric info or NVLink is not used by the device.
-W1208 03:39:55.758022    3124 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn&#39;t support extracting fabric info or NVLink is not used by the device.
-</pre></div>
-</div>
-</div>
 </div>
 <p>Here’s a first run of the JAX code.</p>
 <div class="cell docutils container">
@@ -886,8 +880,8 @@ W1208 03:39:55.758022    3124 cuda_executor.cc:1802] GPU interconnect informatio
 Error at iteration 2000 is 1.2994575430580468e-05.
 
 Converged in 2192 iterations.
-CPU times: user 3.78 s, sys: 1.18 s, total: 4.96 s
-Wall time: 3.12 s
+CPU times: user 3.58 s, sys: 1.16 s, total: 4.73 s
+Wall time: 2.96 s
 </pre></div>
 </div>
 </div>
@@ -962,7 +956,7 @@ Wall time: 1min 6s
 Error at iteration 2000 is 1.2994575430580468e-05.
 
 Converged in 2192 iterations.
-Jax execution time =  2.1135435104370117
+Jax execution time =  2.076688766479492
 </pre></div>
 </div>
 </div>
@@ -982,7 +976,7 @@ Jax execution time =  2.1135435104370117
 Error at iteration 2000 is 1.2994575430802513e-05.
 
 Converged in 2192 iterations.
-Numba execution time =  65.57691764831543
+Numba execution time =  65.95626997947693
 </pre></div>
 </div>
 </div>
@@ -994,7 +988,7 @@ Numba execution time =  65.57691764831543
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.03222999168353417
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.031485843076415304
 </pre></div>
 </div>
 </div>

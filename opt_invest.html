@@ -423,7 +423,7 @@ P_t = a_0 - a_1 Y_t + Z_t,
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Mon Dec  8 03:48:29 2025       
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Mon Dec 22 03:50:51 2025       
 +-----------------------------------------------------------------------------------------+
 | NVIDIA-SMI 580.105.08             Driver Version: 580.105.08     CUDA Version: 13.0     |
 +-----------------------------------------+------------------------+----------------------+
@@ -432,7 +432,7 @@ P_t = a_0 - a_1 Y_t + Z_t,
 |                                         |                        |               MIG M. |
 |=========================================+========================+======================|
 |   0  Tesla T4                       On  |   00000000:00:1E.0 Off |                    0 |
-| N/A   28C    P8              9W /   70W |       0MiB /  15360MiB |      0%      Default |
+| N/A   27C    P8              9W /   70W |       0MiB /  15360MiB |      0%      Default |
 |                                         |                        |                  N/A |
 +-----------------------------------------+------------------------+----------------------+
 
@@ -808,7 +808,7 @@ step is to define the function <span class="math notranslate nohighlight">\(L_{\
 </div>
 </div>
 <div class="cell tag_hide-output docutils container">
-<div class="cell_input above-output-prompt docutils container">
+<div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">create_investment_model</span><span class="p">()</span>
 <span class="n">constants</span><span class="p">,</span> <span class="n">sizes</span><span class="p">,</span> <span class="n">arrays</span> <span class="o">=</span> <span class="n">model</span>
 <span class="n">β</span><span class="p">,</span> <span class="n">a_0</span><span class="p">,</span> <span class="n">a_1</span><span class="p">,</span> <span class="n">γ</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="n">constants</span>
@@ -817,18 +817,6 @@ step is to define the function <span class="math notranslate nohighlight">\(L_{\
 </pre></div>
 </div>
 </div>
-<details class="admonition hide below-input">
-<summary aria-label="Toggle hidden content">
-<p class="collapsed admonition-title">Show code cell output</p>
-<p class="expanded admonition-title">Hide code cell output</p>
-</summary>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>W1208 03:48:30.349318    5319 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn&#39;t support extracting fabric info or NVLink is not used by the device.
-W1208 03:48:30.352943    5253 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn&#39;t support extracting fabric info or NVLink is not used by the device.
-</pre></div>
-</div>
-</div>
-</details>
 </div>
 <div class="cell tag_hide-output docutils container">
 <div class="cell_input above-output-prompt docutils container">
@@ -856,8 +844,8 @@ Concluded loop 9 with error 1.
 Concluded loop 10 with error 1.
 Concluded loop 11 with error 1.
 Concluded loop 12 with error 0.
-CPU times: user 986 ms, sys: 87.6 ms, total: 1.07 s
-Wall time: 1.35 s
+CPU times: user 994 ms, sys: 99.5 ms, total: 1.09 s
+Wall time: 1.36 s
 </pre></div>
 </div>
 </div>
@@ -894,7 +882,7 @@ Concluded loop 12 with error 0.
  [82 82 82 ... 86 86 86]
  [83 83 83 ... 86 86 86]
  [84 84 84 ... 87 87 87]]
-HPI completed in 0.11741876602172852 seconds.
+HPI completed in 0.11629986763000488 seconds.
 </pre></div>
 </div>
 </div>
@@ -930,8 +918,8 @@ HPI completed in 0.11741876602172852 seconds.
 </summary>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Starting VFI.
-CPU times: user 661 ms, sys: 10.7 ms, total: 671 ms
-Wall time: 818 ms
+CPU times: user 652 ms, sys: 10.1 ms, total: 662 ms
+Wall time: 808 ms
 </pre></div>
 </div>
 </div>
@@ -956,7 +944,7 @@ Wall time: 818 ms
  [82 82 82 ... 86 86 86]
  [83 83 83 ... 86 86 86]
  [84 84 84 ... 87 87 87]]
-VFI completed in 0.7327821254730225 seconds.
+VFI completed in 0.5921132564544678 seconds.
 </pre></div>
 </div>
 </div>
@@ -992,7 +980,7 @@ VFI completed in 0.7327821254730225 seconds.
 </summary>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Starting OPI.
-CPU times: user 525 ms, sys: 11.9 ms, total: 537 ms
+CPU times: user 521 ms, sys: 16.6 ms, total: 538 ms
 Wall time: 602 ms
 </pre></div>
 </div>
@@ -1018,7 +1006,7 @@ Wall time: 602 ms
  [82 82 82 ... 86 86 86]
  [83 83 83 ... 86 86 86]
  [84 84 84 ... 87 87 87]]
-OPI completed in 0.20464134216308594 seconds.
+OPI completed in 0.20345401763916016 seconds.
 </pre></div>
 </div>
 </div>
@@ -1070,8 +1058,8 @@ Concluded loop 9 with error 1.
 Concluded loop 10 with error 1.
 Concluded loop 11 with error 1.
 Concluded loop 12 with error 0.
-CPU times: user 111 ms, sys: 8.39 ms, total: 119 ms
-Wall time: 99.4 ms
+CPU times: user 108 ms, sys: 8.24 ms, total: 116 ms
+Wall time: 99 ms
 </pre></div>
 </div>
 </div>
@@ -1099,7 +1087,7 @@ Concluded loop 9 with error 1.
 Concluded loop 10 with error 1.
 Concluded loop 11 with error 1.
 Concluded loop 12 with error 0.
-HPI completed in 0.09869885444641113 seconds.
+HPI completed in 0.09880948066711426 seconds.
 </pre></div>
 </div>
 </div>
@@ -1113,8 +1101,8 @@ HPI completed in 0.09869885444641113 seconds.
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Running value function iteration.
-CPU times: user 525 ms, sys: 3.67 ms, total: 529 ms
-Wall time: 583 ms
+CPU times: user 530 ms, sys: 5.76 ms, total: 536 ms
+Wall time: 589 ms
 </pre></div>
 </div>
 </div>
@@ -1130,7 +1118,7 @@ Wall time: 583 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>VFI completed in 0.5863316059112549 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>VFI completed in 0.5936672687530518 seconds.
 </pre></div>
 </div>
 </div>
@@ -1158,35 +1146,35 @@ Wall time: 583 ms
 </summary>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Running optimistic policy iteration with m=5.
-OPI with m=5 completed in 0.24430227279663086 seconds.
+OPI with m=5 completed in 0.24480175971984863 seconds.
 Running optimistic policy iteration with m=45.
-OPI with m=45 completed in 0.19073176383972168 seconds.
+OPI with m=45 completed in 0.18940520286560059 seconds.
 Running optimistic policy iteration with m=85.
-OPI with m=85 completed in 0.19956183433532715 seconds.
+OPI with m=85 completed in 0.1985642910003662 seconds.
 Running optimistic policy iteration with m=125.
-OPI with m=125 completed in 0.20544028282165527 seconds.
+OPI with m=125 completed in 0.2047879695892334 seconds.
 Running optimistic policy iteration with m=165.
-OPI with m=165 completed in 0.22230219841003418 seconds.
+OPI with m=165 completed in 0.22153687477111816 seconds.
 Running optimistic policy iteration with m=205.
-OPI with m=205 completed in 0.2547261714935303 seconds.
+OPI with m=205 completed in 0.25461721420288086 seconds.
 Running optimistic policy iteration with m=245.
-OPI with m=245 completed in 0.2801845073699951 seconds.
+OPI with m=245 completed in 0.27977871894836426 seconds.
 Running optimistic policy iteration with m=285.
-OPI with m=285 completed in 0.29805684089660645 seconds.
+OPI with m=285 completed in 0.29782915115356445 seconds.
 Running optimistic policy iteration with m=325.
-OPI with m=325 completed in 0.3396790027618408 seconds.
+OPI with m=325 completed in 0.33878135681152344 seconds.
 Running optimistic policy iteration with m=365.
-OPI with m=365 completed in 0.3806161880493164 seconds.
+OPI with m=365 completed in 0.38020873069763184 seconds.
 Running optimistic policy iteration with m=405.
-OPI with m=405 completed in 0.4226725101470947 seconds.
+OPI with m=405 completed in 0.4215707778930664 seconds.
 Running optimistic policy iteration with m=445.
-OPI with m=445 completed in 0.46388745307922363 seconds.
+OPI with m=445 completed in 0.4629647731781006 seconds.
 Running optimistic policy iteration with m=485.
-OPI with m=485 completed in 0.5056676864624023 seconds.
+OPI with m=485 completed in 0.5041012763977051 seconds.
 Running optimistic policy iteration with m=525.
-OPI with m=525 completed in 0.5462007522583008 seconds.
+OPI with m=525 completed in 0.545177698135376 seconds.
 Running optimistic policy iteration with m=565.
-OPI with m=565 completed in 0.5874123573303223 seconds.
+OPI with m=565 completed in 0.586768627166748 seconds.
 </pre></div>
 </div>
 </div>
@@ -1208,7 +1196,7 @@ OPI with m=565 completed in 0.5874123573303223 seconds.
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/461502542ee4404e15c0c98906edcdd2b6c4eb08a1f630cbea121bdcd7562b81.png"><img alt="_images/461502542ee4404e15c0c98906edcdd2b6c4eb08a1f630cbea121bdcd7562b81.png" src="_images/461502542ee4404e15c0c98906edcdd2b6c4eb08a1f630cbea121bdcd7562b81.png" style="width: 80%;" />
+<a class="reference internal image-reference" href="_images/42f7ed5eaaf889c216c4900e5a41a91aea563e67a51f34935cd2e41eb6476309.png"><img alt="_images/42f7ed5eaaf889c216c4900e5a41a91aea563e67a51f34935cd2e41eb6476309.png" src="_images/42f7ed5eaaf889c216c4900e5a41a91aea563e67a51f34935cd2e41eb6476309.png" style="width: 80%;" />
 </a>
 </div>
 </div>

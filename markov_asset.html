@@ -384,7 +384,7 @@ you can jump to <a class="reference internal" href="#equation-eq-ntecx2">(9.13)<
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Mon Dec  8 03:44:47 2025       
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Mon Dec 22 03:47:08 2025       
 +-----------------------------------------------------------------------------------------+
 | NVIDIA-SMI 580.105.08             Driver Version: 580.105.08     CUDA Version: 13.0     |
 +-----------------------------------------+------------------------+----------------------+
@@ -393,7 +393,7 @@ you can jump to <a class="reference internal" href="#equation-eq-ntecx2">(9.13)<
 |                                         |                        |               MIG M. |
 |=========================================+========================+======================|
 |   0  Tesla T4                       On  |   00000000:00:1E.0 Off |                    0 |
-| N/A   30C    P0             31W /   70W |       0MiB /  15360MiB |      0%      Default |
+| N/A   28C    P0             30W /   70W |       0MiB /  15360MiB |      0%      Default |
 |                                         |                        |                  N/A |
 +-----------------------------------------+------------------------+----------------------+
 
@@ -797,10 +797,6 @@ is</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>W1208 03:44:50.534231    4727 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn&#39;t support extracting fabric info or NVLink is not used by the device.
-W1208 03:44:50.537785    4661 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn&#39;t support extracting fabric info or NVLink is not used by the device.
-</pre></div>
-</div>
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>True
 </pre></div>
 </div>
@@ -1112,7 +1108,7 @@ and <span class="math notranslate nohighlight">\(A\)</span> into an <span class=
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Numpy compile plus execution time =  1.063283920288086
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Numpy compile plus execution time =  1.1833741664886475
 </pre></div>
 </div>
 </div>
@@ -1128,7 +1124,7 @@ and <span class="math notranslate nohighlight">\(A\)</span> into an <span class=
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Numpy execution time =  0.2748379707336426
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Numpy execution time =  0.2636990547180176
 </pre></div>
 </div>
 </div>
@@ -1301,7 +1297,7 @@ and <span class="math notranslate nohighlight">\(A\)</span> into an <span class=
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>JAX compile plus execution time =  0.9087069034576416
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>JAX compile plus execution time =  0.898108720779419
 </pre></div>
 </div>
 </div>
@@ -1317,7 +1313,7 @@ and <span class="math notranslate nohighlight">\(A\)</span> into an <span class=
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>JAX execution time =  0.09490275382995605
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>JAX execution time =  0.12511038780212402
 </pre></div>
 </div>
 </div>
@@ -1330,7 +1326,7 @@ and <span class="math notranslate nohighlight">\(A\)</span> into an <span class=
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.3453043754348282
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.4744438236075925
 </pre></div>
 </div>
 </div>
@@ -1421,7 +1417,7 @@ that acts directly on the linear operator <code class="docutils literal notransl
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>JAX compile plus execution time =  0.7027287483215332
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>JAX compile plus execution time =  0.6951436996459961
 </pre></div>
 </div>
 </div>
@@ -1437,7 +1433,7 @@ that acts directly on the linear operator <code class="docutils literal notransl
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>JAX execution time =  0.006237030029296875
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>JAX execution time =  0.005959510803222656
 </pre></div>
 </div>
 </div>
@@ -1463,7 +1459,7 @@ that acts directly on the linear operator <code class="docutils literal notransl
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.0657202217806261
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.047634020706963875
 </pre></div>
 </div>
 </div>
@@ -1483,10 +1479,10 @@ that acts directly on the linear operator <code class="docutils literal notransl
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 704 ms, sys: 16.8 ms, total: 720 ms
-Wall time: 906 ms
-CPU times: user 164 ms, sys: 0 ns, total: 164 ms
-Wall time: 163 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 702 ms, sys: 21.5 ms, total: 723 ms
+Wall time: 907 ms
+CPU times: user 163 ms, sys: 886 μs, total: 164 ms
+Wall time: 164 ms
 </pre></div>
 </div>
 </div>

@@ -392,7 +392,7 @@ Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in /home/runner/minicond
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Mon Dec  8 03:48:52 2025       
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Mon Dec 22 03:51:14 2025       
 +-----------------------------------------------------------------------------------------+
 | NVIDIA-SMI 580.105.08             Driver Version: 580.105.08     CUDA Version: 13.0     |
 +-----------------------------------------+------------------------+----------------------+
@@ -401,7 +401,7 @@ Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in /home/runner/minicond
 |                                         |                        |               MIG M. |
 |=========================================+========================+======================|
 |   0  Tesla T4                       On  |   00000000:00:1E.0 Off |                    0 |
-| N/A   32C    P8             13W /   70W |       0MiB /  15360MiB |      0%      Default |
+| N/A   30C    P8             14W /   70W |       0MiB /  15360MiB |      0%      Default |
 |                                         |                        |                  N/A |
 +-----------------------------------------+------------------------+----------------------+
 
@@ -598,7 +598,7 @@ model.</p>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Starting VFI.
-VFI completed in 17.033132314682007 seconds.
+VFI completed in 16.98636484146118 seconds.
 </pre></div>
 </div>
 </div>
@@ -614,7 +614,7 @@ VFI completed in 17.033132314682007 seconds.
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>VFI completed in 17.083527088165283 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>VFI completed in 16.573667287826538 seconds.
 </pre></div>
 </div>
 </div>
@@ -812,12 +812,6 @@ in the Bellman operator.</p>
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>W1208 03:49:27.829898    5489 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn&#39;t support extracting fabric info or NVLink is not used by the device.
-W1208 03:49:27.833492    5421 cuda_executor.cc:1802] GPU interconnect information not available: INTERNAL: NVML doesn&#39;t support extracting fabric info or NVLink is not used by the device.
-</pre></div>
-</div>
-</div>
 </div>
 <p>Let’s see how long it takes to solve this model.</p>
 <div class="cell docutils container">
@@ -832,7 +826,7 @@ W1208 03:49:27.833492    5421 cuda_executor.cc:1802] GPU interconnect informatio
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Starting VFI using vectorization.
-VFI completed in 1.229844570159912 seconds.
+VFI completed in 1.229727029800415 seconds.
 </pre></div>
 </div>
 </div>
@@ -848,7 +842,7 @@ VFI completed in 1.229844570159912 seconds.
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>VFI completed in 0.44198131561279297 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>VFI completed in 0.4426748752593994 seconds.
 </pre></div>
 </div>
 </div>
@@ -861,7 +855,7 @@ VFI completed in 1.229844570159912 seconds.
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Relative speed gain = 38.652147691989015
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Relative speed gain = 37.43981918584078
 </pre></div>
 </div>
 </div>
@@ -969,7 +963,7 @@ up our sleeves.</p>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Starting VFI using vmap.
-VFI completed in 0.6140573024749756 seconds.
+VFI completed in 0.618995189666748 seconds.
 </pre></div>
 </div>
 </div>
@@ -985,7 +979,7 @@ VFI completed in 0.6140573024749756 seconds.
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>VFI completed in 0.46105480194091797 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>VFI completed in 0.4602844715118408 seconds.
 </pre></div>
 </div>
 </div>
@@ -1013,7 +1007,7 @@ True
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Relative speed = 37.05313775336074
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Relative speed = 36.00744390396012
 </pre></div>
 </div>
 </div>
@@ -1026,7 +1020,7 @@ True
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Relative speed = 0.9586307609250989
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Relative speed = 0.9617419284326467
 </pre></div>
 </div>
 </div>
