@@ -355,7 +355,7 @@
 <h1><span class="section-number">9. </span>An Asset Pricing Problem<a class="headerlink" href="#an-asset-pricing-problem" title="Link to this heading">#</a></h1>
 <div class="warning admonition">
 <p class="admonition-title">GPU</p>
-<p>This lecture was built using a machine with access to a GPU.</p>
+<p>This lecture was built using a machine with access to a GPU — although it will also run without one.</p>
 <p><a class="reference external" href="https://colab.research.google.com/">Google Colab</a> has a free tier with GPUs
 that you can access as follows:</p>
 <ol class="arabic simple">
@@ -384,7 +384,7 @@ you can jump to <a class="reference internal" href="#equation-eq-ntecx2">(9.13)<
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Sat Dec 27 05:09:54 2025       
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Mon Jan 12 03:49:34 2026       
 +-----------------------------------------------------------------------------------------+
 | NVIDIA-SMI 580.105.08             Driver Version: 580.105.08     CUDA Version: 13.0     |
 +-----------------------------------------+------------------------+----------------------+
@@ -393,7 +393,7 @@ you can jump to <a class="reference internal" href="#equation-eq-ntecx2">(9.13)<
 |                                         |                        |               MIG M. |
 |=========================================+========================+======================|
 |   0  Tesla T4                       On  |   00000000:00:1E.0 Off |                    0 |
-| N/A   27C    P0             32W /   70W |       0MiB /  15360MiB |      0%      Default |
+| N/A   28C    P0             31W /   70W |       0MiB /  15360MiB |      0%      Default |
 |                                         |                        |                  N/A |
 +-----------------------------------------+------------------------+----------------------+
 
@@ -1108,7 +1108,7 @@ and <span class="math notranslate nohighlight">\(A\)</span> into an <span class=
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Numpy compile plus execution time =  1.0430645942687988
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Numpy compile plus execution time =  1.0639259815216064
 </pre></div>
 </div>
 </div>
@@ -1124,7 +1124,7 @@ and <span class="math notranslate nohighlight">\(A\)</span> into an <span class=
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Numpy execution time =  0.25275254249572754
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Numpy execution time =  0.25684309005737305
 </pre></div>
 </div>
 </div>
@@ -1297,7 +1297,7 @@ and <span class="math notranslate nohighlight">\(A\)</span> into an <span class=
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>JAX compile plus execution time =  0.9200949668884277
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>JAX compile plus execution time =  0.9087388515472412
 </pre></div>
 </div>
 </div>
@@ -1313,7 +1313,7 @@ and <span class="math notranslate nohighlight">\(A\)</span> into an <span class=
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>JAX execution time =  0.10205483436584473
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>JAX execution time =  0.1299748420715332
 </pre></div>
 </div>
 </div>
@@ -1326,7 +1326,7 @@ and <span class="math notranslate nohighlight">\(A\)</span> into an <span class=
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.4037737201696787
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.5060476497245836
 </pre></div>
 </div>
 </div>
@@ -1417,7 +1417,7 @@ that acts directly on the linear operator <code class="docutils literal notransl
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>JAX compile plus execution time =  0.6895568370819092
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>JAX compile plus execution time =  0.7123968601226807
 </pre></div>
 </div>
 </div>
@@ -1433,7 +1433,7 @@ that acts directly on the linear operator <code class="docutils literal notransl
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>JAX execution time =  0.006235599517822266
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>JAX execution time =  0.005956172943115234
 </pre></div>
 </div>
 </div>
@@ -1459,7 +1459,7 @@ that acts directly on the linear operator <code class="docutils literal notransl
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.06110048148693257
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.04582558322969289
 </pre></div>
 </div>
 </div>
@@ -1479,10 +1479,10 @@ that acts directly on the linear operator <code class="docutils literal notransl
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 705 ms, sys: 18.6 ms, total: 724 ms
-Wall time: 906 ms
-CPU times: user 168 ms, sys: 0 ns, total: 168 ms
-Wall time: 167 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 725 ms, sys: 13.2 ms, total: 739 ms
+Wall time: 928 ms
+CPU times: user 167 ms, sys: 0 ns, total: 167 ms
+Wall time: 166 ms
 </pre></div>
 </div>
 </div>
