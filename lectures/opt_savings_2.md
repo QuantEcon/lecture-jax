@@ -602,7 +602,7 @@ ax.plot(m_vals,
         lw=2, label="value function iteration")
 ax.plot(m_vals, opi_times, 
         lw=2, label="optimistic policy iteration")
-ax.legend(frameon=False)
+ax.legend(frameon=False, loc='lower right')
 ax.set_xlabel("$m$")
 ax.set_ylabel("time")
 plt.show()
