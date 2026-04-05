@@ -36,7 +36,7 @@ jobs:
         run: pip list
       # Download Build Cache from cache.yml
       - name: Download "build" folder (cache)
-        uses: dawidd6/action-download-artifact@v14
+        uses: dawidd6/action-download-artifact@v20
         with:
           workflow: cache.yml
           branch: main
@@ -57,7 +57,7 @@ jobs:
         run: |
           jb build lectures --path-output ./ --builder=custom --custom-builder=jupyter -n -W --keep-going
           zip -r download-notebooks.zip _build/jupyter
-      - uses: actions/upload-artifact@v6
+      - uses: actions/upload-artifact@v7
         with:
           name: download-notebooks
           path: download-notebooks.zip
