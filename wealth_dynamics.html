@@ -77,12 +77,13 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
-    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=22b71a9b445b7b2b6a277c0a48ea72bf6e7c90d9" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=3355220bfb204a7ac1b0ca03dac108f0437ded6f" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=9c3e77be" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="_static/exercise.css?v=982b99e0" />
+    <link rel="stylesheet" type="text/css" href="_static/proof.css" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
@@ -100,8 +101,8 @@
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="_static/togglebutton.js?v=4a39c7ea"></script>
-    <script src="_static/scripts/quantecon-book-theme.js?digest=65b86b9423025043228643fcfb616ce846cb91c1"></script>
+    <script src="_static/togglebutton.js?v=b8b12719"></script>
+    <script src="_static/scripts/quantecon-book-theme.js?digest=9980b4379844dc0b911d69b62b295f34ede88fac"></script>
     <script src="_static/scripts/jquery.js?v=5d32c60e"></script>
     <script src="_static/scripts/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
@@ -156,10 +157,31 @@
 <meta property="og:site_name" content="Quantitative Economics with Python using JAX" />
 <meta name="theme-color" content="#ffffff" />
 
+
+
+
   </head>
 <body>
 
+<!-- Prevent flash of light theme when dark mode is saved -->
+<script>
+(function() {
+  try {
+    if (localStorage.setContrast === '1') {
+      document.body.classList.add('dark-theme');
+      document.documentElement.setAttribute('data-theme', 'dark');
+    } else {
+      document.documentElement.setAttribute('data-theme', 'light');
+    }
+  } catch(e) {
+    document.documentElement.setAttribute('data-theme', 'light');
+  }
+})();
+</script>
+
 <!-- Override QuantEcon theme colors -->
+
+<!-- Color scheme: applies scheme-specific body class -->
 
     <span id="top"></span>
 
@@ -171,7 +193,12 @@
 
                 <div class="qe-page__toc">
 
-                    <div class="inner">
+                    
+                    
+                    
+
+                    
+                    <div class="inner sticky" data-autoexpand="true">
 
                         
                         <div class="qe-page__toc-header">
@@ -213,10 +240,16 @@
                         <div class="qe-page__toc-footer">
                             
                             
-                            <p><a href="#top"><strong>Back to top</strong></a></p>
+                            
+                            
+                            
                         </div>
 
                     </div>
+
+                    
+                    <a href="#top" class="back-to-top-btn" title="Back to top">↑ Top</a>
+                    
 
                 </div>
 
@@ -393,7 +426,7 @@ inequality, such as the Gini coefficient.</p>
 <p class="expanded admonition-title">Hide code cell output</p>
 </summary>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (0.10.1)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (0.11.1)
 Requirement already satisfied: numba&gt;=0.49.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from quantecon) (0.62.1)
 Requirement already satisfied: numpy&gt;=1.17.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from quantecon) (2.3.5)
 Requirement already satisfied: requests in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from quantecon) (2.32.5)
@@ -433,7 +466,7 @@ Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in /home/runner/minicond
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Mon Jan 12 03:55:24 2026       
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Mon Mar 30 04:21:59 2026       
 +-----------------------------------------------------------------------------------------+
 | NVIDIA-SMI 580.105.08             Driver Version: 580.105.08     CUDA Version: 13.0     |
 +-----------------------------------------+------------------------+----------------------+
@@ -442,7 +475,7 @@ Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in /home/runner/minicond
 |                                         |                        |               MIG M. |
 |=========================================+========================+======================|
 |   0  Tesla T4                       On  |   00000000:00:1E.0 Off |                    0 |
-| N/A   28C    P8             13W /   70W |       0MiB /  15360MiB |      0%      Default |
+| N/A   36C    P8              9W /   70W |       0MiB /  15360MiB |      0%      Default |
 |                                         |                        |                  N/A |
 +-----------------------------------------+------------------------+----------------------+
 
@@ -628,7 +661,7 @@ current value of the aggregate shock</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/d551809d997132eb16a152f0e3fb2b1efd8fbad421e70c3b5ca04d38a3baa2d0.png"><img alt="_images/d551809d997132eb16a152f0e3fb2b1efd8fbad421e70c3b5ca04d38a3baa2d0.png" src="_images/d551809d997132eb16a152f0e3fb2b1efd8fbad421e70c3b5ca04d38a3baa2d0.png" style="width: 80%;" />
+<a class="reference internal image-reference" href="_images/dc244b4a6c1dad7dfd19f3240fe5809d28cfc2fe986735c7e60a23f1051508a9.png"><img alt="_images/dc244b4a6c1dad7dfd19f3240fe5809d28cfc2fe986735c7e60a23f1051508a9.png" src="_images/dc244b4a6c1dad7dfd19f3240fe5809d28cfc2fe986735c7e60a23f1051508a9.png" style="width: 80%;" />
 </a>
 </div>
 </div>
@@ -695,7 +728,7 @@ is known.</p>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Generating cross-section using Numba
-Generated cross-section in 27.439136266708374 seconds.
+Generated cross-section in 27.378645420074463 seconds.
 </pre></div>
 </div>
 </div>
@@ -711,7 +744,7 @@ Generated cross-section in 27.439136266708374 seconds.
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Generated cross-section in 27.03705072402954 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Generated cross-section in 27.04946804046631 seconds.
 </pre></div>
 </div>
 </div>
@@ -784,7 +817,7 @@ using JAX</p>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Generating cross-section using JAX
-Generated cross-section in 3.222991704940796 seconds.
+Generated cross-section in 3.3107268810272217 seconds.
 </pre></div>
 </div>
 </div>
@@ -802,7 +835,7 @@ Generated cross-section in 3.222991704940796 seconds.
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Repeating without compile time.
-Generated cross-section in 1.329458236694336 seconds
+Generated cross-section in 1.3297488689422607 seconds
 </pre></div>
 </div>
 </div>
@@ -876,7 +909,7 @@ Generated cross-section in 1.329458236694336 seconds
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Generating cross-section using JAX with compiled loop
-Generated cross-section in 1.0351390838623047 seconds.
+Generated cross-section in 1.0153295993804932 seconds.
 </pre></div>
 </div>
 </div>
@@ -896,7 +929,7 @@ Generated cross-section in 1.0351390838623047 seconds.
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Repeating without compile time
-Generated cross-section in 0.16712331771850586 seconds
+Generated cross-section in 0.16470551490783691 seconds
 </pre></div>
 </div>
 </div>
@@ -908,7 +941,7 @@ Generated cross-section in 0.16712331771850586 seconds
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>JAX is 161.7790 times faster.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>JAX is 164.2293 times faster.
 </pre></div>
 </div>
 </div>
@@ -941,7 +974,7 @@ that generates a cross-section of wealth and generating a suitable rank-size plo
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/e5f51481a51779ed4f89b136803615d27670d513a71e9f30cf429957af4b046d.png"><img alt="_images/e5f51481a51779ed4f89b136803615d27670d513a71e9f30cf429957af4b046d.png" src="_images/e5f51481a51779ed4f89b136803615d27670d513a71e9f30cf429957af4b046d.png" style="width: 80%;" />
+<a class="reference internal image-reference" href="_images/069e6b92eaaad7169383b66492b1760e369f0a6c7c87f933d521e1d47d77b0d6.png"><img alt="_images/069e6b92eaaad7169383b66492b1760e369f0a6c7c87f933d521e1d47d77b0d6.png" src="_images/069e6b92eaaad7169383b66492b1760e369f0a6c7c87f933d521e1d47d77b0d6.png" style="width: 80%;" />
 </a>
 </div>
 </div>
@@ -1010,8 +1043,8 @@ generates data points <span class="math notranslate nohighlight">\((x_i, y_i)_{i
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 243 ms, sys: 17 ms, total: 260 ms
-Wall time: 296 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 263 ms, sys: 10 ms, total: 273 ms
+Wall time: 314 ms
 </pre></div>
 </div>
 </div>
@@ -1024,8 +1057,8 @@ Wall time: 296 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 673 μs, sys: 2 μs, total: 675 μs
-Wall time: 348 μs
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 503 μs, sys: 0 ns, total: 503 μs
+Wall time: 302 μs
 </pre></div>
 </div>
 </div>
@@ -1041,7 +1074,7 @@ Wall time: 348 μs
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/ecdce38dccdf8b2035797de8291db7e32f44bee1dc11d202770da6b3ff9eafb9.png"><img alt="_images/ecdce38dccdf8b2035797de8291db7e32f44bee1dc11d202770da6b3ff9eafb9.png" src="_images/ecdce38dccdf8b2035797de8291db7e32f44bee1dc11d202770da6b3ff9eafb9.png" style="width: 80%;" />
+<a class="reference internal image-reference" href="_images/d0845d7642e34ff6bb8970209d11990d421e3d7e45e73b944ab1ee5184679250.png"><img alt="_images/d0845d7642e34ff6bb8970209d11990d421e3d7e45e73b944ab1ee5184679250.png" src="_images/d0845d7642e34ff6bb8970209d11990d421e3d7e45e73b944ab1ee5184679250.png" style="width: 80%;" />
 </a>
 </div>
 </div>
@@ -1077,8 +1110,8 @@ G :=
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 273 ms, sys: 7 ms, total: 280 ms
-Wall time: 7.14 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 311 ms, sys: 16 ms, total: 327 ms
+Wall time: 6.92 s
 </pre></div>
 </div>
 </div>
@@ -1091,8 +1124,8 @@ Wall time: 7.14 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 2.66 ms, sys: 2.01 ms, total: 4.67 ms
-Wall time: 6.61 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 3.09 ms, sys: 1.01 ms, total: 4.1 ms
+Wall time: 6.57 s
 </pre></div>
 </div>
 </div>
@@ -1104,7 +1137,7 @@ Wall time: 6.61 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Array(0.7685361, dtype=float32)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Array(0.769534, dtype=float32)
 </pre></div>
 </div>
 </div>
@@ -1150,8 +1183,8 @@ Wall time: 6.61 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 132 ms, sys: 7.98 ms, total: 140 ms
-Wall time: 6.78 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 155 ms, sys: 1.99 ms, total: 157 ms
+Wall time: 6.79 s
 </pre></div>
 </div>
 </div>
@@ -1164,7 +1197,7 @@ Wall time: 6.78 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 4.48 ms, sys: 17 μs, total: 4.5 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 2.3 ms, sys: 2 ms, total: 4.3 ms
 Wall time: 6.61 s
 </pre></div>
 </div>
@@ -1177,7 +1210,7 @@ Wall time: 6.61 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Array(0.7685361, dtype=float32)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Array(0.769534, dtype=float32)
 </pre></div>
 </div>
 </div>
@@ -1247,7 +1280,7 @@ Wall time: 6.61 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/bb649a8fd353569386f04c6be475dd0293c85b43ed135947f612243269d53378.png"><img alt="_images/bb649a8fd353569386f04c6be475dd0293c85b43ed135947f612243269d53378.png" src="_images/bb649a8fd353569386f04c6be475dd0293c85b43ed135947f612243269d53378.png" style="width: 80%;" />
+<a class="reference internal image-reference" href="_images/a1ce02eec7184108021ea550450cdf2d4d310d2c69bffb75f682e317b134b2ca.png"><img alt="_images/a1ce02eec7184108021ea550450cdf2d4d310d2c69bffb75f682e317b134b2ca.png" src="_images/a1ce02eec7184108021ea550450cdf2d4d310d2c69bffb75f682e317b134b2ca.png" style="width: 80%;" />
 </a>
 </div>
 </div>
@@ -1264,7 +1297,7 @@ Wall time: 6.61 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/2f88c43dc9d5ad6679a432800e754fb0fe19cd20a24269afdffd5c02c84fce6e.png"><img alt="_images/2f88c43dc9d5ad6679a432800e754fb0fe19cd20a24269afdffd5c02c84fce6e.png" src="_images/2f88c43dc9d5ad6679a432800e754fb0fe19cd20a24269afdffd5c02c84fce6e.png" style="width: 80%;" />
+<a class="reference internal image-reference" href="_images/47e872627552f9f02c2a96a44f7e0e5e98740ec160f04b7c7b6ab329f8caa51a.png"><img alt="_images/47e872627552f9f02c2a96a44f7e0e5e98740ec160f04b7c7b6ab329f8caa51a.png" src="_images/47e872627552f9f02c2a96a44f7e0e5e98740ec160f04b7c7b6ab329f8caa51a.png" style="width: 80%;" />
 </a>
 </div>
 </div>
@@ -1315,7 +1348,7 @@ Wall time: 6.61 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/2bf9b0a6e6bd5c84ce95278985987871ed647720d85e0c639dc5341f61f82f5e.png"><img alt="_images/2bf9b0a6e6bd5c84ce95278985987871ed647720d85e0c639dc5341f61f82f5e.png" src="_images/2bf9b0a6e6bd5c84ce95278985987871ed647720d85e0c639dc5341f61f82f5e.png" style="width: 80%;" />
+<a class="reference internal image-reference" href="_images/e7bc4df6e80b619ccf49ad06c0bdb048ea5b37d587f3a0a2fac2ff687f808781.png"><img alt="_images/e7bc4df6e80b619ccf49ad06c0bdb048ea5b37d587f3a0a2fac2ff687f808781.png" src="_images/e7bc4df6e80b619ccf49ad06c0bdb048ea5b37d587f3a0a2fac2ff687f808781.png" style="width: 80%;" />
 </a>
 </div>
 </div>
@@ -1330,7 +1363,7 @@ Wall time: 6.61 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/ed9155871117089964e1dc2371e3969ed0306540b9a2d04ad6845b9fd99d43ac.png"><img alt="_images/ed9155871117089964e1dc2371e3969ed0306540b9a2d04ad6845b9fd99d43ac.png" src="_images/ed9155871117089964e1dc2371e3969ed0306540b9a2d04ad6845b9fd99d43ac.png" style="width: 80%;" />
+<a class="reference internal image-reference" href="_images/5628cd4c179a63863e7c2c31802656128b41fd31f0ab6c0afcb68822ad123126.png"><img alt="_images/5628cd4c179a63863e7c2c31802656128b41fd31f0ab6c0afcb68822ad123126.png" src="_images/5628cd4c179a63863e7c2c31802656128b41fd31f0ab6c0afcb68822ad123126.png" style="width: 80%;" />
 </a>
 </div>
 </div>
@@ -1394,7 +1427,7 @@ Wall time: 6.61 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/aa56bf57807f5dd30d7b703e7b76cbdb22ea90f8d81e7fbb1d0ab78a35c6d18a.png"><img alt="_images/aa56bf57807f5dd30d7b703e7b76cbdb22ea90f8d81e7fbb1d0ab78a35c6d18a.png" src="_images/aa56bf57807f5dd30d7b703e7b76cbdb22ea90f8d81e7fbb1d0ab78a35c6d18a.png" style="width: 80%;" />
+<a class="reference internal image-reference" href="_images/18f27e4dcfab766987099f67577750c84dc962fd42f1c07fe3e01f2332be78e3.png"><img alt="_images/18f27e4dcfab766987099f67577750c84dc962fd42f1c07fe3e01f2332be78e3.png" src="_images/18f27e4dcfab766987099f67577750c84dc962fd42f1c07fe3e01f2332be78e3.png" style="width: 80%;" />
 </a>
 </div>
 </div>
@@ -1618,23 +1651,55 @@ Wall time: 6.61 s
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
+  Racial Segregation
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="schelling.html">
+   25. Schelling’s Model of Racial Segregation
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="schelling_numpy.html">
+   26. Schelling Model with NumPy
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="schelling_jax.html">
+   27. Schelling Model with JAX
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="schelling_jax_parallel.html">
+   28. Parallelizing the Algorithm
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="schelling_shocks.html">
+   29. Segregation with Persistent Shocks
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
   Other
  </span>
 </p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   25. Troubleshooting
+   30. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   26. References
+   31. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   27. Execution Statistics
+   32. Execution Statistics
   </a>
  </li>
 </ul>
@@ -1678,6 +1743,8 @@ Wall time: 6.61 s
                     <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-jax/blob/main/lectures/wealth_dynamics.md" download><i data-feather="github"></i></a></li>
                     -->
                     <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-jax" download><i data-feather="github"></i></a></li>
+                    
+                    
                 </ul>
 
             </div>

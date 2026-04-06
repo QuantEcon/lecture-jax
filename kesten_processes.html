@@ -77,12 +77,13 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
-    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=22b71a9b445b7b2b6a277c0a48ea72bf6e7c90d9" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=3355220bfb204a7ac1b0ca03dac108f0437ded6f" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=9c3e77be" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="_static/exercise.css?v=982b99e0" />
+    <link rel="stylesheet" type="text/css" href="_static/proof.css" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
@@ -100,8 +101,8 @@
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="_static/togglebutton.js?v=4a39c7ea"></script>
-    <script src="_static/scripts/quantecon-book-theme.js?digest=65b86b9423025043228643fcfb616ce846cb91c1"></script>
+    <script src="_static/togglebutton.js?v=b8b12719"></script>
+    <script src="_static/scripts/quantecon-book-theme.js?digest=9980b4379844dc0b911d69b62b295f34ede88fac"></script>
     <script src="_static/scripts/jquery.js?v=5d32c60e"></script>
     <script src="_static/scripts/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
@@ -156,10 +157,31 @@
 <meta property="og:site_name" content="Quantitative Economics with Python using JAX" />
 <meta name="theme-color" content="#ffffff" />
 
+
+
+
   </head>
 <body>
 
+<!-- Prevent flash of light theme when dark mode is saved -->
+<script>
+(function() {
+  try {
+    if (localStorage.setContrast === '1') {
+      document.body.classList.add('dark-theme');
+      document.documentElement.setAttribute('data-theme', 'dark');
+    } else {
+      document.documentElement.setAttribute('data-theme', 'light');
+    }
+  } catch(e) {
+    document.documentElement.setAttribute('data-theme', 'light');
+  }
+})();
+</script>
+
 <!-- Override QuantEcon theme colors -->
+
+<!-- Color scheme: applies scheme-specific body class -->
 
     <span id="top"></span>
 
@@ -171,7 +193,12 @@
 
                 <div class="qe-page__toc">
 
-                    <div class="inner">
+                    
+                    
+                    
+
+                    
+                    <div class="inner sticky" data-autoexpand="true">
 
                         
                         <div class="qe-page__toc-header">
@@ -211,10 +238,16 @@
                         <div class="qe-page__toc-footer">
                             
                             
-                            <p><a href="#top"><strong>Back to top</strong></a></p>
+                            
+                            
+                            
                         </div>
 
                     </div>
+
+                    
+                    <a href="#top" class="back-to-top-btn" title="Back to top">↑ Top</a>
+                    
 
                 </div>
 
@@ -255,7 +288,7 @@
                                 <a href="https://github.com/QuantEcon/lecture-jax/commit/5ae1a02" class="changelog-hash">5ae1a02</a>
                                 
                                 <span class="changelog-author">John Stachurski</span>
-                                <span class="changelog-time">6 months ago</span>
+                                <span class="changelog-time">9 months ago</span>
                                 <span class="changelog-message">misc (#222)</span>
                             </li>
                             
@@ -264,7 +297,7 @@
                                 <a href="https://github.com/QuantEcon/lecture-jax/commit/3021391" class="changelog-hash">3021391</a>
                                 
                                 <span class="changelog-author">John Stachurski</span>
-                                <span class="changelog-time">6 months ago</span>
+                                <span class="changelog-time">9 months ago</span>
                                 <span class="changelog-message">Kesten edits (#219)</span>
                             </li>
                             
@@ -273,7 +306,7 @@
                                 <a href="https://github.com/QuantEcon/lecture-jax/commit/8ff32f3" class="changelog-hash">8ff32f3</a>
                                 
                                 <span class="changelog-author">John Stachurski</span>
-                                <span class="changelog-time">6 months ago</span>
+                                <span class="changelog-time">9 months ago</span>
                                 <span class="changelog-message">misc</span>
                             </li>
                             
@@ -291,7 +324,7 @@
                                 <a href="https://github.com/QuantEcon/lecture-jax/commit/1a1be32" class="changelog-hash">1a1be32</a>
                                 
                                 <span class="changelog-author">Matt McKay</span>
-                                <span class="changelog-time">1 year ago</span>
+                                <span class="changelog-time">2 years ago</span>
                                 <span class="changelog-message">MAINT: Update GPU admonition text (#157)</span>
                             </li>
                             
@@ -300,7 +333,7 @@
                                 <a href="https://github.com/QuantEcon/lecture-jax/commit/0fc5009" class="changelog-hash">0fc5009</a>
                                 
                                 <span class="changelog-author">Matt McKay</span>
-                                <span class="changelog-time">1 year ago</span>
+                                <span class="changelog-time">2 years ago</span>
                                 <span class="changelog-message">MAINT: check gpu admonitions and tidy up (#137)</span>
                             </li>
                             
@@ -382,7 +415,7 @@ that you can access as follows:</p>
 <p class="expanded admonition-title">Hide code cell output</p>
 </summary>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (0.10.1)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (0.11.1)
 Requirement already satisfied: numba&gt;=0.49.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from quantecon) (0.62.1)
 Requirement already satisfied: numpy&gt;=1.17.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from quantecon) (2.3.5)
 Requirement already satisfied: requests in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from quantecon) (2.32.5)
@@ -431,7 +464,7 @@ which uses Numba to accelerate the computations.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Mon Jan 12 03:49:06 2026       
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Mon Mar 30 04:15:41 2026       
 +-----------------------------------------------------------------------------------------+
 | NVIDIA-SMI 580.105.08             Driver Version: 580.105.08     CUDA Version: 13.0     |
 +-----------------------------------------+------------------------+----------------------+
@@ -440,7 +473,7 @@ which uses Numba to accelerate the computations.</p>
 |                                         |                        |               MIG M. |
 |=========================================+========================+======================|
 |   0  Tesla T4                       On  |   00000000:00:1E.0 Off |                    0 |
-| N/A   27C    P8             13W /   70W |       0MiB /  15360MiB |      0%      Default |
+| N/A   35C    P8             13W /   70W |       0MiB /  15360MiB |      0%      Default |
 |                                         |                        |                  N/A |
 +-----------------------------------------+------------------------+----------------------+
 
@@ -592,10 +625,10 @@ time <code class="docutils literal notranslate"><span class="pre">T</span></code
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:2.40
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:2.51
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2.4081289768218994
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2.5178921222686768
 </pre></div>
 </div>
 </div>
@@ -610,10 +643,10 @@ time <code class="docutils literal notranslate"><span class="pre">T</span></code
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:0.83
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:0.91
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.8300988674163818
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.916942834854126
 </pre></div>
 </div>
 </div>
@@ -697,10 +730,10 @@ by</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:1.34
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:1.17
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1.3483147621154785
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1.1784563064575195
 </pre></div>
 </div>
 </div>
@@ -717,7 +750,7 @@ by</p>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:0.06
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.06149888038635254
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.06246495246887207
 </pre></div>
 </div>
 </div>
@@ -803,10 +836,10 @@ by</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:1.16
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:1.13
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1.164440393447876
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1.1318714618682861
 </pre></div>
 </div>
 </div>
@@ -823,7 +856,7 @@ by</p>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TOC: Elapsed: 0:00:0.07
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.07547593116760254
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.07660984992980957
 </pre></div>
 </div>
 </div>
@@ -1053,23 +1086,55 @@ the simulation paths.</p>
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
+  Racial Segregation
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="schelling.html">
+   25. Schelling’s Model of Racial Segregation
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="schelling_numpy.html">
+   26. Schelling Model with NumPy
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="schelling_jax.html">
+   27. Schelling Model with JAX
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="schelling_jax_parallel.html">
+   28. Parallelizing the Algorithm
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="schelling_shocks.html">
+   29. Segregation with Persistent Shocks
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
   Other
  </span>
 </p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   25. Troubleshooting
+   30. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   26. References
+   31. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   27. Execution Statistics
+   32. Execution Statistics
   </a>
  </li>
 </ul>
@@ -1113,6 +1178,8 @@ the simulation paths.</p>
                     <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-jax/blob/main/lectures/kesten_processes.md" download><i data-feather="github"></i></a></li>
                     -->
                     <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-jax" download><i data-feather="github"></i></a></li>
+                    
+                    
                 </ul>
 
             </div>

@@ -77,12 +77,13 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
-    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=22b71a9b445b7b2b6a277c0a48ea72bf6e7c90d9" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=3355220bfb204a7ac1b0ca03dac108f0437ded6f" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=9c3e77be" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="_static/exercise.css?v=982b99e0" />
+    <link rel="stylesheet" type="text/css" href="_static/proof.css" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
@@ -100,8 +101,8 @@
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="_static/togglebutton.js?v=4a39c7ea"></script>
-    <script src="_static/scripts/quantecon-book-theme.js?digest=65b86b9423025043228643fcfb616ce846cb91c1"></script>
+    <script src="_static/togglebutton.js?v=b8b12719"></script>
+    <script src="_static/scripts/quantecon-book-theme.js?digest=9980b4379844dc0b911d69b62b295f34ede88fac"></script>
     <script src="_static/scripts/jquery.js?v=5d32c60e"></script>
     <script src="_static/scripts/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
@@ -156,10 +157,31 @@
 <meta property="og:site_name" content="Quantitative Economics with Python using JAX" />
 <meta name="theme-color" content="#ffffff" />
 
+
+
+
   </head>
 <body>
 
+<!-- Prevent flash of light theme when dark mode is saved -->
+<script>
+(function() {
+  try {
+    if (localStorage.setContrast === '1') {
+      document.body.classList.add('dark-theme');
+      document.documentElement.setAttribute('data-theme', 'dark');
+    } else {
+      document.documentElement.setAttribute('data-theme', 'light');
+    }
+  } catch(e) {
+    document.documentElement.setAttribute('data-theme', 'light');
+  }
+})();
+</script>
+
 <!-- Override QuantEcon theme colors -->
+
+<!-- Color scheme: applies scheme-specific body class -->
 
     <span id="top"></span>
 
@@ -171,7 +193,12 @@
 
                 <div class="qe-page__toc">
 
-                    <div class="inner">
+                    
+                    
+                    
+
+                    
+                    <div class="inner sticky" data-autoexpand="true">
 
                         
 
@@ -196,10 +223,16 @@
                         <div class="qe-page__toc-footer">
                             
                             
-                            <p><a href="#top"><strong>Back to top</strong></a></p>
+                            
+                            
+                            
                         </div>
 
                     </div>
+
+                    
+                    <a href="#top" class="back-to-top-btn" title="Back to top">↑ Top</a>
+                    
 
                 </div>
 
@@ -249,7 +282,7 @@
                                 <a href="https://github.com/QuantEcon/lecture-jax/commit/a7b173a" class="changelog-hash">a7b173a</a>
                                 
                                 <span class="changelog-author">kp992</span>
-                                <span class="changelog-time">1 year ago</span>
+                                <span class="changelog-time">2 years ago</span>
                                 <span class="changelog-message">Add visual comparison of HPI, VFI and OPI outputs (#171)</span>
                             </li>
                             
@@ -258,7 +291,7 @@
                                 <a href="https://github.com/QuantEcon/lecture-jax/commit/1a1be32" class="changelog-hash">1a1be32</a>
                                 
                                 <span class="changelog-author">Matt McKay</span>
-                                <span class="changelog-time">1 year ago</span>
+                                <span class="changelog-time">2 years ago</span>
                                 <span class="changelog-message">MAINT: Update GPU admonition text (#157)</span>
                             </li>
                             
@@ -267,7 +300,7 @@
                                 <a href="https://github.com/QuantEcon/lecture-jax/commit/ce4ef38" class="changelog-hash">ce4ef38</a>
                                 
                                 <span class="changelog-author">John Stachurski</span>
-                                <span class="changelog-time">1 year ago</span>
+                                <span class="changelog-time">2 years ago</span>
                                 <span class="changelog-message">Edits to opt savings and opt invest (#154)</span>
                             </li>
                             
@@ -276,7 +309,7 @@
                                 <a href="https://github.com/QuantEcon/lecture-jax/commit/4beb13a" class="changelog-hash">4beb13a</a>
                                 
                                 <span class="changelog-author">kp992</span>
-                                <span class="changelog-time">1 year ago</span>
+                                <span class="changelog-time">2 years ago</span>
                                 <span class="changelog-message">Use JAX in successive_approx (#134)</span>
                             </li>
                             
@@ -363,7 +396,7 @@ that you can access as follows:</p>
 <p class="expanded admonition-title">Hide code cell output</p>
 </summary>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (0.10.1)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (0.11.1)
 Requirement already satisfied: numba&gt;=0.49.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from quantecon) (0.62.1)
 Requirement already satisfied: numpy&gt;=1.17.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from quantecon) (2.3.5)
 Requirement already satisfied: requests in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from quantecon) (2.32.5)
@@ -423,7 +456,7 @@ P_t = a_0 - a_1 Y_t + Z_t,
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Mon Jan 12 03:53:20 2026       
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Mon Mar 30 04:19:54 2026       
 +-----------------------------------------------------------------------------------------+
 | NVIDIA-SMI 580.105.08             Driver Version: 580.105.08     CUDA Version: 13.0     |
 +-----------------------------------------+------------------------+----------------------+
@@ -432,7 +465,7 @@ P_t = a_0 - a_1 Y_t + Z_t,
 |                                         |                        |               MIG M. |
 |=========================================+========================+======================|
 |   0  Tesla T4                       On  |   00000000:00:1E.0 Off |                    0 |
-| N/A   27C    P8             13W /   70W |       0MiB /  15360MiB |      0%      Default |
+| N/A   35C    P8              9W /   70W |       0MiB /  15360MiB |      0%      Default |
 |                                         |                        |                  N/A |
 +-----------------------------------------+------------------------+----------------------+
 
@@ -844,8 +877,8 @@ Concluded loop 9 with error 1.
 Concluded loop 10 with error 1.
 Concluded loop 11 with error 1.
 Concluded loop 12 with error 0.
-CPU times: user 951 ms, sys: 106 ms, total: 1.06 s
-Wall time: 1.33 s
+CPU times: user 1.03 s, sys: 102 ms, total: 1.13 s
+Wall time: 1.28 s
 </pre></div>
 </div>
 </div>
@@ -882,7 +915,7 @@ Concluded loop 12 with error 0.
  [82 82 82 ... 86 86 86]
  [83 83 83 ... 86 86 86]
  [84 84 84 ... 87 87 87]]
-HPI completed in 0.1280806064605713 seconds.
+HPI completed in 0.13516688346862793 seconds.
 </pre></div>
 </div>
 </div>
@@ -918,8 +951,8 @@ HPI completed in 0.1280806064605713 seconds.
 </summary>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Starting VFI.
-CPU times: user 662 ms, sys: 7.31 ms, total: 670 ms
-Wall time: 817 ms
+CPU times: user 697 ms, sys: 14.9 ms, total: 712 ms
+Wall time: 772 ms
 </pre></div>
 </div>
 </div>
@@ -944,7 +977,7 @@ Wall time: 817 ms
  [82 82 82 ... 86 86 86]
  [83 83 83 ... 86 86 86]
  [84 84 84 ... 87 87 87]]
-VFI completed in 0.5942850112915039 seconds.
+VFI completed in 0.6000404357910156 seconds.
 </pre></div>
 </div>
 </div>
@@ -980,8 +1013,8 @@ VFI completed in 0.5942850112915039 seconds.
 </summary>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Starting OPI.
-CPU times: user 530 ms, sys: 15.4 ms, total: 546 ms
-Wall time: 609 ms
+CPU times: user 538 ms, sys: 11.1 ms, total: 549 ms
+Wall time: 620 ms
 </pre></div>
 </div>
 </div>
@@ -1006,7 +1039,7 @@ Wall time: 609 ms
  [82 82 82 ... 86 86 86]
  [83 83 83 ... 86 86 86]
  [84 84 84 ... 87 87 87]]
-OPI completed in 0.2041454315185547 seconds.
+OPI completed in 0.20207452774047852 seconds.
 </pre></div>
 </div>
 </div>
@@ -1058,8 +1091,8 @@ Concluded loop 9 with error 1.
 Concluded loop 10 with error 1.
 Concluded loop 11 with error 1.
 Concluded loop 12 with error 0.
-CPU times: user 111 ms, sys: 8.54 ms, total: 120 ms
-Wall time: 99.9 ms
+CPU times: user 105 ms, sys: 10.1 ms, total: 115 ms
+Wall time: 98.7 ms
 </pre></div>
 </div>
 </div>
@@ -1087,7 +1120,7 @@ Concluded loop 9 with error 1.
 Concluded loop 10 with error 1.
 Concluded loop 11 with error 1.
 Concluded loop 12 with error 0.
-HPI completed in 0.09887075424194336 seconds.
+HPI completed in 0.09906363487243652 seconds.
 </pre></div>
 </div>
 </div>
@@ -1101,8 +1134,8 @@ HPI completed in 0.09887075424194336 seconds.
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Running value function iteration.
-CPU times: user 532 ms, sys: 6.22 ms, total: 538 ms
-Wall time: 592 ms
+CPU times: user 542 ms, sys: 3.53 ms, total: 546 ms
+Wall time: 602 ms
 </pre></div>
 </div>
 </div>
@@ -1118,7 +1151,7 @@ Wall time: 592 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>VFI completed in 0.5941853523254395 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>VFI completed in 0.6019759178161621 seconds.
 </pre></div>
 </div>
 </div>
@@ -1146,35 +1179,35 @@ Wall time: 592 ms
 </summary>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Running optimistic policy iteration with m=5.
-OPI with m=5 completed in 0.24476981163024902 seconds.
+OPI with m=5 completed in 0.24284648895263672 seconds.
 Running optimistic policy iteration with m=45.
-OPI with m=45 completed in 0.19036126136779785 seconds.
+OPI with m=45 completed in 0.1881260871887207 seconds.
 Running optimistic policy iteration with m=85.
-OPI with m=85 completed in 0.20009994506835938 seconds.
+OPI with m=85 completed in 0.19699954986572266 seconds.
 Running optimistic policy iteration with m=125.
-OPI with m=125 completed in 0.20530223846435547 seconds.
+OPI with m=125 completed in 0.20325160026550293 seconds.
 Running optimistic policy iteration with m=165.
-OPI with m=165 completed in 0.2220463752746582 seconds.
+OPI with m=165 completed in 0.21938872337341309 seconds.
 Running optimistic policy iteration with m=205.
-OPI with m=205 completed in 0.2551255226135254 seconds.
+OPI with m=205 completed in 0.25209569931030273 seconds.
 Running optimistic policy iteration with m=245.
-OPI with m=245 completed in 0.2807447910308838 seconds.
+OPI with m=245 completed in 0.2775857448577881 seconds.
 Running optimistic policy iteration with m=285.
-OPI with m=285 completed in 0.29868412017822266 seconds.
+OPI with m=285 completed in 0.2956845760345459 seconds.
 Running optimistic policy iteration with m=325.
-OPI with m=325 completed in 0.34015989303588867 seconds.
+OPI with m=325 completed in 0.33637237548828125 seconds.
 Running optimistic policy iteration with m=365.
-OPI with m=365 completed in 0.3817570209503174 seconds.
+OPI with m=365 completed in 0.37735772132873535 seconds.
 Running optimistic policy iteration with m=405.
-OPI with m=405 completed in 0.42269182205200195 seconds.
+OPI with m=405 completed in 0.4183177947998047 seconds.
 Running optimistic policy iteration with m=445.
-OPI with m=445 completed in 0.4637758731842041 seconds.
+OPI with m=445 completed in 0.4593007564544678 seconds.
 Running optimistic policy iteration with m=485.
-OPI with m=485 completed in 0.5058023929595947 seconds.
+OPI with m=485 completed in 0.4999086856842041 seconds.
 Running optimistic policy iteration with m=525.
-OPI with m=525 completed in 0.5473554134368896 seconds.
+OPI with m=525 completed in 0.5412957668304443 seconds.
 Running optimistic policy iteration with m=565.
-OPI with m=565 completed in 0.5888638496398926 seconds.
+OPI with m=565 completed in 0.5819723606109619 seconds.
 </pre></div>
 </div>
 </div>
@@ -1196,7 +1229,7 @@ OPI with m=565 completed in 0.5888638496398926 seconds.
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/1f960c5b3d96ca3c2083a4f5d2d918e71594e1bc5a7062b616805b6457495135.png"><img alt="_images/1f960c5b3d96ca3c2083a4f5d2d918e71594e1bc5a7062b616805b6457495135.png" src="_images/1f960c5b3d96ca3c2083a4f5d2d918e71594e1bc5a7062b616805b6457495135.png" style="width: 80%;" />
+<a class="reference internal image-reference" href="_images/f937505f8340b7841394baeb8171cfc6f85ce9220f7a70d02428d0f35e356f6a.png"><img alt="_images/f937505f8340b7841394baeb8171cfc6f85ce9220f7a70d02428d0f35e356f6a.png" src="_images/f937505f8340b7841394baeb8171cfc6f85ce9220f7a70d02428d0f35e356f6a.png" style="width: 80%;" />
 </a>
 </div>
 </div>
@@ -1417,23 +1450,55 @@ OPI with m=565 completed in 0.5888638496398926 seconds.
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
+  Racial Segregation
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="schelling.html">
+   25. Schelling’s Model of Racial Segregation
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="schelling_numpy.html">
+   26. Schelling Model with NumPy
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="schelling_jax.html">
+   27. Schelling Model with JAX
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="schelling_jax_parallel.html">
+   28. Parallelizing the Algorithm
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="schelling_shocks.html">
+   29. Segregation with Persistent Shocks
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
   Other
  </span>
 </p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   25. Troubleshooting
+   30. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   26. References
+   31. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   27. Execution Statistics
+   32. Execution Statistics
   </a>
  </li>
 </ul>
@@ -1477,6 +1542,8 @@ OPI with m=565 completed in 0.5888638496398926 seconds.
                     <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-jax/blob/main/lectures/opt_invest.md" download><i data-feather="github"></i></a></li>
                     -->
                     <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-jax" download><i data-feather="github"></i></a></li>
+                    
+                    
                 </ul>
 
             </div>

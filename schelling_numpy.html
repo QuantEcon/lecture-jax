@@ -1,0 +1,1131 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>26. Schelling Model with NumPy &#8212; Quantitative Economics with Python using JAX</title>
+    
+    <link rel="preconnect" href="https://unpkg.com" crossorigin>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js" integrity="sha384-bq5PNg/ZcfW7KMvFSmhjqCQJ/VFnec+6sZkctn/4ZLeubkn7U58Le4zFFSn3dhUu" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js" integrity="sha384-qEqAs1VsN9WH2myXDbiP2wGGIttL9bMRZBKCl54ZnzpDlVqbYANP9vMaoT/wvQcf" crossorigin="anonymous"></script>
+    
+        <script>
+            MathJax = {
+            loader: {load: ['[tex]/boldsymbol', '[tex]/textmacros']},
+            tex: {
+                packages: {'[+]': ['boldsymbol', 'textmacros']},
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                processEscapes: true,
+                macros: {
+                    "argmax" : "arg\\,max",
+                    "argmin" : "arg\\,min",
+                    "col"    : "col",
+                    "Span"   :  "span",
+                    "epsilon": "\\varepsilon",
+                    "EE": "\\mathbb{E}",
+                    "PP": "\\mathbb{P}",
+                    "RR": "\\mathbb{R}",
+                    "NN": "\\mathbb{N}",
+                    "ZZ": "\\mathbb{Z}",
+                    "aA": "\\mathcal{A}",
+                    "bB": "\\mathcal{B}",
+                    "cC": "\\mathcal{C}",
+                    "dD": "\\mathcal{D}",
+                    "eE": "\\mathcal{E}",
+                    "fF": "\\mathcal{F}",
+                    "gG": "\\mathcal{G}",
+                    "hH": "\\mathcal{H}",
+                }
+            },
+            svg: {
+                fontCache: 'global',
+                scale: 0.92,
+                displayAlign: "center",
+            },
+            };
+        </script>
+    
+    
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=3355220bfb204a7ac1b0ca03dac108f0437ded6f" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="_static/exercise.css?v=982b99e0" />
+    <link rel="stylesheet" type="text/css" href="_static/proof.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+
+    <script src="_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/scripts/sphinx-book-theme.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js?v=b8b12719"></script>
+    <script src="_static/scripts/quantecon-book-theme.js?digest=9980b4379844dc0b911d69b62b295f34ede88fac"></script>
+    <script src="_static/scripts/jquery.js?v=5d32c60e"></script>
+    <script src="_static/scripts/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
+    <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-K1NYBSC1CZ"></script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-K1NYBSC1CZ');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-K1NYBSC1CZ');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"tex": {"macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'schelling_numpy';</script>
+    <link rel="canonical" href="https://jax.quantecon.org/schelling_numpy.html" />
+    <link rel="icon" href="_static/lectures-favicon.ico"/>
+    <link rel="author" title="About these documents" href="about.html" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="27. Schelling Model with JAX" href="schelling_jax.html" />
+    <link rel="prev" title="25. Schelling’s Model of Racial Segregation" href="schelling.html" />
+
+<!-- Normal Meta Tags -->
+<meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
+<meta name="keywords" content="Python, JAX, QuantEcon, Quantitative Economics, Economics, Sloan, Alfred P. Sloan Foundation, Tom J. Sargent, John Stachurski" />
+<meta name="description" content=This website presents a set of lectures on quantitative economic modeling using JAX, designed and written by Thomas J. Sargent and John Stachurski. />
+
+<!-- Twitter tags -->
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@quantecon" />
+<meta name="twitter:title" content="Schelling Model with NumPy"/>
+<meta name="twitter:description" content="This website presents a set of lectures on quantitative economic modeling using JAX, designed and written by Thomas J. Sargent and John Stachurski.">
+<meta name="twitter:creator" content="@quantecon">
+<meta name="twitter:image" content="https://assets.quantecon.org/img/qe-twitter-logo.png">
+
+<!-- Opengraph tags -->
+<meta property="og:title" content="Schelling Model with NumPy" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://jax.quantecon.org/schelling_numpy.html" />
+<meta property="og:image" content="https://assets.quantecon.org/img/qe-og-logo.png" />
+<meta property="og:description" content="This website presents a set of lectures on quantitative economic modeling using JAX, designed and written by Thomas J. Sargent and John Stachurski." />
+<meta property="og:site_name" content="Quantitative Economics with Python using JAX" />
+<meta name="theme-color" content="#ffffff" />
+
+
+
+
+  </head>
+<body>
+
+<!-- Prevent flash of light theme when dark mode is saved -->
+<script>
+(function() {
+  try {
+    if (localStorage.setContrast === '1') {
+      document.body.classList.add('dark-theme');
+      document.documentElement.setAttribute('data-theme', 'dark');
+    } else {
+      document.documentElement.setAttribute('data-theme', 'light');
+    }
+  } catch(e) {
+    document.documentElement.setAttribute('data-theme', 'light');
+  }
+})();
+</script>
+
+<!-- Override QuantEcon theme colors -->
+
+<!-- Color scheme: applies scheme-specific body class -->
+
+    <span id="top"></span>
+
+    <div class="qe-wrapper">
+
+        <div class="qe-main">
+
+            <div class="qe-page" id=schelling_numpy>
+
+                <div class="qe-page__toc">
+
+                    
+                    
+                    
+
+                    
+                    <div class="inner sticky" data-autoexpand="true">
+
+                        
+                        <div class="qe-page__toc-header">
+                            On this page
+                        </div>
+
+
+                        <nav id="bd-toc-nav" class="qe-page__toc-nav">
+                            <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">26.1. Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-representation">26.2. Data Representation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#helper-functions">26.3. Helper Functions</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#computing-distances">26.3.1. Computing Distances</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#finding-neighbors">26.3.2. Finding Neighbors</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#checking-happiness">26.3.3. Checking Happiness</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#counting-happy-agents">26.3.4. Counting Happy Agents</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#moving-unhappy-agents">26.3.5. Moving Unhappy Agents</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visualization">26.4. Visualization</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-simulation">26.5. The Simulation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#results">26.6. Results</a></li>
+</ul>
+                            <p class="logo">
+                                
+                                    
+                                    <a href=https://quantecon.org><img src="_static/qe-logo-large.png" class="logo logo-img" alt="logo"></a>
+                                    
+                                    <a href=https://quantecon.org><img src="_static/quantecon-logo-transparent.png" class="dark-logo-img" alt="logo"></a>
+                                    
+                                    
+                                
+                            </p>
+
+                            <p class="powered">Powered by <a href="https://jupyterbook.org/v1/">Jupyter Book</a></p>
+
+                        </nav>
+
+                        <div class="qe-page__toc-footer">
+                            
+                            
+                            
+                            
+                            
+                        </div>
+
+                    </div>
+
+                    
+                    <a href="#top" class="back-to-top-btn" title="Back to top">↑ Top</a>
+                    
+
+                </div>
+
+                <div class="qe-page__header">
+
+                    <div class="qe-page__header-copy">
+
+                        <p class="qe-page__header-heading"><a href="intro.html">Quantitative Economics with Python using JAX</a></p>
+
+                    </div>
+
+                    <!-- Authors section -->
+                        <p class="qe-page__header-authors" font-size="18">
+                            
+                                
+                                    <a href="http://www.tomsargent.com/" target="_blank"><span>Thomas J. Sargent</span></a>
+                                
+                            
+                                
+                                    and <a href="https://johnstachurski.net/" target="_blank"><span>John Stachurski</span></a>
+                                
+                            
+                        </p>
+
+                    <!-- Last modified / Changelog dropdown -->
+                        <button class="qe-page__header-changed" id="changelog-toggle" aria-expanded="false">
+                            Last changed: Apr 06, 2026
+                            <span class="changelog-icon">▼</span>
+                        </button>
+
+                    <!-- Changelog dropdown content -->
+                    <div class="qe-page__header-changelog" id="changelog-content" aria-hidden="true">
+                        <h4>Changelog (<a href="https://github.com/QuantEcon/lecture-jax/commits/main/lectures/schelling_numpy.md">full history</a>)</h4>
+                        <ul class="changelog-list">
+                            
+                            <li class="changelog-entry">
+                                
+                                <a href="https://github.com/QuantEcon/lecture-jax/commit/2cf9ade" class="changelog-hash">2cf9ade</a>
+                                
+                                <span class="changelog-author">John Stachurski</span>
+                                <span class="changelog-time">38 minutes ago</span>
+                                <span class="changelog-message">Add Schelling segregation model lectures (#296)</span>
+                            </li>
+                            
+                        </ul>
+                    </div>
+
+                </div> <!-- .page__header -->
+
+
+
+                
+                <main class="qe-page__content" role="main">
+                    
+                    <div>
+                        
+  <section class="tex2jax_ignore mathjax_ignore" id="schelling-model-with-numpy">
+<h1><span class="section-number">26. </span>Schelling Model with NumPy<a class="headerlink" href="#schelling-model-with-numpy" title="Link to this heading">#</a></h1>
+<section id="overview">
+<h2><span class="section-number">26.1. </span>Overview<a class="headerlink" href="#overview" title="Link to this heading">#</a></h2>
+<p>In the <a class="reference internal" href="schelling.html"><span class="doc">previous lecture</span></a>, we implemented the Schelling
+segregation model using pure Python and standard libraries, rather than
+Python plus numerical and scientific libraries.</p>
+<p>In this lecture, we rewrite the model using NumPy arrays and functions.</p>
+<p>NumPy is the most fundamental library for numerical coding in Python.</p>
+<p>We’ll achieve greater speed — but at the cost of readability!</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">numpy.random</span><span class="w"> </span><span class="kn">import</span> <span class="n">uniform</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="data-representation">
+<h2><span class="section-number">26.2. </span>Data Representation<a class="headerlink" href="#data-representation" title="Link to this heading">#</a></h2>
+<p>In the class-based version, each agent was an object storing its own type and location.</p>
+<p>Here we take a different approach: we store all agent data in NumPy arrays.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">locations</span></code> — an <span class="math notranslate nohighlight">\(n \times 2\)</span> array where row <span class="math notranslate nohighlight">\(i\)</span> holds the <span class="math notranslate nohighlight">\((x, y)\)</span> coordinates of agent <span class="math notranslate nohighlight">\(i\)</span></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">types</span></code> — an array of length <span class="math notranslate nohighlight">\(n\)</span> where entry <span class="math notranslate nohighlight">\(i\)</span> is 0 or 1, indicating agent <span class="math notranslate nohighlight">\(i\)</span>’s type</p></li>
+</ul>
+<p>Let’s set up the parameters:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">num_of_type_0</span> <span class="o">=</span> <span class="mi">1000</span>    <span class="c1"># number of agents of type 0 (orange)</span>
+<span class="n">num_of_type_1</span> <span class="o">=</span> <span class="mi">1000</span>    <span class="c1"># number of agents of type 1 (green)</span>
+<span class="n">n</span> <span class="o">=</span> <span class="n">num_of_type_0</span> <span class="o">+</span> <span class="n">num_of_type_1</span>  <span class="c1"># total number of agents</span>
+<span class="n">num_neighbors</span> <span class="o">=</span> <span class="mi">10</span>      <span class="c1"># number of agents viewed as neighbors</span>
+<span class="n">max_other_type</span> <span class="o">=</span> <span class="mi">6</span>      <span class="c1"># max number of different-type neighbors tolerated</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Here’s a function to initialize the state with random locations and types:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">initialize_state</span><span class="p">():</span>
+    <span class="n">locations</span> <span class="o">=</span> <span class="n">uniform</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+    <span class="n">types</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">num_of_type_0</span> <span class="o">+</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">num_of_type_1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">locations</span><span class="p">,</span> <span class="n">types</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s see what this looks like:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">1234</span><span class="p">)</span>
+<span class="n">locations</span><span class="p">,</span> <span class="n">types</span> <span class="o">=</span> <span class="n">initialize_state</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;locations shape: </span><span class="si">{</span><span class="n">locations</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;First 5 locations:</span><span class="se">\n</span><span class="si">{</span><span class="n">locations</span><span class="p">[:</span><span class="mi">5</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">types shape: </span><span class="si">{</span><span class="n">types</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;First 20 types: </span><span class="si">{</span><span class="n">types</span><span class="p">[:</span><span class="mi">20</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>locations shape: (2000, 2)
+First 5 locations:
+[[0.19151945 0.62210877]
+ [0.43772774 0.78535858]
+ [0.77997581 0.27259261]
+ [0.27646426 0.80187218]
+ [0.95813935 0.87593263]]
+
+types shape: (2000,)
+First 20 types: [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0]
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="helper-functions">
+<h2><span class="section-number">26.3. </span>Helper Functions<a class="headerlink" href="#helper-functions" title="Link to this heading">#</a></h2>
+<p>Let’s write some functions that compute what we need while operating on the arrays.</p>
+<section id="computing-distances">
+<h3><span class="section-number">26.3.1. </span>Computing Distances<a class="headerlink" href="#computing-distances" title="Link to this heading">#</a></h3>
+<p>To find an agent’s neighbors, we need to compute distances.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">get_distances</span><span class="p">(</span><span class="n">loc</span><span class="p">,</span> <span class="n">locations</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute the Euclidean distance from one location to all agent locations.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">loc</span> <span class="o">-</span> <span class="n">locations</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s break down how this function works:</p>
+<ol class="arabic simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">loc</span> <span class="pre">-</span> <span class="pre">locations</span></code> subtracts the reference point <code class="docutils literal notranslate"><span class="pre">loc</span></code> from every row of
+<code class="docutils literal notranslate"><span class="pre">locations</span></code>. NumPy “broadcasts” the subtraction, so if <code class="docutils literal notranslate"><span class="pre">loc</span> <span class="pre">=</span> <span class="pre">[0.5,</span> <span class="pre">0.3]</span></code>
+and <code class="docutils literal notranslate"><span class="pre">locations</span></code> has 2000 rows, the result is a 2000 × 2 array where each
+row is the difference vector from <code class="docutils literal notranslate"><span class="pre">loc</span></code> to that agent.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">np.linalg.norm(...,</span> <span class="pre">axis=1)</span></code> computes the Euclidean norm of each
+row. The <code class="docutils literal notranslate"><span class="pre">axis=1</span></code> argument tells NumPy to compute the norm across columns
+(i.e., for each row separately).</p></li>
+</ol>
+<p>This vectorized approach is much faster than looping through agents one by one.</p>
+</section>
+<section id="finding-neighbors">
+<h3><span class="section-number">26.3.2. </span>Finding Neighbors<a class="headerlink" href="#finding-neighbors" title="Link to this heading">#</a></h3>
+<p>Now we can find the nearest neighbors:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">get_neighbors</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">locations</span><span class="p">):</span>
+    <span class="s2">&quot; Get indices of the nearest neighbors to agent i (excluding self). &quot;</span>
+    <span class="n">loc</span> <span class="o">=</span> <span class="n">locations</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:]</span>
+    <span class="n">distances</span> <span class="o">=</span> <span class="n">get_distances</span><span class="p">(</span><span class="n">loc</span><span class="p">,</span> <span class="n">locations</span><span class="p">)</span>
+    <span class="n">distances</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span>                 <span class="c1"># Don&#39;t count ourselves </span>
+    <span class="n">indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">distances</span><span class="p">)</span>       <span class="c1"># Sort agents by distance</span>
+    <span class="n">neighbors</span> <span class="o">=</span> <span class="n">indices</span><span class="p">[:</span><span class="n">num_neighbors</span><span class="p">]</span>   <span class="c1"># Keep the closest</span>
+    <span class="k">return</span> <span class="n">neighbors</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Here’s how this function works:</p>
+<ol class="arabic simple">
+<li><p>First we call <code class="docutils literal notranslate"><span class="pre">get_distances</span></code> to get an array of 2000 distances (one for
+each agent).</p></li>
+<li><p>We set <code class="docutils literal notranslate"><span class="pre">distances[i]</span> <span class="pre">=</span> <span class="pre">np.inf</span></code> so that agent <span class="math notranslate nohighlight">\(i\)</span> doesn’t count as their own
+neighbor.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">np.argsort(distances)</span></code> returns the <em>indices</em> of agents sorted from closest
+to furthest. For example, if the closest agent has index
+42, then <code class="docutils literal notranslate"><span class="pre">indices[0]</span></code> equals 42.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">indices[:num_neighbors]</span></code> uses slicing to keep only the first <code class="docutils literal notranslate"><span class="pre">num_neighbors</span></code>
+indices — these correspond to the nearest neighbors.</p></li>
+</ol>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Find neighbors of agent 0</span>
+<span class="n">neighbors</span> <span class="o">=</span> <span class="n">get_neighbors</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">locations</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Agent 0&#39;s nearest neighbors: </span><span class="si">{</span><span class="n">neighbors</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Agent 0 is NOT included: </span><span class="si">{</span><span class="mi">0</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">neighbors</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Agent 0&#39;s nearest neighbors: [ 595 1737  366 1442 1283  261  763  854 1427  218]
+Agent 0 is NOT included: True
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="checking-happiness">
+<h3><span class="section-number">26.3.3. </span>Checking Happiness<a class="headerlink" href="#checking-happiness" title="Link to this heading">#</a></h3>
+<p>An agent is happy if enough of their neighbors share their type:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">is_happy</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">locations</span><span class="p">,</span> <span class="n">types</span><span class="p">):</span>
+    <span class="s2">&quot; True if agent i has no more than max_other_type neighbors of a different type. &quot;</span>
+    <span class="n">agent_type</span> <span class="o">=</span> <span class="n">types</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    <span class="n">neighbors</span> <span class="o">=</span> <span class="n">get_neighbors</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">locations</span><span class="p">)</span>
+    <span class="n">neighbor_types</span> <span class="o">=</span> <span class="n">types</span><span class="p">[</span><span class="n">neighbors</span><span class="p">]</span>
+    <span class="n">num_other</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">neighbor_types</span> <span class="o">!=</span> <span class="n">agent_type</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">num_other</span> <span class="o">&lt;=</span> <span class="n">max_other_type</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s walk through this function step by step:</p>
+<ol class="arabic simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">types[i]</span></code> gets the type (0 or 1) of agent <span class="math notranslate nohighlight">\(i\)</span>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">get_neighbors(i,</span> <span class="pre">locations)</span></code> returns an array of indices for the nearest
+neighbors.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">types[neighbors]</span></code> uses these indices to look up the types of the
+neighbors. This is called “fancy indexing” — when you pass an array of
+indices to another array, NumPy returns the elements at those positions.
+For example, if <code class="docutils literal notranslate"><span class="pre">neighbors</span> <span class="pre">=</span> <span class="pre">[42,</span> <span class="pre">7,</span> <span class="pre">15,</span> <span class="pre">...]</span></code>, then <code class="docutils literal notranslate"><span class="pre">types[neighbors]</span></code>
+returns <code class="docutils literal notranslate"><span class="pre">[types[42],</span> <span class="pre">types[7],</span> <span class="pre">types[15],</span> <span class="pre">...]</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">neighbor_types</span> <span class="pre">==</span> <span class="pre">agent_type</span></code> compares each neighbor’s type to the agent’s
+type, producing an array of <code class="docutils literal notranslate"><span class="pre">True</span></code>/<code class="docutils literal notranslate"><span class="pre">False</span></code> values (e.g.,
+<code class="docutils literal notranslate"><span class="pre">[True,</span> <span class="pre">False,</span> <span class="pre">True,</span> <span class="pre">...]</span></code>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">np.sum(...)</span></code> counts how many <code class="docutils literal notranslate"><span class="pre">True</span></code> values there are. In NumPy, <code class="docutils literal notranslate"><span class="pre">True</span></code>
+is treated as 1 and <code class="docutils literal notranslate"><span class="pre">False</span></code> as 0, so summing a boolean array counts the
+<code class="docutils literal notranslate"><span class="pre">True</span></code> entries.</p></li>
+<li><p>Finally, we check if this count is within the tolerance <code class="docutils literal notranslate"><span class="pre">max_other_type</span></code>.</p></li>
+</ol>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check if agent 0 is happy</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Agent 0 type: </span><span class="si">{</span><span class="n">types</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Agent 0 happy: </span><span class="si">{</span><span class="n">is_happy</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">locations</span><span class="p">,</span><span class="w"> </span><span class="n">types</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Agent 0 type: 0
+Agent 0 happy: True
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="counting-happy-agents">
+<h3><span class="section-number">26.3.4. </span>Counting Happy Agents<a class="headerlink" href="#counting-happy-agents" title="Link to this heading">#</a></h3>
+<p>The next function uses a loop to check each agent and count how many are happy.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">count_happy</span><span class="p">(</span><span class="n">locations</span><span class="p">,</span> <span class="n">types</span><span class="p">):</span>
+    <span class="s2">&quot; Count the number of happy agents. &quot;</span>
+    <span class="n">happy_count</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+        <span class="n">happy_count</span> <span class="o">+=</span> <span class="n">is_happy</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">locations</span><span class="p">,</span> <span class="n">types</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">happy_count</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Since <code class="docutils literal notranslate"><span class="pre">is_happy</span></code> returns <code class="docutils literal notranslate"><span class="pre">True</span></code> or <code class="docutils literal notranslate"><span class="pre">False</span></code>, and Python treats <code class="docutils literal notranslate"><span class="pre">True</span></code>
+as 1 when adding, we can accumulate the count directly.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Initially happy agents: </span><span class="si">{</span><span class="n">count_happy</span><span class="p">(</span><span class="n">locations</span><span class="p">,</span><span class="w"> </span><span class="n">types</span><span class="p">)</span><span class="si">}</span><span class="s2"> out of </span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Initially happy agents: 1648 out of 2000
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="moving-unhappy-agents">
+<h3><span class="section-number">26.3.5. </span>Moving Unhappy Agents<a class="headerlink" href="#moving-unhappy-agents" title="Link to this heading">#</a></h3>
+<p>When an agent is unhappy, they keep trying new random locations until they find
+one where they’re happy:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">update_agent</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">locations</span><span class="p">,</span> <span class="n">types</span><span class="p">,</span> <span class="n">max_attempts</span><span class="o">=</span><span class="mi">10_000</span><span class="p">):</span>
+    <span class="s2">&quot; Move agent i to a new location where they are happy. &quot;</span>
+    <span class="n">attempts</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">while</span> <span class="ow">not</span> <span class="n">is_happy</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">locations</span><span class="p">,</span> <span class="n">types</span><span class="p">):</span>
+        <span class="n">locations</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">uniform</span><span class="p">(),</span> <span class="n">uniform</span><span class="p">()</span>
+        <span class="n">attempts</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="n">attempts</span> <span class="o">&gt;=</span> <span class="n">max_attempts</span><span class="p">:</span>
+            <span class="k">break</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Here’s how this works:</p>
+<ol class="arabic simple">
+<li><p>The <code class="docutils literal notranslate"><span class="pre">while</span></code> loop keeps running as long as the agent is unhappy.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">locations[i,</span> <span class="pre">:]</span> <span class="pre">=</span> <span class="pre">uniform(),</span> <span class="pre">uniform()</span></code> assigns a new random <span class="math notranslate nohighlight">\((x, y)\)</span>
+location to agent <span class="math notranslate nohighlight">\(i\)</span>. The left side <code class="docutils literal notranslate"><span class="pre">locations[i,</span> <span class="pre">:]</span></code> selects row <span class="math notranslate nohighlight">\(i\)</span>
+(all columns), and the right side creates a tuple of two random numbers
+between 0 and 1.</p></li>
+<li><p>Importantly, this modifies the <code class="docutils literal notranslate"><span class="pre">locations</span></code> array <em>in place</em>. We don’t need
+to return anything because the original array is changed directly. This is
+a key feature of NumPy arrays — when you modify a slice, you modify the
+underlying data.</p></li>
+</ol>
+</section>
+</section>
+<section id="visualization">
+<h2><span class="section-number">26.4. </span>Visualization<a class="headerlink" href="#visualization" title="Link to this heading">#</a></h2>
+<p>Here’s some code for Visualization — we’ll skip the details</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">plot_distribution</span><span class="p">(</span><span class="n">locations</span><span class="p">,</span> <span class="n">types</span><span class="p">,</span> <span class="n">title</span><span class="p">):</span>
+    <span class="s2">&quot; Plot the distribution of agents. &quot;</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+    <span class="n">plot_args</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;markersize&#39;</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span> <span class="s1">&#39;alpha&#39;</span><span class="p">:</span> <span class="mf">0.8</span><span class="p">,</span> 
+        <span class="s1">&#39;markeredgecolor&#39;</span><span class="p">:</span> <span class="s1">&#39;black&#39;</span><span class="p">,</span> 
+        <span class="s1">&#39;markeredgewidth&#39;</span><span class="p">:</span> <span class="mf">0.5</span>
+    <span class="p">}</span>
+    <span class="n">colors</span> <span class="o">=</span> <span class="s1">&#39;darkorange&#39;</span><span class="p">,</span> <span class="s1">&#39;green&#39;</span>
+    <span class="k">for</span> <span class="n">agent_type</span><span class="p">,</span> <span class="n">color</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">colors</span><span class="p">):</span>
+        <span class="n">idx</span> <span class="o">=</span> <span class="p">(</span><span class="n">types</span> <span class="o">==</span> <span class="n">agent_type</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">locations</span><span class="p">[</span><span class="n">idx</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+                <span class="n">locations</span><span class="p">[</span><span class="n">idx</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+                <span class="s1">&#39;o&#39;</span><span class="p">,</span>
+                <span class="n">markerfacecolor</span><span class="o">=</span><span class="n">color</span><span class="p">,</span>
+                <span class="o">**</span><span class="n">plot_args</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s visualize the initial random distribution:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">1234</span><span class="p">)</span>
+<span class="n">locations</span><span class="p">,</span> <span class="n">types</span> <span class="o">=</span> <span class="n">initialize_state</span><span class="p">()</span>
+<span class="n">plot_distribution</span><span class="p">(</span><span class="n">locations</span><span class="p">,</span> <span class="n">types</span><span class="p">,</span> <span class="s1">&#39;Initial random distribution&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<a class="reference internal image-reference" href="_images/fdc3aebab8d2c8b6d5e7e7aa62c8cf8f521af93dd5a69d36bbdc31c5171b6803.png"><img alt="_images/fdc3aebab8d2c8b6d5e7e7aa62c8cf8f521af93dd5a69d36bbdc31c5171b6803.png" src="_images/fdc3aebab8d2c8b6d5e7e7aa62c8cf8f521af93dd5a69d36bbdc31c5171b6803.png" style="width: 80%;" />
+</a>
+</div>
+</div>
+</section>
+<section id="the-simulation">
+<h2><span class="section-number">26.5. </span>The Simulation<a class="headerlink" href="#the-simulation" title="Link to this heading">#</a></h2>
+<p>Now we put it all together.</p>
+<p>As in the first lecture, each iteration cycles through all agents in order,
+giving each the opportunity to move:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">run_simulation</span><span class="p">(</span><span class="n">max_iter</span><span class="o">=</span><span class="mi">100_000</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">42</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Run the Schelling simulation.</span>
+
+<span class="sd">    Each iteration cycles through all agents, giving each a chance to move.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
+    <span class="n">locations</span><span class="p">,</span> <span class="n">types</span> <span class="o">=</span> <span class="n">initialize_state</span><span class="p">()</span>
+
+    <span class="n">plot_distribution</span><span class="p">(</span><span class="n">locations</span><span class="p">,</span> <span class="n">types</span><span class="p">,</span> <span class="s1">&#39;Initial distribution&#39;</span><span class="p">)</span>
+
+    <span class="c1"># Loop until no agent wishes to move</span>
+    <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+    <span class="n">someone_moved</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">iteration</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">while</span> <span class="n">someone_moved</span> <span class="ow">and</span> <span class="n">iteration</span> <span class="o">&lt;</span> <span class="n">max_iter</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Entering iteration </span><span class="si">{</span><span class="n">iteration</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">iteration</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">someone_moved</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">is_happy</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">locations</span><span class="p">,</span> <span class="n">types</span><span class="p">):</span>
+                <span class="n">update_agent</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">locations</span><span class="p">,</span> <span class="n">types</span><span class="p">)</span>
+                <span class="n">someone_moved</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">elapsed</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span>
+
+    <span class="n">plot_distribution</span><span class="p">(</span><span class="n">locations</span><span class="p">,</span> <span class="n">types</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;Iteration </span><span class="si">{</span><span class="n">iteration</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">someone_moved</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Converged in </span><span class="si">{</span><span class="n">elapsed</span><span class="si">:</span><span class="s1">.2f</span><span class="si">}</span><span class="s1"> seconds after </span><span class="si">{</span><span class="n">iteration</span><span class="si">}</span><span class="s1"> iterations.&#39;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Hit iteration bound and terminated.&#39;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">locations</span><span class="p">,</span> <span class="n">types</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="results">
+<h2><span class="section-number">26.6. </span>Results<a class="headerlink" href="#results" title="Link to this heading">#</a></h2>
+<p>Let’s run the simulation:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">locations</span><span class="p">,</span> <span class="n">types</span> <span class="o">=</span> <span class="n">run_simulation</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<a class="reference internal image-reference" href="_images/5366b6629d22de91860bfb88553f28fc002097fd832af6e6285dc1e644ca64fd.png"><img alt="_images/5366b6629d22de91860bfb88553f28fc002097fd832af6e6285dc1e644ca64fd.png" src="_images/5366b6629d22de91860bfb88553f28fc002097fd832af6e6285dc1e644ca64fd.png" style="width: 80%;" />
+</a>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Entering iteration 1
+Entering iteration 2
+Entering iteration 3
+Entering iteration 4
+Entering iteration 5
+Entering iteration 6
+Entering iteration 7
+Converged in 1.86 seconds after 7 iterations.
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="_images/5167d885f4b0cb0df0fb701efb1a6c998135077dd0ba29641849da2d726da150.png"><img alt="_images/5167d885f4b0cb0df0fb701efb1a6c998135077dd0ba29641849da2d726da150.png" src="_images/5167d885f4b0cb0df0fb701efb1a6c998135077dd0ba29641849da2d726da150.png" style="width: 80%;" />
+</a>
+</div>
+</div>
+<p>We see the same phenomenon as in the class-based version: starting from a
+random mixed distribution, agents self-organize into segregated clusters.</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                    </div>
+                    
+                </main> <!-- .page__content -->
+                
+
+
+                <footer class="qe-page__footer">
+
+                    <p><a href="https://creativecommons.org/licenses/by-sa/4.0/"><img src="https://licensebuttons.net/l/by-sa/4.0/80x15.png"></a></p>
+
+                    <p>Creative Commons License &ndash; This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International.</p>
+
+                    <p>A theme by <a href="https://quantecon.org">QuantEcon</a></p>
+
+                </footer> <!-- .page__footer -->
+
+            </div> <!-- .page -->
+
+            
+
+            
+            <div class="qe-sidebar bd-sidebar inactive" id="site-navigation">
+
+                <div class="qe-sidebar__header">
+
+
+                    Contents
+
+                </div>
+
+                <nav class="qe-sidebar__nav" id="qe-sidebar-nav" aria-label="Main navigation">
+                    <p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Introduction
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="about.html">
+   1. About
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="jax_intro.html">
+   2. An Introduction to JAX
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="autodiff.html">
+   3. Adventures with Autodiff
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="newtons_method.html">
+   4. Newton’s Method via JAX
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Simulation
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="inventory_dynamics.html">
+   5. Inventory Dynamics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="kesten_processes.html">
+   6. Kesten Processes and Firm Dynamics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="wealth_dynamics.html">
+   7. Wealth Distribution Dynamics
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Asset Pricing
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="lucas_model.html">
+   8. Asset Pricing: The Lucas Asset Pricing Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="markov_asset.html">
+   9. An Asset Pricing Problem
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Dynamic Programming
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="job_search.html">
+   10. Job Search
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="opt_savings_1.html">
+   11. Optimal Savings I: Value Function Iteration
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="opt_savings_2.html">
+   12. Optimal Savings II: Alternative Algorithms
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="short_path.html">
+   13. Shortest Paths
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="opt_invest.html">
+   14. Optimal Investment
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="inventory_ssd.html">
+   15. Inventory Management Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ifp_egm.html">
+   16. Endogenous Grid Method
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Macroeconomic Models
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="arellano.html">
+   17. Default Risk and Income Fluctuations
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="aiyagari_jax.html">
+   18. The Aiyagari Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="hopenhayn.html">
+   19. The Hopenhayn Entry-Exit Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="overborrowing.html">
+   20. Bianchi Overborrowing Model
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Data and Empirics
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="mle.html">
+   21. Maximum Likelihood Estimation
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="keras.html">
+   22. Simple Neural Network Regression with Keras and JAX
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="jax_nn.html">
+   23. Neural Network Regression with JAX
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ifp_dl.html">
+   24. Policy Gradient-Based Optimal Savings
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Racial Segregation
+ </span>
+</p>
+<ul class="current nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="schelling.html">
+   25. Schelling’s Model of Racial Segregation
+  </a>
+ </li>
+ <li class="toctree-l1 current active active">
+  <a class="current reference internal" href="#">
+   26. Schelling Model with NumPy
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="schelling_jax.html">
+   27. Schelling Model with JAX
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="schelling_jax_parallel.html">
+   28. Parallelizing the Algorithm
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="schelling_shocks.html">
+   29. Segregation with Persistent Shocks
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Other
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="troubleshooting.html">
+   30. Troubleshooting
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="zreferences.html">
+   31. References
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="status.html">
+   32. Execution Statistics
+  </a>
+ </li>
+</ul>
+
+                </nav>
+
+                <div class="qe-sidebar__footer">
+
+                </div>
+
+            </div> <!-- .sidebar -->
+            
+        </div> <!-- .main -->
+
+        <div class="qe-toolbar">
+
+            <div class="qe-toolbar__inner">
+
+                <ul class="qe-toolbar__main">
+                    <li data-tippy-content="Table of Contents" class="btn__sidebar"><i data-feather="menu"></i></li>
+                    <li data-tippy-content="Home"><a href="intro.html"><i data-feather="home"></i></a></li>
+                    <li class="btn__qelogo"><a href="https://quantecon.org" title=""><span class="show-for-sr">QuantEcon</span></a></li>
+                </ul>
+
+                <ul class="qe-toolbar__links">
+                    <li class="btn__search">
+                        <form action="search.html" method="get">
+                            <input type="search" class="form-control" name="q" id="search-input" placeholder="Search..." aria-label="Search..." autocomplete="off" accesskey="k">
+                            <i data-feather="search" id="search-icon"></i>
+                        </form>
+                    </li>
+                    <li data-tippy-content="Fullscreen" class="btn__fullscreen"><i data-feather="maximize"></i></li>
+                    <li data-tippy-content="Increase font size" class="btn__plus"><i data-feather="plus-circle"></i></li>
+                    <li data-tippy-content="Decrease font size" class="btn__minus"><i data-feather="minus-circle"></i></li>
+                    <li data-tippy-content="Change contrast" class="btn__contrast"><i data-feather="sunset"></i></li>
+                    <li data-tippy-content="Download Notebook"><a href="/_notebooks/schelling_numpy.ipynb" download><i data-feather="download-cloud"></i></a></li>
+                    <li class="settings-button" id="settingsButton"><div data-tippy-content="Launch Notebook"><i data-feather="play-circle"></i></div></li>
+                        <li class="download-pdf" id="downloadButton"><i data-feather="file"></i></li>
+                    <!--
+                    # Enable if looking for link to specific document hosted on GitHub
+                    <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-jax/blob/main/lectures/schelling_numpy.md" download><i data-feather="github"></i></a></li>
+                    -->
+                    <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-jax" download><i data-feather="github"></i></a></li>
+                    
+                    
+                </ul>
+
+            </div>
+
+        </div> <!-- .toolbar -->
+        <div id="downloadPDFModal" style="display: none;">
+            <ul class="pdf-options" style="display: block;">
+                <li class="download-pdf-book" onClick="window.print()">
+                    <p>Lecture (PDF)</p>
+                </li>
+                <li class="download-pdf-file">
+                    <a href="/_pdf/quantecon-jax.pdf" download><p>Book (PDF)</p></a>
+                </li>
+            </ul>
+        </div>
+        <div id="settingsModal" style="display: none;">
+            <p class="modal-title"> Notebook Launcher </p>
+            <div class="modal-desc">
+            <p>
+                Choose public or private cloud service for "Launch" button.
+            </p>
+            </div>
+            <p class="modal-subtitle">Select a server</p>
+            <ul class="modal-servers">
+            <li class="active launcher-public">
+                <span class="label">Public</span>
+                <select id="launcher-public-input">
+                
+                    <option value="https://colab.research.google.com/github/QuantEcon/lecture-jax.notebooks/blob/main/schelling_numpy.ipynb">Colab</option>
+                
+                </select>
+                <i class="fas fa-check-circle"></i>
+            </li>
+            <li class="launcher-private">
+                <span class="label">Private</span>
+                <input type="text" id="launcher-private-input" data-repourl="https://github.com/QuantEcon/lecture-jax.notebooks" data-urlpath="tree/lecture-jax.notebooks/schelling_numpy.ipynb" data-branch=main>
+                <i class="fas fa-check-circle"></i>
+            </li>
+            </ul>
+            <p class="launch"><a href="https://colab.research.google.com/github/QuantEcon/lecture-jax.notebooks/blob/main/schelling_numpy.ipynb" id="advancedLaunchButton" target="_blank">Launch Notebook</a></p>
+            <script>
+                // QuantEcon Notebook Launcher
+                const launcherTypeElements = document.querySelectorAll('#settingsModal .modal-servers li');
+                // Highlight the server type if previous selection exists
+                if (typeof localStorage.launcherType !== 'undefined') {
+                  for (var i = 0; i < launcherTypeElements.length; i++) {
+                    launcherTypeElements[i].classList.remove('active');
+                    if ( launcherTypeElements[i].classList.contains(localStorage.launcherType) ) {
+                      launcherTypeElements[i].classList.add('active');
+                    }
+                  }
+                }
+                // Highlight server type on click and set local storage value
+                for (var i = 0; i < launcherTypeElements.length; i++) {
+                  launcherTypeElements[i].addEventListener('click', function() {
+                    for (var j = 0; j < launcherTypeElements.length; j++) {
+                      launcherTypeElements[j].classList.remove('active');
+                    }
+                    this.classList.add('active');
+                    if ( this.classList.contains('launcher-private') ) {
+                      localStorage.launcherType = 'launcher-private';
+                    } else if ( this.classList.contains('launcher-public') ) {
+                      localStorage.launcherType = 'launcher-public';
+                    }
+                    setLaunchServer();
+                  })
+                }
+                const launcherPublic = document.getElementById('launcher-public-input');
+                const launcherPrivate = document.getElementById('launcher-private-input');
+                const pageName = "schelling_numpy";
+                const repoURL = "https://github.com/QuantEcon/lecture-jax.notebooks";
+                const urlPath = "tree/lecture-jax.notebooks/schelling_numpy.ipynb";
+                const branch = "main"
+                const launchNotebookLink = document.getElementById('advancedLaunchButton');
+
+                // Highlight public server option if previous selection exists
+                if (typeof localStorage.launcherPublic !== 'undefined') {
+                  launcherPublic.value = localStorage.launcherPublic;
+                }
+                // Update local storage upon public server selection
+                launcherPublic.addEventListener('change', (event) => {
+                  setLaunchServer();
+                });
+                // Populate private server input if previous entry exists
+                if (typeof localStorage.launcherPrivate !== 'undefined') {
+                  launcherPrivate.value = localStorage.launcherPrivate;
+                }
+                // Update local storage when a private server is entered
+                launcherPrivate.addEventListener('input', (event) => {
+                  setLaunchServer();
+                });
+
+                // Function to update the "Launch Notebook" link href
+                function setLaunchServer() {
+                  launchNotebookLink.removeAttribute("style")
+                  if ( localStorage.launcherType == 'launcher-private' ) {
+                    let repoPrefix = "/user-redirect/git-pull?repo=" + repoURL + "&branch=" + branch + "&urlpath=" + urlPath;
+                    launcherPrivateValue = launcherPrivate.value
+                    if (!launcherPrivateValue) {
+                        launchNotebookLink.removeAttribute("href")
+                        launchNotebookLink.style.background = "grey"
+                        return
+                    }
+                    localStorage.launcherPrivate = launcherPrivateValue;
+                    privateServer = localStorage.launcherPrivate.replace(/\/$/, "")
+                    if (!privateServer.includes("http")) {
+                        privateServer = "http://" + privateServer
+                    }
+                    launchNotebookLinkURL = privateServer + repoPrefix;
+                  } else if ( localStorage.launcherType == 'launcher-public' ) {
+                    launcherPublicValue = launcherPublic.options[launcherPublic.selectedIndex].value;
+                    localStorage.launcherPublic = launcherPublicValue;
+                    launchNotebookLinkURL = localStorage.launcherPublic;
+                  }
+                  if (launchNotebookLinkURL) launchNotebookLink.href = launchNotebookLinkURL;
+                }
+                // Check if user has previously selected a server
+                if ( (typeof localStorage.launcherPrivate !== 'undefined') || (typeof localStorage.launcherPublic !== 'undefined') ) {
+                  setLaunchServer();
+                }
+                </script>
+
+        </div>
+
+    </div> <!-- .wrapper-->
+  </body>
+</html>

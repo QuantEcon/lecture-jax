@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>27. Execution Statistics &#8212; Quantitative Economics with Python using JAX</title>
+    <title>32. Execution Statistics &#8212; Quantitative Economics with Python using JAX</title>
     
     <link rel="preconnect" href="https://unpkg.com" crossorigin>
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
@@ -77,12 +77,13 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
-    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=22b71a9b445b7b2b6a277c0a48ea72bf6e7c90d9" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=3355220bfb204a7ac1b0ca03dac108f0437ded6f" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=9c3e77be" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="_static/exercise.css?v=982b99e0" />
+    <link rel="stylesheet" type="text/css" href="_static/proof.css" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
@@ -100,8 +101,8 @@
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="_static/togglebutton.js?v=4a39c7ea"></script>
-    <script src="_static/scripts/quantecon-book-theme.js?digest=65b86b9423025043228643fcfb616ce846cb91c1"></script>
+    <script src="_static/togglebutton.js?v=b8b12719"></script>
+    <script src="_static/scripts/quantecon-book-theme.js?digest=9980b4379844dc0b911d69b62b295f34ede88fac"></script>
     <script src="_static/scripts/jquery.js?v=5d32c60e"></script>
     <script src="_static/scripts/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
@@ -129,7 +130,7 @@
     <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="prev" title="26. References" href="zreferences.html" />
+    <link rel="prev" title="31. References" href="zreferences.html" />
 
 <!-- Normal Meta Tags -->
 <meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
@@ -153,10 +154,31 @@
 <meta property="og:site_name" content="Quantitative Economics with Python using JAX" />
 <meta name="theme-color" content="#ffffff" />
 
+
+
+
   </head>
 <body>
 
+<!-- Prevent flash of light theme when dark mode is saved -->
+<script>
+(function() {
+  try {
+    if (localStorage.setContrast === '1') {
+      document.body.classList.add('dark-theme');
+      document.documentElement.setAttribute('data-theme', 'dark');
+    } else {
+      document.documentElement.setAttribute('data-theme', 'light');
+    }
+  } catch(e) {
+    document.documentElement.setAttribute('data-theme', 'light');
+  }
+})();
+</script>
+
 <!-- Override QuantEcon theme colors -->
+
+<!-- Color scheme: applies scheme-specific body class -->
 
     <span id="top"></span>
 
@@ -168,7 +190,12 @@
 
                 <div class="qe-page__toc">
 
-                    <div class="inner">
+                    
+                    
+                    
+
+                    
+                    <div class="inner sticky" data-autoexpand="true">
 
                         
 
@@ -193,10 +220,16 @@
                         <div class="qe-page__toc-footer">
                             
                             
-                            <p><a href="#top"><strong>Back to top</strong></a></p>
+                            
+                            
+                            
                         </div>
 
                     </div>
+
+                    
+                    <a href="#top" class="back-to-top-btn" title="Back to top">↑ Top</a>
+                    
 
                 </div>
 
@@ -237,7 +270,7 @@
                                 <a href="https://github.com/QuantEcon/lecture-jax/commit/775f6d0" class="changelog-hash">775f6d0</a>
                                 
                                 <span class="changelog-author">Matt McKay</span>
-                                <span class="changelog-time">5 months ago</span>
+                                <span class="changelog-time">8 months ago</span>
                                 <span class="changelog-message">MAINT: upgrade anaconda=2025.06 and python=3.13 (#223)</span>
                             </li>
                             
@@ -273,7 +306,7 @@
                                 <a href="https://github.com/QuantEcon/lecture-jax/commit/7cc525f" class="changelog-hash">7cc525f</a>
                                 
                                 <span class="changelog-author">mmcky</span>
-                                <span class="changelog-time">2 years ago</span>
+                                <span class="changelog-time">3 years ago</span>
                                 <span class="changelog-message">INF: Setup initial Infrastructure</span>
                             </li>
                             
@@ -290,7 +323,7 @@
                     <div>
                         
   <section class="tex2jax_ignore mathjax_ignore" id="execution-statistics">
-<h1><span class="section-number">27. </span>Execution Statistics<a class="headerlink" href="#execution-statistics" title="Link to this heading">#</a></h1>
+<h1><span class="section-number">32. </span>Execution Statistics<a class="headerlink" href="#execution-statistics" title="Link to this heading">#</a></h1>
 <p>This table contains the latest execution statistics.</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <thead>
@@ -303,165 +336,195 @@
 </thead>
 <tbody>
 <tr class="row-even"><td><p><a class="xref doc reference internal" href="aiyagari_jax.html"><span class="doc">aiyagari_jax</span></a></p></td>
-<td><p>2026-01-12 03:42</p></td>
+<td><p>2026-03-30 04:09</p></td>
 <td><p>cache</p></td>
-<td><p>67.97</p></td>
+<td><p>70.54</p></td>
 <td><p>✅</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="xref doc reference internal" href="arellano.html"><span class="doc">arellano</span></a></p></td>
-<td><p>2026-01-12 03:43</p></td>
+<td><p>2026-03-30 04:09</p></td>
 <td><p>cache</p></td>
-<td><p>23.28</p></td>
+<td><p>25.15</p></td>
 <td><p>✅</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="xref doc reference internal" href="autodiff.html"><span class="doc">autodiff</span></a></p></td>
-<td><p>2026-01-12 03:43</p></td>
+<td><p>2026-03-30 04:10</p></td>
 <td><p>cache</p></td>
-<td><p>13.8</p></td>
+<td><p>14.52</p></td>
 <td><p>✅</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="xref doc reference internal" href="hopenhayn.html"><span class="doc">hopenhayn</span></a></p></td>
-<td><p>2026-01-12 03:43</p></td>
+<td><p>2026-03-30 04:10</p></td>
 <td><p>cache</p></td>
-<td><p>25.67</p></td>
+<td><p>26.87</p></td>
 <td><p>✅</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="xref doc reference internal" href="ifp_dl.html"><span class="doc">ifp_dl</span></a></p></td>
-<td><p>2026-01-12 03:44</p></td>
+<td><p>2026-03-30 04:11</p></td>
 <td><p>cache</p></td>
-<td><p>35.32</p></td>
+<td><p>35.91</p></td>
 <td><p>✅</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="xref doc reference internal" href="ifp_egm.html"><span class="doc">ifp_egm</span></a></p></td>
-<td><p>2026-01-12 03:46</p></td>
+<td><p>2026-03-30 04:13</p></td>
 <td><p>cache</p></td>
-<td><p>145.48</p></td>
+<td><p>147.38</p></td>
 <td><p>✅</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="xref doc reference internal" href="intro.html"><span class="doc">intro</span></a></p></td>
-<td><p>2026-01-12 03:47</p></td>
+<td><p>2026-03-30 04:13</p></td>
 <td><p>cache</p></td>
-<td><p>0.92</p></td>
+<td><p>0.96</p></td>
 <td><p>✅</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="xref doc reference internal" href="inventory_dynamics.html"><span class="doc">inventory_dynamics</span></a></p></td>
-<td><p>2026-01-12 03:47</p></td>
+<td><p>2026-03-30 04:13</p></td>
 <td><p>cache</p></td>
-<td><p>9.27</p></td>
+<td><p>9.57</p></td>
 <td><p>✅</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="xref doc reference internal" href="inventory_ssd.html"><span class="doc">inventory_ssd</span></a></p></td>
-<td><p>2026-01-12 03:47</p></td>
+<td><p>2026-03-30 04:13</p></td>
 <td><p>cache</p></td>
-<td><p>10.08</p></td>
+<td><p>10.17</p></td>
 <td><p>✅</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="xref doc reference internal" href="jax_intro.html"><span class="doc">jax_intro</span></a></p></td>
-<td><p>2026-01-12 03:47</p></td>
+<td><p>2026-03-30 04:14</p></td>
 <td><p>cache</p></td>
-<td><p>19.31</p></td>
+<td><p>20.02</p></td>
 <td><p>✅</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="xref doc reference internal" href="jax_nn.html"><span class="doc">jax_nn</span></a></p></td>
-<td><p>2026-01-12 03:48</p></td>
+<td><p>2026-03-30 04:14</p></td>
 <td><p>cache</p></td>
-<td><p>43.49</p></td>
+<td><p>44.8</p></td>
 <td><p>✅</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="xref doc reference internal" href="job_search.html"><span class="doc">job_search</span></a></p></td>
-<td><p>2026-01-12 03:48</p></td>
+<td><p>2026-03-30 04:15</p></td>
 <td><p>cache</p></td>
-<td><p>10.48</p></td>
+<td><p>10.75</p></td>
 <td><p>✅</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="xref doc reference internal" href="keras.html"><span class="doc">keras</span></a></p></td>
-<td><p>2026-01-12 03:49</p></td>
+<td><p>2026-03-30 04:15</p></td>
 <td><p>cache</p></td>
-<td><p>28.11</p></td>
+<td><p>29.0</p></td>
 <td><p>✅</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="xref doc reference internal" href="kesten_processes.html"><span class="doc">kesten_processes</span></a></p></td>
-<td><p>2026-01-12 03:49</p></td>
+<td><p>2026-03-30 04:15</p></td>
 <td><p>cache</p></td>
-<td><p>11.67</p></td>
+<td><p>11.82</p></td>
 <td><p>✅</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="xref doc reference internal" href="lucas_model.html"><span class="doc">lucas_model</span></a></p></td>
-<td><p>2026-01-12 03:49</p></td>
+<td><p>2026-03-30 04:16</p></td>
 <td><p>cache</p></td>
-<td><p>18.88</p></td>
+<td><p>18.47</p></td>
 <td><p>✅</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="xref doc reference internal" href="markov_asset.html"><span class="doc">markov_asset</span></a></p></td>
-<td><p>2026-01-12 03:49</p></td>
+<td><p>2026-03-30 04:16</p></td>
 <td><p>cache</p></td>
-<td><p>12.4</p></td>
+<td><p>12.07</p></td>
 <td><p>✅</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="xref doc reference internal" href="mle.html"><span class="doc">mle</span></a></p></td>
-<td><p>2026-01-12 03:50</p></td>
+<td><p>2026-03-30 04:16</p></td>
 <td><p>cache</p></td>
-<td><p>17.36</p></td>
+<td><p>17.45</p></td>
 <td><p>✅</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="xref doc reference internal" href="newtons_method.html"><span class="doc">newtons_method</span></a></p></td>
-<td><p>2026-01-12 03:53</p></td>
+<td><p>2026-03-30 04:19</p></td>
 <td><p>cache</p></td>
-<td><p>192.91</p></td>
+<td><p>193.08</p></td>
 <td><p>✅</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="xref doc reference internal" href="opt_invest.html"><span class="doc">opt_invest</span></a></p></td>
-<td><p>2026-01-12 03:53</p></td>
+<td><p>2026-03-30 04:20</p></td>
 <td><p>cache</p></td>
-<td><p>23.06</p></td>
+<td><p>22.79</p></td>
 <td><p>✅</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="xref doc reference internal" href="opt_savings_1.html"><span class="doc">opt_savings_1</span></a></p></td>
-<td><p>2026-01-12 03:54</p></td>
+<td><p>2026-03-30 04:20</p></td>
 <td><p>cache</p></td>
-<td><p>43.53</p></td>
+<td><p>42.24</p></td>
 <td><p>✅</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="xref doc reference internal" href="opt_savings_2.html"><span class="doc">opt_savings_2</span></a></p></td>
-<td><p>2026-01-12 03:54</p></td>
+<td><p>2026-04-06 05:44</p></td>
 <td><p>cache</p></td>
-<td><p>21.1</p></td>
+<td><p>27.6</p></td>
 <td><p>✅</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="xref doc reference internal" href="overborrowing.html"><span class="doc">overborrowing</span></a></p></td>
-<td><p>2026-01-12 03:55</p></td>
+<td><p>2026-03-30 04:21</p></td>
 <td><p>cache</p></td>
-<td><p>24.01</p></td>
+<td><p>24.74</p></td>
 <td><p>✅</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="xref doc reference internal" href="short_path.html"><span class="doc">short_path</span></a></p></td>
-<td><p>2026-01-12 03:55</p></td>
+<tr class="row-even"><td><p><a class="xref doc reference internal" href="schelling.html"><span class="doc">schelling</span></a></p></td>
+<td><p>2026-04-06 05:45</p></td>
 <td><p>cache</p></td>
-<td><p>4.61</p></td>
+<td><p>20.43</p></td>
 <td><p>✅</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="xref doc reference internal" href="#"><span class="doc">status</span></a></p></td>
-<td><p>2026-01-12 03:55</p></td>
+<tr class="row-odd"><td><p><a class="xref doc reference internal" href="schelling_jax.html"><span class="doc">schelling_jax</span></a></p></td>
+<td><p>2026-04-06 05:45</p></td>
 <td><p>cache</p></td>
-<td><p>7.28</p></td>
+<td><p>7.45</p></td>
 <td><p>✅</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="xref doc reference internal" href="troubleshooting.html"><span class="doc">troubleshooting</span></a></p></td>
-<td><p>2026-01-12 03:47</p></td>
+<tr class="row-even"><td><p><a class="xref doc reference internal" href="schelling_jax_parallel.html"><span class="doc">schelling_jax_parallel</span></a></p></td>
+<td><p>2026-04-06 05:45</p></td>
 <td><p>cache</p></td>
-<td><p>0.92</p></td>
+<td><p>17.59</p></td>
 <td><p>✅</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="xref doc reference internal" href="wealth_dynamics.html"><span class="doc">wealth_dynamics</span></a></p></td>
-<td><p>2026-01-12 03:57</p></td>
+<tr class="row-odd"><td><p><a class="xref doc reference internal" href="schelling_numpy.html"><span class="doc">schelling_numpy</span></a></p></td>
+<td><p>2026-04-06 05:45</p></td>
 <td><p>cache</p></td>
-<td><p>140.6</p></td>
+<td><p>4.05</p></td>
 <td><p>✅</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="xref doc reference internal" href="zreferences.html"><span class="doc">zreferences</span></a></p></td>
-<td><p>2026-01-12 03:47</p></td>
+<tr class="row-even"><td><p><a class="xref doc reference internal" href="schelling_shocks.html"><span class="doc">schelling_shocks</span></a></p></td>
+<td><p>2026-04-06 05:46</p></td>
 <td><p>cache</p></td>
-<td><p>0.92</p></td>
+<td><p>23.69</p></td>
+<td><p>✅</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="xref doc reference internal" href="short_path.html"><span class="doc">short_path</span></a></p></td>
+<td><p>2026-03-30 04:21</p></td>
+<td><p>cache</p></td>
+<td><p>4.51</p></td>
+<td><p>✅</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="xref doc reference internal" href="#"><span class="doc">status</span></a></p></td>
+<td><p>2026-03-30 04:21</p></td>
+<td><p>cache</p></td>
+<td><p>7.62</p></td>
+<td><p>✅</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="xref doc reference internal" href="troubleshooting.html"><span class="doc">troubleshooting</span></a></p></td>
+<td><p>2026-03-30 04:13</p></td>
+<td><p>cache</p></td>
+<td><p>0.96</p></td>
+<td><p>✅</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="xref doc reference internal" href="wealth_dynamics.html"><span class="doc">wealth_dynamics</span></a></p></td>
+<td><p>2026-03-30 04:24</p></td>
+<td><p>cache</p></td>
+<td><p>140.65</p></td>
+<td><p>✅</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="xref doc reference internal" href="zreferences.html"><span class="doc">zreferences</span></a></p></td>
+<td><p>2026-03-30 04:13</p></td>
+<td><p>cache</p></td>
+<td><p>0.96</p></td>
 <td><p>✅</p></td>
 </tr>
 </tbody>
@@ -500,7 +563,7 @@ access to a <code class="docutils literal notranslate"><span class="pre">gpu</sp
 # Name                           Version               Build               Channel
 _libgcc_mutex                    0.1                   main
 _openmp_mutex                    5.1                   1_gnu
-absl-py                          2.3.1                 pypi_0              pypi
+absl-py                          2.4.0                 pypi_0              pypi
 accessible-pygments              0.0.5                 pypi_0              pypi
 aiobotocore                      2.25.0                py313h06a4308_0
 aiodns                           3.5.0                 py313h06a4308_1
@@ -566,7 +629,6 @@ certifi                          2025.11.12            py313h06a4308_0
 cffi                             2.0.0                 py313h4eded50_1
 chardet                          5.2.0                 py313h06a4308_0
 charset-normalizer               3.4.4                 py313h06a4308_0
-chex                             0.1.91                pypi_0              pypi
 click                            8.2.1                 py313h06a4308_0
 cloudpickle                      3.1.1                 py313h06a4308_0
 colorama                         0.4.6                 pypi_0              pypi
@@ -657,10 +719,10 @@ jansson                          2.14                  h5eee18b_1
 jaraco.classes                   3.4.0                 py313h06a4308_0
 jaraco.context                   6.0.0                 py313h06a4308_0
 jaraco.functools                 4.1.0                 py313h06a4308_0
-jax                              0.8.2                 pypi_0              pypi
-jax-cuda13-pjrt                  0.8.2                 pypi_0              pypi
-jax-cuda13-plugin                0.8.2                 pypi_0              pypi
-jaxlib                           0.8.2                 pypi_0              pypi
+jax                              0.9.2                 pypi_0              pypi
+jax-cuda13-pjrt                  0.9.2                 pypi_0              pypi
+jax-cuda13-plugin                0.9.2                 pypi_0              pypi
+jaxlib                           0.9.2                 pypi_0              pypi
 jedi                             0.19.2                py313h06a4308_0
 jeepney                          0.7.1                 pyhd3eb1b0_0
 jellyfish                        1.2.1                 py313h498d7c9_0
@@ -670,14 +732,13 @@ joblib                           1.5.2                 py313h06a4308_0
 jpeg                             9f                    h5ce9db8_0
 jq                               1.8.1                 h5eee18b_0
 json5                            0.12.1                py313h06a4308_0
-jsonpointer                      3.0.0                 pypi_0              pypi
+jsonpointer                      3.1.1                 pypi_0              pypi
 jsonschema                       4.25.0                py313h06a4308_1
 jsonschema-specifications        2025.9.1              py313h06a4308_0
 jupyter                          1.1.1                 py313h06a4308_0
 jupyter-book                     1.0.4.post1           pypi_0              pypi
 jupyter-cache                    1.0.1                 pypi_0              pypi
 jupyter-lsp                      2.2.5                 py313h06a4308_0
-jupyter-server-mathjax           0.2.6                 pypi_0              pypi
 jupyter_client                   8.6.3                 py313h06a4308_1
 jupyter_console                  6.6.3                 py313h06a4308_1
 jupyter_core                     5.8.1                 py313h06a4308_0
@@ -689,7 +750,7 @@ jupyterlab-variableinspector     3.2.4                 py313h06a4308_0
 jupyterlab_pygments              0.3.0                 py313h06a4308_0
 jupyterlab_server                2.28.0                py313h06a4308_0
 jupyterlab_widgets               3.0.15                py313h06a4308_0
-keras                            3.13.0                pypi_0              pypi
+keras                            3.13.2                pypi_0              pypi
 keyring                          25.7.0                py313h06a4308_0
 kiwisolver                       1.4.9                 py313h24d9097_0
 lark                             1.3.1                 pypi_0              pypi
@@ -795,7 +856,7 @@ mypy                             1.17.1                py313hee96239_1
 mypy_extensions                  1.0.0                 py313h06a4308_0
 mysql-common                     9.3.0                 h0021b1a_3
 mysql-libs                       9.3.0                 h797a5cd_3
-myst-nb                          1.3.0                 pypi_0              pypi
+myst-nb                          1.4.0                 pypi_0              pypi
 myst-parser                      3.0.1                 pypi_0              pypi
 namex                            0.1.0                 pypi_0              pypi
 narwhals                         2.7.0                 py313h06a4308_0
@@ -803,7 +864,7 @@ nbclient                         0.10.2                py313h06a4308_0
 nbconvert                        7.16.6                py313h06a4308_0
 nbconvert-core                   7.16.6                py313h06a4308_0
 nbconvert-pandoc                 7.16.6                py313h06a4308_0
-nbdime                           4.0.2                 pypi_0              pypi
+nbdime                           4.0.4                 pypi_0              pypi
 nbformat                         5.10.4                py313h06a4308_0
 ncurses                          6.5                   h7934f7d_0
 nest-asyncio                     1.6.0                 py313h06a4308_0
@@ -818,28 +879,28 @@ numexpr                          2.14.1                py313h41d4191_0
 numpy                            2.3.5                 py313h08c6c3d_0
 numpy-base                       2.3.5                 py313h00548fb_0
 numpydoc                         1.9.0                 py313h06a4308_0
-nvidia-cublas                    13.2.0.9              pypi_0              pypi
-nvidia-cuda-cccl                 13.1.78               pypi_0              pypi
-nvidia-cuda-crt                  13.1.80               pypi_0              pypi
-nvidia-cuda-cupti                13.1.75               pypi_0              pypi
-nvidia-cuda-nvcc                 13.1.80               pypi_0              pypi
-nvidia-cuda-nvrtc                13.1.80               pypi_0              pypi
-nvidia-cuda-runtime              13.1.80               pypi_0              pypi
-nvidia-cudnn-cu13                9.17.1.4              pypi_0              pypi
-nvidia-cufft                     12.1.0.31             pypi_0              pypi
-nvidia-cusolver                  12.0.7.41             pypi_0              pypi
-nvidia-cusparse                  12.7.2.19             pypi_0              pypi
-nvidia-nccl-cu13                 2.29.2                pypi_0              pypi
-nvidia-nvjitlink                 13.1.80               pypi_0              pypi
-nvidia-nvshmem-cu13              3.5.19                pypi_0              pypi
-nvidia-nvvm                      13.1.80               pypi_0              pypi
+nvidia-cublas                    13.3.0.5              pypi_0              pypi
+nvidia-cuda-cccl                 13.2.27               pypi_0              pypi
+nvidia-cuda-crt                  13.2.51               pypi_0              pypi
+nvidia-cuda-cupti                13.2.23               pypi_0              pypi
+nvidia-cuda-nvcc                 13.2.51               pypi_0              pypi
+nvidia-cuda-nvrtc                13.2.51               pypi_0              pypi
+nvidia-cuda-runtime              13.2.51               pypi_0              pypi
+nvidia-cudnn-cu13                9.20.0.48             pypi_0              pypi
+nvidia-cufft                     12.2.0.37             pypi_0              pypi
+nvidia-cusolver                  12.1.0.51             pypi_0              pypi
+nvidia-cusparse                  12.7.9.17             pypi_0              pypi
+nvidia-nccl-cu13                 2.29.7                pypi_0              pypi
+nvidia-nvjitlink                 13.2.51               pypi_0              pypi
+nvidia-nvshmem-cu13              3.6.5                 pypi_0              pypi
+nvidia-nvvm                      13.2.51               pypi_0              pypi
 oniguruma                        6.9.10                hb25bd0a_0
 openldap                         2.6.10                he9288cc_1
 openpyxl                         3.1.5                 py313h5eee18b_1
 openssl                          3.0.18                hd6dcaed_0
 opt-einsum                       3.4.0                 pypi_0              pypi
-optax                            0.2.6                 pypi_0              pypi
-optree                           0.18.0                pypi_0              pypi
+optax                            0.2.8                 pypi_0              pypi
+optree                           0.19.0                pypi_0              pypi
 orc                              2.2.0                 h372e9aa_0
 overrides                        7.7.0                 py313h06a4308_0
 packaging                        25.0                  py313h06a4308_1
@@ -932,8 +993,8 @@ qt-webengine                     5.15.9                he2071f7_8
 qtawesome                        1.4.0                 py313h06a4308_0
 qtconsole                        5.7.0                 py313h06a4308_0
 qtpy                             2.4.3                 py313h06a4308_0
-quantecon                        0.10.1                pypi_0              pypi
-quantecon-book-theme             0.15.1                pypi_0              pypi
+quantecon                        0.11.1                pypi_0              pypi
+quantecon-book-theme             0.16.0                pypi_0              pypi
 queuelib                         1.8.0                 py313h06a4308_0
 re2                              2024.07.02            hdb19cb5_0
 readline                         8.3                   hc2a1206_0
@@ -973,12 +1034,12 @@ sphinx                           7.4.7                 pypi_0              pypi
 sphinx-book-theme                1.1.4                 pypi_0              pypi
 sphinx-comments                  0.0.3                 pypi_0              pypi
 sphinx-copybutton                0.5.2                 pypi_0              pypi
-sphinx-design                    0.6.1                 pypi_0              pypi
+sphinx-design                    0.7.0                 pypi_0              pypi
 sphinx-exercise                  1.2.1                 pypi_0              pypi
-sphinx-external-toc              1.0.1                 pypi_0              pypi
+sphinx-external-toc              1.1.0                 pypi_0              pypi
 sphinx-jupyterbook-latex         1.0.0                 pypi_0              pypi
 sphinx-multitoc-numbering        0.1.3                 pypi_0              pypi
-sphinx-proof                     0.3.0                 pypi_0              pypi
+sphinx-proof                     0.4.0                 pypi_0              pypi
 sphinx-reredirects               1.1.0                 pypi_0              pypi
 sphinx-thebe                     0.3.1                 pypi_0              pypi
 sphinx-togglebutton              0.3.2                 pypi_0              pypi
@@ -1108,7 +1169,7 @@ zstd                             1.5.7                 h11fc155_0
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Mon Jan 12 03:55:19 2026       
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Mon Mar 30 04:21:54 2026       
 +-----------------------------------------------------------------------------------------+
 | NVIDIA-SMI 580.105.08             Driver Version: 580.105.08     CUDA Version: 13.0     |
 +-----------------------------------------+------------------------+----------------------+
@@ -1117,7 +1178,7 @@ zstd                             1.5.7                 h11fc155_0
 |                                         |                        |               MIG M. |
 |=========================================+========================+======================|
 |   0  Tesla T4                       On  |   00000000:00:1E.0 Off |                    0 |
-| N/A   29C    P0             25W /   70W |     113MiB /  15360MiB |      0%      Default |
+| N/A   37C    P0             25W /   70W |     113MiB /  15360MiB |      1%      Default |
 |                                         |                        |                  N/A |
 +-----------------------------------------+------------------------+----------------------+
 
@@ -1126,7 +1187,7 @@ zstd                             1.5.7                 h11fc155_0
 |  GPU   GI   CI              PID   Type   Process name                        GPU Memory |
 |        ID   ID                                                               Usage      |
 |=========================================================================================|
-|    0   N/A  N/A            6271      C   ...da3/envs/quantecon/bin/python        110MiB |
+|    0   N/A  N/A            6512      C   ...da3/envs/quantecon/bin/python        110MiB |
 +-----------------------------------------------------------------------------------------+
 </pre></div>
 </div>
@@ -1353,23 +1414,55 @@ zstd                             1.5.7                 h11fc155_0
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
+  Racial Segregation
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="schelling.html">
+   25. Schelling’s Model of Racial Segregation
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="schelling_numpy.html">
+   26. Schelling Model with NumPy
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="schelling_jax.html">
+   27. Schelling Model with JAX
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="schelling_jax_parallel.html">
+   28. Parallelizing the Algorithm
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="schelling_shocks.html">
+   29. Segregation with Persistent Shocks
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
   Other
  </span>
 </p>
 <ul class="current nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   25. Troubleshooting
+   30. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   26. References
+   31. References
   </a>
  </li>
  <li class="toctree-l1 current active active">
   <a class="current reference internal" href="#">
-   27. Execution Statistics
+   32. Execution Statistics
   </a>
  </li>
 </ul>
@@ -1413,6 +1506,8 @@ zstd                             1.5.7                 h11fc155_0
                     <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-jax/blob/main/lectures/status.md" download><i data-feather="github"></i></a></li>
                     -->
                     <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-jax" download><i data-feather="github"></i></a></li>
+                    
+                    
                 </ul>
 
             </div>

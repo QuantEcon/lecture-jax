@@ -77,12 +77,13 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
-    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=22b71a9b445b7b2b6a277c0a48ea72bf6e7c90d9" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=3355220bfb204a7ac1b0ca03dac108f0437ded6f" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=9c3e77be" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="_static/exercise.css?v=982b99e0" />
+    <link rel="stylesheet" type="text/css" href="_static/proof.css" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
@@ -100,8 +101,8 @@
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="_static/togglebutton.js?v=4a39c7ea"></script>
-    <script src="_static/scripts/quantecon-book-theme.js?digest=65b86b9423025043228643fcfb616ce846cb91c1"></script>
+    <script src="_static/togglebutton.js?v=b8b12719"></script>
+    <script src="_static/scripts/quantecon-book-theme.js?digest=9980b4379844dc0b911d69b62b295f34ede88fac"></script>
     <script src="_static/scripts/jquery.js?v=5d32c60e"></script>
     <script src="_static/scripts/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
@@ -156,10 +157,31 @@
 <meta property="og:site_name" content="Quantitative Economics with Python using JAX" />
 <meta name="theme-color" content="#ffffff" />
 
+
+
+
   </head>
 <body>
 
+<!-- Prevent flash of light theme when dark mode is saved -->
+<script>
+(function() {
+  try {
+    if (localStorage.setContrast === '1') {
+      document.body.classList.add('dark-theme');
+      document.documentElement.setAttribute('data-theme', 'dark');
+    } else {
+      document.documentElement.setAttribute('data-theme', 'light');
+    }
+  } catch(e) {
+    document.documentElement.setAttribute('data-theme', 'light');
+  }
+})();
+</script>
+
 <!-- Override QuantEcon theme colors -->
+
+<!-- Color scheme: applies scheme-specific body class -->
 
     <span id="top"></span>
 
@@ -171,7 +193,12 @@
 
                 <div class="qe-page__toc">
 
-                    <div class="inner">
+                    
+                    
+                    
+
+                    
+                    <div class="inner sticky" data-autoexpand="true">
 
                         
                         <div class="qe-page__toc-header">
@@ -217,10 +244,16 @@
                         <div class="qe-page__toc-footer">
                             
                             
-                            <p><a href="#top"><strong>Back to top</strong></a></p>
+                            
+                            
+                            
                         </div>
 
                     </div>
+
+                    
+                    <a href="#top" class="back-to-top-btn" title="Back to top">↑ Top</a>
+                    
 
                 </div>
 
@@ -270,7 +303,7 @@
                                 <a href="https://github.com/QuantEcon/lecture-jax/commit/f676e28" class="changelog-hash">f676e28</a>
                                 
                                 <span class="changelog-author">kp992</span>
-                                <span class="changelog-time">1 year ago</span>
+                                <span class="changelog-time">2 years ago</span>
                                 <span class="changelog-message">Add Hopenhayn lecture (#173)</span>
                             </li>
                             
@@ -321,7 +354,7 @@ that you can access as follows:</p>
 <p class="expanded admonition-title">Hide code cell output</p>
 </summary>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (0.10.1)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (0.11.1)
 Requirement already satisfied: numba&gt;=0.49.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from quantecon) (0.62.1)
 Requirement already satisfied: numpy&gt;=1.17.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from quantecon) (2.3.5)
 Requirement already satisfied: requests in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from quantecon) (2.32.5)
@@ -411,15 +444,15 @@ distribution over <span class="math notranslate nohighlight">\(\mathbb R_+\)</sp
 </ol>
 <p>Scrap value is set to zero and the discount rate is <span class="math notranslate nohighlight">\(\beta \in (0, 1)\)</span>.</p>
 <p>The firm makes their stop-continue choice by first solving for the value function, which is the unique solution in a class of continuous functions <span class="math notranslate nohighlight">\(\mathscr C\)</span> (details omitted) to</p>
-<div class="amsmath math notranslate nohighlight" id="equation-8f8ae4f3-8721-46e0-9389-366c183f08dc">
-<span class="eqno">(19.1)<a class="headerlink" href="#equation-8f8ae4f3-8721-46e0-9389-366c183f08dc" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-a8e5c69e-ae66-42ab-a584-b36ec92bfc08">
+<span class="eqno">(19.1)<a class="headerlink" href="#equation-a8e5c69e-ae66-42ab-a584-b36ec92bfc08" title="Permalink to this equation">#</a></span>\[\begin{equation}
     v(\varphi, p) = \pi(\varphi, p) + \beta 
         \max \left\{ 0, \int v(\varphi', p) \Gamma(\varphi, d \varphi') \right\}.
 \end{equation}\]</div>
 <p>Let <span class="math notranslate nohighlight">\(\bar v\)</span> be the unique solution to this functional equation.</p>
 <p>Given <span class="math notranslate nohighlight">\(\bar v\)</span>, we let <span class="math notranslate nohighlight">\(\bar \varphi\)</span> be the exit threshold function defined by</p>
-<div class="amsmath math notranslate nohighlight" id="equation-7d9027e7-0c5d-4640-8373-7c83316b556d">
-<span class="eqno">(19.2)<a class="headerlink" href="#equation-7d9027e7-0c5d-4640-8373-7c83316b556d" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-8f374e88-5f31-4576-ac29-9ad1eadc56d1">
+<span class="eqno">(19.2)<a class="headerlink" href="#equation-8f374e88-5f31-4576-ac29-9ad1eadc56d1" title="Permalink to this equation">#</a></span>\[\begin{equation}
     \bar \varphi(p) := 
     \min
     \left\{ 
@@ -454,13 +487,13 @@ section, a <strong>stationary recursive equilibrium</strong>  is a triple</p>
 \end{equation*}\]</div>
 <p>with <span class="math notranslate nohighlight">\(p\)</span> understood as price, <span class="math notranslate nohighlight">\(M\)</span> as mass of entrants, and <span class="math notranslate nohighlight">\(\mu\)</span> as a
 distribution of firms over productivity levels, such that the goods market clears, or</p>
-<div class="amsmath math notranslate nohighlight" id="equation-66df0e49-1ccd-4e1f-b26b-35025135e9c6">
-<span class="eqno">(19.3)<a class="headerlink" href="#equation-66df0e49-1ccd-4e1f-b26b-35025135e9c6" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-3f98995b-b349-41b5-818d-b44642fee65f">
+<span class="eqno">(19.3)<a class="headerlink" href="#equation-3f98995b-b349-41b5-818d-b44642fee65f" title="Permalink to this equation">#</a></span>\[\begin{equation}
     \int q( \varphi, p) \mu(d \varphi) = D(p),
 \end{equation}\]</div>
 <p>the <em>invariance condition</em> over the firm distribution</p>
-<div class="amsmath math notranslate nohighlight" id="equation-54f55640-bfdb-45eb-bfc4-a1c63f9ec04b">
-<span class="eqno">(19.4)<a class="headerlink" href="#equation-54f55640-bfdb-45eb-bfc4-a1c63f9ec04b" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-1cc5d922-186b-4582-9eea-46cadb8f9507">
+<span class="eqno">(19.4)<a class="headerlink" href="#equation-1cc5d922-186b-4582-9eea-46cadb8f9507" title="Permalink to this equation">#</a></span>\[\begin{equation}
     \mu (B) 
     = \int \Gamma(\varphi, B) \, \mathbf{1}  \{\varphi \geq \bar \varphi(p)\} \,
     \mu(d \varphi)
@@ -468,13 +501,13 @@ distribution of firms over productivity levels, such that the goods market clear
     \text{ for all } B \in \mathscr B,
 \end{equation}\]</div>
 <p>holds (see below for intuition), the <em>equilibrium entry condition</em></p>
-<div class="amsmath math notranslate nohighlight" id="equation-e4a356ee-52c0-4abd-8139-05d4f23bdb8f">
-<span class="eqno">(19.5)<a class="headerlink" href="#equation-e4a356ee-52c0-4abd-8139-05d4f23bdb8f" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-027e3cc1-2a26-43cb-9459-8c11990a5987">
+<span class="eqno">(19.5)<a class="headerlink" href="#equation-027e3cc1-2a26-43cb-9459-8c11990a5987" title="Permalink to this equation">#</a></span>\[\begin{equation}
     \int \bar v( \varphi, p) \, \gamma(d \varphi) = c_e
 \end{equation}\]</div>
 <p>holds, and the <em>balanced entry and exit condition</em></p>
-<div class="amsmath math notranslate nohighlight" id="equation-b190ffc0-a5fc-40ca-b1ea-e4a9e561298b">
-<span class="eqno">(19.6)<a class="headerlink" href="#equation-b190ffc0-a5fc-40ca-b1ea-e4a9e561298b" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-1228b3fb-b9dd-48db-b07b-e93f5155ca34">
+<span class="eqno">(19.6)<a class="headerlink" href="#equation-1228b3fb-b9dd-48db-b07b-e93f5155ca34" title="Permalink to this equation">#</a></span>\[\begin{equation}
     M = \mu \{ \varphi &lt; \bar \varphi(p) \}
 \end{equation}\]</div>
 <p>is verified.</p>
@@ -485,15 +518,15 @@ distribution of firms over productivity levels, such that the goods market clear
 <p>We compute the equilibrium as follows:</p>
 <p>For the purposes of this section, we insert balanced entry and
 exit into the time invariance condition, yielding</p>
-<div class="amsmath math notranslate nohighlight" id="equation-83cfa518-ea8e-4e1c-8ede-abcb065452c6">
-<span class="eqno">(19.7)<a class="headerlink" href="#equation-83cfa518-ea8e-4e1c-8ede-abcb065452c6" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-60c30bf1-15a2-4aeb-9fe3-3b2d8ef24ae5">
+<span class="eqno">(19.7)<a class="headerlink" href="#equation-60c30bf1-15a2-4aeb-9fe3-3b2d8ef24ae5" title="Permalink to this equation">#</a></span>\[\begin{equation}
     \mu (B) 
     = \int \Pi(\varphi, B) \mu (d \varphi)
     \quad \text{for all } B \in \mathscr B,
 \end{equation}\]</div>
 <p>where <span class="math notranslate nohighlight">\(\Pi\)</span> is the transition kernel on <span class="math notranslate nohighlight">\(\mathbb R_+\)</span> defined by</p>
-<div class="amsmath math notranslate nohighlight" id="equation-89b80360-8cf5-4f54-ad7b-f37ff7b9dd3f">
-<span class="eqno">(19.8)<a class="headerlink" href="#equation-89b80360-8cf5-4f54-ad7b-f37ff7b9dd3f" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-491fbd26-3aed-4cde-8674-1a17ce125ca6">
+<span class="eqno">(19.8)<a class="headerlink" href="#equation-491fbd26-3aed-4cde-8674-1a17ce125ca6" title="Permalink to this equation">#</a></span>\[\begin{equation}
     \Pi(\varphi, B) 
     = \Gamma(\varphi, B) \mathbf{1} \{\varphi \geq \bar \varphi(p) \} + 
     \mathbf{1} \{\varphi &lt; \bar \varphi(p)\} \gamma(B).
@@ -929,8 +962,8 @@ from a cold start.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 434 ms, sys: 26.9 ms, total: 461 ms
-Wall time: 548 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 447 ms, sys: 36.1 ms, total: 483 ms
+Wall time: 525 ms
 </pre></div>
 </div>
 </div>
@@ -943,8 +976,8 @@ Wall time: 548 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 56.8 ms, sys: 644 μs, total: 57.4 ms
-Wall time: 56 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 54.6 ms, sys: 1.03 ms, total: 55.6 ms
+Wall time: 54.3 ms
 </pre></div>
 </div>
 </div>
@@ -990,8 +1023,8 @@ Wall time: 56 ms
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 2.37 s, sys: 113 ms, total: 2.48 s
-Wall time: 3.12 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 2.42 s, sys: 113 ms, total: 2.53 s
+Wall time: 3.15 s
 </pre></div>
 </div>
 </div>
@@ -1006,8 +1039,8 @@ Wall time: 3.12 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 447 ms, sys: 31 ms, total: 478 ms
-Wall time: 782 ms
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 445 ms, sys: 34.7 ms, total: 480 ms
+Wall time: 797 ms
 </pre></div>
 </div>
 </div>
@@ -1465,23 +1498,55 @@ Equilibrium price when c = 5.0 is 1.6
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
+  Racial Segregation
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="schelling.html">
+   25. Schelling’s Model of Racial Segregation
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="schelling_numpy.html">
+   26. Schelling Model with NumPy
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="schelling_jax.html">
+   27. Schelling Model with JAX
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="schelling_jax_parallel.html">
+   28. Parallelizing the Algorithm
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="schelling_shocks.html">
+   29. Segregation with Persistent Shocks
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
   Other
  </span>
 </p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   25. Troubleshooting
+   30. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   26. References
+   31. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   27. Execution Statistics
+   32. Execution Statistics
   </a>
  </li>
 </ul>
@@ -1525,6 +1590,8 @@ Equilibrium price when c = 5.0 is 1.6
                     <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-jax/blob/main/lectures/hopenhayn.md" download><i data-feather="github"></i></a></li>
                     -->
                     <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-jax" download><i data-feather="github"></i></a></li>
+                    
+                    
                 </ul>
 
             </div>

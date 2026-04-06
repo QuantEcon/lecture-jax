@@ -77,12 +77,13 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
-    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=22b71a9b445b7b2b6a277c0a48ea72bf6e7c90d9" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=3355220bfb204a7ac1b0ca03dac108f0437ded6f" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=9c3e77be" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="_static/exercise.css?v=982b99e0" />
+    <link rel="stylesheet" type="text/css" href="_static/proof.css" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
@@ -100,8 +101,8 @@
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="_static/togglebutton.js?v=4a39c7ea"></script>
-    <script src="_static/scripts/quantecon-book-theme.js?digest=65b86b9423025043228643fcfb616ce846cb91c1"></script>
+    <script src="_static/togglebutton.js?v=b8b12719"></script>
+    <script src="_static/scripts/quantecon-book-theme.js?digest=9980b4379844dc0b911d69b62b295f34ede88fac"></script>
     <script src="_static/scripts/jquery.js?v=5d32c60e"></script>
     <script src="_static/scripts/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
@@ -156,10 +157,31 @@
 <meta property="og:site_name" content="Quantitative Economics with Python using JAX" />
 <meta name="theme-color" content="#ffffff" />
 
+
+
+
   </head>
 <body>
 
+<!-- Prevent flash of light theme when dark mode is saved -->
+<script>
+(function() {
+  try {
+    if (localStorage.setContrast === '1') {
+      document.body.classList.add('dark-theme');
+      document.documentElement.setAttribute('data-theme', 'dark');
+    } else {
+      document.documentElement.setAttribute('data-theme', 'light');
+    }
+  } catch(e) {
+    document.documentElement.setAttribute('data-theme', 'light');
+  }
+})();
+</script>
+
 <!-- Override QuantEcon theme colors -->
+
+<!-- Color scheme: applies scheme-specific body class -->
 
     <span id="top"></span>
 
@@ -171,7 +193,12 @@
 
                 <div class="qe-page__toc">
 
-                    <div class="inner">
+                    
+                    
+                    
+
+                    
+                    <div class="inner sticky" data-autoexpand="true">
 
                         
                         <div class="qe-page__toc-header">
@@ -205,10 +232,16 @@
                         <div class="qe-page__toc-footer">
                             
                             
-                            <p><a href="#top"><strong>Back to top</strong></a></p>
+                            
+                            
+                            
                         </div>
 
                     </div>
+
+                    
+                    <a href="#top" class="back-to-top-btn" title="Back to top">↑ Top</a>
+                    
 
                 </div>
 
@@ -235,7 +268,7 @@
 
                     <!-- Last modified / Changelog dropdown -->
                         <button class="qe-page__header-changed" id="changelog-toggle" aria-expanded="false">
-                            Last changed: Jun 06, 2024
+                            Last changed: Apr 05, 2026
                             <span class="changelog-icon">▼</span>
                         </button>
 
@@ -243,6 +276,15 @@
                     <div class="qe-page__header-changelog" id="changelog-content" aria-hidden="true">
                         <h4>Changelog (<a href="https://github.com/QuantEcon/lecture-jax/commits/main/lectures/opt_savings_2.md">full history</a>)</h4>
                         <ul class="changelog-list">
+                            
+                            <li class="changelog-entry">
+                                
+                                <a href="https://github.com/QuantEcon/lecture-jax/commit/fdf1555" class="changelog-hash">fdf1555</a>
+                                
+                                <span class="changelog-author">John Stachurski</span>
+                                <span class="changelog-time">23 hours ago</span>
+                                <span class="changelog-message">Fix legend position in solver times figure (#293)</span>
+                            </li>
                             
                             <li class="changelog-entry">
                                 
@@ -258,7 +300,7 @@
                                 <a href="https://github.com/QuantEcon/lecture-jax/commit/a7b173a" class="changelog-hash">a7b173a</a>
                                 
                                 <span class="changelog-author">kp992</span>
-                                <span class="changelog-time">1 year ago</span>
+                                <span class="changelog-time">2 years ago</span>
                                 <span class="changelog-message">Add visual comparison of HPI, VFI and OPI outputs (#171)</span>
                             </li>
                             
@@ -267,7 +309,7 @@
                                 <a href="https://github.com/QuantEcon/lecture-jax/commit/ef43c79" class="changelog-hash">ef43c79</a>
                                 
                                 <span class="changelog-author">John Stachurski</span>
-                                <span class="changelog-time">1 year ago</span>
+                                <span class="changelog-time">2 years ago</span>
                                 <span class="changelog-message">Use vmap throughout opt savings 2 (#155)</span>
                             </li>
                             
@@ -276,7 +318,7 @@
                                 <a href="https://github.com/QuantEcon/lecture-jax/commit/ce4ef38" class="changelog-hash">ce4ef38</a>
                                 
                                 <span class="changelog-author">John Stachurski</span>
-                                <span class="changelog-time">1 year ago</span>
+                                <span class="changelog-time">2 years ago</span>
                                 <span class="changelog-message">Edits to opt savings and opt invest (#154)</span>
                             </li>
                             
@@ -285,7 +327,7 @@
                                 <a href="https://github.com/QuantEcon/lecture-jax/commit/0e3aa57" class="changelog-hash">0e3aa57</a>
                                 
                                 <span class="changelog-author">John Stachurski</span>
-                                <span class="changelog-time">1 year ago</span>
+                                <span class="changelog-time">2 years ago</span>
                                 <span class="changelog-message">Small patches to optimal savings (#152)</span>
                             </li>
                             
@@ -294,7 +336,7 @@
                                 <a href="https://github.com/QuantEcon/lecture-jax/commit/216ed17" class="changelog-hash">216ed17</a>
                                 
                                 <span class="changelog-author">John Stachurski</span>
-                                <span class="changelog-time">1 year ago</span>
+                                <span class="changelog-time">2 years ago</span>
                                 <span class="changelog-message">Split optimal savings (#151)</span>
                             </li>
                             
@@ -303,7 +345,7 @@
                                 <a href="https://github.com/QuantEcon/lecture-jax/commit/4beb13a" class="changelog-hash">4beb13a</a>
                                 
                                 <span class="changelog-author">kp992</span>
-                                <span class="changelog-time">1 year ago</span>
+                                <span class="changelog-time">2 years ago</span>
                                 <span class="changelog-message">Use JAX in successive_approx (#134)</span>
                             </li>
                             
@@ -323,15 +365,6 @@
                                 <span class="changelog-author">Humphrey Yang</span>
                                 <span class="changelog-time">2 years ago</span>
                                 <span class="changelog-message">Remove Extra Model in Optimal Saving Lecture (#108)</span>
-                            </li>
-                            
-                            <li class="changelog-entry">
-                                
-                                <a href="https://github.com/QuantEcon/lecture-jax/commit/e2646e4" class="changelog-hash">e2646e4</a>
-                                
-                                <span class="changelog-author">Smit Lunagariya</span>
-                                <span class="changelog-time">2 years ago</span>
-                                <span class="changelog-message">Extract common code from opt_invest and savings (#83)</span>
                             </li>
                             
                         </ul>
@@ -395,7 +428,8 @@ computation.</p>
 <p class="expanded admonition-title">Hide code cell output</p>
 </summary>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: quantecon in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (0.10.1)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting quantecon
+  Downloading quantecon-0.11.2-py3-none-any.whl.metadata (5.3 kB)
 Requirement already satisfied: numba&gt;=0.49.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from quantecon) (0.62.1)
 Requirement already satisfied: numpy&gt;=1.17.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from quantecon) (2.3.5)
 Requirement already satisfied: requests in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from quantecon) (2.32.5)
@@ -407,6 +441,9 @@ Requirement already satisfied: idna&lt;4,&gt;=2.5 in /home/runner/miniconda3/env
 Requirement already satisfied: urllib3&lt;3,&gt;=1.21.1 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from requests-&gt;quantecon) (2.5.0)
 Requirement already satisfied: certifi&gt;=2017.4.17 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from requests-&gt;quantecon) (2025.11.12)
 Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from sympy-&gt;quantecon) (1.3.0)
+Downloading quantecon-0.11.2-py3-none-any.whl (330 kB)
+Installing collected packages: quantecon
+Successfully installed quantecon-0.11.2
 </pre></div>
 </div>
 </div>
@@ -432,7 +469,7 @@ Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in /home/runner/minicond
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Mon Jan 12 03:54:26 2026       
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Mon Apr  6 05:44:31 2026       
 +-----------------------------------------------------------------------------------------+
 | NVIDIA-SMI 580.105.08             Driver Version: 580.105.08     CUDA Version: 13.0     |
 +-----------------------------------------+------------------------+----------------------+
@@ -441,7 +478,7 @@ Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in /home/runner/minicond
 |                                         |                        |               MIG M. |
 |=========================================+========================+======================|
 |   0  Tesla T4                       On  |   00000000:00:1E.0 Off |                    0 |
-| N/A   26C    P8              9W /   70W |       0MiB /  15360MiB |      0%      Default |
+| N/A   27C    P8             13W /   70W |       0MiB /  15360MiB |      0%      Default |
 |                                         |                        |                  N/A |
 +-----------------------------------------+------------------------+----------------------+
 
@@ -898,7 +935,7 @@ Concluded loop 7 with error 1.
 Concluded loop 8 with error 1.
 Concluded loop 9 with error 1.
 Concluded loop 10 with error 0.
-HPI completed in 1.655519962310791 seconds.
+HPI completed in 1.5673437118530273 seconds.
 </pre></div>
 </div>
 </div>
@@ -924,7 +961,7 @@ Concluded loop 7 with error 1.
 Concluded loop 8 with error 1.
 Concluded loop 9 with error 1.
 Concluded loop 10 with error 0.
-HPI completed in 0.11150050163269043 seconds.
+HPI completed in 0.12304925918579102 seconds.
 </pre></div>
 </div>
 </div>
@@ -962,7 +999,7 @@ HPI completed in 0.11150050163269043 seconds.
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Starting VFI.
-VFI completed in 0.6681711673736572 seconds.
+VFI completed in 0.6365835666656494 seconds.
 </pre></div>
 </div>
 </div>
@@ -978,7 +1015,7 @@ VFI completed in 0.6681711673736572 seconds.
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>VFI completed in 0.47457337379455566 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>VFI completed in 0.47737693786621094 seconds.
 </pre></div>
 </div>
 </div>
@@ -1016,7 +1053,7 @@ VFI completed in 0.6681711673736572 seconds.
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Starting OPI.
-OPI completed in 0.621798038482666 seconds.
+OPI completed in 0.6450886726379395 seconds.
 </pre></div>
 </div>
 </div>
@@ -1032,7 +1069,7 @@ OPI completed in 0.621798038482666 seconds.
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OPI completed in 0.12435579299926758 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OPI completed in 0.12602686882019043 seconds.
 </pre></div>
 </div>
 </div>
@@ -1121,21 +1158,21 @@ value_function_iteration completed in 0.47 seconds.
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>optimistic_policy_iteration completed in 0.38 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>optimistic_policy_iteration completed in 0.37 seconds.
 optimistic_policy_iteration completed in 0.12 seconds.
 optimistic_policy_iteration completed in 0.12 seconds.
 optimistic_policy_iteration completed in 0.14 seconds.
 optimistic_policy_iteration completed in 0.17 seconds.
-optimistic_policy_iteration completed in 0.20 seconds.
+optimistic_policy_iteration completed in 0.21 seconds.
 optimistic_policy_iteration completed in 0.24 seconds.
-optimistic_policy_iteration completed in 0.27 seconds.
-optimistic_policy_iteration completed in 0.31 seconds.
+optimistic_policy_iteration completed in 0.28 seconds.
+optimistic_policy_iteration completed in 0.32 seconds.
 optimistic_policy_iteration completed in 0.35 seconds.
-optimistic_policy_iteration completed in 0.38 seconds.
-optimistic_policy_iteration completed in 0.42 seconds.
-optimistic_policy_iteration completed in 0.45 seconds.
-optimistic_policy_iteration completed in 0.48 seconds.
-optimistic_policy_iteration completed in 0.52 seconds.
+optimistic_policy_iteration completed in 0.39 seconds.
+optimistic_policy_iteration completed in 0.43 seconds.
+optimistic_policy_iteration completed in 0.46 seconds.
+optimistic_policy_iteration completed in 0.50 seconds.
+optimistic_policy_iteration completed in 0.53 seconds.
 </pre></div>
 </div>
 </div>
@@ -1151,7 +1188,7 @@ optimistic_policy_iteration completed in 0.52 seconds.
         <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;value function iteration&quot;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">m_vals</span><span class="p">,</span> <span class="n">opi_times</span><span class="p">,</span> 
         <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;optimistic policy iteration&quot;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">frameon</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">frameon</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s1">&#39;lower right&#39;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;$m$&quot;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;time&quot;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
@@ -1160,7 +1197,7 @@ optimistic_policy_iteration completed in 0.52 seconds.
 </div>
 <div class="cell_output docutils container">
 <figure class="align-default" id="howard-value-optimistic-solver-times">
-<a class="reference internal image-reference" href="_images/6d56ca0bec7d84a33cfff035cd82f8131d42629736ebc07ffcf6332adbf63aa2.png"><img alt="_images/6d56ca0bec7d84a33cfff035cd82f8131d42629736ebc07ffcf6332adbf63aa2.png" src="_images/6d56ca0bec7d84a33cfff035cd82f8131d42629736ebc07ffcf6332adbf63aa2.png" style="width: 80%;" />
+<a class="reference internal image-reference" href="_images/10f95ce0fcbe24a59e7076e33e31a8dac417b790a4f5dc09b0d200aa49446941.png"><img alt="_images/10f95ce0fcbe24a59e7076e33e31a8dac417b790a4f5dc09b0d200aa49446941.png" src="_images/10f95ce0fcbe24a59e7076e33e31a8dac417b790a4f5dc09b0d200aa49446941.png" style="width: 80%;" />
 </a>
 <figcaption>
 <p><span class="caption-number">Fig. 12.4 </span><span class="caption-text">Solver times</span><a class="headerlink" href="#howard-value-optimistic-solver-times" title="Link to this image">#</a></p>
@@ -1386,23 +1423,55 @@ optimistic_policy_iteration completed in 0.52 seconds.
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
+  Racial Segregation
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="schelling.html">
+   25. Schelling’s Model of Racial Segregation
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="schelling_numpy.html">
+   26. Schelling Model with NumPy
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="schelling_jax.html">
+   27. Schelling Model with JAX
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="schelling_jax_parallel.html">
+   28. Parallelizing the Algorithm
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="schelling_shocks.html">
+   29. Segregation with Persistent Shocks
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
   Other
  </span>
 </p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   25. Troubleshooting
+   30. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   26. References
+   31. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   27. Execution Statistics
+   32. Execution Statistics
   </a>
  </li>
 </ul>
@@ -1446,6 +1515,8 @@ optimistic_policy_iteration completed in 0.52 seconds.
                     <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-jax/blob/main/lectures/opt_savings_2.md" download><i data-feather="github"></i></a></li>
                     -->
                     <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-jax" download><i data-feather="github"></i></a></li>
+                    
+                    
                 </ul>
 
             </div>

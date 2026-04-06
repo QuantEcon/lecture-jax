@@ -1,0 +1,1260 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>27. Schelling Model with JAX &#8212; Quantitative Economics with Python using JAX</title>
+    
+    <link rel="preconnect" href="https://unpkg.com" crossorigin>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js" integrity="sha384-bq5PNg/ZcfW7KMvFSmhjqCQJ/VFnec+6sZkctn/4ZLeubkn7U58Le4zFFSn3dhUu" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js" integrity="sha384-qEqAs1VsN9WH2myXDbiP2wGGIttL9bMRZBKCl54ZnzpDlVqbYANP9vMaoT/wvQcf" crossorigin="anonymous"></script>
+    
+        <script>
+            MathJax = {
+            loader: {load: ['[tex]/boldsymbol', '[tex]/textmacros']},
+            tex: {
+                packages: {'[+]': ['boldsymbol', 'textmacros']},
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                processEscapes: true,
+                macros: {
+                    "argmax" : "arg\\,max",
+                    "argmin" : "arg\\,min",
+                    "col"    : "col",
+                    "Span"   :  "span",
+                    "epsilon": "\\varepsilon",
+                    "EE": "\\mathbb{E}",
+                    "PP": "\\mathbb{P}",
+                    "RR": "\\mathbb{R}",
+                    "NN": "\\mathbb{N}",
+                    "ZZ": "\\mathbb{Z}",
+                    "aA": "\\mathcal{A}",
+                    "bB": "\\mathcal{B}",
+                    "cC": "\\mathcal{C}",
+                    "dD": "\\mathcal{D}",
+                    "eE": "\\mathcal{E}",
+                    "fF": "\\mathcal{F}",
+                    "gG": "\\mathcal{G}",
+                    "hH": "\\mathcal{H}",
+                }
+            },
+            svg: {
+                fontCache: 'global',
+                scale: 0.92,
+                displayAlign: "center",
+            },
+            };
+        </script>
+    
+    
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=3355220bfb204a7ac1b0ca03dac108f0437ded6f" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="_static/exercise.css?v=982b99e0" />
+    <link rel="stylesheet" type="text/css" href="_static/proof.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+
+    <script src="_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/scripts/sphinx-book-theme.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js?v=b8b12719"></script>
+    <script src="_static/scripts/quantecon-book-theme.js?digest=9980b4379844dc0b911d69b62b295f34ede88fac"></script>
+    <script src="_static/scripts/jquery.js?v=5d32c60e"></script>
+    <script src="_static/scripts/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
+    <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-K1NYBSC1CZ"></script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-K1NYBSC1CZ');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-K1NYBSC1CZ');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'schelling_jax';</script>
+    <link rel="canonical" href="https://jax.quantecon.org/schelling_jax.html" />
+    <link rel="icon" href="_static/lectures-favicon.ico"/>
+    <link rel="author" title="About these documents" href="about.html" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="28. Parallelizing the Algorithm" href="schelling_jax_parallel.html" />
+    <link rel="prev" title="26. Schelling Model with NumPy" href="schelling_numpy.html" />
+
+<!-- Normal Meta Tags -->
+<meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
+<meta name="keywords" content="Python, JAX, QuantEcon, Quantitative Economics, Economics, Sloan, Alfred P. Sloan Foundation, Tom J. Sargent, John Stachurski" />
+<meta name="description" content=This website presents a set of lectures on quantitative economic modeling using JAX, designed and written by Thomas J. Sargent and John Stachurski. />
+
+<!-- Twitter tags -->
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@quantecon" />
+<meta name="twitter:title" content="Schelling Model with JAX"/>
+<meta name="twitter:description" content="This website presents a set of lectures on quantitative economic modeling using JAX, designed and written by Thomas J. Sargent and John Stachurski.">
+<meta name="twitter:creator" content="@quantecon">
+<meta name="twitter:image" content="https://assets.quantecon.org/img/qe-twitter-logo.png">
+
+<!-- Opengraph tags -->
+<meta property="og:title" content="Schelling Model with JAX" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://jax.quantecon.org/schelling_jax.html" />
+<meta property="og:image" content="https://assets.quantecon.org/img/qe-og-logo.png" />
+<meta property="og:description" content="This website presents a set of lectures on quantitative economic modeling using JAX, designed and written by Thomas J. Sargent and John Stachurski." />
+<meta property="og:site_name" content="Quantitative Economics with Python using JAX" />
+<meta name="theme-color" content="#ffffff" />
+
+
+
+
+  </head>
+<body>
+
+<!-- Prevent flash of light theme when dark mode is saved -->
+<script>
+(function() {
+  try {
+    if (localStorage.setContrast === '1') {
+      document.body.classList.add('dark-theme');
+      document.documentElement.setAttribute('data-theme', 'dark');
+    } else {
+      document.documentElement.setAttribute('data-theme', 'light');
+    }
+  } catch(e) {
+    document.documentElement.setAttribute('data-theme', 'light');
+  }
+})();
+</script>
+
+<!-- Override QuantEcon theme colors -->
+
+<!-- Color scheme: applies scheme-specific body class -->
+
+    <span id="top"></span>
+
+    <div class="qe-wrapper">
+
+        <div class="qe-main">
+
+            <div class="qe-page" id=schelling_jax>
+
+                <div class="qe-page__toc">
+
+                    
+                    
+                    
+
+                    
+                    <div class="inner sticky" data-autoexpand="true">
+
+                        
+                        <div class="qe-page__toc-header">
+                            On this page
+                        </div>
+
+
+                        <nav id="bd-toc-nav" class="qe-page__toc-nav">
+                            <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">27.1. Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-jax-differs-from-numpy">27.2. How JAX Differs from NumPy</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#immutable-arrays">27.2.1. Immutable Arrays</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#functional-programming">27.2.2. Functional Programming</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#random-numbers">27.2.3. Random Numbers</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#parameters">27.3. Parameters</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#initialization">27.4. Initialization</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#jax-compiled-functions">27.5. JAX-Compiled Functions</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#computing-distances">27.5.1. Computing Distances</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#finding-neighbors">27.5.2. Finding Neighbors</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#checking-unhappiness">27.5.3. Checking Unhappiness</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#moving-unhappy-agents">27.5.4. Moving Unhappy Agents</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visualization">27.6. Visualization</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-simulation">27.7. The Simulation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#warming-up-jax">27.8. Warming Up JAX</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#results">27.9. Results</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tips-for-using-jax">27.10. Tips for Using JAX</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#limitations-of-this-approach">27.11. Limitations of This Approach</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#summary">27.12. Summary</a></li>
+</ul>
+                            <p class="logo">
+                                
+                                    
+                                    <a href=https://quantecon.org><img src="_static/qe-logo-large.png" class="logo logo-img" alt="logo"></a>
+                                    
+                                    <a href=https://quantecon.org><img src="_static/quantecon-logo-transparent.png" class="dark-logo-img" alt="logo"></a>
+                                    
+                                    
+                                
+                            </p>
+
+                            <p class="powered">Powered by <a href="https://jupyterbook.org/v1/">Jupyter Book</a></p>
+
+                        </nav>
+
+                        <div class="qe-page__toc-footer">
+                            
+                            
+                            
+                            
+                            
+                        </div>
+
+                    </div>
+
+                    
+                    <a href="#top" class="back-to-top-btn" title="Back to top">↑ Top</a>
+                    
+
+                </div>
+
+                <div class="qe-page__header">
+
+                    <div class="qe-page__header-copy">
+
+                        <p class="qe-page__header-heading"><a href="intro.html">Quantitative Economics with Python using JAX</a></p>
+
+                    </div>
+
+                    <!-- Authors section -->
+                        <p class="qe-page__header-authors" font-size="18">
+                            
+                                
+                                    <a href="http://www.tomsargent.com/" target="_blank"><span>Thomas J. Sargent</span></a>
+                                
+                            
+                                
+                                    and <a href="https://johnstachurski.net/" target="_blank"><span>John Stachurski</span></a>
+                                
+                            
+                        </p>
+
+                    <!-- Last modified / Changelog dropdown -->
+                        <button class="qe-page__header-changed" id="changelog-toggle" aria-expanded="false">
+                            Last changed: Apr 06, 2026
+                            <span class="changelog-icon">▼</span>
+                        </button>
+
+                    <!-- Changelog dropdown content -->
+                    <div class="qe-page__header-changelog" id="changelog-content" aria-hidden="true">
+                        <h4>Changelog (<a href="https://github.com/QuantEcon/lecture-jax/commits/main/lectures/schelling_jax.md">full history</a>)</h4>
+                        <ul class="changelog-list">
+                            
+                            <li class="changelog-entry">
+                                
+                                <a href="https://github.com/QuantEcon/lecture-jax/commit/2cf9ade" class="changelog-hash">2cf9ade</a>
+                                
+                                <span class="changelog-author">John Stachurski</span>
+                                <span class="changelog-time">38 minutes ago</span>
+                                <span class="changelog-message">Add Schelling segregation model lectures (#296)</span>
+                            </li>
+                            
+                        </ul>
+                    </div>
+
+                </div> <!-- .page__header -->
+
+
+
+                
+                <main class="qe-page__content" role="main">
+                    
+                    <div>
+                        
+  <section class="tex2jax_ignore mathjax_ignore" id="schelling-model-with-jax">
+<h1><span class="section-number">27. </span>Schelling Model with JAX<a class="headerlink" href="#schelling-model-with-jax" title="Link to this heading">#</a></h1>
+<section id="overview">
+<h2><span class="section-number">27.1. </span>Overview<a class="headerlink" href="#overview" title="Link to this heading">#</a></h2>
+<p>In the <a class="reference internal" href="schelling_numpy.html"><span class="doc">previous lecture</span></a>, we rewrote our Schelling model
+using NumPy arrays and functions.</p>
+<p>In this lecture, we explore <a class="reference external" href="https://github.com/google/jax">JAX</a>, a library
+developed by Google for high-performance numerical computing.</p>
+<p>JAX offers several powerful features, including automatic GPU/TPU acceleration and
+just-in-time compilation.</p>
+<p>JAX is heavily used for AI workflows but we repurpose it to work with our simulation.</p>
+<p>Let’s start with some imports:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">jax</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">jax.numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">jnp</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">jax</span><span class="w"> </span><span class="kn">import</span> <span class="n">random</span><span class="p">,</span> <span class="n">jit</span><span class="p">,</span> <span class="n">vmap</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">partial</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">NamedTuple</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="how-jax-differs-from-numpy">
+<h2><span class="section-number">27.2. </span>How JAX Differs from NumPy<a class="headerlink" href="#how-jax-differs-from-numpy" title="Link to this heading">#</a></h2>
+<p>Before diving into the code, let’s understand what makes JAX special.</p>
+<section id="immutable-arrays">
+<h3><span class="section-number">27.2.1. </span>Immutable Arrays<a class="headerlink" href="#immutable-arrays" title="Link to this heading">#</a></h3>
+<p>In NumPy, we often modify arrays in place:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># NumPy style (mutable)</span>
+<span class="n">locations</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">new_location</span>  <span class="c1"># modifies the array</span>
+</pre></div>
+</div>
+<p>JAX arrays are <strong>immutable</strong> — they cannot be modified after creation. Instead,
+you create new arrays:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># JAX style (immutable)</span>
+<span class="n">locations</span> <span class="o">=</span> <span class="n">locations</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">new_location</span><span class="p">)</span>  <span class="c1"># returns a new array</span>
+</pre></div>
+</div>
+<p>This might seem inefficient, but JAX’s compiler can optimize these operations,
+often avoiding unnecessary copies.</p>
+</section>
+<section id="functional-programming">
+<h3><span class="section-number">27.2.2. </span>Functional Programming<a class="headerlink" href="#functional-programming" title="Link to this heading">#</a></h3>
+<p>JAX works best with <strong>pure functions</strong> — functions that:</p>
+<ol class="arabic simple">
+<li><p>Always return the same output for the same input</p></li>
+<li><p>Don’t modify any external state (no side effects)</p></li>
+</ol>
+<p>This style makes code easier to reason about and enables JAX’s powerful
+optimizations.</p>
+</section>
+<section id="random-numbers">
+<h3><span class="section-number">27.2.3. </span>Random Numbers<a class="headerlink" href="#random-numbers" title="Link to this heading">#</a></h3>
+<p>NumPy’s random number generator maintains hidden internal state. JAX takes a
+different approach: you explicitly manage random “keys”:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># NumPy style</span>
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">()</span>  <span class="c1"># uses hidden state</span>
+
+<span class="c1"># JAX style</span>
+<span class="n">key</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">PRNGKey</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>       <span class="c1"># create a key</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>        <span class="c1"># pass key explicitly</span>
+<span class="n">key</span><span class="p">,</span> <span class="n">subkey</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>  <span class="c1"># get new keys for future use</span>
+</pre></div>
+</div>
+<p>This explicit handling makes JAX programs reproducible and parallelizable.</p>
+</section>
+</section>
+<section id="parameters">
+<h2><span class="section-number">27.3. </span>Parameters<a class="headerlink" href="#parameters" title="Link to this heading">#</a></h2>
+<p>We use the same parameters as before. To keep our functions pure, we pack all
+parameters into a <code class="docutils literal notranslate"><span class="pre">NamedTuple</span></code> that gets passed to functions that need them:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">Params</span><span class="p">(</span><span class="n">NamedTuple</span><span class="p">):</span>
+    <span class="n">num_of_type_0</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1000</span>    <span class="c1"># number of agents of type 0 (orange)</span>
+    <span class="n">num_of_type_1</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1000</span>    <span class="c1"># number of agents of type 1 (green)</span>
+    <span class="n">num_neighbors</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span>      <span class="c1"># number of agents regarded as neighbors</span>
+    <span class="n">max_other_type</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">6</span>     <span class="c1"># max number of different-type neighbors tolerated</span>
+
+
+<span class="n">params</span> <span class="o">=</span> <span class="n">Params</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="initialization">
+<h2><span class="section-number">27.4. </span>Initialization<a class="headerlink" href="#initialization" title="Link to this heading">#</a></h2>
+<p>Here’s our initialization function. Note that we use <code class="docutils literal notranslate"><span class="pre">jax.random</span></code> instead of
+<code class="docutils literal notranslate"><span class="pre">numpy.random</span></code>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">initialize_state</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">params</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Initialize agent locations and types.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">num_of_type_0</span><span class="p">,</span> <span class="n">num_of_type_1</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="n">num_of_type_0</span><span class="p">,</span> <span class="n">params</span><span class="o">.</span><span class="n">num_of_type_1</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="n">num_of_type_0</span> <span class="o">+</span> <span class="n">num_of_type_1</span>
+    <span class="n">locations</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+    <span class="n">types</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">num_of_type_0</span> <span class="o">+</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">num_of_type_1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">locations</span><span class="p">,</span> <span class="n">types</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The key differences from NumPy are that we pass a <code class="docutils literal notranslate"><span class="pre">key</span></code> argument to
+<code class="docutils literal notranslate"><span class="pre">random.uniform</span></code> (making random generation deterministic and reproducible)
+and we pass <code class="docutils literal notranslate"><span class="pre">params</span></code> explicitly rather than relying on global variables.</p>
+</section>
+<section id="jax-compiled-functions">
+<h2><span class="section-number">27.5. </span>JAX-Compiled Functions<a class="headerlink" href="#jax-compiled-functions" title="Link to this heading">#</a></h2>
+<p>Now let’s rewrite our core functions for JAX. We add the <code class="docutils literal notranslate"><span class="pre">&#64;jit</span></code> decorator
+to compile functions for faster execution.</p>
+<section id="computing-distances">
+<h3><span class="section-number">27.5.1. </span>Computing Distances<a class="headerlink" href="#computing-distances" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@jit</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_distances</span><span class="p">(</span><span class="n">loc</span><span class="p">,</span> <span class="n">locations</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute squared Euclidean distance from one location to all agent locations.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">diff</span> <span class="o">=</span> <span class="n">loc</span> <span class="o">-</span> <span class="n">locations</span>  <span class="c1"># broadcasting: (2,) - (n, 2) -&gt; (n, 2)</span>
+    <span class="k">return</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">diff</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Notice that we use vectorized operations like in NumPy. JAX compiles these
+vectorized operations very efficiently, especially when running on GPUs.</p>
+<p>We use <code class="docutils literal notranslate"><span class="pre">jnp</span></code> (JAX NumPy) instead of <code class="docutils literal notranslate"><span class="pre">np</span></code> (NumPy). The functions are similar,
+but <code class="docutils literal notranslate"><span class="pre">jnp</span></code> operations return JAX arrays and can be compiled by JAX’s JIT
+compiler.</p>
+</section>
+<section id="finding-neighbors">
+<h3><span class="section-number">27.5.2. </span>Finding Neighbors<a class="headerlink" href="#finding-neighbors" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@partial</span><span class="p">(</span><span class="n">jit</span><span class="p">,</span> <span class="n">static_argnames</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;params&#39;</span><span class="p">,))</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_neighbors</span><span class="p">(</span><span class="n">loc</span><span class="p">,</span> <span class="n">agent_idx</span><span class="p">,</span> <span class="n">locations</span><span class="p">,</span> <span class="n">params</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get indices of the num_neighbors nearest neighbors to a location (excluding agent_idx).</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    loc : array of shape (2,)</span>
+<span class="sd">        The location to find neighbors for.</span>
+<span class="sd">    agent_idx : int</span>
+<span class="sd">        The index of the agent (excluded from neighbors).</span>
+<span class="sd">    locations : array of shape (n, 2)</span>
+<span class="sd">        All agent locations.</span>
+<span class="sd">    params : Params</span>
+<span class="sd">        Model parameters.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">num_neighbors</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="n">num_neighbors</span>
+    <span class="n">distances</span> <span class="o">=</span> <span class="n">get_distances</span><span class="p">(</span><span class="n">loc</span><span class="p">,</span> <span class="n">locations</span><span class="p">)</span>
+    <span class="c1"># Set self-distance to infinity so agent doesn&#39;t count as own neighbor</span>
+    <span class="n">distances</span> <span class="o">=</span> <span class="n">distances</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">agent_idx</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">inf</span><span class="p">)</span>
+    <span class="c1"># Use top_k on negated distances to find num_neighbors smallest in O(n) instead of O(n log n)</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">indices</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">lax</span><span class="o">.</span><span class="n">top_k</span><span class="p">(</span><span class="o">-</span><span class="n">distances</span><span class="p">,</span> <span class="n">num_neighbors</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">indices</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Note that we use <code class="docutils literal notranslate"><span class="pre">distances.at[i].set(jnp.inf)</span></code> instead of <code class="docutils literal notranslate"><span class="pre">distances[i]</span> <span class="pre">=</span> <span class="pre">jnp.inf</span></code>
+because JAX arrays are immutable. This returns a new array with the value at
+index <code class="docutils literal notranslate"><span class="pre">i</span></code> set to infinity.</p>
+</section>
+<section id="checking-unhappiness">
+<h3><span class="section-number">27.5.3. </span>Checking Unhappiness<a class="headerlink" href="#checking-unhappiness" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@partial</span><span class="p">(</span><span class="n">jit</span><span class="p">,</span> <span class="n">static_argnames</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;params&#39;</span><span class="p">,))</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">is_unhappy</span><span class="p">(</span><span class="n">loc</span><span class="p">,</span> <span class="n">agent_type</span><span class="p">,</span> <span class="n">agent_idx</span><span class="p">,</span> <span class="n">locations</span><span class="p">,</span> <span class="n">types</span><span class="p">,</span> <span class="n">params</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    True if an agent at loc would have too many different-type neighbors.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    loc : array of shape (2,)</span>
+<span class="sd">        The location to test.</span>
+<span class="sd">    agent_type : int</span>
+<span class="sd">        The type of the agent (0 or 1).</span>
+<span class="sd">    agent_idx : int</span>
+<span class="sd">        The index of the agent (excluded from neighbor calculation).</span>
+<span class="sd">    locations : array of shape (n, 2)</span>
+<span class="sd">        All agent locations.</span>
+<span class="sd">    types : array of shape (n,)</span>
+<span class="sd">        All agent types.</span>
+<span class="sd">    params : Params</span>
+<span class="sd">        Model parameters.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">max_other_type</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="n">max_other_type</span>
+    <span class="n">neighbors</span> <span class="o">=</span> <span class="n">get_neighbors</span><span class="p">(</span><span class="n">loc</span><span class="p">,</span> <span class="n">agent_idx</span><span class="p">,</span> <span class="n">locations</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
+    <span class="n">neighbor_types</span> <span class="o">=</span> <span class="n">types</span><span class="p">[</span><span class="n">neighbors</span><span class="p">]</span>
+    <span class="n">num_other</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">neighbor_types</span> <span class="o">!=</span> <span class="n">agent_type</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">num_other</span> <span class="o">&gt;</span> <span class="n">max_other_type</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>This function takes the location and type as explicit arguments, rather than
+looking them up from the arrays. This design allows us to test hypothetical
+locations without modifying the <code class="docutils literal notranslate"><span class="pre">locations</span></code> array — useful when an agent is
+searching for a new location.</p>
+</section>
+<section id="moving-unhappy-agents">
+<h3><span class="section-number">27.5.4. </span>Moving Unhappy Agents<a class="headerlink" href="#moving-unhappy-agents" title="Link to this heading">#</a></h3>
+<p>This function finds a location where the agent would be happy. Rather than
+updating the <code class="docutils literal notranslate"><span class="pre">locations</span></code> array on each iteration, it tests candidate locations
+directly and returns only the final location.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@partial</span><span class="p">(</span><span class="n">jit</span><span class="p">,</span> <span class="n">static_argnames</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;params&#39;</span><span class="p">,))</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">update_agent</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">locations</span><span class="p">,</span> <span class="n">types</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">max_attempts</span><span class="o">=</span><span class="mi">10_000</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Find a location where agent i is happy.</span>
+
+<span class="sd">    Returns the new location and updated random key. The calling code</span>
+<span class="sd">    is responsible for updating the locations array if the agent moved.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">loc</span> <span class="o">=</span> <span class="n">locations</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:]</span>
+    <span class="n">agent_type</span> <span class="o">=</span> <span class="n">types</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">cond_fn</span><span class="p">(</span><span class="n">state</span><span class="p">):</span>
+        <span class="n">loc</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">attempts</span> <span class="o">=</span> <span class="n">state</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">attempts</span> <span class="o">&lt;</span> <span class="n">max_attempts</span><span class="p">)</span> <span class="o">&amp;</span> <span class="n">is_unhappy</span><span class="p">(</span><span class="n">loc</span><span class="p">,</span> <span class="n">agent_type</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">locations</span><span class="p">,</span> <span class="n">types</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">body_fn</span><span class="p">(</span><span class="n">state</span><span class="p">):</span>
+        <span class="n">_</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">attempts</span> <span class="o">=</span> <span class="n">state</span>
+        <span class="n">key</span><span class="p">,</span> <span class="n">subkey</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+        <span class="n">new_loc</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">subkey</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,))</span>
+        <span class="k">return</span> <span class="n">new_loc</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">attempts</span> <span class="o">+</span> <span class="mi">1</span>
+
+    <span class="n">final_loc</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">lax</span><span class="o">.</span><span class="n">while_loop</span><span class="p">(</span><span class="n">cond_fn</span><span class="p">,</span> <span class="n">body_fn</span><span class="p">,</span> <span class="p">(</span><span class="n">loc</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">final_loc</span><span class="p">,</span> <span class="n">key</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s break down the key JAX concepts here:</p>
+<ol class="arabic simple">
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">jax.lax.while_loop</span></code></strong>: Takes three arguments:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">cond_fn(state)</span></code> — returns True to continue looping, False to stop</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">body_fn(state)</span></code> — executes one iteration, returns new state</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">(loc,</span> <span class="pre">key)</span></code> — initial state (a tuple containing location and random key)</p></li>
+</ul>
+</li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">random.split(key)</span></code></strong>: Since JAX random numbers are deterministic, we
+need to “split” the key to get new randomness. Each split produces two new
+keys: one to use now, one to save for later.</p></li>
+<li><p><strong>Testing without updating</strong>: By passing <code class="docutils literal notranslate"><span class="pre">loc</span></code> directly to <code class="docutils literal notranslate"><span class="pre">is_unhappy</span></code>, we
+can test candidate locations without modifying the <code class="docutils literal notranslate"><span class="pre">locations</span></code> array. This
+avoids creating new arrays inside the loop, improving efficiency.</p></li>
+</ol>
+</section>
+</section>
+<section id="visualization">
+<h2><span class="section-number">27.6. </span>Visualization<a class="headerlink" href="#visualization" title="Link to this heading">#</a></h2>
+<p>Plotting uses Matplotlib, which works with regular NumPy arrays. We convert
+JAX arrays to NumPy arrays using <code class="docutils literal notranslate"><span class="pre">np.asarray()</span></code>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">plot_distribution</span><span class="p">(</span><span class="n">locations</span><span class="p">,</span> <span class="n">types</span><span class="p">,</span> <span class="n">title</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Plot the distribution of agents.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Convert JAX arrays to NumPy for matplotlib</span>
+    <span class="n">locations_np</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">locations</span><span class="p">)</span>
+    <span class="n">types_np</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">types</span><span class="p">)</span>
+
+    <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+    <span class="n">plot_args</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;markersize&#39;</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span> <span class="s1">&#39;alpha&#39;</span><span class="p">:</span> <span class="mf">0.8</span><span class="p">,</span> <span class="s1">&#39;markeredgecolor&#39;</span><span class="p">:</span> <span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="s1">&#39;markeredgewidth&#39;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">}</span>
+    <span class="n">colors</span> <span class="o">=</span> <span class="s1">&#39;darkorange&#39;</span><span class="p">,</span> <span class="s1">&#39;green&#39;</span>
+    <span class="k">for</span> <span class="n">agent_type</span><span class="p">,</span> <span class="n">color</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">colors</span><span class="p">):</span>
+        <span class="n">idx</span> <span class="o">=</span> <span class="p">(</span><span class="n">types_np</span> <span class="o">==</span> <span class="n">agent_type</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">locations_np</span><span class="p">[</span><span class="n">idx</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+                <span class="n">locations_np</span><span class="p">[</span><span class="n">idx</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+                <span class="s1">&#39;o&#39;</span><span class="p">,</span>
+                <span class="n">markerfacecolor</span><span class="o">=</span><span class="n">color</span><span class="p">,</span>
+                <span class="o">**</span><span class="n">plot_args</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="the-simulation">
+<h2><span class="section-number">27.7. </span>The Simulation<a class="headerlink" href="#the-simulation" title="Link to this heading">#</a></h2>
+<p>We separate the core simulation loop from the setup and plotting code. This
+makes it easier to optimize or JIT-compile the loop independently.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@partial</span><span class="p">(</span><span class="n">jit</span><span class="p">,</span> <span class="n">static_argnames</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;params&#39;</span><span class="p">,))</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_unhappy_agents</span><span class="p">(</span><span class="n">locations</span><span class="p">,</span> <span class="n">types</span><span class="p">,</span> <span class="n">params</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Find indices and count of all unhappy agents using vectorized computation.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="n">num_of_type_0</span> <span class="o">+</span> <span class="n">params</span><span class="o">.</span><span class="n">num_of_type_1</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">check_agent</span><span class="p">(</span><span class="n">i</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">is_unhappy</span><span class="p">(</span><span class="n">locations</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">types</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">i</span><span class="p">,</span> <span class="n">locations</span><span class="p">,</span> <span class="n">types</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
+
+    <span class="n">all_unhappy</span> <span class="o">=</span> <span class="n">vmap</span><span class="p">(</span><span class="n">check_agent</span><span class="p">)(</span><span class="n">jnp</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n</span><span class="p">))</span>
+    <span class="c1"># jnp.where with size= returns fixed-length array (required for JIT)</span>
+    <span class="c1"># Pads with fill_value=-1 when fewer than n agents are unhappy</span>
+    <span class="n">indices</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">all_unhappy</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">n</span><span class="p">,</span> <span class="n">fill_value</span><span class="o">=-</span><span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">count</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">all_unhappy</span><span class="p">)</span>  <span class="c1"># number of valid indices</span>
+    <span class="k">return</span> <span class="n">indices</span><span class="p">,</span> <span class="n">count</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">simulation_loop</span><span class="p">(</span><span class="n">locations</span><span class="p">,</span> <span class="n">types</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">max_iter</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Run the simulation loop until convergence or max iterations.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    locations : array</span>
+<span class="sd">        Final agent locations.</span>
+<span class="sd">    iteration : int</span>
+<span class="sd">        Number of iterations completed.</span>
+<span class="sd">    key : PRNGKey</span>
+<span class="sd">        Updated random key.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">iteration</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">while</span> <span class="n">iteration</span> <span class="o">&lt;</span> <span class="n">max_iter</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Entering iteration </span><span class="si">{</span><span class="n">iteration</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">iteration</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="c1"># Find unhappy agents using vectorized computation</span>
+        <span class="n">unhappy</span><span class="p">,</span> <span class="n">num_unhappy</span> <span class="o">=</span> <span class="n">get_unhappy_agents</span><span class="p">(</span><span class="n">locations</span><span class="p">,</span> <span class="n">types</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
+        <span class="n">num_unhappy</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">num_unhappy</span><span class="p">)</span>
+
+        <span class="c1"># Check if everyone is happy</span>
+        <span class="k">if</span> <span class="n">num_unhappy</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">break</span>
+
+        <span class="c1"># Update only the unhappy agents</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_unhappy</span><span class="p">):</span>
+            <span class="n">i</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">unhappy</span><span class="p">[</span><span class="n">j</span><span class="p">])</span>
+            <span class="n">new_loc</span><span class="p">,</span> <span class="n">key</span> <span class="o">=</span> <span class="n">update_agent</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">locations</span><span class="p">,</span> <span class="n">types</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
+            <span class="n">locations</span> <span class="o">=</span> <span class="n">locations</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">new_loc</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">locations</span><span class="p">,</span> <span class="n">iteration</span><span class="p">,</span> <span class="n">key</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">run_simulation</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">100_000</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">1234</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Run the Schelling simulation using JAX.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">key</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">PRNGKey</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
+    <span class="n">key</span><span class="p">,</span> <span class="n">init_key</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+    <span class="n">locations</span><span class="p">,</span> <span class="n">types</span> <span class="o">=</span> <span class="n">initialize_state</span><span class="p">(</span><span class="n">init_key</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
+
+    <span class="n">plot_distribution</span><span class="p">(</span><span class="n">locations</span><span class="p">,</span> <span class="n">types</span><span class="p">,</span> <span class="s1">&#39;Initial distribution&#39;</span><span class="p">)</span>
+
+    <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+    <span class="n">locations</span><span class="p">,</span> <span class="n">iteration</span><span class="p">,</span> <span class="n">key</span> <span class="o">=</span> <span class="n">simulation_loop</span><span class="p">(</span><span class="n">locations</span><span class="p">,</span> <span class="n">types</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">max_iter</span><span class="p">)</span>
+    <span class="n">elapsed</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span>
+
+    <span class="n">plot_distribution</span><span class="p">(</span><span class="n">locations</span><span class="p">,</span> <span class="n">types</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;Iteration </span><span class="si">{</span><span class="n">iteration</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">iteration</span> <span class="o">&lt;</span> <span class="n">max_iter</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Converged in </span><span class="si">{</span><span class="n">elapsed</span><span class="si">:</span><span class="s1">.2f</span><span class="si">}</span><span class="s1"> seconds after </span><span class="si">{</span><span class="n">iteration</span><span class="si">}</span><span class="s1"> iterations.&#39;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Hit iteration bound and terminated.&#39;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">locations</span><span class="p">,</span> <span class="n">types</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The simulation loop differs from the NumPy version in several ways:</p>
+<ol class="arabic simple">
+<li><p><strong>Vectorized unhappiness check</strong>: We use <code class="docutils literal notranslate"><span class="pre">get_unhappy_agents</span></code> to identify all
+unhappy agents in parallel, then only process those agents</p></li>
+<li><p>We pass and receive the random <code class="docutils literal notranslate"><span class="pre">key</span></code> in each call to <code class="docutils literal notranslate"><span class="pre">update_agent</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">update_agent</span></code> returns the new location, not the whole array</p></li>
+<li><p>We only update <code class="docutils literal notranslate"><span class="pre">locations</span></code> when an agent actually moves</p></li>
+</ol>
+<p>This hybrid approach uses vectorized computation to identify unhappy agents,
+then processes them sequentially. As the simulation progresses and more agents
+become happy, fewer agents need processing each iteration.</p>
+</section>
+<section id="warming-up-jax">
+<h2><span class="section-number">27.8. </span>Warming Up JAX<a class="headerlink" href="#warming-up-jax" title="Link to this heading">#</a></h2>
+<p>JAX compiles functions the first time they’re called. Let’s warm up the
+functions:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Warm up: use actual problem size to trigger compilation</span>
+<span class="c1"># (JAX recompiles when array shapes change)</span>
+<span class="n">key</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">PRNGKey</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+<span class="n">key</span><span class="p">,</span> <span class="n">init_key</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+<span class="n">test_locations</span><span class="p">,</span> <span class="n">test_types</span> <span class="o">=</span> <span class="n">initialize_state</span><span class="p">(</span><span class="n">init_key</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
+
+<span class="c1"># Call each function once to compile it</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">get_distances</span><span class="p">(</span><span class="n">test_locations</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">test_locations</span><span class="p">)</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">get_neighbors</span><span class="p">(</span><span class="n">test_locations</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">0</span><span class="p">,</span> <span class="n">test_locations</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">is_unhappy</span><span class="p">(</span><span class="n">test_locations</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">test_types</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">0</span><span class="p">,</span> <span class="n">test_locations</span><span class="p">,</span> <span class="n">test_types</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
+<span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">get_unhappy_agents</span><span class="p">(</span><span class="n">test_locations</span><span class="p">,</span> <span class="n">test_types</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
+<span class="n">key</span><span class="p">,</span> <span class="n">subkey</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+<span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">update_agent</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">test_locations</span><span class="p">,</span> <span class="n">test_types</span><span class="p">,</span> <span class="n">subkey</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;JAX functions compiled and ready!&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>JAX functions compiled and ready!
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="results">
+<h2><span class="section-number">27.9. </span>Results<a class="headerlink" href="#results" title="Link to this heading">#</a></h2>
+<p>Now let’s run the simulation:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">locations</span><span class="p">,</span> <span class="n">types</span> <span class="o">=</span> <span class="n">run_simulation</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<a class="reference internal image-reference" href="_images/d2e08faa443c919c8468559d0479722d7a404724511a4844ec158fbcf3f54437.png"><img alt="_images/d2e08faa443c919c8468559d0479722d7a404724511a4844ec158fbcf3f54437.png" src="_images/d2e08faa443c919c8468559d0479722d7a404724511a4844ec158fbcf3f54437.png" style="width: 80%;" />
+</a>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Entering iteration 1
+Entering iteration 2
+Entering iteration 3
+Entering iteration 4
+Entering iteration 5
+Entering iteration 6
+Entering iteration 7
+Entering iteration 8
+Entering iteration 9
+Entering iteration 10
+Converged in 1.57 seconds after 10 iterations.
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="_images/5968201619ddb15d8e41e9a58cf22c1ab2d4cf08848cf306a60368d5bab3419f.png"><img alt="_images/5968201619ddb15d8e41e9a58cf22c1ab2d4cf08848cf306a60368d5bab3419f.png" src="_images/5968201619ddb15d8e41e9a58cf22c1ab2d4cf08848cf306a60368d5bab3419f.png" style="width: 80%;" />
+</a>
+</div>
+</div>
+</section>
+<section id="tips-for-using-jax">
+<h2><span class="section-number">27.10. </span>Tips for Using JAX<a class="headerlink" href="#tips-for-using-jax" title="Link to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p><strong>Think functionally</strong>: Write pure functions that don’t modify external
+state. This makes your code easier to JIT-compile and parallelize.</p></li>
+<li><p><strong>Use <code class="docutils literal notranslate"><span class="pre">jnp</span></code> instead of <code class="docutils literal notranslate"><span class="pre">np</span></code></strong>: Replace NumPy operations with their JAX
+equivalents. Most functions have the same names.</p></li>
+<li><p><strong>Manage random keys explicitly</strong>: Always split keys before generating
+random numbers. Never reuse the same key.</p></li>
+<li><p><strong>Use JAX’s loop constructs</strong>: Replace Python <code class="docutils literal notranslate"><span class="pre">for</span></code> and <code class="docutils literal notranslate"><span class="pre">while</span></code> loops with
+<code class="docutils literal notranslate"><span class="pre">jax.lax.fori_loop</span></code> and <code class="docutils literal notranslate"><span class="pre">jax.lax.while_loop</span></code> inside JIT-compiled functions.</p></li>
+<li><p><strong>Remember immutability</strong>: Use <code class="docutils literal notranslate"><span class="pre">.at[].set()</span></code> to “update” arrays. The
+original array is never modified.</p></li>
+<li><p><strong>Warm up before timing</strong>: Always call your functions once before measuring
+performance to exclude compilation time.</p></li>
+</ol>
+</section>
+<section id="limitations-of-this-approach">
+<h2><span class="section-number">27.11. </span>Limitations of This Approach<a class="headerlink" href="#limitations-of-this-approach" title="Link to this heading">#</a></h2>
+<p>While this lecture demonstrated JAX syntax and concepts, the algorithm itself
+doesn’t fully leverage JAX’s parallel capabilities. The original Schelling
+algorithm has inherent sequential dependencies:</p>
+<ul class="simple">
+<li><p>Agents update one at a time</p></li>
+<li><p>Each agent’s move changes the state for subsequent agents</p></li>
+<li><p>The “move until happy” while loop has unpredictable length</p></li>
+</ul>
+<p>These characteristics don’t map well to parallel hardware like GPUs, which
+excel at performing the same operation on many data points simultaneously.</p>
+</section>
+<section id="summary">
+<h2><span class="section-number">27.12. </span>Summary<a class="headerlink" href="#summary" title="Link to this heading">#</a></h2>
+<p>JAX provides a powerful framework for accelerating Python code. Its key features
+are:</p>
+<ul class="simple">
+<li><p><strong>Immutable arrays</strong> that encourage functional programming</p></li>
+<li><p><strong>Explicit random key management</strong> for reproducibility</p></li>
+<li><p><strong>JIT compilation</strong> via the <code class="docutils literal notranslate"><span class="pre">&#64;jit</span></code> decorator</p></li>
+<li><p><strong>GPU/TPU support</strong> for hardware acceleration</p></li>
+</ul>
+<p>JAX’s functional style and unique capabilities like automatic differentiation
+and seamless GPU acceleration make it particularly valuable for machine learning
+and large-scale numerical computing.</p>
+<p>To fully benefit from these capabilities, algorithms often need to be
+restructured for parallelism — as we’ll see in the next lecture.</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                    </div>
+                    
+                </main> <!-- .page__content -->
+                
+
+
+                <footer class="qe-page__footer">
+
+                    <p><a href="https://creativecommons.org/licenses/by-sa/4.0/"><img src="https://licensebuttons.net/l/by-sa/4.0/80x15.png"></a></p>
+
+                    <p>Creative Commons License &ndash; This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International.</p>
+
+                    <p>A theme by <a href="https://quantecon.org">QuantEcon</a></p>
+
+                </footer> <!-- .page__footer -->
+
+            </div> <!-- .page -->
+
+            
+
+            
+            <div class="qe-sidebar bd-sidebar inactive" id="site-navigation">
+
+                <div class="qe-sidebar__header">
+
+
+                    Contents
+
+                </div>
+
+                <nav class="qe-sidebar__nav" id="qe-sidebar-nav" aria-label="Main navigation">
+                    <p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Introduction
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="about.html">
+   1. About
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="jax_intro.html">
+   2. An Introduction to JAX
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="autodiff.html">
+   3. Adventures with Autodiff
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="newtons_method.html">
+   4. Newton’s Method via JAX
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Simulation
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="inventory_dynamics.html">
+   5. Inventory Dynamics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="kesten_processes.html">
+   6. Kesten Processes and Firm Dynamics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="wealth_dynamics.html">
+   7. Wealth Distribution Dynamics
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Asset Pricing
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="lucas_model.html">
+   8. Asset Pricing: The Lucas Asset Pricing Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="markov_asset.html">
+   9. An Asset Pricing Problem
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Dynamic Programming
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="job_search.html">
+   10. Job Search
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="opt_savings_1.html">
+   11. Optimal Savings I: Value Function Iteration
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="opt_savings_2.html">
+   12. Optimal Savings II: Alternative Algorithms
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="short_path.html">
+   13. Shortest Paths
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="opt_invest.html">
+   14. Optimal Investment
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="inventory_ssd.html">
+   15. Inventory Management Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ifp_egm.html">
+   16. Endogenous Grid Method
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Macroeconomic Models
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="arellano.html">
+   17. Default Risk and Income Fluctuations
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="aiyagari_jax.html">
+   18. The Aiyagari Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="hopenhayn.html">
+   19. The Hopenhayn Entry-Exit Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="overborrowing.html">
+   20. Bianchi Overborrowing Model
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Data and Empirics
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="mle.html">
+   21. Maximum Likelihood Estimation
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="keras.html">
+   22. Simple Neural Network Regression with Keras and JAX
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="jax_nn.html">
+   23. Neural Network Regression with JAX
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ifp_dl.html">
+   24. Policy Gradient-Based Optimal Savings
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Racial Segregation
+ </span>
+</p>
+<ul class="current nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="schelling.html">
+   25. Schelling’s Model of Racial Segregation
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="schelling_numpy.html">
+   26. Schelling Model with NumPy
+  </a>
+ </li>
+ <li class="toctree-l1 current active active">
+  <a class="current reference internal" href="#">
+   27. Schelling Model with JAX
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="schelling_jax_parallel.html">
+   28. Parallelizing the Algorithm
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="schelling_shocks.html">
+   29. Segregation with Persistent Shocks
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Other
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="troubleshooting.html">
+   30. Troubleshooting
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="zreferences.html">
+   31. References
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="status.html">
+   32. Execution Statistics
+  </a>
+ </li>
+</ul>
+
+                </nav>
+
+                <div class="qe-sidebar__footer">
+
+                </div>
+
+            </div> <!-- .sidebar -->
+            
+        </div> <!-- .main -->
+
+        <div class="qe-toolbar">
+
+            <div class="qe-toolbar__inner">
+
+                <ul class="qe-toolbar__main">
+                    <li data-tippy-content="Table of Contents" class="btn__sidebar"><i data-feather="menu"></i></li>
+                    <li data-tippy-content="Home"><a href="intro.html"><i data-feather="home"></i></a></li>
+                    <li class="btn__qelogo"><a href="https://quantecon.org" title=""><span class="show-for-sr">QuantEcon</span></a></li>
+                </ul>
+
+                <ul class="qe-toolbar__links">
+                    <li class="btn__search">
+                        <form action="search.html" method="get">
+                            <input type="search" class="form-control" name="q" id="search-input" placeholder="Search..." aria-label="Search..." autocomplete="off" accesskey="k">
+                            <i data-feather="search" id="search-icon"></i>
+                        </form>
+                    </li>
+                    <li data-tippy-content="Fullscreen" class="btn__fullscreen"><i data-feather="maximize"></i></li>
+                    <li data-tippy-content="Increase font size" class="btn__plus"><i data-feather="plus-circle"></i></li>
+                    <li data-tippy-content="Decrease font size" class="btn__minus"><i data-feather="minus-circle"></i></li>
+                    <li data-tippy-content="Change contrast" class="btn__contrast"><i data-feather="sunset"></i></li>
+                    <li data-tippy-content="Download Notebook"><a href="/_notebooks/schelling_jax.ipynb" download><i data-feather="download-cloud"></i></a></li>
+                    <li class="settings-button" id="settingsButton"><div data-tippy-content="Launch Notebook"><i data-feather="play-circle"></i></div></li>
+                        <li class="download-pdf" id="downloadButton"><i data-feather="file"></i></li>
+                    <!--
+                    # Enable if looking for link to specific document hosted on GitHub
+                    <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-jax/blob/main/lectures/schelling_jax.md" download><i data-feather="github"></i></a></li>
+                    -->
+                    <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-jax" download><i data-feather="github"></i></a></li>
+                    
+                    
+                </ul>
+
+            </div>
+
+        </div> <!-- .toolbar -->
+        <div id="downloadPDFModal" style="display: none;">
+            <ul class="pdf-options" style="display: block;">
+                <li class="download-pdf-book" onClick="window.print()">
+                    <p>Lecture (PDF)</p>
+                </li>
+                <li class="download-pdf-file">
+                    <a href="/_pdf/quantecon-jax.pdf" download><p>Book (PDF)</p></a>
+                </li>
+            </ul>
+        </div>
+        <div id="settingsModal" style="display: none;">
+            <p class="modal-title"> Notebook Launcher </p>
+            <div class="modal-desc">
+            <p>
+                Choose public or private cloud service for "Launch" button.
+            </p>
+            </div>
+            <p class="modal-subtitle">Select a server</p>
+            <ul class="modal-servers">
+            <li class="active launcher-public">
+                <span class="label">Public</span>
+                <select id="launcher-public-input">
+                
+                    <option value="https://colab.research.google.com/github/QuantEcon/lecture-jax.notebooks/blob/main/schelling_jax.ipynb">Colab</option>
+                
+                </select>
+                <i class="fas fa-check-circle"></i>
+            </li>
+            <li class="launcher-private">
+                <span class="label">Private</span>
+                <input type="text" id="launcher-private-input" data-repourl="https://github.com/QuantEcon/lecture-jax.notebooks" data-urlpath="tree/lecture-jax.notebooks/schelling_jax.ipynb" data-branch=main>
+                <i class="fas fa-check-circle"></i>
+            </li>
+            </ul>
+            <p class="launch"><a href="https://colab.research.google.com/github/QuantEcon/lecture-jax.notebooks/blob/main/schelling_jax.ipynb" id="advancedLaunchButton" target="_blank">Launch Notebook</a></p>
+            <script>
+                // QuantEcon Notebook Launcher
+                const launcherTypeElements = document.querySelectorAll('#settingsModal .modal-servers li');
+                // Highlight the server type if previous selection exists
+                if (typeof localStorage.launcherType !== 'undefined') {
+                  for (var i = 0; i < launcherTypeElements.length; i++) {
+                    launcherTypeElements[i].classList.remove('active');
+                    if ( launcherTypeElements[i].classList.contains(localStorage.launcherType) ) {
+                      launcherTypeElements[i].classList.add('active');
+                    }
+                  }
+                }
+                // Highlight server type on click and set local storage value
+                for (var i = 0; i < launcherTypeElements.length; i++) {
+                  launcherTypeElements[i].addEventListener('click', function() {
+                    for (var j = 0; j < launcherTypeElements.length; j++) {
+                      launcherTypeElements[j].classList.remove('active');
+                    }
+                    this.classList.add('active');
+                    if ( this.classList.contains('launcher-private') ) {
+                      localStorage.launcherType = 'launcher-private';
+                    } else if ( this.classList.contains('launcher-public') ) {
+                      localStorage.launcherType = 'launcher-public';
+                    }
+                    setLaunchServer();
+                  })
+                }
+                const launcherPublic = document.getElementById('launcher-public-input');
+                const launcherPrivate = document.getElementById('launcher-private-input');
+                const pageName = "schelling_jax";
+                const repoURL = "https://github.com/QuantEcon/lecture-jax.notebooks";
+                const urlPath = "tree/lecture-jax.notebooks/schelling_jax.ipynb";
+                const branch = "main"
+                const launchNotebookLink = document.getElementById('advancedLaunchButton');
+
+                // Highlight public server option if previous selection exists
+                if (typeof localStorage.launcherPublic !== 'undefined') {
+                  launcherPublic.value = localStorage.launcherPublic;
+                }
+                // Update local storage upon public server selection
+                launcherPublic.addEventListener('change', (event) => {
+                  setLaunchServer();
+                });
+                // Populate private server input if previous entry exists
+                if (typeof localStorage.launcherPrivate !== 'undefined') {
+                  launcherPrivate.value = localStorage.launcherPrivate;
+                }
+                // Update local storage when a private server is entered
+                launcherPrivate.addEventListener('input', (event) => {
+                  setLaunchServer();
+                });
+
+                // Function to update the "Launch Notebook" link href
+                function setLaunchServer() {
+                  launchNotebookLink.removeAttribute("style")
+                  if ( localStorage.launcherType == 'launcher-private' ) {
+                    let repoPrefix = "/user-redirect/git-pull?repo=" + repoURL + "&branch=" + branch + "&urlpath=" + urlPath;
+                    launcherPrivateValue = launcherPrivate.value
+                    if (!launcherPrivateValue) {
+                        launchNotebookLink.removeAttribute("href")
+                        launchNotebookLink.style.background = "grey"
+                        return
+                    }
+                    localStorage.launcherPrivate = launcherPrivateValue;
+                    privateServer = localStorage.launcherPrivate.replace(/\/$/, "")
+                    if (!privateServer.includes("http")) {
+                        privateServer = "http://" + privateServer
+                    }
+                    launchNotebookLinkURL = privateServer + repoPrefix;
+                  } else if ( localStorage.launcherType == 'launcher-public' ) {
+                    launcherPublicValue = launcherPublic.options[launcherPublic.selectedIndex].value;
+                    localStorage.launcherPublic = launcherPublicValue;
+                    launchNotebookLinkURL = localStorage.launcherPublic;
+                  }
+                  if (launchNotebookLinkURL) launchNotebookLink.href = launchNotebookLinkURL;
+                }
+                // Check if user has previously selected a server
+                if ( (typeof localStorage.launcherPrivate !== 'undefined') || (typeof localStorage.launcherPublic !== 'undefined') ) {
+                  setLaunchServer();
+                }
+                </script>
+
+        </div>
+
+    </div> <!-- .wrapper-->
+  </body>
+</html>

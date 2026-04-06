@@ -1,0 +1,1191 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>25. Schelling’s Model of Racial Segregation &#8212; Quantitative Economics with Python using JAX</title>
+    
+    <link rel="preconnect" href="https://unpkg.com" crossorigin>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    
+    <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/tippy.js@6.3.1/dist/tippy-bundle.umd.js" integrity="sha384-bq5PNg/ZcfW7KMvFSmhjqCQJ/VFnec+6sZkctn/4ZLeubkn7U58Le4zFFSn3dhUu" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js" integrity="sha384-qEqAs1VsN9WH2myXDbiP2wGGIttL9bMRZBKCl54ZnzpDlVqbYANP9vMaoT/wvQcf" crossorigin="anonymous"></script>
+    
+        <script>
+            MathJax = {
+            loader: {load: ['[tex]/boldsymbol', '[tex]/textmacros']},
+            tex: {
+                packages: {'[+]': ['boldsymbol', 'textmacros']},
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                processEscapes: true,
+                macros: {
+                    "argmax" : "arg\\,max",
+                    "argmin" : "arg\\,min",
+                    "col"    : "col",
+                    "Span"   :  "span",
+                    "epsilon": "\\varepsilon",
+                    "EE": "\\mathbb{E}",
+                    "PP": "\\mathbb{P}",
+                    "RR": "\\mathbb{R}",
+                    "NN": "\\mathbb{N}",
+                    "ZZ": "\\mathbb{Z}",
+                    "aA": "\\mathcal{A}",
+                    "bB": "\\mathcal{B}",
+                    "cC": "\\mathcal{C}",
+                    "dD": "\\mathcal{D}",
+                    "eE": "\\mathcal{E}",
+                    "fF": "\\mathcal{F}",
+                    "gG": "\\mathcal{G}",
+                    "hH": "\\mathcal{H}",
+                }
+            },
+            svg: {
+                fontCache: 'global',
+                scale: 0.92,
+                displayAlign: "center",
+            },
+            };
+        </script>
+    
+    
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=3355220bfb204a7ac1b0ca03dac108f0437ded6f" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="_static/exercise.css?v=982b99e0" />
+    <link rel="stylesheet" type="text/css" href="_static/proof.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+
+    <script src="_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/scripts/sphinx-book-theme.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js?v=b8b12719"></script>
+    <script src="_static/scripts/quantecon-book-theme.js?digest=9980b4379844dc0b911d69b62b295f34ede88fac"></script>
+    <script src="_static/scripts/jquery.js?v=5d32c60e"></script>
+    <script src="_static/scripts/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
+    <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-K1NYBSC1CZ"></script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-K1NYBSC1CZ');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', 'G-K1NYBSC1CZ');
+            </script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"tex": {"macros": {"argmax": "arg\\,max", "argmin": "arg\\,min"}}, "options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'schelling';</script>
+    <link rel="canonical" href="https://jax.quantecon.org/schelling.html" />
+    <link rel="icon" href="_static/lectures-favicon.ico"/>
+    <link rel="author" title="About these documents" href="about.html" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="26. Schelling Model with NumPy" href="schelling_numpy.html" />
+    <link rel="prev" title="24. Policy Gradient-Based Optimal Savings" href="ifp_dl.html" />
+
+<!-- Normal Meta Tags -->
+<meta name="author" context="Thomas J. Sargent &amp; John Stachurski" />
+<meta name="keywords" content="Python, JAX, QuantEcon, Quantitative Economics, Economics, Sloan, Alfred P. Sloan Foundation, Tom J. Sargent, John Stachurski" />
+<meta name="description" content=This website presents a set of lectures on quantitative economic modeling using JAX, designed and written by Thomas J. Sargent and John Stachurski. />
+
+<!-- Twitter tags -->
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@quantecon" />
+<meta name="twitter:title" content="Schelling’s Model of Racial Segregation"/>
+<meta name="twitter:description" content="This website presents a set of lectures on quantitative economic modeling using JAX, designed and written by Thomas J. Sargent and John Stachurski.">
+<meta name="twitter:creator" content="@quantecon">
+<meta name="twitter:image" content="https://assets.quantecon.org/img/qe-twitter-logo.png">
+
+<!-- Opengraph tags -->
+<meta property="og:title" content="Schelling’s Model of Racial Segregation" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://jax.quantecon.org/schelling.html" />
+<meta property="og:image" content="https://assets.quantecon.org/img/qe-og-logo.png" />
+<meta property="og:description" content="This website presents a set of lectures on quantitative economic modeling using JAX, designed and written by Thomas J. Sargent and John Stachurski." />
+<meta property="og:site_name" content="Quantitative Economics with Python using JAX" />
+<meta name="theme-color" content="#ffffff" />
+
+
+
+
+  </head>
+<body>
+
+<!-- Prevent flash of light theme when dark mode is saved -->
+<script>
+(function() {
+  try {
+    if (localStorage.setContrast === '1') {
+      document.body.classList.add('dark-theme');
+      document.documentElement.setAttribute('data-theme', 'dark');
+    } else {
+      document.documentElement.setAttribute('data-theme', 'light');
+    }
+  } catch(e) {
+    document.documentElement.setAttribute('data-theme', 'light');
+  }
+})();
+</script>
+
+<!-- Override QuantEcon theme colors -->
+
+<!-- Color scheme: applies scheme-specific body class -->
+
+    <span id="top"></span>
+
+    <div class="qe-wrapper">
+
+        <div class="qe-main">
+
+            <div class="qe-page" id=schelling>
+
+                <div class="qe-page__toc">
+
+                    
+                    
+                    
+
+                    
+                    <div class="inner sticky" data-autoexpand="true">
+
+                        
+                        <div class="qe-page__toc-header">
+                            On this page
+                        </div>
+
+
+                        <nav id="bd-toc-nav" class="qe-page__toc-nav">
+                            <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#outline">25.1. Outline</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#background">25.2. Background</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#columbus-ohio">25.2.1. Columbus, Ohio</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#memphis-tennessee">25.2.2. Memphis, Tennessee</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#washington-d-c">25.2.3. Washington, D.C.</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#houston-texas">25.2.4. Houston, Texas</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#miami-florida">25.2.5. Miami, Florida</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-model">25.3. The model</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#set-up">25.3.1. Set-Up</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#preferences">25.3.2. Preferences</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#behavior">25.3.3. Behavior</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#main-loop">25.4. Main Loop</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#results">25.5. Results</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#performance">25.6. Performance</a></li>
+</ul>
+                            <p class="logo">
+                                
+                                    
+                                    <a href=https://quantecon.org><img src="_static/qe-logo-large.png" class="logo logo-img" alt="logo"></a>
+                                    
+                                    <a href=https://quantecon.org><img src="_static/quantecon-logo-transparent.png" class="dark-logo-img" alt="logo"></a>
+                                    
+                                    
+                                
+                            </p>
+
+                            <p class="powered">Powered by <a href="https://jupyterbook.org/v1/">Jupyter Book</a></p>
+
+                        </nav>
+
+                        <div class="qe-page__toc-footer">
+                            
+                            
+                            
+                            
+                            
+                        </div>
+
+                    </div>
+
+                    
+                    <a href="#top" class="back-to-top-btn" title="Back to top">↑ Top</a>
+                    
+
+                </div>
+
+                <div class="qe-page__header">
+
+                    <div class="qe-page__header-copy">
+
+                        <p class="qe-page__header-heading"><a href="intro.html">Quantitative Economics with Python using JAX</a></p>
+
+                    </div>
+
+                    <!-- Authors section -->
+                        <p class="qe-page__header-authors" font-size="18">
+                            
+                                
+                                    <a href="http://www.tomsargent.com/" target="_blank"><span>Thomas J. Sargent</span></a>
+                                
+                            
+                                
+                                    and <a href="https://johnstachurski.net/" target="_blank"><span>John Stachurski</span></a>
+                                
+                            
+                        </p>
+
+                    <!-- Last modified / Changelog dropdown -->
+                        <button class="qe-page__header-changed" id="changelog-toggle" aria-expanded="false">
+                            Last changed: Apr 06, 2026
+                            <span class="changelog-icon">▼</span>
+                        </button>
+
+                    <!-- Changelog dropdown content -->
+                    <div class="qe-page__header-changelog" id="changelog-content" aria-hidden="true">
+                        <h4>Changelog (<a href="https://github.com/QuantEcon/lecture-jax/commits/main/lectures/schelling.md">full history</a>)</h4>
+                        <ul class="changelog-list">
+                            
+                            <li class="changelog-entry">
+                                
+                                <a href="https://github.com/QuantEcon/lecture-jax/commit/2cf9ade" class="changelog-hash">2cf9ade</a>
+                                
+                                <span class="changelog-author">John Stachurski</span>
+                                <span class="changelog-time">38 minutes ago</span>
+                                <span class="changelog-message">Add Schelling segregation model lectures (#296)</span>
+                            </li>
+                            
+                        </ul>
+                    </div>
+
+                </div> <!-- .page__header -->
+
+
+
+                
+                <main class="qe-page__content" role="main">
+                    
+                    <div>
+                        
+  <section class="tex2jax_ignore mathjax_ignore" id="schellings-model-of-racial-segregation">
+<h1><span class="section-number">25. </span>Schelling’s Model of Racial Segregation<a class="headerlink" href="#schellings-model-of-racial-segregation" title="Link to this heading">#</a></h1>
+<section id="outline">
+<h2><span class="section-number">25.1. </span>Outline<a class="headerlink" href="#outline" title="Link to this heading">#</a></h2>
+<p>Racial residential segregation has significant consequences across many
+dimensions of life in the US and other countries.</p>
+<p>In 1969, Thomas C. Schelling developed a simple but striking model of racial
+segregation (<a class="reference external" href="https://en.wikipedia.org/wiki/Schelling%27s_model_of_segregation">Schelling, 1969</a>).</p>
+<p>His model studies the dynamics of racially mixed neighborhoods.</p>
+<p>Like much of Schelling’s work, the model shows how local interactions can lead
+to surprising aggregate outcomes.</p>
+<p>It studies a setting where agents (think of households) have relatively mild
+preference for neighbors of the same race.</p>
+<p>For example, these agents might be comfortable with a mixed race neighborhood
+but uncomfortable when they feel “surrounded” by people from a different race.</p>
+<p>Schelling illustrated the following surprising result: in such a setting, mixed
+race neighborhoods are likely to be unstable, tending to collapse over time.</p>
+<p>In fact the model predicts strongly divided neighborhoods, with high levels of
+segregation.</p>
+<p>In other words, extreme segregation outcomes arise even though people’s
+preferences are not particularly extreme.</p>
+<p>These extreme outcomes happen because of <em>interactions</em> between agents in the
+model (e.g., households in a city) that drive self-reinforcing dynamics in the
+model.</p>
+<p>In recognition of his work on segregation and other research, Schelling was
+awarded the 2005 Nobel Prize in Economic Sciences.</p>
+<p>In this and the following lectures, we study Schelling’s model using simulation.</p>
+<p>We will start in this lecture with a relatively elementary version written in
+pure Python.</p>
+<p>Once that simple version is in place, we will consider efficiency.</p>
+<p>We will develop progressively more efficient versions of the model, allowing us
+to study dynamics with larger populations and more interesting features.</p>
+<p>In the most efficient versions, JAX and parallelization will play a central
+role.</p>
+<p>Let’s start with some imports:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">random</span><span class="w"> </span><span class="kn">import</span> <span class="n">uniform</span><span class="p">,</span> <span class="n">seed</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">math</span><span class="w"> </span><span class="kn">import</span> <span class="n">sqrt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="background">
+<h2><span class="section-number">25.2. </span>Background<a class="headerlink" href="#background" title="Link to this heading">#</a></h2>
+<p>Before jumping into the modelling process, let’s look at some data</p>
+<p>The maps below are from the
+<a class="reference external" href="https://demographics.coopercenter.org/">Weldon Cooper Center for Public Service</a>
+at the University of Virginia.</p>
+<p>They illustrate the racial composition of several major US cities, based on census data.</p>
+<p>Each dot represents a group of residents — we omit details on which color represents which group.</p>
+<p>These maps reveal patterns of spatial separation between racial groups.</p>
+<section id="columbus-ohio">
+<h3><span class="section-number">25.2.1. </span>Columbus, Ohio<a class="headerlink" href="#columbus-ohio" title="Link to this heading">#</a></h3>
+<figure class="align-default" id="columbus-map">
+<a class="reference internal image-reference" href="_images/columbus.webp"><img alt="_images/columbus.webp" src="_images/columbus.webp" style="width: 80%;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 25.1 </span><span class="caption-text">Racial distribution in Columbus, Ohio.</span><a class="headerlink" href="#columbus-map" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="memphis-tennessee">
+<h3><span class="section-number">25.2.2. </span>Memphis, Tennessee<a class="headerlink" href="#memphis-tennessee" title="Link to this heading">#</a></h3>
+<figure class="align-default" id="memphis-map">
+<a class="reference internal image-reference" href="_images/memphis.webp"><img alt="_images/memphis.webp" src="_images/memphis.webp" style="width: 80%;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 25.2 </span><span class="caption-text">Racial distribution in Memphis, Tennessee.</span><a class="headerlink" href="#memphis-map" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="washington-d-c">
+<h3><span class="section-number">25.2.3. </span>Washington, D.C.<a class="headerlink" href="#washington-d-c" title="Link to this heading">#</a></h3>
+<figure class="align-default" id="dc-map">
+<a class="reference internal image-reference" href="_images/washington_dc.webp"><img alt="_images/washington_dc.webp" src="_images/washington_dc.webp" style="width: 80%;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 25.3 </span><span class="caption-text">Racial distribution in Washington, D.C.</span><a class="headerlink" href="#dc-map" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="houston-texas">
+<h3><span class="section-number">25.2.4. </span>Houston, Texas<a class="headerlink" href="#houston-texas" title="Link to this heading">#</a></h3>
+<figure class="align-default" id="houston-map">
+<a class="reference internal image-reference" href="_images/houston.webp"><img alt="_images/houston.webp" src="_images/houston.webp" style="width: 80%;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 25.4 </span><span class="caption-text">Racial distribution in Houston, Texas.</span><a class="headerlink" href="#houston-map" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="miami-florida">
+<h3><span class="section-number">25.2.5. </span>Miami, Florida<a class="headerlink" href="#miami-florida" title="Link to this heading">#</a></h3>
+<figure class="align-default" id="miami-map">
+<a class="reference internal image-reference" href="_images/miami.webp"><img alt="_images/miami.webp" src="_images/miami.webp" style="width: 80%;" />
+</a>
+<figcaption>
+<p><span class="caption-number">Fig. 25.5 </span><span class="caption-text">Racial distribution in Miami, Florida.</span><a class="headerlink" href="#miami-map" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>Looking at these maps, one might assume that segregation persists because of
+strong preferences—that people simply want to live only with others of
+their own race.</p>
+<p>But is this actually the case?</p>
+<p>Let’s now look at Schelling’s segregation model,
+which demonstrates a surprising result: extreme segregation can emerge even
+when individuals have only mild preferences for same-race neighbors.</p>
+<p>This insight has profound implications for understanding how segregation
+persists and what policies might effectively address it.</p>
+</section>
+</section>
+<section id="the-model">
+<h2><span class="section-number">25.3. </span>The model<a class="headerlink" href="#the-model" title="Link to this heading">#</a></h2>
+<section id="set-up">
+<h3><span class="section-number">25.3.1. </span>Set-Up<a class="headerlink" href="#set-up" title="Link to this heading">#</a></h3>
+<p>We will cover a variation of Schelling’s model that is different from the
+original but also easy to program and, at the same time, captures his main
+idea.</p>
+<p>For now our coding objective is clarity rather than efficiency.</p>
+<p>Suppose we have two types of people: orange people and green people.</p>
+<p>Assume there are <span class="math notranslate nohighlight">\(n\)</span> of each type.</p>
+<p>These agents all live on a single unit square.</p>
+<p>Thus, the location (e.g, address) of an agent is just a point <span class="math notranslate nohighlight">\((x, y)\)</span>,  where
+<span class="math notranslate nohighlight">\(0 &lt; x, y &lt; 1\)</span>.</p>
+<ul class="simple">
+<li><p>The set of all points <span class="math notranslate nohighlight">\((x,y)\)</span> satisfying <span class="math notranslate nohighlight">\(0 &lt; x, y &lt; 1\)</span> is called the <strong>unit square</strong></p></li>
+<li><p>Below we denote the unit square by <span class="math notranslate nohighlight">\(S\)</span></p></li>
+</ul>
+</section>
+<section id="preferences">
+<h3><span class="section-number">25.3.2. </span>Preferences<a class="headerlink" href="#preferences" title="Link to this heading">#</a></h3>
+<p>We will say that an agent is</p>
+<ul class="simple">
+<li><p><strong>happy</strong> if <span class="math notranslate nohighlight">\(k \leq 6\)</span> of her 10 nearest neighbors are of a different type.</p></li>
+<li><p><strong>unhappy</strong> if <span class="math notranslate nohighlight">\(k &gt; 6\)</span> her 10 nearest neighbors are of a different type.</p></li>
+</ul>
+<p>For example,</p>
+<ul class="simple">
+<li><p>if an agent is orange and 6 of her 10 nearest neighbors are green, then she is happy.</p></li>
+<li><p>if an agent is orange and 7 of her 10 nearest neighbors are green, then she is unhappy.</p></li>
+</ul>
+<p>‘Nearest’ is in terms of <a class="reference external" href="https://en.wikipedia.org/wiki/Euclidean_distance">Euclidean distance</a>.</p>
+<p>An important point to note is that agents are <strong>not</strong> averse to living in mixed areas.</p>
+<p>They are perfectly happy if 60% of their neighbors are of the other color.</p>
+<p>Let’s set up the parameters for our simulation:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">seed</span><span class="p">(</span><span class="mi">1234</span><span class="p">)</span>              <span class="c1"># set seed for reproducibility</span>
+
+<span class="n">num_of_type_0</span> <span class="o">=</span> <span class="mi">1000</span>    <span class="c1"># number of agents of type 0 (orange)</span>
+<span class="n">num_of_type_1</span> <span class="o">=</span> <span class="mi">1000</span>    <span class="c1"># number of agents of type 1 (green)</span>
+<span class="n">num_neighbors</span> <span class="o">=</span> <span class="mi">10</span>      <span class="c1"># number of agents viewed as neighbors</span>
+<span class="n">max_other_type</span> <span class="o">=</span> <span class="mi">6</span>      <span class="c1"># max number of different-type neighbors tolerated</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="behavior">
+<h3><span class="section-number">25.3.3. </span>Behavior<a class="headerlink" href="#behavior" title="Link to this heading">#</a></h3>
+<p>Initially, agents are mixed together (integrated).</p>
+<p>In particular, we assume that the initial location of each agent is an
+independent draw from a bivariate uniform distribution on the unit square <span class="math notranslate nohighlight">\(S\)</span>.</p>
+<ul class="simple">
+<li><p>Their <span class="math notranslate nohighlight">\(x\)</span> coordinate is drawn from a uniform distribution on <span class="math notranslate nohighlight">\((0,1)\)</span></p></li>
+<li><p>Their <span class="math notranslate nohighlight">\(y\)</span> coordinate is drawn independently from the same distribution.</p></li>
+</ul>
+<p>Now, cycling through the set of all agents, each agent is now given the chance to stay or move.</p>
+<p>Each agent stays if they are happy and moves if they are unhappy.</p>
+<p>The algorithm for moving is as follows</p>
+<div class="proof algorithm admonition" id="move_algo">
+<p class="admonition-title"><span class="caption-number">Algorithm 25.1 </span> (Relocation Algorithm)</p>
+<section class="algorithm-content" id="proof-content">
+<ol class="arabic simple">
+<li><p>Draw a random location in <span class="math notranslate nohighlight">\(S\)</span></p></li>
+<li><p>If happy at new location, move there</p></li>
+<li><p>Else go to step 1</p></li>
+</ol>
+</section>
+</div><p>We cycle continuously through the agents, each time allowing an unhappy agent
+to move.</p>
+<p>We continue to cycle until no one wishes to move.</p>
+</section>
+</section>
+<section id="main-loop">
+<h2><span class="section-number">25.4. </span>Main Loop<a class="headerlink" href="#main-loop" title="Link to this heading">#</a></h2>
+<p>Let’s write the code to run this simulation.</p>
+<p>In what follows, agents are modeled as <a class="reference external" href="https://python-programming.quantecon.org/python_oop.html">objects</a> that store</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>    * type (green or orange)
+    * location
+</pre></div>
+</div>
+<p>Here’s a class that we can use to instantiate agents from:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">Agent</span><span class="p">:</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">type</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="nb">type</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">location</span> <span class="o">=</span> <span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Here’s a collection of functions that act on agents:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">move_agent</span><span class="p">(</span><span class="n">agent</span><span class="p">):</span>
+    <span class="s2">&quot;Provide agent with a new location.&quot;</span>
+    <span class="n">agent</span><span class="o">.</span><span class="n">location</span> <span class="o">=</span> <span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">get_distance</span><span class="p">(</span><span class="n">agent</span><span class="p">,</span> <span class="n">other_agent</span><span class="p">):</span>
+    <span class="s2">&quot;Computes the Euclidean distance between self and other agent.&quot;</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">agent</span><span class="o">.</span><span class="n">location</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">other_agent</span><span class="o">.</span><span class="n">location</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="n">agent</span><span class="o">.</span><span class="n">location</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">other_agent</span><span class="o">.</span><span class="n">location</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">sqrt</span><span class="p">(</span><span class="n">a</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">b</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">happy</span><span class="p">(</span><span class="n">agent</span><span class="p">,</span> <span class="n">all_agents</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Test happiness of agent, given locations of others (all_agents).</span>
+
+<span class="sd">    Return true if the number of neighbors with a different type is not more</span>
+<span class="sd">    than max_other_type.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Set up a list of pairs (distance, other_agent) that records the</span>
+    <span class="c1"># distance from agent to all other agents.</span>
+    <span class="n">distances</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="c1"># Populate the list</span>
+    <span class="k">for</span> <span class="n">some_agent</span> <span class="ow">in</span> <span class="n">all_agents</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">some_agent</span> <span class="o">!=</span> <span class="n">agent</span><span class="p">:</span>
+            <span class="n">distance</span> <span class="o">=</span> <span class="n">get_distance</span><span class="p">(</span><span class="n">agent</span><span class="p">,</span> <span class="n">some_agent</span><span class="p">)</span>
+            <span class="n">distances</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">distance</span><span class="p">,</span> <span class="n">some_agent</span><span class="p">))</span>
+
+    <span class="c1"># Sort from smallest to largest, according to distance</span>
+    <span class="n">distances</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+
+    <span class="c1"># Extract the list of neighboring agents</span>
+    <span class="n">neighbor_pairs</span> <span class="o">=</span> <span class="n">distances</span><span class="p">[:</span><span class="n">num_neighbors</span><span class="p">]</span>
+    <span class="n">neighbors</span> <span class="o">=</span> <span class="p">[</span><span class="n">neighbor</span> <span class="k">for</span> <span class="n">d</span><span class="p">,</span> <span class="n">neighbor</span> <span class="ow">in</span> <span class="n">neighbor_pairs</span><span class="p">]</span>
+
+    <span class="c1"># Count how many neighbors have a different type</span>
+    <span class="n">num_other_type</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">agent</span><span class="o">.</span><span class="n">type</span> <span class="o">!=</span> <span class="n">neighbor</span><span class="o">.</span><span class="n">type</span> <span class="k">for</span> <span class="n">neighbor</span> <span class="ow">in</span> <span class="n">neighbors</span><span class="p">)</span>
+    <span class="c1"># Return true if does not exceed threshold</span>
+    <span class="k">return</span> <span class="n">num_other_type</span> <span class="o">&lt;=</span> <span class="n">max_other_type</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">relocate</span><span class="p">(</span><span class="n">agent</span><span class="p">,</span> <span class="n">all_agents</span><span class="p">,</span> <span class="n">max_attempts</span><span class="o">=</span><span class="mi">10_000</span><span class="p">):</span>
+    <span class="s2">&quot;If not happy, then randomly choose new locations until happy.&quot;</span>
+    <span class="n">attempts</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">while</span> <span class="ow">not</span> <span class="n">happy</span><span class="p">(</span><span class="n">agent</span><span class="p">,</span> <span class="n">all_agents</span><span class="p">):</span>
+        <span class="n">move_agent</span><span class="p">(</span><span class="n">agent</span><span class="p">)</span>
+        <span class="n">attempts</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="n">attempts</span> <span class="o">&gt;=</span> <span class="n">max_attempts</span><span class="p">:</span>
+            <span class="k">break</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Here’s some code that takes a list of agents and produces a plot showing their
+locations on the unit square.</p>
+<p>Orange agents are represented by orange dots and green ones are represented by
+green dots.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">plot_distribution</span><span class="p">(</span><span class="n">agents</span><span class="p">,</span> <span class="n">round_num</span><span class="p">):</span>
+    <span class="s2">&quot;Plot the distribution of agents after round_num rounds of the loop.&quot;</span>
+    <span class="n">x_values_0</span><span class="p">,</span> <span class="n">y_values_0</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
+    <span class="n">x_values_1</span><span class="p">,</span> <span class="n">y_values_1</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
+    <span class="c1"># == Obtain locations of each type == #</span>
+    <span class="k">for</span> <span class="n">agent</span> <span class="ow">in</span> <span class="n">agents</span><span class="p">:</span>
+        <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">agent</span><span class="o">.</span><span class="n">location</span>
+        <span class="k">if</span> <span class="n">agent</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">x_values_0</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+            <span class="n">y_values_0</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">x_values_1</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+            <span class="n">y_values_1</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+    <span class="n">plot_args</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;markersize&#39;</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span>
+        <span class="s1">&#39;alpha&#39;</span><span class="p">:</span> <span class="mf">0.8</span><span class="p">,</span>
+        <span class="s1">&#39;markeredgecolor&#39;</span><span class="p">:</span> <span class="s1">&#39;black&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;markeredgewidth&#39;</span><span class="p">:</span> <span class="mf">0.5</span>
+    <span class="p">}</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_values_0</span><span class="p">,</span> <span class="n">y_values_0</span><span class="p">,</span>
+        <span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">markerfacecolor</span><span class="o">=</span><span class="s1">&#39;darkorange&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">plot_args</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_values_1</span><span class="p">,</span> <span class="n">y_values_1</span><span class="p">,</span>
+        <span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">markerfacecolor</span><span class="o">=</span><span class="s1">&#39;green&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">plot_args</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Round </span><span class="si">{</span><span class="n">round_num</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The main loop cycles through all agents until no one wishes to move.</p>
+<div class="proof algorithm admonition" id="main_loop_algo">
+<p class="admonition-title"><span class="caption-number">Algorithm 25.2 </span> (Main Simulation Loop)</p>
+<section class="algorithm-content" id="proof-content">
+<p><strong>Input:</strong> Set of agents with initial random locations</p>
+<p><strong>Output:</strong> Final distribution of agents</p>
+<ol class="arabic simple">
+<li><p>Set <code class="docutils literal notranslate"><span class="pre">count</span></code> <span class="math notranslate nohighlight">\(\leftarrow\)</span> 1</p></li>
+<li><p>While <code class="docutils literal notranslate"><span class="pre">count</span></code> &lt; <code class="docutils literal notranslate"><span class="pre">max_iter</span></code>:</p>
+<ol class="arabic simple">
+<li><p>Set <code class="docutils literal notranslate"><span class="pre">number_of_moves</span></code> <span class="math notranslate nohighlight">\(\leftarrow\)</span> 0</p></li>
+<li><p>For each agent:</p>
+<ol class="arabic simple">
+<li><p>Record current location</p></li>
+<li><p>If agent is unhappy, relocate using <a class="reference internal" href="#move_algo">Algorithm 25.1</a></p></li>
+<li><p>If location changed, increment <code class="docutils literal notranslate"><span class="pre">number_of_moves</span></code></p></li>
+</ol>
+</li>
+<li><p>Plot distribution</p></li>
+<li><p>Increment <code class="docutils literal notranslate"><span class="pre">count</span></code></p></li>
+<li><p>If <code class="docutils literal notranslate"><span class="pre">number_of_moves</span></code> = 0, exit loop</p></li>
+</ol>
+</li>
+</ol>
+</section>
+</div><p>The code is below</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">run_simulation</span><span class="p">(</span><span class="n">all_agents</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">100_000</span><span class="p">):</span>
+
+    <span class="c1"># Initialize a counter</span>
+    <span class="n">count</span> <span class="o">=</span> <span class="mi">1</span>
+
+    <span class="c1"># Loop until no agent wishes to move</span>
+    <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+    <span class="k">while</span> <span class="n">count</span> <span class="o">&lt;</span> <span class="n">max_iter</span><span class="p">:</span>
+        <span class="n">number_of_moves</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="c1"># Offer each agent the chance to relocate</span>
+        <span class="k">for</span> <span class="n">agent</span> <span class="ow">in</span> <span class="n">all_agents</span><span class="p">:</span>
+            <span class="n">old_location</span> <span class="o">=</span> <span class="n">agent</span><span class="o">.</span><span class="n">location</span>
+            <span class="c1"># Relocate unhappy agents (happy ones won&#39;t move)</span>
+            <span class="n">relocate</span><span class="p">(</span><span class="n">agent</span><span class="p">,</span> <span class="n">all_agents</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">agent</span><span class="o">.</span><span class="n">location</span> <span class="o">!=</span> <span class="n">old_location</span><span class="p">:</span>
+                <span class="n">number_of_moves</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="c1"># Plot the distribution after this round</span>
+        <span class="n">plot_distribution</span><span class="p">(</span><span class="n">all_agents</span><span class="p">,</span> <span class="n">count</span><span class="p">)</span>
+        <span class="c1"># Print outcome and stop loop if no one moved</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Completed loop </span><span class="si">{</span><span class="n">count</span><span class="si">}</span><span class="s1"> with </span><span class="si">{</span><span class="n">number_of_moves</span><span class="si">}</span><span class="s1"> moves&#39;</span><span class="p">)</span>
+        <span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="n">number_of_moves</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">break</span>
+    <span class="n">elapsed</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span>
+
+    <span class="k">if</span> <span class="n">count</span> <span class="o">&lt;</span> <span class="n">max_iter</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Converged in </span><span class="si">{</span><span class="n">elapsed</span><span class="si">:</span><span class="s1">.2f</span><span class="si">}</span><span class="s1"> seconds after </span><span class="si">{</span><span class="n">count</span><span class="si">}</span><span class="s1"> iterations.&#39;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Hit iteration bound and terminated.&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="results">
+<h2><span class="section-number">25.5. </span>Results<a class="headerlink" href="#results" title="Link to this heading">#</a></h2>
+<p>We are now ready to run our simulation.</p>
+<p>First we build a population of agents:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">all_agents</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_of_type_0</span><span class="p">):</span>
+    <span class="n">all_agents</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Agent</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_of_type_1</span><span class="p">):</span>
+    <span class="n">all_agents</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Agent</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+
+<span class="n">plot_distribution</span><span class="p">(</span><span class="n">all_agents</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<a class="reference internal image-reference" href="_images/4fb72d16e653d63569d2dd1ca7cf8f0cfce4bb0014019f3250f434c222c36d1a.png"><img alt="_images/4fb72d16e653d63569d2dd1ca7cf8f0cfce4bb0014019f3250f434c222c36d1a.png" src="_images/4fb72d16e653d63569d2dd1ca7cf8f0cfce4bb0014019f3250f434c222c36d1a.png" style="width: 80%;" />
+</a>
+</div>
+</div>
+<p>Now we run the simulation and look at the results.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">run_simulation</span><span class="p">(</span><span class="n">all_agents</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<a class="reference internal image-reference" href="_images/55b327f557b8833022939637f253a60feb42fafbf7c3a9432d0c88901222b244.png"><img alt="_images/55b327f557b8833022939637f253a60feb42fafbf7c3a9432d0c88901222b244.png" src="_images/55b327f557b8833022939637f253a60feb42fafbf7c3a9432d0c88901222b244.png" style="width: 80%;" />
+</a>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Completed loop 1 with 404 moves
+Completed loop 2 with 193 moves
+Completed loop 3 with 66 moves
+Completed loop 4 with 9 moves
+Completed loop 5 with 4 moves
+Completed loop 6 with 1 moves
+Completed loop 7 with 0 moves
+Converged in 18.77 seconds after 8 iterations.
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="_images/cd08edb6cf681885ccb0e3e0063d85f6431ea746115fdc59538e22490b39228f.png"><img alt="_images/cd08edb6cf681885ccb0e3e0063d85f6431ea746115fdc59538e22490b39228f.png" src="_images/cd08edb6cf681885ccb0e3e0063d85f6431ea746115fdc59538e22490b39228f.png" style="width: 80%;" />
+</a>
+<a class="reference internal image-reference" href="_images/a816d0887569385e1da6200975a79f48a9b1df9783f2fb414ffe86d05f98091c.png"><img alt="_images/a816d0887569385e1da6200975a79f48a9b1df9783f2fb414ffe86d05f98091c.png" src="_images/a816d0887569385e1da6200975a79f48a9b1df9783f2fb414ffe86d05f98091c.png" style="width: 80%;" />
+</a>
+<a class="reference internal image-reference" href="_images/5464a8ea865c19c3cef1e6316ac9f9811fd915dfd71855c80d79779a792a8fb1.png"><img alt="_images/5464a8ea865c19c3cef1e6316ac9f9811fd915dfd71855c80d79779a792a8fb1.png" src="_images/5464a8ea865c19c3cef1e6316ac9f9811fd915dfd71855c80d79779a792a8fb1.png" style="width: 80%;" />
+</a>
+<a class="reference internal image-reference" href="_images/b3a79e15862bbcb1b1e4237d98d462a7607c841b96158922856d291e63caf615.png"><img alt="_images/b3a79e15862bbcb1b1e4237d98d462a7607c841b96158922856d291e63caf615.png" src="_images/b3a79e15862bbcb1b1e4237d98d462a7607c841b96158922856d291e63caf615.png" style="width: 80%;" />
+</a>
+<a class="reference internal image-reference" href="_images/d6a3a8dc104b4ecc24d5c517ded641b39c12364ea5d20bd07ef5c3a71e7e2eb4.png"><img alt="_images/d6a3a8dc104b4ecc24d5c517ded641b39c12364ea5d20bd07ef5c3a71e7e2eb4.png" src="_images/d6a3a8dc104b4ecc24d5c517ded641b39c12364ea5d20bd07ef5c3a71e7e2eb4.png" style="width: 80%;" />
+</a>
+<a class="reference internal image-reference" href="_images/55dfa9390215b61bd2bf4bbf57f92e2718d72d9d33a6e1b3ef4cab3c6a030cd0.png"><img alt="_images/55dfa9390215b61bd2bf4bbf57f92e2718d72d9d33a6e1b3ef4cab3c6a030cd0.png" src="_images/55dfa9390215b61bd2bf4bbf57f92e2718d72d9d33a6e1b3ef4cab3c6a030cd0.png" style="width: 80%;" />
+</a>
+</div>
+</div>
+<p>As discussed above, agents are initially mixed randomly together.</p>
+<p>But after several cycles, they become segregated into distinct regions.</p>
+<p>In this instance, the program terminated after a small number of cycles
+through the set of agents, indicating that all agents had reached a state of
+happiness.</p>
+<p>We notice that the fully mixed environment rapidly breaks down.</p>
+<p>We get emergence of at least some segregation.</p>
+<p>This is despite the fact that people in the model don’t actually mind living
+mixed with the other type.</p>
+<p>Even with these preferences, the outcome is some degree of segregation.</p>
+<p>(Not a lot of segregation, but we’ll see more segregation in later lectures,
+after some modifications.)</p>
+</section>
+<section id="performance">
+<h2><span class="section-number">25.6. </span>Performance<a class="headerlink" href="#performance" title="Link to this heading">#</a></h2>
+<p>Our Python code was written for readability, not speed.</p>
+<p>This is fine for very small simulations but not for bigger ones.</p>
+<p>That’s a problem for us because we want to experiment with some more ideas.</p>
+<p>In the following lectures we’ll look at strategies for making our code faster.</p>
+<p>Then we’ll investigate variations that might lead to even more segregation.</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                    </div>
+                    
+                </main> <!-- .page__content -->
+                
+
+
+                <footer class="qe-page__footer">
+
+                    <p><a href="https://creativecommons.org/licenses/by-sa/4.0/"><img src="https://licensebuttons.net/l/by-sa/4.0/80x15.png"></a></p>
+
+                    <p>Creative Commons License &ndash; This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International.</p>
+
+                    <p>A theme by <a href="https://quantecon.org">QuantEcon</a></p>
+
+                </footer> <!-- .page__footer -->
+
+            </div> <!-- .page -->
+
+            
+
+            
+            <div class="qe-sidebar bd-sidebar inactive" id="site-navigation">
+
+                <div class="qe-sidebar__header">
+
+
+                    Contents
+
+                </div>
+
+                <nav class="qe-sidebar__nav" id="qe-sidebar-nav" aria-label="Main navigation">
+                    <p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Introduction
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="about.html">
+   1. About
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="jax_intro.html">
+   2. An Introduction to JAX
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="autodiff.html">
+   3. Adventures with Autodiff
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="newtons_method.html">
+   4. Newton’s Method via JAX
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Simulation
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="inventory_dynamics.html">
+   5. Inventory Dynamics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="kesten_processes.html">
+   6. Kesten Processes and Firm Dynamics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="wealth_dynamics.html">
+   7. Wealth Distribution Dynamics
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Asset Pricing
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="lucas_model.html">
+   8. Asset Pricing: The Lucas Asset Pricing Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="markov_asset.html">
+   9. An Asset Pricing Problem
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Dynamic Programming
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="job_search.html">
+   10. Job Search
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="opt_savings_1.html">
+   11. Optimal Savings I: Value Function Iteration
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="opt_savings_2.html">
+   12. Optimal Savings II: Alternative Algorithms
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="short_path.html">
+   13. Shortest Paths
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="opt_invest.html">
+   14. Optimal Investment
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="inventory_ssd.html">
+   15. Inventory Management Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ifp_egm.html">
+   16. Endogenous Grid Method
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Macroeconomic Models
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="arellano.html">
+   17. Default Risk and Income Fluctuations
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="aiyagari_jax.html">
+   18. The Aiyagari Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="hopenhayn.html">
+   19. The Hopenhayn Entry-Exit Model
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="overborrowing.html">
+   20. Bianchi Overborrowing Model
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Data and Empirics
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="mle.html">
+   21. Maximum Likelihood Estimation
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="keras.html">
+   22. Simple Neural Network Regression with Keras and JAX
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="jax_nn.html">
+   23. Neural Network Regression with JAX
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="ifp_dl.html">
+   24. Policy Gradient-Based Optimal Savings
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Racial Segregation
+ </span>
+</p>
+<ul class="current nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1 current active active">
+  <a class="current reference internal" href="#">
+   25. Schelling’s Model of Racial Segregation
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="schelling_numpy.html">
+   26. Schelling Model with NumPy
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="schelling_jax.html">
+   27. Schelling Model with JAX
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="schelling_jax_parallel.html">
+   28. Parallelizing the Algorithm
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="schelling_shocks.html">
+   29. Segregation with Persistent Shocks
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Other
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="troubleshooting.html">
+   30. Troubleshooting
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="zreferences.html">
+   31. References
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="status.html">
+   32. Execution Statistics
+  </a>
+ </li>
+</ul>
+
+                </nav>
+
+                <div class="qe-sidebar__footer">
+
+                </div>
+
+            </div> <!-- .sidebar -->
+            
+        </div> <!-- .main -->
+
+        <div class="qe-toolbar">
+
+            <div class="qe-toolbar__inner">
+
+                <ul class="qe-toolbar__main">
+                    <li data-tippy-content="Table of Contents" class="btn__sidebar"><i data-feather="menu"></i></li>
+                    <li data-tippy-content="Home"><a href="intro.html"><i data-feather="home"></i></a></li>
+                    <li class="btn__qelogo"><a href="https://quantecon.org" title=""><span class="show-for-sr">QuantEcon</span></a></li>
+                </ul>
+
+                <ul class="qe-toolbar__links">
+                    <li class="btn__search">
+                        <form action="search.html" method="get">
+                            <input type="search" class="form-control" name="q" id="search-input" placeholder="Search..." aria-label="Search..." autocomplete="off" accesskey="k">
+                            <i data-feather="search" id="search-icon"></i>
+                        </form>
+                    </li>
+                    <li data-tippy-content="Fullscreen" class="btn__fullscreen"><i data-feather="maximize"></i></li>
+                    <li data-tippy-content="Increase font size" class="btn__plus"><i data-feather="plus-circle"></i></li>
+                    <li data-tippy-content="Decrease font size" class="btn__minus"><i data-feather="minus-circle"></i></li>
+                    <li data-tippy-content="Change contrast" class="btn__contrast"><i data-feather="sunset"></i></li>
+                    <li data-tippy-content="Download Notebook"><a href="/_notebooks/schelling.ipynb" download><i data-feather="download-cloud"></i></a></li>
+                    <li class="settings-button" id="settingsButton"><div data-tippy-content="Launch Notebook"><i data-feather="play-circle"></i></div></li>
+                        <li class="download-pdf" id="downloadButton"><i data-feather="file"></i></li>
+                    <!--
+                    # Enable if looking for link to specific document hosted on GitHub
+                    <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-jax/blob/main/lectures/schelling.md" download><i data-feather="github"></i></a></li>
+                    -->
+                    <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-jax" download><i data-feather="github"></i></a></li>
+                    
+                    
+                </ul>
+
+            </div>
+
+        </div> <!-- .toolbar -->
+        <div id="downloadPDFModal" style="display: none;">
+            <ul class="pdf-options" style="display: block;">
+                <li class="download-pdf-book" onClick="window.print()">
+                    <p>Lecture (PDF)</p>
+                </li>
+                <li class="download-pdf-file">
+                    <a href="/_pdf/quantecon-jax.pdf" download><p>Book (PDF)</p></a>
+                </li>
+            </ul>
+        </div>
+        <div id="settingsModal" style="display: none;">
+            <p class="modal-title"> Notebook Launcher </p>
+            <div class="modal-desc">
+            <p>
+                Choose public or private cloud service for "Launch" button.
+            </p>
+            </div>
+            <p class="modal-subtitle">Select a server</p>
+            <ul class="modal-servers">
+            <li class="active launcher-public">
+                <span class="label">Public</span>
+                <select id="launcher-public-input">
+                
+                    <option value="https://colab.research.google.com/github/QuantEcon/lecture-jax.notebooks/blob/main/schelling.ipynb">Colab</option>
+                
+                </select>
+                <i class="fas fa-check-circle"></i>
+            </li>
+            <li class="launcher-private">
+                <span class="label">Private</span>
+                <input type="text" id="launcher-private-input" data-repourl="https://github.com/QuantEcon/lecture-jax.notebooks" data-urlpath="tree/lecture-jax.notebooks/schelling.ipynb" data-branch=main>
+                <i class="fas fa-check-circle"></i>
+            </li>
+            </ul>
+            <p class="launch"><a href="https://colab.research.google.com/github/QuantEcon/lecture-jax.notebooks/blob/main/schelling.ipynb" id="advancedLaunchButton" target="_blank">Launch Notebook</a></p>
+            <script>
+                // QuantEcon Notebook Launcher
+                const launcherTypeElements = document.querySelectorAll('#settingsModal .modal-servers li');
+                // Highlight the server type if previous selection exists
+                if (typeof localStorage.launcherType !== 'undefined') {
+                  for (var i = 0; i < launcherTypeElements.length; i++) {
+                    launcherTypeElements[i].classList.remove('active');
+                    if ( launcherTypeElements[i].classList.contains(localStorage.launcherType) ) {
+                      launcherTypeElements[i].classList.add('active');
+                    }
+                  }
+                }
+                // Highlight server type on click and set local storage value
+                for (var i = 0; i < launcherTypeElements.length; i++) {
+                  launcherTypeElements[i].addEventListener('click', function() {
+                    for (var j = 0; j < launcherTypeElements.length; j++) {
+                      launcherTypeElements[j].classList.remove('active');
+                    }
+                    this.classList.add('active');
+                    if ( this.classList.contains('launcher-private') ) {
+                      localStorage.launcherType = 'launcher-private';
+                    } else if ( this.classList.contains('launcher-public') ) {
+                      localStorage.launcherType = 'launcher-public';
+                    }
+                    setLaunchServer();
+                  })
+                }
+                const launcherPublic = document.getElementById('launcher-public-input');
+                const launcherPrivate = document.getElementById('launcher-private-input');
+                const pageName = "schelling";
+                const repoURL = "https://github.com/QuantEcon/lecture-jax.notebooks";
+                const urlPath = "tree/lecture-jax.notebooks/schelling.ipynb";
+                const branch = "main"
+                const launchNotebookLink = document.getElementById('advancedLaunchButton');
+
+                // Highlight public server option if previous selection exists
+                if (typeof localStorage.launcherPublic !== 'undefined') {
+                  launcherPublic.value = localStorage.launcherPublic;
+                }
+                // Update local storage upon public server selection
+                launcherPublic.addEventListener('change', (event) => {
+                  setLaunchServer();
+                });
+                // Populate private server input if previous entry exists
+                if (typeof localStorage.launcherPrivate !== 'undefined') {
+                  launcherPrivate.value = localStorage.launcherPrivate;
+                }
+                // Update local storage when a private server is entered
+                launcherPrivate.addEventListener('input', (event) => {
+                  setLaunchServer();
+                });
+
+                // Function to update the "Launch Notebook" link href
+                function setLaunchServer() {
+                  launchNotebookLink.removeAttribute("style")
+                  if ( localStorage.launcherType == 'launcher-private' ) {
+                    let repoPrefix = "/user-redirect/git-pull?repo=" + repoURL + "&branch=" + branch + "&urlpath=" + urlPath;
+                    launcherPrivateValue = launcherPrivate.value
+                    if (!launcherPrivateValue) {
+                        launchNotebookLink.removeAttribute("href")
+                        launchNotebookLink.style.background = "grey"
+                        return
+                    }
+                    localStorage.launcherPrivate = launcherPrivateValue;
+                    privateServer = localStorage.launcherPrivate.replace(/\/$/, "")
+                    if (!privateServer.includes("http")) {
+                        privateServer = "http://" + privateServer
+                    }
+                    launchNotebookLinkURL = privateServer + repoPrefix;
+                  } else if ( localStorage.launcherType == 'launcher-public' ) {
+                    launcherPublicValue = launcherPublic.options[launcherPublic.selectedIndex].value;
+                    localStorage.launcherPublic = launcherPublicValue;
+                    launchNotebookLinkURL = localStorage.launcherPublic;
+                  }
+                  if (launchNotebookLinkURL) launchNotebookLink.href = launchNotebookLinkURL;
+                }
+                // Check if user has previously selected a server
+                if ( (typeof localStorage.launcherPrivate !== 'undefined') || (typeof localStorage.launcherPublic !== 'undefined') ) {
+                  setLaunchServer();
+                }
+                </script>
+
+        </div>
+
+    </div> <!-- .wrapper-->
+  </body>
+</html>

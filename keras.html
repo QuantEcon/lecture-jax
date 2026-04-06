@@ -77,12 +77,13 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
-    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=22b71a9b445b7b2b6a277c0a48ea72bf6e7c90d9" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=3355220bfb204a7ac1b0ca03dac108f0437ded6f" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=9c3e77be" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="_static/exercise.css?v=982b99e0" />
+    <link rel="stylesheet" type="text/css" href="_static/proof.css" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
@@ -100,8 +101,8 @@
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="_static/togglebutton.js?v=4a39c7ea"></script>
-    <script src="_static/scripts/quantecon-book-theme.js?digest=65b86b9423025043228643fcfb616ce846cb91c1"></script>
+    <script src="_static/togglebutton.js?v=b8b12719"></script>
+    <script src="_static/scripts/quantecon-book-theme.js?digest=9980b4379844dc0b911d69b62b295f34ede88fac"></script>
     <script src="_static/scripts/jquery.js?v=5d32c60e"></script>
     <script src="_static/scripts/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
@@ -156,10 +157,31 @@
 <meta property="og:site_name" content="Quantitative Economics with Python using JAX" />
 <meta name="theme-color" content="#ffffff" />
 
+
+
+
   </head>
 <body>
 
+<!-- Prevent flash of light theme when dark mode is saved -->
+<script>
+(function() {
+  try {
+    if (localStorage.setContrast === '1') {
+      document.body.classList.add('dark-theme');
+      document.documentElement.setAttribute('data-theme', 'dark');
+    } else {
+      document.documentElement.setAttribute('data-theme', 'light');
+    }
+  } catch(e) {
+    document.documentElement.setAttribute('data-theme', 'light');
+  }
+})();
+</script>
+
 <!-- Override QuantEcon theme colors -->
+
+<!-- Color scheme: applies scheme-specific body class -->
 
     <span id="top"></span>
 
@@ -171,7 +193,12 @@
 
                 <div class="qe-page__toc">
 
-                    <div class="inner">
+                    
+                    
+                    
+
+                    
+                    <div class="inner sticky" data-autoexpand="true">
 
                         
                         <div class="qe-page__toc-header">
@@ -212,10 +239,16 @@
                         <div class="qe-page__toc-footer">
                             
                             
-                            <p><a href="#top"><strong>Back to top</strong></a></p>
+                            
+                            
+                            
                         </div>
 
                     </div>
+
+                    
+                    <a href="#top" class="back-to-top-btn" title="Back to top">↑ Top</a>
+                    
 
                 </div>
 
@@ -256,7 +289,7 @@
                                 <a href="https://github.com/QuantEcon/lecture-jax/commit/38889cb" class="changelog-hash">38889cb</a>
                                 
                                 <span class="changelog-author">John Stachurski</span>
-                                <span class="changelog-time">10 months ago</span>
+                                <span class="changelog-time">1 year ago</span>
                                 <span class="changelog-message">Add JAX NN training lecture (#205)</span>
                             </li>
                             
@@ -265,7 +298,7 @@
                                 <a href="https://github.com/QuantEcon/lecture-jax/commit/b970020" class="changelog-hash">b970020</a>
                                 
                                 <span class="changelog-author">John Stachurski</span>
-                                <span class="changelog-time">10 months ago</span>
+                                <span class="changelog-time">1 year ago</span>
                                 <span class="changelog-message">Misc edits to keras lecture (#204)</span>
                             </li>
                             
@@ -354,13 +387,13 @@ learning in a regression setting.</p>
 <p class="expanded admonition-title">Hide code cell output</p>
 </summary>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: keras in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (3.13.0)
-Requirement already satisfied: absl-py in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from keras) (2.3.1)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: keras in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (3.13.2)
+Requirement already satisfied: absl-py in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from keras) (2.4.0)
 Requirement already satisfied: numpy in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from keras) (2.3.5)
 Requirement already satisfied: rich in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from keras) (14.2.0)
 Requirement already satisfied: namex in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from keras) (0.1.0)
 Requirement already satisfied: h5py in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from keras) (3.15.1)
-Requirement already satisfied: optree in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from keras) (0.18.0)
+Requirement already satisfied: optree in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from keras) (0.19.0)
 Requirement already satisfied: ml-dtypes in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from keras) (0.5.4)
 Requirement already satisfied: packaging in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from keras) (25.0)
 Requirement already satisfied: typing-extensions&gt;=4.6.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from optree-&gt;keras) (4.15.0)
@@ -388,12 +421,6 @@ Requirement already satisfied: mdurl~=0.1 in /home/runner/miniconda3/envs/quante
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">keras</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">keras</span><span class="w"> </span><span class="kn">import</span> <span class="n">Sequential</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">keras.layers</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dense</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages/keras/src/export/tf2onnx_lib.py:8: FutureWarning: In the future `np.object` will be defined as the corresponding NumPy scalar.
-  if not hasattr(np, &quot;object&quot;):
 </pre></div>
 </div>
 </div>
@@ -583,7 +610,7 @@ as the parameters are adjusted to better fit the data.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/337621e7d488c5926897c9782af63a47e2890372f7eac38e5b4f11169880a411.png"><img alt="_images/337621e7d488c5926897c9782af63a47e2890372f7eac38e5b4f11169880a411.png" src="_images/337621e7d488c5926897c9782af63a47e2890372f7eac38e5b4f11169880a411.png" style="width: 80%;" />
+<a class="reference internal image-reference" href="_images/a894079ba296bf1375dafdc583ebabaceeae6de9e0ce232c7091e521725e7736.png"><img alt="_images/a894079ba296bf1375dafdc583ebabaceeae6de9e0ce232c7091e521725e7736.png" src="_images/a894079ba296bf1375dafdc583ebabaceeae6de9e0ce232c7091e521725e7736.png" style="width: 80%;" />
 </a>
 </div>
 </div>
@@ -597,10 +624,10 @@ as the parameters are adjusted to better fit the data.</p>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Testing loss on the validation set.
-13/13 - 0s - 18ms/step - loss: 0.3016
+13/13 - 0s - 19ms/step - loss: 0.3016
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.3015977740287781
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.3015977442264557
 </pre></div>
 </div>
 </div>
@@ -674,7 +701,7 @@ as the parameters are adjusted to better fit the data.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/8f02576536d2158d53e0f331fc99f7671b9be7dfa2352b76fe51396f54f639db.png"><img alt="_images/8f02576536d2158d53e0f331fc99f7671b9be7dfa2352b76fe51396f54f639db.png" src="_images/8f02576536d2158d53e0f331fc99f7671b9be7dfa2352b76fe51396f54f639db.png" style="width: 80%;" />
+<a class="reference internal image-reference" href="_images/70a004c3d3735ff739df5b30144cee88bdfb904c002df4c64d1ab21afc26fa3b.png"><img alt="_images/70a004c3d3735ff739df5b30144cee88bdfb904c002df4c64d1ab21afc26fa3b.png" src="_images/70a004c3d3735ff739df5b30144cee88bdfb904c002df4c64d1ab21afc26fa3b.png" style="width: 80%;" />
 </a>
 </div>
 </div>
@@ -688,10 +715,10 @@ as the parameters are adjusted to better fit the data.</p>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Testing loss on the validation set.
-13/13 - 0s - 36ms/step - loss: 0.0415
+13/13 - 0s - 38ms/step - loss: 0.0417
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.04151148349046707
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.04168751463294029
 </pre></div>
 </div>
 </div>
@@ -706,7 +733,7 @@ linear regression, suggesting a better fit.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>13/13 - 0s - 25ms/step
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>13/13 - 0s - 27ms/step
 </pre></div>
 </div>
 </div>
@@ -731,7 +758,7 @@ linear regression, suggesting a better fit.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/24f0e34fb579384c4341f32120aeff99134618452306a2a1487ef06e8fb03ceb.png"><img alt="_images/24f0e34fb579384c4341f32120aeff99134618452306a2a1487ef06e8fb03ceb.png" src="_images/24f0e34fb579384c4341f32120aeff99134618452306a2a1487ef06e8fb03ceb.png" style="width: 80%;" />
+<a class="reference internal image-reference" href="_images/775fb67618192950edce833cceb5ca9d9f2b462167c04e231ea955e547fb80b8.png"><img alt="_images/775fb67618192950edce833cceb5ca9d9f2b462167c04e231ea955e547fb80b8.png" src="_images/775fb67618192950edce833cceb5ca9d9f2b462167c04e231ea955e547fb80b8.png" style="width: 80%;" />
 </a>
 </div>
 </div>
@@ -956,23 +983,55 @@ linear regression, suggesting a better fit.</p>
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
+  Racial Segregation
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="schelling.html">
+   25. Schelling’s Model of Racial Segregation
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="schelling_numpy.html">
+   26. Schelling Model with NumPy
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="schelling_jax.html">
+   27. Schelling Model with JAX
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="schelling_jax_parallel.html">
+   28. Parallelizing the Algorithm
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="schelling_shocks.html">
+   29. Segregation with Persistent Shocks
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
   Other
  </span>
 </p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   25. Troubleshooting
+   30. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   26. References
+   31. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   27. Execution Statistics
+   32. Execution Statistics
   </a>
  </li>
 </ul>
@@ -1016,6 +1075,8 @@ linear regression, suggesting a better fit.</p>
                     <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-jax/blob/main/lectures/keras.md" download><i data-feather="github"></i></a></li>
                     -->
                     <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-jax" download><i data-feather="github"></i></a></li>
+                    
+                    
                 </ul>
 
             </div>

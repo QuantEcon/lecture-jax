@@ -77,12 +77,13 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
-    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=22b71a9b445b7b2b6a277c0a48ea72bf6e7c90d9" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" href="_static/styles/quantecon-book-theme.css?digest=3355220bfb204a7ac1b0ca03dac108f0437ded6f" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=9c3e77be" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="_static/exercise.css?v=982b99e0" />
+    <link rel="stylesheet" type="text/css" href="_static/proof.css" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
@@ -100,8 +101,8 @@
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="_static/togglebutton.js?v=4a39c7ea"></script>
-    <script src="_static/scripts/quantecon-book-theme.js?digest=65b86b9423025043228643fcfb616ce846cb91c1"></script>
+    <script src="_static/togglebutton.js?v=b8b12719"></script>
+    <script src="_static/scripts/quantecon-book-theme.js?digest=9980b4379844dc0b911d69b62b295f34ede88fac"></script>
     <script src="_static/scripts/jquery.js?v=5d32c60e"></script>
     <script src="_static/scripts/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
@@ -156,10 +157,31 @@
 <meta property="og:site_name" content="Quantitative Economics with Python using JAX" />
 <meta name="theme-color" content="#ffffff" />
 
+
+
+
   </head>
 <body>
 
+<!-- Prevent flash of light theme when dark mode is saved -->
+<script>
+(function() {
+  try {
+    if (localStorage.setContrast === '1') {
+      document.body.classList.add('dark-theme');
+      document.documentElement.setAttribute('data-theme', 'dark');
+    } else {
+      document.documentElement.setAttribute('data-theme', 'light');
+    }
+  } catch(e) {
+    document.documentElement.setAttribute('data-theme', 'light');
+  }
+})();
+</script>
+
 <!-- Override QuantEcon theme colors -->
+
+<!-- Color scheme: applies scheme-specific body class -->
 
     <span id="top"></span>
 
@@ -171,7 +193,12 @@
 
                 <div class="qe-page__toc">
 
-                    <div class="inner">
+                    
+                    
+                    
+
+                    
+                    <div class="inner sticky" data-autoexpand="true">
 
                         
                         <div class="qe-page__toc-header">
@@ -221,10 +248,16 @@
                         <div class="qe-page__toc-footer">
                             
                             
-                            <p><a href="#top"><strong>Back to top</strong></a></p>
+                            
+                            
+                            
                         </div>
 
                     </div>
+
+                    
+                    <a href="#top" class="back-to-top-btn" title="Back to top">↑ Top</a>
+                    
 
                 </div>
 
@@ -265,7 +298,7 @@
                                 <a href="https://github.com/QuantEcon/lecture-jax/commit/9dd8db0" class="changelog-hash">9dd8db0</a>
                                 
                                 <span class="changelog-author">Chase Coleman</span>
-                                <span class="changelog-time">1 month ago</span>
+                                <span class="changelog-time">3 months ago</span>
                                 <span class="changelog-message">BUG: Remove x_validate and y_validate as they're unnecessary (#266)</span>
                             </li>
                             
@@ -274,7 +307,7 @@
                                 <a href="https://github.com/QuantEcon/lecture-jax/commit/102113e" class="changelog-hash">102113e</a>
                                 
                                 <span class="changelog-author">John Stachurski</span>
-                                <span class="changelog-time">1 month ago</span>
+                                <span class="changelog-time">4 months ago</span>
                                 <span class="changelog-message">Remove num_layers from Config and improve visualization (#265)</span>
                             </li>
                             
@@ -283,7 +316,7 @@
                                 <a href="https://github.com/QuantEcon/lecture-jax/commit/9724c6c" class="changelog-hash">9724c6c</a>
                                 
                                 <span class="changelog-author">John Stachurski</span>
-                                <span class="changelog-time">1 month ago</span>
+                                <span class="changelog-time">4 months ago</span>
                                 <span class="changelog-message">Refactor train_jax_model to use fori_loop and simplify return value (#264)</span>
                             </li>
                             
@@ -292,7 +325,7 @@
                                 <a href="https://github.com/QuantEcon/lecture-jax/commit/d311b01" class="changelog-hash">d311b01</a>
                                 
                                 <span class="changelog-author">John Stachurski</span>
-                                <span class="changelog-time">1 month ago</span>
+                                <span class="changelog-time">4 months ago</span>
                                 <span class="changelog-message">Optimize JAX JIT compilation strategy in neural network lecture (#262)</span>
                             </li>
                             
@@ -301,7 +334,7 @@
                                 <a href="https://github.com/QuantEcon/lecture-jax/commit/e544012" class="changelog-hash">e544012</a>
                                 
                                 <span class="changelog-author">John Stachurski</span>
-                                <span class="changelog-time">1 month ago</span>
+                                <span class="changelog-time">4 months ago</span>
                                 <span class="changelog-message">Update jax_nn.md with improved data handling and exercise strategies (#261)</span>
                             </li>
                             
@@ -310,7 +343,7 @@
                                 <a href="https://github.com/QuantEcon/lecture-jax/commit/25d9551" class="changelog-hash">25d9551</a>
                                 
                                 <span class="changelog-author">John Stachurski</span>
-                                <span class="changelog-time">1 month ago</span>
+                                <span class="changelog-time">4 months ago</span>
                                 <span class="changelog-message">Refactor jax_nn.md to use LayerParams NamedTuple (#257)</span>
                             </li>
                             
@@ -319,7 +352,7 @@
                                 <a href="https://github.com/QuantEcon/lecture-jax/commit/69d51f2" class="changelog-hash">69d51f2</a>
                                 
                                 <span class="changelog-author">John Stachurski</span>
-                                <span class="changelog-time">1 month ago</span>
+                                <span class="changelog-time">4 months ago</span>
                                 <span class="changelog-message">Add exercise and solution to JAX neural network lecture (#254)</span>
                             </li>
                             
@@ -328,7 +361,7 @@
                                 <a href="https://github.com/QuantEcon/lecture-jax/commit/e98e55d" class="changelog-hash">e98e55d</a>
                                 
                                 <span class="changelog-author">John Stachurski</span>
-                                <span class="changelog-time">1 month ago</span>
+                                <span class="changelog-time">4 months ago</span>
                                 <span class="changelog-message">Simplify Optax training functions with lax.fori_loop (#253)</span>
                             </li>
                             
@@ -337,7 +370,7 @@
                                 <a href="https://github.com/QuantEcon/lecture-jax/commit/5576b14" class="changelog-hash">5576b14</a>
                                 
                                 <span class="changelog-author">John Stachurski</span>
-                                <span class="changelog-time">1 month ago</span>
+                                <span class="changelog-time">4 months ago</span>
                                 <span class="changelog-message">Improve jax_nn.md: fix errors and accurate JAX timing (#247)</span>
                             </li>
                             
@@ -346,7 +379,7 @@
                                 <a href="https://github.com/QuantEcon/lecture-jax/commit/38889cb" class="changelog-hash">38889cb</a>
                                 
                                 <span class="changelog-author">John Stachurski</span>
-                                <span class="changelog-time">10 months ago</span>
+                                <span class="changelog-time">1 year ago</span>
                                 <span class="changelog-message">Add JAX NN training lecture (#205)</span>
                             </li>
                             
@@ -420,33 +453,31 @@ using a neural network via the deep learning library <a class="reference externa
 </summary>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting keras
-  Downloading keras-3.13.0-py3-none-any.whl.metadata (6.3 kB)
-Requirement already satisfied: optax in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (0.2.6)
-Requirement already satisfied: absl-py in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from keras) (2.3.1)
+  Downloading keras-3.13.2-py3-none-any.whl.metadata (6.3 kB)
+Requirement already satisfied: optax in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (0.2.8)
+Requirement already satisfied: absl-py in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from keras) (2.4.0)
 Requirement already satisfied: numpy in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from keras) (2.3.5)
 Requirement already satisfied: rich in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from keras) (14.2.0)
 Collecting namex (from keras)
   Downloading namex-0.1.0-py3-none-any.whl.metadata (322 bytes)
 Requirement already satisfied: h5py in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from keras) (3.15.1)
 Collecting optree (from keras)
-  Downloading optree-0.18.0-cp313-cp313-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl.metadata (34 kB)
+  Downloading optree-0.19.0-cp313-cp313-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl.metadata (34 kB)
 Requirement already satisfied: ml-dtypes in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from keras) (0.5.4)
 Requirement already satisfied: packaging in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from keras) (25.0)
-Requirement already satisfied: chex&gt;=0.1.87 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from optax) (0.1.91)
-Requirement already satisfied: jax&gt;=0.5.3 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from optax) (0.8.2)
-Requirement already satisfied: jaxlib&gt;=0.5.3 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from optax) (0.8.2)
-Requirement already satisfied: typing_extensions&gt;=4.15.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from chex&gt;=0.1.87-&gt;optax) (4.15.0)
-Requirement already satisfied: toolz&gt;=1.0.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from chex&gt;=0.1.87-&gt;optax) (1.0.0)
+Requirement already satisfied: jax&gt;=0.5.3 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from optax) (0.9.2)
+Requirement already satisfied: jaxlib&gt;=0.5.3 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from optax) (0.9.2)
 Requirement already satisfied: opt_einsum in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from jax&gt;=0.5.3-&gt;optax) (3.4.0)
 Requirement already satisfied: scipy&gt;=1.13 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from jax&gt;=0.5.3-&gt;optax) (1.16.3)
+Requirement already satisfied: typing-extensions&gt;=4.6.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from optree-&gt;keras) (4.15.0)
 Requirement already satisfied: markdown-it-py&gt;=2.2.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from rich-&gt;keras) (3.0.0)
 Requirement already satisfied: pygments&lt;3.0.0,&gt;=2.13.0 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from rich-&gt;keras) (2.19.2)
 Requirement already satisfied: mdurl~=0.1 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from markdown-it-py&gt;=2.2.0-&gt;rich-&gt;keras) (0.1.2)
-Downloading keras-3.13.0-py3-none-any.whl (1.5 MB)
+Downloading keras-3.13.2-py3-none-any.whl (1.5 MB)
 ?25l   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">0.0/1.5 MB</span> <span class=" -Color -Color-Red">?</span> eta <span class=" -Color -Color-Cyan">-:--:--</span>
-   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">1.5/1.5 MB</span> <span class=" -Color -Color-Red">10.1 MB/s</span>  <span class=" -Color -Color-Yellow">0:00:00</span>
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">1.5/1.5 MB</span> <span class=" -Color -Color-Red">11.9 MB/s</span>  <span class=" -Color -Color-Yellow">0:00:00</span>
 ?25hDownloading namex-0.1.0-py3-none-any.whl (5.9 kB)
-Downloading optree-0.18.0-cp313-cp313-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (414 kB)
+Downloading optree-0.19.0-cp313-cp313-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (456 kB)
 Installing collected packages: namex, optree, keras
 ?25l
    ━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━ <span class=" -Color -Color-Green">2/3</span> [keras]
@@ -456,8 +487,7 @@ Installing collected packages: namex, optree, keras
    ━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━ <span class=" -Color -Color-Green">2/3</span> [keras]
    ━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━ <span class=" -Color -Color-Green">2/3</span> [keras]
    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">3/3</span> [keras]
-
-Successfully installed keras-3.13.0 namex-0.1.0 optree-0.18.0
+Successfully installed keras-3.13.2 namex-0.1.0 optree-0.19.0
 </pre></div>
 </div>
 </div>
@@ -486,12 +516,6 @@ Successfully installed keras-3.13.0 namex-0.1.0 optree-0.18.0
 <span class="kn">from</span><span class="w"> </span><span class="nn">keras</span><span class="w"> </span><span class="kn">import</span> <span class="n">Sequential</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">keras.layers</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dense</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">optax</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages/keras/src/export/tf2onnx_lib.py:8: FutureWarning: In the future `np.object` will be defined as the corresponding NumPy scalar.
-  if not hasattr(np, &quot;object&quot;):
 </pre></div>
 </div>
 </div>
@@ -664,12 +688,12 @@ mean square loss.</p>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Training NN using Keras.
-13/13 - 0s - 37ms/step - loss: 0.0440
-Trained in 19.58 seconds, validation data MSE = 0.04396016523241997
-13/13 - 0s - 25ms/step
+13/13 - 1s - 39ms/step - loss: 0.0467
+Trained in 20.07 seconds, validation data MSE = 0.04671717435121536
+13/13 - 0s - 27ms/step
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="_images/f19bd97dd95a34943f4e727285fcccbcf7347b6e28ed2f50845a36a460b3fc93.png"><img alt="_images/f19bd97dd95a34943f4e727285fcccbcf7347b6e28ed2f50845a36a460b3fc93.png" src="_images/f19bd97dd95a34943f4e727285fcccbcf7347b6e28ed2f50845a36a460b3fc93.png" style="width: 80%;" />
+<a class="reference internal image-reference" href="_images/60755c26933eeb3e150ea8587d60980195d0825ea530765e77e67b246984003d.png"><img alt="_images/60755c26933eeb3e150ea8587d60980195d0825ea530765e77e67b246984003d.png" src="_images/60755c26933eeb3e150ea8587d60980195d0825ea530765e77e67b246984003d.png" style="width: 80%;" />
 </a>
 </div>
 </div>
@@ -925,7 +949,7 @@ descent, exactly as required.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Trained model with JAX in 0.27 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Trained model with JAX in 0.28 seconds.
 Final MSE on validation data = 0.042119
 </pre></div>
 </div>
@@ -1185,10 +1209,10 @@ Final MSE on validation data = 0.040869
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Summary of Training Methods:
                   Method  Runtime (s) Training MSE Validation MSE
-                   Keras    19.579857     0.039605       0.043960
-Pure JAX (hand-coded GD)     0.274634     0.039963       0.042119
-         JAX + Optax SGD     0.273954     0.039963       0.042119
-        JAX + Optax ADAM     0.278531     0.035879       0.040869
+                   Keras    20.073680     0.041369       0.046717
+Pure JAX (hand-coded GD)     0.276992     0.039963       0.042119
+         JAX + Optax SGD     0.272873     0.039963       0.042119
+        JAX + Optax ADAM     0.277604     0.035879       0.040869
 </pre></div>
 </div>
 </div>
@@ -1276,7 +1300,7 @@ Pure JAX (hand-coded GD)     0.274634     0.039963       0.042119
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Strategy 1 - Deeper network (6 layers, k=6)
   Total parameters: 187
-  Runtime: 0.45s
+  Runtime: 0.46s
   Validation MSE: 0.041686
   Improvement over ADAM: -0.000817
 </pre></div>
@@ -1338,7 +1362,7 @@ Pure JAX (hand-coded GD)     0.274634     0.039963       0.042119
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Strategy 2 - Deeper network + LR schedule
-  Runtime: 1.00s
+  Runtime: 1.04s
   Validation MSE: 0.041633
   Improvement over ADAM: -0.000764
 </pre></div>
@@ -1414,7 +1438,7 @@ Pure JAX (hand-coded GD)     0.274634     0.039963       0.042119
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Strategy 3 - Deeper network + LR schedule + L2 regularization
-  Runtime: 1.11s
+  Runtime: 1.13s
   Validation MSE: 0.040845
   Improvement over ADAM: 0.000024
 </pre></div>
@@ -1486,7 +1510,7 @@ Pure JAX (hand-coded GD)     0.274634     0.039963       0.042119
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Strategy 4 - Baseline + L2 regularization
-  Runtime: 0.83s
+  Runtime: 0.86s
   Validation MSE: 0.040959
   Improvement over ADAM: -0.000090
 </pre></div>
@@ -1544,11 +1568,11 @@ Pure JAX (hand-coded GD)     0.274634     0.039963       0.042119
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Summary of Exercise Strategies:
                          Strategy  Runtime (s) Validation MSE  Improvement
-           Baseline (ADAM + tanh)     0.278531      0.0408687     0.000000
-     1. Deeper network (6 layers)     0.453044    0.041686147    -0.000817
-  2. Deeper network + LR schedule     0.997154    0.041632924    -0.000764
-3. Strategy 2 + L2 regularization     1.109324    0.040844545     0.000024
-  4. Baseline + L2 regularization     0.830949    0.040959038    -0.000090
+           Baseline (ADAM + tanh)     0.277604      0.0408687     0.000000
+     1. Deeper network (6 layers)     0.460927    0.041686147    -0.000817
+  2. Deeper network + LR schedule     1.037287    0.041632924    -0.000764
+3. Strategy 2 + L2 regularization     1.127499    0.040844545     0.000024
+  4. Baseline + L2 regularization     0.858678    0.040959038    -0.000090
 </pre></div>
 </div>
 </div>
@@ -1784,23 +1808,55 @@ regularization is more effective with deeper architectures or simpler ones.</p><
 </ul>
 <p aria-level="2" class="caption" role="heading">
  <span class="caption-text">
+  Racial Segregation
+ </span>
+</p>
+<ul class="nav bd-sidenav nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="schelling.html">
+   25. Schelling’s Model of Racial Segregation
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="schelling_numpy.html">
+   26. Schelling Model with NumPy
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="schelling_jax.html">
+   27. Schelling Model with JAX
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="schelling_jax_parallel.html">
+   28. Parallelizing the Algorithm
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="schelling_shocks.html">
+   29. Segregation with Persistent Shocks
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
   Other
  </span>
 </p>
 <ul class="nav bd-sidenav nav sidenav_l1">
  <li class="toctree-l1">
   <a class="reference internal" href="troubleshooting.html">
-   25. Troubleshooting
+   30. Troubleshooting
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="zreferences.html">
-   26. References
+   31. References
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="status.html">
-   27. Execution Statistics
+   32. Execution Statistics
   </a>
  </li>
 </ul>
@@ -1844,6 +1900,8 @@ regularization is more effective with deeper architectures or simpler ones.</p><
                     <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-jax/blob/main/lectures/jax_nn.md" download><i data-feather="github"></i></a></li>
                     -->
                     <li data-tippy-content="View Source"><a target="_blank" href="https://github.com/QuantEcon/lecture-jax" download><i data-feather="github"></i></a></li>
+                    
+                    
                 </ul>
 
             </div>
