@@ -263,6 +263,7 @@ def run_simulation_with_shocks(params, max_iter=1000, seed=42, plot_every=100):
     key = random.PRNGKey(seed)
     key, init_key = random.split(key)
     locations, types = initialize_state(init_key, params)
+    n = locations.shape[0]
 
     print(f"Running simulation with {n} agents for {max_iter} iterations")
     print(f"Flip probability: {params.flip_prob}")

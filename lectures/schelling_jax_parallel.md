@@ -251,11 +251,12 @@ def jax_simulation_loop(locations, types, key, params, max_iter):
         iteration += 1
 
         unhappy, num_unhappy = jax_get_unhappy_agents(locations, types, params)
+        num_unhappy = int(num_unhappy)
 
         if num_unhappy == 0:
             break
 
-        for j in range(int(num_unhappy)):
+        for j in range(num_unhappy):
             i = int(unhappy[j])
             new_loc, key = jax_update_agent(i, locations, types, key, params)
             locations = locations.at[i, :].set(new_loc)
@@ -420,6 +421,7 @@ def parallel_simulation_loop(locations, types, key, params, max_iter):
         iteration += 1
 
         _, num_unhappy = jax_get_unhappy_agents(locations, types, params)
+        num_unhappy = int(num_unhappy)
 
         if num_unhappy == 0:
             break

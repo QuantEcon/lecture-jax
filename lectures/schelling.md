@@ -33,7 +33,7 @@ preference for neighbors of the same race.
 For example, these agents might be comfortable with a mixed race neighborhood
 but uncomfortable when they feel "surrounded" by people from a different race.
 
-Schelling illustrated the follow surprising result: in such a setting, mixed
+Schelling illustrated the following surprising result: in such a setting, mixed
 race neighborhoods are likely to be unstable, tending to collapse over time.
 
 In fact the model predicts strongly divided neighborhoods, with high levels of
@@ -75,7 +75,7 @@ import time
 
 Before jumping into the modelling process, let's look at some data
 
-The maps below show are from the
+The maps below are from the
 [Weldon Cooper Center for Public Service](https://demographics.coopercenter.org/)
 at the University of Virginia.
 
@@ -271,7 +271,7 @@ def get_distance(agent, other_agent):
 
 def happy(agent, all_agents):
     """
-    Test happiness of agent, givel locations of others (all_agents).
+    Test happiness of agent, given locations of others (all_agents).
 
     Return true if the number of neighbors with a different type is not more
     than max_other_type.
@@ -284,7 +284,7 @@ def happy(agent, all_agents):
     # Populate the list
     for some_agent in all_agents:
         if some_agent != agent:
-            distance = get_distance(some_agent, agent)
+            distance = get_distance(agent, some_agent)
             distances.append((distance, some_agent))
 
     # Sort from smallest to largest, according to distance
@@ -296,14 +296,18 @@ def happy(agent, all_agents):
 
     # Count how many neighbors have a different type
     num_other_type = sum(agent.type != neighbor.type for neighbor in neighbors)
-    # Return true if does not exceed theshold
+    # Return true if does not exceed threshold
     return num_other_type <= max_other_type
 
 
-def relocate(agent, all_agents):
+def relocate(agent, all_agents, max_attempts=10_000):
     "If not happy, then randomly choose new locations until happy."
+    attempts = 0
     while not happy(agent, all_agents):
         move_agent(agent)
+        attempts += 1
+        if attempts >= max_attempts:
+            break
 ```
 
 Here's some code that takes a list of agents and produces a plot showing their
