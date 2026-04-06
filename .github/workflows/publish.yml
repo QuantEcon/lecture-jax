@@ -28,6 +28,8 @@ jobs:
           python --version
           python scripts/test-jax-install.py
           nvidia-smi
+      - name: Install ImageMagick
+        run: sudo apt-get update && sudo apt-get install -y imagemagick
       - name: Display Conda Environment Versions
         shell: bash -l {0}
         run: conda list
