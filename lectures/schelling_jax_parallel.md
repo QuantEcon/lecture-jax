@@ -27,7 +27,7 @@ JAX was slightly faster, with some small amount of parallelization achieved.
 Parallelization was limited however, because the algorithm is heavily
 sequential.
 
-In this lecture,  introduce a **parallel algorithm** that 
+In this lecture, we introduce a **parallel algorithm** that 
 
 * is in some sense less elegant but
 * fully leverages JAX's ability to perform vectorized operations across all agents simultaneously.
@@ -60,9 +60,10 @@ import time
 
 ## Parameters
 
-We use the same parameters across all implementations. To keep our functions
-pure, we pack all parameters into a `NamedTuple` that gets passed to functions
-that need them:
+We use the same parameters across all implementations.
+
+To keep our functions pure, we pack all parameters into a `NamedTuple` that
+gets passed to functions that need them:
 
 ```{code-cell} ipython3
 class Params(NamedTuple):
@@ -101,46 +102,30 @@ def plot_distribution(locations, types, title):
 
 ## NumPy Implementation
 
-First, let's copy the NumPy version from {doc}`schelling_numpy`:
+First, let's set up the NumPy version from {doc}`schelling_numpy`:
 
 ```{code-cell} ipython3
 def np_initialize_state(params):
-    num_of_type_0, num_of_type_1 = params.num_of_type_0, params.num_of_type_1
-    n = num_of_type_0 + num_of_type_1
+    n = params.num_of_type_0 + params.num_of_type_1
     locations = uniform(size=(n, 2))
-    types = np.array([0] * num_of_type_0 + [1] * num_of_type_1)
+    types = np.zeros(n, dtype=int)
+    types[params.num_of_type_0:] = 1
     return locations, types
 
 
-def np_get_distances(loc, locations):
-    return np.linalg.norm(loc - locations, axis=1)
-
-
-def np_get_neighbors(i, locations, params):
-    num_neighbors = params.num_neighbors
-    loc = locations[i, :]
-    distances = np_get_distances(loc, locations)
+def np_is_unhappy(i, locations, types, params):
+    distances = np.linalg.norm(locations[i] - locations, axis=1)
     distances[i] = np.inf
-    indices = np.argsort(distances)
-    return indices[:num_neighbors]
-
-
-def np_is_happy(i, locations, types, params):
-    max_other_type = params.max_other_type
-    agent_type = types[i]
-    neighbors = np_get_neighbors(i, locations, params)
-    neighbor_types = types[neighbors]
-    num_other = np.sum(neighbor_types != agent_type)
-    return num_other <= max_other_type
+    neighbors = np.argsort(distances)[:params.num_neighbors]
+    num_other = np.sum(types[neighbors] != types[i])
+    return num_other > params.max_other_type
 
 
 def np_update_agent(i, locations, types, params, max_attempts=10_000):
     attempts = 0
-    while not np_is_happy(i, locations, types, params):
+    while np_is_unhappy(i, locations, types, params) and attempts < max_attempts:
         locations[i, :] = uniform(), uniform()
         attempts += 1
-        if attempts >= max_attempts:
-            break
 
 
 def run_numpy_simulation(params, max_iter=100_000, seed=42):
@@ -151,21 +136,22 @@ def run_numpy_simulation(params, max_iter=100_000, seed=42):
     plot_distribution(locations, types, 'NumPy: Initial distribution')
 
     start_time = time.time()
-    someone_moved = True
-    iteration = 0
-    while someone_moved and iteration < max_iter:
-        print(f'Entering iteration {iteration + 1}')
-        iteration += 1
+    converged = False
+    for iteration in range(1, max_iter + 1):
+        print(f'Entering iteration {iteration}')
         someone_moved = False
         for i in range(n):
-            if not np_is_happy(i, locations, types, params):
+            if np_is_unhappy(i, locations, types, params):
                 np_update_agent(i, locations, types, params)
                 someone_moved = True
+        if not someone_moved:
+            converged = True
+            break
     elapsed = time.time() - start_time
 
     plot_distribution(locations, types, f'NumPy: Iteration {iteration}')
 
-    if not someone_moved:
+    if converged:
         print(f'Converged in {elapsed:.2f} seconds after {iteration} iterations.')
     else:
         print('Hit iteration bound and terminated.')
@@ -175,39 +161,25 @@ def run_numpy_simulation(params, max_iter=100_000, seed=42):
 
 ## JAX Sequential Implementation
 
-Next, we copy the JAX version from {doc}`schelling_jax`:
+Next, we set up the JAX version from {doc}`schelling_jax`:
 
 ```{code-cell} ipython3
 def jax_initialize_state(key, params):
-    num_of_type_0, num_of_type_1 = params.num_of_type_0, params.num_of_type_1
-    n = num_of_type_0 + num_of_type_1
+    n = params.num_of_type_0 + params.num_of_type_1
     locations = random.uniform(key, shape=(n, 2))
-    types = jnp.array([0] * num_of_type_0 + [1] * num_of_type_1)
+    types = jnp.concatenate([jnp.zeros(params.num_of_type_0, dtype=int),
+                              jnp.ones(params.num_of_type_1, dtype=int)])
     return locations, types
-
-
-@jit
-def jax_get_distances(loc, locations):
-    diff = loc - locations
-    return jnp.sum(diff**2, axis=1)
-
-
-@partial(jit, static_argnames=('params',))
-def jax_get_neighbors(loc, agent_idx, locations, params):
-    num_neighbors = params.num_neighbors
-    distances = jax_get_distances(loc, locations)
-    distances = distances.at[agent_idx].set(jnp.inf)
-    _, indices = jax.lax.top_k(-distances, num_neighbors)
-    return indices
 
 
 @partial(jit, static_argnames=('params',))
 def jax_is_unhappy(loc, agent_type, agent_idx, locations, types, params):
-    max_other_type = params.max_other_type
-    neighbors = jax_get_neighbors(loc, agent_idx, locations, params)
-    neighbor_types = types[neighbors]
-    num_other = jnp.sum(neighbor_types != agent_type)
-    return num_other > max_other_type
+    " True if an agent at loc has too many different-type neighbors. "
+    distances = jnp.sum((loc - locations)**2, axis=1)
+    distances = distances.at[agent_idx].set(jnp.inf)
+    _, neighbors = jax.lax.top_k(-distances, params.num_neighbors)
+    num_other = jnp.sum(types[neighbors] != agent_type)
+    return num_other > params.max_other_type
 
 
 @partial(jit, static_argnames=('params',))
@@ -237,23 +209,21 @@ def jax_get_unhappy_agents(locations, types, params):
         return jax_is_unhappy(locations[i], types[i], i, locations, types, params)
 
     all_unhappy = vmap(check_agent)(jnp.arange(n))
-    # jnp.where with size= returns fixed-length array (required for JIT)
-    # Pads with fill_value=-1 when fewer than n agents are unhappy
     indices = jnp.where(all_unhappy, size=n, fill_value=-1)[0]
-    count = jnp.sum(all_unhappy)  # number of valid indices
+    count = jnp.sum(all_unhappy)
     return indices, count
 
 
 def jax_simulation_loop(locations, types, key, params, max_iter):
-    iteration = 0
-    while iteration < max_iter:
-        print(f'Entering iteration {iteration + 1}')
-        iteration += 1
+    converged = False
+    for iteration in range(1, max_iter + 1):
+        print(f'Entering iteration {iteration}')
 
         unhappy, num_unhappy = jax_get_unhappy_agents(locations, types, params)
         num_unhappy = int(num_unhappy)
 
         if num_unhappy == 0:
+            converged = True
             break
 
         for j in range(num_unhappy):
@@ -261,7 +231,7 @@ def jax_simulation_loop(locations, types, key, params, max_iter):
             new_loc, key = jax_update_agent(i, locations, types, key, params)
             locations = locations.at[i, :].set(new_loc)
 
-    return locations, iteration, key
+    return locations, iteration, converged, key
 
 
 def run_jax_simulation(params, max_iter=100_000, seed=42):
@@ -272,12 +242,12 @@ def run_jax_simulation(params, max_iter=100_000, seed=42):
     plot_distribution(locations, types, 'JAX Sequential: Initial distribution')
 
     start_time = time.time()
-    locations, iteration, key = jax_simulation_loop(locations, types, key, params, max_iter)
+    locations, iteration, converged, key = jax_simulation_loop(locations, types, key, params, max_iter)
     elapsed = time.time() - start_time
 
     plot_distribution(locations, types, f'JAX Sequential: Iteration {iteration}')
 
-    if iteration < max_iter:
+    if converged:
         print(f'Converged in {elapsed:.2f} seconds after {iteration} iterations.')
     else:
         print('Hit iteration bound and terminated.')
@@ -341,9 +311,10 @@ This may seem wasteful for agents who are
 already happy, but it's actually optimal for parallel execution.
 
 In SIMD/SIMT architectures (GPUs, vectorized CPU operations), all threads
-execute the same instructions in lockstep. Conditional branches like
-`jax.lax.cond` don't skip work—both branches are computed and the result is
-selected afterward. 
+execute the same instructions in lockstep.
+
+Conditional branches like `jax.lax.cond` don't skip work—both branches are
+computed and the result is selected afterward. 
 
 By doing uniform work for all agents and using `jnp.where`
 to select results at the end, we align with how the hardware actually executes
@@ -415,20 +386,20 @@ def parallel_update_step(locations, types, key, params):
 
 ```{code-cell} ipython3
 def parallel_simulation_loop(locations, types, key, params, max_iter):
-    iteration = 0
-    while iteration < max_iter:
-        print(f'Entering iteration {iteration + 1}')
-        iteration += 1
+    converged = False
+    for iteration in range(1, max_iter + 1):
+        print(f'Entering iteration {iteration}')
 
         _, num_unhappy = jax_get_unhappy_agents(locations, types, params)
         num_unhappy = int(num_unhappy)
 
         if num_unhappy == 0:
+            converged = True
             break
 
         locations, key = parallel_update_step(locations, types, key, params)
 
-    return locations, iteration, key
+    return locations, iteration, converged, key
 
 
 def run_parallel_simulation(params, max_iter=100_000, seed=42):
@@ -439,12 +410,12 @@ def run_parallel_simulation(params, max_iter=100_000, seed=42):
     plot_distribution(locations, types, 'JAX Parallel: Initial distribution')
 
     start_time = time.time()
-    locations, iteration, key = parallel_simulation_loop(locations, types, key, params, max_iter)
+    locations, iteration, converged, key = parallel_simulation_loop(locations, types, key, params, max_iter)
     elapsed = time.time() - start_time
 
     plot_distribution(locations, types, f'JAX Parallel: Iteration {iteration}')
 
-    if iteration < max_iter:
+    if converged:
         print(f'Converged in {elapsed:.2f} seconds after {iteration} iterations.')
     else:
         print('Hit iteration bound and terminated.')
@@ -462,8 +433,6 @@ key, init_key = random.split(key)
 test_locations, test_types = jax_initialize_state(init_key, params)
 
 # Warm up JAX sequential functions
-_ = jax_get_distances(test_locations[0], test_locations)
-_ = jax_get_neighbors(test_locations[0], 0, test_locations, params)
 _ = jax_is_unhappy(test_locations[0], test_types[0], 0, test_locations, test_types, params)
 _, _ = jax_get_unhappy_agents(test_locations, test_types, params)
 key, subkey = random.split(key)
@@ -511,33 +480,13 @@ locations_par, types_par = run_parallel_simulation(params)
 
 ## Discussion
 
-The results reveal interesting trade-offs:
+The parallel approach processes all agents simultaneously each iteration.
 
-1. **NumPy** provides a straightforward implementation but runs entirely on
-   the CPU with Python loops.
+While it may require more iterations (since agents get only a fixed number of
+candidate locations), each iteration leverages massive parallelism.
 
-2. **JAX Sequential** uses JIT compilation for individual operations, but the
-   outer loop still processes agents one at a time.
+This trade-off strongly favors parallelism on GPUs, where thousands of threads
+can evaluate candidate locations concurrently.
 
-3. **JAX Parallel** processes all agents simultaneously each iteration. While
-   it may require more iterations (since agents might not find a happy location
-   in their limited candidates), each iteration leverages massive parallelism.
-
-The parallel approach shines on GPUs, where thousands of threads can evaluate
-candidate locations concurrently. On CPUs, the benefits are more modest, but
-the parallel structure still allows JAX to optimize memory access patterns and
-use SIMD instructions effectively.
-
-## Key Takeaways
-
-1. **Algorithm structure matters**: Simply porting code to JAX doesn't
-   automatically make it faster. To fully benefit from JAX's capabilities,
-   algorithms often need to be restructured for parallelism.
-
-2. **Trade iteration count for parallelism**: The parallel algorithm may need
-   more iterations, but each iteration does more work in parallel. This
-   trade-off often favors parallelism on modern hardware.
-
-3. **GPU acceleration**: The parallel algorithm is particularly well-suited
-   for GPUs, where the speedup can be dramatic. On CPU-only systems, the
-   difference is smaller.
+The key lesson is that simply porting code to JAX doesn't automatically make it
+faster — algorithms often need to be restructured for parallelism.

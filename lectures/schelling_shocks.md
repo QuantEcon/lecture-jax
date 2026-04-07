@@ -84,35 +84,22 @@ We reuse the core functions from the parallel JAX implementation.
 def initialize_state(key, params):
     n = params.num_of_type_0 + params.num_of_type_1
     locations = random.uniform(key, shape=(n, 2))
-    types = jnp.array([0] * params.num_of_type_0 + [1] * params.num_of_type_1)
+    types = jnp.concatenate([jnp.zeros(params.num_of_type_0, dtype=int),
+                              jnp.ones(params.num_of_type_1, dtype=int)])
     return locations, types
 ```
 
-### Distance and Neighbor Functions
+### Core Functions
 
 ```{code-cell} ipython3
-@jit
-def get_distances(loc, locations):
-    diff = locations - loc
-    return jnp.sum(diff**2, axis=1)
-
-
-@partial(jit, static_argnames=('params',))
-def get_neighbors(loc, agent_idx, locations, params):
-    num_neighbors = params.num_neighbors
-    distances = get_distances(loc, locations)
-    distances = distances.at[agent_idx].set(jnp.inf)
-    _, indices = jax.lax.top_k(-distances, num_neighbors)
-    return indices
-
-
 @partial(jit, static_argnames=('params',))
 def is_unhappy(loc, agent_type, agent_idx, locations, types, params):
-    max_other_type = params.max_other_type
-    neighbors = get_neighbors(loc, agent_idx, locations, params)
-    neighbor_types = types[neighbors]
-    num_other = jnp.sum(neighbor_types != agent_type)
-    return num_other > max_other_type
+    " True if an agent at loc has too many different-type neighbors. "
+    distances = jnp.sum((loc - locations)**2, axis=1)
+    distances = distances.at[agent_idx].set(jnp.inf)
+    _, neighbors = jax.lax.top_k(-distances, params.num_neighbors)
+    num_other = jnp.sum(types[neighbors] != agent_type)
+    return num_other > params.max_other_type
 
 
 @partial(jit, static_argnames=('params',))
@@ -134,27 +121,39 @@ def get_unhappy_agents(locations, types, params):
 
 ```{code-cell} ipython3
 @partial(jit, static_argnames=('params',))
-def find_happy_candidate(i, locations, types, key, params):
+def update_agent_location(i, locations, types, key, params):
     """
     Propose num_candidates random locations for agent i.
-    Return the first one where agent is happy, or current location if none work.
+    Return the first happy candidate if agent is unhappy, otherwise current location.
     """
     num_candidates = params.num_candidates
     current_loc = locations[i, :]
     agent_type = types[i]
 
+    # Generate candidate locations
     keys = random.split(key, num_candidates)
     candidates = vmap(lambda k: random.uniform(k, shape=(2,)))(keys)
 
+    # Check happiness at each candidate location (in parallel)
     def check_candidate(loc):
         return ~is_unhappy(loc, agent_type, i, locations, types, params)
-
     happy_at_candidates = vmap(check_candidate)(candidates)
 
+    # Find first happy candidate (if any)
     first_happy_idx = jnp.argmax(happy_at_candidates)
     any_happy = jnp.any(happy_at_candidates)
 
-    new_loc = jnp.where(any_happy, candidates[first_happy_idx], current_loc)
+    # Check if agent is already happy at current location
+    is_happy = ~is_unhappy(current_loc, agent_type, i, locations, types, params)
+
+    # Move only if unhappy and found a happy candidate; otherwise stay put
+    new_loc = jnp.where(is_happy,
+                current_loc,
+                jnp.where(any_happy,
+                    candidates[first_happy_idx],
+                    current_loc
+                )
+              )
     return new_loc
 
 
@@ -164,7 +163,7 @@ def parallel_update_step(locations, types, key, params):
     One step of the parallel algorithm:
     1. Generate keys for all agents
     2. For each agent, find a happy candidate location (in parallel)
-    3. Only update unhappy agents
+       (happy agents stay put, unhappy agents search for new locations)
     """
     n = params.num_of_type_0 + params.num_of_type_1
 
@@ -172,19 +171,11 @@ def parallel_update_step(locations, types, key, params):
     key = keys[0]
     agent_keys = keys[1:]
 
-    def try_move(i):
-        return find_happy_candidate(i, locations, types, agent_keys[i], params)
+    def update_one_agent(i):
+        return update_agent_location(i, locations, types, agent_keys[i], params)
+    new_locations = vmap(update_one_agent)(jnp.arange(n))
 
-    new_locations = vmap(try_move)(jnp.arange(n))
-
-    def check_agent(i):
-        return is_unhappy(locations[i], types[i], i, locations, types, params)
-
-    is_unhappy_mask = vmap(check_agent)(jnp.arange(n))
-
-    final_locations = jnp.where(is_unhappy_mask[:, None], new_locations, locations)
-
-    return final_locations, key
+    return new_locations, key
 ```
 
 ### Type Flipping
@@ -301,13 +292,11 @@ key = random.PRNGKey(0)
 key, init_key = random.split(key)
 test_locations, test_types = initialize_state(init_key, params)
 
-_ = get_distances(test_locations[0], test_locations)
-_ = get_neighbors(test_locations[0], 0, test_locations, params)
 _ = is_unhappy(test_locations[0], test_types[0], 0, test_locations, test_types, params)
 _, _ = get_unhappy_agents(test_locations, test_types, params)
 
 key, subkey = random.split(key)
-_ = find_happy_candidate(0, test_locations, test_types, subkey, params)
+_ = update_agent_location(0, test_locations, test_types, subkey, params)
 
 key, subkey = random.split(key)
 _, _ = parallel_update_step(test_locations, test_types, subkey, params)
@@ -328,31 +317,24 @@ locations, types = run_simulation_with_shocks(params, max_iter=1000, plot_every=
 
 ## Discussion
 
-The figures show a striking result: segregation levels at the end of the
+The figures show an interesting result: segregation levels at the end of the
 simulation are much higher than in the basic model without shocks.
 
-Why does this happen? In the basic model, the system converges to an
-equilibrium where everyone is happy, and then the dynamics stop. But with
-persistent shocks, the system never converges. Each time an agent's type is
-flipped, they may suddenly find themselves unhappy (surrounded by agents of
-the now-different type). This triggers movement, which can make other agents
-unhappy, leading to cascades of relocations.
+Why does this happen?
 
-The key insight is that **the segregation dynamics never shut off**. The same
-forces that drove initial segregation in the basic model continue operating
-indefinitely:
+In the basic model, the system converges to an equilibrium where everyone is
+happy, and then the dynamics stop.
 
-1. Random type flips create local pockets of unhappiness
-2. Unhappy agents relocate to find compatible neighbors
-3. This relocation can trigger further unhappiness in other agents
-4. The cycle continues, pushing segregation ever higher
+With persistent shocks, the system never converges — random type flips create
+local pockets of unhappiness, triggering relocations that can cascade through
+the population.
+
+The key insight is that the segregation dynamics never shut off.
+
+The result is that segregation continues to increase over time, reaching levels
+far beyond what we observe when the system is allowed to converge.
 
 This is arguably more realistic than the static equilibrium of the basic model.
-Real cities experience constant population turnover—people move in and out,
-neighborhoods change. The Schelling dynamics don't just operate once and stop;
-they operate continuously on the evolving population.
 
-The persistent shocks prevent the system from settling into equilibrium,
-keeping the segregation pressures active. The result is that segregation
-continues to increase over time, reaching levels far beyond what we observe
-when the system is allowed to converge.
+Real cities experience constant population turnover, and the Schelling dynamics
+operate continuously on the evolving population.

@@ -173,7 +173,7 @@ $0 < x, y < 1$.
 We will say that an agent is 
 
 * **happy** if $k \leq 6$ of her 10 nearest neighbors are of a different type.
-* **unhappy** if $k > 6$ her 10 nearest neighbors are of a different type.
+* **unhappy** if $k > 6$ of her 10 nearest neighbors are of a different type.
 
 For example,
 
