@@ -61,16 +61,6 @@ from functools import partial
 os.environ['KERAS_BACKEND'] = 'jax'
 ```
 
-```{note}
-Without setting the backend to JAX, the imports below might fail.
-
-If you have problems running the next cell in Jupyter, try 
-
-1. quitting
-2. running `export KERAS_BACKEND="jax"` 
-3. starting Jupyter on the command line from the same terminal.
-```
-
 ```{code-cell} ipython3
 import keras
 from keras import Sequential
@@ -194,7 +184,7 @@ def train_keras_model(
         y_validate,     # Validation data, outputs
         config: Config  # contains configuration data
     ):
-    print(f"Training NN using Keras.")
+    print("Training NN using Keras.")
     start_time = time()
     training_history = model.fit(
         x, y,
@@ -209,10 +199,10 @@ def train_keras_model(
     return model, training_history, elapsed, mse
 ```
 
-The next function extracts and visualizes a prediction from the trained model.
+The next function extracts and visualizes a prediction from the trained Keras model.
 
 ```{code-cell} ipython3
-def plot_keras_output(model, x, y, x_validate, y_validate):
+def plot_keras_output(model, x_validate, y_validate):
     y_predict = model.predict(x_validate, verbose=2)
     fig, ax = plt.subplots()
     ax.scatter(x_validate, y_validate, color='red', alpha=0.5)
@@ -230,7 +220,7 @@ model = build_keras_model(config)
 model, training_history, keras_runtime, keras_mse = train_keras_model(
     model, x_train, y_train, x_validate, y_validate, config
 )
-plot_keras_output(model, x_train, y_train, x_validate, y_validate)
+plot_keras_output(model, x_validate, y_validate)
 ```
 
 The fit is good and we note the relatively low final MSE.
@@ -281,8 +271,8 @@ class LayerParams(NamedTuple):
     Stores parameters for one layer of the neural network.
 
     """
-    W: jnp.ndarray     # weights
-    b: jnp.ndarray     # biases
+    W: jax.Array     # weights
+    b: jax.Array     # biases
 ```
 
 The following function initializes a single layer of the network using He
@@ -291,7 +281,7 @@ initialization for weights and ones for biases.
 ```{code-cell} ipython3
 def initialize_layer(in_dim, out_dim, key):
     """
-    Initialize weights and biases for a single layer of a the network.
+    Initialize weights and biases for a single layer of the network.
     Use He initialization for weights and ones for biases.
 
     """
@@ -341,7 +331,7 @@ Here’s our implementation of the ANN $f$:
 ```{code-cell} ipython3
 def f(
         θ: list,                        # Network parameters (pytree)
-        x: jnp.ndarray,                 # Input data (row vector)
+        x: jax.Array,                 # Input data (row vector)
         σ: callable = jnp.tanh          # Activation function
     ):
     """
@@ -356,23 +346,36 @@ def f(
 
 The function $ f $ is appropriately vectorized, so that we can pass in the entire
 set of input observations as `x` and return the predicted vector of outputs `y_hat = f(θ, x)`
-corresponding  to each data point.
+corresponding to each data point.
 
 The loss function is mean squared error, the same as the Keras case.
 
 ```{code-cell} ipython3
 def loss_fn(
         θ: list,            # Network parameters (pytree)
-        x: jnp.ndarray,     # Input data
-        y: jnp.ndarray      # Target data
+        x: jax.Array,     # Input data
+        y: jax.Array      # Target data
     ):
     return jnp.mean((f(θ, x) - y)**2)
 ```
 
-We’ll use its gradient to do stochastic gradient descent.
+We’ll also define a function to visualize predictions from our JAX models.
+
+```{code-cell} ipython3
+def plot_jax_output(θ, x_validate, y_validate):
+    fig, ax = plt.subplots()
+    ax.scatter(x_validate, y_validate, color=’red’, alpha=0.5)
+    ax.plot(x_validate.flatten(), f(θ, x_validate).flatten(),
+            label="fitted model", color=’black’)
+    ax.set_xlabel(‘x’)
+    ax.set_ylabel(‘y’)
+    plt.show()
+```
+
+We’ll use the gradient of the loss to do stochastic gradient descent.
 
 (Technically, we will be doing gradient descent, rather than stochastic
-gradient descent, since will not randomize over sample points when we
+gradient descent, since we will not randomize over sample points when we
 evaluate the gradient.)
 
 ```{code-cell} ipython3
@@ -382,11 +385,11 @@ loss_gradient = jax.jit(jax.grad(loss_fn))
 The gradient of `loss_fn` is with respect to the first argument `θ`.
 
 The code above seems kind of magical, since we are differentiating with respect
-to a parameter “vector” stored as a list of dictionaries containing arrays.
+to a parameter “vector” stored as a list of named tuples containing arrays.
 
 How can we differentiate with respect to such a complex object?
 
-The answer is that the list of dictionaries is treated internally as a
+The answer is that the list of named tuples is treated internally as a
 [pytree](https://docs.jax.dev/en/latest/pytrees.html).
 
 The JAX function `grad` understands how to
@@ -407,8 +410,8 @@ In this case, to keep things as simple as possible, we’ll use a fixed learning
 ```{code-cell} ipython3
 def update_parameters(
         θ: list,            # Current parameters (pytree)
-        x: jnp.ndarray,     # Input data
-        y: jnp.ndarray,     # Target data
+        x: jax.Array,     # Input data
+        y: jax.Array,     # Target data
         config: Config      # contains configuration data
     ):
     """
@@ -442,8 +445,8 @@ Here’s code that puts this all together.
 @partial(jax.jit, static_argnames=['config'])
 def train_jax_model(
         θ: list,                    # Initial parameters (pytree)
-        x: jnp.ndarray,             # Training input data
-        y: jnp.ndarray,             # Training target data
+        x: jax.Array,             # Training input data
+        y: jax.Array,             # Training target data
         config: Config              # contains configuration data
     ):
     """
@@ -491,13 +494,7 @@ Despite the simplicity of our implementation, we actually perform slightly bette
 Here's a visualization of the quality of our fit.
 
 ```{code-cell} ipython3
-fig, ax = plt.subplots()
-ax.scatter(x_validate, y_validate, color='red', alpha=0.5)
-ax.plot(x_validate.flatten(), f(θ, x_validate).flatten(),
-        label="fitted model", color='black')
-ax.set_xlabel('x')
-ax.set_ylabel('y')
-plt.show()
+plot_jax_output(θ, x_validate, y_validate)
 ```
 
 ## JAX plus Optax
@@ -515,8 +512,8 @@ Here’s a training routine using Optax’s stochastic gradient descent solver.
 @partial(jax.jit, static_argnames=['config'])
 def train_jax_optax(
         θ: list,                    # Initial parameters (pytree)
-        x: jnp.ndarray,             # Training input data
-        y: jnp.ndarray,             # Training target data
+        x: jax.Array,             # Training input data
+        y: jax.Array,             # Training target data
         config: Config              # contains configuration data
     ):
     " Train model using Optax SGD optimizer. "
@@ -562,19 +559,13 @@ print(f"Final MSE on validation data = {optax_sgd_mse:.6f}")
 ```
 
 ```{code-cell} ipython3
-fig, ax = plt.subplots()
-ax.scatter(x_validate, y_validate, color='red', alpha=0.5)
-ax.plot(x_validate.flatten(), f(θ, x_validate).flatten(),
-        label="fitted model", color='black')
-ax.set_xlabel('x')
-ax.set_ylabel('y')
-plt.show()
+plot_jax_output(θ, x_validate, y_validate)
 ```
 
-### Optax with ADAM
+### Optax with Adam
 
 We can also consider using a slightly more sophisticated gradient-based method,
-such as [ADAM](https://arxiv.org/pdf/1412.6980).
+such as [Adam](https://arxiv.org/pdf/1412.6980).
 
 You will notice that the syntax for using this alternative optimizer is very
 similar.
@@ -583,11 +574,11 @@ similar.
 @partial(jax.jit, static_argnames=['config'])
 def train_jax_optax_adam(
         θ: list,                    # Initial parameters (pytree)
-        x: jnp.ndarray,             # Training input data
-        y: jnp.ndarray,             # Training target data
+        x: jax.Array,             # Training input data
+        y: jax.Array,             # Training target data
         config: Config              # contains configuration data
     ):
-    " Train model using Optax ADAM optimizer. "
+    " Train model using Optax Adam optimizer. "
     epochs = config.epochs
     learning_rate = config.learning_rate
     solver = optax.adam(learning_rate)
@@ -622,20 +613,14 @@ optax_adam_runtime = time() - start_time
 
 optax_adam_mse = loss_fn(θ, x_validate, y_validate)
 optax_adam_train_mse = loss_fn(θ, x_train, y_train)
-print(f"Trained model with JAX and Optax ADAM in {optax_adam_runtime:.2f} seconds.")
+print(f"Trained model with JAX and Optax Adam in {optax_adam_runtime:.2f} seconds.")
 print(f"Final MSE on validation data = {optax_adam_mse:.6f}")
 ```
 
 Here's a visualization of the result.
 
 ```{code-cell} ipython3
-fig, ax = plt.subplots()
-ax.scatter(x_validate, y_validate, color='red', alpha=0.5)
-ax.plot(x_validate.flatten(), f(θ, x_validate).flatten(),
-        label="fitted model", color='black')
-ax.set_xlabel('x')
-ax.set_ylabel('y')
-plt.show()
+plot_jax_output(θ, x_validate, y_validate)
 ```
 
 ## Summary
@@ -647,14 +632,8 @@ Here we compare the performance of the four different training approaches we exp
 
 import pandas as pd
 
-# Compute training MSEs for each method
-# Need to retrieve the trained models and compute training MSE
-# For Keras, we already have the model
+# Compute Keras training MSE (JAX training MSEs were computed above)
 keras_train_mse = model.evaluate(x_train, y_train, verbose=0)
-
-# For JAX methods, we need to compute using loss_fn with the final θ from each method
-# We need to re-train or save the θ from each method
-# For now, let's add these calculations after each training section
 
 # Create summary table
 results = {
@@ -662,7 +641,7 @@ results = {
         'Keras',
         'Pure JAX (hand-coded GD)',
         'JAX + Optax SGD',
-        'JAX + Optax ADAM'
+        'JAX + Optax Adam'
     ],
     'Runtime (s)': [
         keras_runtime,
@@ -697,7 +676,7 @@ All methods achieve similar validation MSE values (around 0.043-0.045).
 
 At the time of writing, the MSEs from plain vanilla Optax and our own hand-coded SGD routine are identical.
 
-The ADAM optimizer achieves slightly better MSE by using adaptive learning rates.
+The Adam optimizer achieves slightly better MSE by using adaptive learning rates.
 
 Still, our hand-coded algorithm does very well compared to this high-quality optimizer.
 
@@ -779,7 +758,7 @@ print(f"Strategy 1 - Deeper network (6 layers, k=6)")
 print(f"  Total parameters: 187")
 print(f"  Runtime: {deep_runtime:.2f}s")
 print(f"  Validation MSE: {deep_mse:.6f}")
-print(f"  Improvement over ADAM: {optax_adam_mse - deep_mse:.6f}")
+print(f"  Improvement over Adam: {optax_adam_mse - deep_mse:.6f}")
 ```
 
 **Strategy 2: Deeper Network + Learning Rate Schedule**
@@ -792,8 +771,8 @@ Since the deeper network performed best, let's combine it with the learning rate
 
 def train_deep_with_schedule(
         θ: list,
-        x: jnp.ndarray,
-        y: jnp.ndarray,
+        x: jax.Array,
+        y: jax.Array,
         config: Config
     ):
     " Train deeper network with learning rate schedule. "
@@ -832,7 +811,7 @@ deep_schedule_mse = loss_fn(θ_deep_schedule, x_validate, y_validate)
 print(f"Strategy 2 - Deeper network + LR schedule")
 print(f"  Runtime: {deep_schedule_runtime:.2f}s")
 print(f"  Validation MSE: {deep_schedule_mse:.6f}")
-print(f"  Improvement over ADAM: {optax_adam_mse - deep_schedule_mse:.6f}")
+print(f"  Improvement over Adam: {optax_adam_mse - deep_schedule_mse:.6f}")
 ```
 
 **Strategy 3: Deeper Network + LR Schedule + L2 Regularization**
@@ -845,8 +824,8 @@ Let's add L2 regularization (similar to ridge regression) to penalize complexity
 
 def train_deep_with_schedule_and_l2(
         θ: list,
-        x: jnp.ndarray,
-        y: jnp.ndarray,
+        x: jax.Array,
+        y: jax.Array,
         config: Config,
         lambda_l2: float = 0.001
     ):
@@ -899,7 +878,7 @@ deep_l2_mse = loss_fn(θ_deep_l2, x_validate, y_validate)
 print(f"Strategy 3 - Deeper network + LR schedule + L2 regularization")
 print(f"  Runtime: {deep_l2_runtime:.2f}s")
 print(f"  Validation MSE: {deep_l2_mse:.6f}")
-print(f"  Improvement over ADAM: {optax_adam_mse - deep_l2_mse:.6f}")
+print(f"  Improvement over Adam: {optax_adam_mse - deep_l2_mse:.6f}")
 ```
 
 **Strategy 4: Baseline + L2 Regularization**
@@ -912,8 +891,8 @@ Let's see if L2 regularization helps the baseline architecture:
 
 def train_baseline_with_l2(
         θ: list,
-        x: jnp.ndarray,
-        y: jnp.ndarray,
+        x: jax.Array,
+        y: jax.Array,
         config: Config,
         lambda_l2: float = 0.001
     ):
@@ -962,7 +941,7 @@ baseline_l2_mse = loss_fn(θ_baseline_l2, x_validate, y_validate)
 print(f"Strategy 4 - Baseline + L2 regularization")
 print(f"  Runtime: {baseline_l2_runtime:.2f}s")
 print(f"  Validation MSE: {baseline_l2_mse:.6f}")
-print(f"  Improvement over ADAM: {optax_adam_mse - baseline_l2_mse:.6f}")
+print(f"  Improvement over Adam: {optax_adam_mse - baseline_l2_mse:.6f}")
 ```
 
 **Results Summary**
@@ -975,7 +954,7 @@ Let's compare all strategies:
 # Summary of all strategies
 strategies_results = {
     'Strategy': [
-        'Baseline (ADAM + tanh)',
+        'Baseline (Adam + tanh)',
         '1. Deeper network (6 layers)',
         '2. Deeper network + LR schedule',
         '3. Strategy 2 + L2 regularization',
