@@ -18,11 +18,11 @@ kernelspec:
 In the {doc}`previous lecture <schelling>`, we implemented the Schelling
 segregation model using pure Python and standard libraries.
 
-In this lecture we will rewrite the model using NumPy arrays and functions.
+In this lecture, we will rewrite the model using NumPy arrays and functions.
 
 This is intended as a first step towards greater efficiency.
 
-In later lectures we'll improve execution speed further by adopting JAX and
+In later lectures, we'll improve execution speed further by adopting JAX and
 modifying algorithms.
 
 We'll achieve greater speed --- but at the cost of readability!

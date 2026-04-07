@@ -24,7 +24,7 @@ NumPy offered speed gains from vectorization.
 
 JAX was slightly faster, with some small amount of parallelization achieved.
 
-Parallelization was limited however, because the algorithm is heavily
+Parallelization was limited, however, because the algorithm is heavily
 sequential.
 
 In this lecture, we introduce a **parallel algorithm** that 
