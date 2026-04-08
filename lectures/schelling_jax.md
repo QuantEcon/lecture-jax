@@ -39,58 +39,6 @@ from typing import NamedTuple
 import time
 ```
 
-## How JAX Differs from NumPy
-
-Before diving into the code, let's understand what makes JAX special.
-
-### Immutable Arrays
-
-In NumPy, we often modify arrays in place:
-
-```python
-# NumPy style (mutable)
-locations[i, :] = new_location  # modifies the array
-```
-
-JAX arrays are **immutable** — they cannot be modified after creation. Instead,
-you create new arrays:
-
-```python
-# JAX style (immutable)
-locations = locations.at[i, :].set(new_location)  # returns a new array
-```
-
-This might seem inefficient, but JAX's compiler can optimize these operations,
-often avoiding unnecessary copies.
-
-### Functional Programming
-
-JAX works best with **pure functions** — functions that:
-
-1. Always return the same output for the same input
-2. Don't modify any external state (no side effects)
-
-This style makes code easier to reason about and enables JAX's powerful
-optimizations.
-
-### Random Numbers
-
-NumPy's random number generator maintains hidden internal state. JAX takes a
-different approach: you explicitly manage random "keys":
-
-```python
-# NumPy style
-np.random.seed(42)
-x = np.random.uniform()  # uses hidden state
-
-# JAX style
-key = random.PRNGKey(42)       # create a key
-x = random.uniform(key)        # pass key explicitly
-key, subkey = random.split(key)  # get new keys for future use
-```
-
-This explicit handling makes JAX programs reproducible and parallelizable.
-
 ## Parameters
 
 We use the same parameters as before. To keep our functions pure, we pack all
@@ -121,7 +69,8 @@ def initialize_state(key, params):
     num_of_type_0, num_of_type_1 = params.num_of_type_0, params.num_of_type_1
     n = num_of_type_0 + num_of_type_1
     locations = random.uniform(key, shape=(n, 2))
-    types = jnp.array([0] * num_of_type_0 + [1] * num_of_type_1)
+    types = jnp.concatenate([jnp.zeros(num_of_type_0, dtype=int),
+                              jnp.ones(num_of_type_1, dtype=int)])
     return locations, types
 ```
 
@@ -131,102 +80,44 @@ and we pass `params` explicitly rather than relying on global variables.
 
 ## JAX-Compiled Functions
 
-Now let's rewrite our core functions for JAX. We add the `@jit` decorator
-to compile functions for faster execution.
+Now let's rewrite our core functions for JAX.
 
-### Computing Distances
-
-```{code-cell} ipython3
-@jit
-def get_distances(loc, locations):
-    """
-    Compute squared Euclidean distance from one location to all agent locations.
-
-    """
-    diff = loc - locations  # broadcasting: (2,) - (n, 2) -> (n, 2)
-    return jnp.sum(diff**2, axis=1)
-```
-
-Notice that we use vectorized operations like in NumPy. JAX compiles these
-vectorized operations very efficiently, especially when running on GPUs.
-
-We use `jnp` (JAX NumPy) instead of `np` (NumPy). The functions are similar,
-but `jnp` operations return JAX arrays and can be compiled by JAX's JIT
-compiler.
-
-### Finding Neighbors
-
-```{code-cell} ipython3
-@partial(jit, static_argnames=('params',))
-def get_neighbors(loc, agent_idx, locations, params):
-    """
-    Get indices of the num_neighbors nearest neighbors to a location (excluding agent_idx).
-
-    Parameters
-    ----------
-    loc : array of shape (2,)
-        The location to find neighbors for.
-    agent_idx : int
-        The index of the agent (excluded from neighbors).
-    locations : array of shape (n, 2)
-        All agent locations.
-    params : Params
-        Model parameters.
-    """
-    num_neighbors = params.num_neighbors
-    distances = get_distances(loc, locations)
-    # Set self-distance to infinity so agent doesn't count as own neighbor
-    distances = distances.at[agent_idx].set(jnp.inf)
-    # Use top_k on negated distances to find num_neighbors smallest in O(n) instead of O(n log n)
-    _, indices = jax.lax.top_k(-distances, num_neighbors)
-    return indices
-```
-
-Note that we use `distances.at[i].set(jnp.inf)` instead of `distances[i] = jnp.inf`
-because JAX arrays are immutable. This returns a new array with the value at
-index `i` set to infinity.
+We add the `@jit` decorator to compile functions for faster execution.
 
 ### Checking Unhappiness
 
 ```{code-cell} ipython3
 @partial(jit, static_argnames=('params',))
 def is_unhappy(loc, agent_type, agent_idx, locations, types, params):
-    """
-    True if an agent at loc would have too many different-type neighbors.
-
-    Parameters
-    ----------
-    loc : array of shape (2,)
-        The location to test.
-    agent_type : int
-        The type of the agent (0 or 1).
-    agent_idx : int
-        The index of the agent (excluded from neighbor calculation).
-    locations : array of shape (n, 2)
-        All agent locations.
-    types : array of shape (n,)
-        All agent types.
-    params : Params
-        Model parameters.
-    """
-    max_other_type = params.max_other_type
-    neighbors = get_neighbors(loc, agent_idx, locations, params)
-    neighbor_types = types[neighbors]
-    num_other = jnp.sum(neighbor_types != agent_type)
-    return num_other > max_other_type
+    " True if an agent at loc has too many different-type neighbors. "
+    # Squared distances from loc to every agent
+    distances = jnp.sum((loc - locations)**2, axis=1)
+    distances = distances.at[agent_idx].set(jnp.inf)  # exclude self
+    # top_k finds the k smallest distances in O(n) (we negate to use top_k)
+    _, neighbors = jax.lax.top_k(-distances, params.num_neighbors)
+    num_other = jnp.sum(types[neighbors] != agent_type)
+    return num_other > params.max_other_type
 ```
 
-This function takes the location and type as explicit arguments, rather than
-looking them up from the arrays. This design allows us to test hypothetical
-locations without modifying the `locations` array — useful when an agent is
-searching for a new location.
+Compared to the NumPy version, there are a few differences worth noting.
+
+We use `jax.lax.top_k` instead of `argsort` to find nearest neighbors — this
+is $O(n)$ rather than $O(n \log n)$.
+
+We use `.at[].set()` rather than direct indexing to exclude the agent from its
+own neighbor set, since JAX arrays are immutable.
+
+The function takes `loc` and `agent_type` as explicit arguments rather than
+looking them up from the arrays, so we can test hypothetical locations without
+modifying the `locations` array.
 
 
 ### Moving Unhappy Agents
 
-This function finds a location where the agent would be happy. Rather than
-updating the `locations` array on each iteration, it tests candidate locations
-directly and returns only the final location.
+This function finds a location where the agent would be happy.
+
+Rather than updating the `locations` array on each iteration, it tests
+candidate locations directly and returns only the final location.
 
 ```{code-cell} ipython3
 @partial(jit, static_argnames=('params',))
@@ -271,8 +162,9 @@ Let's break down the key JAX concepts here:
 
 ## Visualization
 
-Plotting uses Matplotlib, which works with regular NumPy arrays. We convert
-JAX arrays to NumPy arrays using `np.asarray()`:
+Plotting uses Matplotlib, which works with regular NumPy arrays.
+
+We convert JAX arrays to NumPy arrays using `np.asarray()`:
 
 ```{code-cell} ipython3
 def plot_distribution(locations, types, title):
@@ -299,8 +191,9 @@ def plot_distribution(locations, types, title):
 
 ## The Simulation
 
-We separate the core simulation loop from the setup and plotting code. This
-makes it easier to optimize or JIT-compile the loop independently.
+We separate the core simulation loop from the setup and plotting code.
+
+This makes it easier to optimize or JIT-compile the loop independently.
 
 ```{code-cell} ipython3
 @partial(jit, static_argnames=('params',))
@@ -331,13 +224,14 @@ def simulation_loop(locations, types, key, params, max_iter):
         Final agent locations.
     iteration : int
         Number of iterations completed.
+    converged : bool
+        True if all agents are happy.
     key : PRNGKey
         Updated random key.
     """
-    iteration = 0
-    while iteration < max_iter:
-        print(f'Entering iteration {iteration + 1}')
-        iteration += 1
+    converged = False
+    for iteration in range(1, max_iter + 1):
+        print(f'Entering iteration {iteration}')
 
         # Find unhappy agents using vectorized computation
         unhappy, num_unhappy = get_unhappy_agents(locations, types, params)
@@ -345,6 +239,7 @@ def simulation_loop(locations, types, key, params, max_iter):
 
         # Check if everyone is happy
         if num_unhappy == 0:
+            converged = True
             break
 
         # Update only the unhappy agents
@@ -353,7 +248,7 @@ def simulation_loop(locations, types, key, params, max_iter):
             new_loc, key = update_agent(i, locations, types, key, params)
             locations = locations.at[i, :].set(new_loc)
 
-    return locations, iteration, key
+    return locations, iteration, converged, key
 ```
 
 ```{code-cell} ipython3
@@ -368,12 +263,12 @@ def run_simulation(params, max_iter=100_000, seed=1234):
     plot_distribution(locations, types, 'Initial distribution')
 
     start_time = time.time()
-    locations, iteration, key = simulation_loop(locations, types, key, params, max_iter)
+    locations, iteration, converged, key = simulation_loop(locations, types, key, params, max_iter)
     elapsed = time.time() - start_time
 
     plot_distribution(locations, types, f'Iteration {iteration}')
 
-    if iteration < max_iter:
+    if converged:
         print(f'Converged in {elapsed:.2f} seconds after {iteration} iterations.')
     else:
         print('Hit iteration bound and terminated.')
@@ -406,8 +301,6 @@ key, init_key = random.split(key)
 test_locations, test_types = initialize_state(init_key, params)
 
 # Call each function once to compile it
-_ = get_distances(test_locations[0], test_locations)
-_ = get_neighbors(test_locations[0], 0, test_locations, params)
 _ = is_unhappy(test_locations[0], test_types[0], 0, test_locations, test_types, params)
 _, _ = get_unhappy_agents(test_locations, test_types, params)
 key, subkey = random.split(key)
@@ -424,26 +317,6 @@ Now let's run the simulation:
 locations, types = run_simulation(params)
 ```
 
-## Tips for Using JAX
-
-1. **Think functionally**: Write pure functions that don't modify external
-   state. This makes your code easier to JIT-compile and parallelize.
-
-2. **Use `jnp` instead of `np`**: Replace NumPy operations with their JAX
-   equivalents. Most functions have the same names.
-
-3. **Manage random keys explicitly**: Always split keys before generating
-   random numbers. Never reuse the same key.
-
-4. **Use JAX's loop constructs**: Replace Python `for` and `while` loops with
-   `jax.lax.fori_loop` and `jax.lax.while_loop` inside JIT-compiled functions.
-
-5. **Remember immutability**: Use `.at[].set()` to "update" arrays. The
-   original array is never modified.
-
-6. **Warm up before timing**: Always call your functions once before measuring
-   performance to exclude compilation time.
-
 ## Limitations of This Approach
 
 While this lecture demonstrated JAX syntax and concepts, the algorithm itself
@@ -458,19 +331,5 @@ These characteristics don't map well to parallel hardware like GPUs, which
 excel at performing the same operation on many data points simultaneously.
 
 
-## Summary
-
-JAX provides a powerful framework for accelerating Python code. Its key features
-are:
-
-- **Immutable arrays** that encourage functional programming
-- **Explicit random key management** for reproducibility
-- **JIT compilation** via the `@jit` decorator
-- **GPU/TPU support** for hardware acceleration
-
-JAX's functional style and unique capabilities like automatic differentiation
-and seamless GPU acceleration make it particularly valuable for machine learning
-and large-scale numerical computing.
-
-To fully benefit from these capabilities, algorithms often need to be
-restructured for parallelism — as we'll see in the next lecture.
+In the {doc}`next lecture <schelling_jax_parallel>`, we'll restructure the
+algorithm to better leverage JAX's parallel capabilities.
