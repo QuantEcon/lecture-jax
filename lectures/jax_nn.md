@@ -86,7 +86,7 @@ the overall mapping is
 
 $$ \mathbb R \to \mathbb R^k \to \mathbb R^k \to \mathbb R^k \to \mathbb R $$
 
-Here's a class to store the learning-related constants we’ll use across all implementations.
+Here's a class to store the learning-related constants we'll use across all implementations.
 
 Our default value of $k$ will be 10.
 
@@ -231,7 +231,7 @@ The fit is good and we note the relatively low final MSE.
 For the JAX implementation, we need to construct the network ourselves, as a map
 from inputs to outputs.
 
-We’ll use the same network structure we used for the Keras implementation.
+We'll use the same network structure we used for the Keras implementation.
 
 ### Background and set up
 
@@ -319,14 +319,14 @@ def initialize_network(
 
 Wait, you say!
 
-Shouldn’t we concatenate the elements of $ \theta $ into some kind of big array, so that we can do autodiff with respect to this array?
+Shouldn't we concatenate the elements of $ \theta $ into some kind of big array, so that we can do autodiff with respect to this array?
 
-Actually we don’t need to --- we use the JAX PyTree approach discussed below.
+Actually we don't need to --- we use the JAX PyTree approach discussed below.
 
 
 ### Coding the network
 
-Here’s our implementation of the ANN $f$:
+Here's our implementation of the ANN $f$:
 
 ```{code-cell} ipython3
 def f(
@@ -359,20 +359,20 @@ def loss_fn(
     return jnp.mean((f(θ, x) - y)**2)
 ```
 
-We’ll also define a function to visualize predictions from our JAX models.
+We'll also define a function to visualize predictions from our JAX models.
 
 ```{code-cell} ipython3
 def plot_jax_output(θ, x_validate, y_validate):
     fig, ax = plt.subplots()
-    ax.scatter(x_validate, y_validate, color=’red’, alpha=0.5)
+    ax.scatter(x_validate, y_validate, color='red', alpha=0.5)
     ax.plot(x_validate.flatten(), f(θ, x_validate).flatten(),
-            label="fitted model", color=’black’)
-    ax.set_xlabel(‘x’)
-    ax.set_ylabel(‘y’)
+            label="fitted model", color='black')
+    ax.set_xlabel('x')
+    ax.set_ylabel('y')
     plt.show()
 ```
 
-We’ll use the gradient of the loss to do stochastic gradient descent.
+We'll use the gradient of the loss to do stochastic gradient descent.
 
 (Technically, we will be doing gradient descent, rather than stochastic
 gradient descent, since we will not randomize over sample points when we
@@ -385,7 +385,7 @@ loss_gradient = jax.jit(jax.grad(loss_fn))
 The gradient of `loss_fn` is with respect to the first argument `θ`.
 
 The code above seems kind of magical, since we are differentiating with respect
-to a parameter “vector” stored as a list of named tuples containing arrays.
+to a parameter "vector" stored as a list of named tuples containing arrays.
 
 How can we differentiate with respect to such a complex object?
 
@@ -405,7 +405,7 @@ The JAX function `grad` understands how to
 Using the above code, we can now write our rule for updating the parameters via gradient descent, which is the
 algorithm we covered in our [lecture on autodiff](https://jax.quantecon.org/autodiff.html).
 
-In this case, to keep things as simple as possible, we’ll use a fixed learning rate for every iteration.
+In this case, to keep things as simple as possible, we'll use a fixed learning rate for every iteration.
 
 ```{code-cell} ipython3
 def update_parameters(
@@ -439,7 +439,7 @@ of trees.
 Each weight matrix and bias vector is updated by gradient
 descent, exactly as required.
 
-Here’s code that puts this all together.
+Here's code that puts this all together.
 
 ```{code-cell} ipython3
 @partial(jax.jit, static_argnames=['config'])
@@ -506,7 +506,7 @@ One such library is [Optax](https://optax.readthedocs.io/en/latest/).
 
 ### Optax with SGD
 
-Here’s a training routine using Optax’s stochastic gradient descent solver.
+Here's a training routine using Optax's stochastic gradient descent solver.
 
 ```{code-cell} ipython3
 @partial(jax.jit, static_argnames=['config'])
@@ -536,7 +536,7 @@ def train_jax_optax(
     return θ_final
 ```
 
-Let’s try running it.
+Let's try running it.
 
 ```{code-cell} ipython3
 # Reset parameter vector
