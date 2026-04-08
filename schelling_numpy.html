@@ -211,16 +211,14 @@
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">26.1. Overview</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-representation">26.2. Data Representation</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#helper-functions">26.3. Helper Functions</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#computing-distances">26.3.1. Computing Distances</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#finding-neighbors">26.3.2. Finding Neighbors</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#checking-happiness">26.3.3. Checking Happiness</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#counting-happy-agents">26.3.4. Counting Happy Agents</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#moving-unhappy-agents">26.3.5. Moving Unhappy Agents</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#checking-unhappiness">26.3.1. Checking Unhappiness</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#moving-unhappy-agents">26.3.2. Moving Unhappy Agents</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visualization">26.4. Visualization</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-simulation">26.5. The Simulation</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#results">26.6. Results</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#performance">26.7. Performance</a></li>
 </ul>
                             <p class="logo">
                                 
@@ -276,7 +274,7 @@
 
                     <!-- Last modified / Changelog dropdown -->
                         <button class="qe-page__header-changed" id="changelog-toggle" aria-expanded="false">
-                            Last changed: Apr 06, 2026
+                            Last changed: Apr 08, 2026
                             <span class="changelog-icon">▼</span>
                         </button>
 
@@ -287,10 +285,19 @@
                             
                             <li class="changelog-entry">
                                 
+                                <a href="https://github.com/QuantEcon/lecture-jax/commit/907f64f" class="changelog-hash">907f64f</a>
+                                
+                                <span class="changelog-author">John Stachurski</span>
+                                <span class="changelog-time">11 minutes ago</span>
+                                <span class="changelog-message">Edit Schelling lecture series for clarity and consistency (#301)</span>
+                            </li>
+                            
+                            <li class="changelog-entry">
+                                
                                 <a href="https://github.com/QuantEcon/lecture-jax/commit/2cf9ade" class="changelog-hash">2cf9ade</a>
                                 
                                 <span class="changelog-author">John Stachurski</span>
-                                <span class="changelog-time">38 minutes ago</span>
+                                <span class="changelog-time">1 day ago</span>
                                 <span class="changelog-message">Add Schelling segregation model lectures (#296)</span>
                             </li>
                             
@@ -311,10 +318,11 @@
 <section id="overview">
 <h2><span class="section-number">26.1. </span>Overview<a class="headerlink" href="#overview" title="Link to this heading">#</a></h2>
 <p>In the <a class="reference internal" href="schelling.html"><span class="doc">previous lecture</span></a>, we implemented the Schelling
-segregation model using pure Python and standard libraries, rather than
-Python plus numerical and scientific libraries.</p>
-<p>In this lecture, we rewrite the model using NumPy arrays and functions.</p>
-<p>NumPy is the most fundamental library for numerical coding in Python.</p>
+segregation model using pure Python and standard libraries.</p>
+<p>In this lecture, we will rewrite the model using NumPy arrays and functions.</p>
+<p>This is intended as a first step towards greater efficiency.</p>
+<p>In later lectures, we’ll improve execution speed further by adopting JAX and
+modifying algorithms.</p>
 <p>We’ll achieve greater speed — but at the cost of readability!</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -352,7 +360,8 @@ Python plus numerical and scientific libraries.</p>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">initialize_state</span><span class="p">():</span>
     <span class="n">locations</span> <span class="o">=</span> <span class="n">uniform</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
-    <span class="n">types</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">num_of_type_0</span> <span class="o">+</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">num_of_type_1</span><span class="p">)</span>
+    <span class="n">types</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+    <span class="n">types</span><span class="p">[</span><span class="n">num_of_type_0</span><span class="p">:]</span> <span class="o">=</span> <span class="mi">1</span>
     <span class="k">return</span> <span class="n">locations</span><span class="p">,</span> <span class="n">types</span>
 </pre></div>
 </div>
@@ -390,161 +399,42 @@ First 20 types: [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0]
 <section id="helper-functions">
 <h2><span class="section-number">26.3. </span>Helper Functions<a class="headerlink" href="#helper-functions" title="Link to this heading">#</a></h2>
 <p>Let’s write some functions that compute what we need while operating on the arrays.</p>
-<section id="computing-distances">
-<h3><span class="section-number">26.3.1. </span>Computing Distances<a class="headerlink" href="#computing-distances" title="Link to this heading">#</a></h3>
-<p>To find an agent’s neighbors, we need to compute distances.</p>
+<section id="checking-unhappiness">
+<h3><span class="section-number">26.3.1. </span>Checking Unhappiness<a class="headerlink" href="#checking-unhappiness" title="Link to this heading">#</a></h3>
+<p>An agent is unhappy if more than <code class="docutils literal notranslate"><span class="pre">max_other_type</span></code> of their nearest neighbors
+are of a different type:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">get_distances</span><span class="p">(</span><span class="n">loc</span><span class="p">,</span> <span class="n">locations</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Compute the Euclidean distance from one location to all agent locations.</span>
-
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">loc</span> <span class="o">-</span> <span class="n">locations</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">is_unhappy</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">locations</span><span class="p">,</span> <span class="n">types</span><span class="p">):</span>
+    <span class="s2">&quot; True if agent i has more than max_other_type neighbors of a different type. &quot;</span>
+    <span class="c1"># Compute distance from agent i to every other agent</span>
+    <span class="n">distances</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">locations</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">locations</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">distances</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span>                              <span class="c1"># exclude self</span>
+    <span class="n">neighbors</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">distances</span><span class="p">)[:</span><span class="n">num_neighbors</span><span class="p">]</span>  <span class="c1"># indices of nearest</span>
+    <span class="n">num_other</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">types</span><span class="p">[</span><span class="n">neighbors</span><span class="p">]</span> <span class="o">!=</span> <span class="n">types</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">num_other</span> <span class="o">&gt;</span> <span class="n">max_other_type</span>
 </pre></div>
 </div>
 </div>
 </div>
-<p>Let’s break down how this function works:</p>
-<ol class="arabic simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">loc</span> <span class="pre">-</span> <span class="pre">locations</span></code> subtracts the reference point <code class="docutils literal notranslate"><span class="pre">loc</span></code> from every row of
-<code class="docutils literal notranslate"><span class="pre">locations</span></code>. NumPy “broadcasts” the subtraction, so if <code class="docutils literal notranslate"><span class="pre">loc</span> <span class="pre">=</span> <span class="pre">[0.5,</span> <span class="pre">0.3]</span></code>
-and <code class="docutils literal notranslate"><span class="pre">locations</span></code> has 2000 rows, the result is a 2000 × 2 array where each
-row is the difference vector from <code class="docutils literal notranslate"><span class="pre">loc</span></code> to that agent.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">np.linalg.norm(...,</span> <span class="pre">axis=1)</span></code> computes the Euclidean norm of each
-row. The <code class="docutils literal notranslate"><span class="pre">axis=1</span></code> argument tells NumPy to compute the norm across columns
-(i.e., for each row separately).</p></li>
-</ol>
-<p>This vectorized approach is much faster than looping through agents one by one.</p>
-</section>
-<section id="finding-neighbors">
-<h3><span class="section-number">26.3.2. </span>Finding Neighbors<a class="headerlink" href="#finding-neighbors" title="Link to this heading">#</a></h3>
-<p>Now we can find the nearest neighbors:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">get_neighbors</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">locations</span><span class="p">):</span>
-    <span class="s2">&quot; Get indices of the nearest neighbors to agent i (excluding self). &quot;</span>
-    <span class="n">loc</span> <span class="o">=</span> <span class="n">locations</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:]</span>
-    <span class="n">distances</span> <span class="o">=</span> <span class="n">get_distances</span><span class="p">(</span><span class="n">loc</span><span class="p">,</span> <span class="n">locations</span><span class="p">)</span>
-    <span class="n">distances</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span>                 <span class="c1"># Don&#39;t count ourselves </span>
-    <span class="n">indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">distances</span><span class="p">)</span>       <span class="c1"># Sort agents by distance</span>
-    <span class="n">neighbors</span> <span class="o">=</span> <span class="n">indices</span><span class="p">[:</span><span class="n">num_neighbors</span><span class="p">]</span>   <span class="c1"># Keep the closest</span>
-    <span class="k">return</span> <span class="n">neighbors</span>
-</pre></div>
-</div>
-</div>
-</div>
-<p>Here’s how this function works:</p>
-<ol class="arabic simple">
-<li><p>First we call <code class="docutils literal notranslate"><span class="pre">get_distances</span></code> to get an array of 2000 distances (one for
-each agent).</p></li>
-<li><p>We set <code class="docutils literal notranslate"><span class="pre">distances[i]</span> <span class="pre">=</span> <span class="pre">np.inf</span></code> so that agent <span class="math notranslate nohighlight">\(i\)</span> doesn’t count as their own
-neighbor.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">np.argsort(distances)</span></code> returns the <em>indices</em> of agents sorted from closest
-to furthest. For example, if the closest agent has index
-42, then <code class="docutils literal notranslate"><span class="pre">indices[0]</span></code> equals 42.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">indices[:num_neighbors]</span></code> uses slicing to keep only the first <code class="docutils literal notranslate"><span class="pre">num_neighbors</span></code>
-indices — these correspond to the nearest neighbors.</p></li>
-</ol>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Find neighbors of agent 0</span>
-<span class="n">neighbors</span> <span class="o">=</span> <span class="n">get_neighbors</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">locations</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Agent 0&#39;s nearest neighbors: </span><span class="si">{</span><span class="n">neighbors</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Agent 0 is NOT included: </span><span class="si">{</span><span class="mi">0</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">neighbors</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Agent 0&#39;s nearest neighbors: [ 595 1737  366 1442 1283  261  763  854 1427  218]
-Agent 0 is NOT included: True
-</pre></div>
-</div>
-</div>
-</div>
-</section>
-<section id="checking-happiness">
-<h3><span class="section-number">26.3.3. </span>Checking Happiness<a class="headerlink" href="#checking-happiness" title="Link to this heading">#</a></h3>
-<p>An agent is happy if enough of their neighbors share their type:</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">is_happy</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">locations</span><span class="p">,</span> <span class="n">types</span><span class="p">):</span>
-    <span class="s2">&quot; True if agent i has no more than max_other_type neighbors of a different type. &quot;</span>
-    <span class="n">agent_type</span> <span class="o">=</span> <span class="n">types</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-    <span class="n">neighbors</span> <span class="o">=</span> <span class="n">get_neighbors</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">locations</span><span class="p">)</span>
-    <span class="n">neighbor_types</span> <span class="o">=</span> <span class="n">types</span><span class="p">[</span><span class="n">neighbors</span><span class="p">]</span>
-    <span class="n">num_other</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">neighbor_types</span> <span class="o">!=</span> <span class="n">agent_type</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">num_other</span> <span class="o">&lt;=</span> <span class="n">max_other_type</span>
-</pre></div>
-</div>
-</div>
-</div>
-<p>Let’s walk through this function step by step:</p>
-<ol class="arabic simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">types[i]</span></code> gets the type (0 or 1) of agent <span class="math notranslate nohighlight">\(i\)</span>.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">get_neighbors(i,</span> <span class="pre">locations)</span></code> returns an array of indices for the nearest
-neighbors.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">types[neighbors]</span></code> uses these indices to look up the types of the
-neighbors. This is called “fancy indexing” — when you pass an array of
-indices to another array, NumPy returns the elements at those positions.
-For example, if <code class="docutils literal notranslate"><span class="pre">neighbors</span> <span class="pre">=</span> <span class="pre">[42,</span> <span class="pre">7,</span> <span class="pre">15,</span> <span class="pre">...]</span></code>, then <code class="docutils literal notranslate"><span class="pre">types[neighbors]</span></code>
-returns <code class="docutils literal notranslate"><span class="pre">[types[42],</span> <span class="pre">types[7],</span> <span class="pre">types[15],</span> <span class="pre">...]</span></code>.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">neighbor_types</span> <span class="pre">==</span> <span class="pre">agent_type</span></code> compares each neighbor’s type to the agent’s
-type, producing an array of <code class="docutils literal notranslate"><span class="pre">True</span></code>/<code class="docutils literal notranslate"><span class="pre">False</span></code> values (e.g.,
-<code class="docutils literal notranslate"><span class="pre">[True,</span> <span class="pre">False,</span> <span class="pre">True,</span> <span class="pre">...]</span></code>).</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">np.sum(...)</span></code> counts how many <code class="docutils literal notranslate"><span class="pre">True</span></code> values there are. In NumPy, <code class="docutils literal notranslate"><span class="pre">True</span></code>
-is treated as 1 and <code class="docutils literal notranslate"><span class="pre">False</span></code> as 0, so summing a boolean array counts the
-<code class="docutils literal notranslate"><span class="pre">True</span></code> entries.</p></li>
-<li><p>Finally, we check if this count is within the tolerance <code class="docutils literal notranslate"><span class="pre">max_other_type</span></code>.</p></li>
-</ol>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check if agent 0 is happy</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check if agent 0 is unhappy</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Agent 0 type: </span><span class="si">{</span><span class="n">types</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Agent 0 happy: </span><span class="si">{</span><span class="n">is_happy</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">locations</span><span class="p">,</span><span class="w"> </span><span class="n">types</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Agent 0 unhappy: </span><span class="si">{</span><span class="n">is_unhappy</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">locations</span><span class="p">,</span><span class="w"> </span><span class="n">types</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Agent 0 type: 0
-Agent 0 happy: True
-</pre></div>
-</div>
-</div>
-</div>
-</section>
-<section id="counting-happy-agents">
-<h3><span class="section-number">26.3.4. </span>Counting Happy Agents<a class="headerlink" href="#counting-happy-agents" title="Link to this heading">#</a></h3>
-<p>The next function uses a loop to check each agent and count how many are happy.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">count_happy</span><span class="p">(</span><span class="n">locations</span><span class="p">,</span> <span class="n">types</span><span class="p">):</span>
-    <span class="s2">&quot; Count the number of happy agents. &quot;</span>
-    <span class="n">happy_count</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
-        <span class="n">happy_count</span> <span class="o">+=</span> <span class="n">is_happy</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">locations</span><span class="p">,</span> <span class="n">types</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">happy_count</span>
-</pre></div>
-</div>
-</div>
-</div>
-<p>Since <code class="docutils literal notranslate"><span class="pre">is_happy</span></code> returns <code class="docutils literal notranslate"><span class="pre">True</span></code> or <code class="docutils literal notranslate"><span class="pre">False</span></code>, and Python treats <code class="docutils literal notranslate"><span class="pre">True</span></code>
-as 1 when adding, we can accumulate the count directly.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Initially happy agents: </span><span class="si">{</span><span class="n">count_happy</span><span class="p">(</span><span class="n">locations</span><span class="p">,</span><span class="w"> </span><span class="n">types</span><span class="p">)</span><span class="si">}</span><span class="s2"> out of </span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Initially happy agents: 1648 out of 2000
+Agent 0 unhappy: False
 </pre></div>
 </div>
 </div>
 </div>
 </section>
 <section id="moving-unhappy-agents">
-<h3><span class="section-number">26.3.5. </span>Moving Unhappy Agents<a class="headerlink" href="#moving-unhappy-agents" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">26.3.2. </span>Moving Unhappy Agents<a class="headerlink" href="#moving-unhappy-agents" title="Link to this heading">#</a></h3>
 <p>When an agent is unhappy, they keep trying new random locations until they find
 one where they’re happy:</p>
 <div class="cell docutils container">
@@ -552,32 +442,20 @@ one where they’re happy:</p>
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">update_agent</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">locations</span><span class="p">,</span> <span class="n">types</span><span class="p">,</span> <span class="n">max_attempts</span><span class="o">=</span><span class="mi">10_000</span><span class="p">):</span>
     <span class="s2">&quot; Move agent i to a new location where they are happy. &quot;</span>
     <span class="n">attempts</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="k">while</span> <span class="ow">not</span> <span class="n">is_happy</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">locations</span><span class="p">,</span> <span class="n">types</span><span class="p">):</span>
+    <span class="k">while</span> <span class="n">is_unhappy</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">locations</span><span class="p">,</span> <span class="n">types</span><span class="p">)</span> <span class="ow">and</span> <span class="n">attempts</span> <span class="o">&lt;</span> <span class="n">max_attempts</span><span class="p">:</span>
         <span class="n">locations</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">uniform</span><span class="p">(),</span> <span class="n">uniform</span><span class="p">()</span>
         <span class="n">attempts</span> <span class="o">+=</span> <span class="mi">1</span>
-        <span class="k">if</span> <span class="n">attempts</span> <span class="o">&gt;=</span> <span class="n">max_attempts</span><span class="p">:</span>
-            <span class="k">break</span>
 </pre></div>
 </div>
 </div>
 </div>
-<p>Here’s how this works:</p>
-<ol class="arabic simple">
-<li><p>The <code class="docutils literal notranslate"><span class="pre">while</span></code> loop keeps running as long as the agent is unhappy.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">locations[i,</span> <span class="pre">:]</span> <span class="pre">=</span> <span class="pre">uniform(),</span> <span class="pre">uniform()</span></code> assigns a new random <span class="math notranslate nohighlight">\((x, y)\)</span>
-location to agent <span class="math notranslate nohighlight">\(i\)</span>. The left side <code class="docutils literal notranslate"><span class="pre">locations[i,</span> <span class="pre">:]</span></code> selects row <span class="math notranslate nohighlight">\(i\)</span>
-(all columns), and the right side creates a tuple of two random numbers
-between 0 and 1.</p></li>
-<li><p>Importantly, this modifies the <code class="docutils literal notranslate"><span class="pre">locations</span></code> array <em>in place</em>. We don’t need
-to return anything because the original array is changed directly. This is
-a key feature of NumPy arrays — when you modify a slice, you modify the
-underlying data.</p></li>
-</ol>
+<p>Note that <code class="docutils literal notranslate"><span class="pre">locations[i,</span> <span class="pre">:]</span> <span class="pre">=</span> <span class="pre">...</span></code> modifies the array in place — the change
+is visible to all code that references <code class="docutils literal notranslate"><span class="pre">locations</span></code>.</p>
 </section>
 </section>
 <section id="visualization">
 <h2><span class="section-number">26.4. </span>Visualization<a class="headerlink" href="#visualization" title="Link to this heading">#</a></h2>
-<p>Here’s some code for Visualization — we’ll skip the details</p>
+<p>Here’s some code for visualization — we’ll skip the details</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">plot_distribution</span><span class="p">(</span><span class="n">locations</span><span class="p">,</span> <span class="n">types</span><span class="p">,</span> <span class="n">title</span><span class="p">):</span>
@@ -637,21 +515,22 @@ giving each the opportunity to move:</p>
 
     <span class="c1"># Loop until no agent wishes to move</span>
     <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
-    <span class="n">someone_moved</span> <span class="o">=</span> <span class="kc">True</span>
-    <span class="n">iteration</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="k">while</span> <span class="n">someone_moved</span> <span class="ow">and</span> <span class="n">iteration</span> <span class="o">&lt;</span> <span class="n">max_iter</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Entering iteration </span><span class="si">{</span><span class="n">iteration</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-        <span class="n">iteration</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="n">converged</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="k">for</span> <span class="n">iteration</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">max_iter</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Entering iteration </span><span class="si">{</span><span class="n">iteration</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
         <span class="n">someone_moved</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">is_happy</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">locations</span><span class="p">,</span> <span class="n">types</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">is_unhappy</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">locations</span><span class="p">,</span> <span class="n">types</span><span class="p">):</span>
                 <span class="n">update_agent</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">locations</span><span class="p">,</span> <span class="n">types</span><span class="p">)</span>
                 <span class="n">someone_moved</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">someone_moved</span><span class="p">:</span>
+            <span class="n">converged</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">break</span>
     <span class="n">elapsed</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span>
 
     <span class="n">plot_distribution</span><span class="p">(</span><span class="n">locations</span><span class="p">,</span> <span class="n">types</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;Iteration </span><span class="si">{</span><span class="n">iteration</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">someone_moved</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">converged</span><span class="p">:</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Converged in </span><span class="si">{</span><span class="n">elapsed</span><span class="si">:</span><span class="s1">.2f</span><span class="si">}</span><span class="s1"> seconds after </span><span class="si">{</span><span class="n">iteration</span><span class="si">}</span><span class="s1"> iterations.&#39;</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Hit iteration bound and terminated.&#39;</span><span class="p">)</span>
@@ -681,7 +560,7 @@ Entering iteration 4
 Entering iteration 5
 Entering iteration 6
 Entering iteration 7
-Converged in 1.86 seconds after 7 iterations.
+Converged in 1.87 seconds after 7 iterations.
 </pre></div>
 </div>
 <a class="reference internal image-reference" href="_images/5167d885f4b0cb0df0fb701efb1a6c998135077dd0ba29641849da2d726da150.png"><img alt="_images/5167d885f4b0cb0df0fb701efb1a6c998135077dd0ba29641849da2d726da150.png" src="_images/5167d885f4b0cb0df0fb701efb1a6c998135077dd0ba29641849da2d726da150.png" style="width: 80%;" />
@@ -690,6 +569,14 @@ Converged in 1.86 seconds after 7 iterations.
 </div>
 <p>We see the same phenomenon as in the class-based version: starting from a
 random mixed distribution, agents self-organize into segregated clusters.</p>
+</section>
+<section id="performance">
+<h2><span class="section-number">26.7. </span>Performance<a class="headerlink" href="#performance" title="Link to this heading">#</a></h2>
+<p>The NumPy version is faster than the pure Python version, but still slow for
+large populations.</p>
+<p>In the <a class="reference internal" href="schelling_jax.html"><span class="doc">next lecture</span></a>, we’ll rewrite the model using JAX,
+which offers just-in-time compilation, GPU acceleration, and faster nearest
+neighbor computations.</p>
 </section>
 </section>
 
