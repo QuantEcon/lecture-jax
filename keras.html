@@ -209,15 +209,15 @@
                         <nav id="bd-toc-nav" class="qe-page__toc-nav">
                             <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data">22.1. Data</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#models">22.2. Models</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#regression-model">22.3. Regression model</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#deep-network">22.3.1. Deep Network</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tracking-errors">22.3.2. Tracking errors</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#models">22.2. Models</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#regression-model">22.2.1. Regression model</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#deep-network">22.2.2. Deep Network</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tracking-errors">22.2.3. Tracking errors</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#training">22.4. Training</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#linear-regression">22.4.1. Linear regression</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#deep-learning">22.4.2. Deep learning</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#training">22.3. Training</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#linear-regression">22.3.1. Linear regression</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#deep-learning">22.3.2. Deep learning</a></li>
 </ul>
 </li>
 </ul>
@@ -275,7 +275,7 @@
 
                     <!-- Last modified / Changelog dropdown -->
                         <button class="qe-page__header-changed" id="changelog-toggle" aria-expanded="false">
-                            Last changed: Mar 14, 2025
+                            Last changed: Apr 09, 2026
                             <span class="changelog-icon">▼</span>
                         </button>
 
@@ -283,6 +283,15 @@
                     <div class="qe-page__header-changelog" id="changelog-content" aria-hidden="true">
                         <h4>Changelog (<a href="https://github.com/QuantEcon/lecture-jax/commits/main/lectures/keras.md">full history</a>)</h4>
                         <ul class="changelog-list">
+                            
+                            <li class="changelog-entry">
+                                
+                                <a href="https://github.com/QuantEcon/lecture-jax/commit/b8bab59" class="changelog-hash">b8bab59</a>
+                                
+                                <span class="changelog-author">John Stachurski</span>
+                                <span class="changelog-time">9 minutes ago</span>
+                                <span class="changelog-message">Fix errors and modernize keras and jax_nn lectures (#302)</span>
+                            </li>
                             
                             <li class="changelog-entry">
                                 
@@ -354,17 +363,15 @@ that you can access as follows:</p>
 <li><p>Set the runtime environment to include a GPU</p></li>
 </ol>
 </div>
-<p>In this lecture we show how to implement one-dimensional nonlinear regression
-using a neural network.</p>
-<p>We will use the popular deep learning library <a class="reference external" href="https://keras.io/">Keras</a>, which
-provides a simple interface to deep learning.</p>
+<p>In this lecture we show how to implement one-dimensional nonlinear regression using a neural network.</p>
+<p>We will use <a class="reference external" href="https://keras.io/">Keras</a>, a popular and relatively simple library for deep learning.</p>
 <p>The emphasis in Keras is on providing an intuitive API, while the heavy lifting is
 done by one of several possible backends.</p>
-<p>Currently the backend library options are Tensorflow, PyTorch, and JAX.</p>
+<p>Currently the backend library options are TensorFlow, PyTorch, and JAX.</p>
 <p>In this lecture we will use JAX.</p>
-<p>The objective of this lecture is to provide a very simple introduction to deep
-learning in a regression setting.</p>
-<p>Later, in <a class="reference internal" href="jax_nn.html"><span class="doc">a separate lecture</span></a>, we will investigate how to do the same learning task using pure JAX, rather than relying on Keras.</p>
+<p>Our main task is to provide an elementary introduction to deep learning in a regression setting.</p>
+<p>Later, in <a class="reference internal" href="jax_nn.html"><span class="doc">a separate lecture</span></a>, we will investigate how to do the
+same learning task using JAX directly, rather than relying on Keras.</p>
 <p>We begin this lecture with some standard imports.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -387,7 +394,7 @@ learning in a regression setting.</p>
 <p class="expanded admonition-title">Hide code cell output</p>
 </summary>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: keras in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (3.13.2)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: keras in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (3.14.0)
 Requirement already satisfied: absl-py in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from keras) (2.4.0)
 Requirement already satisfied: numpy in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from keras) (2.3.5)
 Requirement already satisfied: rich in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from keras) (14.2.0)
@@ -415,7 +422,16 @@ Requirement already satisfied: mdurl~=0.1 in /home/runner/miniconda3/envs/quante
 </div>
 </div>
 <p>Now we should be able to import some tools from Keras.</p>
-<p>(Without setting the backend to JAX, these imports might fail – unless you have PyTorch or Tensorflow set up.)</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Without setting the backend to JAX, the imports below might fail (unless you have PyTorch or TensorFlow set up).</p>
+<p>If you have problems running the next cell in Jupyter, try</p>
+<ol class="arabic simple">
+<li><p>quitting</p></li>
+<li><p>running <code class="docutils literal notranslate"><span class="pre">export</span> <span class="pre">KERAS_BACKEND=&quot;jax&quot;</span></code></p></li>
+<li><p>starting Jupyter on the command line from the same terminal.</p></li>
+</ol>
+</div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">keras</span>
@@ -448,10 +464,10 @@ above.</p>
                   <span class="n">x_max</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>           <span class="c1"># Max x value</span>
                   <span class="n">data_size</span><span class="o">=</span><span class="mi">400</span><span class="p">,</span>     <span class="c1"># Default size for dataset</span>
                   <span class="n">seed</span><span class="o">=</span><span class="mi">1234</span><span class="p">):</span>
-    <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
+    <span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
     <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">x_min</span><span class="p">,</span> <span class="n">x_max</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="n">data_size</span><span class="p">)</span>
     
-    <span class="n">ϵ</span> <span class="o">=</span> <span class="mf">0.2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">data_size</span><span class="p">)</span>
+    <span class="n">ϵ</span> <span class="o">=</span> <span class="mf">0.2</span> <span class="o">*</span> <span class="n">rng</span><span class="o">.</span><span class="n">standard_normal</span><span class="p">(</span><span class="n">data_size</span><span class="p">)</span>
     <span class="n">y</span> <span class="o">=</span> <span class="n">x</span><span class="o">**</span><span class="mf">0.5</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">+</span> <span class="n">ϵ</span>
     <span class="c1"># Keras expects two dimensions, not flat arrays</span>
     <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="p">(</span><span class="n">data_size</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span> <span class="k">for</span> <span class="n">z</span> <span class="ow">in</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)]</span>
@@ -480,14 +496,14 @@ above.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/0588ca8e2f054c9f4d829df57fcf91337e70317c14b2f327575167fb4c0cf92d.png"><img alt="_images/0588ca8e2f054c9f4d829df57fcf91337e70317c14b2f327575167fb4c0cf92d.png" src="_images/0588ca8e2f054c9f4d829df57fcf91337e70317c14b2f327575167fb4c0cf92d.png" style="width: 80%;" />
+<a class="reference internal image-reference" href="_images/1037e91c737f1f2bd661f2a1f66750217c9440918917fbe0dfc1b36d9dd088d9.png"><img alt="_images/1037e91c737f1f2bd661f2a1f66750217c9440918917fbe0dfc1b36d9dd088d9.png" src="_images/1037e91c737f1f2bd661f2a1f66750217c9440918917fbe0dfc1b36d9dd088d9.png" style="width: 80%;" />
 </a>
 </div>
 </div>
-<p>We’ll also use data from the same process for cross-validation.</p>
+<p>We’ll also use data from the same process for validation.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x_validate</span><span class="p">,</span> <span class="n">y_validate</span> <span class="o">=</span> <span class="n">generate_data</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x_validate</span><span class="p">,</span> <span class="n">y_validate</span> <span class="o">=</span> <span class="n">generate_data</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="mi">5678</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -496,14 +512,13 @@ above.</p>
 <section id="models">
 <h2><span class="section-number">22.2. </span>Models<a class="headerlink" href="#models" title="Link to this heading">#</a></h2>
 <p>We supply functions to build two types of models.</p>
-</section>
 <section id="regression-model">
-<h2><span class="section-number">22.3. </span>Regression model<a class="headerlink" href="#regression-model" title="Link to this heading">#</a></h2>
+<h3><span class="section-number">22.2.1. </span>Regression model<a class="headerlink" href="#regression-model" title="Link to this heading">#</a></h3>
 <p>The first implements linear regression.</p>
 <p>This is achieved by constructing a neural network with just one layer, that maps
 to a single dimension (since the prediction is real-valued).</p>
 <p>The object <code class="docutils literal notranslate"><span class="pre">model</span></code> will be an instance of <code class="docutils literal notranslate"><span class="pre">keras.Sequential</span></code>, which is used to
-group a stack of layers into a single prediction model.</p>
+stack layers into a single prediction model.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">build_regression_model</span><span class="p">():</span>
@@ -524,21 +539,21 @@ group a stack of layers into a single prediction model.</p>
 <li><p>we use stochastic gradient descent to train the model, and</p></li>
 <li><p>the loss is mean squared error (MSE).</p></li>
 </ul>
-<p>The call <code class="docutils literal notranslate"><span class="pre">model.add</span></code> adds a single layer the activation function equal to the identity map.</p>
+<p>The call <code class="docutils literal notranslate"><span class="pre">model.add</span></code> adds a single layer with the activation function equal to the identity map.</p>
 <p>MSE is the standard loss function for ordinary least squares regression.</p>
+</section>
 <section id="deep-network">
-<h3><span class="section-number">22.3.1. </span>Deep Network<a class="headerlink" href="#deep-network" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">22.2.2. </span>Deep Network<a class="headerlink" href="#deep-network" title="Link to this heading">#</a></h3>
 <p>The second function creates a dense (i.e., fully connected) neural network with
-3 hidden layers, where each hidden layer maps to a k-dimensional output space.</p>
+3 hidden layers, where each hidden layer maps to a 10-dimensional output space.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">build_nn_model</span><span class="p">(</span><span class="n">output_dim</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">num_layers</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">activation_function</span><span class="o">=</span><span class="s1">&#39;tanh&#39;</span><span class="p">):</span>
-    <span class="c1"># Create a Keras Model instance using Sequential()</span>
     <span class="n">model</span> <span class="o">=</span> <span class="n">Sequential</span><span class="p">()</span>
     <span class="c1"># Add layers to the network sequentially, from inputs towards outputs</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_layers</span><span class="p">):</span>
         <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Dense</span><span class="p">(</span><span class="n">units</span><span class="o">=</span><span class="n">output_dim</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="n">activation_function</span><span class="p">))</span>
-    <span class="c1"># Add a final layer that maps to a scalar value, for regression.</span>
+    <span class="c1"># Add a final layer that maps to a scalar value, the prediction.</span>
     <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Dense</span><span class="p">(</span><span class="n">units</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
     <span class="c1"># Embed training configurations</span>
     <span class="n">model</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">optimizer</span><span class="o">=</span><span class="n">keras</span><span class="o">.</span><span class="n">optimizers</span><span class="o">.</span><span class="n">SGD</span><span class="p">(),</span> 
@@ -550,11 +565,10 @@ group a stack of layers into a single prediction model.</p>
 </div>
 </section>
 <section id="tracking-errors">
-<h3><span class="section-number">22.3.2. </span>Tracking errors<a class="headerlink" href="#tracking-errors" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">22.2.3. </span>Tracking errors<a class="headerlink" href="#tracking-errors" title="Link to this heading">#</a></h3>
 <p>The following function will be used to plot the MSE of the model during the
 training process.</p>
-<p>Initially the MSE will be relatively high, but it should fall at each iteration,
-as the parameters are adjusted to better fit the data.</p>
+<p>The MSE should fall as the parameters are adjusted to better fit the data.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">plot_loss_history</span><span class="p">(</span><span class="n">training_history</span><span class="p">,</span> <span class="n">ax</span><span class="p">):</span>
@@ -578,10 +592,10 @@ as the parameters are adjusted to better fit the data.</p>
 </section>
 </section>
 <section id="training">
-<h2><span class="section-number">22.4. </span>Training<a class="headerlink" href="#training" title="Link to this heading">#</a></h2>
-<p>Now let’s go ahead and train our  models.</p>
+<h2><span class="section-number">22.3. </span>Training<a class="headerlink" href="#training" title="Link to this heading">#</a></h2>
+<p>Now let’s go ahead and train our models.</p>
 <section id="linear-regression">
-<h3><span class="section-number">22.4.1. </span>Linear regression<a class="headerlink" href="#linear-regression" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">22.3.1. </span>Linear regression<a class="headerlink" href="#linear-regression" title="Link to this heading">#</a></h3>
 <p>We’ll start with linear regression.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -610,11 +624,11 @@ as the parameters are adjusted to better fit the data.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/a894079ba296bf1375dafdc583ebabaceeae6de9e0ce232c7091e521725e7736.png"><img alt="_images/a894079ba296bf1375dafdc583ebabaceeae6de9e0ce232c7091e521725e7736.png" src="_images/a894079ba296bf1375dafdc583ebabaceeae6de9e0ce232c7091e521725e7736.png" style="width: 80%;" />
+<a class="reference internal image-reference" href="_images/a99bc26c888d3341dc228b9249c994a20ab54ca69d27d2d8f47d3a372f12d16b.png"><img alt="_images/a99bc26c888d3341dc228b9249c994a20ab54ca69d27d2d8f47d3a372f12d16b.png" src="_images/a99bc26c888d3341dc228b9249c994a20ab54ca69d27d2d8f47d3a372f12d16b.png" style="width: 80%;" />
 </a>
 </div>
 </div>
-<p>Let’s print the final MSE on the cross-validation data.</p>
+<p>Let’s print the final MSE on the validation data.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Testing loss on the validation set.&quot;</span><span class="p">)</span>
@@ -624,15 +638,15 @@ as the parameters are adjusted to better fit the data.</p>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Testing loss on the validation set.
-13/13 - 0s - 19ms/step - loss: 0.3016
+13/13 - 0s - 18ms/step - loss: 0.2954
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.3015977442264557
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.2953752875328064
 </pre></div>
 </div>
 </div>
 </div>
-<p>Here’s our output predictions on the cross-validation data.</p>
+<p>Here’s our output predictions on the validation data.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">y_predict</span> <span class="o">=</span> <span class="n">regression_model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">x_validate</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
@@ -657,7 +671,7 @@ as the parameters are adjusted to better fit the data.</p>
 </div>
 </div>
 </div>
-<p>Let’s now call the function on the cross-validation data.</p>
+<p>Let’s now call the function on the validation data.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
@@ -667,13 +681,13 @@ as the parameters are adjusted to better fit the data.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/7edfdfa3b34418dfa89a9b84d90a2fca29f94fd54072c0260a9899e9015e7311.png"><img alt="_images/7edfdfa3b34418dfa89a9b84d90a2fca29f94fd54072c0260a9899e9015e7311.png" src="_images/7edfdfa3b34418dfa89a9b84d90a2fca29f94fd54072c0260a9899e9015e7311.png" style="width: 80%;" />
+<a class="reference internal image-reference" href="_images/1e300dba8ac41fcea4f0556cecc69d9c8f6ea151610d113a644fa1aea7eea0f2.png"><img alt="_images/1e300dba8ac41fcea4f0556cecc69d9c8f6ea151610d113a644fa1aea7eea0f2.png" src="_images/1e300dba8ac41fcea4f0556cecc69d9c8f6ea151610d113a644fa1aea7eea0f2.png" style="width: 80%;" />
 </a>
 </div>
 </div>
 </section>
 <section id="deep-learning">
-<h3><span class="section-number">22.4.2. </span>Deep learning<a class="headerlink" href="#deep-learning" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">22.3.2. </span>Deep learning<a class="headerlink" href="#deep-learning" title="Link to this heading">#</a></h3>
 <p>Now let’s switch to a neural network with multiple layers.</p>
 <p>We implement the same steps as before.</p>
 <div class="cell docutils container">
@@ -701,7 +715,7 @@ as the parameters are adjusted to better fit the data.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/70a004c3d3735ff739df5b30144cee88bdfb904c002df4c64d1ab21afc26fa3b.png"><img alt="_images/70a004c3d3735ff739df5b30144cee88bdfb904c002df4c64d1ab21afc26fa3b.png" src="_images/70a004c3d3735ff739df5b30144cee88bdfb904c002df4c64d1ab21afc26fa3b.png" style="width: 80%;" />
+<a class="reference internal image-reference" href="_images/b484d6a636145501112a86124b18c52f1b249674a176ae1190c050d39aae02ce.png"><img alt="_images/b484d6a636145501112a86124b18c52f1b249674a176ae1190c050d39aae02ce.png" src="_images/b484d6a636145501112a86124b18c52f1b249674a176ae1190c050d39aae02ce.png" style="width: 80%;" />
 </a>
 </div>
 </div>
@@ -715,10 +729,10 @@ as the parameters are adjusted to better fit the data.</p>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Testing loss on the validation set.
-13/13 - 0s - 38ms/step - loss: 0.0417
+13/13 - 1s - 39ms/step - loss: 0.0422
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.04168751463294029
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.042199816554784775
 </pre></div>
 </div>
 </div>
@@ -733,18 +747,7 @@ linear regression, suggesting a better fit.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>13/13 - 0s - 27ms/step
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">plot_results</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">y_predict</span><span class="p">,</span> <span class="n">ax</span><span class="p">):</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y_predict</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;fitted model&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">)</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>13/13 - 0s - 28ms/step
 </pre></div>
 </div>
 </div>
@@ -758,12 +761,12 @@ linear regression, suggesting a better fit.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/775fb67618192950edce833cceb5ca9d9f2b462167c04e231ea955e547fb80b8.png"><img alt="_images/775fb67618192950edce833cceb5ca9d9f2b462167c04e231ea955e547fb80b8.png" src="_images/775fb67618192950edce833cceb5ca9d9f2b462167c04e231ea955e547fb80b8.png" style="width: 80%;" />
+<a class="reference internal image-reference" href="_images/38bf50b803273e1f000f567d61dd081a30a0e0558d19c3700c1e213863122acd.png"><img alt="_images/38bf50b803273e1f000f567d61dd081a30a0e0558d19c3700c1e213863122acd.png" src="_images/38bf50b803273e1f000f567d61dd081a30a0e0558d19c3700c1e213863122acd.png" style="width: 80%;" />
 </a>
 </div>
 </div>
 <p>Not surprisingly, the multilayer neural network does a much better job of fitting the data.</p>
-<p>In a <a class="reference internal" href="jax_nn.html"><span class="doc">a follow-up lecture</span></a>, we will try to achieve the same fit using pure JAX, rather than relying on the Keras front-end.</p>
+<p>In <a class="reference internal" href="jax_nn.html"><span class="doc">a follow-up lecture</span></a>, we will try to achieve the same fit using pure JAX, rather than relying on the Keras front-end.</p>
 </section>
 </section>
 </section>
