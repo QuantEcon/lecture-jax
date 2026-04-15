@@ -33,7 +33,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import jax
 import jax.numpy as jnp
-from jax import random, jit, vmap
+from jax import random, jit
 from functools import partial
 from typing import NamedTuple
 import time
@@ -77,7 +77,7 @@ def initialize_state(key, params):
 
 Now let's rewrite our core functions for JAX.
 
-We add the `@jit` decorator to compile functions for faster execution.
+We use `jit` to compile functions for faster execution.
 
 ```{code-cell} ipython3
 @partial(jit, static_argnames=('params',))
@@ -167,19 +167,6 @@ def plot_distribution(locations, types, title):
 ```
 
 ```{code-cell} ipython3
-@partial(jit, static_argnames=('params',))
-def get_unhappy_agents(locations, types, params):
-    """
-    Return a boolean array indicating which agents are unhappy.
-    """
-    n = params.num_of_type_0 + params.num_of_type_1
-
-    def is_unhappy(i):
-        return ~is_happy(locations[i], i, locations, types, params)
-
-    return vmap(is_unhappy)(jnp.arange(n))
-
-
 def simulation_loop(locations, types, key, params, max_iter):
     """
     Run the simulation loop until convergence or max iterations.
@@ -188,20 +175,15 @@ def simulation_loop(locations, types, key, params, max_iter):
     converged = False
     for iteration in range(1, max_iter + 1):
         print(f'Entering iteration {iteration}')
-
-        # Find unhappy agents using vectorized computation
-        unhappy = get_unhappy_agents(locations, types, params)
-
-        # Check if everyone is happy
-        if not jnp.any(unhappy):
-            converged = True
-            break
-
-        # Move the unhappy agents
+        someone_moved = False
         for i in range(n):
-            if unhappy[i]:
+            if not is_happy(locations[i], i, locations, types, params):
                 new_loc, key = move_agent(i, locations, types, key, params)
                 locations = locations.at[i, :].set(new_loc)
+                someone_moved = True
+        if not someone_moved:
+            converged = True
+            break
 
     return locations, iteration, converged, key
 ```
@@ -231,10 +213,8 @@ def run_simulation(params, max_iter=100_000, seed=1234):
     return locations, types
 ```
 
-The simulation loop uses `get_unhappy_agents` to identify all unhappy agents
-in parallel via `vmap`, then processes them sequentially. As the simulation
-progresses and more agents become happy, fewer agents need processing each
-iteration.
+The simulation loop is similar to the NumPy version: it cycles through agents,
+checks each one for happiness, and moves the unhappy ones.
 
 (schelling_jax_results)=
 ## Results
@@ -248,7 +228,6 @@ key, init_key = random.split(key)
 test_locations, test_types = initialize_state(init_key, params)
 
 _ = is_happy(test_locations[0], 0, test_locations, test_types, params)
-_ = get_unhappy_agents(test_locations, test_types, params)
 key, subkey = random.split(key)
 _, _ = move_agent(0, test_locations, test_types, subkey, params)
 
