@@ -39,7 +39,7 @@ from typing import NamedTuple
 import time
 ```
 
-## Parameters
+## Setup
 
 We use the same parameters as before. To keep our functions pure, we pack all
 parameters into a `NamedTuple` that gets passed to functions that need them:
@@ -55,10 +55,9 @@ class Params(NamedTuple):
 params = Params()
 ```
 
-## Initialization
-
 Here's our initialization function. Note that we use `jax.random` instead of
-`numpy.random`:
+`numpy.random` — we pass a `key` argument to `random.uniform`, making random
+generation deterministic and reproducible:
 
 ```{code-cell} ipython3
 def initialize_state(key, params):
@@ -68,15 +67,11 @@ def initialize_state(key, params):
     """
     num_of_type_0, num_of_type_1 = params.num_of_type_0, params.num_of_type_1
     n = num_of_type_0 + num_of_type_1
-    locations = random.uniform(key, shape=(n, 2))
+    locations = random.uniform(key, (n, 2))
     types = jnp.concatenate([jnp.zeros(num_of_type_0, dtype=int),
                               jnp.ones(num_of_type_1, dtype=int)])
     return locations, types
 ```
-
-The key differences from NumPy are that we pass a `key` argument to
-`random.uniform` (making random generation deterministic and reproducible)
-and we pass `params` explicitly rather than relying on global variables.
 
 ## JAX-Compiled Functions
 
@@ -84,19 +79,17 @@ Now let's rewrite our core functions for JAX.
 
 We add the `@jit` decorator to compile functions for faster execution.
 
-### Checking Unhappiness
-
 ```{code-cell} ipython3
 @partial(jit, static_argnames=('params',))
-def is_unhappy(loc, agent_type, agent_idx, locations, types, params):
-    " True if an agent at loc has too many different-type neighbors. "
+def is_happy(loc, agent_idx, locations, types, params):
+    " True if an agent at loc has at most max_other_type different-type neighbors. "
     # Squared distances from loc to every agent
     distances = jnp.sum((loc - locations)**2, axis=1)
     distances = distances.at[agent_idx].set(jnp.inf)  # exclude self
     # top_k finds the k smallest distances in O(n) (we negate to use top_k)
     _, neighbors = jax.lax.top_k(-distances, params.num_neighbors)
-    num_other = jnp.sum(types[neighbors] != agent_type)
-    return num_other > params.max_other_type
+    num_other = jnp.sum(types[neighbors] != types[agent_idx])
+    return num_other <= params.max_other_type
 ```
 
 Compared to the NumPy version, there are a few differences worth noting.
@@ -107,21 +100,19 @@ is $O(n)$ rather than $O(n \log n)$.
 We use `.at[].set()` rather than direct indexing to exclude the agent from its
 own neighbor set, since JAX arrays are immutable.
 
-The function takes `loc` and `agent_type` as explicit arguments rather than
-looking them up from the arrays, so we can test hypothetical locations without
-modifying the `locations` array.
+The function takes `loc` as an explicit argument rather than looking it up
+from the arrays, so we can test hypothetical locations without modifying the
+`locations` array.
 
 
-### Moving Unhappy Agents
-
-This function finds a location where the agent would be happy.
+The next function finds a location where a given agent would be happy.
 
 Rather than updating the `locations` array on each iteration, it tests
 candidate locations directly and returns only the final location.
 
 ```{code-cell} ipython3
 @partial(jit, static_argnames=('params',))
-def update_agent(i, locations, types, key, params, max_attempts=10_000):
+def move_agent(i, locations, types, key, params, max_attempts=10_000):
     """
     Find a location where agent i is happy.
 
@@ -129,44 +120,30 @@ def update_agent(i, locations, types, key, params, max_attempts=10_000):
     is responsible for updating the locations array if the agent moved.
     """
     loc = locations[i, :]
-    agent_type = types[i]
 
-    def cond_fn(state):
+    # Continue while under max_attempts and not yet happy
+    def while_test(state):
         loc, key, attempts = state
-        return (attempts < max_attempts) & is_unhappy(loc, agent_type, i, locations, types, params)
+        return (attempts < max_attempts) & ~is_happy(loc, i, locations, types, params)
 
-    def body_fn(state):
+    # Draw a new random location
+    def update(state):
         _, key, attempts = state
         key, subkey = random.split(key)
-        new_loc = random.uniform(subkey, shape=(2,))
+        new_loc = random.uniform(subkey, 2)
         return new_loc, key, attempts + 1
 
-    final_loc, key, _ = jax.lax.while_loop(cond_fn, body_fn, (loc, key, 0))
+    final_loc, key, _ = jax.lax.while_loop(while_test, update, (loc, key, 0))
     return final_loc, key
 ```
 
-Let's break down the key JAX concepts here:
+Here `jax.lax.while_loop` calls `update` repeatedly until `while_test` returns False.
 
-1. **`jax.lax.while_loop`**: Takes three arguments:
-   - `cond_fn(state)` — returns True to continue looping, False to stop
-   - `body_fn(state)` — executes one iteration, returns new state
-   - `(loc, key)` — initial state (a tuple containing location and random key)
-
-2. **`random.split(key)`**: Since JAX random numbers are deterministic, we
-   need to "split" the key to get new randomness. Each split produces two new
-   keys: one to use now, one to save for later.
-
-3. **Testing without updating**: By passing `loc` directly to `is_unhappy`, we
-   can test candidate locations without modifying the `locations` array. This
-   avoids creating new arrays inside the loop, improving efficiency.
-
-## Visualization
-
-Plotting uses Matplotlib, which works with regular NumPy arrays.
-
-We convert JAX arrays to NumPy arrays using `np.asarray()`:
+## The Simulation
 
 ```{code-cell} ipython3
+:tags: [hide-input]
+
 def plot_distribution(locations, types, title):
     """
     Plot the distribution of agents.
@@ -189,64 +166,42 @@ def plot_distribution(locations, types, title):
     plt.show()
 ```
 
-## The Simulation
-
-We separate the core simulation loop from the setup and plotting code.
-
-This makes it easier to optimize or JIT-compile the loop independently.
-
 ```{code-cell} ipython3
 @partial(jit, static_argnames=('params',))
 def get_unhappy_agents(locations, types, params):
     """
-    Find indices and count of all unhappy agents using vectorized computation.
+    Return a boolean array indicating which agents are unhappy.
     """
     n = params.num_of_type_0 + params.num_of_type_1
 
-    def check_agent(i):
-        return is_unhappy(locations[i], types[i], i, locations, types, params)
+    def is_unhappy(i):
+        return ~is_happy(locations[i], i, locations, types, params)
 
-    all_unhappy = vmap(check_agent)(jnp.arange(n))
-    # jnp.where with size= returns fixed-length array (required for JIT)
-    # Pads with fill_value=-1 when fewer than n agents are unhappy
-    indices = jnp.where(all_unhappy, size=n, fill_value=-1)[0]
-    count = jnp.sum(all_unhappy)  # number of valid indices
-    return indices, count
+    return vmap(is_unhappy)(jnp.arange(n))
 
 
 def simulation_loop(locations, types, key, params, max_iter):
     """
     Run the simulation loop until convergence or max iterations.
-
-    Returns
-    -------
-    locations : array
-        Final agent locations.
-    iteration : int
-        Number of iterations completed.
-    converged : bool
-        True if all agents are happy.
-    key : PRNGKey
-        Updated random key.
     """
+    n = params.num_of_type_0 + params.num_of_type_1
     converged = False
     for iteration in range(1, max_iter + 1):
         print(f'Entering iteration {iteration}')
 
         # Find unhappy agents using vectorized computation
-        unhappy, num_unhappy = get_unhappy_agents(locations, types, params)
-        num_unhappy = int(num_unhappy)
+        unhappy = get_unhappy_agents(locations, types, params)
 
         # Check if everyone is happy
-        if num_unhappy == 0:
+        if not jnp.any(unhappy):
             converged = True
             break
 
-        # Update only the unhappy agents
-        for j in range(num_unhappy):
-            i = int(unhappy[j])
-            new_loc, key = update_agent(i, locations, types, key, params)
-            locations = locations.at[i, :].set(new_loc)
+        # Move the unhappy agents
+        for i in range(n):
+            if unhappy[i]:
+                new_loc, key = move_agent(i, locations, types, key, params)
+                locations = locations.at[i, :].set(new_loc)
 
     return locations, iteration, converged, key
 ```
@@ -256,7 +211,7 @@ def run_simulation(params, max_iter=100_000, seed=1234):
     """
     Run the Schelling simulation using JAX.
     """
-    key = random.PRNGKey(seed)
+    key = random.key(seed)
     key, init_key = random.split(key)
     locations, types = initialize_state(init_key, params)
 
@@ -276,40 +231,29 @@ def run_simulation(params, max_iter=100_000, seed=1234):
     return locations, types
 ```
 
-The simulation loop differs from the NumPy version in several ways:
+The simulation loop uses `get_unhappy_agents` to identify all unhappy agents
+in parallel via `vmap`, then processes them sequentially. As the simulation
+progresses and more agents become happy, fewer agents need processing each
+iteration.
 
-1. **Vectorized unhappiness check**: We use `get_unhappy_agents` to identify all
-   unhappy agents in parallel, then only process those agents
-2. We pass and receive the random `key` in each call to `update_agent`
-3. `update_agent` returns the new location, not the whole array
-4. We only update `locations` when an agent actually moves
+(schelling_jax_results)=
+## Results
 
-This hybrid approach uses vectorized computation to identify unhappy agents,
-then processes them sequentially. As the simulation progresses and more agents
-become happy, fewer agents need processing each iteration.
-
-## Warming Up JAX
-
-JAX compiles functions the first time they're called. Let's warm up the
-functions:
+JAX compiles functions the first time they're called. Let's warm them up
+before timing the simulation:
 
 ```{code-cell} ipython3
-# Warm up: use actual problem size to trigger compilation
-# (JAX recompiles when array shapes change)
-key = random.PRNGKey(42)
+key = random.key(42)
 key, init_key = random.split(key)
 test_locations, test_types = initialize_state(init_key, params)
 
-# Call each function once to compile it
-_ = is_unhappy(test_locations[0], test_types[0], 0, test_locations, test_types, params)
-_, _ = get_unhappy_agents(test_locations, test_types, params)
+_ = is_happy(test_locations[0], 0, test_locations, test_types, params)
+_ = get_unhappy_agents(test_locations, test_types, params)
 key, subkey = random.split(key)
-_, _ = update_agent(0, test_locations, test_types, subkey, params)
+_, _ = move_agent(0, test_locations, test_types, subkey, params)
 
 print("JAX functions compiled and ready!")
 ```
-
-## Results
 
 Now let's run the simulation:
 

@@ -257,11 +257,6 @@ class Agent:
 Here's a collection of functions that act on agents:
 
 ```{code-cell} ipython3
-def move_agent(agent):
-    "Provide agent with a new location."
-    agent.location = uniform(0, 1), uniform(0, 1)
-
-
 def get_distance(agent, other_agent):
     "Computes the Euclidean distance between self and other agent."
     a = agent.location[0] - other_agent.location[0]
@@ -269,42 +264,26 @@ def get_distance(agent, other_agent):
     return sqrt(a**2 + b**2)
 
 
-def happy(agent, all_agents):
+def is_happy(agent, all_agents):
     """
-    Test happiness of agent, given locations of others (all_agents).
-
-    Return true if the number of neighbors with a different type is not more
-    than max_other_type.
+    True if agent has at most max_other_type different-type agents
+    among its num_neighbors nearest neighbors.
     """
+    # Collect all other agents, sorted by distance to agent
+    others = [a for a in all_agents if a != agent]
+    others.sort(key=lambda a: get_distance(agent, a))
 
-    # Set up a list of pairs (distance, other_agent) that records the
-    # distance from agent to all other agents.
-    distances = []
-
-    # Populate the list
-    for some_agent in all_agents:
-        if some_agent != agent:
-            distance = get_distance(agent, some_agent)
-            distances.append((distance, some_agent))
-
-    # Sort from smallest to largest, according to distance
-    distances.sort()
-
-    # Extract the list of neighboring agents
-    neighbor_pairs = distances[:num_neighbors]
-    neighbors = [neighbor for d, neighbor in neighbor_pairs]
-
-    # Count how many neighbors have a different type
-    num_other_type = sum(agent.type != neighbor.type for neighbor in neighbors)
-    # Return true if does not exceed threshold
+    # Check the nearest neighbors
+    neighbors = others[:num_neighbors]
+    num_other_type = sum(neighbor.type != agent.type for neighbor in neighbors)
     return num_other_type <= max_other_type
 
 
-def relocate(agent, all_agents, max_attempts=10_000):
+def move_agent(agent, all_agents, max_attempts=10_000):
     "If not happy, then randomly choose new locations until happy."
     attempts = 0
-    while not happy(agent, all_agents):
-        move_agent(agent)
+    while not is_happy(agent, all_agents):
+        agent.location = uniform(0, 1), uniform(0, 1)
         attempts += 1
         if attempts >= max_attempts:
             break
@@ -317,6 +296,8 @@ Orange agents are represented by orange dots and green ones are represented by
 green dots.
 
 ```{code-cell} ipython3
+:tags: [hide-input]
+
 def plot_distribution(agents, round_num):
     "Plot the distribution of agents after round_num rounds of the loop."
     x_values_0, y_values_0 = [], []
@@ -358,9 +339,7 @@ The main loop cycles through all agents until no one wishes to move.
 2. While `count` < `max_iter`:
     1. Set `number_of_moves` $\leftarrow$ 0
     2. For each agent:
-        1. Record current location
-        2. If agent is unhappy, relocate using {prf:ref}`move_algo`
-        3. If location changed, increment `number_of_moves`
+        1. If agent is unhappy, relocate using {prf:ref}`move_algo` and increment `number_of_moves`
     3. Plot distribution
     4. Increment `count`
     5. If `number_of_moves` = 0, exit loop
@@ -379,12 +358,9 @@ def run_simulation(all_agents, max_iter=100_000):
     start_time = time.time()
     while count < max_iter:
         number_of_moves = 0
-        # Offer each agent the chance to relocate
         for agent in all_agents:
-            old_location = agent.location
-            # Relocate unhappy agents (happy ones won't move)
-            relocate(agent, all_agents)
-            if agent.location != old_location:
+            if not is_happy(agent, all_agents):
+                move_agent(agent, all_agents)
                 number_of_moves += 1
         # Plot the distribution after this round
         plot_distribution(all_agents, count)
