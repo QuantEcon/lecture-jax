@@ -120,18 +120,17 @@ def update_agent_location(i, locations, types, key, params):
 
     # Build candidate list: current location + num_candidates random ones
     random_locs = random.uniform(key, (params.num_candidates, 2))
-    candidates = jnp.vstack([current_loc[None, :], random_locs])
+    candidate_locations = jnp.vstack([current_loc[None, :], random_locs])
 
     # Check happiness at each candidate (in parallel)
     def check_candidate(loc):
         return is_happy(loc, i, locations, types, params)
-    happy_at = vmap(check_candidate)(candidates)
+    happy_at = vmap(check_candidate)(candidate_locations)
 
-    # Take the first happy candidate, or stay put if none are happy
-    first_happy_idx = jnp.argmax(happy_at)
-    return jnp.where(jnp.any(happy_at),
-                     candidates[first_happy_idx],
-                     current_loc)
+    # Return the first happy candidate location.
+    # Already happy agents select candidate_locations[0] and stay put.
+    # If no candidate is happy, argmax returns 0 and the agent stays put.
+    return candidate_locations[jnp.argmax(happy_at)]
 
 
 @partial(jit, static_argnames=('params',))
@@ -147,6 +146,7 @@ def parallel_update_step(locations, types, key, params):
     key = keys[0]
     agent_keys = keys[1:]
 
+    # Closure: wraps update_agent_location so vmap can map over a single argument
     def update_one_agent(i):
         return update_agent_location(i, locations, types, agent_keys[i], params)
     new_locations = vmap(update_one_agent)(jnp.arange(n))
