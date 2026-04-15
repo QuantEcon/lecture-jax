@@ -83,26 +83,20 @@ print(f"First 20 types: {types[:20]}")
 Let's write some functions that compute what we need while operating on the arrays.
 
 
-### Checking Unhappiness
+### Checking Happiness
 
-An agent is unhappy if more than `max_other_type` of their nearest neighbors
+An agent is happy if at most `max_other_type` of their nearest neighbors
 are of a different type:
 
 ```{code-cell} ipython3
-def is_unhappy(i, locations, types):
-    " True if agent i has more than max_other_type neighbors of a different type. "
+def is_happy(i, locations, types):
+    " True if agent i has at most max_other_type neighbors of a different type. "
     # Compute distance from agent i to every other agent
     distances = np.linalg.norm(locations[i] - locations, axis=1)
     distances[i] = np.inf                              # exclude self
     neighbors = np.argsort(distances)[:num_neighbors]  # indices of nearest
     num_other = np.sum(types[neighbors] != types[i])
-    return num_other > max_other_type
-```
-
-```{code-cell} ipython3
-# Check if agent 0 is unhappy
-print(f"Agent 0 type: {types[0]}")
-print(f"Agent 0 unhappy: {is_unhappy(0, locations, types)}")
+    return num_other <= max_other_type
 ```
 
 ### Moving Unhappy Agents
@@ -111,10 +105,10 @@ When an agent is unhappy, they keep trying new random locations until they find
 one where they're happy:
 
 ```{code-cell} ipython3
-def update_agent(i, locations, types, max_attempts=10_000):
+def move_agent(i, locations, types, max_attempts=10_000):
     " Move agent i to a new location where they are happy. "
     attempts = 0
-    while is_unhappy(i, locations, types) and attempts < max_attempts:
+    while not is_happy(i, locations, types) and attempts < max_attempts:
         locations[i, :] = uniform(), uniform()
         attempts += 1
 ```
@@ -127,6 +121,8 @@ is visible to all code that references `locations`.
 Here's some code for visualization --- we'll skip the details
 
 ```{code-cell} ipython3
+:tags: [hide-input]
+
 def plot_distribution(locations, types, title):
     " Plot the distribution of agents. "
     fig, ax = plt.subplots()
@@ -183,8 +179,8 @@ def run_simulation(max_iter=100_000, seed=42):
         print(f'Entering iteration {iteration}')
         someone_moved = False
         for i in range(n):
-            if is_unhappy(i, locations, types):
-                update_agent(i, locations, types)
+            if not is_happy(i, locations, types):
+                move_agent(i, locations, types)
                 someone_moved = True
         if not someone_moved:
             converged = True
@@ -201,6 +197,7 @@ def run_simulation(max_iter=100_000, seed=42):
     return locations, types
 ```
 
+(schelling_numpy_results)=
 ## Results
 
 Let's run the simulation:
