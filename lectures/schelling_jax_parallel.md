@@ -41,14 +41,13 @@ import time
 
 ## Setup
 
-We use similar parameters to before, but with more agents and the addition of
-`num_candidates` — the number of candidate locations each agent considers per
-iteration:
+We use the same parameters as before, with the addition of `num_candidates` —
+the number of candidate locations each agent considers per iteration:
 
 ```{code-cell} ipython3
 class Params(NamedTuple):
-    num_of_type_0: int = 1800    # number of agents of type 0 (orange)
-    num_of_type_1: int = 1800    # number of agents of type 1 (green)
+    num_of_type_0: int = 1000    # number of agents of type 0 (orange)
+    num_of_type_1: int = 1000    # number of agents of type 1 (green)
     num_neighbors: int = 10      # number of neighbors
     max_other_type: int = 6     # max number of different-type neighbors tolerated
     num_candidates: int = 3      # candidate locations per agent per iteration
@@ -118,12 +117,11 @@ Our aim is to update all agents at the same time, rather than sequentially.
 To do this we
 
 1. **Generate candidate locations** for all agents in parallel
-2. **Test happiness** at all candidate locations in parallel
-3. **Update all agents** simultaneously — happy agents stay put, unhappy
-   agents move to a happy candidate if one was found
+2. **Update all agents** simultaneously — happy agents stay put, unhappy
+   agents move if a happy candidate was found
 
 We offer a fixed number of candidates to all agents, so that the parallel
-threads do the same amount of work and all run at the same speed.
+threads do the same amount of work and hence run at the same speed.
 
 This approach is well-suited to GPU execution, where thousands of operations
 can run concurrently.
@@ -131,22 +129,28 @@ can run concurrently.
 There are two trade-offs compared to the sequential algorithm.
 
 First, the sequential algorithm guarantees that each agent finds a happy
-location before moving on. The parallel algorithm instead proposes a fixed
-number of candidate locations per agent per iteration. If none of the
-candidates make the agent happy, the agent stays put and tries again next
-iteration. This means the parallel algorithm may need more iterations, but each
-iteration is faster because all work is done in parallel.
+location before moving on.
+
+The parallel algorithm instead proposes a fixed
+number of candidate locations per agent per iteration.
+
+If none of the candidates make the agent happy, the agent stays put and tries again next
+iteration. 
+
+This means the parallel algorithm may need more iterations. 
 
 Second, because we update all agents at once, the agents have less information
-— they are predicting the next period distribution from the current one. We
-hope that, nonetheless, the algorithm will converge.
+— they are predicting the next period distribution from the current one. 
+
+We hope that, nonetheless, the algorithm will converge.
 
 The `update_agent_location` function below performs all computation (generating
-candidates, checking happiness at each candidate) upfront before making the
-final decision about whether to move. This may seem wasteful for agents who are
-already happy, but it's actually optimal for parallel execution: on GPUs, all
-threads execute the same instructions in lockstep, so conditional branches
-don't skip work.
+candidates for all agents, regardless of current status, checking happiness at
+each candidate) upfront before making the final decision about whether to move. 
+
+This may seem wasteful but it's actually optimal for parallel execution: on GPUs, all
+threads execute the same instructions in lockstep, so conditional branches don't skip work.
+
 
 ```{code-cell} ipython3
 @partial(jit, static_argnames=('params',))
@@ -159,20 +163,25 @@ def update_agent_location(i, locations, types, key, params):
 
     # Build candidate list: current location + num_candidates random ones
     random_locs = random.uniform(key, (params.num_candidates, 2))
-    candidates = jnp.vstack([current_loc[None, :], random_locs])
+    candidate_locations = jnp.vstack([current_loc[None, :], random_locs])
 
     # Check happiness at each candidate (in parallel)
     def check_candidate(loc):
         return is_happy(loc, i, locations, types, params)
-    happy_at = vmap(check_candidate)(candidates)
+    happy_at = vmap(check_candidate)(candidate_locations)
 
-    # Take the first happy candidate, or stay put if none are happy
-    first_happy_idx = jnp.argmax(happy_at)
-    return jnp.where(jnp.any(happy_at),
-                     candidates[first_happy_idx],
-                     current_loc)
+    # Return the first happy candidate location.
+    # Already happy agents select candidate_locations[0] and stay put.
+    # If no candidate is happy, argmax returns 0 and the agent stays put.
+    return candidate_locations[jnp.argmax(happy_at)]
+```
 
+The code above is for one agent.
 
+The next function uses `vmap` to apply this update rule to determine the new
+location array across all agents.
+
+```{code-cell} ipython3
 @partial(jit, static_argnames=('params',))
 def parallel_update_step(locations, types, key, params):
     """
@@ -186,6 +195,7 @@ def parallel_update_step(locations, types, key, params):
     key = keys[0]
     agent_keys = keys[1:]
 
+    # Closure: wraps update_agent_location so vmap can map over a single argument
     def update_one_agent(i):
         return update_agent_location(i, locations, types, agent_keys[i], params)
     new_locations = vmap(update_one_agent)(jnp.arange(n))
@@ -193,21 +203,30 @@ def parallel_update_step(locations, types, key, params):
     return new_locations, key
 ```
 
+Here's the outer loop, which updates the population until convergence.
+
+By using `jax.lax.while_loop`, we can JIT-compile the entire simulation,
+avoiding Python loop overhead.
+
 ```{code-cell} ipython3
+@partial(jit, static_argnames=('params', 'max_iter'))
 def parallel_simulation_loop(locations, types, key, params, max_iter):
-    converged = False
-    for iteration in range(1, max_iter + 1):
-        print(f'Entering iteration {iteration}')
 
+    def while_test(state):
+        locations, key, iteration = state
         unhappy = get_unhappy_agents(locations, types, params)
+        return (iteration < max_iter) & jnp.any(unhappy)
 
-        if not jnp.any(unhappy):
-            converged = True
-            break
-
+    def update(state):
+        locations, key, iteration = state
         locations, key = parallel_update_step(locations, types, key, params)
+        return locations, key, iteration + 1
 
-    return locations, iteration, converged, key
+    locations, _, iteration = jax.lax.while_loop(
+        while_test, update, (locations, key, 0)
+    )
+    converged = ~jnp.any(get_unhappy_agents(locations, types, params))
+    return locations, iteration, converged
 
 
 def run_parallel_simulation(params, max_iter=100_000, seed=42):
@@ -218,13 +237,13 @@ def run_parallel_simulation(params, max_iter=100_000, seed=42):
     plot_distribution(locations, types, 'Initial distribution')
 
     start_time = time.time()
-    locations, iteration, converged, key = parallel_simulation_loop(locations, types, key, params, max_iter)
+    locations, iteration, converged = parallel_simulation_loop(locations, types, key, params, max_iter)
     elapsed = time.time() - start_time
 
-    plot_distribution(locations, types, f'Iteration {iteration}')
+    plot_distribution(locations, types, f'Iteration {int(iteration)}')
 
     if converged:
-        print(f'Converged in {elapsed:.2f} seconds after {iteration} iterations.')
+        print(f'Converged in {elapsed:.2f} seconds after {int(iteration)} iterations.')
     else:
         print('Hit iteration bound and terminated.')
 
