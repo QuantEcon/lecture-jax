@@ -34,6 +34,7 @@ import numpy as np
 import jax
 import jax.numpy as jnp
 from jax import random, jit, vmap
+from functools import partial
 from typing import NamedTuple
 import time
 ```
@@ -67,7 +68,7 @@ def initialize_state(key, params):
     return locations, types
 
 
-@jit(static_argnames=('params',))
+@partial(jit, static_argnames=('params',))
 def is_happy(loc, agent_idx, locations, types, params):
     " True if an agent at loc has at most max_other_type different-type neighbors. "
     distances = jnp.sum((loc - locations)**2, axis=1)
@@ -77,7 +78,7 @@ def is_happy(loc, agent_idx, locations, types, params):
     return num_other <= params.max_other_type
 
 
-@jit(static_argnames=('params',))
+@partial(jit, static_argnames=('params',))
 def get_unhappy_agents(locations, types, params):
     " Return a boolean array indicating which agents are unhappy. "
     n = params.num_of_type_0 + params.num_of_type_1
@@ -148,7 +149,7 @@ threads execute the same instructions in lockstep, so conditional branches
 don't skip work.
 
 ```{code-cell} ipython3
-@jit(static_argnames=('params',))
+@partial(jit, static_argnames=('params',))
 def update_agent_location(i, locations, types, key, params):
     """
     Consider current location and num_candidates random alternatives.
@@ -172,7 +173,7 @@ def update_agent_location(i, locations, types, key, params):
                      current_loc)
 
 
-@jit(static_argnames=('params',))
+@partial(jit, static_argnames=('params',))
 def parallel_update_step(locations, types, key, params):
     """
     One step of the parallel algorithm: for each agent, find a happy

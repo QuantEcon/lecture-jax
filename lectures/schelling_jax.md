@@ -34,6 +34,7 @@ import numpy as np
 import jax
 import jax.numpy as jnp
 from jax import random, jit, vmap
+from functools import partial
 from typing import NamedTuple
 import time
 ```
@@ -79,7 +80,7 @@ Now let's rewrite our core functions for JAX.
 We add the `@jit` decorator to compile functions for faster execution.
 
 ```{code-cell} ipython3
-@jit(static_argnames=('params',))
+@partial(jit, static_argnames=('params',))
 def is_happy(loc, agent_idx, locations, types, params):
     " True if an agent at loc has at most max_other_type different-type neighbors. "
     # Squared distances from loc to every agent
@@ -110,7 +111,7 @@ Rather than updating the `locations` array on each iteration, it tests
 candidate locations directly and returns only the final location.
 
 ```{code-cell} ipython3
-@jit(static_argnames=('params',))
+@partial(jit, static_argnames=('params',))
 def move_agent(i, locations, types, key, params, max_attempts=10_000):
     """
     Find a location where agent i is happy.
@@ -166,7 +167,7 @@ def plot_distribution(locations, types, title):
 ```
 
 ```{code-cell} ipython3
-@jit(static_argnames=('params',))
+@partial(jit, static_argnames=('params',))
 def get_unhappy_agents(locations, types, params):
     """
     Return a boolean array indicating which agents are unhappy.
