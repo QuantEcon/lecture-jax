@@ -83,7 +83,7 @@
     <link rel="stylesheet" type="text/css" href="_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css?v=8cd3d715" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="_static/exercise.css?v=982b99e0" />
-    <link rel="stylesheet" type="text/css" href="_static/proof.css" />
+    <link rel="stylesheet" type="text/css" href="_static/proof.css?v=8c6b312c" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
@@ -298,7 +298,7 @@
                                 <a href="https://github.com/QuantEcon/lecture-jax/commit/b8bab59" class="changelog-hash">b8bab59</a>
                                 
                                 <span class="changelog-author">John Stachurski</span>
-                                <span class="changelog-time">9 minutes ago</span>
+                                <span class="changelog-time">6 days ago</span>
                                 <span class="changelog-message">Fix errors and modernize keras and jax_nn lectures (#302)</span>
                             </li>
                             
@@ -439,11 +439,6 @@ using a neural network via the deep learning library <a class="reference externa
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Matplotlib is building the font cache; this may take a moment.
-</pre></div>
-</div>
-</div>
 </div>
 <div class="cell tag_hide-output docutils container">
 <div class="cell_input above-output-prompt docutils container">
@@ -459,10 +454,8 @@ using a neural network via the deep learning library <a class="reference externa
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting keras
   Downloading keras-3.14.0-py3-none-any.whl.metadata (6.3 kB)
-Collecting optax
-  Downloading optax-0.2.8-py3-none-any.whl.metadata (7.9 kB)
-Collecting absl-py (from keras)
-  Downloading absl_py-2.4.0-py3-none-any.whl.metadata (3.3 kB)
+Requirement already satisfied: optax in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (0.2.8)
+Requirement already satisfied: absl-py in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from keras) (2.4.0)
 Requirement already satisfied: numpy in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from keras) (2.3.5)
 Requirement already satisfied: rich in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from keras) (14.2.0)
 Collecting namex (from keras)
@@ -482,24 +475,20 @@ Requirement already satisfied: pygments&lt;3.0.0,&gt;=2.13.0 in /home/runner/min
 Requirement already satisfied: mdurl~=0.1 in /home/runner/miniconda3/envs/quantecon/lib/python3.13/site-packages (from markdown-it-py&gt;=2.2.0-&gt;rich-&gt;keras) (0.1.2)
 Downloading keras-3.14.0-py3-none-any.whl (1.6 MB)
 ?25l   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">0.0/1.6 MB</span> <span class=" -Color -Color-Red">?</span> eta <span class=" -Color -Color-Cyan">-:--:--</span>
-   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">1.6/1.6 MB</span> <span class=" -Color -Color-Red">53.0 MB/s</span>  <span class=" -Color -Color-Yellow">0:00:00</span>
-?25hDownloading optax-0.2.8-py3-none-any.whl (402 kB)
-Downloading absl_py-2.4.0-py3-none-any.whl (135 kB)
-Downloading namex-0.1.0-py3-none-any.whl (5.9 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">1.6/1.6 MB</span> <span class=" -Color -Color-Red">12.6 MB/s</span>  <span class=" -Color -Color-Yellow">0:00:00</span>
+?25hDownloading namex-0.1.0-py3-none-any.whl (5.9 kB)
 Downloading optree-0.19.0-cp313-cp313-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (456 kB)
-Installing collected packages: namex, optree, absl-py, keras, optax
+Installing collected packages: namex, optree, keras
 ?25l
-   ━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">3/5</span> [keras]
-   ━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">3/5</span> [keras]
-   ━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">3/5</span> [keras]
-   ━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">3/5</span> [keras]
-   ━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">3/5</span> [keras]
-   ━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">3/5</span> [keras]
-   ━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">3/5</span> [keras]
-   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╺━━━━━━━ <span class=" -Color -Color-Green">4/5</span> [optax]
-   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">5/5</span> [optax]
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━ <span class=" -Color -Color-Green">2/3</span> [keras]
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━ <span class=" -Color -Color-Green">2/3</span> [keras]
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━ <span class=" -Color -Color-Green">2/3</span> [keras]
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━ <span class=" -Color -Color-Green">2/3</span> [keras]
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━ <span class=" -Color -Color-Green">2/3</span> [keras]
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━╸━━━━━━━━━━━━━ <span class=" -Color -Color-Green">2/3</span> [keras]
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ <span class=" -Color -Color-Green">3/3</span> [keras]
 
-Successfully installed absl-py-2.4.0 keras-3.14.0 namex-0.1.0 optax-0.2.8 optree-0.19.0
+Successfully installed keras-3.14.0 namex-0.1.0 optree-0.19.0
 </pre></div>
 </div>
 </div>
@@ -690,12 +679,12 @@ mean square loss.</p>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Training NN using Keras.
-13/13 - 1s - 39ms/step - loss: 0.0460
-Trained in 19.76 seconds, validation data MSE = 0.046006131917238235
+13/13 - 1s - 39ms/step - loss: 0.0451
+Trained in 19.86 seconds, validation data MSE = 0.04505595192313194
 13/13 - 0s - 27ms/step
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="_images/5a765b7b6bf94768ecf71544e2c8b941b5fbf8bd159c43f947bcad1361da2f0d.png"><img alt="_images/5a765b7b6bf94768ecf71544e2c8b941b5fbf8bd159c43f947bcad1361da2f0d.png" src="_images/5a765b7b6bf94768ecf71544e2c8b941b5fbf8bd159c43f947bcad1361da2f0d.png" style="width: 80%;" />
+<a class="reference internal image-reference" href="_images/138d050166556f8e262717c36da69576fc2e53db95721f928248ec9f2dcf836b.png"><img alt="_images/138d050166556f8e262717c36da69576fc2e53db95721f928248ec9f2dcf836b.png" src="_images/138d050166556f8e262717c36da69576fc2e53db95721f928248ec9f2dcf836b.png" style="width: 80%;" />
 </a>
 </div>
 </div>
@@ -966,7 +955,7 @@ descent, exactly as required.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Trained model with JAX in 0.27 seconds.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Trained model with JAX in 0.28 seconds.
 Final MSE on validation data = 0.042119
 </pre></div>
 </div>
@@ -1140,7 +1129,7 @@ Final MSE on validation data = 0.040869
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/49a2f8814317c735c703a0a6448e7105c896ddac4d007fc4bcf0f19406e97868.png"><img alt="_images/49a2f8814317c735c703a0a6448e7105c896ddac4d007fc4bcf0f19406e97868.png" src="_images/49a2f8814317c735c703a0a6448e7105c896ddac4d007fc4bcf0f19406e97868.png" style="width: 80%;" />
+<a class="reference internal image-reference" href="_images/0d0f4b03f44b5a97095be1bd5175838beee9d6b86816b118252378037b08bea8.png"><img alt="_images/0d0f4b03f44b5a97095be1bd5175838beee9d6b86816b118252378037b08bea8.png" src="_images/0d0f4b03f44b5a97095be1bd5175838beee9d6b86816b118252378037b08bea8.png" style="width: 80%;" />
 </a>
 </div>
 </div>
@@ -1202,10 +1191,10 @@ Final MSE on validation data = 0.040869
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Summary of Training Methods:
                   Method  Runtime (s) Training MSE Validation MSE
-                   Keras    19.763419     0.040786       0.046006
-Pure JAX (hand-coded GD)     0.272707     0.039963       0.042119
-         JAX + Optax SGD     0.272872     0.039963       0.042119
-        JAX + Optax Adam     0.277651     0.035879       0.040869
+                   Keras    19.864409     0.040153       0.045056
+Pure JAX (hand-coded GD)     0.277301     0.039963       0.042119
+         JAX + Optax SGD     0.273060     0.039963       0.042119
+        JAX + Optax Adam     0.278272     0.035879       0.040869
 </pre></div>
 </div>
 </div>
@@ -1293,7 +1282,7 @@ Pure JAX (hand-coded GD)     0.272707     0.039963       0.042119
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Strategy 1 - Deeper network (6 layers, k=6)
   Total parameters: 187
-  Runtime: 0.46s
+  Runtime: 0.45s
   Validation MSE: 0.041686
   Improvement over Adam: -0.000817
 </pre></div>
@@ -1355,7 +1344,7 @@ Pure JAX (hand-coded GD)     0.272707     0.039963       0.042119
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Strategy 2 - Deeper network + LR schedule
-  Runtime: 1.01s
+  Runtime: 1.00s
   Validation MSE: 0.041633
   Improvement over Adam: -0.000764
 </pre></div>
@@ -1431,7 +1420,7 @@ Pure JAX (hand-coded GD)     0.272707     0.039963       0.042119
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Strategy 3 - Deeper network + LR schedule + L2 regularization
-  Runtime: 1.10s
+  Runtime: 1.11s
   Validation MSE: 0.040845
   Improvement over Adam: 0.000024
 </pre></div>
@@ -1503,7 +1492,7 @@ Pure JAX (hand-coded GD)     0.272707     0.039963       0.042119
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Strategy 4 - Baseline + L2 regularization
-  Runtime: 0.82s
+  Runtime: 0.83s
   Validation MSE: 0.040959
   Improvement over Adam: -0.000090
 </pre></div>
@@ -1561,11 +1550,11 @@ Pure JAX (hand-coded GD)     0.272707     0.039963       0.042119
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Summary of Exercise Strategies:
                          Strategy  Runtime (s) Validation MSE  Improvement
-           Baseline (Adam + tanh)     0.277651      0.0408687     0.000000
-     1. Deeper network (6 layers)     0.463065    0.041686025    -0.000817
-  2. Deeper network + LR schedule     1.011776    0.041632917    -0.000764
-3. Strategy 2 + L2 regularization     1.100289    0.040844545     0.000024
-  4. Baseline + L2 regularization     0.823430     0.04095904    -0.000090
+           Baseline (Adam + tanh)     0.278272    0.040868692     0.000000
+     1. Deeper network (6 layers)     0.450329    0.041686147    -0.000817
+  2. Deeper network + LR schedule     0.999848    0.041632924    -0.000764
+3. Strategy 2 + L2 regularization     1.108653    0.040844545     0.000024
+  4. Baseline + L2 regularization     0.828963    0.040959034    -0.000090
 </pre></div>
 </div>
 </div>
