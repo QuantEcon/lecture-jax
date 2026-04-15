@@ -280,10 +280,19 @@
                             
                             <li class="changelog-entry">
                                 
+                                <a href="https://github.com/QuantEcon/lecture-jax/commit/fb42861" class="changelog-hash">fb42861</a>
+                                
+                                <span class="changelog-author">John Stachurski</span>
+                                <span class="changelog-time">11 minutes ago</span>
+                                <span class="changelog-message">Simplify JAX lecture: remove get_unhappy_agents, match numpy loop structure (#306)</span>
+                            </li>
+                            
+                            <li class="changelog-entry">
+                                
                                 <a href="https://github.com/QuantEcon/lecture-jax/commit/33d1348" class="changelog-hash">33d1348</a>
                                 
                                 <span class="changelog-author">John Stachurski</span>
-                                <span class="changelog-time">3 hours ago</span>
+                                <span class="changelog-time">5 hours ago</span>
                                 <span class="changelog-message">Improve Schelling lectures: consistency, clarity, and modernization (#304)</span>
                             </li>
                             
@@ -335,7 +344,7 @@ just-in-time compilation.</p>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">jax</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">jax.numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">jnp</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">jax</span><span class="w"> </span><span class="kn">import</span> <span class="n">random</span><span class="p">,</span> <span class="n">jit</span><span class="p">,</span> <span class="n">vmap</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">jax</span><span class="w"> </span><span class="kn">import</span> <span class="n">random</span><span class="p">,</span> <span class="n">jit</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">partial</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">NamedTuple</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
@@ -386,7 +395,7 @@ generation deterministic and reproducible:</p>
 <section id="jax-compiled-functions">
 <h2><span class="section-number">27.3. </span>JAX-Compiled Functions<a class="headerlink" href="#jax-compiled-functions" title="Link to this heading">#</a></h2>
 <p>Now let’s rewrite our core functions for JAX.</p>
-<p>We add the <code class="docutils literal notranslate"><span class="pre">&#64;jit</span></code> decorator to compile functions for faster execution.</p>
+<p>We use <code class="docutils literal notranslate"><span class="pre">jit</span></code> to compile functions for faster execution.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@partial</span><span class="p">(</span><span class="n">jit</span><span class="p">,</span> <span class="n">static_argnames</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;params&#39;</span><span class="p">,))</span>
@@ -482,20 +491,7 @@ candidate locations directly and returns only the final location.</p>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@partial</span><span class="p">(</span><span class="n">jit</span><span class="p">,</span> <span class="n">static_argnames</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;params&#39;</span><span class="p">,))</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">get_unhappy_agents</span><span class="p">(</span><span class="n">locations</span><span class="p">,</span> <span class="n">types</span><span class="p">,</span> <span class="n">params</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Return a boolean array indicating which agents are unhappy.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">n</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="n">num_of_type_0</span> <span class="o">+</span> <span class="n">params</span><span class="o">.</span><span class="n">num_of_type_1</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">is_unhappy</span><span class="p">(</span><span class="n">i</span><span class="p">):</span>
-        <span class="k">return</span> <span class="o">~</span><span class="n">is_happy</span><span class="p">(</span><span class="n">locations</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">i</span><span class="p">,</span> <span class="n">locations</span><span class="p">,</span> <span class="n">types</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
-
-    <span class="k">return</span> <span class="n">vmap</span><span class="p">(</span><span class="n">is_unhappy</span><span class="p">)(</span><span class="n">jnp</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n</span><span class="p">))</span>
-
-
-<span class="k">def</span><span class="w"> </span><span class="nf">simulation_loop</span><span class="p">(</span><span class="n">locations</span><span class="p">,</span> <span class="n">types</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">max_iter</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">simulation_loop</span><span class="p">(</span><span class="n">locations</span><span class="p">,</span> <span class="n">types</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">max_iter</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Run the simulation loop until convergence or max iterations.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -503,20 +499,15 @@ candidate locations directly and returns only the final location.</p>
     <span class="n">converged</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="k">for</span> <span class="n">iteration</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">max_iter</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Entering iteration </span><span class="si">{</span><span class="n">iteration</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-
-        <span class="c1"># Find unhappy agents using vectorized computation</span>
-        <span class="n">unhappy</span> <span class="o">=</span> <span class="n">get_unhappy_agents</span><span class="p">(</span><span class="n">locations</span><span class="p">,</span> <span class="n">types</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
-
-        <span class="c1"># Check if everyone is happy</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">jnp</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">unhappy</span><span class="p">):</span>
-            <span class="n">converged</span> <span class="o">=</span> <span class="kc">True</span>
-            <span class="k">break</span>
-
-        <span class="c1"># Move the unhappy agents</span>
+        <span class="n">someone_moved</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
-            <span class="k">if</span> <span class="n">unhappy</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">is_happy</span><span class="p">(</span><span class="n">locations</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">i</span><span class="p">,</span> <span class="n">locations</span><span class="p">,</span> <span class="n">types</span><span class="p">,</span> <span class="n">params</span><span class="p">):</span>
                 <span class="n">new_loc</span><span class="p">,</span> <span class="n">key</span> <span class="o">=</span> <span class="n">move_agent</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">locations</span><span class="p">,</span> <span class="n">types</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
                 <span class="n">locations</span> <span class="o">=</span> <span class="n">locations</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">new_loc</span><span class="p">)</span>
+                <span class="n">someone_moved</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">someone_moved</span><span class="p">:</span>
+            <span class="n">converged</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">break</span>
 
     <span class="k">return</span> <span class="n">locations</span><span class="p">,</span> <span class="n">iteration</span><span class="p">,</span> <span class="n">converged</span><span class="p">,</span> <span class="n">key</span>
 </pre></div>
@@ -551,10 +542,8 @@ candidate locations directly and returns only the final location.</p>
 </div>
 </div>
 </div>
-<p>The simulation loop uses <code class="docutils literal notranslate"><span class="pre">get_unhappy_agents</span></code> to identify all unhappy agents
-in parallel via <code class="docutils literal notranslate"><span class="pre">vmap</span></code>, then processes them sequentially. As the simulation
-progresses and more agents become happy, fewer agents need processing each
-iteration.</p>
+<p>The simulation loop is similar to the NumPy version: it cycles through agents,
+checks each one for happiness, and moves the unhappy ones.</p>
 </section>
 <section id="results">
 <span id="schelling-jax-results"></span><h2><span class="section-number">27.5. </span>Results<a class="headerlink" href="#results" title="Link to this heading">#</a></h2>
@@ -567,7 +556,6 @@ before timing the simulation:</p>
 <span class="n">test_locations</span><span class="p">,</span> <span class="n">test_types</span> <span class="o">=</span> <span class="n">initialize_state</span><span class="p">(</span><span class="n">init_key</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
 
 <span class="n">_</span> <span class="o">=</span> <span class="n">is_happy</span><span class="p">(</span><span class="n">test_locations</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">0</span><span class="p">,</span> <span class="n">test_locations</span><span class="p">,</span> <span class="n">test_types</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
-<span class="n">_</span> <span class="o">=</span> <span class="n">get_unhappy_agents</span><span class="p">(</span><span class="n">test_locations</span><span class="p">,</span> <span class="n">test_types</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
 <span class="n">key</span><span class="p">,</span> <span class="n">subkey</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
 <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">move_agent</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">test_locations</span><span class="p">,</span> <span class="n">test_types</span><span class="p">,</span> <span class="n">subkey</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
 
@@ -599,12 +587,10 @@ Entering iteration 5
 Entering iteration 6
 Entering iteration 7
 Entering iteration 8
-Entering iteration 9
-Entering iteration 10
-Converged in 8.99 seconds after 10 iterations.
+Converged in 12.89 seconds after 8 iterations.
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="_images/5968201619ddb15d8e41e9a58cf22c1ab2d4cf08848cf306a60368d5bab3419f.png"><img alt="_images/5968201619ddb15d8e41e9a58cf22c1ab2d4cf08848cf306a60368d5bab3419f.png" src="_images/5968201619ddb15d8e41e9a58cf22c1ab2d4cf08848cf306a60368d5bab3419f.png" style="width: 80%;" />
+<a class="reference internal image-reference" href="_images/0ecff6e3c78d2bfc50c0b6557adfe9a925b101b09a69371a2047258fd127b4f6.png"><img alt="_images/0ecff6e3c78d2bfc50c0b6557adfe9a925b101b09a69371a2047258fd127b4f6.png" src="_images/0ecff6e3c78d2bfc50c0b6557adfe9a925b101b09a69371a2047258fd127b4f6.png" style="width: 80%;" />
 </a>
 </div>
 </div>
