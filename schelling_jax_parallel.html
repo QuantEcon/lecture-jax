@@ -207,25 +207,10 @@
                         <nav id="bd-toc-nav" class="qe-page__toc-nav">
                             <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">28.1. Overview</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#parameters">28.2. Parameters</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#shared-plotting-function">28.3. Shared Plotting Function</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#numpy-implementation">28.4. NumPy Implementation</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#jax-sequential-implementation">28.5. JAX Sequential Implementation</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#jax-parallel-implementation">28.6. JAX Parallel Implementation</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#trade-off-i">28.6.1. Trade-off I</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#trade-off-ii">28.6.2. Trade-off II</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#core-parallel-functions">28.6.3. Core Parallel Functions</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#parallel-simulation-loop">28.6.4. Parallel Simulation Loop</a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#warming-up-jax">28.7. Warming Up JAX</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-horse-race">28.8. The Horse Race</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#numpy">28.8.1. NumPy</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#jax-sequential">28.8.2. JAX Sequential</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#jax-parallel">28.8.3. JAX Parallel</a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#discussion">28.9. Discussion</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#setup">28.2. Setup</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-parallel-algorithm">28.3. The Parallel Algorithm</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#results">28.4. Results</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#discussion">28.5. Discussion</a></li>
 </ul>
                             <p class="logo">
                                 
@@ -281,7 +266,7 @@
 
                     <!-- Last modified / Changelog dropdown -->
                         <button class="qe-page__header-changed" id="changelog-toggle" aria-expanded="false">
-                            Last changed: Apr 08, 2026
+                            Last changed: Apr 15, 2026
                             <span class="changelog-icon">▼</span>
                         </button>
 
@@ -289,6 +274,15 @@
                     <div class="qe-page__header-changelog" id="changelog-content" aria-hidden="true">
                         <h4>Changelog (<a href="https://github.com/QuantEcon/lecture-jax/commits/main/lectures/schelling_jax_parallel.md">full history</a>)</h4>
                         <ul class="changelog-list">
+                            
+                            <li class="changelog-entry">
+                                
+                                <a href="https://github.com/QuantEcon/lecture-jax/commit/33d1348" class="changelog-hash">33d1348</a>
+                                
+                                <span class="changelog-author">John Stachurski</span>
+                                <span class="changelog-time">8 minutes ago</span>
+                                <span class="changelog-message">Improve Schelling lectures: consistency, clarity, and modernization (#304)</span>
+                            </li>
                             
                             <li class="changelog-entry">
                                 
@@ -324,31 +318,15 @@
 <h1><span class="section-number">28. </span>Parallelizing the Algorithm<a class="headerlink" href="#parallelizing-the-algorithm" title="Link to this heading">#</a></h1>
 <section id="overview">
 <h2><span class="section-number">28.1. </span>Overview<a class="headerlink" href="#overview" title="Link to this heading">#</a></h2>
-<p>In the previous lectures, we implemented the Schelling segregation model using:</p>
-<ol class="arabic simple">
-<li><p><a class="reference internal" href="schelling_numpy.html"><span class="doc">NumPy arrays and functions</span></a></p></li>
-<li><p><a class="reference internal" href="schelling_jax.html"><span class="doc">JAX with JIT compilation</span></a></p></li>
-</ol>
-<p>NumPy offered speed gains from vectorization.</p>
-<p>JAX was slightly faster, with some small amount of parallelization achieved.</p>
-<p>Parallelization was limited, however, because the algorithm is heavily
-sequential.</p>
-<p>In this lecture, we introduce a <strong>parallel algorithm</strong> that</p>
-<ul class="simple">
-<li><p>is in some sense less elegant but</p></li>
-<li><p>fully leverages JAX’s ability to perform vectorized operations across all agents simultaneously.</p></li>
-</ul>
-<p>Even though the algorithm is less elegant, it still converges in a relatively
-small number of steps.</p>
-<p>Moreover, the parallel nature of the algorithm allows us to exploit the full
-power of JAX.</p>
-<p>Our plan for the lecture is to compare three implementations</p>
-<ol class="arabic simple">
-<li><p>The original NumPy one,</p></li>
-<li><p>The original JAX one, and</p></li>
-<li><p>The new parallelized JAX algorithm.</p></li>
-</ol>
-<p>We’ll run a “horse race” to see how each approach performs.</p>
+<p>In the previous lectures, we implemented the Schelling segregation model using
+<a class="reference internal" href="schelling_numpy.html"><span class="doc">NumPy</span></a> and <a class="reference internal" href="schelling_jax.html"><span class="doc">JAX</span></a>.</p>
+<p>Both implementations are fundamentally sequential: agents update one at a time,
+and each agent’s move changes the state for subsequent agents.</p>
+<p>In this lecture, we introduce a <strong>parallel algorithm</strong> that fully leverages
+JAX’s ability to perform vectorized operations across all agents simultaneously.</p>
+<p>The algorithm is in some sense less elegant, but it still converges in a
+relatively small number of steps — and its parallel nature allows us to exploit
+the full power of JAX.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
@@ -358,18 +336,17 @@ power of JAX.</p>
 <span class="kn">from</span><span class="w"> </span><span class="nn">jax</span><span class="w"> </span><span class="kn">import</span> <span class="n">random</span><span class="p">,</span> <span class="n">jit</span><span class="p">,</span> <span class="n">vmap</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">partial</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">NamedTuple</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">numpy.random</span><span class="w"> </span><span class="kn">import</span> <span class="n">uniform</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
 </pre></div>
 </div>
 </div>
 </div>
 </section>
-<section id="parameters">
-<h2><span class="section-number">28.2. </span>Parameters<a class="headerlink" href="#parameters" title="Link to this heading">#</a></h2>
-<p>We use the same parameters across all implementations.</p>
-<p>To keep our functions pure, we pack all parameters into a <code class="docutils literal notranslate"><span class="pre">NamedTuple</span></code> that
-gets passed to functions that need them:</p>
+<section id="setup">
+<h2><span class="section-number">28.2. </span>Setup<a class="headerlink" href="#setup" title="Link to this heading">#</a></h2>
+<p>We use similar parameters to before, but with more agents and the addition of
+<code class="docutils literal notranslate"><span class="pre">num_candidates</span></code> — the number of candidate locations each agent considers per
+iteration:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">Params</span><span class="p">(</span><span class="n">NamedTuple</span><span class="p">):</span>
@@ -385,14 +362,49 @@ gets passed to functions that need them:</p>
 </div>
 </div>
 </div>
-</section>
-<section id="shared-plotting-function">
-<h2><span class="section-number">28.3. </span>Shared Plotting Function<a class="headerlink" href="#shared-plotting-function" title="Link to this heading">#</a></h2>
+<p>The following functions are repeated from the <a class="reference internal" href="schelling_jax.html"><span class="doc">previous lecture</span></a>:</p>
 <div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">initialize_state</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">params</span><span class="p">):</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="n">num_of_type_0</span> <span class="o">+</span> <span class="n">params</span><span class="o">.</span><span class="n">num_of_type_1</span>
+    <span class="n">locations</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+    <span class="n">types</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">jnp</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">num_of_type_0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">),</span>
+                              <span class="n">jnp</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">num_of_type_1</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)])</span>
+    <span class="k">return</span> <span class="n">locations</span><span class="p">,</span> <span class="n">types</span>
+
+
+<span class="nd">@partial</span><span class="p">(</span><span class="n">jit</span><span class="p">,</span> <span class="n">static_argnames</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;params&#39;</span><span class="p">,))</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">is_happy</span><span class="p">(</span><span class="n">loc</span><span class="p">,</span> <span class="n">agent_idx</span><span class="p">,</span> <span class="n">locations</span><span class="p">,</span> <span class="n">types</span><span class="p">,</span> <span class="n">params</span><span class="p">):</span>
+    <span class="s2">&quot; True if an agent at loc has at most max_other_type different-type neighbors. &quot;</span>
+    <span class="n">distances</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">loc</span> <span class="o">-</span> <span class="n">locations</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">distances</span> <span class="o">=</span> <span class="n">distances</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">agent_idx</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">inf</span><span class="p">)</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">neighbors</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">lax</span><span class="o">.</span><span class="n">top_k</span><span class="p">(</span><span class="o">-</span><span class="n">distances</span><span class="p">,</span> <span class="n">params</span><span class="o">.</span><span class="n">num_neighbors</span><span class="p">)</span>
+    <span class="n">num_other</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">types</span><span class="p">[</span><span class="n">neighbors</span><span class="p">]</span> <span class="o">!=</span> <span class="n">types</span><span class="p">[</span><span class="n">agent_idx</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">num_other</span> <span class="o">&lt;=</span> <span class="n">params</span><span class="o">.</span><span class="n">max_other_type</span>
+
+
+<span class="nd">@partial</span><span class="p">(</span><span class="n">jit</span><span class="p">,</span> <span class="n">static_argnames</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;params&#39;</span><span class="p">,))</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_unhappy_agents</span><span class="p">(</span><span class="n">locations</span><span class="p">,</span> <span class="n">types</span><span class="p">,</span> <span class="n">params</span><span class="p">):</span>
+    <span class="s2">&quot; Return a boolean array indicating which agents are unhappy. &quot;</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="n">num_of_type_0</span> <span class="o">+</span> <span class="n">params</span><span class="o">.</span><span class="n">num_of_type_1</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">is_unhappy</span><span class="p">(</span><span class="n">i</span><span class="p">):</span>
+        <span class="k">return</span> <span class="o">~</span><span class="n">is_happy</span><span class="p">(</span><span class="n">locations</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">i</span><span class="p">,</span> <span class="n">locations</span><span class="p">,</span> <span class="n">types</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">vmap</span><span class="p">(</span><span class="n">is_unhappy</span><span class="p">)(</span><span class="n">jnp</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">plot_distribution</span><span class="p">(</span><span class="n">locations</span><span class="p">,</span> <span class="n">types</span><span class="p">,</span> <span class="n">title</span><span class="p">):</span>
     <span class="s2">&quot; Plot the distribution of agents. &quot;</span>
-    <span class="c1"># Convert to NumPy if needed (for JAX arrays)</span>
     <span class="n">locations_np</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">locations</span><span class="p">)</span>
     <span class="n">types_np</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">types</span><span class="p">)</span>
 
@@ -411,274 +423,78 @@ gets passed to functions that need them:</p>
 </pre></div>
 </div>
 </div>
+</details>
 </div>
 </section>
-<section id="numpy-implementation">
-<h2><span class="section-number">28.4. </span>NumPy Implementation<a class="headerlink" href="#numpy-implementation" title="Link to this heading">#</a></h2>
-<p>First, let’s set up the NumPy version from <a class="reference internal" href="schelling_numpy.html"><span class="doc">Schelling Model with NumPy</span></a>:</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">np_initialize_state</span><span class="p">(</span><span class="n">params</span><span class="p">):</span>
-    <span class="n">n</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="n">num_of_type_0</span> <span class="o">+</span> <span class="n">params</span><span class="o">.</span><span class="n">num_of_type_1</span>
-    <span class="n">locations</span> <span class="o">=</span> <span class="n">uniform</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
-    <span class="n">types</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
-    <span class="n">types</span><span class="p">[</span><span class="n">params</span><span class="o">.</span><span class="n">num_of_type_0</span><span class="p">:]</span> <span class="o">=</span> <span class="mi">1</span>
-    <span class="k">return</span> <span class="n">locations</span><span class="p">,</span> <span class="n">types</span>
-
-
-<span class="k">def</span><span class="w"> </span><span class="nf">np_is_unhappy</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">locations</span><span class="p">,</span> <span class="n">types</span><span class="p">,</span> <span class="n">params</span><span class="p">):</span>
-    <span class="n">distances</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">locations</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">locations</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-    <span class="n">distances</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span>
-    <span class="n">neighbors</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">distances</span><span class="p">)[:</span><span class="n">params</span><span class="o">.</span><span class="n">num_neighbors</span><span class="p">]</span>
-    <span class="n">num_other</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">types</span><span class="p">[</span><span class="n">neighbors</span><span class="p">]</span> <span class="o">!=</span> <span class="n">types</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
-    <span class="k">return</span> <span class="n">num_other</span> <span class="o">&gt;</span> <span class="n">params</span><span class="o">.</span><span class="n">max_other_type</span>
-
-
-<span class="k">def</span><span class="w"> </span><span class="nf">np_update_agent</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">locations</span><span class="p">,</span> <span class="n">types</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">max_attempts</span><span class="o">=</span><span class="mi">10_000</span><span class="p">):</span>
-    <span class="n">attempts</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="k">while</span> <span class="n">np_is_unhappy</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">locations</span><span class="p">,</span> <span class="n">types</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span> <span class="ow">and</span> <span class="n">attempts</span> <span class="o">&lt;</span> <span class="n">max_attempts</span><span class="p">:</span>
-        <span class="n">locations</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">uniform</span><span class="p">(),</span> <span class="n">uniform</span><span class="p">()</span>
-        <span class="n">attempts</span> <span class="o">+=</span> <span class="mi">1</span>
-
-
-<span class="k">def</span><span class="w"> </span><span class="nf">run_numpy_simulation</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">100_000</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">42</span><span class="p">):</span>
-    <span class="n">n</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="n">num_of_type_0</span> <span class="o">+</span> <span class="n">params</span><span class="o">.</span><span class="n">num_of_type_1</span>
-    <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
-    <span class="n">locations</span><span class="p">,</span> <span class="n">types</span> <span class="o">=</span> <span class="n">np_initialize_state</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
-
-    <span class="n">plot_distribution</span><span class="p">(</span><span class="n">locations</span><span class="p">,</span> <span class="n">types</span><span class="p">,</span> <span class="s1">&#39;NumPy: Initial distribution&#39;</span><span class="p">)</span>
-
-    <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
-    <span class="n">converged</span> <span class="o">=</span> <span class="kc">False</span>
-    <span class="k">for</span> <span class="n">iteration</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">max_iter</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Entering iteration </span><span class="si">{</span><span class="n">iteration</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-        <span class="n">someone_moved</span> <span class="o">=</span> <span class="kc">False</span>
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
-            <span class="k">if</span> <span class="n">np_is_unhappy</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">locations</span><span class="p">,</span> <span class="n">types</span><span class="p">,</span> <span class="n">params</span><span class="p">):</span>
-                <span class="n">np_update_agent</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">locations</span><span class="p">,</span> <span class="n">types</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
-                <span class="n">someone_moved</span> <span class="o">=</span> <span class="kc">True</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">someone_moved</span><span class="p">:</span>
-            <span class="n">converged</span> <span class="o">=</span> <span class="kc">True</span>
-            <span class="k">break</span>
-    <span class="n">elapsed</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span>
-
-    <span class="n">plot_distribution</span><span class="p">(</span><span class="n">locations</span><span class="p">,</span> <span class="n">types</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;NumPy: Iteration </span><span class="si">{</span><span class="n">iteration</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-
-    <span class="k">if</span> <span class="n">converged</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Converged in </span><span class="si">{</span><span class="n">elapsed</span><span class="si">:</span><span class="s1">.2f</span><span class="si">}</span><span class="s1"> seconds after </span><span class="si">{</span><span class="n">iteration</span><span class="si">}</span><span class="s1"> iterations.&#39;</span><span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Hit iteration bound and terminated.&#39;</span><span class="p">)</span>
-
-    <span class="k">return</span> <span class="n">locations</span><span class="p">,</span> <span class="n">types</span>
-</pre></div>
-</div>
-</div>
-</div>
-</section>
-<section id="jax-sequential-implementation">
-<h2><span class="section-number">28.5. </span>JAX Sequential Implementation<a class="headerlink" href="#jax-sequential-implementation" title="Link to this heading">#</a></h2>
-<p>Next, we set up the JAX version from <a class="reference internal" href="schelling_jax.html"><span class="doc">Schelling Model with JAX</span></a>:</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">jax_initialize_state</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">params</span><span class="p">):</span>
-    <span class="n">n</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="n">num_of_type_0</span> <span class="o">+</span> <span class="n">params</span><span class="o">.</span><span class="n">num_of_type_1</span>
-    <span class="n">locations</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
-    <span class="n">types</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">jnp</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">num_of_type_0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">),</span>
-                              <span class="n">jnp</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">num_of_type_1</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)])</span>
-    <span class="k">return</span> <span class="n">locations</span><span class="p">,</span> <span class="n">types</span>
-
-
-<span class="nd">@partial</span><span class="p">(</span><span class="n">jit</span><span class="p">,</span> <span class="n">static_argnames</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;params&#39;</span><span class="p">,))</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">jax_is_unhappy</span><span class="p">(</span><span class="n">loc</span><span class="p">,</span> <span class="n">agent_type</span><span class="p">,</span> <span class="n">agent_idx</span><span class="p">,</span> <span class="n">locations</span><span class="p">,</span> <span class="n">types</span><span class="p">,</span> <span class="n">params</span><span class="p">):</span>
-    <span class="s2">&quot; True if an agent at loc has too many different-type neighbors. &quot;</span>
-    <span class="n">distances</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">loc</span> <span class="o">-</span> <span class="n">locations</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-    <span class="n">distances</span> <span class="o">=</span> <span class="n">distances</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">agent_idx</span><span class="p">]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">inf</span><span class="p">)</span>
-    <span class="n">_</span><span class="p">,</span> <span class="n">neighbors</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">lax</span><span class="o">.</span><span class="n">top_k</span><span class="p">(</span><span class="o">-</span><span class="n">distances</span><span class="p">,</span> <span class="n">params</span><span class="o">.</span><span class="n">num_neighbors</span><span class="p">)</span>
-    <span class="n">num_other</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">types</span><span class="p">[</span><span class="n">neighbors</span><span class="p">]</span> <span class="o">!=</span> <span class="n">agent_type</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">num_other</span> <span class="o">&gt;</span> <span class="n">params</span><span class="o">.</span><span class="n">max_other_type</span>
-
-
-<span class="nd">@partial</span><span class="p">(</span><span class="n">jit</span><span class="p">,</span> <span class="n">static_argnames</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;params&#39;</span><span class="p">,))</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">jax_update_agent</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">locations</span><span class="p">,</span> <span class="n">types</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">max_attempts</span><span class="o">=</span><span class="mi">10_000</span><span class="p">):</span>
-    <span class="n">loc</span> <span class="o">=</span> <span class="n">locations</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:]</span>
-    <span class="n">agent_type</span> <span class="o">=</span> <span class="n">types</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">cond_fn</span><span class="p">(</span><span class="n">state</span><span class="p">):</span>
-        <span class="n">loc</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">attempts</span> <span class="o">=</span> <span class="n">state</span>
-        <span class="k">return</span> <span class="p">(</span><span class="n">attempts</span> <span class="o">&lt;</span> <span class="n">max_attempts</span><span class="p">)</span> <span class="o">&amp;</span> <span class="n">jax_is_unhappy</span><span class="p">(</span><span class="n">loc</span><span class="p">,</span> <span class="n">agent_type</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">locations</span><span class="p">,</span> <span class="n">types</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">body_fn</span><span class="p">(</span><span class="n">state</span><span class="p">):</span>
-        <span class="n">_</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">attempts</span> <span class="o">=</span> <span class="n">state</span>
-        <span class="n">key</span><span class="p">,</span> <span class="n">subkey</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
-        <span class="n">new_loc</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">subkey</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,))</span>
-        <span class="k">return</span> <span class="n">new_loc</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">attempts</span> <span class="o">+</span> <span class="mi">1</span>
-
-    <span class="n">final_loc</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">jax</span><span class="o">.</span><span class="n">lax</span><span class="o">.</span><span class="n">while_loop</span><span class="p">(</span><span class="n">cond_fn</span><span class="p">,</span> <span class="n">body_fn</span><span class="p">,</span> <span class="p">(</span><span class="n">loc</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
-    <span class="k">return</span> <span class="n">final_loc</span><span class="p">,</span> <span class="n">key</span>
-
-
-<span class="nd">@partial</span><span class="p">(</span><span class="n">jit</span><span class="p">,</span> <span class="n">static_argnames</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;params&#39;</span><span class="p">,))</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">jax_get_unhappy_agents</span><span class="p">(</span><span class="n">locations</span><span class="p">,</span> <span class="n">types</span><span class="p">,</span> <span class="n">params</span><span class="p">):</span>
-    <span class="n">n</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="n">num_of_type_0</span> <span class="o">+</span> <span class="n">params</span><span class="o">.</span><span class="n">num_of_type_1</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">check_agent</span><span class="p">(</span><span class="n">i</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">jax_is_unhappy</span><span class="p">(</span><span class="n">locations</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">types</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">i</span><span class="p">,</span> <span class="n">locations</span><span class="p">,</span> <span class="n">types</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
-
-    <span class="n">all_unhappy</span> <span class="o">=</span> <span class="n">vmap</span><span class="p">(</span><span class="n">check_agent</span><span class="p">)(</span><span class="n">jnp</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n</span><span class="p">))</span>
-    <span class="n">indices</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">all_unhappy</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">n</span><span class="p">,</span> <span class="n">fill_value</span><span class="o">=-</span><span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="n">count</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">all_unhappy</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">indices</span><span class="p">,</span> <span class="n">count</span>
-
-
-<span class="k">def</span><span class="w"> </span><span class="nf">jax_simulation_loop</span><span class="p">(</span><span class="n">locations</span><span class="p">,</span> <span class="n">types</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">max_iter</span><span class="p">):</span>
-    <span class="n">converged</span> <span class="o">=</span> <span class="kc">False</span>
-    <span class="k">for</span> <span class="n">iteration</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">max_iter</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Entering iteration </span><span class="si">{</span><span class="n">iteration</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-
-        <span class="n">unhappy</span><span class="p">,</span> <span class="n">num_unhappy</span> <span class="o">=</span> <span class="n">jax_get_unhappy_agents</span><span class="p">(</span><span class="n">locations</span><span class="p">,</span> <span class="n">types</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
-        <span class="n">num_unhappy</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">num_unhappy</span><span class="p">)</span>
-
-        <span class="k">if</span> <span class="n">num_unhappy</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="n">converged</span> <span class="o">=</span> <span class="kc">True</span>
-            <span class="k">break</span>
-
-        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_unhappy</span><span class="p">):</span>
-            <span class="n">i</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">unhappy</span><span class="p">[</span><span class="n">j</span><span class="p">])</span>
-            <span class="n">new_loc</span><span class="p">,</span> <span class="n">key</span> <span class="o">=</span> <span class="n">jax_update_agent</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">locations</span><span class="p">,</span> <span class="n">types</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
-            <span class="n">locations</span> <span class="o">=</span> <span class="n">locations</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:]</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">new_loc</span><span class="p">)</span>
-
-    <span class="k">return</span> <span class="n">locations</span><span class="p">,</span> <span class="n">iteration</span><span class="p">,</span> <span class="n">converged</span><span class="p">,</span> <span class="n">key</span>
-
-
-<span class="k">def</span><span class="w"> </span><span class="nf">run_jax_simulation</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">100_000</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">42</span><span class="p">):</span>
-    <span class="n">key</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">PRNGKey</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
-    <span class="n">key</span><span class="p">,</span> <span class="n">init_key</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
-    <span class="n">locations</span><span class="p">,</span> <span class="n">types</span> <span class="o">=</span> <span class="n">jax_initialize_state</span><span class="p">(</span><span class="n">init_key</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
-
-    <span class="n">plot_distribution</span><span class="p">(</span><span class="n">locations</span><span class="p">,</span> <span class="n">types</span><span class="p">,</span> <span class="s1">&#39;JAX Sequential: Initial distribution&#39;</span><span class="p">)</span>
-
-    <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
-    <span class="n">locations</span><span class="p">,</span> <span class="n">iteration</span><span class="p">,</span> <span class="n">converged</span><span class="p">,</span> <span class="n">key</span> <span class="o">=</span> <span class="n">jax_simulation_loop</span><span class="p">(</span><span class="n">locations</span><span class="p">,</span> <span class="n">types</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">max_iter</span><span class="p">)</span>
-    <span class="n">elapsed</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span>
-
-    <span class="n">plot_distribution</span><span class="p">(</span><span class="n">locations</span><span class="p">,</span> <span class="n">types</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;JAX Sequential: Iteration </span><span class="si">{</span><span class="n">iteration</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-
-    <span class="k">if</span> <span class="n">converged</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Converged in </span><span class="si">{</span><span class="n">elapsed</span><span class="si">:</span><span class="s1">.2f</span><span class="si">}</span><span class="s1"> seconds after </span><span class="si">{</span><span class="n">iteration</span><span class="si">}</span><span class="s1"> iterations.&#39;</span><span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Hit iteration bound and terminated.&#39;</span><span class="p">)</span>
-
-    <span class="k">return</span> <span class="n">locations</span><span class="p">,</span> <span class="n">types</span>
-</pre></div>
-</div>
-</div>
-</div>
-</section>
-<section id="jax-parallel-implementation">
-<h2><span class="section-number">28.6. </span>JAX Parallel Implementation<a class="headerlink" href="#jax-parallel-implementation" title="Link to this heading">#</a></h2>
-<p>Now we introduce the parallel algorithm.</p>
+<section id="the-parallel-algorithm">
+<h2><span class="section-number">28.3. </span>The Parallel Algorithm<a class="headerlink" href="#the-parallel-algorithm" title="Link to this heading">#</a></h2>
 <p>Our aim is to update all agents at the same time, rather than sequentially.</p>
 <p>To do this we</p>
 <ol class="arabic simple">
-<li><p><strong>Identify all unhappy agents</strong> in parallel</p></li>
-<li><p><strong>Generate candidate locations</strong> for all unhappy agents in parallel</p></li>
+<li><p><strong>Generate candidate locations</strong> for all agents in parallel</p></li>
 <li><p><strong>Test happiness</strong> at all candidate locations in parallel</p></li>
-<li><p><strong>Update all agents</strong> simultaneously</p></li>
+<li><p><strong>Update all agents</strong> simultaneously — happy agents stay put, unhappy
+agents move to a happy candidate if one was found</p></li>
 </ol>
-<p>Moreover, when we generate candidate locations, we will offer a fixed number to
-all agents.</p>
-<p>This allows the parallel threads to do the same amount of work, so they all run
-at the same speed.</p>
+<p>We offer a fixed number of candidates to all agents, so that the parallel
+threads do the same amount of work and all run at the same speed.</p>
 <p>This approach is well-suited to GPU execution, where thousands of operations
 can run concurrently.</p>
-<section id="trade-off-i">
-<h3><span class="section-number">28.6.1. </span>Trade-off I<a class="headerlink" href="#trade-off-i" title="Link to this heading">#</a></h3>
-<p>The sequential algorithm guarantees that each agent finds a happy location
-before moving on.</p>
-<p>The parallel algorithm instead proposes a fixed number of candidate locations
-per agent per iteration.</p>
-<p>If none of the candidates make the agent happy, the agent stays put and tries again next iteration.</p>
-<p>This means the parallel algorithm may need more iterations.</p>
-<p>However, each iteration is faster because all work is done in parallel.</p>
-</section>
-<section id="trade-off-ii">
-<h3><span class="section-number">28.6.2. </span>Trade-off II<a class="headerlink" href="#trade-off-ii" title="Link to this heading">#</a></h3>
-<p>Because we update all agents at once, the agents have less information — they
-are predicting the next period distribution from the current one.</p>
-<p>(All agents take the current distribution of agents as their information, rather
-than waiting until other agents update and viewing the true distribution.)</p>
-<p>We hope that, nonetheless, the algorithm will converge.</p>
-</section>
-<section id="core-parallel-functions">
-<h3><span class="section-number">28.6.3. </span>Core Parallel Functions<a class="headerlink" href="#core-parallel-functions" title="Link to this heading">#</a></h3>
+<p>There are two trade-offs compared to the sequential algorithm.</p>
+<p>First, the sequential algorithm guarantees that each agent finds a happy
+location before moving on. The parallel algorithm instead proposes a fixed
+number of candidate locations per agent per iteration. If none of the
+candidates make the agent happy, the agent stays put and tries again next
+iteration. This means the parallel algorithm may need more iterations, but each
+iteration is faster because all work is done in parallel.</p>
+<p>Second, because we update all agents at once, the agents have less information
+— they are predicting the next period distribution from the current one. We
+hope that, nonetheless, the algorithm will converge.</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">update_agent_location</span></code> function below performs all computation (generating
 candidates, checking happiness at each candidate) upfront before making the
-final decision about whether to move.</p>
-<p>This may seem wasteful for agents who are
-already happy, but it’s actually optimal for parallel execution.</p>
-<p>In SIMD/SIMT architectures (GPUs, vectorized CPU operations), all threads
-execute the same instructions in lockstep.</p>
-<p>Conditional branches like <code class="docutils literal notranslate"><span class="pre">jax.lax.cond</span></code> don’t skip work—both branches are
-computed and the result is selected afterward.</p>
-<p>By doing uniform work for all agents and using <code class="docutils literal notranslate"><span class="pre">jnp.where</span></code>
-to select results at the end, we align with how the hardware actually executes
-the code.</p>
+final decision about whether to move. This may seem wasteful for agents who are
+already happy, but it’s actually optimal for parallel execution: on GPUs, all
+threads execute the same instructions in lockstep, so conditional branches
+don’t skip work.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nd">@partial</span><span class="p">(</span><span class="n">jit</span><span class="p">,</span> <span class="n">static_argnames</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;params&#39;</span><span class="p">,))</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">update_agent_location</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">locations</span><span class="p">,</span> <span class="n">types</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">params</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Propose num_candidates random locations for agent i.</span>
-<span class="sd">    Return the first happy candidate if agent is unhappy, otherwise current location.</span>
+<span class="sd">    Consider current location and num_candidates random alternatives.</span>
+<span class="sd">    Return the first happy one. Already happy agents stay put.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">num_candidates</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="n">num_candidates</span>
     <span class="n">current_loc</span> <span class="o">=</span> <span class="n">locations</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:]</span>
-    <span class="n">agent_type</span> <span class="o">=</span> <span class="n">types</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
 
-    <span class="c1"># Generate num_candidates random locations</span>
-    <span class="n">keys</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">num_candidates</span><span class="p">)</span>
-    <span class="n">candidates</span> <span class="o">=</span> <span class="n">vmap</span><span class="p">(</span><span class="k">lambda</span> <span class="n">k</span><span class="p">:</span> <span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,)))(</span><span class="n">keys</span><span class="p">)</span>
+    <span class="c1"># Build candidate list: current location + num_candidates random ones</span>
+    <span class="n">random_locs</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">num_candidates</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+    <span class="n">candidates</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span><span class="n">current_loc</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="p">:],</span> <span class="n">random_locs</span><span class="p">])</span>
 
-    <span class="c1"># Check happiness at each candidate location (in parallel)</span>
+    <span class="c1"># Check happiness at each candidate (in parallel)</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">check_candidate</span><span class="p">(</span><span class="n">loc</span><span class="p">):</span>
-        <span class="k">return</span> <span class="o">~</span><span class="n">jax_is_unhappy</span><span class="p">(</span><span class="n">loc</span><span class="p">,</span> <span class="n">agent_type</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">locations</span><span class="p">,</span> <span class="n">types</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
-    <span class="n">happy_at_candidates</span> <span class="o">=</span> <span class="n">vmap</span><span class="p">(</span><span class="n">check_candidate</span><span class="p">)(</span><span class="n">candidates</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">is_happy</span><span class="p">(</span><span class="n">loc</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">locations</span><span class="p">,</span> <span class="n">types</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
+    <span class="n">happy_at</span> <span class="o">=</span> <span class="n">vmap</span><span class="p">(</span><span class="n">check_candidate</span><span class="p">)(</span><span class="n">candidates</span><span class="p">)</span>
 
-    <span class="c1"># Find first happy candidate (if any)</span>
-    <span class="n">first_happy_idx</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">happy_at_candidates</span><span class="p">)</span>
-    <span class="n">any_happy</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">happy_at_candidates</span><span class="p">)</span>
-
-    <span class="c1"># Check if agent is already happy at current location</span>
-    <span class="n">is_happy</span> <span class="o">=</span> <span class="o">~</span><span class="n">jax_is_unhappy</span><span class="p">(</span><span class="n">current_loc</span><span class="p">,</span> <span class="n">agent_type</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">locations</span><span class="p">,</span> <span class="n">types</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
-
-    <span class="c1"># Move only if unhappy and found a happy candidate; otherwise stay put</span>
-    <span class="n">new_loc</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">is_happy</span><span class="p">,</span>
-                <span class="n">current_loc</span><span class="p">,</span>                      <span class="c1"># Happy agents branch</span>
-                <span class="n">jnp</span><span class="o">.</span><span class="n">where</span><span class="p">(</span>                        <span class="c1"># Unhappy agents branch</span>
-                    <span class="n">any_happy</span><span class="p">,</span>                    <span class="c1"># If there is a good candidate </span>
-                    <span class="n">candidates</span><span class="p">[</span><span class="n">first_happy_idx</span><span class="p">],</span>  <span class="c1"># Move to it</span>
-                    <span class="n">current_loc</span>                   <span class="c1"># Otherwise stay still</span>
-                <span class="p">)</span>
-              <span class="p">)</span>
-    <span class="k">return</span> <span class="n">new_loc</span>
+    <span class="c1"># Take the first happy candidate, or stay put if none are happy</span>
+    <span class="n">first_happy_idx</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">happy_at</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">jnp</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">happy_at</span><span class="p">),</span>
+                     <span class="n">candidates</span><span class="p">[</span><span class="n">first_happy_idx</span><span class="p">],</span>
+                     <span class="n">current_loc</span><span class="p">)</span>
 
 
 <span class="nd">@partial</span><span class="p">(</span><span class="n">jit</span><span class="p">,</span> <span class="n">static_argnames</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;params&#39;</span><span class="p">,))</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">parallel_update_step</span><span class="p">(</span><span class="n">locations</span><span class="p">,</span> <span class="n">types</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">params</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    One step of the parallel algorithm:</span>
-<span class="sd">    1. Generate keys for all agents</span>
-<span class="sd">    2. For each agent, find a happy candidate location (in parallel)</span>
-<span class="sd">       (happy agents stay put, unhappy agents search for new locations)</span>
+<span class="sd">    One step of the parallel algorithm: for each agent, find a happy</span>
+<span class="sd">    candidate location (in parallel). Happy agents stay put, unhappy</span>
+<span class="sd">    agents search for new locations.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">n</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="n">num_of_type_0</span> <span class="o">+</span> <span class="n">params</span><span class="o">.</span><span class="n">num_of_type_1</span>
 
-    <span class="c1"># Generate keys for all agents</span>
     <span class="n">keys</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
     <span class="n">key</span> <span class="o">=</span> <span class="n">keys</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
     <span class="n">agent_keys</span> <span class="o">=</span> <span class="n">keys</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
 
-    <span class="c1"># For each agent, find a happy candidate location (in parallel)</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">update_one_agent</span><span class="p">(</span><span class="n">i</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">update_agent_location</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">locations</span><span class="p">,</span> <span class="n">types</span><span class="p">,</span> <span class="n">agent_keys</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">params</span><span class="p">)</span>
     <span class="n">new_locations</span> <span class="o">=</span> <span class="n">vmap</span><span class="p">(</span><span class="n">update_one_agent</span><span class="p">)(</span><span class="n">jnp</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n</span><span class="p">))</span>
@@ -688,9 +504,6 @@ the code.</p>
 </div>
 </div>
 </div>
-</section>
-<section id="parallel-simulation-loop">
-<h3><span class="section-number">28.6.4. </span>Parallel Simulation Loop<a class="headerlink" href="#parallel-simulation-loop" title="Link to this heading">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">parallel_simulation_loop</span><span class="p">(</span><span class="n">locations</span><span class="p">,</span> <span class="n">types</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">max_iter</span><span class="p">):</span>
@@ -698,10 +511,9 @@ the code.</p>
     <span class="k">for</span> <span class="n">iteration</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">max_iter</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Entering iteration </span><span class="si">{</span><span class="n">iteration</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 
-        <span class="n">_</span><span class="p">,</span> <span class="n">num_unhappy</span> <span class="o">=</span> <span class="n">jax_get_unhappy_agents</span><span class="p">(</span><span class="n">locations</span><span class="p">,</span> <span class="n">types</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
-        <span class="n">num_unhappy</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">num_unhappy</span><span class="p">)</span>
+        <span class="n">unhappy</span> <span class="o">=</span> <span class="n">get_unhappy_agents</span><span class="p">(</span><span class="n">locations</span><span class="p">,</span> <span class="n">types</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="n">num_unhappy</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">jnp</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">unhappy</span><span class="p">):</span>
             <span class="n">converged</span> <span class="o">=</span> <span class="kc">True</span>
             <span class="k">break</span>
 
@@ -711,17 +523,17 @@ the code.</p>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">run_parallel_simulation</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">100_000</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">42</span><span class="p">):</span>
-    <span class="n">key</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">PRNGKey</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
+    <span class="n">key</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">key</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
     <span class="n">key</span><span class="p">,</span> <span class="n">init_key</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
-    <span class="n">locations</span><span class="p">,</span> <span class="n">types</span> <span class="o">=</span> <span class="n">jax_initialize_state</span><span class="p">(</span><span class="n">init_key</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
+    <span class="n">locations</span><span class="p">,</span> <span class="n">types</span> <span class="o">=</span> <span class="n">initialize_state</span><span class="p">(</span><span class="n">init_key</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
 
-    <span class="n">plot_distribution</span><span class="p">(</span><span class="n">locations</span><span class="p">,</span> <span class="n">types</span><span class="p">,</span> <span class="s1">&#39;JAX Parallel: Initial distribution&#39;</span><span class="p">)</span>
+    <span class="n">plot_distribution</span><span class="p">(</span><span class="n">locations</span><span class="p">,</span> <span class="n">types</span><span class="p">,</span> <span class="s1">&#39;Initial distribution&#39;</span><span class="p">)</span>
 
     <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
     <span class="n">locations</span><span class="p">,</span> <span class="n">iteration</span><span class="p">,</span> <span class="n">converged</span><span class="p">,</span> <span class="n">key</span> <span class="o">=</span> <span class="n">parallel_simulation_loop</span><span class="p">(</span><span class="n">locations</span><span class="p">,</span> <span class="n">types</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">max_iter</span><span class="p">)</span>
     <span class="n">elapsed</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span>
 
-    <span class="n">plot_distribution</span><span class="p">(</span><span class="n">locations</span><span class="p">,</span> <span class="n">types</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;JAX Parallel: Iteration </span><span class="si">{</span><span class="n">iteration</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">plot_distribution</span><span class="p">(</span><span class="n">locations</span><span class="p">,</span> <span class="n">types</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;Iteration </span><span class="si">{</span><span class="n">iteration</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">converged</span><span class="p">:</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Converged in </span><span class="si">{</span><span class="n">elapsed</span><span class="si">:</span><span class="s1">.2f</span><span class="si">}</span><span class="s1"> seconds after </span><span class="si">{</span><span class="n">iteration</span><span class="si">}</span><span class="s1"> iterations.&#39;</span><span class="p">)</span>
@@ -734,23 +546,17 @@ the code.</p>
 </div>
 </div>
 </section>
-</section>
-<section id="warming-up-jax">
-<h2><span class="section-number">28.7. </span>Warming Up JAX<a class="headerlink" href="#warming-up-jax" title="Link to this heading">#</a></h2>
-<p>Before timing, we compile all JAX functions:</p>
+<section id="results">
+<h2><span class="section-number">28.4. </span>Results<a class="headerlink" href="#results" title="Link to this heading">#</a></h2>
+<p>Let’s warm up the JIT-compiled functions and run the simulation:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">key</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">PRNGKey</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">key</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">key</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
 <span class="n">key</span><span class="p">,</span> <span class="n">init_key</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
-<span class="n">test_locations</span><span class="p">,</span> <span class="n">test_types</span> <span class="o">=</span> <span class="n">jax_initialize_state</span><span class="p">(</span><span class="n">init_key</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
+<span class="n">test_locations</span><span class="p">,</span> <span class="n">test_types</span> <span class="o">=</span> <span class="n">initialize_state</span><span class="p">(</span><span class="n">init_key</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
 
-<span class="c1"># Warm up JAX sequential functions</span>
-<span class="n">_</span> <span class="o">=</span> <span class="n">jax_is_unhappy</span><span class="p">(</span><span class="n">test_locations</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">test_types</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">0</span><span class="p">,</span> <span class="n">test_locations</span><span class="p">,</span> <span class="n">test_types</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
-<span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">jax_get_unhappy_agents</span><span class="p">(</span><span class="n">test_locations</span><span class="p">,</span> <span class="n">test_types</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
-<span class="n">key</span><span class="p">,</span> <span class="n">subkey</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
-<span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">jax_update_agent</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">test_locations</span><span class="p">,</span> <span class="n">test_types</span><span class="p">,</span> <span class="n">subkey</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
-
-<span class="c1"># Warm up JAX parallel functions</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">is_happy</span><span class="p">(</span><span class="n">test_locations</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">0</span><span class="p">,</span> <span class="n">test_locations</span><span class="p">,</span> <span class="n">test_types</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">get_unhappy_agents</span><span class="p">(</span><span class="n">test_locations</span><span class="p">,</span> <span class="n">test_types</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
 <span class="n">key</span><span class="p">,</span> <span class="n">subkey</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
 <span class="n">_</span> <span class="o">=</span> <span class="n">update_agent_location</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">test_locations</span><span class="p">,</span> <span class="n">test_types</span><span class="p">,</span> <span class="n">subkey</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
 <span class="n">key</span><span class="p">,</span> <span class="n">subkey</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
@@ -766,60 +572,16 @@ the code.</p>
 </div>
 </div>
 </div>
-</section>
-<section id="the-horse-race">
-<h2><span class="section-number">28.8. </span>The Horse Race<a class="headerlink" href="#the-horse-race" title="Link to this heading">#</a></h2>
-<p>Now let’s run all three implementations and compare their performance.</p>
-<section id="numpy">
-<h3><span class="section-number">28.8.1. </span>NumPy<a class="headerlink" href="#numpy" title="Link to this heading">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;=&quot;</span> <span class="o">*</span> <span class="mi">50</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;NUMPY&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;=&quot;</span> <span class="o">*</span> <span class="mi">50</span><span class="p">)</span>
-<span class="n">locations_np</span><span class="p">,</span> <span class="n">types_np</span> <span class="o">=</span> <span class="n">run_numpy_simulation</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">locations</span><span class="p">,</span> <span class="n">types</span> <span class="o">=</span> <span class="n">run_parallel_simulation</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>==================================================
-NUMPY
-==================================================
-Entering iteration 1
-Entering iteration 2
-Entering iteration 3
-Entering iteration 4
-Entering iteration 5
-Entering iteration 6
-Entering iteration 7
-Entering iteration 8
-Entering iteration 9
-Converged in 7.31 seconds after 9 iterations.
-</pre></div>
-</div>
-<a class="reference internal image-reference" href="_images/fc8163ffbe6c795030c440cbf4e8b17783ecf9de4557a00e9c60cea27bba1b86.png"><img alt="_images/fc8163ffbe6c795030c440cbf4e8b17783ecf9de4557a00e9c60cea27bba1b86.png" src="_images/fc8163ffbe6c795030c440cbf4e8b17783ecf9de4557a00e9c60cea27bba1b86.png" style="width: 80%;" />
+<a class="reference internal image-reference" href="_images/4834a3423cb0b3f0d36ecf34dbca0367e70f9aad256033b5fe9fb0cf8d9fce43.png"><img alt="_images/4834a3423cb0b3f0d36ecf34dbca0367e70f9aad256033b5fe9fb0cf8d9fce43.png" src="_images/4834a3423cb0b3f0d36ecf34dbca0367e70f9aad256033b5fe9fb0cf8d9fce43.png" style="width: 80%;" />
 </a>
-<a class="reference internal image-reference" href="_images/4175ecee6addf8cfdd652b88195bf608d935bf40add074661d8a0da8882ec969.png"><img alt="_images/4175ecee6addf8cfdd652b88195bf608d935bf40add074661d8a0da8882ec969.png" src="_images/4175ecee6addf8cfdd652b88195bf608d935bf40add074661d8a0da8882ec969.png" style="width: 80%;" />
-</a>
-</div>
-</div>
-</section>
-<section id="jax-sequential">
-<h3><span class="section-number">28.8.2. </span>JAX Sequential<a class="headerlink" href="#jax-sequential" title="Link to this heading">#</a></h3>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;=&quot;</span> <span class="o">*</span> <span class="mi">50</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;JAX SEQUENTIAL&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;=&quot;</span> <span class="o">*</span> <span class="mi">50</span><span class="p">)</span>
-<span class="n">locations_jax</span><span class="p">,</span> <span class="n">types_jax</span> <span class="o">=</span> <span class="n">run_jax_simulation</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>==================================================
-JAX SEQUENTIAL
-==================================================
-Entering iteration 1
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Entering iteration 1
 Entering iteration 2
 Entering iteration 3
 Entering iteration 4
@@ -835,56 +597,20 @@ Entering iteration 13
 Entering iteration 14
 Entering iteration 15
 Entering iteration 16
-Converged in 2.76 seconds after 16 iterations.
+Converged in 0.53 seconds after 16 iterations.
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="_images/33957109050ef67c8fbe8e9c87b251825690eda18d335eac5be95fde38a781f2.png"><img alt="_images/33957109050ef67c8fbe8e9c87b251825690eda18d335eac5be95fde38a781f2.png" src="_images/33957109050ef67c8fbe8e9c87b251825690eda18d335eac5be95fde38a781f2.png" style="width: 80%;" />
-</a>
-<a class="reference internal image-reference" href="_images/d200c8f4be094afeec27a726dab86dde6cc3af8fda68af602e06f7104f1fb24b.png"><img alt="_images/d200c8f4be094afeec27a726dab86dde6cc3af8fda68af602e06f7104f1fb24b.png" src="_images/d200c8f4be094afeec27a726dab86dde6cc3af8fda68af602e06f7104f1fb24b.png" style="width: 80%;" />
+<a class="reference internal image-reference" href="_images/6e4e021e472de8ccb6c25b0b56a122f77e95e83b1703763dad020df19fcd8afe.png"><img alt="_images/6e4e021e472de8ccb6c25b0b56a122f77e95e83b1703763dad020df19fcd8afe.png" src="_images/6e4e021e472de8ccb6c25b0b56a122f77e95e83b1703763dad020df19fcd8afe.png" style="width: 80%;" />
 </a>
 </div>
 </div>
-</section>
-<section id="jax-parallel">
-<h3><span class="section-number">28.8.3. </span>JAX Parallel<a class="headerlink" href="#jax-parallel" title="Link to this heading">#</a></h3>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;=&quot;</span> <span class="o">*</span> <span class="mi">50</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;JAX PARALLEL&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;=&quot;</span> <span class="o">*</span> <span class="mi">50</span><span class="p">)</span>
-<span class="n">locations_par</span><span class="p">,</span> <span class="n">types_par</span> <span class="o">=</span> <span class="n">run_parallel_simulation</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>==================================================
-JAX PARALLEL
-==================================================
-Entering iteration 1
-Entering iteration 2
-Entering iteration 3
-Entering iteration 4
-Entering iteration 5
-Entering iteration 6
-Entering iteration 7
-Entering iteration 8
-Entering iteration 9
-Entering iteration 10
-Entering iteration 11
-Entering iteration 12
-Converged in 0.31 seconds after 12 iterations.
-</pre></div>
-</div>
-<a class="reference internal image-reference" href="_images/e7ef4b872a2a5efcf3ca6219eed42ee1f9ecfd6537fd25985f5ba2bd4e19ef52.png"><img alt="_images/e7ef4b872a2a5efcf3ca6219eed42ee1f9ecfd6537fd25985f5ba2bd4e19ef52.png" src="_images/e7ef4b872a2a5efcf3ca6219eed42ee1f9ecfd6537fd25985f5ba2bd4e19ef52.png" style="width: 80%;" />
-</a>
-<a class="reference internal image-reference" href="_images/91a8b47f14601fec9c9b6462f6e2a74bc22571ef1c7d381eb972653522c2cbb7.png"><img alt="_images/91a8b47f14601fec9c9b6462f6e2a74bc22571ef1c7d381eb972653522c2cbb7.png" src="_images/91a8b47f14601fec9c9b6462f6e2a74bc22571ef1c7d381eb972653522c2cbb7.png" style="width: 80%;" />
-</a>
-</div>
-</div>
-</section>
+<p>You can compare the execution time with the
+<a class="reference internal" href="schelling_numpy.html#schelling-numpy-results"><span class="std std-ref">NumPy</span></a> and
+<a class="reference internal" href="schelling_jax.html#schelling-jax-results"><span class="std std-ref">JAX sequential</span></a> results from the previous
+lectures.</p>
 </section>
 <section id="discussion">
-<h2><span class="section-number">28.9. </span>Discussion<a class="headerlink" href="#discussion" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">28.5. </span>Discussion<a class="headerlink" href="#discussion" title="Link to this heading">#</a></h2>
 <p>The parallel approach processes all agents simultaneously each iteration.</p>
 <p>While it may require more iterations (since agents get only a fixed number of
 candidate locations), each iteration leverages massive parallelism.</p>

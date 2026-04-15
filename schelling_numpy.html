@@ -211,7 +211,7 @@
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">26.1. Overview</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-representation">26.2. Data Representation</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#helper-functions">26.3. Helper Functions</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#checking-unhappiness">26.3.1. Checking Unhappiness</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#checking-happiness">26.3.1. Checking Happiness</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#moving-unhappy-agents">26.3.2. Moving Unhappy Agents</a></li>
 </ul>
 </li>
@@ -274,7 +274,7 @@
 
                     <!-- Last modified / Changelog dropdown -->
                         <button class="qe-page__header-changed" id="changelog-toggle" aria-expanded="false">
-                            Last changed: Apr 08, 2026
+                            Last changed: Apr 15, 2026
                             <span class="changelog-icon">▼</span>
                         </button>
 
@@ -282,6 +282,15 @@
                     <div class="qe-page__header-changelog" id="changelog-content" aria-hidden="true">
                         <h4>Changelog (<a href="https://github.com/QuantEcon/lecture-jax/commits/main/lectures/schelling_numpy.md">full history</a>)</h4>
                         <ul class="changelog-list">
+                            
+                            <li class="changelog-entry">
+                                
+                                <a href="https://github.com/QuantEcon/lecture-jax/commit/33d1348" class="changelog-hash">33d1348</a>
+                                
+                                <span class="changelog-author">John Stachurski</span>
+                                <span class="changelog-time">8 minutes ago</span>
+                                <span class="changelog-message">Improve Schelling lectures: consistency, clarity, and modernization (#304)</span>
+                            </li>
                             
                             <li class="changelog-entry">
                                 
@@ -399,35 +408,20 @@ First 20 types: [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0]
 <section id="helper-functions">
 <h2><span class="section-number">26.3. </span>Helper Functions<a class="headerlink" href="#helper-functions" title="Link to this heading">#</a></h2>
 <p>Let’s write some functions that compute what we need while operating on the arrays.</p>
-<section id="checking-unhappiness">
-<h3><span class="section-number">26.3.1. </span>Checking Unhappiness<a class="headerlink" href="#checking-unhappiness" title="Link to this heading">#</a></h3>
-<p>An agent is unhappy if more than <code class="docutils literal notranslate"><span class="pre">max_other_type</span></code> of their nearest neighbors
+<section id="checking-happiness">
+<h3><span class="section-number">26.3.1. </span>Checking Happiness<a class="headerlink" href="#checking-happiness" title="Link to this heading">#</a></h3>
+<p>An agent is happy if at most <code class="docutils literal notranslate"><span class="pre">max_other_type</span></code> of their nearest neighbors
 are of a different type:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">is_unhappy</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">locations</span><span class="p">,</span> <span class="n">types</span><span class="p">):</span>
-    <span class="s2">&quot; True if agent i has more than max_other_type neighbors of a different type. &quot;</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">is_happy</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">locations</span><span class="p">,</span> <span class="n">types</span><span class="p">):</span>
+    <span class="s2">&quot; True if agent i has at most max_other_type neighbors of a different type. &quot;</span>
     <span class="c1"># Compute distance from agent i to every other agent</span>
     <span class="n">distances</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">locations</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">locations</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
     <span class="n">distances</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span>                              <span class="c1"># exclude self</span>
     <span class="n">neighbors</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">distances</span><span class="p">)[:</span><span class="n">num_neighbors</span><span class="p">]</span>  <span class="c1"># indices of nearest</span>
     <span class="n">num_other</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">types</span><span class="p">[</span><span class="n">neighbors</span><span class="p">]</span> <span class="o">!=</span> <span class="n">types</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
-    <span class="k">return</span> <span class="n">num_other</span> <span class="o">&gt;</span> <span class="n">max_other_type</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check if agent 0 is unhappy</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Agent 0 type: </span><span class="si">{</span><span class="n">types</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Agent 0 unhappy: </span><span class="si">{</span><span class="n">is_unhappy</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">locations</span><span class="p">,</span><span class="w"> </span><span class="n">types</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Agent 0 type: 0
-Agent 0 unhappy: False
+    <span class="k">return</span> <span class="n">num_other</span> <span class="o">&lt;=</span> <span class="n">max_other_type</span>
 </pre></div>
 </div>
 </div>
@@ -439,10 +433,10 @@ Agent 0 unhappy: False
 one where they’re happy:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">update_agent</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">locations</span><span class="p">,</span> <span class="n">types</span><span class="p">,</span> <span class="n">max_attempts</span><span class="o">=</span><span class="mi">10_000</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">move_agent</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">locations</span><span class="p">,</span> <span class="n">types</span><span class="p">,</span> <span class="n">max_attempts</span><span class="o">=</span><span class="mi">10_000</span><span class="p">):</span>
     <span class="s2">&quot; Move agent i to a new location where they are happy. &quot;</span>
     <span class="n">attempts</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="k">while</span> <span class="n">is_unhappy</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">locations</span><span class="p">,</span> <span class="n">types</span><span class="p">)</span> <span class="ow">and</span> <span class="n">attempts</span> <span class="o">&lt;</span> <span class="n">max_attempts</span><span class="p">:</span>
+    <span class="k">while</span> <span class="ow">not</span> <span class="n">is_happy</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">locations</span><span class="p">,</span> <span class="n">types</span><span class="p">)</span> <span class="ow">and</span> <span class="n">attempts</span> <span class="o">&lt;</span> <span class="n">max_attempts</span><span class="p">:</span>
         <span class="n">locations</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">uniform</span><span class="p">(),</span> <span class="n">uniform</span><span class="p">()</span>
         <span class="n">attempts</span> <span class="o">+=</span> <span class="mi">1</span>
 </pre></div>
@@ -456,7 +450,12 @@ is visible to all code that references <code class="docutils literal notranslate
 <section id="visualization">
 <h2><span class="section-number">26.4. </span>Visualization<a class="headerlink" href="#visualization" title="Link to this heading">#</a></h2>
 <p>Here’s some code for visualization — we’ll skip the details</p>
-<div class="cell docutils container">
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">plot_distribution</span><span class="p">(</span><span class="n">locations</span><span class="p">,</span> <span class="n">types</span><span class="p">,</span> <span class="n">title</span><span class="p">):</span>
     <span class="s2">&quot; Plot the distribution of agents. &quot;</span>
@@ -479,6 +478,7 @@ is visible to all code that references <code class="docutils literal notranslate
 </pre></div>
 </div>
 </div>
+</details>
 </div>
 <p>Let’s visualize the initial random distribution:</p>
 <div class="cell docutils container">
@@ -520,8 +520,8 @@ giving each the opportunity to move:</p>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Entering iteration </span><span class="si">{</span><span class="n">iteration</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
         <span class="n">someone_moved</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
-            <span class="k">if</span> <span class="n">is_unhappy</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">locations</span><span class="p">,</span> <span class="n">types</span><span class="p">):</span>
-                <span class="n">update_agent</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">locations</span><span class="p">,</span> <span class="n">types</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">is_happy</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">locations</span><span class="p">,</span> <span class="n">types</span><span class="p">):</span>
+                <span class="n">move_agent</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">locations</span><span class="p">,</span> <span class="n">types</span><span class="p">)</span>
                 <span class="n">someone_moved</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">someone_moved</span><span class="p">:</span>
             <span class="n">converged</span> <span class="o">=</span> <span class="kc">True</span>
@@ -542,7 +542,7 @@ giving each the opportunity to move:</p>
 </div>
 </section>
 <section id="results">
-<h2><span class="section-number">26.6. </span>Results<a class="headerlink" href="#results" title="Link to this heading">#</a></h2>
+<span id="schelling-numpy-results"></span><h2><span class="section-number">26.6. </span>Results<a class="headerlink" href="#results" title="Link to this heading">#</a></h2>
 <p>Let’s run the simulation:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -560,7 +560,7 @@ Entering iteration 4
 Entering iteration 5
 Entering iteration 6
 Entering iteration 7
-Converged in 1.94 seconds after 7 iterations.
+Converged in 1.88 seconds after 7 iterations.
 </pre></div>
 </div>
 <a class="reference internal image-reference" href="_images/5167d885f4b0cb0df0fb701efb1a6c998135077dd0ba29641849da2d726da150.png"><img alt="_images/5167d885f4b0cb0df0fb701efb1a6c998135077dd0ba29641849da2d726da150.png" src="_images/5167d885f4b0cb0df0fb701efb1a6c998135077dd0ba29641849da2d726da150.png" style="width: 80%;" />

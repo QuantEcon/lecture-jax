@@ -281,7 +281,7 @@
 
                     <!-- Last modified / Changelog dropdown -->
                         <button class="qe-page__header-changed" id="changelog-toggle" aria-expanded="false">
-                            Last changed: Apr 08, 2026
+                            Last changed: Apr 15, 2026
                             <span class="changelog-icon">▼</span>
                         </button>
 
@@ -289,6 +289,15 @@
                     <div class="qe-page__header-changelog" id="changelog-content" aria-hidden="true">
                         <h4>Changelog (<a href="https://github.com/QuantEcon/lecture-jax/commits/main/lectures/schelling.md">full history</a>)</h4>
                         <ul class="changelog-list">
+                            
+                            <li class="changelog-entry">
+                                
+                                <a href="https://github.com/QuantEcon/lecture-jax/commit/33d1348" class="changelog-hash">33d1348</a>
+                                
+                                <span class="changelog-author">John Stachurski</span>
+                                <span class="changelog-time">8 minutes ago</span>
+                                <span class="changelog-message">Improve Schelling lectures: consistency, clarity, and modernization (#304)</span>
+                            </li>
                             
                             <li class="changelog-entry">
                                 
@@ -361,6 +370,11 @@ role.</p>
 <span class="kn">from</span><span class="w"> </span><span class="nn">random</span><span class="w"> </span><span class="kn">import</span> <span class="n">uniform</span><span class="p">,</span> <span class="n">seed</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">math</span><span class="w"> </span><span class="kn">import</span> <span class="n">sqrt</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Matplotlib is building the font cache; this may take a moment.
 </pre></div>
 </div>
 </div>
@@ -531,54 +545,33 @@ to move.</p>
 <p>Here’s a collection of functions that act on agents:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">move_agent</span><span class="p">(</span><span class="n">agent</span><span class="p">):</span>
-    <span class="s2">&quot;Provide agent with a new location.&quot;</span>
-    <span class="n">agent</span><span class="o">.</span><span class="n">location</span> <span class="o">=</span> <span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-
-
-<span class="k">def</span><span class="w"> </span><span class="nf">get_distance</span><span class="p">(</span><span class="n">agent</span><span class="p">,</span> <span class="n">other_agent</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">get_distance</span><span class="p">(</span><span class="n">agent</span><span class="p">,</span> <span class="n">other_agent</span><span class="p">):</span>
     <span class="s2">&quot;Computes the Euclidean distance between self and other agent.&quot;</span>
     <span class="n">a</span> <span class="o">=</span> <span class="n">agent</span><span class="o">.</span><span class="n">location</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">other_agent</span><span class="o">.</span><span class="n">location</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
     <span class="n">b</span> <span class="o">=</span> <span class="n">agent</span><span class="o">.</span><span class="n">location</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">other_agent</span><span class="o">.</span><span class="n">location</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
     <span class="k">return</span> <span class="n">sqrt</span><span class="p">(</span><span class="n">a</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">b</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
 
 
-<span class="k">def</span><span class="w"> </span><span class="nf">happy</span><span class="p">(</span><span class="n">agent</span><span class="p">,</span> <span class="n">all_agents</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">is_happy</span><span class="p">(</span><span class="n">agent</span><span class="p">,</span> <span class="n">all_agents</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Test happiness of agent, given locations of others (all_agents).</span>
-
-<span class="sd">    Return true if the number of neighbors with a different type is not more</span>
-<span class="sd">    than max_other_type.</span>
+<span class="sd">    True if agent has at most max_other_type different-type agents</span>
+<span class="sd">    among its num_neighbors nearest neighbors.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Collect all other agents, sorted by distance to agent</span>
+    <span class="n">others</span> <span class="o">=</span> <span class="p">[</span><span class="n">a</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">all_agents</span> <span class="k">if</span> <span class="n">a</span> <span class="o">!=</span> <span class="n">agent</span><span class="p">]</span>
+    <span class="n">others</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">a</span><span class="p">:</span> <span class="n">get_distance</span><span class="p">(</span><span class="n">agent</span><span class="p">,</span> <span class="n">a</span><span class="p">))</span>
 
-    <span class="c1"># Set up a list of pairs (distance, other_agent) that records the</span>
-    <span class="c1"># distance from agent to all other agents.</span>
-    <span class="n">distances</span> <span class="o">=</span> <span class="p">[]</span>
-
-    <span class="c1"># Populate the list</span>
-    <span class="k">for</span> <span class="n">some_agent</span> <span class="ow">in</span> <span class="n">all_agents</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">some_agent</span> <span class="o">!=</span> <span class="n">agent</span><span class="p">:</span>
-            <span class="n">distance</span> <span class="o">=</span> <span class="n">get_distance</span><span class="p">(</span><span class="n">agent</span><span class="p">,</span> <span class="n">some_agent</span><span class="p">)</span>
-            <span class="n">distances</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">distance</span><span class="p">,</span> <span class="n">some_agent</span><span class="p">))</span>
-
-    <span class="c1"># Sort from smallest to largest, according to distance</span>
-    <span class="n">distances</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
-
-    <span class="c1"># Extract the list of neighboring agents</span>
-    <span class="n">neighbor_pairs</span> <span class="o">=</span> <span class="n">distances</span><span class="p">[:</span><span class="n">num_neighbors</span><span class="p">]</span>
-    <span class="n">neighbors</span> <span class="o">=</span> <span class="p">[</span><span class="n">neighbor</span> <span class="k">for</span> <span class="n">d</span><span class="p">,</span> <span class="n">neighbor</span> <span class="ow">in</span> <span class="n">neighbor_pairs</span><span class="p">]</span>
-
-    <span class="c1"># Count how many neighbors have a different type</span>
-    <span class="n">num_other_type</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">agent</span><span class="o">.</span><span class="n">type</span> <span class="o">!=</span> <span class="n">neighbor</span><span class="o">.</span><span class="n">type</span> <span class="k">for</span> <span class="n">neighbor</span> <span class="ow">in</span> <span class="n">neighbors</span><span class="p">)</span>
-    <span class="c1"># Return true if does not exceed threshold</span>
+    <span class="c1"># Check the nearest neighbors</span>
+    <span class="n">neighbors</span> <span class="o">=</span> <span class="n">others</span><span class="p">[:</span><span class="n">num_neighbors</span><span class="p">]</span>
+    <span class="n">num_other_type</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">neighbor</span><span class="o">.</span><span class="n">type</span> <span class="o">!=</span> <span class="n">agent</span><span class="o">.</span><span class="n">type</span> <span class="k">for</span> <span class="n">neighbor</span> <span class="ow">in</span> <span class="n">neighbors</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">num_other_type</span> <span class="o">&lt;=</span> <span class="n">max_other_type</span>
 
 
-<span class="k">def</span><span class="w"> </span><span class="nf">relocate</span><span class="p">(</span><span class="n">agent</span><span class="p">,</span> <span class="n">all_agents</span><span class="p">,</span> <span class="n">max_attempts</span><span class="o">=</span><span class="mi">10_000</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">move_agent</span><span class="p">(</span><span class="n">agent</span><span class="p">,</span> <span class="n">all_agents</span><span class="p">,</span> <span class="n">max_attempts</span><span class="o">=</span><span class="mi">10_000</span><span class="p">):</span>
     <span class="s2">&quot;If not happy, then randomly choose new locations until happy.&quot;</span>
     <span class="n">attempts</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="k">while</span> <span class="ow">not</span> <span class="n">happy</span><span class="p">(</span><span class="n">agent</span><span class="p">,</span> <span class="n">all_agents</span><span class="p">):</span>
-        <span class="n">move_agent</span><span class="p">(</span><span class="n">agent</span><span class="p">)</span>
+    <span class="k">while</span> <span class="ow">not</span> <span class="n">is_happy</span><span class="p">(</span><span class="n">agent</span><span class="p">,</span> <span class="n">all_agents</span><span class="p">):</span>
+        <span class="n">agent</span><span class="o">.</span><span class="n">location</span> <span class="o">=</span> <span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
         <span class="n">attempts</span> <span class="o">+=</span> <span class="mi">1</span>
         <span class="k">if</span> <span class="n">attempts</span> <span class="o">&gt;=</span> <span class="n">max_attempts</span><span class="p">:</span>
             <span class="k">break</span>
@@ -590,7 +583,12 @@ to move.</p>
 locations on the unit square.</p>
 <p>Orange agents are represented by orange dots and green ones are represented by
 green dots.</p>
-<div class="cell docutils container">
+<div class="cell tag_hide-input docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell source</p>
+<p class="expanded admonition-title">Hide code cell source</p>
+</summary>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">plot_distribution</span><span class="p">(</span><span class="n">agents</span><span class="p">,</span> <span class="n">round_num</span><span class="p">):</span>
     <span class="s2">&quot;Plot the distribution of agents after round_num rounds of the loop.&quot;</span>
@@ -621,6 +619,7 @@ green dots.</p>
 </pre></div>
 </div>
 </div>
+</details>
 </div>
 <p>The main loop cycles through all agents until no one wishes to move.</p>
 <div class="proof algorithm admonition" id="main_loop_algo">
@@ -635,9 +634,7 @@ green dots.</p>
 <li><p>Set <code class="docutils literal notranslate"><span class="pre">number_of_moves</span></code> <span class="math notranslate nohighlight">\(\leftarrow\)</span> 0</p></li>
 <li><p>For each agent:</p>
 <ol class="arabic simple">
-<li><p>Record current location</p></li>
-<li><p>If agent is unhappy, relocate using <a class="reference internal" href="#move_algo">Algorithm 25.1</a></p></li>
-<li><p>If location changed, increment <code class="docutils literal notranslate"><span class="pre">number_of_moves</span></code></p></li>
+<li><p>If agent is unhappy, relocate using <a class="reference internal" href="#move_algo">Algorithm 25.1</a> and increment <code class="docutils literal notranslate"><span class="pre">number_of_moves</span></code></p></li>
 </ol>
 </li>
 <li><p>Plot distribution</p></li>
@@ -659,12 +656,9 @@ green dots.</p>
     <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
     <span class="k">while</span> <span class="n">count</span> <span class="o">&lt;</span> <span class="n">max_iter</span><span class="p">:</span>
         <span class="n">number_of_moves</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="c1"># Offer each agent the chance to relocate</span>
         <span class="k">for</span> <span class="n">agent</span> <span class="ow">in</span> <span class="n">all_agents</span><span class="p">:</span>
-            <span class="n">old_location</span> <span class="o">=</span> <span class="n">agent</span><span class="o">.</span><span class="n">location</span>
-            <span class="c1"># Relocate unhappy agents (happy ones won&#39;t move)</span>
-            <span class="n">relocate</span><span class="p">(</span><span class="n">agent</span><span class="p">,</span> <span class="n">all_agents</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">agent</span><span class="o">.</span><span class="n">location</span> <span class="o">!=</span> <span class="n">old_location</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">is_happy</span><span class="p">(</span><span class="n">agent</span><span class="p">,</span> <span class="n">all_agents</span><span class="p">):</span>
+                <span class="n">move_agent</span><span class="p">(</span><span class="n">agent</span><span class="p">,</span> <span class="n">all_agents</span><span class="p">)</span>
                 <span class="n">number_of_moves</span> <span class="o">+=</span> <span class="mi">1</span>
         <span class="c1"># Plot the distribution after this round</span>
         <span class="n">plot_distribution</span><span class="p">(</span><span class="n">all_agents</span><span class="p">,</span> <span class="n">count</span><span class="p">)</span>
@@ -722,7 +716,7 @@ Completed loop 4 with 9 moves
 Completed loop 5 with 4 moves
 Completed loop 6 with 1 moves
 Completed loop 7 with 0 moves
-Converged in 19.06 seconds after 8 iterations.
+Converged in 16.40 seconds after 8 iterations.
 </pre></div>
 </div>
 <a class="reference internal image-reference" href="_images/cd08edb6cf681885ccb0e3e0063d85f6431ea746115fdc59538e22490b39228f.png"><img alt="_images/cd08edb6cf681885ccb0e3e0063d85f6431ea746115fdc59538e22490b39228f.png" src="_images/cd08edb6cf681885ccb0e3e0063d85f6431ea746115fdc59538e22490b39228f.png" style="width: 80%;" />
