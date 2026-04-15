@@ -279,10 +279,19 @@
                             
                             <li class="changelog-entry">
                                 
+                                <a href="https://github.com/QuantEcon/lecture-jax/commit/c641439" class="changelog-hash">c641439</a>
+                                
+                                <span class="changelog-author">John Stachurski</span>
+                                <span class="changelog-time">1 hour ago</span>
+                                <span class="changelog-message">Improve parallel Schelling lectures (#305)</span>
+                            </li>
+                            
+                            <li class="changelog-entry">
+                                
                                 <a href="https://github.com/QuantEcon/lecture-jax/commit/33d1348" class="changelog-hash">33d1348</a>
                                 
                                 <span class="changelog-author">John Stachurski</span>
-                                <span class="changelog-time">8 minutes ago</span>
+                                <span class="changelog-time">3 hours ago</span>
                                 <span class="changelog-message">Improve Schelling lectures: consistency, clarity, and modernization (#304)</span>
                             </li>
                             
@@ -426,18 +435,17 @@ the probability of an agent’s type being flipped after each iteration.</p>
 
     <span class="c1"># Build candidate list: current location + num_candidates random ones</span>
     <span class="n">random_locs</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">num_candidates</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
-    <span class="n">candidates</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span><span class="n">current_loc</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="p">:],</span> <span class="n">random_locs</span><span class="p">])</span>
+    <span class="n">candidate_locations</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span><span class="n">current_loc</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="p">:],</span> <span class="n">random_locs</span><span class="p">])</span>
 
     <span class="c1"># Check happiness at each candidate (in parallel)</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">check_candidate</span><span class="p">(</span><span class="n">loc</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">is_happy</span><span class="p">(</span><span class="n">loc</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">locations</span><span class="p">,</span> <span class="n">types</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
-    <span class="n">happy_at</span> <span class="o">=</span> <span class="n">vmap</span><span class="p">(</span><span class="n">check_candidate</span><span class="p">)(</span><span class="n">candidates</span><span class="p">)</span>
+    <span class="n">happy_at</span> <span class="o">=</span> <span class="n">vmap</span><span class="p">(</span><span class="n">check_candidate</span><span class="p">)(</span><span class="n">candidate_locations</span><span class="p">)</span>
 
-    <span class="c1"># Take the first happy candidate, or stay put if none are happy</span>
-    <span class="n">first_happy_idx</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">happy_at</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">jnp</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">jnp</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">happy_at</span><span class="p">),</span>
-                     <span class="n">candidates</span><span class="p">[</span><span class="n">first_happy_idx</span><span class="p">],</span>
-                     <span class="n">current_loc</span><span class="p">)</span>
+    <span class="c1"># Return the first happy candidate location.</span>
+    <span class="c1"># Already happy agents select candidate_locations[0] and stay put.</span>
+    <span class="c1"># If no candidate is happy, argmax returns 0 and the agent stays put.</span>
+    <span class="k">return</span> <span class="n">candidate_locations</span><span class="p">[</span><span class="n">jnp</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">happy_at</span><span class="p">)]</span>
 
 
 <span class="nd">@partial</span><span class="p">(</span><span class="n">jit</span><span class="p">,</span> <span class="n">static_argnames</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;params&#39;</span><span class="p">,))</span>
@@ -453,6 +461,7 @@ the probability of an agent’s type being flipped after each iteration.</p>
     <span class="n">key</span> <span class="o">=</span> <span class="n">keys</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
     <span class="n">agent_keys</span> <span class="o">=</span> <span class="n">keys</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
 
+    <span class="c1"># Closure: wraps update_agent_location so vmap can map over a single argument</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">update_one_agent</span><span class="p">(</span><span class="n">i</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">update_agent_location</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">locations</span><span class="p">,</span> <span class="n">types</span><span class="p">,</span> <span class="n">agent_keys</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">params</span><span class="p">)</span>
     <span class="n">new_locations</span> <span class="o">=</span> <span class="n">vmap</span><span class="p">(</span><span class="n">update_one_agent</span><span class="p">)(</span><span class="n">jnp</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n</span><span class="p">))</span>
@@ -622,12 +631,12 @@ the system will never fully converge with ongoing shocks.</p>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Running simulation with 4000 agents for 1000 iterations
 Flip probability: 0.01
 Iteration 200: 48 unhappy agents, 3.3s elapsed
-Iteration 400: 57 unhappy agents, 6.8s elapsed
-Iteration 600: 57 unhappy agents, 10.3s elapsed
-Iteration 800: 48 unhappy agents, 13.8s elapsed
-Iteration 1000: 45 unhappy agents, 17.3s elapsed
+Iteration 400: 57 unhappy agents, 6.7s elapsed
+Iteration 600: 57 unhappy agents, 10.2s elapsed
+Iteration 800: 48 unhappy agents, 13.6s elapsed
+Iteration 1000: 45 unhappy agents, 17.0s elapsed
 
-Completed 1000 iterations in 17.61 seconds.
+Completed 1000 iterations in 17.28 seconds.
 </pre></div>
 </div>
 <a class="reference internal image-reference" href="_images/43cb535e11e6a48c03e4dc579586292b4dbd86ea34a2f7f5667edc46688747fd.png"><img alt="_images/43cb535e11e6a48c03e4dc579586292b4dbd86ea34a2f7f5667edc46688747fd.png" src="_images/43cb535e11e6a48c03e4dc579586292b4dbd86ea34a2f7f5667edc46688747fd.png" style="width: 80%;" />
