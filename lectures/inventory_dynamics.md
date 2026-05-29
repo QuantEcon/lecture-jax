@@ -169,11 +169,11 @@ def project_cross_section(params: ModelParameters,
     X_vec = jnp.full((num_firms, ), x_init)
     # Loop
     for i in range(T):
-        Z = random.normal(key, shape=(num_firms, ))
+        key, subkey = random.split(key)
+        Z = random.normal(subkey, shape=(num_firms, ))
         D = jnp.exp(params.μ + params.σ * Z)
 
         X_vec = update_cross_section(params, X_vec, D)
-        _, key = random.split(key)
 
     return X_vec
 ```
@@ -246,15 +246,14 @@ def project_cross_section_fori(
         # Unpack
         X, key = loop_state
         # Draw shocks using key
-        Z = random.normal(key, shape=(num_firms,))
+        key, subkey = random.split(key)
+        Z = random.normal(subkey, shape=(num_firms,))
         D = jnp.exp(μ + σ * Z)
         # Update X
         X = jnp.where(X <= s,
                   jnp.maximum(S - D, 0),
                   jnp.maximum(X - D, 0))
-        # Refresh the key
-        key, subkey = random.split(key)
-        return X, subkey
+        return X, key
 
     # Loop t from 0 to T, applying fori_update each time.
     initial_loop_state = X, key
@@ -311,11 +310,11 @@ def shift_forward_and_sample(x_init, params, sample_dates,
 
     # Use for loop to update X and collect samples
     for i in range(sim_length):
-        Z = random.normal(key, shape=(num_firms, ))
+        key, subkey = random.split(key)
+        Z = random.normal(subkey, shape=(num_firms, ))
         D = jnp.exp(params.μ + params.σ * Z)
 
         X = update_cross_section(params, X, D)
-        _, key = random.split(key)
 
         # draw a sample at the sample dates
         if (i+1 in sample_dates):
@@ -397,7 +396,7 @@ def update_stock(n_restock, X, params, D):
     X = jnp.where(X <= params.s,
                   jnp.maximum(params.S - D, 0),
                   jnp.maximum(X - D, 0))
-    return n_restock, X, key
+    return n_restock, X
 
 def compute_freq(params, key,
                  x_init=70,
@@ -412,11 +411,11 @@ def compute_freq(params, key,
 
     # Use a for loop to perform the calculations on all states
     for i in range(sim_length):
-        Z = random.normal(key, shape=(num_firms, ))
+        key, subkey = random.split(key)
+        Z = random.normal(subkey, shape=(num_firms, ))
         D = jnp.exp(params.μ + params.σ * Z)
-        n_restock, X, key = update_stock(
+        n_restock, X = update_stock(
             n_restock, X, params, D)
-        key = random.fold_in(key, i)
 
     return jnp.mean(n_restock > 1, axis=0)
 ```
@@ -460,7 +459,6 @@ speed while generating a similar answer.
 Here is a `lax.fori_loop` version that JIT compiles the whole function
 
 ```{code-cell} ipython3
-@jax.jit
 def compute_freq(params, key,
                  x_init=70,
                  sim_length=50,
@@ -494,6 +492,9 @@ def compute_freq(params, key,
     X_final = lax.fori_loop(0, sim_length, update_cross_section, Xs)
 
     return jnp.mean(X_final[1] > 1)
+
+# Compile taking sim_length and num_firms as static (changes trigger recompile)
+compute_freq = jax.jit(compute_freq, static_argnums=(3, 4))
 ```
 
 Note the time the routine takes to run, as well as the output
