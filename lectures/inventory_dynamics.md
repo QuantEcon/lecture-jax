@@ -34,7 +34,7 @@ This lecture explores the inventory dynamics of a firm using so-called s-S inven
 Loosely speaking, this means that the firm 
 
 * waits until inventory falls below some value $s$
-* and then restocks with a bulk order of $S$ units (or, in some models, restocks up to level $S$).
+* and then restocks up to level $S$ (or, in some models, restocks with a bulk order of $S$ units).
 
 We will be interested in the distribution of the associated Markov process,
 which can be thought of as cross-sectional distributions of inventory levels
@@ -358,6 +358,10 @@ stationary distribution.
 In particular, the sequence of marginal distributions $\{\psi_t\}$
 converges to a unique limiting distribution that does not depend on
 initial conditions.
+
+Intuitively, demand shocks repeatedly push inventories downward, while the
+threshold rule returns low-inventory firms to a common upper inventory level,
+so the process gradually forgets its initial condition.
 
 Although we will not prove this here, we can see it in the simulation above.
 
