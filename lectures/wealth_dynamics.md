@@ -116,7 +116,7 @@ where $s_0$ is a positive constant.
 Thus, 
 
 * for $w < \hat w$, the household saves nothing, while
-* for $w \geq \bar w$, the household saves a fraction $s_0$ of their wealth.
+* for $w \geq \hat w$, the household saves a fraction $s_0$ of their wealth.
 
 ## Implementation 
 
