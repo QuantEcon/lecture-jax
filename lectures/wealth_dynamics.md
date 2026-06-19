@@ -343,11 +343,11 @@ def update_cross_section_jax(model, w_distribution, z_sequence, key):
 
     # Update wealth
     for z in z_sequence[1:]:
-        U = jax.random.normal(key, (2, n))
+        key, subkey = jax.random.split(key)
+        U = jax.random.normal(subkey, (2, n))
         y = c_y * jnp.exp(z) + jnp.exp(μ_y + σ_y * U[0, :])
         R = c_r * jnp.exp(z) + jnp.exp(μ_r + σ_r * U[1, :])
         w = y + jnp.where(w < w_hat, 0.0, R * s_0 * w) 
-        key, subkey = jax.random.split(key)
 
     return w
 ```
@@ -687,6 +687,10 @@ Do the outcomes match your intuition?
 
 Here is one solution
 
+In this and the following parameter comparisons, we reuse the same random seed
+across parameter values so that differences in the curves mainly reflect
+parameter changes rather than different random draws.
+
 ```{code-cell} ipython3
 key = jax.random.PRNGKey(1234)
 fig, ax = plt.subplots()
@@ -700,7 +704,7 @@ for μ_r in μ_r_vals:
     g = gini_jax(ψ_star, num_households)
     ax.plot(x, y, label=f'$\psi^*$ at $\mu_r = {μ_r:0.2}$')
     gini_vals.append(g)
-ax.plot(x, y, label='equality')
+ax.plot(x, x, label='equality')
 ax.legend(loc="upper left")
 plt.show()
 ```
@@ -736,7 +740,7 @@ Use the same initial condition as before and the sequence
 
 To isolate the role of volatility, set $\mu_r = - \sigma_r^2 / 2$ at each $\sigma_r$.
 
-(This holds the variance of the idiosyncratic term $\exp(\mu_r + \sigma_r \zeta)$ constant.)
+(This holds the mean of the idiosyncratic term $\exp(\mu_r + \sigma_r \xi)$ constant.)
 
 ```{exercise-end}
 ```
@@ -761,7 +765,7 @@ for σ_r in σ_r_vals:
     g = gini_jax(ψ_star, num_households)
     ax.plot(x, y, label=f'$\psi^*$ at $\sigma_r = {σ_r:0.2}$')
     gini_vals.append(g)
-ax.plot(x, y, label='equality')
+ax.plot(x, x, label='equality')
 ax.legend(loc="upper left")
 plt.show()
 ```
