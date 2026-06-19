@@ -32,6 +32,9 @@ One of our interests will be how different aspects of wealth dynamics -- such
 as labor income and the rate of return on investments -- feed into measures of
 inequality, such as the Gini coefficient.
 
+Because the analysis below requires simulating large cross sections of households,
+it provides a natural setting for JAX's array-based programming model and accelerator support.
+
 In addition to JAX and Anaconda, this lecture will need the following libraries:
 
 ```{code-cell} ipython3
