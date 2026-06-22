@@ -71,9 +71,6 @@ Wealth evolves as follows:
     w_{t+1} = (1 + r_{t+1}) s(w_t) + y_{t+1}
 ```
 
-In the simulations below, $z_{t+1}$ and the period $t+1$ idiosyncratic shocks
-are drawn before updating wealth from $w_t$ to $w_{t+1}$.
-
 Here
 
 - $w_t$ is wealth at time $t$ for a given household,
