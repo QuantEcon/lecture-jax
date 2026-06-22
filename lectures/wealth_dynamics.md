@@ -363,7 +363,7 @@ z_sequence = jnp.array(z_sequence)
 
 ```{code-cell} ipython3
 print("Generating cross-section using JAX")
-key = jax.random.PRNGKey(1234)
+key = jax.random.key(1234)
 start = time()
 ψ_star = update_cross_section_jax(model, ψ_0, z_sequence, key).block_until_ready()
 jax_with_compile = time() - start
@@ -372,7 +372,7 @@ print(f"Generated cross-section in {jax_with_compile} seconds.\n")
 
 ```{code-cell} ipython3
 print("Repeating without compile time.")
-key = jax.random.PRNGKey(1234)
+key = jax.random.key(1234)
 start = time()
 ψ_star = update_cross_section_jax(model, ψ_0, z_sequence, key).block_until_ready()
 jax_without_compile = time() - start
@@ -432,7 +432,7 @@ update_cross_section_jax_compiled = jax.jit(
 
 ```{code-cell} ipython3
 print("Generating cross-section using JAX with compiled loop")
-key = jax.random.PRNGKey(1234)
+key = jax.random.key(1234)
 start = time()
 ψ_star = update_cross_section_jax_compiled(
         model, ψ_0, num_households, z_sequence, key
@@ -443,7 +443,7 @@ print(f"Generated cross-section in {jax_fori_with_compile} seconds.\n")
 
 ```{code-cell} ipython3
 print("Repeating without compile time")
-key = jax.random.PRNGKey(1234)
+key = jax.random.key(1234)
 start = time()
 ψ_star = update_cross_section_jax_compiled(
         model, ψ_0, num_households, z_sequence, key
@@ -470,7 +470,7 @@ In the limit, data that obeys a power law generates a straight line.
 
 ```{code-cell} ipython3
 model = create_wealth_model()
-key = jax.random.PRNGKey(1234)
+key = jax.random.key(1234)
 ψ_star = update_cross_section_jax_compiled(
         model, ψ_0, num_households, z_sequence, key
 )
@@ -532,7 +532,7 @@ z_sequence = jnp.array(z_sequence)
 ```
 
 ```{code-cell} ipython3
-key = jax.random.PRNGKey(1234)
+key = jax.random.key(1234)
 ψ_star = update_cross_section_jax_compiled(
         model, ψ_0, num_households, z_sequence, key
 )
@@ -689,7 +689,7 @@ across parameter values so that differences in the curves mainly reflect
 parameter changes rather than different random draws.
 
 ```{code-cell} ipython3
-key = jax.random.PRNGKey(1234)
+key = jax.random.key(1234)
 fig, ax = plt.subplots()
 gini_vals = []
 for μ_r in μ_r_vals:
@@ -749,7 +749,7 @@ To isolate the role of volatility, set $\mu_r = - \sigma_r^2 / 2$ at each $\sigm
 Here's one solution
 
 ```{code-cell} ipython3
-key = jax.random.PRNGKey(1234)
+key = jax.random.key(1234)
 fig, ax = plt.subplots()
 
 gini_vals = []
