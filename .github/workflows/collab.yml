@@ -33,6 +33,7 @@ jobs:
       - name: Install Build Software
         shell: bash -l {0}
         run: |
+          pip install pyyaml
           python -c "import yaml; deps = next(d['pip'] for d in yaml.safe_load(open('environment.yml'))['dependencies'] if isinstance(d, dict) and 'pip' in d); open('colab-requirements.txt', 'w').write('\n'.join(deps) + '\n')"
           cat colab-requirements.txt
           pip install -r colab-requirements.txt
