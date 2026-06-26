@@ -376,7 +376,7 @@ To simulate the model, we sample 500,000 values of $x_t$ from the standard norma
 ```{code-cell} ipython3
 seed = 32
 shape = (500_000, 1)
-key = jax.random.PRNGKey(seed)
+key = jax.random.key(seed)
 x = jax.random.normal(key, shape)
 ```
 

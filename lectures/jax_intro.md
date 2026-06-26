@@ -214,7 +214,7 @@ import jax.random as random
 First we produce a key, which seeds the random number generator.
 
 ```{code-cell} ipython3
-key = random.PRNGKey(1)
+key = random.key(1)
 ```
 
 ```{code-cell} ipython3
@@ -262,7 +262,7 @@ key.
 The function below produces `k` (quasi-) independent random `n x n` matrices using this procedure.
 
 ```{code-cell} ipython3
-base_key = random.PRNGKey(42)
+base_key = random.key(42)
 def gen_random_matrices(key, n, k):
     matrices = []
     for i in range(k):
@@ -723,7 +723,7 @@ def compute_call_price_jax(β=β,
                            ρ=ρ,
                            ν=ν,
                            M=M,
-                           key=jax.random.PRNGKey(1)):
+                           key=jax.random.key(1)):
 
     s = jnp.full(M, np.log(S0))
     h = jnp.full(M, h0)

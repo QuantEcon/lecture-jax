@@ -212,7 +212,7 @@ def generate_cross_section(
     ):
 
     μ_a, σ_a, μ_b, σ_b, μ_e, σ_e, s_bar = firm
-    key = random.PRNGKey(seed)
+    key = random.key(seed)
 
     # Initialize the cross-section to a common value
     s = jnp.full((M, ), s_init)
@@ -284,7 +284,7 @@ def generate_cross_section_lax(
     ):
 
     μ_a, σ_a, μ_b, σ_b, μ_e, σ_e, s_bar = firm
-    key = random.PRNGKey(seed)
+    key = random.key(seed)
     
     # Initial cross section
     s = jnp.full((M, ), s_init)
@@ -367,7 +367,7 @@ def generate_cross_section_lax(
     ):
 
     μ_a, σ_a, μ_b, σ_b, μ_e, σ_e, s_bar = firm
-    key = random.PRNGKey(seed)
+    key = random.key(seed)
     subkey_1, subkey_2, subkey_3 = random.split(key, 3)
     
     # Generate entire sequence of random draws 
