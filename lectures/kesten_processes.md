@@ -272,7 +272,7 @@ we did not JIT-compile the `for` loop.
 Let's try squeezing out a bit more speed
 by 
 
-* replacing the `for` loop with [`lax.fori_loop`](https://jax.readthedocs.io/en/latest/_autosummary/jax.lax.fori_loop.html) and
+* replacing the `for` loop with [`lax.fori_loop`](https://docs.jax.dev/en/latest/_autosummary/jax.lax.fori_loop.html) and
 * JIT-compiling the whole function.
 
 Here is the `lax.fori_loop` version:

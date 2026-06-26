@@ -640,7 +640,7 @@ x.nbytes  # and y is just a pointer to x
 
 This extra memory usage can be a big problem in actual research calculations.
 
-So let's try a different approach using [jax.vmap](https://jax.readthedocs.io/en/latest/_autosummary/jax.vmap.html)
+So let's try a different approach using [jax.vmap](https://docs.jax.dev/en/latest/_autosummary/jax.vmap.html)
 
 +++
 
