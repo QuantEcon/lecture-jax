@@ -126,7 +126,7 @@ Here's a plot of the data.
 
 ```{code-cell} ipython3
 config = Config()
-key = jax.random.PRNGKey(config.seed)
+key = jax.random.key(config.seed)
 key_train, key_validate = jax.random.split(key)
 x_train, y_train = generate_data(key_train)
 x_validate, y_validate = generate_data(key_validate)
@@ -470,7 +470,7 @@ We'll reuse the data we generated earlier.
 ```{code-cell} ipython3
 # Reset parameter vector
 config = Config()
-param_key = jax.random.PRNGKey(1234)
+param_key = jax.random.key(1234)
 θ = initialize_network(param_key, config)
 
 # Warmup run to trigger JIT compilation

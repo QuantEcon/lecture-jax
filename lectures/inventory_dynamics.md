@@ -185,7 +185,7 @@ params = ModelParameters()
 x_init = 50
 T = 500
 # Initialize random number generator
-key = random.PRNGKey(10)
+key = random.key(10)
 ```
 
 Let's look at the timing.
@@ -329,7 +329,7 @@ Let's test it
 x_init = 50
 num_firms = 10_000
 sample_dates = 10, 50, 250, 500, 750
-key = random.PRNGKey(10)
+key = random.key(10)
 
 X = shift_forward_and_sample(
     x_init, params, sample_dates, key).block_until_ready()
@@ -425,7 +425,7 @@ def compute_freq(params, key,
 ```
 
 ```{code-cell} ipython3
-key = random.PRNGKey(27)
+key = random.key(27)
 
 start_time = time()
 freq = compute_freq(params, key).block_until_ready()

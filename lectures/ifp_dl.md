@@ -328,7 +328,7 @@ def train_network(
 
     """
     # Initialize network parameters
-    key = random.PRNGKey(config.seed)
+    key = random.key(config.seed)
     params = initialize_network(key, config.layer_sizes)
 
     # Set up optimizer
@@ -680,7 +680,7 @@ def create_ifp(
     ):
     R = 1 + r
     assert R * β < 1, "Stability condition violated."
-    key = random.PRNGKey(seed)
+    key = random.key(seed)
     z_samples = z_mean + z_std * jax.random.normal(key, n_shocks)
     return IFP(R, β, γ, z_mean, z_std, z_samples)
 ```
@@ -885,7 +885,7 @@ We use the same `ifp` instance that was created for the EGM solution above.
 
 ```{code-cell} ipython3
 config = Config()
-key = random.PRNGKey(config.seed)
+key = random.key(config.seed)
 
 print("Training IFP model with deep learning...\n")
 
