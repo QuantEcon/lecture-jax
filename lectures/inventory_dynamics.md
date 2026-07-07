@@ -34,7 +34,7 @@ This lecture explores the inventory dynamics of a firm using so-called s-S inven
 Loosely speaking, this means that the firm 
 
 * waits until inventory falls below some value $s$
-* then restocks with a bulk order of $S$ units (or, in some models, restocks up to level $S$).
+* and then restocks up to level $S$ (or, in some models, restocks with a bulk order of $S$ units).
 
 We will be interested in the distribution of the associated Markov process,
 which can be thought of as the cross-sectional distribution of inventory levels
@@ -168,10 +168,10 @@ def project_cross_section(
     X_vec = jnp.full((num_firms,), x_init)
     # Loop
     for i in range(T):
-        Z = random.normal(key, shape=(num_firms,))
+        key, subkey = random.split(key)
+        Z = random.normal(subkey, shape=(num_firms, ))
         D = jnp.exp(params.μ + params.σ * Z)
         X_vec = update_cross_section(params, X_vec, D)
-        _, key = random.split(key)
 
     return X_vec
 ```
@@ -183,7 +183,7 @@ params = ModelParameters()
 x_init = 50
 T = 500
 # Initialize random number generator
-key = random.PRNGKey(10)
+key = random.key(10)
 ```
 
 Let's look at the timing.
@@ -241,13 +241,14 @@ def project_cross_section_fori(
         # Unpack
         X, key = loop_state
         # Draw shocks using key
-        Z = random.normal(key, shape=(num_firms,))
+        key, subkey = random.split(key)
+        Z = random.normal(subkey, shape=(num_firms,))
         D = jnp.exp(μ + σ * Z)
         # Update X
-        X = jnp.where(X <= s, jnp.maximum(S - D, 0), jnp.maximum(X - D, 0))
-        # Refresh the key
-        key, subkey = random.split(key)
-        return X, subkey
+        X = jnp.where(X <= s,
+                  jnp.maximum(S - D, 0),
+                  jnp.maximum(X - D, 0))
+        return X, key
 
     # Loop t from 0 to T, applying fori_update each time.
     initial_loop_state = X, key
@@ -302,11 +303,11 @@ def shift_forward_and_sample(
 
     # Use for loop to update X and collect samples
     for i in range(sim_length):
-        Z = random.normal(key, shape=(num_firms,))
+        key, subkey = random.split(key)
+        Z = random.normal(subkey, shape=(num_firms, ))
         D = jnp.exp(params.μ + params.σ * Z)
 
         X = update_cross_section(params, X, D)
-        _, key = random.split(key)
 
         # draw a sample at the sample dates
         if i + 1 in sample_dates:
@@ -321,7 +322,7 @@ Let's test it
 x_init = 50
 num_firms = 10_000
 sample_dates = 10, 50, 250, 500, 750
-key = random.PRNGKey(10)
+key = random.key(10)
 
 X = shift_forward_and_sample(
     x_init, params, sample_dates, key
@@ -355,6 +356,10 @@ In particular, the sequence of marginal distributions $\{\psi_t\}$
 converges to a unique limiting distribution that does not depend on
 initial conditions.
 
+Intuitively, demand shocks repeatedly push inventories downward, while the
+threshold rule returns low-inventory firms to a common upper inventory level,
+so the process gradually forgets its initial condition.
+
 Although we will not prove this here, we can see it in the simulation above.
 
 By $t=500$ or $t=750$ the distributions are barely changing.
@@ -381,11 +386,13 @@ We start with an easier `for` loop implementation
 # Define a jitted function for each update
 @jax.jit
 def update_stock(n_restock, X, params, D):
-    n_restock = jnp.where(X <= params.s, n_restock + 1, n_restock)
-    X = jnp.where(
-        X <= params.s, jnp.maximum(params.S - D, 0), jnp.maximum(X - D, 0)
-    )
-    return n_restock, X, key
+    n_restock = jnp.where(X <= params.s,
+                          n_restock + 1,
+                          n_restock)
+    X = jnp.where(X <= params.s,
+                  jnp.maximum(params.S - D, 0),
+                  jnp.maximum(X - D, 0))
+    return n_restock, X
 ```
 
 ```{code-cell} ipython3
@@ -399,16 +406,17 @@ def compute_freq(params, key, x_init=70, sim_length=50, num_firms=1_000_000):
 
     # Use a for loop to perform the calculations on all states
     for i in range(sim_length):
-        Z = random.normal(key, shape=(num_firms,))
+        key, subkey = random.split(key)
+        Z = random.normal(subkey, shape=(num_firms, ))
         D = jnp.exp(params.μ + params.σ * Z)
-        n_restock, X, key = update_stock(n_restock, X, params, D)
-        key = random.fold_in(key, i)
+        n_restock, X = update_stock(
+            n_restock, X, params, D)
 
     return jnp.mean(n_restock > 1, axis=0)
 ```
 
 ```{code-cell} ipython3
-key = random.PRNGKey(27)
+key = random.key(27)
 
 with qe.Timer():
     freq = compute_freq(params, key).block_until_ready()
@@ -442,8 +450,10 @@ speed while generating a similar answer.
 Here is a `lax.fori_loop` version that JIT compiles the whole function
 
 ```{code-cell} ipython3
-@jax.jit
-def compute_freq(params, key, x_init=70, sim_length=50, num_firms=1_000_000):
+def compute_freq(params, key,
+                 x_init=70,
+                 sim_length=50,
+                 num_firms=1_000_000):
 
     s, S, μ, σ = params.s, params.S, params.μ, params.σ
     # Prepare initial arrays
@@ -471,6 +481,9 @@ def compute_freq(params, key, x_init=70, sim_length=50, num_firms=1_000_000):
     X_final = lax.fori_loop(0, sim_length, update_cross_section, Xs)
 
     return jnp.mean(X_final[1] > 1)
+
+# Compile taking sim_length and num_firms as static (changes trigger recompile)
+compute_freq = jax.jit(compute_freq, static_argnums=(3, 4))
 ```
 
 Note the time the routine takes to run, as well as the output
