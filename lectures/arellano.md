@@ -870,7 +870,7 @@ Plot a time series of major variables simulated from the model
 :hide-output: false
 
 T = 250
-key = jax.random.PRNGKey(42)
+key = jax.random.key(42)
 y_sim, y_a_sim, B_sim, q_sim, d_sim = simulate(ae, T, v_c, v_d, q, B_star, key)
 ```
 

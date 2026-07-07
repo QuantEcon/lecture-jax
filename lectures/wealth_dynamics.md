@@ -32,6 +32,9 @@ One of our interests will be how different aspects of wealth dynamics -- such
 as labor income and the rate of return on investments -- feed into measures of
 inequality, such as the Gini coefficient.
 
+Because the analysis below requires simulating large cross sections of households,
+it provides a natural setting for JAX's array-based programming model and accelerator support.
+
 In addition to JAX and Anaconda, this lecture will need the following libraries:
 
 ```{code-cell} ipython3
@@ -113,7 +116,7 @@ where $s_0$ is a positive constant.
 Thus, 
 
 * for $w < \hat w$, the household saves nothing, while
-* for $w \geq \bar w$, the household saves a fraction $s_0$ of their wealth.
+* for $w \geq \hat w$, the household saves a fraction $s_0$ of their wealth.
 
 ## Implementation 
 
@@ -208,7 +211,7 @@ def wealth_time_series(model, w_0, sim_length):
     a, b, σ_z, z_mean, z_var = aggregate_params 
     # Initialize and update
     z = generate_aggregate_state_sequence(aggregate_params, 
-                                          length=sim_length)
+                                          length=sim_length-1)
     w = np.empty(sim_length)
     w[0] = w_0
     for t in range(sim_length-1):
@@ -251,10 +254,12 @@ def update_cross_section(model, w_distribution, z_sequence):
     Takes 
 
         * a current distribution of wealth values as w_distribution and
-        * an aggregate shock sequence z_sequence
+        * an aggregate state sequence z_sequence
 
-    and updates each w_t in w_distribution to w_{t+j}, where
-    j = len(z_sequence).
+    The first entry of z_sequence is the initial aggregate state.
+
+    It then updates each w_t in w_distribution to w_{t+j}, where
+    j = len(z_sequence) - 1.
 
     Returns the new distribution.
 
@@ -269,7 +274,7 @@ def update_cross_section(model, w_distribution, z_sequence):
     # Update each household
     for i in numba.prange(num_households):
         w = w_distribution[i]
-        for t in range(sim_length):
+        for t in range(1, len(z)):
             w = update_wealth(household_params, w, z[t])
         new_distribution[i] = w
     return new_distribution
@@ -317,10 +322,12 @@ def update_cross_section_jax(model, w_distribution, z_sequence, key):
     Takes 
 
         * a current distribution of wealth values as w_distribution and
-        * an aggregate shock sequence z_sequence
+        * an aggregate state sequence z_sequence
 
-    and updates each w_t in w_distribution to w_{t+j}, where
-    j = len(z_sequence).
+    The first entry of z_sequence is the initial aggregate state.
+
+    It then updates each w_t in w_distribution to w_{t+j}, where
+    j = len(z_sequence) - 1.
 
     Returns the new distribution.
 
@@ -332,12 +339,12 @@ def update_cross_section_jax(model, w_distribution, z_sequence, key):
     n = len(w)
 
     # Update wealth
-    for t, z in enumerate(z_sequence):
-        U = jax.random.normal(key, (2, n))
+    for z in z_sequence[1:]:
+        key, subkey = jax.random.split(key)
+        U = jax.random.normal(subkey, (2, n))
         y = c_y * jnp.exp(z) + jnp.exp(μ_y + σ_y * U[0, :])
         R = c_r * jnp.exp(z) + jnp.exp(μ_r + σ_r * U[1, :])
         w = y + jnp.where(w < w_hat, 0.0, R * s_0 * w) 
-        key, subkey = jax.random.split(key)
 
     return w
 ```
@@ -356,7 +363,7 @@ z_sequence = jnp.array(z_sequence)
 
 ```{code-cell} ipython3
 print("Generating cross-section using JAX")
-key = jax.random.PRNGKey(1234)
+key = jax.random.key(1234)
 start = time()
 ψ_star = update_cross_section_jax(model, ψ_0, z_sequence, key).block_until_ready()
 jax_with_compile = time() - start
@@ -365,7 +372,7 @@ print(f"Generated cross-section in {jax_with_compile} seconds.\n")
 
 ```{code-cell} ipython3
 print("Repeating without compile time.")
-key = jax.random.PRNGKey(1234)
+key = jax.random.key(1234)
 start = time()
 ψ_star = update_cross_section_jax(model, ψ_0, z_sequence, key).block_until_ready()
 jax_without_compile = time() - start
@@ -386,10 +393,12 @@ def update_cross_section_jax_compiled(model,
     Takes 
 
         * a current distribution of wealth values as w_distribution and
-        * an aggregate shock sequence z_sequence
+        * an aggregate state sequence z_sequence
 
-    and updates each w_t in w_distribution to w_{t+j}, where
-    j = len(z_sequence).
+    The first entry of z_sequence is the initial aggregate state.
+
+    It then updates each w_t in w_distribution to w_{t+j}, where
+    j = len(z_sequence) - 1.
 
     Returns the new distribution.
 
@@ -399,7 +408,7 @@ def update_cross_section_jax_compiled(model,
     w_hat, s_0, c_y, μ_y, σ_y, c_r, μ_r, σ_r, y_mean = household_params
     w = w_distribution
     n = len(w)
-    z = z_sequence
+    z = z_sequence[1:]
     sim_length = len(z)
 
     def body_function(t, state):
@@ -423,7 +432,7 @@ update_cross_section_jax_compiled = jax.jit(
 
 ```{code-cell} ipython3
 print("Generating cross-section using JAX with compiled loop")
-key = jax.random.PRNGKey(1234)
+key = jax.random.key(1234)
 start = time()
 ψ_star = update_cross_section_jax_compiled(
         model, ψ_0, num_households, z_sequence, key
@@ -434,7 +443,7 @@ print(f"Generated cross-section in {jax_fori_with_compile} seconds.\n")
 
 ```{code-cell} ipython3
 print("Repeating without compile time")
-key = jax.random.PRNGKey(1234)
+key = jax.random.key(1234)
 start = time()
 ψ_star = update_cross_section_jax_compiled(
         model, ψ_0, num_households, z_sequence, key
@@ -461,7 +470,7 @@ In the limit, data that obeys a power law generates a straight line.
 
 ```{code-cell} ipython3
 model = create_wealth_model()
-key = jax.random.PRNGKey(1234)
+key = jax.random.key(1234)
 ψ_star = update_cross_section_jax_compiled(
         model, ψ_0, num_households, z_sequence, key
 )
@@ -523,7 +532,7 @@ z_sequence = jnp.array(z_sequence)
 ```
 
 ```{code-cell} ipython3
-key = jax.random.PRNGKey(1234)
+key = jax.random.key(1234)
 ψ_star = update_cross_section_jax_compiled(
         model, ψ_0, num_households, z_sequence, key
 )
@@ -675,8 +684,12 @@ Do the outcomes match your intuition?
 
 Here is one solution
 
+In this and the following parameter comparisons, we reuse the same random seed
+across parameter values so that differences in the curves mainly reflect
+parameter changes rather than different random draws.
+
 ```{code-cell} ipython3
-key = jax.random.PRNGKey(1234)
+key = jax.random.key(1234)
 fig, ax = plt.subplots()
 gini_vals = []
 for μ_r in μ_r_vals:
@@ -688,7 +701,7 @@ for μ_r in μ_r_vals:
     g = gini_jax(ψ_star, num_households)
     ax.plot(x, y, label=f'$\psi^*$ at $\mu_r = {μ_r:0.2}$')
     gini_vals.append(g)
-ax.plot(x, y, label='equality')
+ax.plot(x, x, label='equality')
 ax.legend(loc="upper left")
 plt.show()
 ```
@@ -724,7 +737,7 @@ Use the same initial condition as before and the sequence
 
 To isolate the role of volatility, set $\mu_r = - \sigma_r^2 / 2$ at each $\sigma_r$.
 
-(This holds the variance of the idiosyncratic term $\exp(\mu_r + \sigma_r \zeta)$ constant.)
+(This holds the mean of the idiosyncratic term $\exp(\mu_r + \sigma_r \xi)$ constant.)
 
 ```{exercise-end}
 ```
@@ -736,7 +749,7 @@ To isolate the role of volatility, set $\mu_r = - \sigma_r^2 / 2$ at each $\sigm
 Here's one solution
 
 ```{code-cell} ipython3
-key = jax.random.PRNGKey(1234)
+key = jax.random.key(1234)
 fig, ax = plt.subplots()
 
 gini_vals = []
@@ -749,7 +762,7 @@ for σ_r in σ_r_vals:
     g = gini_jax(ψ_star, num_households)
     ax.plot(x, y, label=f'$\psi^*$ at $\sigma_r = {σ_r:0.2}$')
     gini_vals.append(g)
-ax.plot(x, y, label='equality')
+ax.plot(x, x, label='equality')
 ax.legend(loc="upper left")
 plt.show()
 ```
