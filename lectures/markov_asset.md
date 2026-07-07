@@ -359,7 +359,7 @@ def power_iteration_sr(A, num_iterations=15, seed=1234):
     " Estimates the spectral radius of A via power iteration. "
 
     # Initialize
-    key = jax.random.PRNGKey(seed)
+    key = jax.random.key(seed)
     b_k = jax.random.normal(key, (A.shape[1],))
     sr = 0
 

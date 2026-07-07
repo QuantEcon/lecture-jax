@@ -16,23 +16,21 @@ kernelspec:
 ```{include} _admonition/gpu.md
 ```
 
-In this lecture we show how to implement one-dimensional nonlinear regression
-using a neural network.
+In this lecture we show how to implement one-dimensional nonlinear regression using a neural network.
 
-We will use the popular deep learning library [Keras](https://keras.io/), which
-provides a simple interface to deep learning.
+We will use [Keras](https://keras.io/), a popular and relatively simple library for deep learning.
 
 The emphasis in Keras is on providing an intuitive API, while the heavy lifting is
 done by one of several possible backends.
 
-Currently the backend library options are Tensorflow, PyTorch, and JAX.
+Currently the backend library options are TensorFlow, PyTorch, and JAX.
 
 In this lecture we will use JAX.
 
-The objective of this lecture is to provide a very simple introduction to deep
-learning in a regression setting.
+Our main task is to provide an elementary introduction to deep learning in a regression setting.
 
-Later, in {doc}`a separate lecture <jax_nn>`, we will investigate how to do the same learning task using pure JAX, rather than relying on Keras.
+Later, in {doc}`a separate lecture <jax_nn>`, we will investigate how to do the
+same learning task using JAX directly, rather than relying on Keras.
 
 We begin this lecture with some standard imports.
 
@@ -58,7 +56,15 @@ os.environ['KERAS_BACKEND'] = 'jax'
 
 Now we should be able to import some tools from Keras.
 
-(Without setting the backend to JAX, these imports might fail -- unless you have PyTorch or Tensorflow set up.)
+```{note}
+Without setting the backend to JAX, the imports below might fail (unless you have PyTorch or TensorFlow set up).
+
+If you have problems running the next cell in Jupyter, try 
+
+1. quitting
+2. running `export KERAS_BACKEND="jax"` 
+3. starting Jupyter on the command line from the same terminal.
+```
 
 ```{code-cell} ipython3
 import keras
@@ -91,10 +97,10 @@ def generate_data(x_min=0,           # Minimum x value
                   x_max=5,           # Max x value
                   data_size=400,     # Default size for dataset
                   seed=1234):
-    np.random.seed(seed)
+    rng = np.random.default_rng(seed)
     x = np.linspace(x_min, x_max, num=data_size)
     
-    ϵ = 0.2 * np.random.randn(data_size)
+    ϵ = 0.2 * rng.standard_normal(data_size)
     y = x**0.5 + np.sin(x) + ϵ
     # Keras expects two dimensions, not flat arrays
     x, y = [np.reshape(z, (data_size, 1)) for z in (x, y)]
@@ -117,17 +123,17 @@ ax.set_ylabel('y')
 plt.show()
 ```
 
-We'll also use data from the same process for cross-validation.
+We'll also use data from the same process for validation.
 
 ```{code-cell} ipython3
-x_validate, y_validate = generate_data()
+x_validate, y_validate = generate_data(seed=5678)
 ```
 
 ## Models
 
 We supply functions to build two types of models.
 
-## Regression model
+### Regression model
 
 The first implements linear regression.
 
@@ -135,7 +141,7 @@ This is achieved by constructing a neural network with just one layer, that maps
 to a single dimension (since the prediction is real-valued).
 
 The object `model` will be an instance of `keras.Sequential`, which is used to
-group a stack of layers into a single prediction model.
+stack layers into a single prediction model.
 
 ```{code-cell} ipython3
 def build_regression_model():
@@ -154,23 +160,22 @@ In the function above you can see that
 * we use stochastic gradient descent to train the model, and
 * the loss is mean squared error (MSE).
 
-The call `model.add` adds a single layer the activation function equal to the identity map.
+The call `model.add` adds a single layer with the activation function equal to the identity map.
 
 MSE is the standard loss function for ordinary least squares regression.
 
 ### Deep Network
 
 The second function creates a dense (i.e., fully connected) neural network with
-3 hidden layers, where each hidden layer maps to a k-dimensional output space.
+3 hidden layers, where each hidden layer maps to a 10-dimensional output space.
 
 ```{code-cell} ipython3
 def build_nn_model(output_dim=10, num_layers=3, activation_function='tanh'):
-    # Create a Keras Model instance using Sequential()
     model = Sequential()
     # Add layers to the network sequentially, from inputs towards outputs
     for i in range(num_layers):
         model.add(Dense(units=output_dim, activation=activation_function))
-    # Add a final layer that maps to a scalar value, for regression.
+    # Add a final layer that maps to a scalar value, the prediction.
     model.add(Dense(units=1))
     # Embed training configurations
     model.compile(optimizer=keras.optimizers.SGD(), 
@@ -183,8 +188,7 @@ def build_nn_model(output_dim=10, num_layers=3, activation_function='tanh'):
 The following function will be used to plot the MSE of the model during the
 training process.
 
-Initially the MSE will be relatively high, but it should fall at each iteration,
-as the parameters are adjusted to better fit the data.
+The MSE should fall as the parameters are adjusted to better fit the data.
 
 ```{code-cell} ipython3
 def plot_loss_history(training_history, ax):
@@ -205,7 +209,7 @@ def plot_loss_history(training_history, ax):
 
 ## Training
 
-Now let's go ahead and train our  models.
+Now let's go ahead and train our models.
 
 
 ### Linear regression
@@ -232,14 +236,14 @@ plot_loss_history(training_history, ax)
 plt.show()
 ```
 
-Let's print the final MSE on the cross-validation data.
+Let's print the final MSE on the validation data.
 
 ```{code-cell} ipython3
 print("Testing loss on the validation set.")
 regression_model.evaluate(x_validate, y_validate, verbose=2)
 ```
 
-Here's our output predictions on the cross-validation data.
+Here's our output predictions on the validation data.
 
 ```{code-cell} ipython3
 y_predict = regression_model.predict(x_validate, verbose=2)
@@ -255,7 +259,7 @@ def plot_results(x, y, y_predict, ax):
     ax.set_ylabel('y')
 ```
 
-Let's now call the function on the cross-validation data.
+Let's now call the function on the validation data.
 
 ```{code-cell} ipython3
 fig, ax = plt.subplots()
@@ -302,14 +306,6 @@ y_predict = nn_model.predict(x_validate, verbose=2)
 ```
 
 ```{code-cell} ipython3
-def plot_results(x, y, y_predict, ax):
-    ax.scatter(x, y)
-    ax.plot(x, y_predict, label="fitted model", color='black')
-    ax.set_xlabel('x')
-    ax.set_ylabel('y')
-```
-
-```{code-cell} ipython3
 fig, ax = plt.subplots()
 plot_results(x_validate, y_validate, y_predict, ax)
 plt.show()
@@ -317,4 +313,4 @@ plt.show()
 
 Not surprisingly, the multilayer neural network does a much better job of fitting the data.
 
-In a {doc}`a follow-up lecture <jax_nn>`, we will try to achieve the same fit using pure JAX, rather than relying on the Keras front-end.
+In {doc}`a follow-up lecture <jax_nn>`, we will try to achieve the same fit using pure JAX, rather than relying on the Keras front-end.

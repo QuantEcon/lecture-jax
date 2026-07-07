@@ -59,16 +59,6 @@ from functools import partial
 os.environ['KERAS_BACKEND'] = 'jax'
 ```
 
-```{note}
-Without setting the backend to JAX, the imports below might fail.
-
-If you have problems running the next cell in Jupyter, try 
-
-1. quitting
-2. running `export KERAS_BACKEND="jax"` 
-3. starting Jupyter on the command line from the same terminal.
-```
-
 ```{code-cell} ipython3
 import keras
 from keras import Sequential
@@ -94,7 +84,7 @@ the overall mapping is
 
 $$ \mathbb R \to \mathbb R^k \to \mathbb R^k \to \mathbb R^k \to \mathbb R $$
 
-Here's a class to store the learning-related constants we’ll use across all implementations.
+Here's a class to store the learning-related constants we'll use across all implementations.
 
 Our default value of $k$ will be 10.
 
@@ -133,7 +123,7 @@ Here's a plot of the data.
 
 ```{code-cell} ipython3
 config = Config()
-key = jax.random.PRNGKey(config.seed)
+key = jax.random.key(config.seed)
 key_train, key_validate = jax.random.split(key)
 x_train, y_train = generate_data(key_train)
 x_validate, y_validate = generate_data(key_validate)
@@ -207,7 +197,7 @@ def train_keras_model(
         y_validate,     # Validation data, outputs
         config: Config  # contains configuration data
     ):
-    print(f"Training NN using Keras.")
+    print("Training NN using Keras.")
     start_time = time()
     training_history = model.fit(
         x, y,
@@ -222,10 +212,10 @@ def train_keras_model(
     return model, training_history, elapsed, mse
 ```
 
-The next function extracts and visualizes a prediction from the trained model.
+The next function extracts and visualizes a prediction from the trained Keras model.
 
 ```{code-cell} ipython3
-def plot_keras_output(model, x, y, x_validate, y_validate):
+def plot_keras_output(model, x_validate, y_validate):
     y_predict = model.predict(x_validate, verbose=2)
     fig, ax = plt.subplots()
     ax.scatter(x_validate, y_validate, alpha=0.5)
@@ -243,7 +233,7 @@ model = build_keras_model(config)
 model, training_history, keras_runtime, keras_mse = train_keras_model(
     model, x_train, y_train, x_validate, y_validate, config
 )
-plot_keras_output(model, x_train, y_train, x_validate, y_validate)
+plot_keras_output(model, x_validate, y_validate)
 ```
 
 The fit is good and we note the relatively low final MSE.
@@ -254,7 +244,7 @@ The fit is good and we note the relatively low final MSE.
 For the JAX implementation, we need to construct the network ourselves, as a map
 from inputs to outputs.
 
-We’ll use the same network structure we used for the Keras implementation.
+We'll use the same network structure we used for the Keras implementation.
 
 ### Background and set up
 
@@ -294,8 +284,8 @@ class LayerParams(NamedTuple):
     Stores parameters for one layer of the neural network.
 
     """
-    W: jnp.ndarray     # weights
-    b: jnp.ndarray     # biases
+    W: jax.Array     # weights
+    b: jax.Array     # biases
 ```
 
 The following function initializes a single layer of the network using He
@@ -304,7 +294,7 @@ initialization for weights and ones for biases.
 ```{code-cell} ipython3
 def initialize_layer(in_dim, out_dim, key):
     """
-    Initialize weights and biases for a single layer of a the network.
+    Initialize weights and biases for a single layer of the network.
     Use He initialization for weights and ones for biases.
     """
     W = jax.random.normal(key, shape=(in_dim, out_dim)) * jnp.sqrt(2 / in_dim)
@@ -342,17 +332,17 @@ Wait, you say!
 
 Shouldn’t we concatenate the elements of $\theta$ into some kind of big array, so that we can do autodiff with respect to this array?
 
-Actually we don’t need to --- we use the JAX PyTree approach discussed below.
+Actually we don't need to --- we use the JAX PyTree approach discussed below.
 
 
 ### Coding the network
 
-Here’s our implementation of the ANN $f$:
+Here's our implementation of the ANN $f$:
 
 ```{code-cell} ipython3
 def f(
         θ: list,                        # Network parameters (pytree)
-        x: jnp.ndarray,                 # Input data (row vector)
+        x: jax.Array,                 # Input data (row vector)
         σ: callable = jnp.tanh          # Activation function
     ):
     """
@@ -367,20 +357,33 @@ def f(
 
 The function $f$ is appropriately vectorized, so that we can pass in the entire
 set of input observations as `x` and return the predicted vector of outputs `y_hat = f(θ, x)`
-corresponding  to each data point.
+corresponding to each data point.
 
 The loss function is mean squared error, the same as the Keras case.
 
 ```{code-cell} ipython3
 def loss_fn(
         θ: list,            # Network parameters (pytree)
-        x: jnp.ndarray,     # Input data
-        y: jnp.ndarray      # Target data
+        x: jax.Array,     # Input data
+        y: jax.Array      # Target data
     ):
     return jnp.mean((f(θ, x) - y)**2)
 ```
 
-We’ll use its gradient to do stochastic gradient descent.
+We'll also define a function to visualize predictions from our JAX models.
+
+```{code-cell} ipython3
+def plot_jax_output(θ, x_validate, y_validate):
+    fig, ax = plt.subplots()
+    ax.scatter(x_validate, y_validate, color='red', alpha=0.5)
+    ax.plot(x_validate.flatten(), f(θ, x_validate).flatten(),
+            label="fitted model", color='black')
+    ax.set_xlabel('x')
+    ax.set_ylabel('y')
+    plt.show()
+```
+
+We'll use the gradient of the loss to do stochastic gradient descent.
 
 (Technically, we will be doing gradient descent, rather than stochastic
 gradient descent, since we will not randomize over sample points when we
@@ -412,13 +415,13 @@ The JAX function `grad` understands how to
 Using the above code, we can now write our rule for updating the parameters via gradient descent, which is the
 algorithm we covered in our [lecture on autodiff](https://jax.quantecon.org/autodiff.html).
 
-In this case, to keep things as simple as possible, we’ll use a fixed learning rate for every iteration.
+In this case, to keep things as simple as possible, we'll use a fixed learning rate for every iteration.
 
 ```{code-cell} ipython3
 def update_parameters(
         θ: list,            # Current parameters (pytree)
-        x: jnp.ndarray,     # Input data
-        y: jnp.ndarray,     # Target data
+        x: jax.Array,     # Input data
+        y: jax.Array,     # Target data
         config: Config      # contains configuration data
     ):
     """
@@ -449,14 +452,14 @@ of trees.
 Each weight matrix and bias vector is updated by gradient
 descent, exactly as required.
 
-Here’s code that puts this all together.
+Here's code that puts this all together.
 
 ```{code-cell} ipython3
 @partial(jax.jit, static_argnames=['config'])
 def train_jax_model(
         θ: list,                    # Initial parameters (pytree)
-        x: jnp.ndarray,             # Training input data
-        y: jnp.ndarray,             # Training target data
+        x: jax.Array,             # Training input data
+        y: jax.Array,             # Training target data
         config: Config              # contains configuration data
     ):
     """
@@ -479,7 +482,7 @@ We'll reuse the data we generated earlier.
 ```{code-cell} ipython3
 # Reset parameter vector
 config = Config()
-param_key = jax.random.PRNGKey(1234)
+param_key = jax.random.key(1234)
 θ = initialize_network(param_key, config)
 
 # Warmup run to trigger JIT compilation
@@ -503,13 +506,7 @@ Despite the simplicity of our implementation, we actually perform slightly bette
 Here's a visualization of the quality of our fit.
 
 ```{code-cell} ipython3
-fig, ax = plt.subplots()
-ax.scatter(x_validate, y_validate, alpha=0.5)
-ax.plot(x_validate.flatten(), f(θ, x_validate).flatten(),
-        label="fitted model", color='black')
-ax.set_xlabel('x')
-ax.set_ylabel('y')
-plt.show()
+plot_jax_output(θ, x_validate, y_validate)
 ```
 
 ## JAX plus Optax
@@ -521,14 +518,14 @@ One such library is [Optax](https://optax.readthedocs.io/en/latest/).
 
 ### Optax with SGD
 
-Here’s a training routine using Optax’s stochastic gradient descent solver.
+Here's a training routine using Optax's stochastic gradient descent solver.
 
 ```{code-cell} ipython3
 @partial(jax.jit, static_argnames=['config'])
 def train_jax_optax(
         θ: list,                    # Initial parameters (pytree)
-        x: jnp.ndarray,             # Training input data
-        y: jnp.ndarray,             # Training target data
+        x: jax.Array,             # Training input data
+        y: jax.Array,             # Training target data
         config: Config              # contains configuration data
     ):
     " Train model using Optax SGD optimizer. "
@@ -552,7 +549,7 @@ def train_jax_optax(
     return θ_final
 ```
 
-Let’s try running it.
+Let's try running it.
 
 ```{code-cell} ipython3
 # Reset parameter vector
@@ -578,19 +575,13 @@ print(f"Final MSE on validation data = {optax_sgd_mse:.6f}")
 ```
 
 ```{code-cell} ipython3
-fig, ax = plt.subplots()
-ax.scatter(x_validate, y_validate, alpha=0.5)
-ax.plot(x_validate.flatten(), f(θ, x_validate).flatten(),
-        label="fitted model", color='black')
-ax.set_xlabel('x')
-ax.set_ylabel('y')
-plt.show()
+plot_jax_output(θ, x_validate, y_validate)
 ```
 
-### Optax with ADAM
+### Optax with Adam
 
 We can also consider using a slightly more sophisticated gradient-based method,
-such as [ADAM](https://arxiv.org/pdf/1412.6980).
+such as [Adam](https://arxiv.org/pdf/1412.6980).
 
 You will notice that the syntax for using this alternative optimizer is very
 similar.
@@ -599,11 +590,11 @@ similar.
 @partial(jax.jit, static_argnames=['config'])
 def train_jax_optax_adam(
         θ: list,                    # Initial parameters (pytree)
-        x: jnp.ndarray,             # Training input data
-        y: jnp.ndarray,             # Training target data
+        x: jax.Array,             # Training input data
+        y: jax.Array,             # Training target data
         config: Config              # contains configuration data
     ):
-    " Train model using Optax ADAM optimizer. "
+    " Train model using Optax Adam optimizer. "
     epochs = config.epochs
     learning_rate = config.learning_rate
     solver = optax.adam(learning_rate)
@@ -638,21 +629,14 @@ optax_adam_runtime = time() - start_time
 
 optax_adam_mse = loss_fn(θ, x_validate, y_validate)
 optax_adam_train_mse = loss_fn(θ, x_train, y_train)
-print("Trained model with JAX and Optax ADAM " 
-     f"in {optax_adam_runtime:.2f} seconds.")
+print(f"Trained model with JAX and Optax Adam in {optax_adam_runtime:.2f} seconds.")
 print(f"Final MSE on validation data = {optax_adam_mse:.6f}")
 ```
 
 Here's a visualization of the result.
 
 ```{code-cell} ipython3
-fig, ax = plt.subplots()
-ax.scatter(x_validate, y_validate, alpha=0.5)
-ax.plot(x_validate.flatten(), f(θ, x_validate).flatten(),
-        label="fitted model", color='black')
-ax.set_xlabel('x')
-ax.set_ylabel('y')
-plt.show()
+plot_jax_output(θ, x_validate, y_validate)
 ```
 
 ## Summary
@@ -664,7 +648,7 @@ Here we compare the performance of the four different training approaches we exp
 
 import pandas as pd
 
-# Compute training MSEs for each method
+# Compute Keras training MSE (JAX training MSEs were computed above)
 keras_train_mse = model.evaluate(x_train, y_train, verbose=0)
 
 # Create summary table
@@ -673,7 +657,7 @@ results = {
         'Keras',
         'Pure JAX (hand-coded GD)',
         'JAX + Optax SGD',
-        'JAX + Optax ADAM'
+        'JAX + Optax Adam'
     ],
     'Runtime (s)': [
         keras_runtime,
@@ -707,7 +691,7 @@ All methods achieve similar validation MSE values (around 0.040-0.046).
 
 At the time of writing, the MSEs from plain vanilla Optax and our own hand-coded SGD routine are identical.
 
-The ADAM optimizer achieves slightly better MSE by using adaptive learning rates.
+The Adam optimizer achieves slightly better MSE by using adaptive learning rates.
 
 Still, our hand-coded algorithm does very well compared to this high-quality optimizer.
 
@@ -777,8 +761,8 @@ loss_gradient_l2 = jax.grad(loss_fn_l2)
 @partial(jax.jit, static_argnames=['config'])
 def train_with_schedule_and_l2(
         θ: list,
-        x: jnp.ndarray,
-        y: jnp.ndarray,
+        x: jax.Array,
+        y: jax.Array,
         config: Config,
         λ_l2: float = 0.001
     ):
@@ -825,7 +809,7 @@ deep_l2_mse = loss_fn(θ_l2, x_validate, y_validate)
 print(f"Strategy 1 - LR schedule and L2 regularization")
 print(f"  Runtime: {deep_l2_runtime:.2f}s")
 print(f"  Validation MSE: {deep_l2_mse:.6f}")
-print(f"  Improvement over ADAM: {optax_adam_mse - deep_l2_mse:.6f}")
+print(f"  Improvement over Adam: {optax_adam_mse - deep_l2_mse:.6f}")
 ```
 
 **Strategy 2: Baseline + Armijo Line Search**

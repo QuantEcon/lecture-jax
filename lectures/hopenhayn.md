@@ -340,7 +340,7 @@ def create_model(β=0.95,             # discount factor
     assert m_a + σ_a**2 / (2 * (1 - θ)) < 0, "Stability condition fails"
     # Build grids and initialize random number generator
     φ_grid = jnp.linspace(0, φ_grid_max, φ_grid_size)
-    key, subkey = jax.random.split(jax.random.PRNGKey(seed))
+    key, subkey = jax.random.split(jax.random.key(seed))
     # Generate a sample of draws of A for Monte Carlo integration
     A_draws = jnp.exp(m_a + σ_a * jax.random.normal(key, (A_draw_size,)))
     # Generate a sample of draws from γ for Monte Carlo
@@ -406,7 +406,7 @@ def simulate_firms(φ_bar, parameters, grids,
     """
     # Set initial conditions to the threshold value
     φ_vec = jnp.ones((num_firms,)) * φ_bar 
-    key = jax.random.PRNGKey(seed)
+    key = jax.random.key(seed)
     # Iterate forward in time
     for t in range(sim_length):
         key, subkey = jax.random.split(key)
@@ -810,7 +810,7 @@ If the rank-size plot is approximately linear, the data suggests a Pareto tail.
 You can use QuantEcon's `rank_size` function --- here's an example of usage.
 
 ```{code-cell} ipython3
-x = jnp.abs(jax.random.normal(jax.random.PRNGKey(42), (1_000_000,)))
+x = jnp.abs(jax.random.normal(jax.random.key(42), (1_000_000,)))
 rank_data, size_data = qe.rank_size(x, c=0.1)
 fig, ax = plt.subplots(figsize=(7,4))
 ax.loglog(rank_data, size_data, "o", markersize=3.0, alpha=0.5)
