@@ -204,7 +204,7 @@ time `T`) corresponds to the firm size distribution in (approximate) equilibrium
 def generate_cross_section(firm, M=500_000, T=500, s_init=1.0, seed=123):
 
     μ_a, σ_a, μ_b, σ_b, μ_e, σ_e, s_bar = firm
-    key = random.PRNGKey(seed)
+    key = random.key(seed)
 
     # Initialize the cross-section to a common value
     s = jnp.full((M,), s_init)
@@ -261,17 +261,20 @@ we did not JIT-compile the `for` loop.
 Let's try squeezing out a bit more speed
 by 
 
-* replacing the `for` loop with [`jax.lax.fori_loop`](https://jax.readthedocs.io/en/latest/_autosummary/jax.lax.fori_loop.html), and
+* replacing the `for` loop with [`jax.lax.fori_loop`](https://docs.jax.dev/en/latest/_autosummary/jax.lax.fori_loop.html) and
 * JIT-compiling the whole function.
 
 Here is the `jax.lax.fori_loop` version:
 
 ```{code-cell} ipython3
-@jax.jit
-def generate_cross_section_lax(firm, T=500, M=500_000, s_init=1.0, seed=123):
+@partial(jax.jit, static_argnames=("T", "M"))
+def generate_cross_section_lax(
+        firm, T=500, M=500_000, s_init=1.0, seed=123
+    ):
 
     μ_a, σ_a, μ_b, σ_b, μ_e, σ_e, s_bar = firm
-    key = random.PRNGKey(seed)
+    key = random.key(seed)
+
 
     # Initial cross section
     s = jnp.full((M,), s_init)
@@ -285,7 +288,7 @@ def generate_cross_section_lax(firm, T=500, M=500_000, s_init=1.0, seed=123):
         e = μ_e + σ_e * random.normal(subkeys[2], (M,))
         # Exponentiate them
         a, b, e = jax.tree.map(jnp.exp, (a, b, e))
-        # Pull out the t-th cross-section of shocks
+        # Update the cross-section of firms
         s = jnp.where(s < s_bar, e, a * s + b)
         new_state = s, key
         return new_state
@@ -343,11 +346,13 @@ What are the pros and cons of this approach?
 ```
 
 ```{code-cell} ipython3
-@jax.jit
-def generate_cross_section_lax(firm, T=500, M=500_000, s_init=1.0, seed=123):
+@partial(jax.jit, static_argnames=("T", "M"))
+def generate_cross_section_lax(
+        firm, T=500, M=500_000, s_init=1.0, seed=123
+    ):
 
     μ_a, σ_a, μ_b, σ_b, μ_e, σ_e, s_bar = firm
-    key = random.PRNGKey(seed)
+    key = random.key(seed)
     subkey_1, subkey_2, subkey_3 = random.split(key, 3)
 
     # Generate entire sequence of random draws

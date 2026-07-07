@@ -103,7 +103,12 @@ linalg.inv(B)   # Inverse of identity is identity
 ```
 
 ```{code-cell} ipython3
-linalg.eigh(B)  # Computes eigenvalues and eigenvectors
+out = linalg.eigh(B)  # Computes eigenvalues and eigenvectors
+out.eigenvalues
+```
+
+```{code-cell} ipython3
+out.eigenvectors
 ```
 
 ### Differences
@@ -209,7 +214,7 @@ import jax.random as random
 First we produce a key, which seeds the random number generator.
 
 ```{code-cell} ipython3
-key = random.PRNGKey(1)
+key = random.key(1)
 ```
 
 ```{code-cell} ipython3
@@ -233,7 +238,7 @@ If we use the same key again, we initialize at the same seed, so the random numb
 random.normal(key, (3, 3))
 ```
 
-To produce a (quasi-) independent draw, best practice is to "split" the existing key:
+To produce a (quasi-) independent draw, we can `split` the existing key.
 
 ```{code-cell} ipython3
 key, subkey = random.split(key)
@@ -247,14 +252,22 @@ random.normal(key, (3, 3))
 random.normal(subkey, (3, 3))
 ```
 
+As we will see, the `split` operation is particularly useful for parallel
+computing, where independent sequences or simulations can be given their own
+key.
+
+Another option is `fold_in`, which produces new "independent" keys from a base
+key.
+
 The function below produces `k` (quasi-) independent random `n x n` matrices using this procedure.
 
 ```{code-cell} ipython3
+base_key = random.key(42)
 def gen_random_matrices(key, n, k):
     matrices = []
-    for _ in range(k):
-        key, subkey = random.split(key)
-        matrices.append(random.uniform(subkey, (n, n)))
+    for i in range(k):
+        key = random.fold_in(base_key, i)  # generate a fresh key
+        matrices.append(random.uniform(key, (n, n)))
     return matrices
 ```
 
@@ -264,10 +277,16 @@ for A in matrices:
     print(A)
 ```
 
-One point to remember is that JAX expects tuples to describe array shapes, even for flat arrays.  Hence, to get a one-dimensional array of normal random draws we use `(len, )` for the shape, as in
+To get a one-dimensional array of normal random draws, we can either use `(len, )` for the shape, as in
 
 ```{code-cell} ipython3
 random.normal(key, (5, ))
+```
+
+or simply use `5` as the shape argument:
+
+```{code-cell} ipython3
+random.normal(key, 5)
 ```
 
 ## JIT compilation
@@ -621,7 +640,7 @@ x.nbytes  # and y is just a pointer to x
 
 This extra memory usage can be a big problem in actual research calculations.
 
-So let's try a different approach using [jax.vmap](https://jax.readthedocs.io/en/latest/_autosummary/jax.vmap.html)
+So let's try a different approach using [jax.vmap](https://docs.jax.dev/en/latest/_autosummary/jax.vmap.html)
 
 +++
 
@@ -668,7 +687,7 @@ jnp.allclose(z_vmap, z_mesh)
 :label: jax_intro_ex2
 ```
 
-In the Exercise section of [a lecture on Numba and parallelization](https://python-programming.quantecon.org/parallelization.html), we used Monte Carlo to price a European call option.
+In the Exercise section of [a lecture on Numba](https://python-programming.quantecon.org/numba.html), we used Monte Carlo to price a European call option.
 
 The code was accelerated by Numba-based multithreading.
 
@@ -704,18 +723,33 @@ def compute_call_price_jax(β=β,
                            ρ=ρ,
                            ν=ν,
                            M=M,
-                           key=jax.random.PRNGKey(1)):
+                           key=jax.random.key(1)):
 
     s = jnp.full(M, np.log(S0))
     h = jnp.full(M, h0)
-    for t in range(n):
+
+    def update(i, loop_state):
+        s, h, key = loop_state
         key, subkey = jax.random.split(key)
         Z = jax.random.normal(subkey, (2, M))
         s = s + μ + jnp.exp(h) * Z[0, :]
         h = ρ * h + ν * Z[1, :]
+        new_loop_state = s, h, key
+        return new_loop_state
+
+    initial_loop_state = s, h, key
+    final_loop_state = jax.lax.fori_loop(0, n, update, initial_loop_state)
+    s, h, key = final_loop_state
+
     expectation = jnp.mean(jnp.maximum(jnp.exp(s) - K, 0))
         
     return β**n * expectation
+```
+
+```{note}
+We use `jax.lax.fori_loop` instead of a Python `for` loop.
+This allows JAX to compile the loop efficiently without unrolling it,
+which significantly reduces compilation time for large arrays.
 ```
 
 Let's run it once to compile it:

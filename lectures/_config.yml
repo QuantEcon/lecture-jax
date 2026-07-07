@@ -33,9 +33,12 @@ latex:
       targetname: quantecon-jax.tex
 
 sphinx:
-  extra_extensions: [sphinx_multitoc_numbering, sphinxext.rediraffe, sphinxcontrib.youtube, sphinx.ext.todo, sphinx_exercise, sphinx_togglebutton, sphinx_tojupyter]
+  extra_extensions: [sphinx_multitoc_numbering, sphinxext.rediraffe, sphinxcontrib.youtube, sphinx.ext.todo, sphinx_exercise, sphinx_proof, sphinx_togglebutton, sphinx_tojupyter]
   config:
     bibtex_reference_style: author_year
+    suppress_warnings: ["mystnb.unknown_mime_type"]
+    nb_merge_streams: true
+    exercise_style: solution_follow_exercise
     # myst-nb config
     nb_render_image_options:
       width: 80%
@@ -79,6 +82,7 @@ sphinx:
       header_organisation: QuantEcon
       repository_url: https://github.com/QuantEcon/lecture-jax
       nb_repository_url: https://github.com/QuantEcon/lecture-jax.notebooks
+      path_to_docs: lectures
       twitter: quantecon
       twitter_logo_url: https://assets.quantecon.org/img/qe-twitter-logo.png
       og_logo_url: https://assets.quantecon.org/img/qe-og-logo.png

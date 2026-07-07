@@ -12,7 +12,7 @@ kernelspec:
 # Quantitative Economics with JAX
 
 This website presents a set of lectures on quantitative economic modeling
-using GPUs and [Google JAX](https://jax.readthedocs.io).
+using GPUs and [Google JAX](https://docs.jax.dev).
 
 
 ```{tableofcontents}
