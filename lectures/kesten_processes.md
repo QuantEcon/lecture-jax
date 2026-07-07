@@ -56,7 +56,6 @@ import jax
 import jax.numpy as jnp
 from jax import random
 from jax import lax
-from quantecon import tic, toc
 from typing import NamedTuple
 from functools import partial
 ```
@@ -235,17 +234,15 @@ Let's try running the code and generating a cross-section.
 
 ```{code-cell} ipython3
 firm = Firm()
-tic()
-data = generate_cross_section(firm).block_until_ready()
-toc()
+with qe.Timer():
+    data = generate_cross_section(firm).block_until_ready()
 ```
 
 We run the function again so we can see the speed without compile time.
 
 ```{code-cell} ipython3
-tic()
-data = generate_cross_section(firm).block_until_ready()
-toc()
+with qe.Timer():
+    data = generate_cross_section(firm).block_until_ready()
 ```
 
 Let's produce the rank-size plot and check the distribution:
@@ -299,7 +296,7 @@ def generate_cross_section_lax(
         # Exponentiate them
         a, b, e = jax.tree.map(jnp.exp, (a, b, e))
         # Update the cross-section of firms
-        s = jnp.where(s < s_bar, e, a * s + b)
+        s = jnp.where(s < s_bar, e_t, a_t * s + b_t)
         new_state = s, key
         return new_state
 
@@ -314,15 +311,13 @@ def generate_cross_section_lax(
 Let's see if we get any speed gain
 
 ```{code-cell} ipython3
-tic()
-data = generate_cross_section_lax(firm).block_until_ready()
-toc()
+with qe.Timer():
+    data = generate_cross_section_lax(firm).block_until_ready()
 ```
 
 ```{code-cell} ipython3
-tic()
-data = generate_cross_section_lax(firm).block_until_ready()
-toc()
+with qe.Timer():
+    data = generate_cross_section_lax(firm).block_until_ready()
 ```
 
 Here we produce the same rank-size plot:
@@ -393,15 +388,13 @@ def generate_cross_section_lax(
 Here are the run times.
 
 ```{code-cell} ipython3
-tic()
-data = generate_cross_section_lax(firm).block_until_ready()
-toc()
+with qe.Timer():
+    data = generate_cross_section_lax(firm).block_until_ready()
 ```
 
 ```{code-cell} ipython3
-tic()
-data = generate_cross_section_lax(firm).block_until_ready()
-toc()
+with qe.Timer():
+    data = generate_cross_section_lax(firm).block_until_ready()
 ```
 
 This method might or might not be faster.
