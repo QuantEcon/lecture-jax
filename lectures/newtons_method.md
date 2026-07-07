@@ -214,7 +214,7 @@ dim = 5_000
 seed = 32
 
 # Create a random matrix A and normalize the rows to sum to one
-key = jax.random.PRNGKey(seed)
+key = jax.random.key(seed)
 A = jax.random.uniform(key, [dim, dim])
 s = jnp.sum(A, axis=0)
 A = A / s

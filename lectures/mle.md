@@ -77,9 +77,9 @@ def logL(β):
     return -((β - 10) ** 2) - 10
 ```
 
-To find the value of $\frac{d \log \mathcal{L}(\boldsymbol{\beta})}{d \boldsymbol{\beta}}$, we can use [jax.grad](https://jax.readthedocs.io/en/latest/_autosummary/jax.grad.html), which auto-differentiates the given function.
+To find the value of $\frac{d \log \mathcal{L}(\boldsymbol{\beta})}{d \boldsymbol{\beta}}$, we can use [jax.grad](https://docs.jax.dev/en/latest/_autosummary/jax.grad.html), which auto-differentiates the given function.
 
-We further use [jax.vmap](https://jax.readthedocs.io/en/latest/_autosummary/jax.vmap.html), which vectorizes the given function, i.e., the function acting upon scalar inputs can now be used with vector inputs.
+We further use [jax.vmap](https://docs.jax.dev/en/latest/_autosummary/jax.vmap.html), which vectorizes the given function, i.e., the function acting upon scalar inputs can now be used with vector inputs.
 
 ```{code-cell} ipython3
 dlogL = jax.vmap(jax.grad(logL))
@@ -171,9 +171,9 @@ def poisson_logL(β, model):
     return jnp.sum(model.y * jnp.log(μ) - μ - jnp.log(factorial(y)))
 ```
 
-To find the gradient of `poisson_logL`, we again use [jax.grad](https://jax.readthedocs.io/en/latest/_autosummary/jax.grad.html).
+To find the gradient of `poisson_logL`, we again use [jax.grad](https://docs.jax.dev/en/latest/_autosummary/jax.grad.html).
 
-According to [the documentation](https://jax.readthedocs.io/en/latest/notebooks/autodiff_cookbook.html#jacobians-and-hessians-using-jacfwd-and-jacrev):
+According to [the documentation](https://docs.jax.dev/en/latest/notebooks/autodiff_cookbook.html#jacobians-and-hessians-using-jacfwd-and-jacrev):
 
 * `jax.jacfwd` uses forward-mode automatic differentiation, which is more efficient for “tall” Jacobian matrices, while
 * `jax.jacrev` uses reverse-mode, which is more efficient for “wide” Jacobian matrices.
@@ -340,7 +340,7 @@ To simulate the model, we sample 500,000 values of $x_t$ from the standard norma
 ```{code-cell} ipython3
 seed = 32
 shape = (500_000, 1)
-key = jax.random.PRNGKey(seed)
+key = jax.random.key(seed)
 x = jax.random.normal(key, shape)
 ```
 

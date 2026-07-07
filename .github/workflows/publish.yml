@@ -6,19 +6,14 @@ on:
 jobs:
   publish:
     if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags')
-    runs-on: "runs-on=${{ github.run_id }}/family=g4dn.2xlarge/image=quantecon-ubuntu24/disk=large"
+    runs-on: "runs-on=${{ github.run_id }}/family=g4dn.2xlarge/image=quantecon_ubuntu2404/volume=80gb/spot=false"
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
-      - name: Upgrade CUDANN
-        shell: bash -l {0}
-        run: |
-          wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2404/x86_64/cuda-keyring_1.1-1_all.deb
-          sudo dpkg -i cuda-keyring_1.1-1_all.deb
-          sudo apt-get update
-          sudo apt-get -y install cudnn-cuda-12
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
       - name: Setup Anaconda
-        uses: conda-incubator/setup-miniconda@v3
+        uses: conda-incubator/setup-miniconda@v4
         with:
           auto-update-conda: true
           auto-activate-base: true
@@ -29,10 +24,12 @@ jobs:
       - name: Install jax (and install checks for GPU)
         shell: bash -l {0}
         run: |
-          pip install -U "jax[cuda12]"
+          pip install -U "jax[cuda13]"
           python --version
           python scripts/test-jax-install.py
           nvidia-smi
+      - name: Install ImageMagick
+        run: sudo apt-get update && sudo apt-get install -y imagemagick
       - name: Display Conda Environment Versions
         shell: bash -l {0}
         run: conda list
@@ -41,7 +38,7 @@ jobs:
         run: pip list
       # Download Build Cache from cache.yml
       - name: Download "build" folder (cache)
-        uses: dawidd6/action-download-artifact@v11
+        uses: dawidd6/action-download-artifact@v21
         with:
           workflow: cache.yml
           branch: main
@@ -62,7 +59,7 @@ jobs:
         run: |
           jb build lectures --path-output ./ --builder=custom --custom-builder=jupyter -n -W --keep-going
           zip -r download-notebooks.zip _build/jupyter
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: download-notebooks
           path: download-notebooks.zip
@@ -76,6 +73,32 @@ jobs:
         shell: bash -l {0}
         run: |
           jb build lectures --path-output ./ -n -W --keep-going
+      # Create HTML archive for release assets
+      - name: Create HTML archive
+        shell: bash -l {0}
+        run: |
+          tar -czf lecture-jax-html-${{ github.ref_name }}.tar.gz -C _build/html .
+          sha256sum lecture-jax-html-${{ github.ref_name }}.tar.gz > html-checksum.txt
+
+          # Create metadata manifest
+          cat > html-manifest.json << EOF
+          {
+            "tag": "${{ github.ref_name }}",
+            "commit": "${{ github.sha }}",
+            "timestamp": "$(date -Iseconds)",
+            "size_mb": $(du -sm _build/html | cut -f1),
+            "file_count": $(find _build/html -type f | wc -l)
+          }
+          EOF
+      - name: Upload archives to release
+        uses: softprops/action-gh-release@v3
+        with:
+          files: |
+            lecture-jax-html-${{ github.ref_name }}.tar.gz
+            html-checksum.txt
+            html-manifest.json
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Deploy website to gh-pages
         uses: peaceiris/actions-gh-pages@v4
         with:

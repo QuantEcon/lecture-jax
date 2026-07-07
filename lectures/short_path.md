@@ -105,7 +105,7 @@ while i < max_iter:
 print("The cost-to-go function is", J)
 ```
 
-We can further optimize the above code by using [jax.lax.while_loop](https://jax.readthedocs.io/en/latest/_autosummary/jax.lax.while_loop.html). The extra acceleration is due to the fact that the entire operation can be optimized by the JAX compiler and launched as a single kernel on the GPU.
+We can further optimize the above code by using [jax.lax.while_loop](https://docs.jax.dev/en/latest/_autosummary/jax.lax.while_loop.html). The extra acceleration is due to the fact that the entire operation can be optimized by the JAX compiler and launched as a single kernel on the GPU.
 
 ```{code-cell} ipython3
 max_iter = 500

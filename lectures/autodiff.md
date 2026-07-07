@@ -349,7 +349,7 @@ Let's generate some simulated data:
 
 ```{code-cell} ipython3
 n = 100
-key = jax.random.PRNGKey(1234)
+key = jax.random.key(1234)
 x = jax.random.uniform(key, (n,))
 
 α, β, σ = 0.5, 1.0, 0.1  # Set the true intercept and slope.

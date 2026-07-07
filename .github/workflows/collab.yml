@@ -2,12 +2,12 @@ name: Build Project on Google Collab (Execution)
 on: [pull_request]
 jobs:
   execution-checks:
-    runs-on: "runs-on=${{ github.run_id }}/family=g4dn.2xlarge/image=ubuntu24-gpu-x64/disk=large"
+    runs-on: "runs-on=${{ github.run_id }}/family=g4dn.2xlarge/image=ubuntu24-gpu-x64/volume=80gb/spot=false"
     container:
       image: docker://us-docker.pkg.dev/colab-images/public/runtime
       options: --gpus all
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
         with:
           ref: ${{ github.event.pull_request.head.sha }}
       - name: Check nvidia drivers
@@ -22,30 +22,34 @@ jobs:
         shell: bash -l {0}
         run: pip list
       - name: Download "build" folder (cache)
-        uses: dawidd6/action-download-artifact@v11
+        uses: dawidd6/action-download-artifact@v21
         with:
           workflow: cache.yml
           branch: main
           name: build-cache
           path: _build
-      # Install build software
+      # Install build software (pip dependencies sourced from environment.yml
+      # so this stays in sync with the conda build — see #303)
       - name: Install Build Software
         shell: bash -l {0}
         run: |
-          pip install jupyter-book==0.15.1 docutils==0.17.1 quantecon-book-theme==0.7.1 sphinx-tojupyter==0.3.0 sphinxext-rediraffe==0.2.7 sphinx-exercise==0.4.1 sphinxcontrib-youtube==1.1.0 sphinx-togglebutton==0.3.1 arviz==0.13.0
+          pip install pyyaml
+          python -c "import yaml; deps = next(d['pip'] for d in yaml.safe_load(open('environment.yml'))['dependencies'] if isinstance(d, dict) and 'pip' in d); open('colab-requirements.txt', 'w').write('\n'.join(deps) + '\n')"
+          cat colab-requirements.txt
+          pip install -r colab-requirements.txt
       # Build of HTML (Execution Testing)
       - name: Build HTML
         shell: bash -l {0}
         run: |
           jb build lectures --path-output ./ -n -W --keep-going
       - name: Upload Execution Reports
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: failure()
         with:
           name: execution-reports
           path: _build/html/reports
       - name: Preview Deploy to Netlify
-        uses: nwtgck/actions-netlify@v3
+        uses: nwtgck/actions-netlify@v4
         with:
           publish-dir: '_build/html/'
           production-branch: main
