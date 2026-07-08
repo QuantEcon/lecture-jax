@@ -131,7 +131,7 @@ We now study the implications of this specification.
 
 #### Heavy tails
 
-If the conditions of the  {doc}`intermediate:kesten_processes#the-kestengoldie-theorem`
+If the conditions of the [Kesten--Goldie Theorem](https://python.quantecon.org/kesten_processes.html#the-kestengoldie-theorem)
 are satisfied, then {eq}`firm_dynam` implies that the firm size distribution will have Pareto tails.
 
 This matches empirical findings across many data sets.
