@@ -91,7 +91,7 @@ jobs:
           jb build lectures --path-output ./ -n -W --keep-going
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: quantecon/actions/publish-gh-pages@v0.6.0
+        uses: quantecon/actions/publish-gh-pages@v0.8.0
         with:
           build-dir: _build/html
           cname: jax.quantecon.org
