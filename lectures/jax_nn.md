@@ -330,7 +330,7 @@ def initialize_network(
 
 Wait, you say!
 
-Shouldn’t we concatenate the elements of $\theta$ into some kind of big array, so that we can do autodiff with respect to this array?
+Shouldn't we concatenate the elements of $\theta$ into some kind of big array, so that we can do autodiff with respect to this array?
 
 Actually we don't need to --- we use the JAX PyTree approach discussed below.
 
@@ -396,7 +396,7 @@ loss_gradient = jax.grad(loss_fn)
 The gradient of `loss_fn` is with respect to the first argument `θ`.
 
 The code above seems kind of magical, since we are differentiating with respect
-to a parameter “vector” stored as a list of namedtuples containing arrays.
+to a parameter "vector" stored as a list of namedtuples containing arrays.
 
 How can we differentiate with respect to such a complex object?
 
@@ -543,8 +543,9 @@ def train_jax_optax(
         return new_loop_state
 
     initial_loop_state = θ, opt_state
-    final_loop_state = jax.lax.fori_loop(0, 
-                     epochs, update, initial_loop_state)
+    final_loop_state = jax.lax.fori_loop(
+        0, epochs, update, initial_loop_state
+    )
     θ_final, _ = final_loop_state
     return θ_final
 ```
@@ -608,8 +609,9 @@ def train_jax_optax_adam(
         return (θ_new, new_opt_state)
 
     initial_loop_state = θ, opt_state
-    θ_final, _ = jax.lax.fori_loop(0, 
-                        epochs, update, initial_loop_state)
+    θ_final, _ = jax.lax.fori_loop(
+        0, epochs, update, initial_loop_state
+    )
     return θ_final
 ```
 
@@ -714,7 +716,7 @@ You should hold constant both the number of epochs and the total number of
 parameters in the network.
 
 Currently, the network has 4 layers with output dimension $k=10$, giving a total
-of $251$ parameters
+of $251$ parameters.
 
 You can experiment with:
 - Changing the network architecture 
@@ -784,7 +786,8 @@ def train_with_schedule_and_l2(
         θ_curr, opt_state_curr = loop_state
         grad = loss_gradient_l2(θ_curr, x, y, λ_l2)
         updates, opt_state_new = solver.update(
-                            grad, opt_state_curr, θ_curr)
+            grad, opt_state_curr, θ_curr
+        )
         θ_new = optax.apply_updates(θ_curr, updates)
         return (θ_new, opt_state_new)
 
@@ -812,7 +815,7 @@ print(f"  Validation MSE: {deep_l2_mse:.6f}")
 print(f"  Improvement over Adam: {optax_adam_mse - deep_l2_mse:.6f}")
 ```
 
-**Strategy 2: Baseline + Armijo Line Search**
+**Strategy 2: Baseline + Armijo line search**
 
 Let's implement gradient descent with [Armijo line search](https://en.wikipedia.org/wiki/Backtracking_line_search) for adaptive step size selection:
 
@@ -901,8 +904,7 @@ def train_jax_armijo_ls(
         loop_state = jax.lax.while_loop(
             cond_fn,
             body_fn,
-            (α_init, current_loss, 
-                g_norm_sq, θ_current, x_data, y_data, 0),
+            (α_init, current_loss, g_norm_sq, θ_current, x_data, y_data, 0),
         )
         α_final = loop_state[0]
 
@@ -933,10 +935,10 @@ start_time = time()
 armijo_runtime = time() - start_time
 
 armijo_mse = loss_fn(θ_armijo, x_validate, y_validate)
-print(f"Strategy 2 - Baseline + Armijo Line Search")
+print(f"Strategy 2 - Baseline + Armijo line search")
 print(f"  Runtime: {armijo_runtime:.2f}s")
 print(f"  Validation MSE: {armijo_mse:.6f}")
-print(f"  Improvement over ADAM: {optax_adam_mse - armijo_mse:.6f}")
+print(f"  Improvement over Adam: {optax_adam_mse - armijo_mse:.6f}")
 ```
 
 **Results Summary**
@@ -949,9 +951,9 @@ Let's compare all strategies:
 # Summary of all strategies
 strategies_results = {
     'Strategy': [
-        'Baseline (ADAM + tanh)',
+        'Baseline (Adam + tanh)',
         '1. LR schedule and L2 regularization',
-        '2. Baseline + Armijo Line Search'
+        '2. Baseline + Armijo line search'
     ],
     'Runtime (s)': [
         optax_adam_runtime,
