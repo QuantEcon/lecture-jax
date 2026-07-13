@@ -69,13 +69,13 @@ jobs:
         with:
           name: execution-reports
           path: _build/html/reports
-      - name: Preview Deploy to Netlify
-        uses: nwtgck/actions-netlify@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
         with:
-          publish-dir: '_build/html/'
-          production-branch: main
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          deploy-message: "Preview Deploy from GitHub Actions"
-        env:
-          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+          node-version: '20'
+      - name: Preview Deploy to Netlify
+        uses: quantecon/actions/preview-netlify@v0.8.0
+        with:
+          netlify-auth-token: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          netlify-site-id: ${{ secrets.NETLIFY_SITE_ID }}
+          build-dir: _build/html
