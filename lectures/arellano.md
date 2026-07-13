@@ -380,7 +380,7 @@ class ArellanoEconomy(NamedTuple):
     B_size: int         # Grid size for bonds
     y_size: int         # Grid size for income
     P: jnp.ndarray      # Markov matrix governing the income process
-    B_grid: jnp.ndarray # Bond unit grid
+    B_grid: jnp.ndarray # Bond grid
     y_grid: jnp.ndarray # State values of the income process
     def_y: jnp.ndarray  # Default income process
 ```
