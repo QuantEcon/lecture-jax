@@ -296,7 +296,7 @@ def generate_cross_section_lax(
         # Exponentiate them
         a, b, e = jax.tree.map(jnp.exp, (a, b, e))
         # Update the cross-section of firms
-        s = jnp.where(s < s_bar, e_t, a_t * s + b_t)
+        s = jnp.where(s < s_bar, e, a * s + b)
         new_state = s, key
         return new_state
 
