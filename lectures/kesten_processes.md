@@ -54,6 +54,7 @@ import quantecon as qe
 import jax
 import jax.numpy as jnp
 from jax import random
+from jax import lax
 from typing import NamedTuple
 from functools import partial
 ```
