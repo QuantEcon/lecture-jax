@@ -31,7 +31,6 @@ We'll achieve greater speed --- but at the cost of readability!
 ```{code-cell} ipython3
 import matplotlib.pyplot as plt
 import numpy as np
-from numpy.random import uniform
 import time
 ```
 
@@ -58,8 +57,8 @@ max_other_type = 6      # max number of different-type neighbors tolerated
 Here's a function to initialize the state with random locations and types:
 
 ```{code-cell} ipython3
-def initialize_state():
-    locations = uniform(size=(n, 2))
+def initialize_state(rng):
+    locations = rng.random(size=(n, 2))
     types = np.zeros(n, dtype=int)
     types[num_of_type_0:] = 1
     return locations, types
@@ -68,8 +67,8 @@ def initialize_state():
 Let's see what this looks like:
 
 ```{code-cell} ipython3
-np.random.seed(1234)
-locations, types = initialize_state()
+rng = np.random.default_rng(1234)
+locations, types = initialize_state(rng)
 
 print(f"locations shape: {locations.shape}")
 print(f"First 5 locations:\n{locations[:5]}")
@@ -105,11 +104,11 @@ When an agent is unhappy, they keep trying new random locations until they find
 one where they're happy:
 
 ```{code-cell} ipython3
-def move_agent(i, locations, types, max_attempts=10_000):
+def move_agent(i, locations, types, rng, max_attempts=10_000):
     " Move agent i to a new location where they are happy. "
     attempts = 0
     while not is_happy(i, locations, types) and attempts < max_attempts:
-        locations[i, :] = uniform(), uniform()
+        locations[i, :] = rng.random(size=2)
         attempts += 1
 ```
 
@@ -146,8 +145,8 @@ def plot_distribution(locations, types, title):
 Let's visualize the initial random distribution:
 
 ```{code-cell} ipython3
-np.random.seed(1234)
-locations, types = initialize_state()
+rng = np.random.default_rng(1234)
+locations, types = initialize_state(rng)
 plot_distribution(locations, types, 'Initial random distribution')
 ```
 
@@ -167,8 +166,8 @@ def run_simulation(max_iter=100_000, seed=42):
 
     Each iteration cycles through all agents, giving each a chance to move.
     """
-    np.random.seed(seed)
-    locations, types = initialize_state()
+    rng = np.random.default_rng(seed)
+    locations, types = initialize_state(rng)
 
     plot_distribution(locations, types, 'Initial distribution')
 
@@ -180,7 +179,7 @@ def run_simulation(max_iter=100_000, seed=42):
         someone_moved = False
         for i in range(n):
             if not is_happy(i, locations, types):
-                move_agent(i, locations, types)
+                move_agent(i, locations, types, rng)
                 someone_moved = True
         if not someone_moved:
             converged = True
