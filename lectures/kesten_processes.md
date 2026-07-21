@@ -4,7 +4,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.17.2
+    jupytext_version: 1.16.7
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -32,18 +32,17 @@ In addition to JAX and Anaconda, this lecture will need the following libraries:
 ```{code-cell} ipython3
 :tags: [hide-output]
 
-!pip install quantecon
+!pip install --upgrade quantecon
 ```
 
 ## Overview
 
 This lecture describes Kesten processes, which are an important class of
-stochastic processes, and an application of firm dynamics.
+stochastic processes, and their application to firm dynamics.
 
-The lecture draws on [an earlier QuantEcon lecture](https://python.quantecon.org/kesten_processes.html), 
-which uses Numba to accelerate the computations.
+The lecture draws on {doc}`intermediate:kesten_processes`.
 
-In that earlier lecture you can find a more detailed discussion of the concepts involved.
+In that earlier lecture, you can find a more detailed discussion of the concepts involved.
 
 This lecture focuses on implementing the same computations in JAX.
 
@@ -55,12 +54,11 @@ import quantecon as qe
 import jax
 import jax.numpy as jnp
 from jax import random
-from jax import lax
 from typing import NamedTuple
 from functools import partial
 ```
 
-Let's check the GPU we are running
+Let's check the GPU we are running on
 
 ```{code-cell} ipython3
 !nvidia-smi
@@ -84,19 +82,17 @@ sequences.
 
 We are interested in the dynamics of $\{X_t\}_{t \geq 0}$ when $X_0$ is given.
 
-We will focus on the nonnegative scalar case, where $X_t$ takes values in $\mathbb R_+$.
+We will focus on the nonnegative scalar case, where $X_t$ takes values in $\mathbb{R}_+$.
 
 In particular, we will assume that
 
 * the initial condition $X_0$ is nonnegative,
-* $\{a_t\}_{t \geq 1}$ is a nonnegative IID stochastic process and
+* $\{a_t\}_{t \geq 1}$ is a nonnegative IID stochastic process, and
 * $\{\eta_t\}_{t \geq 1}$ is another nonnegative IID stochastic process, independent of the first.
-
 
 ### Application: firm dynamics
 
-In this section we apply Kesten process theory to the study of firm dynamics.
-
+In this section, we apply Kesten process theory to the study of firm dynamics.
 
 #### Gibrat's law
 
@@ -120,7 +116,7 @@ for some positive IID sequence $\{a_t\}$.
 Subsequent empirical research has shown that this specification is not accurate,
 particularly for small firms.
 
-However, we can get close to the data by modifying {eq}`firm_dynam_gb` to
+However, we can get closer to the data by modifying {eq}`firm_dynam_gb` to
 
 ```{math}
 :label: firm_dynam
@@ -153,10 +149,9 @@ In this setting, firm dynamics can be expressed as
     (a_{t+1} s_t + b_{t+1}) \mathbb{1}\{s_t \geq \bar s\}
 ```
 
-The motivation behind and interpretation of [](firm_dynam_ee) can be found in 
-[our earlier Kesten process lecture](https://python.quantecon.org/kesten_processes.html).
+The motivation behind and interpretation of [](firm_dynam_ee) can be found in {doc}`intermediate:kesten_processes`.
 
-What can we say about dynamics?
+What can we say about the dynamics?
 
 Although {eq}`firm_dynam_ee` is not a Kesten process, it does update in the
 same way as a Kesten process when $s_t$ is large.
@@ -167,8 +162,8 @@ We can investigate this question via simulation and rank-size plots.
 
 The approach will be to
 
-1. generate $M$ draws of $s_T$ when $M$ and $T$ are large and
-1. plot the largest 1,000 of the resulting draws in a rank-size plot.
+1. generate $M$ draws of $s_T$ when $M$ and $T$ are large, and
+2. plot the largest 1,000 of the resulting draws in a rank-size plot.
 
 (The distribution of $s_T$ will be close to the stationary distribution
 when $T$ is large.)
@@ -179,12 +174,12 @@ Here's a class to store parameters:
 
 ```{code-cell} ipython3
 class Firm(NamedTuple):
-    μ_a:   float = -0.5
-    σ_a:   float = 0.1
-    μ_b:   float = 0.0
-    σ_b:   float = 0.5
-    μ_e:   float = 0.0
-    σ_e:   float = 0.5
+    μ_a: float = -0.5
+    σ_a: float = 0.1
+    μ_b: float = 0.0
+    σ_b: float = 0.5
+    μ_e: float = 0.0
+    σ_e: float = 0.5
     s_bar: float = 1.0
 ```
 
@@ -203,18 +198,16 @@ Now we write a for loop that repeatedly calls this function, to push a
 cross-section of firms forward in time.
 
 For sufficiently large `T`, the cross-section it returns (the cross-section at
-time `T`) corresponds to firm size distribution in (approximate) equilibrium.
+time `T`) corresponds to the firm size distribution in (approximate) equilibrium.
 
 ```{code-cell} ipython3
-def generate_cross_section(
-        firm, M=500_000, T=500, s_init=1.0, seed=123
-    ):
+def generate_cross_section(firm, M=500_000, T=500, s_init=1.0, seed=123):
 
     μ_a, σ_a, μ_b, σ_b, μ_e, σ_e, s_bar = firm
     key = random.key(seed)
 
     # Initialize the cross-section to a common value
-    s = jnp.full((M, ), s_init)
+    s = jnp.full((M,), s_init)
 
     # Perform updates on s for time t
     for t in range(T):
@@ -251,7 +244,7 @@ Let's produce the rank-size plot and check the distribution:
 fig, ax = plt.subplots()
 
 rank_data, size_data = qe.rank_size(data, c=0.01)
-ax.loglog(rank_data, size_data, 'o', markersize=3.0, alpha=0.5)
+ax.loglog(rank_data, size_data, "o", markersize=3.0, alpha=0.5)
 ax.set_xlabel("log rank")
 ax.set_ylabel("log size")
 
@@ -260,8 +253,7 @@ plt.show()
 
 The plot produces a straight line, consistent with a Pareto tail.
 
-
-#### Alternative implementation with `lax.fori_loop`
+#### Alternative implementation with `jax.lax.fori_loop`
 
 Although we JIT-compiled some of the code above,
 we did not JIT-compile the `for` loop.
@@ -269,10 +261,10 @@ we did not JIT-compile the `for` loop.
 Let's try squeezing out a bit more speed
 by 
 
-* replacing the `for` loop with [`lax.fori_loop`](https://docs.jax.dev/en/latest/_autosummary/jax.lax.fori_loop.html) and
+* replacing the `for` loop with [`jax.lax.fori_loop`](https://docs.jax.dev/en/latest/_autosummary/jax.lax.fori_loop.html) and
 * JIT-compiling the whole function.
 
-Here is the `lax.fori_loop` version:
+Here is the `jax.lax.fori_loop` version:
 
 ```{code-cell} ipython3
 @partial(jax.jit, static_argnames=("T", "M"))
@@ -282,14 +274,15 @@ def generate_cross_section_lax(
 
     μ_a, σ_a, μ_b, σ_b, μ_e, σ_e, s_bar = firm
     key = random.key(seed)
-    
+
+
     # Initial cross section
-    s = jnp.full((M, ), s_init)
+    s = jnp.full((M,), s_init)
 
     def update_cross_section(t, state):
         s, key = state
         key, *subkeys = jax.random.split(key, 4)
-        # Generate current random draws 
+        # Generate current random draws
         a = μ_a + σ_a * random.normal(subkeys[0], (M,))
         b = μ_b + σ_b * random.normal(subkeys[1], (M,))
         e = μ_e + σ_e * random.normal(subkeys[2], (M,))
@@ -300,11 +293,9 @@ def generate_cross_section_lax(
         new_state = s, key
         return new_state
 
-    # Use fori_loop 
+    # Use fori_loop
     initial_state = s, key
-    final_s, final_key = lax.fori_loop(
-        0, T, update_cross_section, initial_state
-    )
+    final_s, final_key = jax.lax.fori_loop(0, T, update_cross_section, initial_state)
     return final_s
 ```
 
@@ -326,12 +317,11 @@ Here we produce the same rank-size plot:
 fig, ax = plt.subplots()
 
 rank_data, size_data = qe.rank_size(data, c=0.01)
-ax.loglog(rank_data, size_data, 'o', markersize=3.0, alpha=0.5)
+ax.loglog(rank_data, size_data, "o", markersize=3.0, alpha=0.5)
 ax.set_xlabel("log rank")
 ax.set_ylabel("log size")
 
 plt.show()
-
 ```
 
 ## Exercises
@@ -364,15 +354,15 @@ def generate_cross_section_lax(
     μ_a, σ_a, μ_b, σ_b, μ_e, σ_e, s_bar = firm
     key = random.key(seed)
     subkey_1, subkey_2, subkey_3 = random.split(key, 3)
-    
-    # Generate entire sequence of random draws 
+
+    # Generate entire sequence of random draws
     a = μ_a + σ_a * random.normal(subkey_1, (T, M))
     b = μ_b + σ_b * random.normal(subkey_2, (T, M))
     e = μ_e + σ_e * random.normal(subkey_3, (T, M))
     # Exponentiate them
     a, b, e = jax.tree.map(jnp.exp, (a, b, e))
     # Initial cross section
-    s = jnp.full((M, ), s_init)
+    s = jnp.full((M,), s_init)
 
     def update_cross_section(t, s):
         # Pull out the t-th cross-section of shocks
@@ -381,7 +371,7 @@ def generate_cross_section_lax(
         return s
 
     # Use lax.fori_loop to perform the calculations on all states
-    s_final = lax.fori_loop(0, T, update_cross_section, s)
+    s_final = jax.lax.fori_loop(0, T, update_cross_section, s)
     return s_final
 ```
 
