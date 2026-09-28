@@ -433,8 +433,8 @@ def create_lucas_tree_model(
     grid_min, grid_max = np.exp(-4 * ssd), np.exp(4 * ssd)
     grid = np.linspace(grid_min, grid_max, grid_size)
     # Set up distribution for shocks
-    np.random.seed(seed)
-    draws = np.random.lognormal(mean=0, sigma=σ, size=500)
+    rng = np.random.default_rng(seed)
+    draws = rng.lognormal(mean=0, sigma=σ, size=500)
     # And the vector h
     h = np.empty(grid_size)
     for i, y in enumerate(grid):
