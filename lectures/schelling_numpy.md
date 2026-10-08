@@ -15,7 +15,7 @@ kernelspec:
 
 ## Overview
 
-In the {doc}`previous lecture <schelling>`, we implemented the Schelling
+In the {doc}`previous lecture <schelling_python>`, we implemented the Schelling
 segregation model using pure Python and standard libraries.
 
 In this lecture, we will rewrite the model using NumPy arrays and functions.
