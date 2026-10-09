@@ -21,7 +21,7 @@ kernelspec:
 In this lecture we consider some asset pricing problems and use them to
 illustrate some foundations of JAX programming.
 
-The main difference from the lecture {doc}`lucas_model`, which also considers
+The main difference from the lecture {doc}`lucas_model_jax`, which also considers
 asset prices, is that the the state
 spaces will be discrete and multi-dimensional.
 
@@ -165,7 +165,7 @@ Our aim is to solve [](pdex2) but before that we need to specify
 
 ## Choosing the stochastic discount factor
 
-We will adopt the stochastic discount factor described in {doc}`lucas_model`, which has the form
+We will adopt the stochastic discount factor described in {doc}`lucas_model_jax`, which has the form
 
 ```{math}
 :label: lucsdf
