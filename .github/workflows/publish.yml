@@ -94,7 +94,8 @@ jobs:
         uses: quantecon/actions/publish-gh-pages@v0.12.0
         with:
           build-dir: _build/html
-          cname: jax.quantecon.org
+          # Custom domain (jax.quantecon.org): set in Settings → Pages. The Actions Pages
+          # deploy ignores a CNAME file, so publish-gh-pages' cname input has no effect.
           create-release-assets: 'true'
           asset-name: 'lecture-jax-html'
           github-token: ${{ secrets.GITHUB_TOKEN }}
