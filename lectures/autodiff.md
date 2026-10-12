@@ -4,7 +4,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.16.4
+    jupytext_version: 1.17.2
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -19,8 +19,8 @@ kernelspec:
 
 ## Overview
 
-This lecture gives a brief introduction to automatic differentiation using
-Google JAX.
+This lecture gives an introduction to automatic differentiation using Google
+JAX.
 
 Automatic differentiation is one of the key elements of modern machine learning
 and artificial intelligence.
@@ -35,10 +35,17 @@ While other software packages also offer this feature, the JAX version is
 particularly powerful because it integrates so well with other core
 components of JAX (e.g., JIT compilation and parallelization).
 
-As we will see in later lectures, automatic differentiation can be used not only
+Automatic differentiation can be used not only
 for AI but also for many problems faced in mathematical modeling, such as
 multi-dimensional nonlinear optimization and root-finding problems.
 
+In addition to what's in Anaconda, this lecture will need the following libraries:
+
+```{code-cell} ipython3
+:tags: [hide-output]
+
+!pip install jax
+```
 
 We need the following imports
 
@@ -47,12 +54,7 @@ import jax
 import jax.numpy as jnp
 import matplotlib.pyplot as plt
 import numpy as np
-```
-
-Checking for a GPU:
-
-```{code-cell} ipython3
-!nvidia-smi
+from sympy import symbols
 ```
 
 ## What is automatic differentiation?
@@ -106,9 +108,9 @@ $$
     \frac{f(x+h) - f(x)}{h} \approx \frac{0}{0}
 $$
 
-Small numbers in the numerator and denominator causes rounding errors.
+Small numbers in the numerator and denominator cause rounding errors.
 
-The situation is exponentially worse in high dimensions / with higher order derivatives
+The situation is exponentially worse in high dimensions / with higher order derivatives.
 
 +++
 
@@ -120,8 +122,6 @@ Symbolic calculus tries to use rules for differentiation to produce a single
 closed-form expression representing a derivative.
 
 ```{code-cell} ipython3
-from sympy import symbols, diff
-
 m, a, b, x = symbols('m a b x')
 f_x = (a*x + b)**m
 f_x.diff((x, 6))  # 6-th order derivative
@@ -141,15 +141,15 @@ $$
     = (f' g + g' f) h + (f g) h'
 $$
 
-If we evaluate at $x$, then we evalute $f(x)$ and $g(x)$ twice each.
+If we evaluate at $x$, then we evaluate $f(x)$ and $g(x)$ twice each.
 
-Also, computing $f'(x)$ and $f(x)$ might involve similar terms (e.g., $(f(x) = \exp(2x)' \implies f'(x) = 2f(x)$) but this is not exploited in symbolic algebra.
+Also, computing $f'(x)$ and $f(x)$ might involve similar terms (e.g., $f(x) = \exp(2x) \implies f'(x) = 2f(x)$) but this is not exploited in symbolic algebra.
 
 +++
 
 ### Autodiff 
 
-Autodiff produces functions that evaluates derivatives at numerical values
+Autodiff produces functions that evaluate derivatives at numerical values
 passed in by the calling code, rather than producing a single symbolic
 expression representing the entire derivative.
 
@@ -171,7 +171,7 @@ Let's start with some real-valued functions on $\mathbb R$.
 
 +++
 
-Let's test JAX's auto diff with a relatively simple function.
+Let's test JAX's autodiff with a relatively simple function.
 
 ```{code-cell} ipython3
 def f(x):
@@ -343,18 +343,18 @@ def grad_descent(f,       # Function to be minimized
 
 ### Simulated data
 
-We're going to test our gradient descent function my minimizing a sum of least squares in a regression problem.
+We're going to test our gradient descent function by minimizing a sum of least squares in a regression problem.
 
 Let's generate some simulated data:
 
 ```{code-cell} ipython3
 n = 100
 key = jax.random.key(1234)
-x = jax.random.uniform(key, (n,))
+key, x_key, ϵ_key = jax.random.split(key, 3)
+x = jax.random.uniform(x_key, (n,))
 
 α, β, σ = 0.5, 1.0, 0.1  # Set the true intercept and slope.
-key, subkey = jax.random.split(key)
-ϵ = jax.random.normal(subkey, (n,))
+ϵ = jax.random.normal(ϵ_key, (n,))
 
 y = α * x + β + σ * ϵ
 ```
