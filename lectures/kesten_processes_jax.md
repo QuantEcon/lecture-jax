@@ -4,7 +4,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.16.7
+    jupytext_version: 1.17.2
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -275,7 +275,6 @@ def generate_cross_section_lax(
     μ_a, σ_a, μ_b, σ_b, μ_e, σ_e, s_bar = firm
     key = random.key(seed)
 
-
     # Initial cross section
     s = jnp.full((M,), s_init)
 
@@ -295,7 +294,9 @@ def generate_cross_section_lax(
 
     # Use fori_loop
     initial_state = s, key
-    final_s, final_key = jax.lax.fori_loop(0, T, update_cross_section, initial_state)
+    final_s, final_key = jax.lax.fori_loop(
+        0, T, update_cross_section, initial_state
+    )
     return final_s
 ```
 
