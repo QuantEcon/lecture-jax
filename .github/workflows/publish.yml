@@ -3,10 +3,26 @@ on:
   push:
     tags:
       - 'publish*'
+
+# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
+permissions:
+  contents: write   # write: upload release assets (html archive, checksum, manifest)
+  actions: read     # dawidd6/action-download-artifact reads the cache.yml build artifact
+  pages: write
+  id-token: write   # required for OIDC-based Pages deployment
+
+# Allow only one concurrent deployment; don't cancel an in-flight deploy
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
 jobs:
   publish:
     if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags')
     runs-on: "runs-on=${{ github.run_id }}/family=g4dn.2xlarge/image=quantecon_ubuntu2404/volume=80gb/spot=false"
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs['page-url'] }}
     steps:
       - name: Checkout
         uses: actions/checkout@v7
@@ -38,12 +54,20 @@ jobs:
         run: pip list
       # Download Build Cache from cache.yml
       - name: Download "build" folder (cache)
-        uses: dawidd6/action-download-artifact@v21
+        uses: dawidd6/action-download-artifact@v28
         with:
           workflow: cache.yml
           branch: main
           name: build-cache
           path: _build
+      # The cache is extracted after the checkout, so its HTML files carry a newer
+      # mtime than every source file and Sphinx's HTML builder sees nothing to
+      # rewrite ("no targets are out of date"). Drop the cached HTML and the pickled
+      # environment so the HTML build renders every page from the current sources.
+      # Executed notebook outputs live in _build/.jupyter_cache and are kept.
+      - name: Clear cached HTML and stale Sphinx environment
+        shell: bash -l {0}
+        run: rm -rf _build/html _build/.doctrees
       # Build Assets (Download Notebooks, PDF via LaTeX)
       - name: Build PDF from LaTeX
         shell: bash -l {0}
@@ -73,38 +97,16 @@ jobs:
         shell: bash -l {0}
         run: |
           jb build lectures --path-output ./ -n -W --keep-going
-      # Create HTML archive for release assets
-      - name: Create HTML archive
-        shell: bash -l {0}
-        run: |
-          tar -czf lecture-jax-html-${{ github.ref_name }}.tar.gz -C _build/html .
-          sha256sum lecture-jax-html-${{ github.ref_name }}.tar.gz > html-checksum.txt
-
-          # Create metadata manifest
-          cat > html-manifest.json << EOF
-          {
-            "tag": "${{ github.ref_name }}",
-            "commit": "${{ github.sha }}",
-            "timestamp": "$(date -Iseconds)",
-            "size_mb": $(du -sm _build/html | cut -f1),
-            "file_count": $(find _build/html -type f | wc -l)
-          }
-          EOF
-      - name: Upload archives to release
-        uses: softprops/action-gh-release@v3
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: quantecon/actions/publish-gh-pages@v0.12.0
         with:
-          files: |
-            lecture-jax-html-${{ github.ref_name }}.tar.gz
-            html-checksum.txt
-            html-manifest.json
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Deploy website to gh-pages
-        uses: peaceiris/actions-gh-pages@v4
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: _build/html/
-          cname: jax.quantecon.org
+          build-dir: _build/html
+          # Custom domain (jax.quantecon.org): set in Settings → Pages. The Actions Pages
+          # deploy ignores a CNAME file, so publish-gh-pages' cname input has no effect.
+          create-release-assets: 'true'
+          asset-name: 'lecture-jax-html'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
       - name: Prepare lecture-jax.notebooks sync
         shell: bash -l {0}
         run: |

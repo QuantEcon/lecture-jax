@@ -38,6 +38,9 @@ sphinx:
     bibtex_reference_style: author_year
     suppress_warnings: ["mystnb.unknown_mime_type"]
     nb_merge_streams: true
+    # sphinx-proof
+    proof_minimal_theme: true
+    # sphinx-exercise
     exercise_style: solution_follow_exercise
     # myst-nb config
     nb_render_image_options:
@@ -97,9 +100,25 @@ sphinx:
         macros:
           "argmax" : "arg\\,max"
           "argmin" : "arg\\,min"
+    intersphinx_mapping: 
+      intermediate: 
+        - "https://python.quantecon.org/"
+        - null
     mathjax_path: https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
     rediraffe_redirects:
       index_toc.md: intro.md
+      about.md: about_jax.md
+      arellano.md: arellano_jax.md
+      ifp_egm.md: ifp_egm_jax.md
+      inventory_dynamics.md: inventory_dynamics_jax.md
+      jax_intro.md: jax_intro_jax.md
+      kesten_processes.md: kesten_processes_jax.md
+      markov_asset.md: markov_asset_jax.md
+      mle.md: mle_jax.md
+      schelling.md: schelling_python.md
+      wealth_dynamics.md: wealth_dynamics_jax.md
+      lucas_model.md: lucas_model_jax.md
+      short_path.md: short_path_jax.md
     tojupyter_static_file_path: ["_static"]
     tojupyter_target_html: true
     tojupyter_urlpath: "https://jax.quantecon.org/"
