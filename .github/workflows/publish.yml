@@ -56,7 +56,9 @@ jobs:
           # the font manager builds it on import, with no backend involved.
           python -c "import matplotlib.font_manager"
       - name: Install ImageMagick
-        run: sudo apt-get update && sudo apt-get install -y imagemagick
+        # A freshly launched machine can still be running unattended-upgrades,
+        # which holds the dpkg lock: wait for it (up to 10 minutes) instead of failing.
+        run: sudo apt-get update && sudo apt-get -o DPkg::Lock::Timeout=600 install -y imagemagick
       - name: Display Conda Environment Versions
         shell: bash -l {0}
         run: conda list
