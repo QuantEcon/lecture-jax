@@ -46,7 +46,7 @@ Nonetheless, the gain is nontrivial.
 Let's start with installing `quantecon` package and some imports:
 
 ```{code-cell} ipython3
-!pip install --upgrade quantecon
+!pip install quantecon
 ```
 
 ```{code-cell} ipython3

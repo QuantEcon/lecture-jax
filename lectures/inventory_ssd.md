@@ -25,7 +25,7 @@ In addition to JAX and Anaconda, this lecture will need the following libraries:
 ```{code-cell} ipython3
 :tags: [hide-output]
 
-!pip install --upgrade quantecon
+!pip install quantecon
 ```
 
 ## A model with constant discounting
