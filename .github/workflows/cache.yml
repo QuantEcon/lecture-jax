@@ -24,9 +24,8 @@ jobs:
       - name: Install jax (and install checks for GPU)
         shell: bash -l {0}
         run: |
-          # Pinned to the lecture baseline, QuantEcon/lectures' _base/environment-update.yml:
-          # jax 0.11.1 hangs a lecture in lecture-python-programming.
-          pip install "jax[cuda13]==0.11.0"
+          # Pinned to the lecture baseline, QuantEcon/lectures' _base/environment-update.yml.
+          pip install "jax[cuda13]==0.12.1"
           python --version
           python scripts/test-jax-install.py
           nvidia-smi
