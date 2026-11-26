@@ -31,7 +31,7 @@ import matplotlib.pyplot as plt
 from typing import NamedTuple
 import jax.numpy as jnp
 import jax
-from jax.scipy.special import factorial
+from jax.scipy.special import gammaln
 from statsmodels.api import Poisson
 ```
 
@@ -93,9 +93,14 @@ fig, (ax1, ax2) = plt.subplots(2, sharex=True, figsize=(12, 8))
 ax1.plot(β, logL(β), lw=2)
 ax2.plot(β, dlogL(β), lw=2)
 
-ax1.set_ylabel(r"$log \mathcal{L(\beta)}$", rotation=0, labelpad=35, fontsize=15)
+ax1.set_ylabel(
+    r"$\log \mathcal{L}(\beta)$", rotation=0, labelpad=35, fontsize=15
+)
 ax2.set_ylabel(
-    r"$\frac{dlog \mathcal{L(\beta)}}{d \beta}$ ", rotation=0, labelpad=35, fontsize=19
+    r"$\frac{d \log \mathcal{L}(\beta)}{d \beta}$",
+    rotation=0,
+    labelpad=35,
+    fontsize=19,
 )
 
 ax2.set_xlabel(r"$\beta$", fontsize=15)
@@ -168,7 +173,7 @@ Now we can define the log-likelihood function.
 def poisson_logL(β, model):
     y = model.y
     μ = jnp.exp(model.X @ β)
-    return jnp.sum(model.y * jnp.log(μ) - μ - jnp.log(factorial(y)))
+    return jnp.sum(model.y * jnp.log(μ) - μ - gammaln(y + 1))
 ```
 
 To find the gradient of `poisson_logL`, we again use [jax.grad](https://docs.jax.dev/en/latest/_autosummary/jax.grad.html).
@@ -366,7 +371,7 @@ X = jnp.hstack((jnp.ones(shape), x, x**2))
 init_β = jnp.array([0.1, 0.1, 0.1])
 
 # Create an object with Poisson model values
-poi = RegressionModel(X=X, y=y)
+poi = RegressionModel(X=X, y=y.ravel())
 
 # Use newton_raphson to find the MLE
 β_hat = newton_raphson(poi, init_β, tol=1e-5, display=True)
