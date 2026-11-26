@@ -4,7 +4,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.16.7
+    jupytext_version: 1.17.2
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -22,6 +22,14 @@ kernelspec:
 # Inventory Dynamics
 
 ```{include} _admonition/gpu.md
+```
+
+In addition to JAX and Anaconda, this lecture will need the following libraries:
+
+```{code-cell} ipython3
+:tags: [hide-output]
+
+!pip install quantecon
 ```
 
 ```{index} single: Markov process, inventory
@@ -132,7 +140,8 @@ def update_cross_section(
 ) -> jnp.ndarray:
     """
     Update by one period a cross-section of firms with inventory levels given by
-    X_vec, given the vector of demand shocks in D.
+    X_vec, given the vector of demand shocks in D. Here D[i] is the demand shock
+    for firm i with current inventory X_vec[i].
     """
     # Unpack
     s, S = params.s, params.S
