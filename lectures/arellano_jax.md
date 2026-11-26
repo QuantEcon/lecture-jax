@@ -85,7 +85,13 @@ Let's check the GPU we are using
 !nvidia-smi
 ```
 
-We will use 64 bit floats with JAX in order to increase the precision.
+We will use 64 bit floats with JAX, because 32 bit floats change the solution of this model.
+
+With 32 bit floats, the default decision flips at a few dozen states where the values of repaying and defaulting nearly tie, and the bond price $ q(B', y) $ at the affected values of $ B' $ moves by up to 0.98.
+
+The borrowing policy also changes at about a third of the states, since at most states the best two choices of $ B' $ are very close in value.
+
+The tolerance of `1e-8` in `solve` below is finer than 32 bit floats can resolve on values of this size, so with 32 bit floats the iteration stops only when the values stop changing altogether.
 
 ```{code-cell} ipython3
 jax.config.update("jax_enable_x64", True)
